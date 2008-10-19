@@ -24,16 +24,11 @@ public class Deoxide extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	int x, y;
-    	Calendar cal = Calendar.getInstance();
+    	Calendar cal;
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
     	
     	sched = new ScheduleData();
     	
-    	cal.set(Calendar.HOUR_OF_DAY, 11);
-    	cal.set(Calendar.MINUTE, 0);
-    	cal.set(Calendar.SECOND, 0);
-    	df.setCalendar(cal);
-
     	schedrows = new LinearLayout[32];
     	schedcont = new LinearLayout(this);
     	scrollert = new ScrollView(this);
@@ -43,6 +38,13 @@ public class Deoxide extends Activity {
     		LinearLayout row = new LinearLayout(this); 
     		schedrows[y] = row;
     		TextView cell;
+
+    		cal = Calendar.getInstance();
+        	cal.set(Calendar.HOUR_OF_DAY, 12);
+        	cal.set(Calendar.MINUTE, 0);
+        	cal.set(Calendar.SECOND, 0);
+        	df.setCalendar(cal);
+
     		if (y == 0) {
     			cell = new ScheduleElement(this);
     			cell.setWidth(TentWidth);
@@ -74,6 +76,8 @@ public class Deoxide extends Activity {
 	
 	    			cal.add(Calendar.MINUTE, 30);
 	    		}
+    		} else {
+    			
     		}
     		schedcont.addView(row);
     	}
