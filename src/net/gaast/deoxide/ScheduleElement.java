@@ -13,6 +13,7 @@ public class ScheduleElement extends TextView {
 		super(ctx);
 		setGravity(Gravity.CENTER);
 		setHeight(Deoxide.TentHeight);
+		setTextColor(0xFFFFFFFF);
 		setTextSize(8);
 	}
 	
