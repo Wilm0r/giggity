@@ -2,6 +2,8 @@ package net.gaast.deoxide;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -25,93 +27,100 @@ public class Deoxide extends Activity {
     	int x, y;
     	Calendar cal;
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+    	LinkedList<ScheduleDataLine> tents;
+    	ListIterator<ScheduleDataLine> tenti;
+    	ScheduleLine line;
+    	ScheduleElement cell;
     	
-    	setTitle("Deoxide: Lowlands 2008 zaterdag 15 aug");
     	sched = new ScheduleData("http://wilmer.gaast.net/deoxide/test.xml");
+    	setTitle("Deoxide: " + sched.getTitle());
     	
     	schedrows = new LinearLayout[32];
     	schedcont = new LinearLayout(this);
     	scrollert = new ScrollView(this);
         scrollert.addView(schedcont);
     	schedcont.setOrientation(LinearLayout.VERTICAL);
-    	for (y = 0; y <= sched.getTents().length; y ++) {
-    		LinearLayout row = new LinearLayout(this); 
-    		schedrows[y] = row;
-    		ScheduleElement cell;
+    	
+    	/* Time to generate the "clock" on the first row. */
+    	line = new ScheduleLine(this);
+		cell = new ScheduleElement(this);
+		cell.setWidth(TentWidth);
+		cell.setText("Tent/Time:");
+		cell.setBackgroundColor(0xFF3F3F3F);
+		line.addView(cell);
 
-    		/* Headers on the first column. */
-    		if (y == 0) {
-    			cell = new ScheduleElement(this);
-    			cell.setWidth(TentWidth);
-    			cell.setText("Lowlands 2008 vrijdag");
+		cal = Calendar.getInstance();
+		cal.setTime(sched.getFirstTime());
+		for (x = 0; x < 24; x ++) {
+			cell = new ScheduleElement(this);
+			
+			cell.setText(df.format(cal.getTime()));
+			cell.setWidth(HourWidth / 2);
+			if ((x & 1) == 0) {
+				cell.setBackgroundColor(0xFF000000);
+			} else {
 				cell.setBackgroundColor(0xFF3F3F3F);
-    		} else {
-    			cell = new ScheduleElement(this);
-    			cell.setWidth(TentWidth);
-    			cell.setText(sched.getTents()[y-1]);
-    			if ((y & 1) != 0) {
-    				cell.setBackgroundColor(0xFF000000);
-    			} else {
-    				cell.setBackgroundColor(0xFF3F3F3F);
-    			}
-    		}
-			row.addView(cell);
+			}
+			line.addView(cell);
+
+			cal.add(Calendar.MINUTE, 30);
+		}
+		schedcont.addView(line);
+		
+		tents = sched.getTents();
+		tenti = tents.listIterator();
+    	while (tenti.hasNext()) {
+    		ListIterator<ScheduleDataItem> gigi;
+    		ScheduleDataLine tent = tenti.next();
+    		
+    		line = new ScheduleLine(this); 
+
+    		/* Tent name on the first column. */
+			cell = new ScheduleElement(this);
+			cell.setWidth(TentWidth);
+			cell.setText(tent.getTitle());
+			if (true) { //(y & 1) != 0) {
+				cell.setBackgroundColor(0xFF000000);
+			} else {
+				cell.setBackgroundColor(0xFF3F3F3F);
+			}
+			line.addView(cell);
 
     		cal = Calendar.getInstance();
-    		cal.set(2008, 7, 15, 13, 0, 0);
-    		cal.set(Calendar.MILLISECOND, 0);
+    		cal.setTime(sched.getFirstTime());
+    		cal.add(Calendar.MINUTE, -15);
         	df.setCalendar(cal);
 			
-			if (y == 0) {
-				/* Time headers on the first row. */
-    			for (x = 0; x < 24; x ++) {
-	    			cell = new ScheduleElement(this);
-	    			
-	    			cell.setText(df.format(cal.getTime()));
-	    			cell.setWidth(HourWidth / 2);
-	    			if ((x & 1) == 0) {
-	    				cell.setBackgroundColor(0xFF000000);
-	    			} else {
-	    				cell.setBackgroundColor(0xFF3F3F3F);
-	    			}
-	    			row.addView(cell);
-	
-	    			cal.add(Calendar.MINUTE, 30);
-	    		}
-    		} else {
-    			ScheduleDataItem gigs[] = sched.getTentSchedule(sched.getTents()[y-1]);
-    			int i;
-    			
-    			for (i = 0; i < gigs.length; i ++) {
-    				int gap, gap2;
-    				String foo = cal.toString();
-    				
-    				gap = (int) ((gigs[i].getStartTime().getTime() -
-    						      cal.getTime().getTime()) / 60000);
-    				
-    				cell = new ScheduleElement(this);
-    				cell.setWidth(HourWidth * gap / 60);
-    				cell.setBackgroundColor(0xFFFFFFFF);
-    				cell.setTextColor(0xFF000000);
-    				cell.setText("" + gap);
-    				row.addView(cell);
-    				cal.add(Calendar.MINUTE, gap);
-    				
-    				gap2 = gap;
-    				gap = (int) ((gigs[i].getEndTime().getTime() -
-						          cal.getTime().getTime()) / 60000);
-    				
-    				cell = new ScheduleElement(this);
-    				cell.setWidth(HourWidth * gap / 60);
-    				cell.setBackgroundColor(0xFF000000);
-    				cell.setTextColor(0xFFFFFFFF);
-    				cell.setText(gigs[i].getTitle());
-    				cell.setItem(gigs[i]);
-    				row.addView(cell);
-    				cal.add(Calendar.MINUTE, gap);
-    			}
-    		}
-    		schedcont.addView(row);
+			gigi = tent.getItems().listIterator();
+			while (gigi.hasNext()) {
+				ScheduleDataItem gig = gigi.next();
+				int gap;
+				String foo = cal.toString();
+				
+				gap = (int) ((gig.getStartTime().getTime() -
+						      cal.getTime().getTime()) / 60000);
+				
+				cell = new ScheduleElement(this);
+				cell.setWidth(HourWidth * gap / 60);
+				cell.setBackgroundColor(0xFFFFFFFF);
+				cell.setTextColor(0xFF000000);
+				cell.setText("" + gap);
+				line.addView(cell);
+				cal.add(Calendar.MINUTE, gap);
+				
+				gap = (int) ((gig.getEndTime().getTime() -
+					          cal.getTime().getTime()) / 60000);
+				
+				cell = new ScheduleElement(this);
+				cell.setWidth(HourWidth * gap / 60);
+				cell.setBackgroundColor(0xFF000000);
+				cell.setTextColor(0xFFFFFFFF);
+				cell.setText(gig.getTitle());
+				cell.setItem(gig);
+				line.addView(cell);
+				cal.add(Calendar.MINUTE, gap);
+			}
+    		schedcont.addView(line);
     	}
         super.onCreate(savedInstanceState);
         setContentView(scrollert);
