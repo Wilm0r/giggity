@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
-import android.widget.TextView;
 
 public class Deoxide extends Activity {
     /** Called when the activity is first created. */
@@ -28,7 +27,7 @@ public class Deoxide extends Activity {
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
     	
     	setTitle("Deoxide: Lowlands 2008 zaterdag 15 aug");
-    	sched = new ScheduleData();
+    	sched = new ScheduleData("http://wilmer.gaast.net/deoxide/test.xml");
     	
     	schedrows = new LinearLayout[32];
     	schedcont = new LinearLayout(this);
