@@ -37,14 +37,9 @@ public class Deoxide extends Activity {
     	for (y = 0; y <= sched.getTents().length; y ++) {
     		LinearLayout row = new LinearLayout(this); 
     		schedrows[y] = row;
-    		TextView cell;
+    		ScheduleElement cell;
 
-    		cal = Calendar.getInstance();
-        	cal.set(Calendar.HOUR_OF_DAY, 12);
-        	cal.set(Calendar.MINUTE, 0);
-        	cal.set(Calendar.SECOND, 0);
-        	df.setCalendar(cal);
-
+    		/* Headers on the first column. */
     		if (y == 0) {
     			cell = new ScheduleElement(this);
     			cell.setWidth(TentWidth);
@@ -61,7 +56,14 @@ public class Deoxide extends Activity {
     			}
     		}
 			row.addView(cell);
-    		if (y == 0) {
+
+    		cal = Calendar.getInstance();
+    		cal.set(2008, 7, 15, 13, 0, 0);
+    		cal.set(Calendar.MILLISECOND, 0);
+        	df.setCalendar(cal);
+			
+			if (y == 0) {
+				/* Time headers on the first row. */
     			for (x = 0; x < 24; x ++) {
 	    			cell = new ScheduleElement(this);
 	    			
@@ -77,7 +79,37 @@ public class Deoxide extends Activity {
 	    			cal.add(Calendar.MINUTE, 30);
 	    		}
     		} else {
+    			ScheduleDataItem gigs[] = sched.getTentSchedule(sched.getTents()[y-1]);
+    			int i;
     			
+    			for (i = 0; i < gigs.length; i ++) {
+    				int gap, gap2;
+    				String foo = cal.toString();
+    				
+    				gap = (int) ((gigs[i].getStartTime().getTime() -
+    						      cal.getTime().getTime()) / 60000);
+    				
+    				cell = new ScheduleElement(this);
+    				cell.setWidth(HourWidth * gap / 60);
+    				cell.setBackgroundColor(0xFFFFFFFF);
+    				cell.setTextColor(0xFF000000);
+    				cell.setText("" + gap);
+    				row.addView(cell);
+    				cal.add(Calendar.MINUTE, gap);
+    				
+    				gap2 = gap;
+    				gap = (int) ((gigs[i].getEndTime().getTime() -
+						          cal.getTime().getTime()) / 60000);
+    				
+    				cell = new ScheduleElement(this);
+    				cell.setWidth(HourWidth * gap / 60);
+    				cell.setBackgroundColor(0xFF000000);
+    				cell.setTextColor(0xFFFFFFFF);
+    				cell.setText(gigs[i].getTitle());
+    				cell.setItem(gigs[i]);
+    				row.addView(cell);
+    				cal.add(Calendar.MINUTE, gap);
+    			}
     		}
     		schedcont.addView(row);
     	}
