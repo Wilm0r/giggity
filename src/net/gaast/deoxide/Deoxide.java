@@ -13,9 +13,10 @@ import android.widget.ScrollView;
 public class Deoxide extends Activity {
     /** Called when the activity is first created. */
     
+	public static final int HourHeight = 16;
+	public static final int HourWidth = 72;
 	public static final int TentHeight = 32;
 	public static final int TentWidth = 48;
-	public static final int HourWidth = 72;
 	
     LinearLayout schedcont;
     LinearLayout schedrows[];
@@ -32,6 +33,9 @@ public class Deoxide extends Activity {
     	ScheduleLine line;
     	ScheduleElement cell;
     	
+    	super.onCreate(savedInstanceState);
+    	// setContentView(R.layout.main);
+
     	sched = new ScheduleData("http://wilmer.gaast.net/deoxide/test.xml");
     	setTitle("Deoxide: " + sched.getTitle());
     	
@@ -40,12 +44,14 @@ public class Deoxide extends Activity {
     	scrollert = new ScrollView(this);
         scrollert.addView(schedcont);
     	schedcont.setOrientation(LinearLayout.VERTICAL);
+    	schedcont.setBackgroundColor(0xFFFFFFFF);
     	
     	/* Time to generate the "clock" on the first row. */
     	line = new ScheduleLine(this);
 		cell = new ScheduleElement(this);
-		cell.setWidth(TentWidth);
 		cell.setText("Tent/Time:");
+		cell.setHeight(HourHeight);
+		cell.setWidth(TentWidth);
 		cell.setBackgroundColor(0xFF3F3F3F);
 		line.addView(cell);
 
@@ -55,6 +61,7 @@ public class Deoxide extends Activity {
 			cell = new ScheduleElement(this);
 			
 			cell.setText(df.format(cal.getTime()));
+			cell.setHeight(HourHeight);
 			cell.setWidth(HourWidth / 2);
 			if ((x & 1) == 0) {
 				cell.setBackgroundColor(0xFF000000);
@@ -116,11 +123,11 @@ public class Deoxide extends Activity {
 				cell.setText(gig.getTitle());
 				cell.setItem(gig);
 				line.addView(cell);
+
 				cal.add(Calendar.MINUTE, gap);
 			}
     		schedcont.addView(line);
     	}
-        super.onCreate(savedInstanceState);
         setContentView(scrollert);
     }
 }

@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
-</LinearLayout>
+
+
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="vertical"><LinearLayout android:id="@+id/LinearLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal"><TextView android:id="@+id/TextView01" android:layout_height="64px" android:layout_width="64px" android:gravity="center" android:text="Tool tips that steal focus from my scroll wheel are very annoying" android:textSize="5pt"></TextView><TextView android:id="@+id/TextView01" android:layout_height="64px" android:layout_width="64px" android:gravity="center" android:text="Tool tips that steal focus from my scroll wheel are very annoying" android:textSize="5pt"></TextView>
+</LinearLayout><LinearLayout android:id="@+id/LinearLayout01" android:layout_width="wrap_content" android:layout_height="wrap_content" xmlns:android="http://schemas.android.com/apk/res/android" android:orientation="horizontal"><TextView android:id="@+id/TextView01" android:layout_height="64px" android:layout_width="64px" android:gravity="center" android:text="Tool tips that steal focus from my scroll wheel are very annoying" android:textSize="5pt"></TextView><TextView android:id="@+id/TextView01" android:layout_height="64px" android:layout_width="64px" android:gravity="center" android:text="Tool tips that steal focus from my scroll wheel are very annoying" android:textSize="5pt"></TextView>
+</LinearLayout></LinearLayout>

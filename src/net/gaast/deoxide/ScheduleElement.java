@@ -1,14 +1,11 @@
 package net.gaast.deoxide;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.graphics.Rect;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.CheckBox;
@@ -20,9 +17,10 @@ public class ScheduleElement extends TextView {
 	
 	public ScheduleElement(Activity ctx) {
 		super(ctx);
-		//setGravity(Gravity.CENTER);
+		setGravity(Gravity.CENTER_HORIZONTAL);
 		setHeight(Deoxide.TentHeight);
 		setTextColor(0xFFFFFFFF);
+		setPadding(3, 3, 3, 3);
 		setTextSize(8);
 	}
 	
@@ -43,7 +41,7 @@ public class ScheduleElement extends TextView {
 	    	desc.setText(df.format(item.getStartTime().getTime()) + "-" +
 	    			     df.format(item.getEndTime().getTime()) + ": " +
 	    			     item.getDescription());
-			cb.setText("Remind me");
+			cb.setText("Remind me" + getTotalPaddingTop());
 			dlg.setTitle(getText());
 			content.setOrientation(LinearLayout.VERTICAL);
 			content.addView(desc);
