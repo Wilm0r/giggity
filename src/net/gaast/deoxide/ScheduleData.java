@@ -149,8 +149,8 @@ public class ScheduleData implements ContentHandler {
 				if (lastTime == null || endTime.after(lastTime))
 					lastTime = endTime;
 				
-				Log.d("XML", "itemParsed: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
-				      " " + startTime + " " + endTime);
+//				Log.d("XML", "itemParsed: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
+//				      " " + startTime + " " + endTime);
 
 				curItem = new ScheduleDataItem(atts.getValue("", "id"),
 	                       atts.getValue("", "title"),

@@ -24,7 +24,7 @@ public class Deoxide extends Activity {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	int x, y;
+    	int x;
     	Calendar cal;
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
     	LinkedList<ScheduleDataLine> tents;
@@ -95,7 +95,6 @@ public class Deoxide extends Activity {
 			while (gigi.hasNext()) {
 				ScheduleDataItem gig = gigi.next();
 				int gap;
-				String foo = cal.toString();
 				
 				gap = (int) ((gig.getStartTime().getTime() -
 						      cal.getTime().getTime()) / 60000);
@@ -104,7 +103,6 @@ public class Deoxide extends Activity {
 				cell.setWidth(HourWidth * gap / 60);
 				cell.setBackgroundColor(0xFFFFFFFF);
 				cell.setTextColor(0xFF000000);
-				cell.setText("" + gap);
 				line.addView(cell);
 				cal.add(Calendar.MINUTE, gap);
 				
