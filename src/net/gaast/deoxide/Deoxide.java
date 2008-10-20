@@ -25,7 +25,7 @@ public class Deoxide extends Activity {
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
-    	int x;
+    	int x, y;
     	Calendar cal;
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
     	LinkedList<ScheduleDataLine> tents;
@@ -74,6 +74,7 @@ public class Deoxide extends Activity {
 		}
 		schedcont.addView(line);
 		
+		y = 0;
 		tents = sched.getTents();
 		tenti = tents.listIterator();
     	while (tenti.hasNext()) {
@@ -86,18 +87,18 @@ public class Deoxide extends Activity {
 			cell = new ScheduleElement(this);
 			cell.setWidth(TentWidth);
 			cell.setText(tent.getTitle());
-			if (true) { //(y & 1) != 0) {
+			if ((++y & 1) > 0)
 				cell.setBackgroundColor(0xFF000000);
-			} else {
+			else
 				cell.setBackgroundColor(0xFF3F3F3F);
-			}
 			line.addView(cell);
 
     		cal = Calendar.getInstance();
     		cal.setTime(sched.getFirstTime());
     		cal.add(Calendar.MINUTE, -15);
         	df.setCalendar(cal);
-			
+
+        	x = 0;
 			gigi = tent.getItems().listIterator();
 			while (gigi.hasNext()) {
 				ScheduleDataItem gig = gigi.next();
@@ -118,7 +119,10 @@ public class Deoxide extends Activity {
 				
 				cell = new ScheduleElement(this);
 				cell.setWidth(HourWidth * gap / 60);
-				cell.setBackgroundColor(0xFF000000);
+				if ((++x & 1) > 0 )
+					cell.setBackgroundColor(0xFF000000);
+				else
+					cell.setBackgroundColor(0xFF3F3F3F);
 				cell.setTextColor(0xFFFFFFFF);
 				cell.setText(gig.getTitle());
 				cell.setItem(gig);
