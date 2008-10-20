@@ -1,5 +1,10 @@
 package net.gaast.deoxide;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 
 import android.app.Activity;
@@ -31,8 +36,22 @@ public class ScheduleElement extends TextView {
 			TextView desc = new TextView(getContext());
 			CheckBox cb = new CheckBox(getContext());
 			LinearLayout content = new LinearLayout(getContext());
+			String hw = "";
+			try {
+				URL dl = new URL("http://wilmer.gaast.net/deoxide/test.xml");
+				BufferedReader in = new BufferedReader(new InputStreamReader(dl.openStream()));
+				String line;
+				
+				while ((line = in.readLine()) != null) {
+					hw = hw + line;
+				}
+			} catch (MalformedURLException e) {
+				hw = "shit happens:" + e;
+			} catch (IOException e) {
+				hw = "shit happens:" + e;
+			}
 			if (item == null) {
-				desc.setText("Je hebt geklikt op " + getText());
+				desc.setText("Je hebt geklikt op " + getText() + hw);
 			} else {
 		    	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 		    	desc.setText(df.format(item.getStartTime().getTime()) + "-" +

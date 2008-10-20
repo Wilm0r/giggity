@@ -27,6 +27,7 @@ public class Deoxide extends Activity {
     	Calendar cal;
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
     	
+    	setTitle("Deoxide: Lowlands 2008 zaterdag 15 aug");
     	sched = new ScheduleData();
     	
     	schedrows = new LinearLayout[32];
@@ -43,7 +44,7 @@ public class Deoxide extends Activity {
     		if (y == 0) {
     			cell = new ScheduleElement(this);
     			cell.setWidth(TentWidth);
-    			cell.setText("Tent/Time:");
+    			cell.setText("Lowlands 2008 vrijdag");
 				cell.setBackgroundColor(0xFF3F3F3F);
     		} else {
     			cell = new ScheduleElement(this);
