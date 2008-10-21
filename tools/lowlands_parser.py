@@ -6,13 +6,16 @@
 import cgi
 import re
 import sys
+import time
 
 def date_mess(key, value):
 	# So fuzzy, brrr
 	if k.endswith('VALUE=DATE-TIME'):
 		m = re.match('(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})(\d{2})', v)
 		if m:
-			date = '%s-%s-%sT%s:%s:%s' % m.groups()
+			#date = '%s-%s-%sT%s:%s:%s' % m.groups()
+			tup = tuple([int(x) for x in m.groups()] + [0, 0, -1])
+			date = int(time.mktime(tup))
 		else:
 			print 'Can\'t parse timestamp: ' + (k, v)
 	else:
