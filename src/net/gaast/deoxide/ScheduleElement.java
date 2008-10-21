@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.graphics.Rect;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.widget.CheckBox;

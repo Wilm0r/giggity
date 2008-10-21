@@ -7,8 +7,8 @@ import java.util.ListIterator;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 
 public class Deoxide extends Activity {
     /** Called when the activity is first created. */
@@ -20,7 +20,7 @@ public class Deoxide extends Activity {
 	
     LinearLayout schedcont;
     LinearLayout schedrows[];
-    ScrollView scrollert;
+    ScheduleScroller scrollert;
     ScheduleData sched;
     
     @Override
@@ -41,8 +41,6 @@ public class Deoxide extends Activity {
     	
     	schedrows = new LinearLayout[32];
     	schedcont = new LinearLayout(this);
-    	scrollert = new ScrollView(this);
-        scrollert.addView(schedcont);
     	schedcont.setOrientation(LinearLayout.VERTICAL);
     	schedcont.setBackgroundColor(0xFFFFFFFF);
     	
@@ -132,6 +130,11 @@ public class Deoxide extends Activity {
 			}
     		schedcont.addView(line);
     	}
+    	
+    	scrollert = new ScheduleScroller(this);
+    	scrollert.setMinimumHeight(1000);
+        scrollert.addView(schedcont);
         setContentView(scrollert);
+        scrollert.scrollTo(100,100);
     }
 }
