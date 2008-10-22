@@ -17,6 +17,9 @@ public class Deoxide extends Activity {
 	public static final int TentHeight = 48;
 	public static final int TentWidth = 48;
 	
+	LinearLayout clockrows; /* Clock->Schedule->Clock (V) */
+	LinearLayout schedcols; /* Tent headers->Schedule (H) */ 
+	
     LinearLayout schedcont;
     LinearLayout schedrows[];
     ScheduleScroller scrollert;
@@ -32,9 +35,11 @@ public class Deoxide extends Activity {
     	ScheduleLine line;
     	ScheduleElement cell;
     	
+    	clockrows = new LinearLayout(this);
+    	clockrows.setOrientation(LinearLayout.VERTICAL);
+    	
     	super.onCreate(savedInstanceState);
-    	scrollert = new ScheduleScroller(this);
-        setContentView(scrollert);
+        setContentView(clockrows);
 
     	// setProgressBarIndeterminateVisibility(true); //(no worky .. probably need some update function?)
     	sched = new ScheduleData("http://wilmer.gaast.net/deoxide/test.xml");
@@ -71,7 +76,7 @@ public class Deoxide extends Activity {
 
 			cal.add(Calendar.MINUTE, 30);
 		}
-		schedcont.addView(line);
+		clockrows.addView(line);
 		
 		y = 0;
 		tents = sched.getTents();
@@ -131,9 +136,11 @@ public class Deoxide extends Activity {
 			}
     		schedcont.addView(line);
     	}
-    	
+
+    	scrollert = new ScheduleScroller(this);
         scrollert.addView(schedcont);
-        //scrollert.scrollTo(100, 100);
+    	clockrows.addView(scrollert);
+        scrollert.scrollTo(100, 100);
     	//setProgressBarIndeterminateVisibility(false);
     }
 }
