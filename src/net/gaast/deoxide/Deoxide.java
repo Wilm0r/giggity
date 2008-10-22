@@ -7,7 +7,6 @@ import java.util.ListIterator;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 public class Deoxide extends Activity {
@@ -34,8 +33,10 @@ public class Deoxide extends Activity {
     	ScheduleElement cell;
     	
     	super.onCreate(savedInstanceState);
-    	// setContentView(R.layout.main);
+    	scrollert = new ScheduleScroller(this);
+        setContentView(scrollert);
 
+    	// setProgressBarIndeterminateVisibility(true); //(no worky .. probably need some update function?)
     	sched = new ScheduleData("http://wilmer.gaast.net/deoxide/test.xml");
     	setTitle("Deoxide: " + sched.getTitle());
     	
@@ -131,9 +132,8 @@ public class Deoxide extends Activity {
     		schedcont.addView(line);
     	}
     	
-    	scrollert = new ScheduleScroller(this);
-    	scrollert.setMinimumHeight(1000);
         scrollert.addView(schedcont);
-        setContentView(scrollert);
+        //scrollert.scrollTo(100, 100);
+    	//setProgressBarIndeterminateVisibility(false);
     }
 }
