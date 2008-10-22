@@ -139,11 +139,16 @@ public class ScheduleData implements ContentHandler {
 				      " " + atts.getValue("", "startTime") + " " + atts.getValue("", "endTime"));
 
 			try {
+				/*
 				df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 				df.setTimeZone(TimeZone.getTimeZone("UTC"));
 				startTime = df.parse(atts.getValue("", "startTime"));
 				endTime = df.parse(atts.getValue("", "endTime"));
-	
+				*/
+				
+				startTime = new Date(Long.parseLong(atts.getValue("", "startTime")) * 1000);
+				endTime = new Date(Long.parseLong(atts.getValue("", "endTime")) * 1000);
+				
 				if (firstTime == null || startTime.before(firstTime))
 					firstTime = startTime;
 				if (lastTime == null || endTime.after(lastTime))
@@ -155,9 +160,12 @@ public class ScheduleData implements ContentHandler {
 				curItem = new ScheduleDataItem(atts.getValue("", "id"),
 	                       atts.getValue("", "title"),
 	                       startTime, endTime);
-			} catch (ParseException e) {
-				Log.e("XML", "Error while trying to parse a date");
+//			} catch (ParseException e) {
+//				Log.e("XML", "Error while trying to parse a date");
+			} catch (NumberFormatException e) {
+				
 			}
+				
 		} else {
 			Log.d("XML", "Unknown element: " + localName);
 		}

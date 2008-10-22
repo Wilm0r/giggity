@@ -135,6 +135,5 @@ public class Deoxide extends Activity {
     	scrollert.setMinimumHeight(1000);
         scrollert.addView(schedcont);
         setContentView(scrollert);
-        scrollert.scrollTo(100,100);
     }
 }
