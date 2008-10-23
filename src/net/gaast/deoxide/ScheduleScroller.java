@@ -51,7 +51,13 @@ public class ScheduleScroller extends FrameLayout {
 	}
 	
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+			dragStartX = ev.getX();
+			dragStartY = ev.getY();
+			dragScrollX = getScrollX();
+			dragScrollY = getScrollY();
+		}
+		else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
 			int newx, newy;
 			
 			newx = dragScrollX + (int) (dragStartX - ev.getX());
