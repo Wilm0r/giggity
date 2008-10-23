@@ -4,9 +4,12 @@
 # later (fetching descriptions, links, etc.).
 
 import cgi
+import gdbm
 import re
 import sys
 import time
+
+descs = gdbm.open('descriptions.pag')
 
 def date_mess(key, value):
 	# So fuzzy, brrr
@@ -55,9 +58,14 @@ print '<schedule id="nl.lowlands.foo" title="Lowlands" xmlns="http://deoxide.gaa
 for loc in locorder:
 	print '\t<line id="%s" title="%s">' % (cgi.escape(loc), cgi.escape(loc))
 	for ev in sorted(perloc[loc], lambda x, y: cmp(x['startTime'], y['startTime'])):
-		print '\t\t<item id="%s" title="%s" startTime="%s" endTime="%s" />' % (
+		print '\t\t<item id="%s" title="%s" startTime="%s" endTime="%s">' % (
 			cgi.escape(ev['uid']), cgi.escape(ev['summary']),
 			ev['startTime'], ev['endTime'])
+		try:
+			print '\t\t\t<itemDescription>' + descs[ev['summary'].lower()] + '</itemDescription>'
+		except:
+			pass
+		print '\t\t</item>'
 
 	print '\t</line>'
 
