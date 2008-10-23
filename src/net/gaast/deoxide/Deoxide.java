@@ -22,18 +22,17 @@ public class Deoxide extends Activity {
 	
     LinearLayout schedcont;
     LinearLayout schedrows[];
-    ScheduleScroller scrollert;
+    SimpleScroller scrollert;
     ScheduleData sched;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	int x, y;
     	Calendar cal;
-    	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
     	LinkedList<ScheduleDataLine> tents;
     	ListIterator<ScheduleDataLine> tenti;
-    	ScheduleLine line;
-    	ScheduleElement cell;
+    	BlockScheduleLine line;
+    	BlockScheduleElement cell;
     	
     	clockrows = new LinearLayout(this);
     	clockrows.setOrientation(LinearLayout.VERTICAL);
@@ -41,7 +40,6 @@ public class Deoxide extends Activity {
     	super.onCreate(savedInstanceState);
         setContentView(clockrows);
 
-    	// setProgressBarIndeterminateVisibility(true); //(no worky .. probably need some update function?)
     	sched = new ScheduleData("http://wilmer.gaast.net/deoxide/test.xml");
     	setTitle("Deoxide: " + sched.getTitle());
     	
@@ -51,32 +49,12 @@ public class Deoxide extends Activity {
     	schedcont.setBackgroundColor(0xFFFFFFFF);
     	
     	/* Time to generate the "clock" on the first row. */
-    	line = new ScheduleLine(this);
-		cell = new ScheduleElement(this);
-		cell.setText("Tent/Time:");
-		cell.setHeight(HourHeight);
-		cell.setWidth(TentWidth);
-		cell.setBackgroundColor(0xFF3F3F3F);
-		line.addView(cell);
+    	line = new BlockScheduleLine(this);
 
 		cal = Calendar.getInstance();
 		cal.setTime(sched.getFirstTime());
-		for (x = 0; x < 24; x ++) {
-			cell = new ScheduleElement(this);
-			
-			cell.setText(df.format(cal.getTime()));
-			cell.setHeight(HourHeight);
-			cell.setWidth(HourWidth / 2);
-			if ((x & 1) == 0) {
-				cell.setBackgroundColor(0xFF000000);
-			} else {
-				cell.setBackgroundColor(0xFF3F3F3F);
-			}
-			line.addView(cell);
-
-			cal.add(Calendar.MINUTE, 30);
-		}
-		clockrows.addView(line);
+		cal.set(Calendar.MINUTE, 0);
+		clockrows.addView(new BlockScheduleClock(this, cal));
 		
 		y = 0;
 		tents = sched.getTents();
@@ -85,10 +63,10 @@ public class Deoxide extends Activity {
     		ListIterator<ScheduleDataItem> gigi;
     		ScheduleDataLine tent = tenti.next();
     		
-    		line = new ScheduleLine(this); 
+    		line = new BlockScheduleLine(this); 
 
     		/* Tent name on the first column. */
-			cell = new ScheduleElement(this);
+			cell = new BlockScheduleElement(this);
 			cell.setWidth(TentWidth);
 			cell.setText(tent.getTitle());
 			if ((++y & 1) > 0)
@@ -100,7 +78,6 @@ public class Deoxide extends Activity {
     		cal = Calendar.getInstance();
     		cal.setTime(sched.getFirstTime());
     		cal.add(Calendar.MINUTE, -15);
-        	df.setCalendar(cal);
 
         	x = 0;
 			gigi = tent.getItems().listIterator();
@@ -111,7 +88,7 @@ public class Deoxide extends Activity {
 				gap = (int) ((gig.getStartTime().getTime() -
 						      cal.getTime().getTime()) / 60000);
 				
-				cell = new ScheduleElement(this);
+				cell = new BlockScheduleElement(this);
 				cell.setWidth(HourWidth * gap / 60);
 				cell.setBackgroundColor(0xFFFFFFFF);
 				cell.setTextColor(0xFF000000);
@@ -121,7 +98,7 @@ public class Deoxide extends Activity {
 				gap = (int) ((gig.getEndTime().getTime() -
 					          cal.getTime().getTime()) / 60000);
 				
-				cell = new ScheduleElement(this);
+				cell = new BlockScheduleElement(this);
 				cell.setWidth(HourWidth * gap / 60);
 				if ((++x & 1) > 0 )
 					cell.setBackgroundColor(0xFF000000);
@@ -137,10 +114,8 @@ public class Deoxide extends Activity {
     		schedcont.addView(line);
     	}
 
-    	scrollert = new ScheduleScroller(this);
+    	scrollert = new SimpleScroller(this, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
         scrollert.addView(schedcont);
     	clockrows.addView(scrollert);
-        scrollert.scrollTo(100, 100);
-    	//setProgressBarIndeterminateVisibility(false);
     }
 }

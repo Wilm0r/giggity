@@ -35,9 +35,6 @@ public class ScheduleData implements ContentHandler {
 			URL dl = new URL(source);
 			BufferedReader in = new BufferedReader(new InputStreamReader(dl.openStream()));
 			Xml.parse(in, this);
-			
-			/* Start on a whole hour. */
-			firstTime.setMinutes(0);
 		} catch (Exception e) {
 			Log.e("XML", "XML parse exception: " + e);
 		}

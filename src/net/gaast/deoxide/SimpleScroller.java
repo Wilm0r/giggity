@@ -6,16 +6,21 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 
-public class ScheduleScroller extends FrameLayout {
-
+public class SimpleScroller extends FrameLayout {
+	private int flags;
+	
 	private int dragScrollX, dragScrollY;
 	private float dragStartX, dragStartY;
 	boolean touchDown;
 	
 	private final int dragThreshold = 8;
 	
-	public ScheduleScroller(Context context) {
+	public static final int HORIZONTAL = 1;
+	public static final int VERTICAL = 2;
+	
+	public SimpleScroller(Context context, int flags_) {
 		super(context);
+		flags = flags_;
 		touchDown = false;
 	}
 	
@@ -29,8 +34,24 @@ public class ScheduleScroller extends FrameLayout {
 			int parentHeightMeasureSpec, int heightUsed) {
 		final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
 		
-		child.measure(MeasureSpec.makeMeasureSpec(lp.topMargin + lp.bottomMargin, MeasureSpec.UNSPECIFIED),
-				      MeasureSpec.makeMeasureSpec(lp.leftMargin + lp.rightMargin, MeasureSpec.UNSPECIFIED));
+		int w, h;
+		
+		if ((flags & HORIZONTAL) > 0) {
+			w = MeasureSpec.makeMeasureSpec(lp.leftMargin + lp.rightMargin, MeasureSpec.UNSPECIFIED);
+		} else {
+			w = getChildMeasureSpec(parentWidthMeasureSpec,
+					lp.leftMargin + 
+					lp.rightMargin + widthUsed, lp.width);
+		}
+		
+		if ((flags & VERTICAL) > 0) {
+			h = MeasureSpec.makeMeasureSpec(lp.topMargin + lp.bottomMargin, MeasureSpec.UNSPECIFIED);
+		} else {
+			h = getChildMeasureSpec(parentHeightMeasureSpec,
+					lp.topMargin + lp.bottomMargin + heightUsed, lp.height);
+		}
+		
+		child.measure(w, h);
 	}
 	
 	public boolean onInterceptTouchEvent(MotionEvent ev) {

@@ -12,10 +12,10 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class ScheduleElement extends TextView implements OnClickListener {
+public class BlockScheduleElement extends TextView implements OnClickListener {
 	ScheduleDataItem item;
 	
-	public ScheduleElement(Activity ctx) {
+	public BlockScheduleElement(Activity ctx) {
 		super(ctx);
 		setGravity(Gravity.CENTER_HORIZONTAL);
 		setHeight(Deoxide.TentHeight);
