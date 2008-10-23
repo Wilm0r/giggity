@@ -12,6 +12,8 @@ public class ScheduleScroller extends FrameLayout {
 	private float dragStartX, dragStartY;
 	boolean touchDown;
 	
+	private final int dragThreshold = 8;
+	
 	public ScheduleScroller(Context context) {
 		super(context);
 		touchDown = false;
@@ -39,7 +41,7 @@ public class ScheduleScroller extends FrameLayout {
 			return false;
 		} else if (ev.getAction() == MotionEvent.ACTION_MOVE &&
 				   (Math.abs(dragStartX - ev.getX()) +
-				    Math.abs(dragStartY - ev.getY())) > 8) {
+				    Math.abs(dragStartY - ev.getY())) > dragThreshold) {
 			dragScrollX = getScrollX();
 			dragScrollY = getScrollY();
 			touchDown = false;
@@ -58,14 +60,16 @@ public class ScheduleScroller extends FrameLayout {
 			dragScrollY = getScrollY();
 		}
 		else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-			int newx, newy;
+			int newx, newy, maxx, maxy;
 			
-			newx = dragScrollX + (int) (dragStartX - ev.getX());
-			newy = dragScrollY + (int) (dragStartY - ev.getY()); 
+			maxx = getChildAt(0).getWidth() - getWidth();
+			maxy = getChildAt(0).getHeight() - getHeight();
 			
-			scrollTo(Math.max(newx, 0), Math.max(newy, 0));
+			newx = Math.max(0, Math.min(maxx, dragScrollX + (int) (dragStartX - ev.getX())));
+			newy = Math.max(0, Math.min(maxy, dragScrollY + (int) (dragStartY - ev.getY()))); 
+			
+			scrollTo(newx, newy);
 		}
-		Log.d("touchevent", "" + ev);
 		return true;
 	}
 	
