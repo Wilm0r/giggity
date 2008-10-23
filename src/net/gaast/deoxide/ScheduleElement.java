@@ -41,7 +41,7 @@ public class ScheduleElement extends TextView implements OnClickListener {
 	    	desc.setText(df.format(item.getStartTime().getTime()) + "-" +
 	    			     df.format(item.getEndTime().getTime()) + ": " +
 	    			     item.getDescription());
-			cb.setText("Remind me" + getTotalPaddingTop());
+			cb.setText("Remind me");
 	
 			content.setOrientation(LinearLayout.VERTICAL);
 			content.addView(desc);

@@ -60,7 +60,8 @@ public class ScheduleData implements ContentHandler {
 	}
 	
 	@Override
-	public void characters(char[] arg0, int arg1, int arg2) throws SAXException {
+	public void characters(char[] ch, int start, int length) throws SAXException {
+		curString += String.copyValueOf(ch, start, length); 
 		// TODO Auto-generated method stub
 		// Log.i("XML", "" + arg2 + " characters " + new String(arg0));
 	}
@@ -68,18 +69,6 @@ public class ScheduleData implements ContentHandler {
 	@Override
 	public void endDocument() throws SAXException {
 		Log.d("XML", "endDocument");
-	}
-
-	@Override
-	public void endElement(String uri, String localName, String qName)
-			throws SAXException {
-		if (localName == "item") {
-			curTent.addItem(curItem);
-			curItem = null;
-		} else if (localName == "line") {
-			tents.add(curTent);
-			curTent = null;
-		}
 	}
 
 	@Override
@@ -168,6 +157,21 @@ public class ScheduleData implements ContentHandler {
 				
 		} else {
 			Log.d("XML", "Unknown element: " + localName);
+		}
+	}
+
+	@Override
+	public void endElement(String uri, String localName, String qName)
+			throws SAXException {
+		if (localName == "item") {
+			curTent.addItem(curItem);
+			curItem = null;
+		} else if (localName == "line") {
+			tents.add(curTent);
+			curTent = null;
+		} else if (localName == "itemDescription") {
+			if (curItem != null)
+				curItem.setDescription(curString);
 		}
 	}
 
