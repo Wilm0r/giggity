@@ -10,11 +10,15 @@ public class BlockScheduleClock extends SimpleScroller {
 	private BlockScheduleElement cell;
 	private LinearLayout child;
 	
-	public BlockScheduleClock(Activity ctx, Calendar cal) {
+	public BlockScheduleClock(Activity ctx, Calendar base) {
 		super(ctx, SimpleScroller.HORIZONTAL);
 
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+		Calendar cal;
 		int x;
+		
+		cal = Calendar.getInstance();
+		cal.setTime(base.getTime());
 		
 		child = new LinearLayout(ctx);
 		

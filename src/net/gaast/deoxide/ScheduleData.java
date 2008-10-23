@@ -3,11 +3,9 @@ package net.gaast.deoxide;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.TimeZone;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -29,7 +27,7 @@ public class ScheduleData implements ContentHandler {
 	private String curString;
 	
 	public ScheduleData(String source) {
-		Log.i("ScheduleData", "About to start parsging");
+		Log.i("ScheduleData", "About to start parsing");
 		tents = new LinkedList<ScheduleDataLine>();
 		try {
 			URL dl = new URL(source);
@@ -121,8 +119,8 @@ public class ScheduleData implements ContentHandler {
 			SimpleDateFormat df;
 			Date startTime, endTime;
 
-			Log.d("XML", "itemRaw: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
-				      " " + atts.getValue("", "startTime") + " " + atts.getValue("", "endTime"));
+			//Log.d("XML", "itemRaw: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
+			//	      " " + atts.getValue("", "startTime") + " " + atts.getValue("", "endTime"));
 
 			try {
 				/*
@@ -151,9 +149,6 @@ public class ScheduleData implements ContentHandler {
 			} catch (NumberFormatException e) {
 				
 			}
-				
-		} else {
-			Log.d("XML", "Unknown element: " + localName);
 		}
 	}
 

@@ -8,10 +8,12 @@ import android.widget.FrameLayout;
 
 public class SimpleScroller extends FrameLayout {
 	private int flags;
+	SimpleScrollerListener listener;
 	
 	private int dragScrollX, dragScrollY;
 	private float dragStartX, dragStartY;
 	boolean touchDown;
+	boolean isCallingBack;
 	
 	private final int dragThreshold = 8;
 	
@@ -22,6 +24,10 @@ public class SimpleScroller extends FrameLayout {
 		super(context);
 		flags = flags_;
 		touchDown = false;
+	}
+	
+	public void setScrollEventListener(SimpleScrollerListener list_) {
+		listener = list_;
 	}
 	
 	protected void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
@@ -97,5 +103,15 @@ public class SimpleScroller extends FrameLayout {
 	public boolean onTrackballEvent(MotionEvent ev) {
 		Log.d("tbevent", "" + ev);
 		return true;
+	}
+	
+	public void scrollTo(int x, int y) {
+		if (!isCallingBack) {
+			isCallingBack = true;
+			super.scrollTo(x, y);
+			if (listener != null)
+				listener.onScrollEvent(this);
+			isCallingBack = false;
+		}
 	}
 }

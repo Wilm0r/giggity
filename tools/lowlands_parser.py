@@ -58,6 +58,8 @@ print '<schedule id="nl.lowlands.foo" title="Lowlands" xmlns="http://deoxide.gaa
 for loc in locorder:
 	print '\t<line id="%s" title="%s">' % (cgi.escape(loc), cgi.escape(loc))
 	for ev in sorted(perloc[loc], lambda x, y: cmp(x['startTime'], y['startTime'])):
+		#if ev['startTime'] > 1218873600:
+		#	continue
 		print '\t\t<item id="%s" title="%s" startTime="%s" endTime="%s">' % (
 			cgi.escape(ev['uid']), cgi.escape(ev['summary']),
 			ev['startTime'], ev['endTime'])
