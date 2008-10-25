@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,11 +49,22 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 
 		CheckBox cb = new CheckBox(getContext());
 		cb.setText("Remind me");
-		content.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		
+		LinearLayout bottomBox = new LinearLayout(getContext());
+		bottomBox.addView(cb);
+		
+		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 
     	new AlertDialog.Builder(getContext())
 			.setTitle(getText())
     		.setView(content)
     		.show();
+    	
+    	/*
+    	Uri uri = Uri.parse("http://www.bitlbee.org/");
+    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+    	intent.addCategory(Intent.CATEGORY_BROWSABLE);
+    	getContext().startActivity(intent);
+    	*/
 	}
 }

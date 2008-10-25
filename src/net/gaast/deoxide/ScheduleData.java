@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import org.xml.sax.Attributes;
@@ -18,15 +19,19 @@ import android.util.Xml;
 public class ScheduleData implements ContentHandler {
 	private String id;
 	private String title;
-	
+
+	private LinkedList<ScheduleDataLine> tents;
+	private HashMap<String,ScheduleDataLinkType> linkTypes;
+
 	private Date firstTime, lastTime;
 	
-	private LinkedList<ScheduleDataLine> tents;
 	private ScheduleDataLine curTent;
 	private ScheduleDataItem curItem;
 	private String curString;
 	
 	public ScheduleData(String source) {
+		linkTypes = new HashMap<String,ScheduleDataLinkType>();
+		
 		Log.i("ScheduleData", "About to start parsing");
 		tents = new LinkedList<ScheduleDataLine>();
 		try {
@@ -35,6 +40,7 @@ public class ScheduleData implements ContentHandler {
 			Xml.parse(in, this);
 		} catch (Exception e) {
 			Log.e("XML", "XML parse exception: " + e);
+			e.printStackTrace();
 		}
 	}
 	
@@ -52,6 +58,10 @@ public class ScheduleData implements ContentHandler {
 	
 	public Date getFirstTime() {
 		return firstTime;
+	}
+	
+	public ScheduleDataLinkType getLinkType(String id) {
+		return linkTypes.get(id);
 	}
 	
 	@Override
@@ -149,6 +159,15 @@ public class ScheduleData implements ContentHandler {
 			} catch (NumberFormatException e) {
 				
 			}
+		} else if (localName == "linkType") {
+			ScheduleDataLinkType lt = new ScheduleDataLinkType(atts.getValue("", "id"));
+			if (atts.getValue("", "icon") != null)
+				lt.setIconUrl(atts.getValue("", "icon"));
+			
+			linkTypes.put(atts.getValue("", "id"), lt);
+		} else if (localName == "itemLink") {
+			ScheduleDataLinkType lt = linkTypes.get(atts.getValue("", "type"));
+			curItem.addLink(lt, atts.getValue("", "href"));
 		}
 	}
 
