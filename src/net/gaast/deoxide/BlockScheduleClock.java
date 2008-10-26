@@ -23,7 +23,7 @@ public class BlockScheduleClock extends SimpleScroller {
 		child = new LinearLayout(ctx);
 		
 		cell = new BlockScheduleElement(ctx);
-		cell.setText("Tent/Time:");
+		// cell.setText("Tent/Time:");
 		cell.setHeight(Deoxide.HourHeight);
 		cell.setWidth(Deoxide.TentWidth);
 		cell.setBackgroundColor(0xFF3F3F3F);

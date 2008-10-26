@@ -9,7 +9,7 @@ public class Deoxide extends Activity {
 	public static final int HourHeight = 16;
 	public static final int HourWidth = 72;
 	public static final int TentHeight = 48;
-	public static final int TentWidth = 48;
+	public static final int TentWidth = 32;
 	
 	ScheduleData sched;
 	
@@ -21,9 +21,5 @@ public class Deoxide extends Activity {
     	setTitle("Deoxide: " + sched.getTitle());
     	
         setContentView(new BlockScheduleViewer(this, sched));
-    }
-    
-    public void onResume() {
-    	super.onResume();
     }
 }

@@ -61,13 +61,16 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 		cb.setText("Remind me");
 		bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		
-		LinkedList<ScheduleDataItemLink> links = item.getLinks(); 
-		Iterator<ScheduleDataItemLink> linki = links.listIterator();
-		while (linki.hasNext()) {
-			ScheduleDataItemLink link = linki.next();
-			LinkButton btn = new LinkButton(getContext(), link);
-			bottomBox.addView(btn); //, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+		LinkedList<ScheduleDataItemLink> links = item.getLinks();
+		if (links != null) {
+			Iterator<ScheduleDataItemLink> linki = links.listIterator();
+			while (linki.hasNext()) {
+				ScheduleDataItemLink link = linki.next();
+				LinkButton btn = new LinkButton(getContext(), link);
+				bottomBox.addView(btn);
+			}
 		}
+
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 
     	new AlertDialog.Builder(getContext())
