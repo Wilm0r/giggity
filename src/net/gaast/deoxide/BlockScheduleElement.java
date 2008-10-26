@@ -54,18 +54,19 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 		descscr.addView(desc);
 		content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
 
+		LinearLayout bottomBox = new LinearLayout(getContext());
+		bottomBox.setGravity(Gravity.RIGHT);
+
 		CheckBox cb = new CheckBox(getContext());
 		cb.setText("Remind me");
-		
-		LinearLayout bottomBox = new LinearLayout(getContext());
-		bottomBox.addView(cb);
+		bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		
 		LinkedList<ScheduleDataItemLink> links = item.getLinks(); 
 		Iterator<ScheduleDataItemLink> linki = links.listIterator();
 		while (linki.hasNext()) {
 			ScheduleDataItemLink link = linki.next();
 			LinkButton btn = new LinkButton(getContext(), link);
-			bottomBox.addView(btn);
+			bottomBox.addView(btn); //, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		}
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 

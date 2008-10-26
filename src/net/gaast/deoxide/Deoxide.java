@@ -22,4 +22,8 @@ public class Deoxide extends Activity {
     	
         setContentView(new BlockScheduleViewer(this, sched));
     }
+    
+    public void onResume() {
+    	super.onResume();
+    }
 }
