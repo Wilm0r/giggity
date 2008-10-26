@@ -121,7 +121,14 @@ public class ScheduleData implements ContentHandler {
 			id = atts.getValue("", "id");
 			title = atts.getValue("", "title");
 		} else if (localName == "linkType") {
-			// Ignore for now.
+			String id = atts.getValue("", "id");
+			String icon = atts.getValue("", "icon");
+			
+			ScheduleDataLinkType lt = new ScheduleDataLinkType(id);
+			if (icon != null)
+				lt.setIconUrl(icon);
+			
+			linkTypes.put(id, lt);
 		} else if (localName == "line") {
 			curTent = new ScheduleDataLine(atts.getValue("", "id"),
 					                       atts.getValue("", "title"));
@@ -159,12 +166,6 @@ public class ScheduleData implements ContentHandler {
 			} catch (NumberFormatException e) {
 				
 			}
-		} else if (localName == "linkType") {
-			ScheduleDataLinkType lt = new ScheduleDataLinkType(atts.getValue("", "id"));
-			if (atts.getValue("", "icon") != null)
-				lt.setIconUrl(atts.getValue("", "icon"));
-			
-			linkTypes.put(atts.getValue("", "id"), lt);
 		} else if (localName == "itemLink") {
 			ScheduleDataLinkType lt = linkTypes.get(atts.getValue("", "type"));
 			curItem.addLink(lt, atts.getValue("", "href"));

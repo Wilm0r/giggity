@@ -1,8 +1,8 @@
 package net.gaast.deoxide;
 
 public class ScheduleDataItemLink {
-	ScheduleDataLinkType type;
-	String url;
+	private ScheduleDataLinkType type;
+	private String url;
 	
 	public ScheduleDataItemLink(ScheduleDataLinkType type_, String url_) {
 		type = type_;

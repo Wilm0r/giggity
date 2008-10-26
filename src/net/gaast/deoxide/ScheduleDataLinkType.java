@@ -1,9 +1,9 @@
 package net.gaast.deoxide;
 
 public class ScheduleDataLinkType {
-	String id;
-	String iconUrl;
-	String iconLocal;
+	private String id;
+	private String iconUrl;
+	private String iconLocal;
 	
 	public ScheduleDataLinkType(String id_) {
 		id = id_;

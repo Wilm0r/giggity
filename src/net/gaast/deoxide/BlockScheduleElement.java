@@ -1,16 +1,23 @@
 package net.gaast.deoxide;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -53,18 +60,42 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 		LinearLayout bottomBox = new LinearLayout(getContext());
 		bottomBox.addView(cb);
 		
+		LinkedList<ScheduleDataItemLink> links = item.getLinks(); 
+		Iterator<ScheduleDataItemLink> linki = links.listIterator();
+		while (linki.hasNext()) {
+			ScheduleDataItemLink link = linki.next();
+			LinkButton btn = new LinkButton(getContext(), link);
+			bottomBox.addView(btn);
+		}
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 
     	new AlertDialog.Builder(getContext())
 			.setTitle(getText())
     		.setView(content)
     		.show();
-    	
-    	/*
-    	Uri uri = Uri.parse("http://www.bitlbee.org/");
-    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-    	intent.addCategory(Intent.CATEGORY_BROWSABLE);
-    	getContext().startActivity(intent);
-    	*/
+	}
+	
+	private class LinkButton extends ImageButton implements OnClickListener {
+		ScheduleDataItemLink link;
+		
+		public LinkButton(Context ctx, ScheduleDataItemLink link_) {
+			super(ctx);
+			link = link_;
+			try {
+				URL dl = new URL(link.getType().getIconUrl());
+				InputStream in = dl.openStream();
+				setImageDrawable(Drawable.createFromStream(in, "hoi"));
+				setOnClickListener(this);
+			} catch (Exception javaruk) {
+				// sigh
+			}
+		}
+		
+		public void onClick(View v) {
+	    	Uri uri = Uri.parse(link.getUrl());
+	    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+	    	intent.addCategory(Intent.CATEGORY_BROWSABLE);
+	    	getContext().startActivity(intent);
+		}
 	}
 }
