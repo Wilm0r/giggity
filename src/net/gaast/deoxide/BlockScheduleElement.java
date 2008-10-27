@@ -1,7 +1,5 @@
 package net.gaast.deoxide;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -10,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.Gravity;
 import android.view.View;
@@ -85,14 +82,7 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 		public LinkButton(Context ctx, ScheduleDataItemLink link_) {
 			super(ctx);
 			link = link_;
-			try {
-				URL dl = new URL(link.getType().getIconUrl());
-				InputStream in = dl.openStream();
-				setImageDrawable(Drawable.createFromStream(in, "hoi"));
-				setOnClickListener(this);
-			} catch (Exception javaruk) {
-				// sigh
-			}
+			setImageDrawable(link.getType().getIcon());
 		}
 		
 		public void onClick(View v) {
