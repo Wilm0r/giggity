@@ -54,17 +54,22 @@ for l in lines:
 			ev[k.lower()] = v
 
 print '<schedule id="nl.lowlands.foo" title="Lowlands" xmlns="http://deoxide.gaast.net/#sched">'
+print '\t<linkType id="www" icon="http://wilmer.gaast.net/deoxide/konq.png" />'
 
 for loc in locorder:
 	print '\t<line id="%s" title="%s">' % (cgi.escape(loc), cgi.escape(loc))
 	for ev in sorted(perloc[loc], lambda x, y: cmp(x['startTime'], y['startTime'])):
-		#if ev['startTime'] > 1218873600:
-		#	continue
+		if ev['startTime'] > 1218873600:
+			continue
 		print '\t\t<item id="%s" title="%s" startTime="%s" endTime="%s">' % (
 			cgi.escape(ev['uid']), cgi.escape(ev['summary']),
 			ev['startTime'], ev['endTime'])
 		try:
-			print '\t\t\t<itemDescription>' + descs[ev['summary'].lower()] + '</itemDescription>'
+			print '\t\t\t<itemDescription>' + descs['desc/'+ev['summary'].lower()] + '</itemDescription>'
+		except:
+			pass
+		try:
+			print '\t\t\t<itemLink type="www" href="' + descs['www/'+ev['summary'].lower()] + '" />'
 		except:
 			pass
 		print '\t\t</item>'

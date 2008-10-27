@@ -83,6 +83,7 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 			super(ctx);
 			link = link_;
 			setImageDrawable(link.getType().getIcon());
+			setOnClickListener(this);
 		}
 		
 		public void onClick(View v) {

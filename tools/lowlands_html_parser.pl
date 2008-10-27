@@ -25,11 +25,15 @@ while ($day =~ /<li class="scheme-act" id="act(\d+)".*?<span class="summary">(.*
 	my($id, $name) = ($1, $2);
 	print("$id $name\n");
 	$desc = wget('http://www.lowlands.nl/programme-act.php?id=' . $id);
-	print $desc;
+	#print $desc;
 	my($key, $value) = $desc =~ /^.*?<h2>(.*?)<.*?<div class="act-content">(.+?)<\/?(?:p|div)>/s;
+	$key = lc($key);
 	$value =~ s/(\s+|<.*?>)+/ /g;
-	$descs{lc($key)} = $value;
-	print("'$key'\n$'value'\n");
+	$descs{'desc/'.$key} = $value;
+	if ($desc =~ /<li class="act-website"><a href="(.*?)"/) {
+		$descs{'www/'.$key} = $1;
+	}
+	#print("'$key'\n$'value'\n");
 }
 
 sub wget($)
