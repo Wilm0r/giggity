@@ -34,37 +34,64 @@ while ($day =~ /<li class="scheme-act" id="act(\d+)".*?<span class="summary">(.*
 		$descs{'www/'.$key} = $1;
 	}
 	#print("'$key'\n$'value'\n");
+	
+	$httpkey = $key;
+	$httpkey =~ s/ /+/g;
+	if (wget('http://www.last.fm/music/' . $httpkey, 'HEAD')) {
+		#print('Detected last.fm page: ' . 'http://last.fm/music/' . $httpkey . "\n");
+		$descs{'lastfm/'.$key} = 'http://www.last.fm/music/' . $httpkey;
+	}
 }
 
-sub wget($)
+sub wget($;$)
 {
-	my( $url ) = @_;
+	my( $url, $meth ) = @_;
 	my( $host, $loc ) = $url =~ m,^(?:http://)(.*?)(/.*)$,;
 	my( $r, $s );
 	
-	if( defined( $wwwcache{$url} ) )
+	if( !defined( $meth ) )
 	{
-		return $wwwcache{$url};
+		$meth = 'GET';
+	}
+	
+	if( defined( $wwwcache{$meth.'/'.$url} ) )
+	{
+		return $wwwcache{$meth.'/'.$url};
 	}
 	
 	my $h = Net::HTTP->new( Host => $host ) or return( '' );
-	$h->write_request( GET => $loc,
+	$h->write_request( $meth => $loc,
 	                   'User-Agent' => 'Lynx/2.8.4rel.1 libwww-FM/2.14',
 	                   'Accept' => 'text/html, text/plain, image/png, image/jpeg, image/gif, text/xml, text/*, */*;q=0.01',
 	                   'Accept-Language' => 'nl, en' ) or return( '' );
 	my $code = $h->read_response_headers or return( '' );
 	if( $code == 200 )
 	{
-		while( $h->read_entity_body( $s, 1024 ) )
+		if( $meth eq 'HEAD' )
 		{
-			$r .= $s;
+			$r = 1;
 		}
-		$wwwcache{$url} = $r;
+		else
+		{
+			while( $h->read_entity_body( $s, 1024 ) )
+			{
+				$r .= $s;
+			}
+		}
+		$wwwcache{$meth.'/'.$url} = $r;
 		return( $r );
 	}
 	else
 	{
-		return( '' );
+		if( $meth eq 'HEAD' )
+		{
+			$wwwcache{$meth.'/'.$url} = 0;
+			return( 0 );
+		}
+		else
+		{
+			return( '' );
+		}
 	}
 }
 

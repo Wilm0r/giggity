@@ -55,6 +55,7 @@ for l in lines:
 
 print '<schedule id="nl.lowlands.foo" title="Lowlands" xmlns="http://deoxide.gaast.net/#sched">'
 print '\t<linkType id="www" icon="http://wilmer.gaast.net/deoxide/konq.png" />'
+print '\t<linkType id="lastfm" icon="http://wilmer.gaast.net/deoxide/lastfm.png" />'
 
 for loc in locorder:
 	print '\t<line id="%s" title="%s">' % (cgi.escape(loc), cgi.escape(loc))
@@ -70,6 +71,10 @@ for loc in locorder:
 			pass
 		try:
 			print '\t\t\t<itemLink type="www" href="' + descs['www/'+ev['summary'].lower()] + '" />'
+		except:
+			pass
+		try:
+			print '\t\t\t<itemLink type="lastfm" href="' + descs['lastfm/'+ev['summary'].lower()] + '" />'
 		except:
 			pass
 		print '\t\t</item>'
