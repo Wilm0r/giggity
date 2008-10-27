@@ -60,6 +60,10 @@ public class ScheduleData implements ContentHandler {
 		return firstTime;
 	}
 	
+	public Date getLastTime() {
+		return lastTime;
+	}
+	
 	public ScheduleDataLinkType getLinkType(String id) {
 		return linkTypes.get(id);
 	}

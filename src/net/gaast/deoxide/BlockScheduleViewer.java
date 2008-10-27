@@ -34,7 +34,7 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
     	sched = sched_;
     	
     	int x, y;
-    	Calendar base, cal;
+    	Calendar base, cal, end;
     	LinkedList<ScheduleDataLine> tents;
     	ListIterator<ScheduleDataLine> tenti;
     	BlockScheduleLine line;
@@ -50,8 +50,11 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 		base = Calendar.getInstance();
 		base.setTime(sched.getFirstTime());
 		base.set(Calendar.MINUTE, 0);
+		
+		end = Calendar.getInstance();
+		end.setTime(sched.getLastTime());		
 
-		topClock = new BlockScheduleClock(ctx, base);
+		topClock = new BlockScheduleClock(ctx, base, end);
 		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
@@ -128,7 +131,7 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 		mainTable.addView(scrollert);
     	addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
     	
-		bottomClock = new BlockScheduleClock(ctx, base);
+		bottomClock = new BlockScheduleClock(ctx, base, end);
 		bottomClock.setScrollEventListener(this);
 		addView(bottomClock);
 	}

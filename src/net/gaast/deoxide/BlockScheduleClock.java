@@ -10,12 +10,11 @@ public class BlockScheduleClock extends SimpleScroller {
 	private BlockScheduleElement cell;
 	private LinearLayout child;
 	
-	public BlockScheduleClock(Activity ctx, Calendar base) {
+	public BlockScheduleClock(Activity ctx, Calendar base, Calendar end) {
 		super(ctx, SimpleScroller.HORIZONTAL);
 
 		SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 		Calendar cal;
-		int x;
 		
 		cal = Calendar.getInstance();
 		cal.setTime(base.getTime());
@@ -29,19 +28,22 @@ public class BlockScheduleClock extends SimpleScroller {
 		cell.setBackgroundColor(0xFF3F3F3F);
 		child.addView(cell);
 
-		for (x = 0; x < 24; x ++) {
+		while(true) {
 			cell = new BlockScheduleElement(ctx);
 			
 			cell.setText(df.format(cal.getTime()));
 			cell.setHeight(Deoxide.HourHeight);
 			cell.setWidth(Deoxide.HourWidth / 2);
-			if ((x & 1) == 0) {
+			if (cal.get(Calendar.MINUTE) == 0) {
 				cell.setBackgroundColor(0xFF000000);
 			} else {
 				cell.setBackgroundColor(0xFF3F3F3F);
 			}
 			child.addView(cell);
 
+			if (cal.after(end))
+				break;
+			
 			cal.add(Calendar.MINUTE, 30);
 		}
 		
