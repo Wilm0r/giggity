@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import android.app.Activity;
+import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 
 public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerListener {
@@ -23,11 +24,10 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
     LinearLayout tentHeaders;
     SimpleScroller tentHeadersScr;
 
-    /* schedcont will contain all the actual data rows,
-     * we'll get scrolling by stuffing it inside scrollert. */
-    LinearLayout schedcont;
-    LinearLayout schedrows[];
-    SimpleScroller scrollert;
+    /* schedCont will contain all the actual data rows,
+     * we'll get scrolling by stuffing it inside schedContScr. */
+    AbsoluteLayout schedCont;
+    SimpleScroller schedContScr;
 
 	BlockScheduleViewer(Activity ctx, ScheduleData sched_) {
 		super(ctx);
@@ -37,15 +37,13 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
     	Calendar base, cal, end;
     	LinkedList<ScheduleDataLine> tents;
     	ListIterator<ScheduleDataLine> tenti;
-    	BlockScheduleLine line;
     	BlockScheduleElement cell;
     	
     	setOrientation(LinearLayout.VERTICAL);
     	
-    	schedrows = new LinearLayout[32];
-    	schedcont = new LinearLayout(ctx);
-    	schedcont.setOrientation(LinearLayout.VERTICAL);
-    	schedcont.setBackgroundColor(0xFFFFFFFF);
+    	schedCont = new AbsoluteLayout(ctx);
+    	schedCont.setBackgroundColor(0xFFFFFFFF);
+    	schedCont.setMinimumHeight(sched.getTents().size());
     	
 		base = Calendar.getInstance();
 		base.setTime(sched.getFirstTime());
@@ -70,14 +68,13 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
     	while (tenti.hasNext()) {
     		ListIterator<ScheduleDataItem> gigi;
     		ScheduleDataLine tent = tenti.next();
+			int posx, posy, h, w;
     		
-    		line = new BlockScheduleLine(ctx); 
-
     		/* Tent name on the first column. */
 			cell = new BlockScheduleElement(ctx);
 			cell.setWidth(Deoxide.TentWidth);
 			cell.setText(tent.getTitle());
-			if ((++y & 1) > 0)
+			if ((y & 1) == 0)
 				cell.setBackgroundColor(0xFF000000);
 			else
 				cell.setBackgroundColor(0xFF3F3F3F);
@@ -88,26 +85,21 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
     		cal.add(Calendar.MINUTE, -15);
 
         	x = 0;
+        	h = Deoxide.TentHeight;
+        	posy = (y++) * h;
 			gigi = tent.getItems().listIterator();
 			while (gigi.hasNext()) {
 				ScheduleDataItem gig = gigi.next();
-				int gap;
 				
-				gap = (int) ((gig.getStartTime().getTime() -
-						      cal.getTime().getTime()) / 60000);
-				
-				cell = new BlockScheduleElement(ctx);
-				cell.setWidth(Deoxide.HourWidth * gap / 60);
-				cell.setBackgroundColor(0xFFFFFFFF);
-				cell.setTextColor(0xFF000000);
-				line.addView(cell);
-				cal.add(Calendar.MINUTE, gap);
-				
-				gap = (int) ((gig.getEndTime().getTime() -
-					          cal.getTime().getTime()) / 60000);
+				posx = (int) ((gig.getStartTime().getTime() -
+				               cal.getTime().getTime()) *
+				              Deoxide.HourWidth / 3600000);
+				w    = (int) (gig.getEndTime().getTime() -
+				              gig.getStartTime().getTime()) *
+				             Deoxide.HourWidth / 3600000;
 				
 				cell = new BlockScheduleElement(ctx);
-				cell.setWidth(Deoxide.HourWidth * gap / 60);
+				cell.setWidth(w);
 				if ((++x & 1) > 0 )
 					cell.setBackgroundColor(0xFF000000);
 				else
@@ -115,20 +107,18 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 				cell.setTextColor(0xFFFFFFFF);
 				cell.setText(gig.getTitle());
 				cell.setItem(gig);
-				line.addView(cell);
-
-				cal.add(Calendar.MINUTE, gap);
+				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, posy);
+				schedCont.addView(cell, lp);
 			}
-    		schedcont.addView(line);
     	}
 
-    	scrollert = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
-        scrollert.addView(schedcont);
-        scrollert.setScrollEventListener(this);
+    	schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
+        schedContScr.addView(schedCont);
+        schedContScr.setScrollEventListener(this);
 
 		mainTable = new LinearLayout(ctx);
 		mainTable.addView(tentHeadersScr);
-		mainTable.addView(scrollert);
+		mainTable.addView(schedContScr);
     	addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
     	
 		bottomClock = new BlockScheduleClock(ctx, base, end);
@@ -137,18 +127,18 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 	}
 
 	public void onScrollEvent(SimpleScroller src) {
-		if (src == scrollert) {
+		if (src == schedContScr) {
 			topClock.scrollTo(src.getScrollX(), 0);
 			bottomClock.scrollTo(src.getScrollX(), 0);
 			tentHeadersScr.scrollTo(0, src.getScrollY());
 		} else if (src == topClock || src == bottomClock) {
-			scrollert.scrollTo(src.getScrollX(), scrollert.getScrollY());
+			schedContScr.scrollTo(src.getScrollX(), schedContScr.getScrollY());
 			if (src != topClock)
 				topClock.scrollTo(src.getScrollX(), 0);
 			if (src != bottomClock)
 				bottomClock.scrollTo(src.getScrollX(), 0);
 		} else if (src == tentHeadersScr) {
-			scrollert.scrollTo(scrollert.getScrollX(), src.getScrollY());
+			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
 		}
 	}
 }
