@@ -1,6 +1,8 @@
 package net.gaast.deoxide;
 
 import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 
 public class Deoxide extends Activity {
@@ -12,14 +14,31 @@ public class Deoxide extends Activity {
 	public static final int TentWidth = 32;
 	
 	ScheduleData sched;
+	DeoxideDb db;
+	DeoxideDbHelper dbh;
 	
-    @Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
 
-    	sched = new ScheduleData("http://wilmer.gaast.net/deoxide/test.xml");
+    	sched = new ScheduleData(this, "http://wilmer.gaast.net/deoxide/test.xml");
     	setTitle("Deoxide: " + sched.getTitle());
+
+    	dbh = new DeoxideDbHelper(this, "deoxide0", null, 1);
+    	db = new DeoxideDb(dbh.getWritableDatabase());
     	
-        setContentView(new BlockScheduleViewer(this, sched));
+        setContentView(new BlockScheduleViewer(this));
+    }
+    
+    public void onPause() {
+    	super.onPause();
+    	dbh.close();
+    }
+    
+    public ScheduleData getSchedule() {
+    	return sched;
+    }
+    
+    public DeoxideDb getDb() {
+    	return db;
     }
 }

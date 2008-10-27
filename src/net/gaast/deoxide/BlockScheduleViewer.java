@@ -4,12 +4,13 @@ import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
-import android.app.Activity;
+import android.database.sqlite.SQLiteDatabase;
 import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 
 public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerListener {
     ScheduleData sched;
+    DeoxideDb db;
 
     /* This object is pretty messy. :-/ It contains the
      * following widgets: */
@@ -29,9 +30,10 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
     AbsoluteLayout schedCont;
     SimpleScroller schedContScr;
 
-	BlockScheduleViewer(Activity ctx, ScheduleData sched_) {
-		super(ctx);
-    	sched = sched_;
+	BlockScheduleViewer(Deoxide app) {
+		super(app);
+    	sched = app.getSchedule();
+    	db = app.getDb();
     	
     	int x, y;
     	Calendar base, cal, end;
@@ -41,7 +43,7 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
     	
     	setOrientation(LinearLayout.VERTICAL);
     	
-    	schedCont = new AbsoluteLayout(ctx);
+    	schedCont = new AbsoluteLayout(app);
     	schedCont.setBackgroundColor(0xFFFFFFFF);
     	schedCont.setMinimumHeight(sched.getTents().size());
     	
@@ -52,13 +54,13 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 		end = Calendar.getInstance();
 		end.setTime(sched.getLastTime());		
 
-		topClock = new BlockScheduleClock(ctx, base, end);
+		topClock = new BlockScheduleClock(app, base, end);
 		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
-		tentHeaders = new LinearLayout(ctx);
+		tentHeaders = new LinearLayout(app);
 		tentHeaders.setOrientation(LinearLayout.VERTICAL);
-		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL);
+		tentHeadersScr = new SimpleScroller(app, SimpleScroller.VERTICAL);
     	tentHeadersScr.addView(tentHeaders);
         tentHeadersScr.setScrollEventListener(this);
     	
@@ -71,7 +73,7 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 			int posx, posy, h, w;
     		
     		/* Tent name on the first column. */
-			cell = new BlockScheduleElement(ctx);
+			cell = new BlockScheduleElement(app);
 			cell.setWidth(Deoxide.TentWidth);
 			cell.setText(tent.getTitle());
 			if ((y & 1) == 0)
@@ -94,11 +96,11 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 				posx = (int) ((gig.getStartTime().getTime() -
 				               cal.getTime().getTime()) *
 				              Deoxide.HourWidth / 3600000);
-				w    = (int) (gig.getEndTime().getTime() -
-				              gig.getStartTime().getTime()) *
-				             Deoxide.HourWidth / 3600000;
+				w    = (int) ((gig.getEndTime().getTime() -
+				               gig.getStartTime().getTime()) *
+				              Deoxide.HourWidth / 3600000);
 				
-				cell = new BlockScheduleElement(ctx);
+				cell = new BlockScheduleElement(app);
 				cell.setWidth(w);
 				if ((++x & 1) > 0 )
 					cell.setBackgroundColor(0xFF000000);
@@ -112,20 +114,21 @@ public class BlockScheduleViewer extends LinearLayout implements SimpleScrollerL
 			}
     	}
 
-    	schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
+    	schedContScr = new SimpleScroller(app, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
         schedContScr.addView(schedCont);
         schedContScr.setScrollEventListener(this);
 
-		mainTable = new LinearLayout(ctx);
+		mainTable = new LinearLayout(app);
 		mainTable.addView(tentHeadersScr);
 		mainTable.addView(schedContScr);
     	addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
     	
-		bottomClock = new BlockScheduleClock(ctx, base, end);
+		bottomClock = new BlockScheduleClock(app, base, end);
 		bottomClock.setScrollEventListener(this);
 		addView(bottomClock);
 	}
 
+	/* If the user scrolls one view, keep the others in sync. */
 	public void onScrollEvent(SimpleScroller src) {
 		if (src == schedContScr) {
 			topClock.scrollTo(src.getScrollX(), 0);

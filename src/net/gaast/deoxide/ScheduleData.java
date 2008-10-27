@@ -17,6 +17,8 @@ import android.util.Log;
 import android.util.Xml;
 
 public class ScheduleData implements ContentHandler {
+	private Deoxide app;
+	
 	private String id;
 	private String title;
 
@@ -29,7 +31,9 @@ public class ScheduleData implements ContentHandler {
 	private ScheduleDataItem curItem;
 	private String curString;
 	
-	public ScheduleData(String source) {
+	public ScheduleData(Deoxide app_, String source) {
+		app = app_;
+		
 		linkTypes = new HashMap<String,ScheduleDataLinkType>();
 		
 		Log.i("ScheduleData", "About to start parsing");
