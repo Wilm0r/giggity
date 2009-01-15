@@ -13,17 +13,19 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import android.app.Activity;
 import android.util.Log;
 import android.util.Xml;
 
 public class ScheduleData implements ContentHandler {
-	private Deoxide app;
+	// private Deoxide app;
 	
 	private String id;
 	private String title;
 
 	private LinkedList<ScheduleDataLine> tents;
 	private HashMap<String,ScheduleDataLinkType> linkTypes;
+	private HashMap<String,ScheduleDataItem> items;
 
 	private Date firstTime, lastTime;
 	
@@ -31,9 +33,10 @@ public class ScheduleData implements ContentHandler {
 	private ScheduleDataItem curItem;
 	private String curString;
 	
-	public ScheduleData(Deoxide app_, String source) {
-		app = app_;
+	public ScheduleData(Object ctx, String source) {
+		// app = (Deoxide) ctx.getApplication();
 		
+		items = new HashMap<String,ScheduleDataItem>();
 		linkTypes = new HashMap<String,ScheduleDataLinkType>();
 		
 		Log.i("ScheduleData", "About to start parsing");
@@ -185,6 +188,7 @@ public class ScheduleData implements ContentHandler {
 			throws SAXException {
 		if (localName == "item") {
 			curTent.addItem(curItem);
+			items.put(curItem.getId(), curItem);
 			curItem = null;
 		} else if (localName == "line") {
 			tents.add(curTent);

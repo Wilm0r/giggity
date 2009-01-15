@@ -1,6 +1,6 @@
 package net.gaast.deoxide;
 
-import android.content.Context;
+import android.app.Activity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -20,8 +20,8 @@ public class SimpleScroller extends FrameLayout {
 	public static final int HORIZONTAL = 1;
 	public static final int VERTICAL = 2;
 	
-	public SimpleScroller(Context context, int flags_) {
-		super(context);
+	public SimpleScroller(Activity ctx, int flags_) {
+		super(ctx);
 		flags = flags_;
 		touchDown = false;
 	}

@@ -7,9 +7,10 @@ import java.util.LinkedList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnDismissListener;
 import android.net.Uri;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,9 +23,11 @@ import android.widget.TextView;
 
 public class BlockScheduleElement extends TextView implements OnClickListener {
 	ScheduleDataItem item;
+	Deoxide app;
 	
 	public BlockScheduleElement(Activity ctx) {
 		super(ctx);
+		//app = app_;
 		setGravity(Gravity.CENTER_HORIZONTAL);
 		setHeight(Deoxide.TentHeight);
 		setTextColor(0xFFFFFFFF);
@@ -57,6 +60,7 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 
 		CheckBox cb = new CheckBox(getContext());
 		cb.setText("Remind me");
+		//cb.set
 		bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		
 		LinkedList<ScheduleDataItemLink> links = item.getLinks();
@@ -74,7 +78,14 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
     	new AlertDialog.Builder(getContext())
 			.setTitle(getText())
     		.setView(content)
-    		.show();
+    		.show()
+    		.setOnDismissListener(new OnDismissListener() {
+    			public void onDismiss(DialogInterface dialog) {
+	    			//item.setRemind(cb.isChecked());
+	    			
+	    			//app.db.updateScheduleItem(item);
+    			}
+    		});
 	}
 	
 	private class LinkButton extends ImageButton implements OnClickListener {
@@ -94,4 +105,5 @@ public class BlockScheduleElement extends TextView implements OnClickListener {
 	    	getContext().startActivity(intent);
 		}
 	}
+	
 }
