@@ -1,12 +1,26 @@
 package net.gaast.deoxide;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.DialogInterface.OnDismissListener;
+import android.net.Uri;
+import android.view.Gravity;
+import android.view.View;
 import android.widget.AbsoluteLayout;
+import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 public class BlockSchedule extends LinearLayout implements SimpleScrollerListener {
 	Deoxide app;
@@ -17,8 +31,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
      * following widgets: */
     
     /* Clocks at the top and bottom */
-    BlockScheduleClock topClock;
-    BlockScheduleClock bottomClock;
+    Clock topClock;
+    Clock bottomClock;
     
     /* mainTable is the middle part of the screen */
     LinearLayout mainTable;
@@ -41,7 +55,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
     	Calendar base, cal, end;
     	LinkedList<ScheduleDataLine> tents;
     	ListIterator<ScheduleDataLine> tenti;
-    	BlockScheduleElement cell;
+    	Element cell;
     	
     	setOrientation(LinearLayout.VERTICAL);
     	
@@ -56,7 +70,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 		end = Calendar.getInstance();
 		end.setTime(sched.getLastTime());		
 
-		topClock = new BlockScheduleClock(ctx, base, end);
+		topClock = new Clock(ctx, base, end);
 		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
@@ -75,7 +89,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 			int posx, posy, h, w;
     		
     		/* Tent name on the first column. */
-			cell = new BlockScheduleElement(ctx);
+			cell = new Element(ctx);
 			cell.setWidth(Deoxide.TentWidth);
 			cell.setText(tent.getTitle());
 			if ((y & 1) == 0)
@@ -102,7 +116,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 				               gig.getStartTime().getTime()) *
 				              Deoxide.HourWidth / 3600000);
 				
-				cell = new BlockScheduleElement(ctx);
+				cell = new Element(ctx);
 				cell.setWidth(w);
 				if ((++x & 1) > 0 )
 					cell.setBackgroundColor(0xFF000000);
@@ -125,7 +139,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 		mainTable.addView(schedContScr);
     	addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
     	
-		bottomClock = new BlockScheduleClock(ctx, base, end);
+		bottomClock = new Clock(ctx, base, end);
 		bottomClock.setScrollEventListener(this);
 		addView(bottomClock);
 	}
@@ -146,4 +160,143 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
 		}
 	}
+	
+	protected static class Element extends TextView implements OnClickListener {
+		ScheduleDataItem item;
+		Deoxide app;
+		
+		public Element(Activity ctx) {
+			super(ctx);
+			//app = app_;
+			setGravity(Gravity.CENTER_HORIZONTAL);
+			setHeight(Deoxide.TentHeight);
+			setTextColor(0xFFFFFFFF);
+			setPadding(0, 3, 0, 0);
+			setTextSize(8);
+		}
+		
+		public void setItem(ScheduleDataItem item_) {
+			item = item_;
+			setOnClickListener(this);
+		}
+		
+		public void onClick(View v) {
+	    	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+
+			LinearLayout content = new LinearLayout(getContext());
+			content.setOrientation(LinearLayout.VERTICAL);
+
+			TextView desc = new TextView(getContext());
+			desc.setText(df.format(item.getStartTime().getTime()) + "-" +
+		    		     df.format(item.getEndTime().getTime()) + ": " +
+		    		     item.getDescription());
+
+			ScrollView descscr = new ScrollView(getContext());
+			descscr.addView(desc);
+			content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
+
+			LinearLayout bottomBox = new LinearLayout(getContext());
+			bottomBox.setGravity(Gravity.RIGHT);
+
+			CheckBox cb = new CheckBox(getContext());
+			cb.setText("Remind me");
+			//cb.set
+			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+			
+			LinkedList<ScheduleDataItemLink> links = item.getLinks();
+			if (links != null) {
+				Iterator<ScheduleDataItemLink> linki = links.listIterator();
+				while (linki.hasNext()) {
+					ScheduleDataItemLink link = linki.next();
+					LinkButton btn = new LinkButton(getContext(), link);
+					bottomBox.addView(btn);
+				}
+			}
+
+			content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+
+	    	new AlertDialog.Builder(getContext())
+				.setTitle(getText())
+	    		.setView(content)
+	    		.show()
+	    		.setOnDismissListener(new OnDismissListener() {
+	    			public void onDismiss(DialogInterface dialog) {
+		    			//item.setRemind(cb.isChecked());
+		    			
+		    			//app.db.updateScheduleItem(item);
+	    			}
+	    		});
+		}
+		
+		private class LinkButton extends ImageButton implements OnClickListener {
+			ScheduleDataItemLink link;
+			
+			public LinkButton(Context ctx, ScheduleDataItemLink link_) {
+				super(ctx);
+				link = link_;
+				setImageDrawable(link.getType().getIcon());
+				setOnClickListener(this);
+			}
+			
+			public void onClick(View v) {
+		    	Uri uri = Uri.parse(link.getUrl());
+		    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+		    	intent.addCategory(Intent.CATEGORY_BROWSABLE);
+		    	getContext().startActivity(intent);
+			}
+		}
+	}
+	
+	protected static class Clock extends SimpleScroller {
+		private Element cell;
+		private LinearLayout child;
+		
+		public Clock(Activity ctx, Calendar base, Calendar end) {
+			super(ctx, SimpleScroller.HORIZONTAL);
+
+			SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+			Calendar cal;
+			
+			cal = Calendar.getInstance();
+			cal.setTime(base.getTime());
+			
+			child = new LinearLayout(ctx);
+			
+			cell = new Element(ctx);
+			// cell.setText("Tent/Time:");
+			cell.setHeight(Deoxide.HourHeight);
+			cell.setWidth(Deoxide.TentWidth);
+			cell.setBackgroundColor(0xFF3F3F3F);
+			child.addView(cell);
+
+			while(true) {
+				cell = new Element(ctx);
+				
+				cell.setText(df.format(cal.getTime()));
+				cell.setHeight(Deoxide.HourHeight);
+				cell.setWidth(Deoxide.HourWidth / 2);
+				if (cal.get(Calendar.MINUTE) == 0) {
+					cell.setBackgroundColor(0xFF000000);
+				} else {
+					cell.setBackgroundColor(0xFF3F3F3F);
+				}
+				child.addView(cell);
+
+				if (cal.after(end))
+					break;
+				
+				cal.add(Calendar.MINUTE, 30);
+			}
+			
+			addView(child);
+		}
+	}
+	
+	/*
+	public class BlockScheduleLine extends LinearLayout {
+		public BlockScheduleLine(Activity ctx) {
+			super(ctx);
+		}
+	}
+	*/
 }
