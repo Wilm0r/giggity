@@ -22,9 +22,9 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class BlockSchedule extends LinearLayout implements SimpleScrollerListener {
+public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener {
 	Deoxide app;
-    ScheduleData sched;
+    Schedule sched;
     DeoxideDb db;
 
     /* This object is pretty messy. :-/ It contains the
@@ -45,7 +45,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
     AbsoluteLayout schedCont;
     SimpleScroller schedContScr;
 
-	BlockSchedule(Activity ctx, ScheduleData sched_) {
+	BlockSchedule(Activity ctx, Schedule sched_) {
 		super(ctx);
 		app = (Deoxide) ctx.getApplication();
     	sched = sched_;
@@ -53,8 +53,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
     	
     	int x, y;
     	Calendar base, cal, end;
-    	LinkedList<ScheduleDataLine> tents;
-    	ListIterator<ScheduleDataLine> tenti;
+    	LinkedList<Schedule.Line> tents;
+    	ListIterator<Schedule.Line> tenti;
     	Element cell;
     	
     	setOrientation(LinearLayout.VERTICAL);
@@ -84,8 +84,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 		tents = sched.getTents();
 		tenti = tents.listIterator();
     	while (tenti.hasNext()) {
-    		ListIterator<ScheduleDataItem> gigi;
-    		ScheduleDataLine tent = tenti.next();
+    		ListIterator<Schedule.Item> gigi;
+    		Schedule.Line tent = tenti.next();
 			int posx, posy, h, w;
     		
     		/* Tent name on the first column. */
@@ -107,7 +107,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
         	posy = (y++) * h;
 			gigi = tent.getItems().listIterator();
 			while (gigi.hasNext()) {
-				ScheduleDataItem gig = gigi.next();
+				Schedule.Item gig = gigi.next();
 				
 				posx = (int) ((gig.getStartTime().getTime() -
 				               cal.getTime().getTime()) *
@@ -161,13 +161,12 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 		}
 	}
 	
-	protected static class Element extends TextView implements OnClickListener {
-		ScheduleDataItem item;
+	protected class Element extends TextView implements OnClickListener {
+		Schedule.Item item;
 		Deoxide app;
 		
 		public Element(Activity ctx) {
 			super(ctx);
-			//app = app_;
 			setGravity(Gravity.CENTER_HORIZONTAL);
 			setHeight(Deoxide.TentHeight);
 			setTextColor(0xFFFFFFFF);
@@ -175,7 +174,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 			setTextSize(8);
 		}
 		
-		public void setItem(ScheduleDataItem item_) {
+		public void setItem(Schedule.Item item_) {
 			item = item_;
 			setOnClickListener(this);
 		}
@@ -203,11 +202,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 			//cb.set
 			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 			
-			LinkedList<ScheduleDataItemLink> links = item.getLinks();
+			LinkedList<Schedule.Item.Link> links = item.getLinks();
 			if (links != null) {
-				Iterator<ScheduleDataItemLink> linki = links.listIterator();
+				Iterator<Schedule.Item.Link> linki = links.listIterator();
 				while (linki.hasNext()) {
-					ScheduleDataItemLink link = linki.next();
+					Schedule.Item.Link link = linki.next();
 					LinkButton btn = new LinkButton(getContext(), link);
 					bottomBox.addView(btn);
 				}
@@ -229,9 +228,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 		}
 		
 		private class LinkButton extends ImageButton implements OnClickListener {
-			ScheduleDataItemLink link;
+			Schedule.Item.Link link;
 			
-			public LinkButton(Context ctx, ScheduleDataItemLink link_) {
+			public LinkButton(Context ctx, Schedule.Item.Link link_) {
 				super(ctx);
 				link = link_;
 				setImageDrawable(link.getType().getIcon());
@@ -247,7 +246,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 		}
 	}
 	
-	protected static class Clock extends SimpleScroller {
+	protected class Clock extends SimpleScroller {
 		private Element cell;
 		private LinearLayout child;
 		
@@ -291,12 +290,4 @@ public class BlockSchedule extends LinearLayout implements SimpleScrollerListene
 			addView(child);
 		}
 	}
-	
-	/*
-	public class BlockScheduleLine extends LinearLayout {
-		public BlockScheduleLine(Activity ctx) {
-			super(ctx);
-		}
-	}
-	*/
 }

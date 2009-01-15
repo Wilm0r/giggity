@@ -1,7 +1,6 @@
 package net.gaast.deoxide;
 
 import android.app.Application;
-import android.os.Bundle;
 
 public class Deoxide extends Application {
 	public static final int HourHeight = 16;
@@ -10,22 +9,23 @@ public class Deoxide extends Application {
 	public static final int TentWidth = 32;
 	
 	DeoxideDb db;
-	DeoxideDbHelper dbh;
+	DeoxideDb.Connection dbc;
 	
     public void onCreate() {
     	super.onCreate();
 
     	//
 
-    	dbh = new DeoxideDbHelper(this, "deoxide0", null, 1);
-    	db = new DeoxideDb(dbh.getWritableDatabase());
+    	db = new DeoxideDb(this);
+    	dbc = db.getConnection();
     	//db.setSchedule(sched);
     	
         //setContentView(new BlockSchedule(this));
     }
     
     public void onPause() {
-    	dbh.close();
+    	// TODO: Proper database cleanup!
+    	//dbc.close();
     }
     
     public DeoxideDb getDb() {

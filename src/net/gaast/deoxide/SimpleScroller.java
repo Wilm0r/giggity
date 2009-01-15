@@ -8,7 +8,7 @@ import android.widget.FrameLayout;
 
 public class SimpleScroller extends FrameLayout {
 	private int flags;
-	SimpleScrollerListener listener;
+	SimpleScroller.Listener listener;
 	
 	private int dragScrollX, dragScrollY;
 	private float dragStartX, dragStartY;
@@ -26,7 +26,7 @@ public class SimpleScroller extends FrameLayout {
 		touchDown = false;
 	}
 	
-	public void setScrollEventListener(SimpleScrollerListener list_) {
+	public void setScrollEventListener(SimpleScroller.Listener list_) {
 		listener = list_;
 	}
 	
@@ -113,5 +113,9 @@ public class SimpleScroller extends FrameLayout {
 				listener.onScrollEvent(this);
 			isCallingBack = false;
 		}
+	}
+	
+	public interface Listener {
+		public void onScrollEvent(SimpleScroller src);
 	}
 }

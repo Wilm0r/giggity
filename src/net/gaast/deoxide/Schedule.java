@@ -1,6 +1,7 @@
 package net.gaast.deoxide;
 
 import java.io.BufferedReader;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -13,34 +14,34 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Xml;
 
-public class ScheduleData implements ContentHandler {
+public class Schedule implements ContentHandler {
 	// private Deoxide app;
 	
 	private String id;
 	private String title;
 
-	private LinkedList<ScheduleDataLine> tents;
-	private HashMap<String,ScheduleDataLinkType> linkTypes;
-	private HashMap<String,ScheduleDataItem> items;
+	private LinkedList<Schedule.Line> tents;
+	private HashMap<String,Schedule.LinkType> linkTypes;
+	private HashMap<String,Schedule.Item> items;
 
 	private Date firstTime, lastTime;
 	
-	private ScheduleDataLine curTent;
-	private ScheduleDataItem curItem;
+	private Schedule.Line curTent;
+	private Schedule.Item curItem;
 	private String curString;
 	
-	public ScheduleData(Object ctx, String source) {
+	public Schedule(Object ctx, String source) {
 		// app = (Deoxide) ctx.getApplication();
 		
-		items = new HashMap<String,ScheduleDataItem>();
-		linkTypes = new HashMap<String,ScheduleDataLinkType>();
+		items = new HashMap<String,Schedule.Item>();
+		linkTypes = new HashMap<String,Schedule.LinkType>();
 		
 		Log.i("ScheduleData", "About to start parsing");
-		tents = new LinkedList<ScheduleDataLine>();
+		tents = new LinkedList<Schedule.Line>();
 		try {
 			URL dl = new URL(source);
 			BufferedReader in = new BufferedReader(new InputStreamReader(dl.openStream()));
@@ -59,7 +60,7 @@ public class ScheduleData implements ContentHandler {
 		return title;
 	}
 	
-	public LinkedList<ScheduleDataLine> getTents() {
+	public LinkedList<Schedule.Line> getTents() {
 		return tents;
 	}
 	
@@ -71,7 +72,7 @@ public class ScheduleData implements ContentHandler {
 		return lastTime;
 	}
 	
-	public ScheduleDataLinkType getLinkType(String id) {
+	public Schedule.LinkType getLinkType(String id) {
 		return linkTypes.get(id);
 	}
 	
@@ -135,13 +136,13 @@ public class ScheduleData implements ContentHandler {
 			String id = atts.getValue("", "id");
 			String icon = atts.getValue("", "icon");
 			
-			ScheduleDataLinkType lt = new ScheduleDataLinkType(id);
+			Schedule.LinkType lt = new Schedule.LinkType(id);
 			if (icon != null)
 				lt.setIconUrl(icon);
 			
 			linkTypes.put(id, lt);
 		} else if (localName == "line") {
-			curTent = new ScheduleDataLine(atts.getValue("", "id"),
+			curTent = new Schedule.Line(atts.getValue("", "id"),
 					                       atts.getValue("", "title"));
 		} else if (localName == "item") {
 			SimpleDateFormat df;
@@ -169,7 +170,7 @@ public class ScheduleData implements ContentHandler {
 //				Log.d("XML", "itemParsed: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
 //				      " " + startTime + " " + endTime);
 
-				curItem = new ScheduleDataItem(atts.getValue("", "id"),
+				curItem = new Schedule.Item(atts.getValue("", "id"),
 	                       atts.getValue("", "title"),
 	                       startTime, endTime);
 //			} catch (ParseException e) {
@@ -178,7 +179,7 @@ public class ScheduleData implements ContentHandler {
 				
 			}
 		} else if (localName == "itemLink") {
-			ScheduleDataLinkType lt = linkTypes.get(atts.getValue("", "type"));
+			Schedule.LinkType lt = linkTypes.get(atts.getValue("", "type"));
 			curItem.addLink(lt, atts.getValue("", "href"));
 		}
 	}
@@ -205,4 +206,133 @@ public class ScheduleData implements ContentHandler {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	public class Line {
+		private String id;
+		private String title;
+		private LinkedList<Schedule.Item> items;
+		
+		public Line(String id_, String title_) {
+			id = id_;
+			title = title_;
+			items = new LinkedList<Schedule.Item>();
+		}
+		
+		public String getId() {
+			return id;
+		}
+		
+		public String getTitle() {
+			return title;
+		}
+		
+		public void addItem(Schedule.Item item) {
+			items.add(item);
+		}
+		
+		public LinkedList<Schedule.Item> getItems() {
+			return items;
+		}
+	}
+
+	
+	
+	public class Item {
+		private String id;
+		private String title;
+		private String description;
+		// private boolean remind;
+		private Date startTime, endTime;
+		private LinkedList<Schedule.Item.Link> links;
+		
+		Item(String id_, String title_, Date startTime_, Date endTime_) {
+			id = id_;
+			title = title_;
+			startTime = startTime_;
+			endTime = endTime_;
+		}
+		
+		public void setDescription(String description_) {
+			description = description_;
+		}
+		
+		public void addLink(Schedule.LinkType type, String url) {
+			Schedule.Item.Link link = new Schedule.Item.Link(type, url);
+			
+			if (links == null) {
+				links = new LinkedList<Schedule.Item.Link>();
+			}
+			links.add(link);
+		}
+		
+		public String getId() {
+			return id;
+		}
+		
+		public String getTitle() {
+			return title;
+		}
+		
+		public Date getStartTime() {
+			return startTime;
+		}
+		
+		public Date getEndTime() {
+			return endTime;
+		}
+		
+		public String getDescription() {
+			return description;
+		}
+		
+		public LinkedList<Schedule.Item.Link> getLinks() {
+			return links;
+		}
+
+		public class Link {
+			private Schedule.LinkType type;
+			private String url;
+			
+			public Link(Schedule.LinkType type_, String url_) {
+				type = type_;
+				url = url_;
+			}
+			
+			public Schedule.LinkType getType() {
+				return type;
+			}
+			
+			public String getUrl() {
+				return url;
+			}
+		}
+
+	}
+
+	
+	public class LinkType {
+		private String id;
+		private Drawable iconDrawable;
+		
+		public LinkType(String id_) {
+			id = id_;
+		}
+		
+		public void setIconUrl(String url_) {
+			try {
+				URL dl = new URL(url_);
+				InputStream in = dl.openStream();
+				iconDrawable = Drawable.createFromStream(in, id);
+			} catch (Exception e) {
+				Log.e("setIconUrl", "Error while dowloading icon " + url_);
+				e.printStackTrace();
+			}
+		}
+		
+		public Drawable getIcon() {
+			return iconDrawable;
+		}
+	}
+
 }
