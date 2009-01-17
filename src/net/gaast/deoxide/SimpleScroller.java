@@ -115,6 +115,24 @@ public class SimpleScroller extends FrameLayout {
 		}
 	}
 	
+	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+		int newx, newy, maxx, maxy;
+		
+		if (getScrollX() == 0 && getScrollY() == 0) {
+			/* If we're already at the top left (possibly still 
+			 * starting up?) then we don't have to care. */
+			return;
+		}
+		
+		maxx = getChildAt(0).getWidth() - w;
+		maxy = getChildAt(0).getHeight() - h;
+		
+		newx = Math.max(0, Math.min(maxx, getScrollX()));
+		newy = Math.max(0, Math.min(maxy, getScrollY())); 
+		
+		scrollTo(newx, newy);
+	}
+	
 	public interface Listener {
 		public void onScrollEvent(SimpleScroller src);
 	}

@@ -1,6 +1,7 @@
 package net.gaast.deoxide;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ public class BlockScheduleActivity extends Activity {
         
         sched = new Schedule(this, "http://wilmer.gaast.net/deoxide/test.xml");
     	setTitle("Deoxide: " + sched.getTitle());
+    	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		bs = new BlockSchedule(this, sched);
 		setContentView(bs);
 	}
