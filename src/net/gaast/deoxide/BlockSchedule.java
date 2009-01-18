@@ -25,7 +25,6 @@ import android.widget.TextView;
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener {
 	Deoxide app;
     Schedule sched;
-    DeoxideDb db;
 
     /* This object is pretty messy. :-/ It contains the
      * following widgets: */
@@ -49,7 +48,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		super(ctx);
 		app = (Deoxide) ctx.getApplication();
     	sched = sched_;
-    	db = app.getDb();
     	
     	int x, y;
     	Calendar base, cal, end;
@@ -143,7 +141,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		bottomClock.setScrollEventListener(this);
 		addView(bottomClock);
 	}
-
+	
 	/* If the user scrolls one view, keep the others in sync. */
 	public void onScrollEvent(SimpleScroller src) {
 		if (src == schedContScr) {
@@ -197,9 +195,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			LinearLayout bottomBox = new LinearLayout(getContext());
 			bottomBox.setGravity(Gravity.RIGHT);
 
-			CheckBox cb = new CheckBox(getContext());
+			final CheckBox cb = new CheckBox(getContext());
 			cb.setText("Remind me");
-			//cb.set
+			cb.setChecked(item.getRemind());
 			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 			
 			LinkedList<Schedule.Item.Link> links = item.getLinks();
@@ -220,9 +218,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	    		.show()
 	    		.setOnDismissListener(new OnDismissListener() {
 	    			public void onDismiss(DialogInterface dialog) {
-		    			//item.setRemind(cb.isChecked());
-		    			
-		    			//app.db.updateScheduleItem(item);
+	    				item.setRemind(cb.isChecked());
 	    			}
 	    		});
 		}
@@ -262,7 +258,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			child = new LinearLayout(ctx);
 			
 			cell = new Element(ctx);
-			// cell.setText("Tent/Time:");
 			cell.setHeight(Deoxide.HourHeight);
 			cell.setWidth(Deoxide.TentWidth);
 			cell.setBackgroundColor(0xFF3F3F3F);

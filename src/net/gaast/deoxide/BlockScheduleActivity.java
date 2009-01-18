@@ -20,6 +20,11 @@ public class BlockScheduleActivity extends Activity {
 		setContentView(bs);
 	}
     
+    protected void onPause() {
+    	sched.commit();
+    	super.onPause();
+    }
+    
     public void onConfigurationChanged(Configuration newConfig) {
     	super.onConfigurationChanged(newConfig);
     	Log.i("BlockScheduleActivity", "Orientation changed");

@@ -7,6 +7,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.xml.sax.Attributes;
@@ -14,12 +15,14 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Xml;
 
 public class Schedule implements ContentHandler {
-	// private Deoxide app;
+	private Deoxide app;
+	private DeoxideDb.Connection db;
 	
 	private String id;
 	private String title;
@@ -34,14 +37,17 @@ public class Schedule implements ContentHandler {
 	private Schedule.Item curItem;
 	private String curString;
 	
-	public Schedule(Object ctx, String source) {
-		// app = (Deoxide) ctx.getApplication();
+	private boolean fullyLoaded;
+	
+	public Schedule(Activity ctx, String source) {
+		app = (Deoxide) ctx.getApplication();
 		
 		items = new HashMap<String,Schedule.Item>();
 		linkTypes = new HashMap<String,Schedule.LinkType>();
+		tents = new LinkedList<Schedule.Line>();
+		fullyLoaded = false;
 		
 		Log.i("ScheduleData", "About to start parsing");
-		tents = new LinkedList<Schedule.Line>();
 		try {
 			URL dl = new URL(source);
 			BufferedReader in = new BufferedReader(new InputStreamReader(dl.openStream()));
@@ -49,6 +55,21 @@ public class Schedule implements ContentHandler {
 		} catch (Exception e) {
 			Log.e("XML", "XML parse exception: " + e);
 			e.printStackTrace();
+		}
+		
+		db = app.getDb();
+		db.setSchedule(this);
+		
+		/* From now, changes should be marked to go back into the db. */
+		fullyLoaded = true;
+	}
+	
+	public void commit() {
+		Iterator<Item> it = items.values().iterator();
+		
+		while (it.hasNext()) {
+			Item item = it.next();
+			item.commit();
 		}
 	}
 	
@@ -74,6 +95,10 @@ public class Schedule implements ContentHandler {
 	
 	public Schedule.LinkType getLinkType(String id) {
 		return linkTypes.get(id);
+	}
+	
+	public Item getItem(String id) {
+		return items.get(id);
 	}
 	
 	@Override
@@ -242,15 +267,20 @@ public class Schedule implements ContentHandler {
 		private String id;
 		private String title;
 		private String description;
-		// private boolean remind;
 		private Date startTime, endTime;
 		private LinkedList<Schedule.Item.Link> links;
+		
+		private boolean remind;
+		private boolean newData;
 		
 		Item(String id_, String title_, Date startTime_, Date endTime_) {
 			id = id_;
 			title = title_;
 			startTime = startTime_;
 			endTime = endTime_;
+			
+			remind = false;
+			newData = false;
 		}
 		
 		public void setDescription(String description_) {
@@ -290,6 +320,24 @@ public class Schedule implements ContentHandler {
 			return links;
 		}
 
+		public void setRemind(boolean remind_) {
+			if (remind != remind_) {
+				remind = remind_;
+				newData |= fullyLoaded;
+			}
+		}
+		
+		public boolean getRemind() {
+			return remind;
+		}
+		
+		public void commit() {
+			if (newData) {
+				db.saveScheduleItem(this);
+				newData = false;
+			}
+		}
+		
 		public class Link {
 			private Schedule.LinkType type;
 			private String url;

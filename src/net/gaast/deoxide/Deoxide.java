@@ -13,22 +13,10 @@ public class Deoxide extends Application {
 	
     public void onCreate() {
     	super.onCreate();
-
-    	//
-
     	db = new DeoxideDb(this);
-    	dbc = db.getConnection();
-    	//db.setSchedule(sched);
-    	
-        //setContentView(new BlockSchedule(this));
     }
     
-    public void onPause() {
-    	// TODO: Proper database cleanup!
-    	//dbc.close();
-    }
-    
-    public DeoxideDb getDb() {
-    	return db;
+    public DeoxideDb.Connection getDb() {
+    	return db.getConnection();
     }
 }
