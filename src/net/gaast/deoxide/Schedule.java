@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +41,14 @@ public class Schedule {
 	}
 	
 	public void loadDeox(String source) throws LoadNetworkException, LoadDataException {
-		DeoxParser parser = new DeoxParser();
+		loadXml(source, new DeoxParser());
+	}
+	
+	public void loadXcal(String source) throws LoadNetworkException, LoadDataException {
+		loadXml(source, new XcalParser());
+	}
+	
+	public void loadXml(String source, ContentHandler parser) throws LoadNetworkException, LoadDataException {
 		BufferedReader in;
 		
 		id = null;
@@ -61,12 +69,12 @@ public class Schedule {
 			try {
 				Xml.parse(in, parser);
 			} catch (Exception e) {
-				Log.e("Schedule.loadDeox", "XML parse exception: " + e);
+				Log.e("Schedule.loadXml", "XML parse exception: " + e);
 				e.printStackTrace();
 				throw new LoadDataException();
 			}
 		} catch (Exception e) {
-			Log.e("Schedule.loadDeox", "Exception while downloading schedule: " + e);
+			Log.e("Schedule.loadXml", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
 			throw new LoadNetworkException();
 		}
@@ -147,20 +155,9 @@ public class Schedule {
 				curTent = new Schedule.Line(atts.getValue("", "id"),
 						                       atts.getValue("", "title"));
 			} else if (localName == "item") {
-				SimpleDateFormat df;
 				Date startTime, endTime;
 	
-				//Log.d("XML", "itemRaw: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
-				//	      " " + atts.getValue("", "startTime") + " " + atts.getValue("", "endTime"));
-	
 				try {
-					/*
-					df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-					df.setTimeZone(TimeZone.getTimeZone("UTC"));
-					startTime = df.parse(atts.getValue("", "startTime"));
-					endTime = df.parse(atts.getValue("", "endTime"));
-					*/
-					
 					startTime = new Date(Long.parseLong(atts.getValue("", "startTime")) * 1000);
 					endTime = new Date(Long.parseLong(atts.getValue("", "endTime")) * 1000);
 					
@@ -169,9 +166,6 @@ public class Schedule {
 					if (lastTime == null || endTime.after(lastTime))
 						lastTime = endTime;
 					
-	//				Log.d("XML", "itemParsed: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
-	//				      " " + startTime + " " + endTime);
-	
 					curItem = new Schedule.Item(atts.getValue("", "id"),
 		                       atts.getValue("", "title"),
 		                       startTime, endTime);
@@ -204,6 +198,131 @@ public class Schedule {
 			} else if (localName == "itemDescription") {
 				if (curItem != null)
 					curItem.setDescription(curString);
+			}
+		}
+		
+		@Override
+		public void startDocument() throws SAXException {
+		}
+	
+		@Override
+		public void endDocument() throws SAXException {
+		}
+		
+		@Override
+		public void startPrefixMapping(String arg0, String arg1)
+				throws SAXException {
+			
+		}
+	
+		@Override
+		public void endPrefixMapping(String arg0) throws SAXException {
+		}
+	
+		@Override
+		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
+				throws SAXException {
+		}
+	
+		@Override
+		public void processingInstruction(String arg0, String arg1)
+				throws SAXException {
+		}
+	
+		@Override
+		public void setDocumentLocator(Locator arg0) {
+		}
+	
+		@Override
+		public void skippedEntity(String arg0) throws SAXException {
+		}
+	}
+	
+	private class XcalParser implements ContentHandler {
+		//private Schedule.Line curTent;
+		private HashMap<String,Schedule.Line> tentMap;
+		private HashMap<String,String> eventData;
+		private String curString;
+
+		SimpleDateFormat df;
+
+		public XcalParser() {
+			tentMap = new HashMap<String,Schedule.Line>();
+			df = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
+		}
+		
+		@Override
+		public void startElement(String uri, String localName, String qName,
+				Attributes atts) throws SAXException {
+			curString = "";
+			if (localName == "vevent") {
+				eventData = new HashMap<String,String>();
+			}
+		}
+	
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			curString += String.copyValueOf(ch, start, length); 
+		}
+	
+		@Override
+		public void endElement(String uri, String localName, String qName)
+				throws SAXException {
+			if (localName == "vevent") {
+				String uid, name, location, startTimeS, endTimeS, s;
+				Date startTime, endTime;
+				Schedule.Item item;
+				Schedule.Line line;
+				
+				Log.d("Event:", eventData.get("summary") + " in " + eventData.get("location"));
+				
+				if ((uid = eventData.get("uid")) == null ||
+				    (name = eventData.get("summary")) == null ||
+				    (location = eventData.get("location")) == null ||
+				    (startTimeS = eventData.get("dtstart")) == null ||
+				    (endTimeS = eventData.get("dtend")) == null) {
+					Log.w("Schedule.loadXcal", "Invalid event, some attributes are missing.");
+					return;
+				}
+				
+				if ((s = eventData.get("attendee")) != null) {
+					name += " (" + s + ")";
+				}
+				
+				try {
+					startTime = df.parse(startTimeS);
+					endTime = df.parse(endTimeS);
+				} catch (ParseException e) {
+					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
+					return;
+				}
+
+				if (firstTime == null || startTime.before(firstTime))
+					firstTime = startTime;
+				if (lastTime == null || endTime.after(lastTime))
+					lastTime = endTime;
+
+				item = new Schedule.Item(uid, name, startTime, endTime);
+				
+				if ((s = eventData.get("description")) != null) {
+					item.setDescription(s);
+				}
+
+				if ((line = tentMap.get(location)) == null) {
+					line = new Schedule.Line(location, location);
+					tents.add(line);
+					tentMap.put(location, line);
+				}
+				line.addItem(item);
+				
+				eventData = null;
+			} else if (localName == "x-wr-calname") {
+				id = curString;
+			} else if (localName == "x-wr-caldesc") {
+				title = curString;
+			} else if (eventData != null) {
+				eventData.put(localName, curString);
 			}
 		}
 		
