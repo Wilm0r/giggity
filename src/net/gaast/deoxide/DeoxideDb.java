@@ -31,6 +31,7 @@ public class DeoxideDb {
 	
 		@Override
 		public void onCreate(SQLiteDatabase db) {
+			Log.i("DeoxideDb", "Creating new database");
 			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null," +
 					                          "sch_id_s VarChar(128))");
 			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null," +
@@ -73,18 +74,11 @@ public class DeoxideDb {
 					        new String[]{sched.getId()});
 			
 			if (q.getCount() == 0) {
-				/*
-				q = db.rawQuery("Insert Into schedule (sch_id_s) Values (?)",
-						    new String[]{sched.getId()});
-				TODO(wilmer): Sanitize this code after figuring out WTF
-				lastInsertRow() is only available via this kiddie
-				interface:
-				*/
-				
 				ContentValues row = new ContentValues();
 				
 				row.put("sch_id_s", sched.getId());
 				schId = db.insert("schedule", null, row);
+				Log.i("DeoxideDb", "Adding schedule to database");
 			} else if (q.getCount() == 1) {
 				q.moveToNext();
 				schId = q.getLong(0);
@@ -101,7 +95,6 @@ public class DeoxideDb {
 				Schedule.Item item = sched.getItem(q.getString(1));
 				item.setRemind(q.getInt(2) != 0);
 				sciIdMap.put(q.getString(1), new Long(q.getInt(0)));
-				Log.d("sci", q.toString());
 			}
 			q.close();
 		}

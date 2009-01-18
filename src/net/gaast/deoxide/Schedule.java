@@ -30,7 +30,7 @@ public class Schedule {
 
 	private LinkedList<Schedule.Line> tents;
 	private HashMap<String,Schedule.LinkType> linkTypes;
-	private HashMap<String,Schedule.Item> items;
+	private HashMap<String,Schedule.Item> allItems;
 
 	private Date firstTime, lastTime;
 	
@@ -54,7 +54,7 @@ public class Schedule {
 		id = null;
 		title = null;
 		
-		items = new HashMap<String,Schedule.Item>();
+		allItems = new HashMap<String,Schedule.Item>();
 		linkTypes = new HashMap<String,Schedule.LinkType>();
 		tents = new LinkedList<Schedule.Line>();
 		
@@ -93,7 +93,7 @@ public class Schedule {
 	}
 
 	public void commit() {
-		Iterator<Item> it = items.values().iterator();
+		Iterator<Item> it = allItems.values().iterator();
 		
 		while (it.hasNext()) {
 			Item item = it.next();
@@ -126,7 +126,7 @@ public class Schedule {
 	}
 	
 	public Item getItem(String id) {
-		return items.get(id);
+		return allItems.get(id);
 	}
 	
 	private class DeoxParser implements ContentHandler {
@@ -153,7 +153,7 @@ public class Schedule {
 				linkTypes.put(id, lt);
 			} else if (localName == "line") {
 				curTent = new Schedule.Line(atts.getValue("", "id"),
-						                       atts.getValue("", "title"));
+						                    atts.getValue("", "title"));
 			} else if (localName == "item") {
 				Date startTime, endTime;
 	
@@ -190,7 +190,6 @@ public class Schedule {
 				throws SAXException {
 			if (localName == "item") {
 				curTent.addItem(curItem);
-				items.put(curItem.getId(), curItem);
 				curItem = null;
 			} else if (localName == "line") {
 				tents.add(curTent);
@@ -384,6 +383,7 @@ public class Schedule {
 		
 		public void addItem(Schedule.Item item) {
 			items.add(item);
+			allItems.put(item.getId(), item);
 		}
 		
 		public LinkedList<Schedule.Item> getItems() {
