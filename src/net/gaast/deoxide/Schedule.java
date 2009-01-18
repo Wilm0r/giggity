@@ -6,10 +6,12 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractSet;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.TreeSet;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -365,12 +367,12 @@ public class Schedule {
 	public class Line {
 		private String id;
 		private String title;
-		private LinkedList<Schedule.Item> items;
+		private TreeSet<Schedule.Item> items;
 		
 		public Line(String id_, String title_) {
 			id = id_;
 			title = title_;
-			items = new LinkedList<Schedule.Item>();
+			items = new TreeSet<Schedule.Item>();
 		}
 		
 		public String getId() {
@@ -386,12 +388,12 @@ public class Schedule {
 			allItems.put(item.getId(), item);
 		}
 		
-		public LinkedList<Schedule.Item> getItems() {
+		public AbstractSet<Schedule.Item> getItems() {
 			return items;
 		}
 	}
 	
-	public class Item {
+	public class Item implements Comparable<Item> {
 		private String id;
 		private String title;
 		private String description;
@@ -482,6 +484,11 @@ public class Schedule {
 			public String getUrl() {
 				return url;
 			}
+		}
+
+		@Override
+		public int compareTo(Item another) {
+			return getStartTime().compareTo(another.getStartTime());
 		}
 
 	}

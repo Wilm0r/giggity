@@ -13,6 +13,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.DialogInterface.OnDismissListener;
 import android.net.Uri;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
@@ -82,7 +83,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		tents = sched.getTents();
 		tenti = tents.listIterator();
     	while (tenti.hasNext()) {
-    		ListIterator<Schedule.Item> gigi;
+    		Iterator<Schedule.Item> gigi;
     		Schedule.Line tent = tenti.next();
 			int posx, posy, h, w;
     		
@@ -103,7 +104,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
         	x = 0;
         	h = Deoxide.TentHeight;
         	posy = (y++) * h;
-			gigi = tent.getItems().listIterator();
+			gigi = tent.getItems().iterator();
 			while (gigi.hasNext()) {
 				Schedule.Item gig = gigi.next();
 				
