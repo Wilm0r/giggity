@@ -13,9 +13,14 @@ public class BlockScheduleActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        sched = new Schedule(this, "http://wilmer.gaast.net/deoxide/test.xml");
+        try {
+        	sched = new Schedule(this, "http://wilmer.gaast.net/deoxide/test.xml");
+        } catch (Throwable t) {
+        	finish();
+        	return;
+        }
     	setTitle("Deoxide: " + sched.getTitle());
-    	setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
+    	// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		bs = new BlockSchedule(this, sched);
 		setContentView(bs);
 	}

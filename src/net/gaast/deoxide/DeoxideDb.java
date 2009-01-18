@@ -24,7 +24,6 @@ public class DeoxideDb {
 	}
 	
 	public class Helper extends SQLiteOpenHelper {
-	
 		public Helper(Context context, String name, CursorFactory factory,
 				int version) {
 			super(context, name, factory, version);

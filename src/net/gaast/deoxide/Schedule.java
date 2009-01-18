@@ -3,6 +3,7 @@ package net.gaast.deoxide;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -39,7 +40,9 @@ public class Schedule implements ContentHandler {
 	
 	private boolean fullyLoaded;
 	
-	public Schedule(Activity ctx, String source) {
+	public Schedule(Activity ctx, String source) throws LoadNetworkException, LoadDataException {
+		BufferedReader in;
+		
 		app = (Deoxide) ctx.getApplication();
 		
 		items = new HashMap<String,Schedule.Item>();
@@ -50,11 +53,18 @@ public class Schedule implements ContentHandler {
 		Log.i("ScheduleData", "About to start parsing");
 		try {
 			URL dl = new URL(source);
-			BufferedReader in = new BufferedReader(new InputStreamReader(dl.openStream()));
-			Xml.parse(in, this);
+			in = new BufferedReader(new InputStreamReader(dl.openStream()));
+			try {
+				Xml.parse(in, this);
+			} catch (Exception e) {
+				Log.e("XML", "XML parse exception: " + e);
+				e.printStackTrace();
+				throw new LoadDataException();
+			}
 		} catch (Exception e) {
-			Log.e("XML", "XML parse exception: " + e);
+			Log.e("Schedule", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
+			throw new LoadNetworkException();
 		}
 		
 		db = app.getDb();
@@ -64,6 +74,12 @@ public class Schedule implements ContentHandler {
 		fullyLoaded = true;
 	}
 	
+	public class LoadDataException extends Exception {
+	}
+
+	public class LoadNetworkException extends Exception {
+	}
+
 	public void commit() {
 		Iterator<Item> it = items.values().iterator();
 		
