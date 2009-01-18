@@ -3,7 +3,6 @@ package net.gaast.deoxide;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Xml;
 
-public class Schedule implements ContentHandler {
+public class Schedule {
 	private Deoxide app;
 	private DeoxideDb.Connection db;
 	
@@ -34,35 +33,40 @@ public class Schedule implements ContentHandler {
 
 	private Date firstTime, lastTime;
 	
-	private Schedule.Line curTent;
-	private Schedule.Item curItem;
-	private String curString;
-	
 	private boolean fullyLoaded;
 	
-	public Schedule(Activity ctx, String source) throws LoadNetworkException, LoadDataException {
+	public Schedule(Activity ctx) {
+		app = (Deoxide) ctx.getApplication();
+	}
+	
+	public void loadDeox(String source) throws LoadNetworkException, LoadDataException {
+		DeoxParser parser = new DeoxParser();
 		BufferedReader in;
 		
-		app = (Deoxide) ctx.getApplication();
+		id = null;
+		title = null;
 		
 		items = new HashMap<String,Schedule.Item>();
 		linkTypes = new HashMap<String,Schedule.LinkType>();
 		tents = new LinkedList<Schedule.Line>();
+		
+		firstTime = null;
+		lastTime = null;
+		
 		fullyLoaded = false;
 		
-		Log.i("ScheduleData", "About to start parsing");
 		try {
 			URL dl = new URL(source);
 			in = new BufferedReader(new InputStreamReader(dl.openStream()));
 			try {
-				Xml.parse(in, this);
+				Xml.parse(in, parser);
 			} catch (Exception e) {
-				Log.e("XML", "XML parse exception: " + e);
+				Log.e("Schedule.loadDeox", "XML parse exception: " + e);
 				e.printStackTrace();
 				throw new LoadDataException();
 			}
 		} catch (Exception e) {
-			Log.e("Schedule", "Exception while downloading schedule: " + e);
+			Log.e("Schedule.loadDeox", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
 			throw new LoadNetworkException();
 		}
@@ -117,137 +121,128 @@ public class Schedule implements ContentHandler {
 		return items.get(id);
 	}
 	
-	@Override
-	public void characters(char[] ch, int start, int length) throws SAXException {
-		curString += String.copyValueOf(ch, start, length); 
-		// TODO Auto-generated method stub
-		// Log.i("XML", "" + arg2 + " characters " + new String(arg0));
-	}
-
-	@Override
-	public void endDocument() throws SAXException {
-		Log.d("XML", "endDocument");
-	}
-
-	@Override
-	public void endPrefixMapping(String arg0) throws SAXException {
-		// TODO Auto-generated method stub
+	private class DeoxParser implements ContentHandler {
+		private Schedule.Line curTent;
+		private Schedule.Item curItem;
+		private String curString;
 		
-	}
-
-	@Override
-	public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
-			throws SAXException {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void processingInstruction(String arg0, String arg1)
-			throws SAXException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setDocumentLocator(Locator arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void skippedEntity(String arg0) throws SAXException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void startDocument() throws SAXException {
-		Log.d("XML", "startDocument");
-	}
-
-	@Override
-	public void startElement(String uri, String localName, String qName,
-			Attributes atts) throws SAXException {
-		curString = "";
-		
-		if (localName == "schedule") {
-			id = atts.getValue("", "id");
-			title = atts.getValue("", "title");
-		} else if (localName == "linkType") {
-			String id = atts.getValue("", "id");
-			String icon = atts.getValue("", "icon");
+		@Override
+		public void startElement(String uri, String localName, String qName,
+				Attributes atts) throws SAXException {
+			curString = "";
 			
-			Schedule.LinkType lt = new Schedule.LinkType(id);
-			if (icon != null)
-				lt.setIconUrl(icon);
-			
-			linkTypes.put(id, lt);
-		} else if (localName == "line") {
-			curTent = new Schedule.Line(atts.getValue("", "id"),
-					                       atts.getValue("", "title"));
-		} else if (localName == "item") {
-			SimpleDateFormat df;
-			Date startTime, endTime;
-
-			//Log.d("XML", "itemRaw: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
-			//	      " " + atts.getValue("", "startTime") + " " + atts.getValue("", "endTime"));
-
-			try {
-				/*
-				df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-				df.setTimeZone(TimeZone.getTimeZone("UTC"));
-				startTime = df.parse(atts.getValue("", "startTime"));
-				endTime = df.parse(atts.getValue("", "endTime"));
-				*/
+			if (localName == "schedule") {
+				id = atts.getValue("", "id");
+				title = atts.getValue("", "title");
+			} else if (localName == "linkType") {
+				String id = atts.getValue("", "id");
+				String icon = atts.getValue("", "icon");
 				
-				startTime = new Date(Long.parseLong(atts.getValue("", "startTime")) * 1000);
-				endTime = new Date(Long.parseLong(atts.getValue("", "endTime")) * 1000);
+				Schedule.LinkType lt = new Schedule.LinkType(id);
+				if (icon != null)
+					lt.setIconUrl(icon);
 				
-				if (firstTime == null || startTime.before(firstTime))
-					firstTime = startTime;
-				if (lastTime == null || endTime.after(lastTime))
-					lastTime = endTime;
-				
-//				Log.d("XML", "itemParsed: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
-//				      " " + startTime + " " + endTime);
-
-				curItem = new Schedule.Item(atts.getValue("", "id"),
-	                       atts.getValue("", "title"),
-	                       startTime, endTime);
-//			} catch (ParseException e) {
-//				Log.e("XML", "Error while trying to parse a date");
-			} catch (NumberFormatException e) {
-				
-			}
-		} else if (localName == "itemLink") {
-			Schedule.LinkType lt = linkTypes.get(atts.getValue("", "type"));
-			curItem.addLink(lt, atts.getValue("", "href"));
-		}
-	}
-
-	@Override
-	public void endElement(String uri, String localName, String qName)
-			throws SAXException {
-		if (localName == "item") {
-			curTent.addItem(curItem);
-			items.put(curItem.getId(), curItem);
-			curItem = null;
-		} else if (localName == "line") {
-			tents.add(curTent);
-			curTent = null;
-		} else if (localName == "itemDescription") {
-			if (curItem != null)
-				curItem.setDescription(curString);
-		}
-	}
-
-	@Override
-	public void startPrefixMapping(String arg0, String arg1)
-			throws SAXException {
-		// TODO Auto-generated method stub
-		
-	}
+				linkTypes.put(id, lt);
+			} else if (localName == "line") {
+				curTent = new Schedule.Line(atts.getValue("", "id"),
+						                       atts.getValue("", "title"));
+			} else if (localName == "item") {
+				SimpleDateFormat df;
+				Date startTime, endTime;
 	
+				//Log.d("XML", "itemRaw: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
+				//	      " " + atts.getValue("", "startTime") + " " + atts.getValue("", "endTime"));
+	
+				try {
+					/*
+					df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+					df.setTimeZone(TimeZone.getTimeZone("UTC"));
+					startTime = df.parse(atts.getValue("", "startTime"));
+					endTime = df.parse(atts.getValue("", "endTime"));
+					*/
+					
+					startTime = new Date(Long.parseLong(atts.getValue("", "startTime")) * 1000);
+					endTime = new Date(Long.parseLong(atts.getValue("", "endTime")) * 1000);
+					
+					if (firstTime == null || startTime.before(firstTime))
+						firstTime = startTime;
+					if (lastTime == null || endTime.after(lastTime))
+						lastTime = endTime;
+					
+	//				Log.d("XML", "itemParsed: " + atts.getValue("", "id") + " " + atts.getValue("", "title") +
+	//				      " " + startTime + " " + endTime);
+	
+					curItem = new Schedule.Item(atts.getValue("", "id"),
+		                       atts.getValue("", "title"),
+		                       startTime, endTime);
+	//			} catch (ParseException e) {
+	//				Log.e("XML", "Error while trying to parse a date");
+				} catch (NumberFormatException e) {
+					
+				}
+			} else if (localName == "itemLink") {
+				Schedule.LinkType lt = linkTypes.get(atts.getValue("", "type"));
+				curItem.addLink(lt, atts.getValue("", "href"));
+			}
+		}
+	
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			curString += String.copyValueOf(ch, start, length); 
+		}
+	
+		@Override
+		public void endElement(String uri, String localName, String qName)
+				throws SAXException {
+			if (localName == "item") {
+				curTent.addItem(curItem);
+				items.put(curItem.getId(), curItem);
+				curItem = null;
+			} else if (localName == "line") {
+				tents.add(curTent);
+				curTent = null;
+			} else if (localName == "itemDescription") {
+				if (curItem != null)
+					curItem.setDescription(curString);
+			}
+		}
+		
+		@Override
+		public void startDocument() throws SAXException {
+		}
+	
+		@Override
+		public void endDocument() throws SAXException {
+		}
+		
+		@Override
+		public void startPrefixMapping(String arg0, String arg1)
+				throws SAXException {
+			
+		}
+	
+		@Override
+		public void endPrefixMapping(String arg0) throws SAXException {
+		}
+	
+		@Override
+		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
+				throws SAXException {
+		}
+	
+		@Override
+		public void processingInstruction(String arg0, String arg1)
+				throws SAXException {
+		}
+	
+		@Override
+		public void setDocumentLocator(Locator arg0) {
+		}
+	
+		@Override
+		public void skippedEntity(String arg0) throws SAXException {
+		}
+	}
 	
 	public class Line {
 		private String id;
@@ -276,8 +271,6 @@ public class Schedule implements ContentHandler {
 			return items;
 		}
 	}
-
-	
 	
 	public class Item {
 		private String id;
@@ -374,7 +367,6 @@ public class Schedule implements ContentHandler {
 
 	}
 
-	
 	public class LinkType {
 		private String id;
 		private Drawable iconDrawable;
@@ -398,5 +390,4 @@ public class Schedule implements ContentHandler {
 			return iconDrawable;
 		}
 	}
-
 }

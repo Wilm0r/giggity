@@ -14,7 +14,8 @@ public class BlockScheduleActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         try {
-        	sched = new Schedule(this, "http://wilmer.gaast.net/deoxide/test.xml");
+        	sched = new Schedule(this);
+        	sched.loadDeox("http://wilmer.gaast.net/deoxide/test.xml");
         } catch (Throwable t) {
         	finish();
         	return;
