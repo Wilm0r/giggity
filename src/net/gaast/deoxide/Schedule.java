@@ -171,10 +171,8 @@ public class Schedule {
 					curItem = new Schedule.Item(atts.getValue("", "id"),
 		                       atts.getValue("", "title"),
 		                       startTime, endTime);
-	//			} catch (ParseException e) {
-	//				Log.e("XML", "Error while trying to parse a date");
 				} catch (NumberFormatException e) {
-					
+					Log.w("Schedule.loadDeox", "Error while parsing date: " + e);
 				}
 			} else if (localName == "itemLink") {
 				Schedule.LinkType lt = linkTypes.get(atts.getValue("", "type"));

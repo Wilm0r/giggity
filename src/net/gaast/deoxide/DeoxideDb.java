@@ -69,7 +69,6 @@ public class DeoxideDb {
 			sched = sched_;
 			sciIdMap = new HashMap<String,Long>();
 			
-			Log.d("bla", "" + sched.getId());
 			q = db.rawQuery("Select sch_id From schedule Where sch_id_s = ?",
 					        new String[]{sched.getId()});
 			

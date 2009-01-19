@@ -23,7 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener {
+public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener {
 	Deoxide app;
     Schedule sched;
 
@@ -37,7 +37,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     /* mainTable is the middle part of the screen */
     LinearLayout mainTable;
     /* Separate this to keep them on screen when scrolling */
-    LinearLayout tentHeaders;
+    ShuffleLayout tentHeaders;
     SimpleScroller tentHeadersScr;
 
     /* schedCont will contain all the actual data rows,
@@ -73,9 +73,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
-		tentHeaders = new LinearLayout(app);
-		tentHeaders.setOrientation(LinearLayout.VERTICAL);
-		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL);
+		tentHeaders = new ShuffleLayout(ctx);
+		tentHeaders.setShuffleEventListener(this);
+		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL); // | SimpleScroller.DISABLE_DRAG_SCROLL);
     	tentHeadersScr.addView(tentHeaders);
         tentHeadersScr.setScrollEventListener(this);
     	
@@ -159,7 +159,28 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
 		}
 	}
-	
+
+	@Override
+	public void onSwapEvent(int y1, int y2) {
+		int i;
+		Log.d("ose1", "" + y1 + " " + y2);
+		for (i = 0; i < schedCont.getChildCount(); i ++) {
+			View c = schedCont.getChildAt(i);
+			if (c.getTop() == y1) {
+				AbsoluteLayout.LayoutParams lp;
+				lp = (AbsoluteLayout.LayoutParams) c.getLayoutParams();
+				lp.y = y2;
+				c.setLayoutParams(lp);
+			} else if (c.getTop() == y2) {
+				AbsoluteLayout.LayoutParams lp;
+				lp = (AbsoluteLayout.LayoutParams) c.getLayoutParams();
+				lp.y = y1;
+				c.setLayoutParams(lp);
+			}
+		}
+		Log.d("ose0", "" + y1 + " " + y2);
+	}
+
 	protected class Element extends TextView implements OnClickListener {
 		Schedule.Item item;
 		Deoxide app;

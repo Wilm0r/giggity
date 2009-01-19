@@ -12,18 +12,17 @@ public class SimpleScroller extends FrameLayout {
 	
 	private int dragScrollX, dragScrollY;
 	private float dragStartX, dragStartY;
-	boolean touchDown;
 	boolean isCallingBack;
 	
 	private final int dragThreshold = 8;
 	
 	public static final int HORIZONTAL = 1;
 	public static final int VERTICAL = 2;
+	public static final int DISABLE_DRAG_SCROLL = 4;
 	
 	public SimpleScroller(Activity ctx, int flags_) {
 		super(ctx);
 		flags = flags_;
-		touchDown = false;
 	}
 	
 	public void setScrollEventListener(SimpleScroller.Listener list_) {
@@ -61,8 +60,10 @@ public class SimpleScroller extends FrameLayout {
 	}
 	
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-			touchDown = true;
+		if ((flags & DISABLE_DRAG_SCROLL) > 0) {
+			/* Pass the events to the "child". */
+			return false;
+		} else if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 			dragStartX = ev.getX();
 			dragStartY = ev.getY();
 			return false;
@@ -71,16 +72,17 @@ public class SimpleScroller extends FrameLayout {
 				    Math.abs(dragStartY - ev.getY())) > dragThreshold) {
 			dragScrollX = getScrollX();
 			dragScrollY = getScrollY();
-			touchDown = false;
 			return true;
 		}
 		
-		touchDown = false;
 		return false;
 	}
 	
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+		if ((flags & DISABLE_DRAG_SCROLL) > 0) {
+			/* Pass the events to the "child". */
+			return false;
+		} else if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 			dragStartX = ev.getX();
 			dragStartY = ev.getY();
 			dragScrollX = getScrollX();
