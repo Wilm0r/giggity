@@ -14,13 +14,13 @@ public class BlockScheduleActivity extends Activity {
         
         try {
         	sched = new Schedule(this);
-        	//sched.loadDeox("http://wilmer.gaast.net/deoxide/test.xml");
-        	sched.loadXcal("http://fosdem.org/2009/schedule/xcal");
+        	sched.loadDeox("http://wilmer.gaast.net/deoxide/test.xml");
+        	//sched.loadXcal("http://fosdem.org/2009/schedule/xcal");
         } catch (Throwable t) {
         	finish();
         	return;
         }
-    	setTitle("Deoxide: " + sched.getTitle());
+    	setTitle("Block schedule: " + sched.getTitle());
     	// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 		bs = new BlockSchedule(this, sched);
 		setContentView(bs);

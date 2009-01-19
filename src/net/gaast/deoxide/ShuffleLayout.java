@@ -15,12 +15,16 @@ public class ShuffleLayout extends LinearLayout {
 	private int dragStartChild;
 	
 	private Listener listener;
+	private int flags;
+	
+	public static final int DISABLE_DRAG_SHUFFLE = 1;
 	
 	private final int dragThreshold = 8;
 	
-	public ShuffleLayout(Activity ctx) {
+	public ShuffleLayout(Activity ctx, int flags_) {
 		super(ctx);
 		setOrientation(LinearLayout.VERTICAL);
+		flags = flags_;
 	}
 	
 	public void setShuffleEventListener(Listener listener_) {
@@ -28,7 +32,9 @@ public class ShuffleLayout extends LinearLayout {
 	}
 	
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
-		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+		if ((flags & DISABLE_DRAG_SHUFFLE) > 0) {
+			return false;
+		} else if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 			dragStartY = ev.getY();
 			dragStartChild = (int) ev.getY() / getChildAt(0).getHeight();
 			return false;
@@ -41,7 +47,11 @@ public class ShuffleLayout extends LinearLayout {
 	}
 	
 	public boolean onTouchEvent(MotionEvent ev) {
-		if (ev.getY() < getChildAt(dragStartChild).getTop() - dragThreshold) {
+		if ((flags & DISABLE_DRAG_SHUFFLE) > 0) {
+			return false;
+		} else if (ev.getY() < 0 || ev.getY() > getHeight()) {
+			return true;
+		} else if (ev.getY() < getChildAt(dragStartChild).getTop() - dragThreshold) {
 			Log.d("ote", "Move up");
 			swapChildren(dragStartChild - 1);
 			dragStartChild --;
@@ -53,19 +63,20 @@ public class ShuffleLayout extends LinearLayout {
 		return true;
 	}
 	
-	private void swapChildren(int top) {
+	public void swapChildren(int top) {
 		View tmpView;
 		int a = top, b = top + 1;
 		
 		tmpView = getChildAt(a);
 		removeView(getChildAt(a));
 		addView(tmpView, b);
-		requestLayout();
-		listener.onSwapEvent(getChildAt(a).getTop(), getChildAt(b).getTop());
+		
+		if (listener != null)
+			listener.onSwapEvent(top);
 	}
 	
 	public interface Listener {
 		/* When this comes in, swap items at y1 and y2. */
-		public void onSwapEvent(int y1, int y2);
+		public void onSwapEvent(int top);
 	}
 }

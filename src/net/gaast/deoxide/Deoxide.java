@@ -6,7 +6,7 @@ public class Deoxide extends Application {
 	public static final int HourHeight = 16;
 	public static final int HourWidth = 72;
 	public static final int TentHeight = 48;
-	public static final int TentWidth = 72;
+	public static final int TentWidth = 32;
 	
 	DeoxideDb db;
 	DeoxideDb.Connection dbc;

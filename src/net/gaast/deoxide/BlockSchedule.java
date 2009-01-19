@@ -42,7 +42,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
     /* schedCont will contain all the actual data rows,
      * we'll get scrolling by stuffing it inside schedContScr. */
-    AbsoluteLayout schedCont;
+    ShuffleLayout schedCont;
     SimpleScroller schedContScr;
 
 	BlockSchedule(Activity ctx, Schedule sched_) {
@@ -58,7 +58,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     	
     	setOrientation(LinearLayout.VERTICAL);
     	
-    	schedCont = new AbsoluteLayout(app);
+    	schedCont = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE);
     	schedCont.setBackgroundColor(0xFFFFFFFF);
     	schedCont.setMinimumHeight(sched.getTents().size());
     	
@@ -73,9 +73,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
-		tentHeaders = new ShuffleLayout(ctx);
+		tentHeaders = new ShuffleLayout(ctx, 0);
 		tentHeaders.setShuffleEventListener(this);
-		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL); // | SimpleScroller.DISABLE_DRAG_SCROLL);
+		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL | SimpleScroller.DISABLE_DRAG_SCROLL);
     	tentHeadersScr.addView(tentHeaders);
         tentHeadersScr.setScrollEventListener(this);
     	
@@ -85,6 +85,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     	while (tenti.hasNext()) {
     		Iterator<Schedule.Item> gigi;
     		Schedule.Line tent = tenti.next();
+    		AbsoluteLayout line;
 			int posx, posy, h, w;
     		
     		/* Tent name on the first column. */
@@ -103,6 +104,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
         	x = 0;
         	h = Deoxide.TentHeight;
+        	line = new AbsoluteLayout(ctx);
         	posy = (y++) * h;
 			gigi = tent.getItems().iterator();
 			while (gigi.hasNext()) {
@@ -124,9 +126,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 					cell.setBackgroundColor(0xFF3F3F3F);
 				cell.setTextColor(0xFFFFFFFF);
 				cell.setText(gig.getTitle());
-				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, posy);
-				schedCont.addView(cell, lp);
+				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, 0);
+				line.addView(cell, lp);
 			}
+			
+			schedCont.addView(line);
     	}
 
     	schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
@@ -161,24 +165,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	}
 
 	@Override
-	public void onSwapEvent(int y1, int y2) {
-		int i;
-		Log.d("ose1", "" + y1 + " " + y2);
-		for (i = 0; i < schedCont.getChildCount(); i ++) {
-			View c = schedCont.getChildAt(i);
-			if (c.getTop() == y1) {
-				AbsoluteLayout.LayoutParams lp;
-				lp = (AbsoluteLayout.LayoutParams) c.getLayoutParams();
-				lp.y = y2;
-				c.setLayoutParams(lp);
-			} else if (c.getTop() == y2) {
-				AbsoluteLayout.LayoutParams lp;
-				lp = (AbsoluteLayout.LayoutParams) c.getLayoutParams();
-				lp.y = y1;
-				c.setLayoutParams(lp);
-			}
-		}
-		Log.d("ose0", "" + y1 + " " + y2);
+	public void onSwapEvent(int top) {
+		schedCont.swapChildren(top);
 	}
 
 	protected class Element extends TextView implements OnClickListener {
