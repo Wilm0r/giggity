@@ -116,6 +116,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				              Deoxide.HourWidth / 3600000);
 				
 				cell = new Element(ctx);
+				cell.setItem(gig);
 				cell.setWidth(w);
 				if ((++x & 1) > 0 )
 					cell.setBackgroundColor(0xFF000000);
@@ -123,7 +124,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 					cell.setBackgroundColor(0xFF3F3F3F);
 				cell.setTextColor(0xFFFFFFFF);
 				cell.setText(gig.getTitle());
-				cell.setItem(gig);
 				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, posy);
 				schedCont.addView(cell, lp);
 			}
@@ -182,6 +182,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	}
 
 	protected class Element extends TextView implements OnClickListener {
+		int bgcolor;
 		Schedule.Item item;
 		Deoxide app;
 		
@@ -197,6 +198,15 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		public void setItem(Schedule.Item item_) {
 			item = item_;
 			setOnClickListener(this);
+		}
+		
+		public void setBackgroundColor(int color) {
+			bgcolor = color;
+			if (item != null && item.getRemind()) {
+				super.setBackgroundColor(0xff00cf00);
+			} else {
+				super.setBackgroundColor(bgcolor);
+			}
 		}
 		
 		public void onClick(View v) {
@@ -241,6 +251,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	    		.setOnDismissListener(new OnDismissListener() {
 	    			public void onDismiss(DialogInterface dialog) {
 	    				item.setRemind(cb.isChecked());
+	    				setBackgroundColor(bgcolor);
 	    			}
 	    		});
 		}
