@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android">
+	
+	<PreferenceCategory android:title="Block schedule">
+	
+		<ListPreference android:key="block_schedule_element_size"
+		                android:title="Block size"
+		                android:summary="Size of a block schedule block"
+		                android:dialogTitle="Block size"
+		                android:positiveButtonText="OK"
+		                android:negativeButtonText="Cancel"
+		                android:entries="@array/block_schedule_element_sizes"
+		                android:entryValues="@array/block_schedule_element_sizes_values"
+		                android:defaultValue="72" />
+	
+		<CheckBoxPreference android:defaultValue="true"
+		                    android:key="block_schedule_tent_shuffling"
+		                    android:summary="Drag row titles to reorder them"
+		                    android:title="Allow row shuffling" />
+
+	</PreferenceCategory>
+
+</PreferenceScreen>

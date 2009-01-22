@@ -52,11 +52,9 @@ public class ShuffleLayout extends LinearLayout {
 		} else if (ev.getY() < 0 || ev.getY() > getHeight()) {
 			return true;
 		} else if (ev.getY() < getChildAt(dragStartChild).getTop() - dragThreshold) {
-			Log.d("ote", "Move up");
 			swapChildren(dragStartChild - 1);
 			dragStartChild --;
 		} else if (ev.getY() > getChildAt(dragStartChild).getBottom() + dragThreshold) {
-			Log.d("ote", "Move down");
 			swapChildren(dragStartChild);
 			dragStartChild ++;
 		}
@@ -75,8 +73,9 @@ public class ShuffleLayout extends LinearLayout {
 			listener.onSwapEvent(top);
 	}
 	
+	/* Other views may want to be informed when we reorder things
+	 * (and reorder related views or something like that). */
 	public interface Listener {
-		/* When this comes in, swap items at y1 and y2. */
 		public void onSwapEvent(int top);
 	}
 }

@@ -11,8 +11,10 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -45,10 +47,19 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     ShuffleLayout schedCont;
     SimpleScroller schedContScr;
 
+    SharedPreferences pref;
+    
+	private static final int HourHeight = 16;
+	private static final int TentHeight = 48;
+	private static final int TentWidth = 32;
+	
+	private int HourWidth;
+	
 	BlockSchedule(Activity ctx, Schedule sched_) {
 		super(ctx);
 		app = (Deoxide) ctx.getApplication();
     	sched = sched_;
+    	pref = PreferenceManager.getDefaultSharedPreferences(app);
     	
     	int x, y;
     	Calendar base, cal, end;
@@ -57,6 +68,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     	Element cell;
     	
     	setOrientation(LinearLayout.VERTICAL);
+    	
+        HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
     	
     	schedCont = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE);
     	schedCont.setBackgroundColor(0xFFFFFFFF);
@@ -75,10 +88,12 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		
 		tentHeaders = new ShuffleLayout(ctx, 0);
 		tentHeaders.setShuffleEventListener(this);
-		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL | SimpleScroller.DISABLE_DRAG_SCROLL);
+		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL |
+				(pref.getBoolean("block_schedule_tent_shuffling", true) ?
+						SimpleScroller.DISABLE_DRAG_SCROLL : 0));
     	tentHeadersScr.addView(tentHeaders);
         tentHeadersScr.setScrollEventListener(this);
-    	
+        
 		y = 0;
 		tents = sched.getTents();
 		tenti = tents.listIterator();
@@ -86,11 +101,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     		Iterator<Schedule.Item> gigi;
     		Schedule.Line tent = tenti.next();
     		AbsoluteLayout line;
-			int posx, posy, h, w;
+			int posx, h, w;
     		
     		/* Tent name on the first column. */
 			cell = new Element(ctx);
-			cell.setWidth(Deoxide.TentWidth);
+			cell.setWidth(TentWidth);
 			cell.setText(tent.getTitle());
 			if ((y & 1) == 0)
 				cell.setBackgroundColor(0xFF000000);
@@ -103,19 +118,19 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     		cal.add(Calendar.MINUTE, -15);
 
         	x = 0;
-        	h = Deoxide.TentHeight;
+        	y ++;
+        	h = TentHeight;
         	line = new AbsoluteLayout(ctx);
-        	posy = (y++) * h;
 			gigi = tent.getItems().iterator();
 			while (gigi.hasNext()) {
 				Schedule.Item gig = gigi.next();
 				
 				posx = (int) ((gig.getStartTime().getTime() -
 				               cal.getTime().getTime()) *
-				              Deoxide.HourWidth / 3600000);
+				              HourWidth / 3600000);
 				w    = (int) ((gig.getEndTime().getTime() -
 				               gig.getStartTime().getTime()) *
-				              Deoxide.HourWidth / 3600000);
+				              HourWidth / 3600000);
 				
 				cell = new Element(ctx);
 				cell.setItem(gig);
@@ -177,7 +192,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		public Element(Activity ctx) {
 			super(ctx);
 			setGravity(Gravity.CENTER_HORIZONTAL);
-			setHeight(Deoxide.TentHeight);
+			setHeight(TentHeight);
 			setTextColor(0xFFFFFFFF);
 			setPadding(0, 3, 0, 0);
 			setTextSize(8);
@@ -279,8 +294,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			child = new LinearLayout(ctx);
 			
 			cell = new Element(ctx);
-			cell.setHeight(Deoxide.HourHeight);
-			cell.setWidth(Deoxide.TentWidth);
+			cell.setHeight(HourHeight);
+			cell.setWidth(TentWidth);
 			cell.setBackgroundColor(0xFF3F3F3F);
 			child.addView(cell);
 
@@ -288,8 +303,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cell = new Element(ctx);
 				
 				cell.setText(df.format(cal.getTime()));
-				cell.setHeight(Deoxide.HourHeight);
-				cell.setWidth(Deoxide.HourWidth / 2);
+				cell.setHeight(HourHeight);
+				cell.setWidth(HourWidth / 2);
 				if (cal.get(Calendar.MINUTE) == 0) {
 					cell.setBackgroundColor(0xFF000000);
 				} else {

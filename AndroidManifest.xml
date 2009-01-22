@@ -10,7 +10,8 @@
 				<category android:name="android.intent.category.LAUNCHER"></category>
 			</intent-filter>
 		</activity>
-	</application>
+	<activity android:name="SettingsActivity"></activity>
+</application>
 	<uses-permission android:name="android.permission.INTERNET" />
 
 
