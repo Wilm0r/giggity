@@ -24,6 +24,8 @@ import android.util.Log;
 import android.util.Xml;
 
 public class Schedule {
+	private final int detectHeaderSize = 1024;
+	
 	private Deoxide app;
 	private DeoxideDb.Connection db;
 	
@@ -41,18 +43,8 @@ public class Schedule {
 	public Schedule(Activity ctx) {
 		app = (Deoxide) ctx.getApplication();
 	}
-	
-	public void loadDeox(String source) throws LoadNetworkException, LoadDataException {
-		loadXml(source, new DeoxParser());
-	}
-	
-	public void loadXcal(String source) throws LoadNetworkException, LoadDataException {
-		loadXml(source, new XcalParser());
-	}
-	
-	public void loadXml(String source, ContentHandler parser) throws LoadNetworkException, LoadDataException {
-		BufferedReader in;
-		
+
+	public void loadSchedule(String source) throws LoadNetworkException, LoadDataException {
 		id = null;
 		title = null;
 		
@@ -67,16 +59,28 @@ public class Schedule {
 		
 		try {
 			URL dl = new URL(source);
-			in = new BufferedReader(new InputStreamReader(dl.openStream()));
-			try {
-				Xml.parse(in, parser);
-			} catch (Exception e) {
-				Log.e("Schedule.loadXml", "XML parse exception: " + e);
-				e.printStackTrace();
-				throw new LoadDataException();
+			BufferedReader in = new BufferedReader(new InputStreamReader(dl.openStream()), 4096);
+			char[] headc = new char[detectHeaderSize];
+			String head;
+			
+			/* Read the first KByte (but keep it buffered) to try to detect the format. */
+			in.mark(detectHeaderSize);
+			in.read(headc, 0, detectHeaderSize);
+			in.reset();
+			
+			/* Yeah, I know this is ugly, and actually reasonably fragile. For now it
+			 * just seems somewhat more efficient than doing something smarter, and
+			 * I want to avoid doing XML-specific stuff here already. */
+			head = new String(headc).toLowerCase();
+			Log.d("head", head);
+			if (head.contains("<icalendar") && head.contains("<vcalendar")) {
+				loadXcal(in);
+			} else if (head.contains("<schedule") && head.contains("<line")) {
+				loadDeox(in);
 			}
+			
 		} catch (Exception e) {
-			Log.e("Schedule.loadXml", "Exception while downloading schedule: " + e);
+			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
 			throw new LoadNetworkException();
 		}
@@ -86,6 +90,24 @@ public class Schedule {
 		
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;
+	}
+	
+	private void loadDeox(BufferedReader in) throws LoadNetworkException, LoadDataException {
+		loadXml(in, new DeoxParser());
+	}
+	
+	private void loadXcal(BufferedReader in) throws LoadNetworkException, LoadDataException {
+		loadXml(in, new XcalParser());
+	}
+	
+	private void loadXml(BufferedReader in, ContentHandler parser) throws LoadNetworkException, LoadDataException {
+		try {
+			Xml.parse(in, parser);
+		} catch (Exception e) {
+			Log.e("Schedule.loadXml", "XML parse exception: " + e);
+			e.printStackTrace();
+			throw new LoadDataException();
+		}
 	}
 	
 	public class LoadDataException extends Exception {

@@ -18,8 +18,9 @@ public class BlockScheduleActivity extends Activity {
         
         try {
         	sched = new Schedule(this);
-        	//sched.loadDeox("http://wilmer.gaast.net/deoxide/test.xml");
-        	sched.loadXcal("http://fosdem.org/2009/schedule/xcal");
+        	//sched.loadSchedule("http://wilmer.gaast.net/deoxide/test.xml");
+        	//sched.loadSchedule("http://fosdem.org/2009/schedule/xcal");
+        	sched.loadSchedule("http://events.ccc.de/congress/2008/Fahrplan/schedule.en.xcs");
         } catch (Throwable t) {
         	finish();
         	return;
