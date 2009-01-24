@@ -1,5 +1,6 @@
 package net.gaast.deoxide;
 
+import java.util.Date;
 import java.util.HashMap;
 
 import android.app.Application;
@@ -15,7 +16,7 @@ public class DeoxideDb {
 	Helper dbh;
 	
 	public DeoxideDb(Application app_) {
-		dbh = new Helper(app_, "deoxide0", null, 1);
+		dbh = new Helper(app_, "deoxide0", null, 2);
 	}
 	
 	public Connection getConnection() {
@@ -32,19 +33,30 @@ public class DeoxideDb {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			Log.i("DeoxideDb", "Creating new database");
-			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null," +
+			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
+					                          "sch_url VarChar(256), " +
+					                          "sch_atime Integer, " +
 					                          "sch_id_s VarChar(128))");
-			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null," +
-					                               "sci_sch_id Integer Not Null," +
-					                               "sci_id_s VarChar(128)," +
-					                               "sci_remind Boolean," +
+			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
+					                               "sci_sch_id Integer Not Null, " +
+					                               "sci_id_s VarChar(128), " +
+					                               "sci_remind Boolean, " +
 					                               "sci_stars Integer(2) Null)");
 		}
 	
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// TODO Auto-generated method stub
-	
+			Log.i("DeoxideDb", "Upgrading from database version " + oldVersion + " to " + newVersion);
+
+			while (oldVersion < newVersion) {
+				switch (oldVersion) {
+				case 1:
+					db.execSQL("Alter Table schedule Add Column sch_url VarChar(256)");
+					db.execSQL("Alter Table schedule Add Column sch_atime Integer");
+					break;
+				}
+				oldVersion++;
+			}
 		}
 	}
 	
@@ -63,24 +75,29 @@ public class DeoxideDb {
 			db.close();
 		}
 		
-		public void setSchedule(Schedule sched_) {
+		public void setSchedule(Schedule sched_, String url) {
+			ContentValues row;
 			Cursor q;
 			
 			sched = sched_;
 			sciIdMap = new HashMap<String,Long>();
+
+			row = new ContentValues();
+			row.put("sch_id_s", sched.getId());
+			row.put("sch_url", url);
+			row.put("sch_atime", new Date().getTime() / 1000);
 			
 			q = db.rawQuery("Select sch_id From schedule Where sch_id_s = ?",
 					        new String[]{sched.getId()});
 			
 			if (q.getCount() == 0) {
-				ContentValues row = new ContentValues();
-				
-				row.put("sch_id_s", sched.getId());
 				schId = db.insert("schedule", null, row);
 				Log.i("DeoxideDb", "Adding schedule to database");
 			} else if (q.getCount() == 1) {
 				q.moveToNext();
 				schId = q.getLong(0);
+				
+				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 			} else {
 				Log.e("DeoxideDb", "Database corrupted");
 			}

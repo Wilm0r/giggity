@@ -72,11 +72,12 @@ public class Schedule {
 			 * just seems somewhat more efficient than doing something smarter, and
 			 * I want to avoid doing XML-specific stuff here already. */
 			head = new String(headc).toLowerCase();
-			Log.d("head", head);
 			if (head.contains("<icalendar") && head.contains("<vcalendar")) {
 				loadXcal(in);
 			} else if (head.contains("<schedule") && head.contains("<line")) {
 				loadDeox(in);
+			} else {
+				throw new LoadDataException();
 			}
 			
 		} catch (Exception e) {
@@ -86,7 +87,7 @@ public class Schedule {
 		}
 		
 		db = app.getDb();
-		db.setSchedule(this);
+		db.setSchedule(this, source);
 		
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;
