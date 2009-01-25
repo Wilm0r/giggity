@@ -43,7 +43,7 @@ public class Schedule {
 		app = ctx;
 	}
 
-	public void loadSchedule(String source) throws LoadNetworkException, LoadDataException {
+	public void loadSchedule(String source) {
 		id = null;
 		title = null;
 		
@@ -55,36 +55,39 @@ public class Schedule {
 		lastTime = null;
 		
 		fullyLoaded = false;
-		
+
+		BufferedReader in;
+		String head;
+
 		try {
 			URL dl = new URL(source);
-			BufferedReader in = new BufferedReader(new InputStreamReader(dl.openStream()), 4096);
 			char[] headc = new char[detectHeaderSize];
-			String head;
+			
+			in = new BufferedReader(new InputStreamReader(dl.openStream()), 4096);
 			
 			/* Read the first KByte (but keep it buffered) to try to detect the format. */
 			in.mark(detectHeaderSize);
 			in.read(headc, 0, detectHeaderSize);
 			in.reset();
-			
-			/* Yeah, I know this is ugly, and actually reasonably fragile. For now it
-			 * just seems somewhat more efficient than doing something smarter, and
-			 * I want to avoid doing XML-specific stuff here already. */
+
 			head = new String(headc).toLowerCase();
-			if (head.contains("<icalendar") && head.contains("<vcalendar")) {
-				loadXcal(in);
-			} else if (head.contains("<schedule") && head.contains("<line")) {
-				loadDeox(in);
-			} else {
-				throw new LoadDataException();
-			}
-			
 		} catch (Exception e) {
 			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
-			throw new LoadNetworkException();
+			throw new RuntimeException("Network I/O problem: " + e);
 		}
-		
+
+		/* Yeah, I know this is ugly, and actually reasonably fragile. For now it
+		 * just seems somewhat more efficient than doing something smarter, and
+		 * I want to avoid doing XML-specific stuff here already. */
+		if (head.contains("<icalendar") && head.contains("<vcalendar")) {
+			loadXcal(in);
+		} else if (head.contains("<schedule") && head.contains("<line")) {
+			loadDeox(in);
+		} else {
+			throw new RuntimeException("File format not recognized");
+		}
+
 		db = app.getDb();
 		db.setSchedule(this, source);
 		
@@ -92,28 +95,22 @@ public class Schedule {
 		fullyLoaded = true;
 	}
 	
-	private void loadDeox(BufferedReader in) throws LoadNetworkException, LoadDataException {
+	private void loadDeox(BufferedReader in) {
 		loadXml(in, new DeoxParser());
 	}
 	
-	private void loadXcal(BufferedReader in) throws LoadNetworkException, LoadDataException {
+	private void loadXcal(BufferedReader in) {
 		loadXml(in, new XcalParser());
 	}
 	
-	private void loadXml(BufferedReader in, ContentHandler parser) throws LoadNetworkException, LoadDataException {
+	private void loadXml(BufferedReader in, ContentHandler parser) {
 		try {
 			Xml.parse(in, parser);
 		} catch (Exception e) {
 			Log.e("Schedule.loadXml", "XML parse exception: " + e);
 			e.printStackTrace();
-			throw new LoadDataException();
+			throw new RuntimeException("XML parsing problem: " + e);
 		}
-	}
-	
-	public class LoadDataException extends Exception {
-	}
-
-	public class LoadNetworkException extends Exception {
 	}
 
 	public void commit() {

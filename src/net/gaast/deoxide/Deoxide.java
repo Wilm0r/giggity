@@ -2,8 +2,6 @@ package net.gaast.deoxide;
 
 import java.util.HashMap;
 
-import net.gaast.deoxide.Schedule.LoadDataException;
-import net.gaast.deoxide.Schedule.LoadNetworkException;
 import android.app.Application;
 import android.preference.PreferenceManager;
 
@@ -30,7 +28,7 @@ public class Deoxide extends Application {
     	return scheduleCache.containsKey(url);
     }
     
-    public Schedule getSchedule(String url) throws LoadNetworkException, LoadDataException {
+    public Schedule getSchedule(String url) throws Exception {
     	if (!hasSchedule(url)) {
     		Schedule sched = new Schedule(this);
     		sched.loadSchedule(url);

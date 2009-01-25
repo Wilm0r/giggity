@@ -1,8 +1,11 @@
 package net.gaast.deoxide;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,11 +14,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+/* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
+
 public class BlockScheduleActivity extends Activity {
 	Schedule sched;
 	BlockSchedule bs;
-    ProgressDialog prog;
-    Handler resultHandler;
     Deoxide app;
     
     @Override
@@ -23,58 +26,84 @@ public class BlockScheduleActivity extends Activity {
         super.onCreate(savedInstanceState);
         app = (Deoxide) getApplication();
         
-        /* HACK! I suppose there are better ways to do this in Java? :-) */
+        if (app.hasSchedule(getIntent().getDataString())) {
+        	try {
+				sched = app.getSchedule(getIntent().getDataString());
+			} catch (Exception e) {
+				// Java makes me tired.
+			}
+        	onScheduleLoaded();
+        } else {
+        	horribleAsyncLoadHack(getIntent().getDataString());
+        }
+    }
+    
+    private void horribleAsyncLoadHack(String source_) { 
+        /* HACK! I suppose there are better ways to do "this" in Java? :-) */
         final Activity this_ = this;
+        final String source;
+        final Thread loader;
+        final Handler resultHandler;
+        final ProgressDialog prog;
         
         prog = new ProgressDialog(this);
         prog.setMessage("Loading schedule data...");
         prog.setIndeterminate(true);
         prog.show();
-        
-        Loader l = new Loader(this.getIntent().getDataString());
+
+        source = source_;
         
 	    resultHandler = new Handler() {
 	    	@Override
 	    	public void handleMessage(Message msg) {
 	    		if (msg.what > 0) {
-	    	    	setTitle("Block schedule: " + sched.getTitle());
-		    		bs = new BlockSchedule(this_, sched);
+	    			onScheduleLoaded();
 		    		prog.dismiss();
-		    		setContentView(bs);
 	    		} else {
 		    		prog.dismiss();
-	    			finish();
+		    		
+		    		new AlertDialog.Builder(this_)
+						.setTitle("Load error")
+						.setMessage(msg.obj.toString())
+						.show()
+			    		.setOnDismissListener(new OnDismissListener() {
+			    			public void onDismiss(DialogInterface dialog) {
+			    				finish();
+			    			}
+			    		});
 	    		}
 	    	}
 	    };
 
-        l.start();
+        loader = new Thread() {
+    		@Override
+    		public void run() {
+    			try {
+    	    		sched = app.getSchedule(source);
+    				resultHandler.sendEmptyMessage(1);
+    			} catch (Throwable t) {
+    				resultHandler.sendMessage(Message.obtain(resultHandler, 0, t));
+    			}
+    		}
+        };
+
+        loader.start();
 
     	// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 	}
     
-    private class Loader extends Thread {
-    	String source;
-    	
-    	public Loader(String source_) {
-    		source = source_;
-    	}
-    	
-		@Override
-		public void run() {
-			try {
-	    		sched = app.getSchedule(source);
-				resultHandler.sendEmptyMessage(1);
-			} catch (Throwable t) {
-				resultHandler.sendEmptyMessage(0);
-			}
-		}
-    }
-
     @Override
     protected void onPause() {
-    	sched.commit();
+    	if (sched != null) {
+    		sched.commit();
+    	}
     	super.onPause();
+    }
+    
+    private void onScheduleLoaded() {
+    	setTitle("Block schedule: " + sched.getTitle());
+		bs = new BlockSchedule(this, sched);
+		setContentView(bs);
     }
     
     @Override
