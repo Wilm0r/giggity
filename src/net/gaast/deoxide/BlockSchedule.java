@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
 import android.net.Uri;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;

@@ -3,8 +3,6 @@ package net.gaast.deoxide;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.ListIterator;
 
 import android.app.Application;
 import android.content.ContentValues;

@@ -1,7 +1,6 @@
 package net.gaast.deoxide;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.LinearLayout;
