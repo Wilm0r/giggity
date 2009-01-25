@@ -6,11 +6,15 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name" android:name="Deoxide">
 		<activity android:name="BlockScheduleActivity" android:configChanges="keyboardHidden|orientation">
 			<intent-filter>
-				<action android:name="android.intent.action.MAIN"></action>
-				<category android:name="android.intent.category.LAUNCHER"></category>
+				
+				
 			</intent-filter>
 		</activity>
 	<activity android:name="SettingsActivity"></activity>
+<activity android:name="ChooserActivity"><intent-filter><action android:name="android.intent.action.MAIN"></action>
+<category android:name="android.intent.category.LAUNCHER"></category>
+</intent-filter>
+</activity>
 </application>
 	<uses-permission android:name="android.permission.INTERNET" />
 

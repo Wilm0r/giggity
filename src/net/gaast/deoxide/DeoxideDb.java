@@ -1,7 +1,10 @@
 package net.gaast.deoxide;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
 import android.app.Application;
 import android.content.ContentValues;
@@ -16,7 +19,7 @@ public class DeoxideDb {
 	Helper dbh;
 	
 	public DeoxideDb(Application app_) {
-		dbh = new Helper(app_, "deoxide0", null, 2);
+		dbh = new Helper(app_, "deoxide0", null, 3);
 	}
 	
 	public Connection getConnection() {
@@ -34,6 +37,7 @@ public class DeoxideDb {
 		public void onCreate(SQLiteDatabase db) {
 			Log.i("DeoxideDb", "Creating new database");
 			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
+					                          "sch_title VarChar(128), " +
 					                          "sch_url VarChar(256), " +
 					                          "sch_atime Integer, " +
 					                          "sch_id_s VarChar(128))");
@@ -53,6 +57,9 @@ public class DeoxideDb {
 				case 1:
 					db.execSQL("Alter Table schedule Add Column sch_url VarChar(256)");
 					db.execSQL("Alter Table schedule Add Column sch_atime Integer");
+					break;
+				case 2:
+					db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
 					break;
 				}
 				oldVersion++;
@@ -84,6 +91,7 @@ public class DeoxideDb {
 
 			row = new ContentValues();
 			row.put("sch_id_s", sched.getId());
+			row.put("sch_title", sched.getTitle());
 			row.put("sch_url", url);
 			row.put("sch_atime", new Date().getTime() / 1000);
 			
@@ -130,6 +138,39 @@ public class DeoxideDb {
 				sciIdMap.put(item.getId(),
 						     new Long(db.insert("schedule_item", null, row)));
 			}
+		}
+		
+		public ArrayList<DbSchedule> getScheduleList() {
+			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
+			Cursor q;
+			
+			q = db.rawQuery("Select sch_url, sch_id_s, sch_title From schedule Order By sch_atime Desc", null);
+			while (q.moveToNext()) {
+				ret.add(new DbSchedule(q.getString(0), q.getString(1), q.getString(2)));
+			}
+			
+			return ret;
+		}
+	}
+	
+	public class DbSchedule {
+		private String url, id, title;
+		
+		public DbSchedule(String url_, String id_, String title_) {
+			url = url_;
+			id = id_;
+		}
+		
+		public String getUrl() {
+			return url;
+		}
+		
+		public String getId() {
+			return id;
+		}
+		
+		public String getTitle() {
+			return title;
 		}
 	}
 }
