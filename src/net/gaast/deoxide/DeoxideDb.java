@@ -79,7 +79,20 @@ public class DeoxideDb {
 		}
 		
 		protected void finalize() {
-			db.close();
+			sleep();
+		}
+		
+		public void sleep() {
+			if (db != null) {
+				db.close();
+				db = null;
+			}
+		}
+		
+		public void resume() {
+			if (db == null) {
+				db = dbh.getWritableDatabase();
+			}
 		}
 		
 		public void setSchedule(Schedule sched_, String url) {
@@ -148,6 +161,7 @@ public class DeoxideDb {
 			while (q.moveToNext()) {
 				ret.add(new DbSchedule(q.getString(0), q.getString(1), q.getString(2)));
 			}
+			q.close();
 			
 			return ret;
 		}

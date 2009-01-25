@@ -93,9 +93,18 @@ public class BlockScheduleActivity extends Activity {
 	}
     
     @Override
+    protected void onResume() {
+    	if (sched != null) {
+    		sched.resume();
+    	}
+    	super.onResume();
+    }
+    
+    @Override
     protected void onPause() {
     	if (sched != null) {
     		sched.commit();
+    		sched.sleep();
     	}
     	super.onPause();
     }

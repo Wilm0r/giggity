@@ -122,6 +122,14 @@ public class Schedule {
 		}
 	}
 	
+	public void sleep() {
+		db.sleep();
+	}
+	
+	public void resume() {
+		db.resume();
+	}
+	
 	public String getId() {
 		return id;
 	}
