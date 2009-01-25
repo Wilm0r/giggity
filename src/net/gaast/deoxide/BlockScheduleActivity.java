@@ -1,9 +1,12 @@
 package net.gaast.deoxide;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,26 +14,76 @@ import android.view.MenuItem;
 public class BlockScheduleActivity extends Activity {
 	Schedule sched;
 	BlockSchedule bs;
-	
+    ProgressDialog prog;
+    Handler resultHandler;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
-        try {
-        	sched = new Schedule(this);
-        	//sched.loadSchedule("http://wilmer.gaast.net/deoxide/test.xml");
-        	//sched.loadSchedule("http://fosdem.org/2009/schedule/xcal");
-        	sched.loadSchedule("http://events.ccc.de/congress/2008/Fahrplan/schedule.en.xcs");
-        } catch (Throwable t) {
-        	finish();
-        	return;
-        }
-    	setTitle("Block schedule: " + sched.getTitle());
+        /* HACK! I suppose there are better ways to do this in Java? :-) */
+        final Activity this_ = this;
+        
+        prog = new ProgressDialog(this);
+        prog.setMessage("Loading schedule data...");
+        prog.setIndeterminate(true);
+        prog.show();
+        
+    	sched = new Schedule(this);
+        Loader l = new Loader(sched, this.getIntent().getDataString());
+        
+	    resultHandler = new Handler() {
+	    	@Override
+	    	public void handleMessage(Message msg) {
+	    		if (msg.what > 0) {
+	    	    	setTitle("Block schedule: " + sched.getTitle());
+		    		bs = new BlockSchedule(this_, sched);
+		    		prog.dismiss();
+		    		setContentView(bs);
+	    		} else {
+	    			finish();
+	    		}
+	    	}
+	    };
+
+        l.start();
+
+        /*
+         * 	public void loadData(String url) {
+                try {
+                	//sched.loadSchedule("http://wilmer.gaast.net/deoxide/test.xml");
+                	//sched.loadSchedule("http://fosdem.org/2009/schedule/xcal");
+                	sched.loadSchedule(this.getIntent().getDataString());
+                } catch (Throwable t) {
+                	//finish();
+                	return;
+                }
+        	}
+        */
+        
     	// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
-		bs = new BlockSchedule(this, sched);
-		setContentView(bs);
 	}
     
+    private class Loader extends Thread {
+    	Schedule sched;
+    	String source;
+    	
+    	public Loader(Schedule sched_, String source_) {
+    		sched = sched_;
+    		source = source_;
+    	}
+    	
+		@Override
+		public void run() {
+			try {
+				sched.loadSchedule(source);	
+				resultHandler.sendEmptyMessage(1);
+			} catch (Throwable t) {
+				resultHandler.sendEmptyMessage(0);
+			}
+		}
+    }
+
     @Override
     protected void onPause() {
     	sched.commit();

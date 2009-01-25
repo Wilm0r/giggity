@@ -297,7 +297,7 @@ public class Schedule {
 				Schedule.Item item;
 				Schedule.Line line;
 				
-				Log.d("Event:", eventData.get("summary") + " in " + eventData.get("location"));
+				// Log.d("Event:", eventData.get("summary") + " in " + eventData.get("location"));
 				
 				if ((uid = eventData.get("uid")) == null ||
 				    (name = eventData.get("summary")) == null ||

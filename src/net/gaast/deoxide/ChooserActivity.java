@@ -3,8 +3,9 @@ package net.gaast.deoxide;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -17,8 +18,7 @@ public class ChooserActivity extends ListActivity {
     	super.onCreate(savedInstanceState);
     	
     	Deoxide app = (Deoxide) getApplication();
-    	DeoxideDb.Connection db = app.getDb();
-    	scheds = db.getScheduleList();
+    	scheds = app.getDb().getScheduleList();
     	String[] listc = new String[scheds.size()];
     	int i;
     	
@@ -30,6 +30,8 @@ public class ChooserActivity extends ListActivity {
     
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-    	Log.d("olic", "" + position + " " + id);
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scheds.get((int)id).getUrl()),
+    			                   this, BlockScheduleActivity.class);
+    	startActivity(intent);
     }
 }
