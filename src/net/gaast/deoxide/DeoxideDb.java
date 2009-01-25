@@ -159,6 +159,7 @@ public class DeoxideDb {
 		public DbSchedule(String url_, String id_, String title_) {
 			url = url_;
 			id = id_;
+			title = title_;
 		}
 		
 		public String getUrl() {

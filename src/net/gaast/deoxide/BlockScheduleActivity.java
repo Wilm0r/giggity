@@ -16,10 +16,12 @@ public class BlockScheduleActivity extends Activity {
 	BlockSchedule bs;
     ProgressDialog prog;
     Handler resultHandler;
+    Deoxide app;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        app = (Deoxide) getApplication();
         
         /* HACK! I suppose there are better ways to do this in Java? :-) */
         final Activity this_ = this;
@@ -29,8 +31,7 @@ public class BlockScheduleActivity extends Activity {
         prog.setIndeterminate(true);
         prog.show();
         
-    	sched = new Schedule(this);
-        Loader l = new Loader(sched, this.getIntent().getDataString());
+        Loader l = new Loader(this.getIntent().getDataString());
         
 	    resultHandler = new Handler() {
 	    	@Override
@@ -41,6 +42,7 @@ public class BlockScheduleActivity extends Activity {
 		    		prog.dismiss();
 		    		setContentView(bs);
 	    		} else {
+		    		prog.dismiss();
 	    			finish();
 	    		}
 	    	}
@@ -48,35 +50,20 @@ public class BlockScheduleActivity extends Activity {
 
         l.start();
 
-        /*
-         * 	public void loadData(String url) {
-                try {
-                	//sched.loadSchedule("http://wilmer.gaast.net/deoxide/test.xml");
-                	//sched.loadSchedule("http://fosdem.org/2009/schedule/xcal");
-                	sched.loadSchedule(this.getIntent().getDataString());
-                } catch (Throwable t) {
-                	//finish();
-                	return;
-                }
-        	}
-        */
-        
     	// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 	}
     
     private class Loader extends Thread {
-    	Schedule sched;
     	String source;
     	
-    	public Loader(Schedule sched_, String source_) {
-    		sched = sched_;
+    	public Loader(String source_) {
     		source = source_;
     	}
     	
 		@Override
 		public void run() {
 			try {
-				sched.loadSchedule(source);	
+	    		sched = app.getSchedule(source);
 				resultHandler.sendEmptyMessage(1);
 			} catch (Throwable t) {
 				resultHandler.sendEmptyMessage(0);

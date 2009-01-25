@@ -6,6 +6,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -23,7 +24,7 @@ public class ChooserActivity extends ListActivity {
     	int i;
     	
     	for (i = 0; i < scheds.size(); i ++) {
-    		listc[i] = scheds.get(i).getId();
+    		listc[i] = scheds.get(i).getTitle();
     	}
     	setListAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listc));
     }
@@ -35,3 +36,7 @@ public class ChooserActivity extends ListActivity {
     	startActivity(intent);
     }
 }
+/*
+//sched.loadSchedule("http://wilmer.gaast.net/deoxide/test.xml");
+//sched.loadSchedule("http://fosdem.org/2009/schedule/xcal");
+*/

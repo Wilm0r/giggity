@@ -18,7 +18,6 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.util.Xml;
@@ -40,8 +39,8 @@ public class Schedule {
 	
 	private boolean fullyLoaded;
 	
-	public Schedule(Activity ctx) {
-		app = (Deoxide) ctx.getApplication();
+	public Schedule(Deoxide ctx) {
+		app = ctx;
 	}
 
 	public void loadSchedule(String source) throws LoadNetworkException, LoadDataException {
