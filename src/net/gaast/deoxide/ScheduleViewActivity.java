@@ -16,7 +16,7 @@ import android.view.MenuItem;
 
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
-public class BlockScheduleActivity extends Activity {
+public class ScheduleViewActivity extends Activity {
 	Schedule sched;
 	BlockSchedule bs;
     Deoxide app;
@@ -111,8 +111,9 @@ public class BlockScheduleActivity extends Activity {
     
     private void onScheduleLoaded() {
     	setTitle("Block schedule: " + sched.getTitle());
-		bs = new BlockSchedule(this, sched);
-		setContentView(bs);
+		//bs = new BlockSchedule(this, sched);
+    	//bs = ;
+		setContentView(new TimeTable(this, sched));
     }
     
     @Override

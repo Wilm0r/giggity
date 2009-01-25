@@ -31,7 +31,7 @@ public class ChooserActivity extends ListActivity {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scheds.get((int)id).getUrl()),
-    			                   this, BlockScheduleActivity.class);
+    			                   this, ScheduleViewActivity.class);
     	startActivity(intent);
     }
 }
