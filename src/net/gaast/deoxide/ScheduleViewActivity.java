@@ -5,11 +5,13 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,13 +25,17 @@ public class ScheduleViewActivity extends Activity {
     private final static int VIEW_BLOCKSCHEDULE = 1;
     private final static int VIEW_TIMETABLE = 2;
     
-    private int view = VIEW_BLOCKSCHEDULE;
-    //private int view = VIEW_TIMETABLE;
+    private int view;
+
+    SharedPreferences pref;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = (Deoxide) getApplication();
+        
+        pref = PreferenceManager.getDefaultSharedPreferences(app);
+        view = Integer.parseInt(pref.getString("default_view", "1"));
         
         if (app.hasSchedule(getIntent().getDataString())) {
         	try {
@@ -139,10 +145,10 @@ public class ScheduleViewActivity extends Activity {
     	menu.add(0, 1, 0, "Settings")
     		.setShortcut('0', 's')
     		.setIcon(android.R.drawable.ic_menu_preferences);
-   		menu.add(0, 2, 0, "Timetable")
+   		menu.add(1, 2, 0, "Timetable")
    			.setShortcut('1', 't')
    			.setIcon(android.R.drawable.ic_menu_my_calendar);
-   		menu.add(0, 3, 0, "Block schedule")
+   		menu.add(1, 3, 0, "Block schedule")
    			.setShortcut('2', 'b')
 			.setIcon(android.R.drawable.ic_menu_my_calendar);
     	

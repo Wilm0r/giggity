@@ -2,6 +2,15 @@
 <PreferenceScreen
         xmlns:android="http://schemas.android.com/apk/res/android">
 	
+	<ListPreference android:key="default_view"
+	                android:title="Default view"
+	                android:dialogTitle="Default view"
+	                android:positiveButtonText="OK"
+	                android:negativeButtonText="Cancel"
+	                android:entries="@array/default_view"
+	                android:entryValues="@array/default_view_values" 
+	                android:defaultValue="1" />
+	
 	<PreferenceCategory android:title="Block schedule">
 	
 		<ListPreference android:key="block_schedule_element_size"
@@ -20,5 +29,7 @@
 		                    android:title="Allow row shuffling" />
 
 	</PreferenceCategory>
+
+
 
 </PreferenceScreen>

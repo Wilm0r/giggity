@@ -11,6 +11,8 @@ public final class R {
     public static final class array {
         public static final int block_schedule_element_sizes=0x7f040000;
         public static final int block_schedule_element_sizes_values=0x7f040001;
+        public static final int default_view=0x7f040002;
+        public static final int default_view_values=0x7f040003;
     }
     public static final class attr {
     }
