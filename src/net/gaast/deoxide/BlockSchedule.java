@@ -7,21 +7,14 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
-import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
-import android.widget.CheckBox;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener {
@@ -183,7 +176,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		schedCont.swapChildren(top);
 	}
 
-	protected class Element extends TextView implements OnClickListener {
+	protected class Element extends TextView {
 		int bgcolor;
 		Schedule.Item item;
 		Deoxide app;
@@ -199,7 +192,18 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		
 		public void setItem(Schedule.Item item_) {
 			item = item_;
-			setOnClickListener(this);
+			setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					EventDialog evd = new EventDialog(getContext(), item);
+			    	evd.setOnDismissListener(new OnDismissListener() {
+			   			public void onDismiss(DialogInterface dialog) {
+			   				setBackgroundColor(bgcolor);
+			   			}
+			   		});
+					evd.show();
+				}
+			});
 		}
 		
 		public void setBackgroundColor(int color) {
@@ -208,71 +212,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				super.setBackgroundColor(0xff00cf00);
 			} else {
 				super.setBackgroundColor(bgcolor);
-			}
-		}
-		
-		public void onClick(View v) {
-	    	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-
-			LinearLayout content = new LinearLayout(getContext());
-			content.setOrientation(LinearLayout.VERTICAL);
-
-			TextView desc = new TextView(getContext());
-			desc.setText(df.format(item.getStartTime().getTime()) + "-" +
-		    		     df.format(item.getEndTime().getTime()) + ": " +
-		    		     item.getDescription());
-
-			ScrollView descscr = new ScrollView(getContext());
-			descscr.addView(desc);
-			content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
-
-			LinearLayout bottomBox = new LinearLayout(getContext());
-			bottomBox.setGravity(Gravity.RIGHT);
-
-			final CheckBox cb = new CheckBox(getContext());
-			cb.setText("Remind me");
-			cb.setChecked(item.getRemind());
-			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-			
-			LinkedList<Schedule.Item.Link> links = item.getLinks();
-			if (links != null) {
-				Iterator<Schedule.Item.Link> linki = links.listIterator();
-				while (linki.hasNext()) {
-					Schedule.Item.Link link = linki.next();
-					LinkButton btn = new LinkButton(getContext(), link);
-					bottomBox.addView(btn);
-				}
-			}
-
-			content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-
-	    	new AlertDialog.Builder(getContext())
-				.setTitle(getText())
-	    		.setView(content)
-	    		.show()
-	    		.setOnDismissListener(new OnDismissListener() {
-	    			public void onDismiss(DialogInterface dialog) {
-	    				item.setRemind(cb.isChecked());
-	    				setBackgroundColor(bgcolor);
-	    			}
-	    		});
-		}
-		
-		private class LinkButton extends ImageButton implements OnClickListener {
-			Schedule.Item.Link link;
-			
-			public LinkButton(Context ctx, Schedule.Item.Link link_) {
-				super(ctx);
-				link = link_;
-				setImageDrawable(link.getType().getIcon());
-				setOnClickListener(this);
-			}
-			
-			public void onClick(View v) {
-		    	Uri uri = Uri.parse(link.getUrl());
-		    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		    	intent.addCategory(Intent.CATEGORY_BROWSABLE);
-		    	getContext().startActivity(intent);
 			}
 		}
 	}
