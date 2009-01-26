@@ -17,9 +17,13 @@ import android.view.MenuItem;
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
 public class ScheduleViewActivity extends Activity {
-	Schedule sched;
-	BlockSchedule bs;
-    Deoxide app;
+	private Schedule sched;
+    private Deoxide app;
+    
+    private final static int VIEW_BLOCKSCHEDULE = 1;
+    private final static int VIEW_TIMETABLE = 2;
+    
+    private int view = VIEW_BLOCKSCHEDULE;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,10 +114,13 @@ public class ScheduleViewActivity extends Activity {
     }
     
     private void onScheduleLoaded() {
-    	setTitle("Block schedule: " + sched.getTitle());
-		//bs = new BlockSchedule(this, sched);
-    	//bs = ;
-		setContentView(new TimeTable(this, sched));
+    	if (view == VIEW_TIMETABLE) {
+        	setTitle("Timetable: " + sched.getTitle());
+    		setContentView(new TimeTable(this, sched));
+    	} else if (view == VIEW_BLOCKSCHEDULE) {
+        	setTitle("Block schedule: " + sched.getTitle());
+    		setContentView(new BlockSchedule(this, sched));
+    	}
     }
     
     @Override
@@ -131,6 +138,20 @@ public class ScheduleViewActivity extends Activity {
     	menu.add(0, 1, 0, "Settings")
     		.setShortcut('0', 's')
     		.setIcon(android.R.drawable.ic_menu_preferences);
+   		menu.add(0, 2, 0, "Timetable")
+   			.setShortcut('1', 't')
+   			.setIcon(android.R.drawable.ic_menu_my_calendar);
+   		menu.add(0, 3, 0, "Block schedule")
+   			.setShortcut('2', 'b')
+			.setIcon(android.R.drawable.ic_menu_my_calendar);
+    	
+    	return true;
+    }
+    
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+    	menu.findItem(2).setVisible(view != VIEW_TIMETABLE);
+    	menu.findItem(3).setVisible(view != VIEW_BLOCKSCHEDULE);
     	return true;
     }
     
@@ -140,6 +161,14 @@ public class ScheduleViewActivity extends Activity {
     	case 1:
     		Intent intent = new Intent(this, SettingsActivity.class);
     		startActivity(intent);
+    		return true;
+    	case 2:
+    		view = VIEW_TIMETABLE;
+    		onScheduleLoaded();
+    		return true;
+    	case 3:
+    		view = VIEW_BLOCKSCHEDULE;
+    		onScheduleLoaded();
     		return true;
     	}
     	return super.onOptionsItemSelected(item);
