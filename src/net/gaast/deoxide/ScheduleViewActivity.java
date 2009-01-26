@@ -24,6 +24,7 @@ public class ScheduleViewActivity extends Activity {
     private final static int VIEW_TIMETABLE = 2;
     
     private int view = VIEW_BLOCKSCHEDULE;
+    //private int view = VIEW_TIMETABLE;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {

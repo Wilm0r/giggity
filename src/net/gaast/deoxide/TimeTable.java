@@ -12,14 +12,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemSelectedListener;
 
-public class TimeTable extends LinearLayout {
+public class TimeTable extends RelativeLayout {
 	Deoxide app;
 	Schedule sched;
 	
@@ -32,13 +32,28 @@ public class TimeTable extends LinearLayout {
 		app = (Deoxide) ctx.getApplication();
     	sched = sched_;
 
-    	setOrientation(LinearLayout.VERTICAL);
+    	//setOrientation(LinearLayout.VERTICAL);
+    	
+    	RelativeLayout.LayoutParams lp;
+    	
+    	lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
+    	//lp.addRule(android.R.attr.layout_alignParentTop, TRUE);
+    	//lp.addRule(android.R.attr.layout_alignParentLeft, TRUE);
+
+    	scroller = new ScrollView(ctx);
+    	table = new TableLayout(ctx);
+    	scroller.addView(table);
+    	addView(scroller, lp);
     	
     	tents = new Gallery(ctx);
     	tents.setAdapter(new TentListAdapter(ctx, sched.getTents()));
 		//tents.setLayoutParams(new Gallery.LayoutParams(
         //        LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-    	addView(tents);
+    	lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+    	//lp.addRule(android.R.attr.layout_alignParentTop, TRUE);
+    	//lp.addRule(android.R.attr.layout_alignParentLeft, TRUE);
+    	
+    	addView(tents, lp);
     	
     	tents.setOnItemSelectedListener(new OnItemSelectedListener() {
 			@Override
@@ -52,11 +67,6 @@ public class TimeTable extends LinearLayout {
 				showTable(null);
 			}
     	});
-    	
-    	scroller = new ScrollView(ctx);
-    	table = new TableLayout(ctx);
-    	scroller.addView(table);
-    	addView(scroller);
     	
     	//showTable(sched.getTents().get(0));
 	}
@@ -85,6 +95,10 @@ public class TimeTable extends LinearLayout {
 		}
 		
 		itemi = line.getItems().iterator();
+		
+		row = new TableRow(getContext());
+		row.setMinimumHeight(tents.getHeight());
+		table.addView(row);
 		
 		while (itemi.hasNext()) {
 			Schedule.Item item = itemi.next();
