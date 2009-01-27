@@ -121,6 +121,8 @@ public class TimeTable extends RelativeLayout {
 		
 		/* Wrap long titles. */
 		table.setColumnShrinkable(1, true);
+		
+		scroller.scrollTo(0, 0);
 	}
 	
 	private class TentListAdapter extends BaseAdapter {
