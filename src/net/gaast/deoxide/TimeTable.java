@@ -67,8 +67,6 @@ public class TimeTable extends RelativeLayout {
 				showTable(null);
 			}
     	});
-    	
-    	//showTable(sched.getTents().get(0));
 	}
 	
 	private TextView makeText(String text) {
@@ -77,7 +75,6 @@ public class TimeTable extends RelativeLayout {
 		ret = new TextView(getContext());
 		ret.setText(text);
 		ret.setPadding(2, 2, 2, 2);
-		//ret.set
 		
 		return ret;
 	}
@@ -85,7 +82,6 @@ public class TimeTable extends RelativeLayout {
 	private void showTable(Schedule.Line line) {
 		SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
 		TableRow row;
-		TextView cell;
 		Iterator<Schedule.Item> itemi;
 		
 		table.removeAllViews();
@@ -94,22 +90,36 @@ public class TimeTable extends RelativeLayout {
 			return;
 		}
 		
-		itemi = line.getItems().iterator();
-		
+		/* Insert one row as big as the tent chooser so everything is
+		 * properly readable. */
 		row = new TableRow(getContext());
 		row.setMinimumHeight(tents.getHeight());
 		table.addView(row);
 		
+		itemi = line.getItems().iterator();
 		while (itemi.hasNext()) {
 			Schedule.Item item = itemi.next();
 			
 			row = new TableRow(getContext());
+			
+			row.setTag(item);
+			row.setOnClickListener(new TableRow.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Schedule.Item item = (Schedule.Item) v.getTag();
+					EventDialog evd = new EventDialog(getContext(), item);
+					evd.show();
+				}
+			});
+			
 			row.addView(makeText(tf.format(item.getStartTime()) + "-" +
 					             tf.format(item.getEndTime())));
 			row.addView(makeText(item.getTitle()));
+			
 			table.addView(row);
 		}
 		
+		/* Wrap long titles. */
 		table.setColumnShrinkable(1, true);
 	}
 	
