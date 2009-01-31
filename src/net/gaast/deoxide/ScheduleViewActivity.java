@@ -147,10 +147,10 @@ public class ScheduleViewActivity extends Activity {
     		.setIcon(android.R.drawable.ic_menu_preferences);
    		menu.add(1, 2, 0, "Timetable")
    			.setShortcut('1', 't')
-   			.setIcon(android.R.drawable.ic_menu_my_calendar);
+   			.setIcon(android.R.drawable.ic_menu_agenda);
    		menu.add(1, 3, 0, "Block schedule")
    			.setShortcut('2', 'b')
-			.setIcon(android.R.drawable.ic_menu_my_calendar);
+			.setIcon(R.drawable.blockschedule);
     	
     	return true;
     }
