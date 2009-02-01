@@ -19,6 +19,8 @@ public final class R {
     public static final class drawable {
         public static final int blockschedule=0x7f020000;
         public static final int deoxide_icon_48x48=0x7f020001;
+        public static final int star_black=0x7f020002;
+        public static final int star_yellow=0x7f020003;
     }
     public static final class string {
         public static final int app_name=0x7f050000;

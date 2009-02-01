@@ -81,15 +81,19 @@ public class DeoxideDb {
 		}
 		
 		public void sleep() {
+			Log.d("DeoxideDb", "sleep()");
 			if (db != null) {
 				db.close();
 				db = null;
+				Log.d("DeoxideDb", "sleep() ok");
 			}
 		}
 		
 		public void resume() {
+			Log.d("DeoxideDb", "resume()");
 			if (db == null) {
 				db = dbh.getWritableDatabase();
+				Log.d("DeoxideDb", "resume() ok");
 			}
 		}
 		
@@ -129,7 +133,10 @@ public class DeoxideDb {
 			while (q.moveToNext()) {
 				Schedule.Item item = sched.getItem(q.getString(1));
 				item.setRemind(q.getInt(2) != 0);
+				item.setStars(q.getInt(3));
 				sciIdMap.put(q.getString(1), new Long(q.getInt(0)));
+				
+				Log.d("DeoxideDb", "Item from db " + item.getDescription() + " remind " + q.getInt(2) + " stars " + q.getInt(3));
 			}
 			q.close();
 		}
@@ -141,6 +148,9 @@ public class DeoxideDb {
 			row.put("sci_sch_id", schId);
 			row.put("sci_id_s", item.getId());
 			row.put("sci_remind", item.getRemind());
+			row.put("sci_stars", item.getStars());
+			
+			Log.d("DeoxideDb", "Saving item " + item.getDescription() + " remind " + row.getAsString("sci_remind") + " stars " + row.getAsString("sci_stars"));
 			
 			if ((sciId = sciIdMap.get(item.getId())) != null) {
 				db.update("schedule_item", row,

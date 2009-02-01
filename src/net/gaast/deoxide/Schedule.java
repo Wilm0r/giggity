@@ -426,6 +426,7 @@ public class Schedule {
 		private LinkedList<Schedule.Item.Link> links;
 		
 		private boolean remind;
+		private int stars;
 		private boolean newData;
 		
 		Item(String id_, String title_, Date startTime_, Date endTime_) {
@@ -435,6 +436,7 @@ public class Schedule {
 			endTime = endTime_;
 			
 			remind = false;
+			stars = -1;
 			newData = false;
 		}
 		
@@ -484,6 +486,17 @@ public class Schedule {
 		
 		public boolean getRemind() {
 			return remind;
+		}
+		
+		public void setStars(int stars_) {
+			if (stars != stars_) {
+				stars = stars_;
+				newData |= fullyLoaded;
+			}
+		}
+		
+		public int getStars() {
+			return stars;
 		}
 		
 		public void commit() {

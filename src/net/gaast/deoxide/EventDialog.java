@@ -1,6 +1,7 @@
 package net.gaast.deoxide;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -14,7 +15,9 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
@@ -22,7 +25,10 @@ import android.widget.LinearLayout.LayoutParams;
 public class EventDialog extends AlertDialog {
 	private Schedule.Item item;
 	private OnDismissListener dismissPassThru;
-	
+
+	private CheckBox cb;
+	private StarsView sv; 
+
 	public EventDialog(Context ctx_, Schedule.Item item_) {
 		super(ctx_);
 
@@ -32,7 +38,8 @@ public class EventDialog extends AlertDialog {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
     	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-
+    	Date now = new Date();
+		
 		LinearLayout content = new LinearLayout(getContext());
 		content.setOrientation(LinearLayout.VERTICAL);
 
@@ -46,12 +53,21 @@ public class EventDialog extends AlertDialog {
 		content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
 
 		LinearLayout bottomBox = new LinearLayout(getContext());
-		bottomBox.setGravity(Gravity.RIGHT);
+		bottomBox.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
 
-		final CheckBox cb = new CheckBox(getContext());
-		cb.setText("Remind me");
-		cb.setChecked(item.getRemind());
-		bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		if (item.getStartTime().after(now)) {
+			cb = new CheckBox(getContext());
+			cb.setText("Remind me");
+			cb.setChecked(item.getRemind());
+			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		} else {
+			sv = new StarsView(getContext());
+			sv.setNumStars(5);
+			sv.setScore(item.getStars());
+			/* Bigger surface for easier touching. */
+			sv.setMinimumHeight(48);
+			bottomBox.addView(sv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1));
+		}
 		
 		LinkedList<Schedule.Item.Link> links = item.getLinks();
 		if (links != null) {
@@ -69,7 +85,10 @@ public class EventDialog extends AlertDialog {
     	setView(content);
     	super.setOnDismissListener(new OnDismissListener() {
    			public void onDismiss(DialogInterface dialog) {
-   				item.setRemind(cb.isChecked());
+   				if (cb != null)
+   					item.setRemind(cb.isChecked());
+   				if (sv != null)
+   					item.setStars(sv.getScore());
    				if (dismissPassThru != null)
    					dismissPassThru.onDismiss(dialog);
    			}
