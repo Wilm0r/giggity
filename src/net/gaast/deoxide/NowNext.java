@@ -1,22 +1,16 @@
 package net.gaast.deoxide;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
-import android.graphics.Typeface;
-import android.view.View;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 public class NowNext extends ScrollView {
 	private Schedule sched;
 	private TableLayout table;
-	private SimpleDateFormat tf;
 	
 	public NowNext(Context ctx, Schedule sched_) {
 		super(ctx);
@@ -28,10 +22,9 @@ public class NowNext extends ScrollView {
 		Iterator<Schedule.Item> itemi;
 		Schedule.Item item = null;
 		
-		tf = new SimpleDateFormat("HH:mm");
 		table = new TableLayout(getContext());
 		
-		table.addView(makeText("Now:"));
+		table.addView(TimeTable.makeText(ctx, "Now:"));
 		
 		tenti = sched.getTents().iterator();
 		while (tenti.hasNext()) {
@@ -41,7 +34,7 @@ public class NowNext extends ScrollView {
 			while (itemi.hasNext()) {
 				item = itemi.next();
 				if (item.getStartTime().before(now) && item.getEndTime().after(now)) {
-					table.addView(itemRow(item));
+					table.addView(new TimeTable.ItemRow(getContext(), item, 0));
 				} else if (item.getStartTime().after(now)) {
 					nextList.add(item);
 					break;
@@ -49,52 +42,16 @@ public class NowNext extends ScrollView {
 			}
 		}
 		
-		table.addView(makeText("Next:"));
+		table.addView(TimeTable.makeText(ctx, "Next:"));
 		
 		itemi = nextList.iterator();
 		while (itemi.hasNext()) {
 			item = itemi.next();
-			table.addView(itemRow(item));
+			table.addView(new TimeTable.ItemRow(getContext(), item, 0));
 		}
 		
 		table.setColumnShrinkable(2, true);
 	
 		addView(table);
-	}
-	
-	private TextView makeText(String text) {
-		TextView ret;
-		
-		ret = new TextView(getContext());
-		ret.setText(text);
-		ret.setPadding(2, 2, 2, 2);
-		
-		return ret;
-	}
-
-	private TableRow itemRow(Schedule.Item item) {
-		TableRow row = new TableRow(getContext());
-		TextView cell;
-		
-		row.addView(makeText(item.getLine().getTitle()));
-		row.addView(makeText(tf.format(item.getStartTime()) + "-" +
-		                     tf.format(item.getEndTime())));
-		
-		cell = makeText(item.getTitle());
-		if (item.getRemind()) 
-			cell.setTypeface(Typeface.DEFAULT_BOLD);
-		row.addView(cell);
-		
-		row.setTag(item);
-		row.setOnClickListener(new TableRow.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Schedule.Item item = (Schedule.Item) v.getTag();
-				EventDialog evd = new EventDialog(getContext(), item);
-				evd.show();
-			}
-		});
-		
-		return row;
 	}
 }

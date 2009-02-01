@@ -6,9 +6,13 @@ import java.util.LinkedList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
+import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
@@ -69,18 +73,7 @@ public class TimeTable extends RelativeLayout {
     	});
 	}
 	
-	private TextView makeText(String text) {
-		TextView ret;
-		
-		ret = new TextView(getContext());
-		ret.setText(text);
-		ret.setPadding(2, 2, 2, 2);
-		
-		return ret;
-	}
-	
 	private void showTable(Schedule.Line line) {
-		SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
 		TableRow row;
 		Iterator<Schedule.Item> itemi;
 		
@@ -100,23 +93,7 @@ public class TimeTable extends RelativeLayout {
 		while (itemi.hasNext()) {
 			Schedule.Item item = itemi.next();
 			
-			row = new TableRow(getContext());
-			
-			row.setTag(item);
-			row.setOnClickListener(new TableRow.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Schedule.Item item = (Schedule.Item) v.getTag();
-					EventDialog evd = new EventDialog(getContext(), item);
-					evd.show();
-				}
-			});
-			
-			row.addView(makeText(tf.format(item.getStartTime()) + "-" +
-					             tf.format(item.getEndTime())));
-			row.addView(makeText(item.getTitle()));
-			
-			table.addView(row);
+			table.addView(new ItemRow(getContext(), item, ItemRow.NO_TENTNAME));
 		}
 		
 		/* Wrap long titles. */
@@ -163,7 +140,61 @@ public class TimeTable extends RelativeLayout {
 			
 			return ret;
 		}
+	}
+	
+	static public TextView makeText(Context ctx, String text) {
+		TextView ret;
 		
+		ret = new TextView(ctx);
+		ret.setText(text);
+		ret.setPadding(2, 2, 2, 2);
 		
+		return ret;
+	}
+
+	static public class ItemRow extends TableRow implements OnClickListener {
+		Schedule.Item item;
+		int flags, titlecol;
+		
+		public final static int NO_TENTNAME = 1;
+		
+		public ItemRow(Context ctx, Schedule.Item item_, int flags_) {
+			super(ctx);
+			item = item_;
+			flags = flags_;
+			
+			SimpleDateFormat tf = new SimpleDateFormat("HH:mm");
+			
+			titlecol = 1;
+			
+			if ((flags & NO_TENTNAME) == 0) {
+				addView(makeText(ctx, item.getLine().getTitle()));
+				titlecol ++;
+			}
+			
+			addView(makeText(ctx, tf.format(item.getStartTime()) + "-" +
+			                      tf.format(item.getEndTime())));
+			
+			addView(makeText(ctx, item.getTitle()));
+			updateBold();
+			
+			setOnClickListener(this);
+		}
+		
+		@Override
+		public void onClick(View v) {
+			EventDialog evd = new EventDialog(getContext(), item);
+	    	evd.setOnDismissListener(new OnDismissListener() {
+	   			public void onDismiss(DialogInterface dialog) {
+	   				updateBold();
+	   			}
+	   		});
+	    	evd.show();
+		}
+		
+		private void updateBold() {
+			((TextView)getChildAt(titlecol)).setTypeface(
+					item.getRemind() ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
+		}
 	}
 }
