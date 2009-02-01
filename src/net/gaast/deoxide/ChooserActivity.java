@@ -21,24 +21,14 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class ChooserActivity extends Activity {
 	private ArrayList<DeoxideDb.DbSchedule> scheds;
+	ListView list;
 	EditText urlBox;
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
-    	ListView list = new ListView(this);
-
-    	Deoxide app = (Deoxide) getApplication();
-    	scheds = app.getDb().getScheduleList();
-    	String[] listc = new String[scheds.size()];
-    	
-    	int i;
-    	for (i = 0; i < scheds.size(); i ++) {
-    		listc[i] = scheds.get(i).getTitle();
-    	}
-    	
-    	list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listc));
+    	list = new ListView(this);
     	
     	list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -86,13 +76,27 @@ public class ChooserActivity extends Activity {
     	setContentView(cont);
     }
     
+    @Override
+    public void onResume() {
+    	/* Do this part in onResume so we automatically re-sort the list (and
+    	 * pick up new items) when returning to the chooser. */
+    	super.onResume();
+    	
+    	Deoxide app = (Deoxide) getApplication();
+    	scheds = app.getDb().getScheduleList();
+    	String[] listc = new String[scheds.size()];
+    	
+    	int i;
+    	for (i = 0; i < scheds.size(); i ++) {
+    		listc[i] = scheds.get(i).getTitle();
+    	}
+    	
+    	list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listc));
+    }
+    
     private void openNewUrl() {
     	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlBox.getText().toString()),
                                    this, ScheduleViewActivity.class);
     	startActivity(intent);
     }
 }
-/*
-//sched.loadSchedule("http://wilmer.gaast.net/deoxide/test.xml");
-//sched.loadSchedule("http://fosdem.org/2009/schedule/xcal");
-*/
