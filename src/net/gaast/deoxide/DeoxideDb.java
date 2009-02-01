@@ -136,7 +136,7 @@ public class DeoxideDb {
 				item.setStars(q.getInt(3));
 				sciIdMap.put(q.getString(1), new Long(q.getInt(0)));
 				
-				Log.d("DeoxideDb", "Item from db " + item.getDescription() + " remind " + q.getInt(2) + " stars " + q.getInt(3));
+				Log.d("DeoxideDb", "Item from db " + item.getTitle() + " remind " + q.getInt(2) + " stars " + q.getInt(3));
 			}
 			q.close();
 		}
@@ -150,7 +150,7 @@ public class DeoxideDb {
 			row.put("sci_remind", item.getRemind());
 			row.put("sci_stars", item.getStars());
 			
-			Log.d("DeoxideDb", "Saving item " + item.getDescription() + " remind " + row.getAsString("sci_remind") + " stars " + row.getAsString("sci_stars"));
+			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") + " stars " + row.getAsString("sci_stars"));
 			
 			if ((sciId = sciIdMap.get(item.getId())) != null) {
 				db.update("schedule_item", row,

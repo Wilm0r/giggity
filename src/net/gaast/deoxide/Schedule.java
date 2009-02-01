@@ -116,6 +116,7 @@ public class Schedule {
 	public void commit() {
 		Iterator<Item> it = allItems.values().iterator();
 		
+		Log.d("Schedule", "Saving all changes to the database");
 		while (it.hasNext()) {
 			Item item = it.next();
 			item.commit();
@@ -409,6 +410,7 @@ public class Schedule {
 		}
 		
 		public void addItem(Schedule.Item item) {
+			item.setLine(this);
 			items.add(item);
 			allItems.put(item.getId(), item);
 		}
@@ -420,6 +422,7 @@ public class Schedule {
 	
 	public class Item implements Comparable<Item> {
 		private String id;
+		private Line line;
 		private String title;
 		private String description;
 		private Date startTime, endTime;
@@ -471,6 +474,14 @@ public class Schedule {
 		
 		public String getDescription() {
 			return description;
+		}
+		
+		public void setLine(Line line_) {
+			line = line_;
+		}
+		
+		public Line getLine() {
+			return line;
 		}
 		
 		public LinkedList<Schedule.Item.Link> getLinks() {

@@ -15,9 +15,11 @@
 	<string-array name="default_view">
 		<item>Block schedule</item>
 		<item>Timetable</item>
+		<item>Now and next</item>
 	</string-array>
 	<string-array name="default_view_values">
 		<item>1</item>
 		<item>2</item>
+		<item>3</item>
 	</string-array>
 </resources>

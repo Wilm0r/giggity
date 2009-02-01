@@ -24,6 +24,7 @@ public class ScheduleViewActivity extends Activity {
     
     private final static int VIEW_BLOCKSCHEDULE = 1;
     private final static int VIEW_TIMETABLE = 2;
+    private final static int VIEW_NOWNEXT= 3;
     
     private int view;
 
@@ -127,6 +128,9 @@ public class ScheduleViewActivity extends Activity {
     	} else if (view == VIEW_BLOCKSCHEDULE) {
         	setTitle("Block schedule: " + sched.getTitle());
     		setContentView(new BlockSchedule(this, sched));
+    	} else if (view == VIEW_NOWNEXT) {
+    		setTitle("Now and next: " + sched.getTitle());
+    		setContentView(new NowNext(this, sched));
     	}
     }
     
@@ -149,8 +153,11 @@ public class ScheduleViewActivity extends Activity {
    			.setShortcut('1', 't')
    			.setIcon(android.R.drawable.ic_menu_agenda);
    		menu.add(1, 3, 0, "Block schedule")
-   			.setShortcut('2', 'b')
-			.setIcon(R.drawable.blockschedule);
+			.setShortcut('2', 'b')
+		.setIcon(R.drawable.blockschedule);
+   		menu.add(1, 4, 0, "Now and next")
+			.setShortcut('2', 'b')
+		.setIcon(R.drawable.ic_menu_clock_face);
     	
     	return true;
     }
@@ -159,6 +166,7 @@ public class ScheduleViewActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.findItem(2).setVisible(view != VIEW_TIMETABLE);
     	menu.findItem(3).setVisible(view != VIEW_BLOCKSCHEDULE);
+    	menu.findItem(4).setVisible(view != VIEW_NOWNEXT);
     	return true;
     }
     
@@ -175,6 +183,10 @@ public class ScheduleViewActivity extends Activity {
     		return true;
     	case 3:
     		view = VIEW_BLOCKSCHEDULE;
+    		onScheduleLoaded();
+    		return true;
+    	case 4:
+    		view = VIEW_NOWNEXT;
     		onScheduleLoaded();
     		return true;
     	}
