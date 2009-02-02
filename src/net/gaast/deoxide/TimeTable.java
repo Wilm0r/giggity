@@ -9,7 +9,9 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,7 +29,7 @@ public class TimeTable extends RelativeLayout {
 	Schedule sched;
 	
 	Gallery tents;
-	ScrollView scroller;
+	SwitchScroller scroller;
 	TableLayout table;
 	
 	public TimeTable(Activity ctx, Schedule sched_) {
@@ -35,26 +37,33 @@ public class TimeTable extends RelativeLayout {
 		app = (Deoxide) ctx.getApplication();
     	sched = sched_;
 
-    	//setOrientation(LinearLayout.VERTICAL);
-    	
     	RelativeLayout.LayoutParams lp;
     	
     	lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
-    	//lp.addRule(android.R.attr.layout_alignParentTop, TRUE);
-    	//lp.addRule(android.R.attr.layout_alignParentLeft, TRUE);
 
-    	scroller = new ScrollView(ctx);
+    	scroller = new SwitchScroller(ctx);
     	table = new TableLayout(ctx);
     	scroller.addView(table);
     	addView(scroller, lp);
+    	// scroller.setBackgroundColor(0xff0000ff);
+    	scroller.setOnSwitchListener(new OnSwitchListener() {
+			@Override
+			public void onSwitchEvent(int direction) {
+				int np;
+				
+				np = tents.getSelectedItemPosition();
+				if (direction == SwitchScroller.LEFT) {
+					np --;
+				} else if (direction == SwitchScroller.RIGHT) {
+					np ++;
+				}
+				tents.setSelection(Math.max(0, Math.min(tents.getCount() - 1, np)), true);
+			}
+    	});
     	
     	tents = new Gallery(ctx);
     	tents.setAdapter(new TentListAdapter(ctx, sched.getTents()));
-		//tents.setLayoutParams(new Gallery.LayoutParams(
-        //        LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
     	lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-    	//lp.addRule(android.R.attr.layout_alignParentTop, TRUE);
-    	//lp.addRule(android.R.attr.layout_alignParentLeft, TRUE);
     	
     	addView(tents, lp);
     	
@@ -70,6 +79,8 @@ public class TimeTable extends RelativeLayout {
 				showTable(null);
 			}
     	});
+    	
+    	Log.d("tm", "" + isInTouchMode());
 	}
 	
 	private void showTable(Schedule.Line line) {
@@ -195,5 +206,51 @@ public class TimeTable extends RelativeLayout {
 			((TextView)getChildAt(titlecol)).setTypeface(
 					item.getRemind() ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
 		}
+	}
+	
+	private class SwitchScroller extends ScrollView {
+		OnSwitchListener osl;
+		float dragStartX, dragStartY;
+		
+		public final static int LEFT = 1;
+		public final static int RIGHT = 2;
+		
+		public SwitchScroller(Context ctx) {
+			super(ctx);
+			dragStartX = dragStartY = -1;
+		}
+		
+		public void setOnSwitchListener(OnSwitchListener osl_) {
+			osl = osl_;
+		}
+		
+		@Override
+		public boolean onInterceptTouchEvent(MotionEvent ev) {
+			if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+				dragStartX = ev.getX();
+				dragStartY = ev.getY();
+			} else if (ev.getAction() == MotionEvent.ACTION_MOVE && dragStartX >= 0) {
+				float xd, yd;
+				
+				xd = Math.abs(ev.getX() - dragStartX);
+				yd = Math.abs(ev.getY() - dragStartY);
+				
+				if (yd > 32 && yd > xd * 2) {
+					dragStartX = dragStartY = -1;
+				} else if (xd > (getWidth() / 4)) {
+					if (osl != null) {
+						osl.onSwitchEvent(ev.getX() > dragStartX ? LEFT : RIGHT);
+					}
+					return true;
+				}
+			}
+			
+			return super.onInterceptTouchEvent(ev);
+		}
+	}
+
+	/* Can only define interfaces in top-level classes. :-/ */ 
+	public interface OnSwitchListener {
+		public void onSwitchEvent(int direction);
 	}
 }

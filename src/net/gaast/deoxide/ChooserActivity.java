@@ -29,7 +29,6 @@ public class ChooserActivity extends Activity {
     	super.onCreate(savedInstanceState);
     	
     	list = new ListView(this);
-    	
     	list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -38,6 +37,8 @@ public class ChooserActivity extends Activity {
     	        startActivity(intent);
 			}
     	});
+    	
+    	/* Filling in the list in onResume(). */
     	
     	LinearLayout cont = new LinearLayout(this);
     	cont.setOrientation(LinearLayout.VERTICAL);
