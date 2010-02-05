@@ -137,7 +137,7 @@ public class ScheduleViewActivity extends Activity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
     	super.onConfigurationChanged(newConfig);
-    	Log.i("BlockScheduleActivity", "Orientation changed");
+    	Log.i("BlockScheduleActivity", "Configuration changed");
     	/* We really don't have to do anything special here. The
     	 * layouts will take care of everything. */
     }

@@ -37,6 +37,7 @@ public class DeoxideDb {
 			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
 					                          "sch_title VarChar(128), " +
 					                          "sch_url VarChar(256), " +
+					                          "sch_localfile VarChar(256), " +
 					                          "sch_atime Integer, " +
 					                          "sch_id_s VarChar(128))");
 			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
@@ -58,6 +59,9 @@ public class DeoxideDb {
 					break;
 				case 2:
 					db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
+					break;
+				case 3:
+					db.execSQL("Alter Table schedule Add Column sch_localfile VarChar(256)");
 					break;
 				}
 				oldVersion++;

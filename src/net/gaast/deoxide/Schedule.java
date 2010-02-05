@@ -1,9 +1,16 @@
 package net.gaast.deoxide;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Reader;
+import java.io.Writer;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractSet;
@@ -18,7 +25,10 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.util.Xml;
 
@@ -43,6 +53,58 @@ public class Schedule {
 		app = ctx;
 	}
 
+	private class TeeReader extends BufferedReader {
+		Writer writer;
+		boolean waiting;
+		
+		public TeeReader(Reader in, Writer out, int buf) {
+			super(in, buf);
+			writer = out;
+		}
+		
+		@Override
+		public void mark(int limit) throws IOException {
+			super.mark(limit);
+			waiting = true;
+		}
+		
+		@Override
+		public void reset() throws IOException {
+			super.reset();
+			waiting = false;
+		}
+
+		@Override
+		public int read(char[] buf, int off, int len) throws IOException {
+			int st = super.read(buf, off, len);
+			if (writer != null && !waiting && st > 0) {
+				writer.write(buf, off, st);
+			}
+			return st;
+		}
+		
+		@Override
+		public void close() throws IOException {
+			super.close();
+			writer.close();
+		}
+	}
+
+	private String hashify(String url) {
+		String ret = "";
+		try {
+			MessageDigest md5 = MessageDigest.getInstance("SHA-1");
+			md5.update(url.getBytes());
+			Log.i("md5", url);
+			byte raw[] = md5.digest();
+			for (int i = 0; i < raw.length; i ++)
+				ret += String.format("%02x", raw[i]);
+		} catch (NoSuchAlgorithmException e) {
+			// WTF
+		}
+		return ret;
+	}
+	
 	public void loadSchedule(String source) {
 		id = null;
 		title = null;
@@ -62,8 +124,18 @@ public class Schedule {
 		try {
 			URL dl = new URL(source);
 			char[] headc = new char[detectHeaderSize];
+			Reader rawin;
+			NetworkInfo network = ((ConnectivityManager)
+					app.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo(); 
 			
-			in = new BufferedReader(new InputStreamReader(dl.openStream()), 4096);
+			String fn = "cache." + hashify(source);
+			if (network != null && network.isConnected()) {
+				rawin = new InputStreamReader(dl.openStream());
+				Writer copy = new BufferedWriter(new OutputStreamWriter(app.openFileOutput(fn, 0)));
+				in = new TeeReader(rawin, copy, 4096);
+			} else {
+				in = new BufferedReader(new InputStreamReader(app.openFileInput(fn)));
+			}
 			
 			/* Read the first KByte (but keep it buffered) to try to detect the format. */
 			in.mark(detectHeaderSize);
@@ -106,6 +178,7 @@ public class Schedule {
 	private void loadXml(BufferedReader in, ContentHandler parser) {
 		try {
 			Xml.parse(in, parser);
+			in.close();
 		} catch (Exception e) {
 			Log.e("Schedule.loadXml", "XML parse exception: " + e);
 			e.printStackTrace();
