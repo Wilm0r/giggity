@@ -14,10 +14,13 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractSet;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.ListIterator;
 import java.util.TreeSet;
 
 import org.xml.sax.Attributes;
@@ -53,6 +56,7 @@ public class Schedule {
 		app = ctx;
 	}
 
+	/* I want to keep local cached copies of schedule files. This reader makes that easy. */
 	private class TeeReader extends BufferedReader {
 		Writer writer;
 		boolean waiting;
@@ -154,11 +158,16 @@ public class Schedule {
 		 * I want to avoid doing XML-specific stuff here already. */
 		if (head.contains("<icalendar") && head.contains("<vcalendar")) {
 			loadXcal(in);
+		} else if (head.contains("<schedule") && head.contains("<conference")) {
+			loadPentabarf(in);
 		} else if (head.contains("<schedule") && head.contains("<line")) {
 			loadDeox(in);
 		} else {
 			throw new RuntimeException("File format not recognized");
 		}
+		
+		if (id == null)
+			id = hashify(source);
 
 		db = app.getDb();
 		db.setSchedule(this, source);
@@ -173,6 +182,10 @@ public class Schedule {
 	
 	private void loadXcal(BufferedReader in) {
 		loadXml(in, new XcalParser());
+	}
+	
+	private void loadPentabarf(BufferedReader in) {
+		loadXml(in, new PentabarfParser());
 	}
 	
 	private void loadXml(BufferedReader in, ContentHandler parser) {
@@ -232,6 +245,8 @@ public class Schedule {
 		return allItems.get(id);
 	}
 	
+	/* Some "proprietary" file format I started with. Should 
+	 * probably remove it in favour of xcal and Pentabarf. */
 	private class DeoxParser implements ContentHandler {
 		private Schedule.Line curTent;
 		private Schedule.Item curItem;
@@ -463,6 +478,173 @@ public class Schedule {
 		}
 	}
 	
+	private class PentabarfParser implements ContentHandler {
+		private Schedule.Line curTent;
+		private HashMap<String,Schedule.Line> tentMap;
+		private HashMap<String,String> propMap;
+		private String curString;
+		private LinkedList<String> links;
+		private Schedule.LinkType lt;
+		private Date curDay;
+
+		SimpleDateFormat df, tf;
+
+		public PentabarfParser() {
+			tentMap = new HashMap<String,Schedule.Line>();
+			df = new SimpleDateFormat("yyyy-MM-dd");
+			tf = new SimpleDateFormat("HH:mm");
+			
+			lt = new Schedule.LinkType("link");
+		}
+		
+		@Override
+		public void startElement(String uri, String localName, String qName,
+				Attributes atts) throws SAXException {
+			curString = "";
+			if (localName == "conference" || localName == "event") {
+				propMap = new HashMap<String,String>();
+				propMap.put("id", atts.getValue("id"));
+				
+				links = new LinkedList<String>();
+			} else if (localName == "day") {
+				try {
+					curDay = df.parse(atts.getValue("date"));
+				} catch (ParseException e) {
+					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
+					return;
+				}
+			} else if (localName == "room") {
+				String name = atts.getValue("name");
+				Schedule.Line line;
+				
+				if (name == null)
+					return;
+				
+				if ((line = tentMap.get(name)) == null) {
+					line = new Schedule.Line(name, name);
+					tents.add(line);
+					tentMap.put(name, line);
+				}
+				curTent = line;
+				Log.d("load", "curTent: " + curTent.getTitle());
+			} else if (localName == "link" && links != null) {
+				String href = atts.getValue("href");
+				if (href != null)
+					links.add(href);
+			}
+		}
+	
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			curString += String.copyValueOf(ch, start, length); 
+		}
+	
+		@Override
+		public void endElement(String uri, String localName, String qName)
+				throws SAXException {
+			if (localName == "conference") {
+				title = propMap.get("title");
+				/* For now ignore the other data. */
+			} else if (localName == "event") {
+				String id, title, startTimeS, durationS, s, desc;
+				Calendar startTime, endTime;
+				Schedule.Item item;
+				
+				if ((id = propMap.get("id")) == null ||
+				    (title = propMap.get("title")) == null ||
+				    (startTimeS = propMap.get("start")) == null ||
+				    (durationS = propMap.get("duration")) == null) {
+					Log.w("Schedule.loadXcal", "Invalid event, some attributes are missing.");
+					return;
+				}
+				
+				try {
+					Date tmp;
+					
+					startTime = new GregorianCalendar();
+					startTime.setTime(curDay);
+					tmp = tf.parse(startTimeS);
+					startTime.add(Calendar.HOUR, tmp.getHours());
+					startTime.add(Calendar.MINUTE, tmp.getMinutes());
+					
+					endTime = new GregorianCalendar();
+					endTime.setTime(startTime.getTime());
+					tmp = tf.parse(durationS);
+					endTime.add(Calendar.HOUR, tmp.getHours());
+					endTime.add(Calendar.MINUTE, tmp.getMinutes());
+				} catch (ParseException e) {
+					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
+					return;
+				}
+
+				if (firstTime == null || startTime.getTime().before(firstTime))
+					firstTime = startTime.getTime();
+				if (lastTime == null || endTime.getTime().after(lastTime))
+					lastTime = endTime.getTime();
+
+				item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
+				
+				desc = "";
+				if ((s = propMap.get("abstract")) != null) {
+					s.replaceAll("\n*$", "");
+					desc += s + "\n\n";
+				}
+				if ((s = propMap.get("description")) != null) {
+					desc += s;
+				}
+				/* Replace newlines with spaces unless there are two of them. */
+				desc = desc.replaceAll("([^\n]) *\n *([^\n])", "$1 $2");
+				item.setDescription(desc);
+				
+				ListIterator<String> linki = links.listIterator();
+				while (linki.hasNext())
+					item.addLink(lt, linki.next());
+
+				curTent.addItem(item);
+				propMap = null;
+				links = null;
+			} else if (propMap != null) {
+				propMap.put(localName, curString);
+			}
+		}
+		
+		@Override
+		public void startDocument() throws SAXException {
+		}
+	
+		@Override
+		public void endDocument() throws SAXException {
+		}
+		
+		@Override
+		public void startPrefixMapping(String arg0, String arg1)
+				throws SAXException {
+			
+		}
+	
+		@Override
+		public void endPrefixMapping(String arg0) throws SAXException {
+		}
+	
+		@Override
+		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
+				throws SAXException {
+		}
+	
+		@Override
+		public void processingInstruction(String arg0, String arg1)
+				throws SAXException {
+		}
+	
+		@Override
+		public void setDocumentLocator(Locator arg0) {
+		}
+	
+		@Override
+		public void skippedEntity(String arg0) throws SAXException {
+		}
+	}
+	
 	public class Line {
 		private String id;
 		private String title;
@@ -621,6 +803,7 @@ public class Schedule {
 		
 		public LinkType(String id_) {
 			id = id_;
+			iconDrawable = app.getResources().getDrawable(android.R.drawable.arrow_up_float);
 		}
 		
 		public void setIconUrl(String url_) {

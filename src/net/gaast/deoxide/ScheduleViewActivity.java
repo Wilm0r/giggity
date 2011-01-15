@@ -94,6 +94,7 @@ public class ScheduleViewActivity extends Activity {
     	    		sched = app.getSchedule(source);
     				resultHandler.sendEmptyMessage(1);
     			} catch (Throwable t) {
+    				t.printStackTrace();
     				resultHandler.sendMessage(Message.obtain(resultHandler, 0, t));
     			}
     		}

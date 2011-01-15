@@ -61,6 +61,7 @@ public class DeoxideDb {
 					db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
 					break;
 				case 3:
+					/* Not actually using this one in the end, but oh well.. */
 					db.execSQL("Alter Table schedule Add Column sch_localfile VarChar(256)");
 					break;
 				}
