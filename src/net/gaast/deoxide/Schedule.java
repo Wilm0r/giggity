@@ -2,6 +2,9 @@ package net.gaast.deoxide;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -163,13 +166,13 @@ public class Schedule {
 			NetworkInfo network = ((ConnectivityManager)
 					app.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo(); 
 			
-			String fn = "cache." + hashify(source);
+			File fn = new File(app.getCacheDir(), "sched." + hashify(source));
 			if (network != null && network.isConnected()) {
 				rawin = new InputStreamReader(dl.openStream());
-				Writer copy = new BufferedWriter(new OutputStreamWriter(app.openFileOutput(fn, 0)));
+				Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fn)));
 				in = new TeeReader(rawin, copy, 4096);
 			} else {
-				in = new BufferedReader(new InputStreamReader(app.openFileInput(fn)));
+				in = new BufferedReader(new InputStreamReader(new FileInputStream(fn)));
 			}
 			
 			/* Read the first KByte (but keep it buffered) to try to detect the format. */
