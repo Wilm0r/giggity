@@ -112,9 +112,20 @@ public class Schedule {
 	
 	public LinkedList<Date> getDays() {
 		LinkedList<Date> ret = new LinkedList<Date>();
-		ret.add(firstTime);
-		ret.add(lastTime);
+		Calendar c = new GregorianCalendar();
+		c.setTime(firstTime);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		while (c.getTime().before(lastTime)) {
+			ret.add(c.getTime());
+			c.add(Calendar.DATE, 1);
+		}
 		return ret;
+	}
+	
+	public Date getDay() {
+		return curDay;
 	}
 	
 	public void setDay(Date day) {
@@ -183,6 +194,7 @@ public class Schedule {
 		} else if (head.contains("<schedule") && head.contains("<line")) {
 			loadDeox(in);
 		} else {
+			Log.d("head", head);
 			throw new RuntimeException("File format not recognized");
 		}
 		

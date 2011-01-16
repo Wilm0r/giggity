@@ -1,20 +1,31 @@
 package net.gaast.deoxide;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
@@ -26,7 +37,7 @@ public class ScheduleViewActivity extends Activity {
     private final static int VIEW_TIMETABLE = 2;
     private final static int VIEW_NOWNEXT= 3;
     
-    private int view;
+    private int view, day;
 
     SharedPreferences pref;
     
@@ -37,6 +48,7 @@ public class ScheduleViewActivity extends Activity {
         
         pref = PreferenceManager.getDefaultSharedPreferences(app);
         view = Integer.parseInt(pref.getString("default_view", "1"));
+        day = 0;
         
         if (app.hasSchedule(getIntent().getDataString())) {
         	try {
@@ -121,14 +133,18 @@ public class ScheduleViewActivity extends Activity {
     }
     
     private void onScheduleLoaded() {
+    	if (view != VIEW_NOWNEXT) {
+    		sched.setDay(sched.getDays().get(day));
+        	setTitle("Giggity: " + sched.getTitle());
+    	} else {
+    		sched.setDay(null);
+    	}
+    	
     	if (view == VIEW_TIMETABLE) {
-        	setTitle("Timetable: " + sched.getTitle());
     		setContentView(new TimeTable(this, sched));
     	} else if (view == VIEW_BLOCKSCHEDULE) {
-        	setTitle("Block schedule: " + sched.getTitle());
     		setContentView(new BlockSchedule(this, sched));
     	} else if (view == VIEW_NOWNEXT) {
-    		setTitle("Now and next: " + sched.getTitle());
     		setContentView(new NowNext(this, sched));
     	}
     }
@@ -169,12 +185,32 @@ public class ScheduleViewActivity extends Activity {
     	menu.findItem(2).setVisible(view != VIEW_NOWNEXT);
     	menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
     	menu.findItem(4).setVisible(view != VIEW_BLOCKSCHEDULE);
-    	menu.findItem(5).setVisible(view != VIEW_NOWNEXT);
+    	menu.findItem(5).setVisible(view != VIEW_NOWNEXT && sched.getDays().size() > 1);
     	return true;
     }
     
     public void showDayDialog() {
+    	Format df = new SimpleDateFormat("EE d MMMM");
+    	LinkedList<Date> days = sched.getDays();
+    	CharSequence dayList[] = new CharSequence[days.size()];
+    	int i, cur = -1;
+    	for (i = 0; i < days.size(); i ++) {
+    		if (sched.getDay().equals(days.get(i)))
+    			cur = i;
+    		dayList[i] = df.format(days.get(i));
+    	}
     	
+    	AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    	builder.setTitle("Choose day");
+    	builder.setSingleChoiceItems(dayList, cur, new DialogInterface.OnClickListener() {
+    	    public void onClick(DialogInterface dialog, int item) {
+    	    	day = item;
+    	    	onScheduleLoaded();
+    	        dialog.dismiss();
+    	    }
+    	});
+    	AlertDialog alert = builder.create();
+    	alert.show();
     }
     
     @Override
