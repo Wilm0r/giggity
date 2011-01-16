@@ -17,7 +17,7 @@ public class DeoxideDb {
 	Helper dbh;
 	
 	public DeoxideDb(Application app_) {
-		dbh = new Helper(app_, "deoxide0", null, 3);
+		dbh = new Helper(app_, "deoxide0", null, 5);
 	}
 	
 	public Connection getConnection() {
@@ -25,7 +25,7 @@ public class DeoxideDb {
 		return new Connection();
 	}
 	
-	public class Helper extends SQLiteOpenHelper {
+	private class Helper extends SQLiteOpenHelper {
 		public Helper(Context context, String name, CursorFactory factory,
 				int version) {
 			super(context, name, factory, version);
@@ -37,9 +37,9 @@ public class DeoxideDb {
 			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
 					                          "sch_title VarChar(128), " +
 					                          "sch_url VarChar(256), " +
-					                          "sch_localfile VarChar(256), " +
 					                          "sch_atime Integer, " +
-					                          "sch_id_s VarChar(128))");
+					                          "sch_id_s VarChar(128))," +
+					                          "sch_day Integer");
 			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
 					                               "sci_sch_id Integer Not Null, " +
 					                               "sci_id_s VarChar(128), " +
@@ -51,21 +51,14 @@ public class DeoxideDb {
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 			Log.i("DeoxideDb", "Upgrading from database version " + oldVersion + " to " + newVersion);
 
-			while (oldVersion < newVersion) {
-				switch (oldVersion) {
-				case 1:
-					db.execSQL("Alter Table schedule Add Column sch_url VarChar(256)");
-					db.execSQL("Alter Table schedule Add Column sch_atime Integer");
-					break;
-				case 2:
-					db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
-					break;
-				case 3:
-					/* Not actually using this one in the end, but oh well.. */
-					db.execSQL("Alter Table schedule Add Column sch_localfile VarChar(256)");
-					break;
-				}
-				oldVersion++;
+			switch (oldVersion) {
+			case 1:
+				db.execSQL("Alter Table schedule Add Column sch_url VarChar(256)");
+				db.execSQL("Alter Table schedule Add Column sch_atime Integer");
+			case 2:
+				db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
+			case 4:
+				db.execSQL("Alter Table schedule Add Column sch_day Integer");
 			}
 		}
 	}
@@ -90,15 +83,12 @@ public class DeoxideDb {
 			if (db != null) {
 				db.close();
 				db = null;
-				Log.d("DeoxideDb", "sleep() ok");
 			}
 		}
 		
 		public void resume() {
-			Log.d("DeoxideDb", "resume()");
 			if (db == null) {
 				db = dbh.getWritableDatabase();
-				Log.d("DeoxideDb", "resume() ok");
 			}
 		}
 		
@@ -115,10 +105,11 @@ public class DeoxideDb {
 			row.put("sch_url", url);
 			row.put("sch_atime", new Date().getTime() / 1000);
 			
-			q = db.rawQuery("Select sch_id From schedule Where sch_id_s = ?",
+			q = db.rawQuery("Select sch_id, sch_day From schedule Where sch_id_s = ?",
 					        new String[]{sched.getId()});
 			
 			if (q.getCount() == 0) {
+				row.put("sch_day", 0);
 				schId = db.insert("schedule", null, row);
 				Log.i("DeoxideDb", "Adding schedule to database");
 			} else if (q.getCount() == 1) {

@@ -54,7 +54,8 @@ public class Schedule {
 	private Date firstTime, lastTime;
 	private Date curDay, curDayEnd;
 	private Date dayChange;
-	
+	LinkedList<Date> dayList;
+
 	private boolean fullyLoaded;
 	
 	public Schedule(Deoxide ctx) {
@@ -76,32 +77,35 @@ public class Schedule {
 	}
 	
 	public LinkedList<Date> getDays() {
-		LinkedList<Date> ret = new LinkedList<Date>();
-		Calendar c = new GregorianCalendar();
-		c.setTime(firstTime);
-		c.set(Calendar.HOUR_OF_DAY, dayChange.getHours());
-		c.set(Calendar.MINUTE, dayChange.getMinutes());
-		/* Add a day 0 (maybe there's an event before the first day officially
-		 * starts?). Saw this in the CCC Fahrplan for example. */
-		if (c.getTime().after(firstTime))
-			c.add(Calendar.DATE, -1);
-		while (c.getTime().before(lastTime)) {
-			ret.add(c.getTime());
-			c.add(Calendar.DATE, 1);
+		if (dayList == null) {
+			dayList = new LinkedList<Date>();
+			Calendar c = new GregorianCalendar();
+			c.setTime(firstTime);
+			c.set(Calendar.HOUR_OF_DAY, dayChange.getHours());
+			c.set(Calendar.MINUTE, dayChange.getMinutes());
+			/* Add a day 0 (maybe there's an event before the first day officially
+			 * starts?). Saw this in the CCC Fahrplan for example. */
+			if (c.getTime().after(firstTime))
+				c.add(Calendar.DATE, -1);
+			while (c.getTime().before(lastTime)) {
+				dayList.add(c.getTime());
+				c.add(Calendar.DATE, 1);
+			}
 		}
-		return ret;
+		return dayList;
 	}
 	
 	public Date getDay() {
 		return curDay;
 	}
 	
-	public void setDay(Date day) {
-		curDay = day;
-		if (day == null) {
-			curDayEnd = null;
+	public void setDay(int day) {
+		if (day == -1) {
+			curDay = curDayEnd = null;
 			return;
 		}
+		
+		curDay = getDays().get(day);
 		
 		Calendar dayEnd = new GregorianCalendar();
 		dayEnd.setTime(curDay);
@@ -156,6 +160,7 @@ public class Schedule {
 		firstTime = null;
 		lastTime = null;
 		
+		dayList = null;
 		curDay = null;
 		curDayEnd = null;
 		dayChange = new Date();
@@ -560,7 +565,6 @@ public class Schedule {
 					tentMap.put(name, line);
 				}
 				curTent = line;
-				Log.d("load", "curTent: " + curTent.getTitle());
 			} else if (localName == "link" && links != null) {
 				String href = atts.getValue("href");
 				if (href != null)

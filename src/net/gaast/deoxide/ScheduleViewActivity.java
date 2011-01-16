@@ -8,7 +8,6 @@ import java.util.LinkedList;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
@@ -19,13 +18,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
 
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
@@ -63,8 +57,6 @@ public class ScheduleViewActivity extends Activity {
     }
     
     private void horribleAsyncLoadHack(String source_) { 
-        /* HACK! I suppose there are better ways to do "this" in Java? :-) */
-        final Activity this_ = this;
         final String source;
         final Thread loader;
         final Handler resultHandler;
@@ -86,7 +78,7 @@ public class ScheduleViewActivity extends Activity {
 	    		} else {
 		    		prog.dismiss();
 		    		
-		    		new AlertDialog.Builder(this_)
+		    		new AlertDialog.Builder(ScheduleViewActivity.this)
 						.setTitle("Load error")
 						.setMessage(msg.obj.toString())
 						.show()
@@ -134,10 +126,10 @@ public class ScheduleViewActivity extends Activity {
     
     private void onScheduleLoaded() {
     	if (view != VIEW_NOWNEXT) {
-    		sched.setDay(sched.getDays().get(day));
+    		sched.setDay(day);
         	setTitle("Giggity: " + sched.getTitle());
     	} else {
-    		sched.setDay(null);
+    		sched.setDay(-1);
     	}
     	
     	if (view == VIEW_TIMETABLE) {
@@ -232,7 +224,6 @@ public class ScheduleViewActivity extends Activity {
     		onScheduleLoaded();
     		return true;
     	case 5:
-    		sched.setDay(null);
     		view = VIEW_NOWNEXT;
     		onScheduleLoaded();
     		return true;
