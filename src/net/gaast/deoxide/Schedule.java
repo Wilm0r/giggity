@@ -53,6 +53,7 @@ public class Schedule {
 
 	private Date firstTime, lastTime;
 	private Date curDay, curDayEnd;
+	private Date dayChange;
 	
 	private boolean fullyLoaded;
 	
@@ -60,50 +61,11 @@ public class Schedule {
 		app = ctx;
 	}
 
-	/* I want to keep local cached copies of schedule files. This reader makes that easy. */
-	private class TeeReader extends BufferedReader {
-		Writer writer;
-		boolean waiting;
-		
-		public TeeReader(Reader in, Writer out, int buf) {
-			super(in, buf);
-			writer = out;
-		}
-		
-		@Override
-		public void mark(int limit) throws IOException {
-			super.mark(limit);
-			waiting = true;
-		}
-		
-		@Override
-		public void reset() throws IOException {
-			super.reset();
-			waiting = false;
-		}
-
-		@Override
-		public int read(char[] buf, int off, int len) throws IOException {
-			int st = super.read(buf, off, len);
-			if (writer != null && !waiting && st > 0) {
-				writer.write(buf, off, st);
-			}
-			return st;
-		}
-		
-		@Override
-		public void close() throws IOException {
-			super.close();
-			writer.close();
-		}
-	}
-
 	private String hashify(String url) {
 		String ret = "";
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("SHA-1");
 			md5.update(url.getBytes());
-			Log.i("md5", url);
 			byte raw[] = md5.digest();
 			for (int i = 0; i < raw.length; i ++)
 				ret += String.format("%02x", raw[i]);
@@ -117,9 +79,12 @@ public class Schedule {
 		LinkedList<Date> ret = new LinkedList<Date>();
 		Calendar c = new GregorianCalendar();
 		c.setTime(firstTime);
-		c.set(Calendar.HOUR_OF_DAY, 0);
-		c.set(Calendar.MINUTE, 0);
-		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.HOUR_OF_DAY, dayChange.getHours());
+		c.set(Calendar.MINUTE, dayChange.getMinutes());
+		/* Add a day 0 (maybe there's an event before the first day officially
+		 * starts?). Saw this in the CCC Fahrplan for example. */
+		if (c.getTime().after(firstTime))
+			c.add(Calendar.DATE, -1);
 		while (c.getTime().before(lastTime)) {
 			ret.add(c.getTime());
 			c.add(Calendar.DATE, 1);
@@ -133,14 +98,51 @@ public class Schedule {
 	
 	public void setDay(Date day) {
 		curDay = day;
-		if (day == null)
+		if (day == null) {
+			curDayEnd = null;
 			return;
+		}
 		
-		curDay.setHours(0);
 		Calendar dayEnd = new GregorianCalendar();
 		dayEnd.setTime(curDay);
 		dayEnd.add(Calendar.DAY_OF_MONTH, 1);
 		curDayEnd = dayEnd.getTime();
+	}
+	
+	public Date getFirstTime() {
+		if (curDay == null)
+			return firstTime;
+		
+		Date ret = null;
+		Iterator<Item> itemi = allItems.values().iterator();
+		while (itemi.hasNext()) {
+			Schedule.Item item = itemi.next();
+			if (item.getStartTime().compareTo(curDay) >= 0 &&
+				item.getEndTime().compareTo(curDayEnd) <= 0) {
+				if (ret == null || item.getStartTime().before(ret))
+					ret = item.getStartTime();
+			}
+		}
+		
+		return ret;
+	}
+	
+	public Date getLastTime() {
+		if (curDay == null)
+			return lastTime;
+		
+		Date ret = null;
+		Iterator<Item> itemi = allItems.values().iterator();
+		while (itemi.hasNext()) {
+			Schedule.Item item = itemi.next();
+			if (item.getStartTime().compareTo(curDay) >= 0 &&
+				item.getEndTime().compareTo(curDayEnd) <= 0) {
+				if (ret == null || item.getEndTime().after(ret))
+					ret = item.getEndTime();
+			}
+		}
+		
+		return ret;
 	}
 	
 	public void loadSchedule(String source) {
@@ -153,6 +155,11 @@ public class Schedule {
 		
 		firstTime = null;
 		lastTime = null;
+		
+		curDay = null;
+		curDayEnd = null;
+		dayChange = new Date();
+		dayChange.setHours(6);
 		
 		fullyLoaded = false;
 
@@ -262,42 +269,6 @@ public class Schedule {
 	
 	public LinkedList<Schedule.Line> getTents() {
 		return tents;
-	}
-	
-	public Date getFirstTime() {
-		if (curDay == null)
-			return firstTime;
-		
-		Date ret = null;
-		Iterator<Item> itemi = allItems.values().iterator();
-		while (itemi.hasNext()) {
-			Schedule.Item item = itemi.next();
-			if (item.getStartTime().compareTo(curDay) >= 0 &&
-				item.getEndTime().compareTo(curDayEnd) <= 0) {
-				if (ret == null || item.getStartTime().before(ret))
-					ret = item.getStartTime();
-			}
-		}
-		
-		return ret;
-	}
-	
-	public Date getLastTime() {
-		if (curDay == null)
-			return lastTime;
-		
-		Date ret = null;
-		Iterator<Item> itemi = allItems.values().iterator();
-		while (itemi.hasNext()) {
-			Schedule.Item item = itemi.next();
-			if (item.getStartTime().compareTo(curDay) >= 0 &&
-				item.getEndTime().compareTo(curDayEnd) <= 0) {
-				if (ret == null || item.getEndTime().after(ret))
-					ret = item.getEndTime();
-			}
-		}
-		
-		return ret;
 	}
 	
 	public Schedule.LinkType getLinkType(String id) {
@@ -607,7 +578,13 @@ public class Schedule {
 				throws SAXException {
 			if (localName == "conference") {
 				title = propMap.get("title");
-				/* For now ignore the other data. Should really handle day_change! */
+				if (propMap.get("day_change") != null) {
+					try {
+						dayChange = tf.parse(propMap.get("day_change"));
+					} catch (ParseException e) {
+						Log.w("Schedule.loadPentabarf", "Couldn't parse day_change: " + propMap.get("day_change"));
+					}
+				}
 			} else if (localName == "event") {
 				String id, title, startTimeS, durationS, s, desc;
 				Calendar startTime, endTime;
@@ -617,7 +594,7 @@ public class Schedule {
 				    (title = propMap.get("title")) == null ||
 				    (startTimeS = propMap.get("start")) == null ||
 				    (durationS = propMap.get("duration")) == null) {
-					Log.w("Schedule.loadXcal", "Invalid event, some attributes are missing.");
+					Log.w("Schedule.loadPentabarf", "Invalid event, some attributes are missing.");
 					return;
 				}
 				
@@ -636,7 +613,7 @@ public class Schedule {
 					endTime.add(Calendar.HOUR, tmp.getHours());
 					endTime.add(Calendar.MINUTE, tmp.getMinutes());
 				} catch (ParseException e) {
-					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
+					Log.w("Schedule.loadPentabarf", "Can't parse date: " + e);
 					return;
 				}
 
@@ -655,8 +632,9 @@ public class Schedule {
 				if ((s = propMap.get("description")) != null) {
 					desc += s;
 				}
-				/* Replace newlines with spaces unless there are two of them. */
-				desc = desc.replaceAll("([^\n]) *\n *([^\n*+-])", "$1 $2");
+				/* Replace newlines with spaces unless there are two of them,
+				 * or if the following line starts with a character. */
+				desc = desc.replaceAll("([^\n]) *\n *([a-zA-Z0-9])", "$1 $2");
 				item.setDescription(desc);
 				
 				ListIterator<String> linki = links.listIterator();
@@ -740,7 +718,6 @@ public class Schedule {
 			
 			Calendar dayStart = new GregorianCalendar();
 			dayStart.setTime(curDay);
-			dayStart.set(Calendar.HOUR_OF_DAY, 0);
 			
 			TreeSet<Schedule.Item> ret = new TreeSet<Schedule.Item>();
 			Iterator<Schedule.Item> itemi = items.iterator();
@@ -898,6 +875,44 @@ public class Schedule {
 		
 		public Drawable getIcon() {
 			return iconDrawable;
+		}
+	}
+
+	/* I want to keep local cached copies of schedule files. This reader makes that easy. */
+	private class TeeReader extends BufferedReader {
+		Writer writer;
+		boolean waiting;
+		
+		public TeeReader(Reader in, Writer out, int buf) {
+			super(in, buf);
+			writer = out;
+		}
+		
+		@Override
+		public void mark(int limit) throws IOException {
+			super.mark(limit);
+			waiting = true;
+		}
+		
+		@Override
+		public void reset() throws IOException {
+			super.reset();
+			waiting = false;
+		}
+
+		@Override
+		public int read(char[] buf, int off, int len) throws IOException {
+			int st = super.read(buf, off, len);
+			if (writer != null && !waiting && st > 0) {
+				writer.write(buf, off, st);
+			}
+			return st;
+		}
+		
+		@Override
+		public void close() throws IOException {
+			super.close();
+			writer.close();
 		}
 	}
 }
