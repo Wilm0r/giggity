@@ -17,7 +17,7 @@ public class DeoxideDb {
 	Helper dbh;
 	
 	public DeoxideDb(Application app_) {
-		dbh = new Helper(app_, "deoxide0", null, 5);
+		dbh = new Helper(app_, "deoxide0", null, 6);
 	}
 	
 	public Connection getConnection() {
@@ -38,8 +38,8 @@ public class DeoxideDb {
 					                          "sch_title VarChar(128), " +
 					                          "sch_url VarChar(256), " +
 					                          "sch_atime Integer, " +
-					                          "sch_id_s VarChar(128))," +
-					                          "sch_day Integer");
+					                          "sch_id_s VarChar(128)," +
+					                          "sch_day Integer)");
 			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
 					                               "sci_sch_id Integer Not Null, " +
 					                               "sci_id_s VarChar(128), " +
@@ -57,7 +57,7 @@ public class DeoxideDb {
 				db.execSQL("Alter Table schedule Add Column sch_atime Integer");
 			case 2:
 				db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
-			case 4:
+			case 5:
 				db.execSQL("Alter Table schedule Add Column sch_day Integer");
 			}
 		}
@@ -69,6 +69,8 @@ public class DeoxideDb {
 
 		private HashMap<String,Long> sciIdMap;
 		private long schId;
+		
+		private int day;
 		
 		public Connection() {
 			db = dbh.getWritableDatabase();
@@ -115,6 +117,7 @@ public class DeoxideDb {
 			} else if (q.getCount() == 1) {
 				q.moveToNext();
 				schId = q.getLong(0);
+				day = (int) q.getLong(1);
 				
 				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 			} else {
@@ -168,6 +171,19 @@ public class DeoxideDb {
 			q.close();
 			
 			return ret;
+		}
+		
+		public int getDay() {
+			return day;
+		}
+		
+		public void setDay(int day_) {
+			day = day_;
+			ContentValues row;
+			
+			row = new ContentValues();
+			row.put("sch_day", day);
+			db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 		}
 	}
 	

@@ -31,7 +31,7 @@ public class ScheduleViewActivity extends Activity {
     private final static int VIEW_TIMETABLE = 2;
     private final static int VIEW_NOWNEXT= 3;
     
-    private int view, day;
+    private int view;
 
     SharedPreferences pref;
     
@@ -42,7 +42,6 @@ public class ScheduleViewActivity extends Activity {
         
         pref = PreferenceManager.getDefaultSharedPreferences(app);
         view = Integer.parseInt(pref.getString("default_view", "1"));
-        day = 0;
         
         if (app.hasSchedule(getIntent().getDataString())) {
         	try {
@@ -126,7 +125,7 @@ public class ScheduleViewActivity extends Activity {
     
     private void onScheduleLoaded() {
     	if (view != VIEW_NOWNEXT) {
-    		sched.setDay(day);
+    		sched.setDay(sched.getDb().getDay());
         	setTitle("Giggity: " + sched.getTitle());
     	} else {
     		sched.setDay(-1);
@@ -196,7 +195,7 @@ public class ScheduleViewActivity extends Activity {
     	builder.setTitle("Choose day");
     	builder.setSingleChoiceItems(dayList, cur, new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int item) {
-    	    	day = item;
+    	    	sched.getDb().setDay(item);
     	    	onScheduleLoaded();
     	        dialog.dismiss();
     	    }

@@ -100,11 +100,14 @@ public class Schedule {
 	}
 	
 	public void setDay(int day) {
+		Log.d("setDay", ""+day);
 		if (day == -1) {
 			curDay = curDayEnd = null;
 			return;
 		}
 		
+		if (day >= getDays().size())
+			day = 0;
 		curDay = getDays().get(day);
 		
 		Calendar dayEnd = new GregorianCalendar();
@@ -262,6 +265,10 @@ public class Schedule {
 	
 	public void resume() {
 		db.resume();
+	}
+	
+	public DeoxideDb.Connection getDb() {
+		return db;
 	}
 	
 	public String getId() {
