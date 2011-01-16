@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -25,7 +25,7 @@ import android.view.MenuItem;
 
 public class ScheduleViewActivity extends Activity {
 	private Schedule sched;
-    private Deoxide app;
+    private Giggity app;
     
     private final static int VIEW_BLOCKSCHEDULE = 1;
     private final static int VIEW_TIMETABLE = 2;
@@ -38,7 +38,7 @@ public class ScheduleViewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (Deoxide) getApplication();
+        app = (Giggity) getApplication();
         
         pref = PreferenceManager.getDefaultSharedPreferences(app);
         view = Integer.parseInt(pref.getString("default_view", "1"));

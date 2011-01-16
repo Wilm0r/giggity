@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.util.ArrayList;
 
@@ -6,21 +6,22 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ListView;
 
 public class ChooserActivity extends Activity {
-	private ArrayList<DeoxideDb.DbSchedule> scheds;
+	private ArrayList<Db.DbSchedule> scheds;
 	ListView list;
 	EditText urlBox;
 	
@@ -49,6 +50,7 @@ public class ChooserActivity extends Activity {
     	urlBox = new EditText(this);
     	urlBox.setText("http://");
     	urlBox.setSingleLine();
+    	urlBox.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
     	urlBox.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -83,7 +85,7 @@ public class ChooserActivity extends Activity {
     	 * pick up new items) when returning to the chooser. */
     	super.onResume();
     	
-    	Deoxide app = (Deoxide) getApplication();
+    	Giggity app = (Giggity) getApplication();
     	scheds = app.getDb().getScheduleList();
     	String[] listc = new String[scheds.size()];
     	

@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -8,8 +8,8 @@ import java.util.ListIterator;
 
 import android.app.Activity;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
@@ -18,7 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener {
-	Deoxide app;
+	Giggity app;
     Schedule sched;
 
     /* This object is pretty messy. :-/ It contains the
@@ -49,7 +49,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	
 	BlockSchedule(Activity ctx, Schedule sched_) {
 		super(ctx);
-		app = (Deoxide) ctx.getApplication();
+		app = (Giggity) ctx.getApplication();
     	sched = sched_;
     	pref = PreferenceManager.getDefaultSharedPreferences(app);
     	
@@ -179,7 +179,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	protected class Element extends TextView {
 		int bgcolor;
 		Schedule.Item item;
-		Deoxide app;
+		Giggity app;
 		
 		public Element(Activity ctx) {
 			super(ctx);

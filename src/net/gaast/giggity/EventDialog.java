@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,9 +16,9 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 
 public class EventDialog extends AlertDialog {
 	private Schedule.Item item;

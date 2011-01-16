@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
@@ -15,6 +15,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.RelativeLayout;
@@ -22,10 +23,9 @@ import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
 
 public class TimeTable extends RelativeLayout {
-	Deoxide app;
+	Giggity app;
 	Schedule sched;
 	
 	Gallery tents;
@@ -34,7 +34,7 @@ public class TimeTable extends RelativeLayout {
 	
 	public TimeTable(Activity ctx, Schedule sched_) {
 		super(ctx);
-		app = (Deoxide) ctx.getApplication();
+		app = (Giggity) ctx.getApplication();
 
     	RelativeLayout.LayoutParams lp;
     	

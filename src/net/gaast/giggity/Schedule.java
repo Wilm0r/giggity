@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -41,8 +41,8 @@ import android.util.Xml;
 public class Schedule {
 	private final int detectHeaderSize = 1024;
 	
-	private Deoxide app;
-	private DeoxideDb.Connection db;
+	private Giggity app;
+	private Db.Connection db;
 	
 	private String id;
 	private String title;
@@ -58,7 +58,7 @@ public class Schedule {
 
 	private boolean fullyLoaded;
 	
-	public Schedule(Deoxide ctx) {
+	public Schedule(Giggity ctx) {
 		app = ctx;
 	}
 
@@ -267,7 +267,7 @@ public class Schedule {
 		db.resume();
 	}
 	
-	public DeoxideDb.Connection getDb() {
+	public Db.Connection getDb() {
 		return db;
 	}
 	

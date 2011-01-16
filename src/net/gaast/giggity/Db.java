@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,15 +9,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DeoxideDb {
+public class Db {
 	Helper dbh;
 	
-	public DeoxideDb(Application app_) {
-		dbh = new Helper(app_, "deoxide0", null, 6);
+	public Db(Application app_) {
+		dbh = new Helper(app_, "giggity", null, 1);
 	}
 	
 	public Connection getConnection() {
@@ -53,12 +53,14 @@ public class DeoxideDb {
 
 			switch (oldVersion) {
 			case 1:
+			/*
 				db.execSQL("Alter Table schedule Add Column sch_url VarChar(256)");
 				db.execSQL("Alter Table schedule Add Column sch_atime Integer");
 			case 2:
 				db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
 			case 5:
 				db.execSQL("Alter Table schedule Add Column sch_day Integer");
+			*/
 			}
 		}
 	}

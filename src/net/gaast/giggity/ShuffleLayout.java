@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import android.app.Activity;
 import android.view.MotionEvent;

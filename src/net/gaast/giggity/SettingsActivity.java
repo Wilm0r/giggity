@@ -1,4 +1,4 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import android.os.Bundle;
 import android.preference.PreferenceActivity;

@@ -1,26 +1,26 @@
-package net.gaast.deoxide;
+package net.gaast.giggity;
 
 import java.util.HashMap;
 
 import android.app.Application;
 import android.preference.PreferenceManager;
 
-public class Deoxide extends Application {
-	DeoxideDb db;
-	DeoxideDb.Connection dbc;
+public class Giggity extends Application {
+	Db db;
+	Db.Connection dbc;
 	
 	HashMap<String,Schedule> scheduleCache;
 	
     public void onCreate() {
     	super.onCreate();
-    	db = new DeoxideDb(this);
+    	db = new Db(this);
     	
     	scheduleCache = new HashMap<String,Schedule>();
     	
     	PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
     }
     
-    public DeoxideDb.Connection getDb() {
+    public Db.Connection getDb() {
     	return db.getConnection();
     }
     
