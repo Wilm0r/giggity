@@ -35,7 +35,6 @@ public class TimeTable extends RelativeLayout {
 	public TimeTable(Activity ctx, Schedule sched_) {
 		super(ctx);
 		app = (Deoxide) ctx.getApplication();
-    	sched = sched_;
 
     	RelativeLayout.LayoutParams lp;
     	
@@ -62,7 +61,7 @@ public class TimeTable extends RelativeLayout {
     	});
     	
     	tents = new Gallery(ctx);
-    	tents.setAdapter(new TentListAdapter(ctx, sched.getTents()));
+    	tents.setAdapter(new TentListAdapter(ctx, sched_.getTents()));
     	lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
     	
     	addView(tents, lp);

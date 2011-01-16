@@ -101,8 +101,6 @@ public class ScheduleViewActivity extends Activity {
         };
 
         loader.start();
-
-    	// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_SENSOR);
 	}
     
     @Override
@@ -150,25 +148,33 @@ public class ScheduleViewActivity extends Activity {
     	menu.add(0, 1, 0, "Settings")
     		.setShortcut('0', 's')
     		.setIcon(android.R.drawable.ic_menu_preferences);
-   		menu.add(1, 2, 0, "Timetable")
-   			.setShortcut('1', 't')
-   			.setIcon(android.R.drawable.ic_menu_agenda);
-   		menu.add(1, 3, 0, "Block schedule")
-			.setShortcut('2', 'b')
-		.setIcon(R.drawable.blockschedule);
-   		menu.add(1, 4, 0, "Now and next")
-			.setShortcut('2', 'b')
-		.setIcon(R.drawable.ic_menu_clock_face);
+   		menu.add(1, 2, 0, "Choose day")
+			.setShortcut('1', 'd')
+			.setIcon(android.R.drawable.ic_menu_day);
+   		menu.add(1, 3, 0, "Timetable")
+			.setShortcut('2', 't')
+			.setIcon(android.R.drawable.ic_menu_agenda);
+   		menu.add(1, 4, 0, "Block schedule")
+			.setShortcut('3', 'b')
+			.setIcon(R.drawable.blockschedule);
+   		menu.add(1, 5, 0, "Now and next")
+			.setShortcut('4', 'n')
+			.setIcon(R.drawable.ic_menu_clock_face);
     	
     	return true;
     }
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(2).setVisible(view != VIEW_TIMETABLE);
-    	menu.findItem(3).setVisible(view != VIEW_BLOCKSCHEDULE);
-    	menu.findItem(4).setVisible(view != VIEW_NOWNEXT);
+    	menu.findItem(2).setVisible(view != VIEW_NOWNEXT);
+    	menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
+    	menu.findItem(4).setVisible(view != VIEW_BLOCKSCHEDULE);
+    	menu.findItem(5).setVisible(view != VIEW_NOWNEXT);
     	return true;
+    }
+    
+    public void showDayDialog() {
+    	
     }
     
     @Override
@@ -179,14 +185,18 @@ public class ScheduleViewActivity extends Activity {
     		startActivity(intent);
     		return true;
     	case 2:
+    		showDayDialog();
+    		return true;
+    	case 3:
     		view = VIEW_TIMETABLE;
     		onScheduleLoaded();
     		return true;
-    	case 3:
+    	case 4:
     		view = VIEW_BLOCKSCHEDULE;
     		onScheduleLoaded();
     		return true;
-    	case 4:
+    	case 5:
+    		sched.setDay(null);
     		view = VIEW_NOWNEXT;
     		onScheduleLoaded();
     		return true;

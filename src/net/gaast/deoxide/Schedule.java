@@ -49,6 +49,7 @@ public class Schedule {
 	private HashMap<String,Schedule.Item> allItems;
 
 	private Date firstTime, lastTime;
+	private Date curDay, curDayEnd;
 	
 	private boolean fullyLoaded;
 	
@@ -107,6 +108,25 @@ public class Schedule {
 			// WTF
 		}
 		return ret;
+	}
+	
+	public LinkedList<Date> getDays() {
+		LinkedList<Date> ret = new LinkedList<Date>();
+		ret.add(firstTime);
+		ret.add(lastTime);
+		return ret;
+	}
+	
+	public void setDay(Date day) {
+		curDay = day;
+		if (day == null)
+			return;
+		
+		curDay.setHours(0);
+		Calendar dayEnd = new GregorianCalendar();
+		dayEnd.setTime(curDay);
+		dayEnd.add(Calendar.DAY_OF_MONTH, 1);
+		curDayEnd = dayEnd.getTime();
 	}
 	
 	public void loadSchedule(String source) {
@@ -230,11 +250,39 @@ public class Schedule {
 	}
 	
 	public Date getFirstTime() {
-		return firstTime;
+		if (curDay == null)
+			return firstTime;
+		
+		Date ret = null;
+		Iterator<Item> itemi = allItems.values().iterator();
+		while (itemi.hasNext()) {
+			Schedule.Item item = itemi.next();
+			if (item.getStartTime().compareTo(curDay) >= 0 &&
+				item.getEndTime().compareTo(curDayEnd) <= 0) {
+				if (ret == null || item.getStartTime().before(ret))
+					ret = item.getStartTime();
+			}
+		}
+		
+		return ret;
 	}
 	
 	public Date getLastTime() {
-		return lastTime;
+		if (curDay == null)
+			return lastTime;
+		
+		Date ret = null;
+		Iterator<Item> itemi = allItems.values().iterator();
+		while (itemi.hasNext()) {
+			Schedule.Item item = itemi.next();
+			if (item.getStartTime().compareTo(curDay) >= 0 &&
+				item.getEndTime().compareTo(curDayEnd) <= 0) {
+				if (ret == null || item.getEndTime().after(ret))
+					ret = item.getEndTime();
+			}
+		}
+		
+		return ret;
 	}
 	
 	public Schedule.LinkType getLinkType(String id) {
@@ -544,7 +592,7 @@ public class Schedule {
 				throws SAXException {
 			if (localName == "conference") {
 				title = propMap.get("title");
-				/* For now ignore the other data. */
+				/* For now ignore the other data. Should really handle day_change! */
 			} else if (localName == "event") {
 				String id, title, startTimeS, durationS, s, desc;
 				Calendar startTime, endTime;
@@ -593,7 +641,7 @@ public class Schedule {
 					desc += s;
 				}
 				/* Replace newlines with spaces unless there are two of them. */
-				desc = desc.replaceAll("([^\n]) *\n *([^\n])", "$1 $2");
+				desc = desc.replaceAll("([^\n]) *\n *([^\n*+-])", "$1 $2");
 				item.setDescription(desc);
 				
 				ListIterator<String> linki = links.listIterator();
@@ -649,6 +697,7 @@ public class Schedule {
 		private String id;
 		private String title;
 		private TreeSet<Schedule.Item> items;
+		Schedule schedule;
 		
 		public Line(String id_, String title_) {
 			id = id_;
@@ -671,7 +720,22 @@ public class Schedule {
 		}
 		
 		public AbstractSet<Schedule.Item> getItems() {
-			return items;
+			if (curDay == null)
+				return items;
+			
+			Calendar dayStart = new GregorianCalendar();
+			dayStart.setTime(curDay);
+			dayStart.set(Calendar.HOUR_OF_DAY, 0);
+			
+			TreeSet<Schedule.Item> ret = new TreeSet<Schedule.Item>();
+			Iterator<Schedule.Item> itemi = items.iterator();
+			while (itemi.hasNext()) {
+				Schedule.Item item = itemi.next();
+				if (item.getStartTime().after(dayStart.getTime()) &&
+					item.getEndTime().before(curDayEnd))
+					ret.add(item);
+			}
+			return ret;
 		}
 	}
 	
