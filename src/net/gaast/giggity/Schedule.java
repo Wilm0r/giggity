@@ -79,17 +79,30 @@ public class Schedule {
 	public LinkedList<Date> getDays() {
 		if (dayList == null) {
 			dayList = new LinkedList<Date>();
-			Calendar c = new GregorianCalendar();
-			c.setTime(firstTime);
-			c.set(Calendar.HOUR_OF_DAY, dayChange.getHours());
-			c.set(Calendar.MINUTE, dayChange.getMinutes());
+			Calendar day = new GregorianCalendar();
+			Calendar dayEnd = new GregorianCalendar();
+			day.setTime(firstTime);
+			day.set(Calendar.HOUR_OF_DAY, dayChange.getHours());
+			day.set(Calendar.MINUTE, dayChange.getMinutes());
+			dayEnd.setTime(day.getTime());
+			dayEnd.add(Calendar.DATE, 1);
 			/* Add a day 0 (maybe there's an event before the first day officially
 			 * starts?). Saw this in the CCC Fahrplan for example. */
-			if (c.getTime().after(firstTime))
-				c.add(Calendar.DATE, -1);
-			while (c.getTime().before(lastTime)) {
-				dayList.add(c.getTime());
-				c.add(Calendar.DATE, 1);
+			if (day.getTime().after(firstTime))
+				day.add(Calendar.DATE, -1);
+			while (day.getTime().before(lastTime)) {
+				/* Some schedules have empty days in between. :-/ Skip those. */
+				Iterator<Item> itemi = allItems.values().iterator();
+				while (itemi.hasNext()) {
+					Schedule.Item item = itemi.next();
+					if (item.getStartTime().compareTo(day.getTime()) >= 0 &&
+						item.getEndTime().compareTo(dayEnd.getTime()) <= 0) {
+						dayList.add(day.getTime());
+						break;
+					}
+				}
+				day.add(Calendar.DATE, 1);
+				dayEnd.add(Calendar.DATE, 1);
 			}
 		}
 		return dayList;
