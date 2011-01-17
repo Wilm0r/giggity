@@ -113,7 +113,6 @@ public class Schedule {
 	}
 	
 	public void setDay(int day) {
-		Log.d("setDay", ""+day);
 		if (day == -1) {
 			curDay = curDayEnd = null;
 			return;

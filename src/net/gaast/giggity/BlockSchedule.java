@@ -113,6 +113,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
         	y ++;
         	h = TentHeight;
         	line = new AbsoluteLayout(ctx);
+        	
 			gigi = tent.getItems().iterator();
 			while (gigi.hasNext()) {
 				Schedule.Item gig = gigi.next();
@@ -127,7 +128,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cell = new Element(ctx);
 				cell.setItem(gig);
 				cell.setWidth(w);
-				if ((++x & 1) > 0 )
+				if ((++x & 1) > 0)
 					cell.setBackgroundColor(0xFF000000);
 				else
 					cell.setBackgroundColor(0xFF3F3F3F);
@@ -137,7 +138,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				line.addView(cell, lp);
 			}
 			
-			schedCont.addView(line);
+			/* TODO: Grrrr, how do I get the width of topClock for here? :-/ */
+			schedCont.addView(line, new LinearLayout.LayoutParams(-1, h));
     	}
 
     	schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
