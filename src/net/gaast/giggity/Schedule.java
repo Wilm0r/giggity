@@ -220,6 +220,7 @@ public class Schedule {
 			}
 			if (in == null && fn.canRead()) {
 				in = new BufferedReader(new InputStreamReader(new FileInputStream(fn)));
+				dlc = null;
 			} else if (in == null) {
 				throw new RuntimeException("No network connection or cached copy available.");
 			}
@@ -254,7 +255,8 @@ public class Schedule {
 			in.close();
 		} catch (IOException e) {}
 		/* Store last-modified date so we can cache more efficiently. */
-		fn.setLastModified(dlc.getLastModified());
+		if (dlc != null)
+			fn.setLastModified(dlc.getLastModified());
 		
 		if (id == null)
 			id = hashify(source);
