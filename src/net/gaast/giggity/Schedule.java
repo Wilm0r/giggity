@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
+import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -183,23 +184,44 @@ public class Schedule {
 		
 		fullyLoaded = false;
 
-		BufferedReader in;
+		BufferedReader in = null;
 		String head;
+		File fn;
+		URL dl;
+		URLConnection dlc;
 
 		try {
-			URL dl = new URL(source);
+			dl = new URL(source);
+			dlc = dl.openConnection();
 			char[] headc = new char[detectHeaderSize];
 			Reader rawin;
 			NetworkInfo network = ((ConnectivityManager)
 					app.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo(); 
 			
-			File fn = new File(app.getCacheDir(), "sched." + hashify(source));
+			fn = new File(app.getCacheDir(), "sched." + hashify(source));
+			if (fn.canRead()) {
+				/* TODO: Not sure if it's a great idea to use inode metadata to store
+				 * modified-since data, but it works so far.. */
+				dlc.setIfModifiedSince(fn.lastModified());
+			}
 			if (network != null && network.isConnected()) {
-				rawin = new InputStreamReader(dl.openStream());
-				Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fn)));
-				in = new TeeReader(rawin, copy, 4096);
-			} else {
+				rawin = new InputStreamReader(dlc.getInputStream());
+				Log.d("HTTP status", ""+dlc.getHeaderField(0));
+				if (dlc.getHeaderField(0).contains(" 200 ")) {
+					Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fn)));
+					in = new TeeReader(rawin, copy, 4096);
+				} else if (dlc.getHeaderField(0).contains(" 304 ")) {
+					Log.i("loadSchedule", "HTTP 304, using cached copy");
+					/* Just continue, in = null so we'll read from cache. */
+				} else {
+					/* This Java URL lib doesn't handle 302s.. :-( */
+					throw new RuntimeException("HTTP error: " + dlc.getHeaderField(0));
+				}
+			}
+			if (in == null && fn.canRead()) {
 				in = new BufferedReader(new InputStreamReader(new FileInputStream(fn)));
+			} else if (in == null) {
+				throw new RuntimeException("No network connection or cached copy available.");
 			}
 			
 			/* Read the first KByte (but keep it buffered) to try to detect the format. */
@@ -227,6 +249,12 @@ public class Schedule {
 			Log.d("head", head);
 			throw new RuntimeException("File format not recognized");
 		}
+		
+		try {
+			in.close();
+		} catch (IOException e) {}
+		/* Store last-modified date so we can cache more efficiently. */
+		fn.setLastModified(dlc.getLastModified());
 		
 		if (id == null)
 			id = hashify(source);
