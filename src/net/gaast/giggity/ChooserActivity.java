@@ -1,8 +1,10 @@
 package net.gaast.giggity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +27,8 @@ public class ChooserActivity extends Activity {
 	ListView list;
 	EditText urlBox;
 	
+	final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -33,6 +37,19 @@ public class ChooserActivity extends Activity {
     	list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+				if (id == scheds.size()) {
+					/* "Scan QR code..." */
+					try {
+						Intent intent = new Intent(BARCODE_SCANNER);
+				        intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+				        startActivityForResult(intent, 0);
+					} catch (android.content.ActivityNotFoundException e) {
+					    new AlertDialog.Builder(ChooserActivity.this)
+					      .setMessage("Please install the Barcode Scanner app")
+					      .show();
+					}
+			        return;
+				}
     	        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scheds.get((int)id).getUrl()),
 		                   view.getContext(), ScheduleViewActivity.class);
     	        startActivity(intent);
@@ -87,12 +104,14 @@ public class ChooserActivity extends Activity {
     	
     	Giggity app = (Giggity) getApplication();
     	scheds = app.getDb().getScheduleList();
-    	String[] listc = new String[scheds.size()];
+    	LinkedList<String> listc = new LinkedList<String>();
     	
     	int i;
     	for (i = 0; i < scheds.size(); i ++) {
-    		listc[i] = scheds.get(i).getTitle();
+    		listc.add(scheds.get(i).getTitle());
     	}
+    	/* TODO: Figure out how to detect if Barcode Scanner is installed here. */
+    	listc.add("Scan QR code...");
     	
     	list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listc));
     }
@@ -101,5 +120,15 @@ public class ChooserActivity extends Activity {
     	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlBox.getText().toString()),
                                    this, ScheduleViewActivity.class);
     	startActivity(intent);
+    }
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                urlBox.setText(intent.getStringExtra("SCAN_RESULT"));
+                urlBox.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+            }
+        }
     }
 }
