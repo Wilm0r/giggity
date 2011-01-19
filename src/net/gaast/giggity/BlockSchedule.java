@@ -2,6 +2,7 @@ package net.gaast.giggity;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -11,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.text.format.DateUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
@@ -128,7 +130,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cell = new Element(ctx);
 				cell.setItem(gig);
 				cell.setWidth(w);
-				if ((++x & 1) > 0)
+				if (((y + ++x) & 1) > 0)
 					cell.setBackgroundColor(0xFF000000);
 				else
 					cell.setBackgroundColor(0xFF3F3F3F);
@@ -221,10 +223,14 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	protected class Clock extends SimpleScroller {
 		private Element cell;
 		private LinearLayout child;
+		Calendar base;
 		
-		public Clock(Activity ctx, Calendar base, Calendar end) {
+		public Clock(Activity ctx, Calendar base_, Calendar end) {
 			super(ctx, SimpleScroller.HORIZONTAL);
 
+			base = new GregorianCalendar();
+			base.setTime(base_.getTime());
+			
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 			Calendar cal;
 			
@@ -245,11 +251,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cell.setText(df.format(cal.getTime()));
 				cell.setHeight(HourHeight);
 				cell.setWidth(HourWidth / 2);
-				if (cal.get(Calendar.MINUTE) == 0) {
-					cell.setBackgroundColor(0xFF000000);
-				} else {
-					cell.setBackgroundColor(0xFF3F3F3F);
-				}
 				child.addView(cell);
 
 				if (cal.after(end))
@@ -258,7 +259,26 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cal.add(Calendar.MINUTE, 30);
 			}
 			
+			update();
 			addView(child);
+		}
+		
+		public void update() {
+			int i;
+			Calendar cal = new GregorianCalendar();
+			cal.setTime(base.getTime());
+			for (i = 1; i < child.getChildCount(); i ++) {
+				Element cell = (Element) child.getChildAt(i);
+				long diff = System.currentTimeMillis() - cal.getTimeInMillis(); 
+				if (diff >= 0 && diff < 1800000)
+					cell.setBackgroundColor(0xFF00CF00);
+				else if (cal.get(Calendar.MINUTE) == 0)
+					cell.setBackgroundColor(0xFF000000);
+				else
+					cell.setBackgroundColor(0xFF3F3F3F);
+
+				cal.add(Calendar.MINUTE, 30);
+			}
 		}
 	}
 }

@@ -912,7 +912,7 @@ public class Schedule {
 		
 		public LinkType(String id_) {
 			id = id_;
-			iconDrawable = app.getResources().getDrawable(android.R.drawable.arrow_up_float);
+			iconDrawable = app.getResources().getDrawable(R.drawable.browser_small);
 		}
 		
 		public void setIconUrl(String url_) {
