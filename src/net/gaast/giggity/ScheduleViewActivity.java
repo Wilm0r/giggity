@@ -32,6 +32,8 @@ public class ScheduleViewActivity extends Activity {
     private final static int VIEW_NOWNEXT= 3;
     
     private int view;
+    
+	private Format df = new SimpleDateFormat("EE d MMMM");
 
     SharedPreferences pref;
     
@@ -124,11 +126,12 @@ public class ScheduleViewActivity extends Activity {
     }
     
     private void onScheduleLoaded() {
-    	if (view != VIEW_NOWNEXT) {
+    	if (view != VIEW_NOWNEXT && sched.getDays().size() > 1) {
     		sched.setDay(sched.getDb().getDay());
-        	setTitle("Giggity: " + sched.getTitle());
+    		setTitle(df.format(sched.getDay()) + ", " + sched.getTitle());
     	} else {
     		sched.setDay(-1);
+    		setTitle(sched.getTitle());
     	}
     	
     	if (view == VIEW_TIMETABLE) {
@@ -181,7 +184,6 @@ public class ScheduleViewActivity extends Activity {
     }
     
     public void showDayDialog() {
-    	Format df = new SimpleDateFormat("EE d MMMM");
     	LinkedList<Date> days = sched.getDays();
     	CharSequence dayList[] = new CharSequence[days.size()];
     	int i, cur = -1;
