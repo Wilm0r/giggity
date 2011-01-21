@@ -11,8 +11,9 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener {
 	Giggity app;
     Schedule sched;
+    
+    Colours c;
 
     /* This object is pretty messy. :-/ It contains the
      * following widgets: */
@@ -54,6 +57,21 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		app = (Giggity) ctx.getApplication();
     	sched = sched_;
     	pref = PreferenceManager.getDefaultSharedPreferences(app);
+
+    	/* Not working yet. :-( */
+    	Class[] styles = getClass().getDeclaredClasses();
+    	int i;
+    	for (i = 0; i < styles.length; i ++)
+    		if (styles[i].getSuperclass() == Colours.class) {
+    			Log.d("bla", styles[i].getSimpleName());
+    			try {
+					c = (Colours) styles[i].newInstance();
+				} catch (IllegalAccessException e) {
+				} catch (InstantiationException e) {
+				}
+    		}
+    	
+    	c = new Light();
     	
     	int x, y;
     	Calendar base, cal, end;
@@ -66,7 +84,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
         HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
     	
     	schedCont = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE);
-    	schedCont.setBackgroundColor(0xFFFFFFFF);
+    	schedCont.setBackgroundColor(c.background);
     	schedCont.setMinimumHeight(sched.getTents().size());
     	
 		base = Calendar.getInstance();
@@ -101,10 +119,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			cell = new Element(ctx);
 			cell.setWidth(TentWidth);
 			cell.setText(tent.getTitle());
-			if ((y & 1) == 0)
-				cell.setBackgroundColor(0xFF000000);
-			else
-				cell.setBackgroundColor(0xFF3F3F3F);
+			cell.setBackgroundColor(c.tentbg[y&1]);
+			cell.setTextColor(c.tentfg[y&1]);
 			tentHeaders.addView(cell);
 
     		cal = Calendar.getInstance();
@@ -130,11 +146,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cell = new Element(ctx);
 				cell.setItem(gig);
 				cell.setWidth(w);
-				if (((y + ++x) & 1) > 0)
-					cell.setBackgroundColor(0xFF000000);
-				else
-					cell.setBackgroundColor(0xFF3F3F3F);
-				cell.setTextColor(0xFFFFFFFF);
+				cell.setBackgroundColor(c.itembg[((y+x)&1)]);
+				cell.setTextColor(c.itemfg[((y+x)&1)]);
+				x ++;
 				cell.setText(gig.getTitle());
 				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, 0);
 				line.addView(cell, lp);
@@ -223,7 +237,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	protected class Clock extends SimpleScroller {
 		private Element cell;
 		private LinearLayout child;
-		Calendar base;
+		private Handler updater;
+		private Calendar base;
 		
 		public Clock(Activity ctx, Calendar base_, Calendar end) {
 			super(ctx, SimpleScroller.HORIZONTAL);
@@ -242,7 +257,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			cell = new Element(ctx);
 			cell.setHeight(HourHeight);
 			cell.setWidth(TentWidth);
-			cell.setBackgroundColor(0xFF3F3F3F);
+			cell.setBackgroundColor(c.clockbg[1]);
 			child.addView(cell);
 
 			while(true) {
@@ -259,26 +274,92 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cal.add(Calendar.MINUTE, 30);
 			}
 			
-			update();
+			updater = new Handler();
+			//update();
+			updater.postAtFrontOfQueue(updatef);
 			addView(child);
 		}
 		
+		private Runnable updatef = new Runnable() {
+			@Override
+			public void run() {
+				update();
+				Log.d("b", "running updater");
+			}
+		};
+		
+		/* Mark the current 30m period in the clock green. */
 		public void update() {
 			int i;
 			Calendar cal = new GregorianCalendar();
 			cal.setTime(base.getTime());
+			Log.d("update", "running 1");
 			for (i = 1; i < child.getChildCount(); i ++) {
 				Element cell = (Element) child.getChildAt(i);
 				long diff = System.currentTimeMillis() - cal.getTimeInMillis(); 
-				if (diff >= 0 && diff < 1800000)
+				if (diff >= 0 && diff < 1800000) {
 					cell.setBackgroundColor(0xFF00CF00);
-				else if (cal.get(Calendar.MINUTE) == 0)
-					cell.setBackgroundColor(0xFF000000);
-				else
-					cell.setBackgroundColor(0xFF3F3F3F);
+					cell.setTextColor(c.clockfg[1]);
+					//updater.postAtTime(updatef, cal.getTimeInMillis() + 1800000);
+				} else if (cal.get(Calendar.MINUTE) == 0) {
+					cell.setBackgroundColor(c.clockbg[0]);
+					cell.setTextColor(c.clockfg[0]);
+				} else {
+					cell.setBackgroundColor(c.clockbg[1]);
+					cell.setTextColor(c.clockfg[1]);
+				}
 
 				cal.add(Calendar.MINUTE, 30);
 			}
+		}
+	}
+	
+	private abstract class Colours {
+		public String name;
+		public int background;
+		public int clockbg[], clockfg[];
+		public int itembg[], itemfg[];
+		public int tentbg[], tentfg[];
+		
+		public Colours() {
+			name = getClass().getName();
+			clockbg = new int[2];
+			clockfg = new int[2];
+			itembg = new int[2];
+			itemfg = new int[2];
+			tentbg = new int[2];
+			tentfg = new int[2];
+		}
+	}
+
+	private class BlackWhite extends Colours {
+		public BlackWhite() {
+			super();
+			background = 0xFFFFFFFF;
+			clockbg[0] = 0xFF3F3F3F;
+			clockbg[1] = 0xFF000000;
+			itembg[0] = 0xFF3F3F3F;
+			itembg[1] = 0xFF000000;
+			tentbg[0] = 0xFF3F3F3F;
+			tentbg[1] = 0xFF000000;
+			clockfg[0] = clockfg[1] = itemfg[0] = itemfg[1] =
+				tentfg[0] = tentfg[1] = 0xFFFFFFFF;
+		}
+	}
+
+	private class Light extends Colours {
+		public Light() {
+			super();
+			background = 0xFFF9FCDA;
+			clockbg[0] = 0xFFF5FC49;
+			clockbg[1] = 0xFFF8FC9C;
+			itembg[0] = 0xFFE0EFFC;
+			itembg[1] = 0xFFC2E1FC;
+			tentbg[0] = 0xFFFAFCB8;
+			tentbg[1] = 0xFFF8FC9C;
+			clockfg[0] = clockfg[1] = itemfg[0] = itemfg[1] =
+				tentfg[0] = tentfg[1] = 0xFF000000;
+			itemfg[0] = itemfg[1] = 0xFF000000;
 		}
 	}
 }
