@@ -11,7 +11,7 @@
 	                android:entryValues="@array/default_view_values" 
 	                android:defaultValue="1" />
 	
-	<PreferenceCategory android:title="Block schedule">
+	<CheckBoxPreference android:key="strict_ssl" android:summary="Do proper HTTPS certificate validation" android:title="Strict SSL" android:defaultValue="false"></CheckBoxPreference><PreferenceCategory android:title="Block schedule">
 	
 		<ListPreference android:key="block_schedule_element_size"
 		                android:title="Block size"
@@ -29,6 +29,7 @@
 		                    android:title="Allow row shuffling" />
 
 	</PreferenceCategory>
+
 
 
 

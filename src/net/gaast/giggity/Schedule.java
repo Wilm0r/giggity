@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.security.MessageDigest;
@@ -27,15 +28,19 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 import java.util.TreeSet;
 
+import javax.net.ssl.HttpsURLConnection;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.util.Xml;
 
@@ -194,31 +199,56 @@ public class Schedule {
 			dl = new URL(source);
 			dlc = dl.openConnection();
 			char[] headc = new char[detectHeaderSize];
-			Reader rawin;
 			NetworkInfo network = ((ConnectivityManager)
 					app.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo(); 
+			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
 			
 			fn = new File(app.getCacheDir(), "sched." + hashify(source));
-			if (fn.canRead()) {
-				/* TODO: Not sure if it's a great idea to use inode metadata to store
-				 * modified-since data, but it works so far.. */
-				dlc.setIfModifiedSince(fn.lastModified());
+			
+			try {
+				/* Do HTTP stuff first, then HTTPS! Once we get a CastClassException, we stop. */
+				HttpURLConnection.setFollowRedirects(true);
+				
+				/* Disabled for now since I can't get the default User-Agent until after sending it.
+				String ua = ((HttpURLConnection)dlc).getRequestProperty("User-Agent");
+				((HttpURLConnection)dlc).setRequestProperty("User-Agent", "Giggity, " + ua);
+				*/
+				
+				if (fn.canRead() && fn.lastModified() > 0) {
+					/* TODO: Not sure if it's a great idea to use inode metadata to store
+					 * modified-since data, but it works so far.. */
+					dlc.setIfModifiedSince(fn.lastModified());
+				}
+				
+				if (!pref.getBoolean("strict_ssl", false))
+					((HttpsURLConnection)dlc).setSSLSocketFactory(SSLRage.getSocketFactory());
+			} catch (ClassCastException e) {
+				/* It failed. Maybe we're HTTP only? Maybe even FTP? */
 			}
+			
 			if (network != null && network.isConnected()) {
-				rawin = new InputStreamReader(dlc.getInputStream());
+				int status;
+				try {
+					status = ((HttpURLConnection)dlc).getResponseCode();
+				} catch (ClassCastException e) {
+					/* Assume success if this isn't HTTP.. */
+					status = 200;
+				}
 				Log.d("HTTP status", ""+dlc.getHeaderField(0));
-				if (dlc.getHeaderField(0).contains(" 200 ")) {
+				if (status == 200) {
 					Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fn)));
+					Reader rawin = new InputStreamReader(dlc.getInputStream());
 					in = new TeeReader(rawin, copy, 4096);
-				} else if (dlc.getHeaderField(0).contains(" 304 ")) {
+				} else if (status == 304) {
 					Log.i("loadSchedule", "HTTP 304, using cached copy");
 					/* Just continue, in = null so we'll read from cache. */
 				} else {
-					/* This Java URL lib doesn't handle 302s.. :-( */
-					throw new RuntimeException("HTTP error: " + dlc.getHeaderField(0));
+					throw new RuntimeException("Download error: " + dlc.getHeaderField(0));
 				}
 			}
+
 			if (in == null && fn.canRead()) {
+				/* We have no download stream and should use the cached copy (i.e. we're offline). */
 				in = new BufferedReader(new InputStreamReader(new FileInputStream(fn)));
 				dlc = null;
 			} else if (in == null) {
@@ -255,7 +285,7 @@ public class Schedule {
 			in.close();
 		} catch (IOException e) {}
 		/* Store last-modified date so we can cache more efficiently. */
-		if (dlc != null)
+		if (dlc != null && dlc.getLastModified() > 0)
 			fn.setLastModified(dlc.getLastModified());
 		
 		if (id == null)
