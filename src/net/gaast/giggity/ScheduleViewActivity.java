@@ -34,8 +34,11 @@ public class ScheduleViewActivity extends Activity {
     private int view;
     
 	private Format df = new SimpleDateFormat("EE d MMMM");
+	
+	/* Set this if when returning to this activity we need a redraw. */
+	private boolean redraw;
 
-    SharedPreferences pref;
+    private SharedPreferences pref;
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,6 +58,8 @@ public class ScheduleViewActivity extends Activity {
         } else {
         	horribleAsyncLoadHack(getIntent().getDataString());
         }
+        
+        redraw = false;
     }
     
     private void horribleAsyncLoadHack(String source_) { 
@@ -110,6 +115,10 @@ public class ScheduleViewActivity extends Activity {
     
     @Override
     protected void onResume() {
+    	if (redraw) {
+    		onScheduleLoaded();
+    		redraw = false;
+    	}
     	if (sched != null) {
     		sched.resume();
     	}
@@ -210,6 +219,7 @@ public class ScheduleViewActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
     	case 1:
+    		redraw = true;
     		Intent intent = new Intent(this, SettingsActivity.class);
     		startActivity(intent);
     		return true;

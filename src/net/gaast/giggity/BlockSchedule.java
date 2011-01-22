@@ -61,17 +61,18 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     	/* Not working yet. :-( */
     	Class[] styles = getClass().getDeclaredClasses();
     	int i;
-    	for (i = 0; i < styles.length; i ++)
-    		if (styles[i].getSuperclass() == Colours.class) {
-    			Log.d("bla", styles[i].getSimpleName());
+    	c = new Light();
+    	for (i = 0; i < styles.length; i ++) {
+			Log.d("style", pref.getString("block_schedule_style", "") + " " + styles[i].getSimpleName());
+    		if (styles[i].getSuperclass() == Colours.class &&
+    			styles[i].getSimpleName().equals(pref.getString("block_schedule_style", ""))) {
     			try {
 					c = (Colours) styles[i].newInstance();
 				} catch (IllegalAccessException e) {
 				} catch (InstantiationException e) {
 				}
-    		}
-    	
-    	c = new Light();
+			}
+    	}
     	
     	int x, y;
     	Calendar base, cal, end;
@@ -314,15 +315,13 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		}
 	}
 	
-	private abstract class Colours {
-		public String name;
+	static private abstract class Colours {
 		public int background;
 		public int clockbg[], clockfg[];
 		public int itembg[], itemfg[];
 		public int tentbg[], tentfg[];
 		
 		public Colours() {
-			name = getClass().getName();
 			clockbg = new int[2];
 			clockfg = new int[2];
 			itembg = new int[2];
@@ -332,7 +331,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		}
 	}
 
-	private class BlackWhite extends Colours {
+	@SuppressWarnings("unused")
+	static private class BlackWhite extends Colours {
 		public BlackWhite() {
 			super();
 			background = 0xFFFFFFFF;
@@ -347,7 +347,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		}
 	}
 
-	private class Light extends Colours {
+	static private class Light extends Colours {
 		public Light() {
 			super();
 			background = 0xFFF9FCDA;

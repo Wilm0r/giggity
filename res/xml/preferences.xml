@@ -13,7 +13,7 @@
 	
 	<CheckBoxPreference android:key="strict_ssl" android:summary="Do proper HTTPS certificate validation" android:title="Strict SSL" android:defaultValue="false"></CheckBoxPreference><PreferenceCategory android:title="Block schedule">
 	
-		<ListPreference android:key="block_schedule_element_size"
+		<ListPreference android:title="Style" android:key="block_schedule_style" android:defaultValue="Light" android:dialogTitle="Style" android:negativeButtonText="Cancel" android:positiveButtonText="OK" android:entries="@array/block_schedule_styles" android:entryValues="@array/block_schedule_styles"></ListPreference><ListPreference android:key="block_schedule_element_size"
 		                android:title="Block size"
 		                android:summary="Size of a block schedule block"
 		                android:dialogTitle="Block size"
@@ -28,7 +28,8 @@
 		                    android:summary="Drag row titles to reorder them"
 		                    android:title="Allow row shuffling" />
 
-	</PreferenceCategory>
+	
+</PreferenceCategory>
 
 
 
