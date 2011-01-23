@@ -11,7 +11,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -20,7 +19,7 @@ import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener {
+public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener, ScheduleViewer {
 	Giggity app;
     Schedule sched;
     
@@ -63,7 +62,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     	int i;
     	c = new Light();
     	for (i = 0; i < styles.length; i ++) {
-			Log.d("style", pref.getString("block_schedule_style", "") + " " + styles[i].getSimpleName());
     		if (styles[i].getSuperclass() == Colours.class &&
     			styles[i].getSimpleName().equals(pref.getString("block_schedule_style", ""))) {
     			try {
@@ -238,7 +236,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	protected class Clock extends SimpleScroller {
 		private Element cell;
 		private LinearLayout child;
-		private Handler updater;
 		private Calendar base;
 		
 		public Clock(Activity ctx, Calendar base_, Calendar end) {
@@ -275,33 +272,21 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cal.add(Calendar.MINUTE, 30);
 			}
 			
-			updater = new Handler();
-			//update();
-			updater.postAtFrontOfQueue(updatef);
+			update();
 			addView(child);
 		}
-		
-		private Runnable updatef = new Runnable() {
-			@Override
-			public void run() {
-				update();
-				Log.d("b", "running updater");
-			}
-		};
 		
 		/* Mark the current 30m period in the clock green. */
 		public void update() {
 			int i;
 			Calendar cal = new GregorianCalendar();
 			cal.setTime(base.getTime());
-			Log.d("update", "running 1");
 			for (i = 1; i < child.getChildCount(); i ++) {
 				Element cell = (Element) child.getChildAt(i);
 				long diff = System.currentTimeMillis() - cal.getTimeInMillis(); 
 				if (diff >= 0 && diff < 1800000) {
 					cell.setBackgroundColor(0xFF00CF00);
 					cell.setTextColor(c.clockfg[1]);
-					//updater.postAtTime(updatef, cal.getTimeInMillis() + 1800000);
 				} else if (cal.get(Calendar.MINUTE) == 0) {
 					cell.setBackgroundColor(c.clockbg[0]);
 					cell.setTextColor(c.clockfg[0]);
@@ -361,5 +346,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				tentfg[0] = tentfg[1] = 0xFF000000;
 			itemfg[0] = itemfg[1] = 0xFF000000;
 		}
+	}
+
+	@Override
+	public void refreshContents() {
+		topClock.update();
+		bottomClock.update();
 	}
 }

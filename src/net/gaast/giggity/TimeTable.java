@@ -24,7 +24,7 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-public class TimeTable extends RelativeLayout {
+public class TimeTable extends RelativeLayout implements ScheduleViewer {
 	Giggity app;
 	Schedule sched;
 	
@@ -251,5 +251,9 @@ public class TimeTable extends RelativeLayout {
 	/* Can only define interfaces in top-level classes. :-/ */ 
 	public interface OnSwitchListener {
 		public void onSwitchEvent(int direction);
+	}
+
+	@Override
+	public void refreshContents() {
 	}
 }

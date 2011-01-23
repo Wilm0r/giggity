@@ -8,20 +8,27 @@ import android.content.Context;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 
-public class NowNext extends ScrollView {
+public class NowNext extends ScrollView implements ScheduleViewer {
 	private Schedule sched;
 	private TableLayout table;
+	Context ctx;
 	
-	public NowNext(Context ctx, Schedule sched_) {
-		super(ctx);
+	public NowNext(Context ctx_, Schedule sched_) {
+		super(ctx_);
+		ctx = ctx_;
 		sched = sched_;
 		
+		refreshContents();
+	}
+
+	@Override
+	public void refreshContents() {
 		Iterator<Schedule.Line> tenti;
-		Date now = new Date(); //1218810000000L);
+		Date now = new Date();
 		LinkedList<Schedule.Item> nextList = new LinkedList<Schedule.Item>();
 		Iterator<Schedule.Item> itemi;
 		Schedule.Item item = null;
-		
+
 		table = new TableLayout(getContext());
 		
 		table.addView(TimeTable.makeText(ctx, "Now:"));
@@ -52,6 +59,7 @@ public class NowNext extends ScrollView {
 		
 		table.setColumnShrinkable(2, true);
 	
+		this.removeAllViews();
 		addView(table);
 	}
 }

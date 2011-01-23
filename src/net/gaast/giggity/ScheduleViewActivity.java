@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
@@ -35,8 +36,11 @@ public class ScheduleViewActivity extends Activity {
     
 	private Format df = new SimpleDateFormat("EE d MMMM");
 	
-	/* Set this if when returning to this activity we need a redraw. */
+	/* Set this if when returning to this activity we need a *full* redraw.
+	 * (I.e. when returning from the settings menu.) */
 	private boolean redraw;
+	private Handler timer;
+	ScheduleViewer viewer;
 
     private SharedPreferences pref;
     
@@ -60,6 +64,7 @@ public class ScheduleViewActivity extends Activity {
         }
         
         redraw = false;
+        timer = new Handler();
     }
     
     private void horribleAsyncLoadHack(String source_) { 
@@ -113,6 +118,17 @@ public class ScheduleViewActivity extends Activity {
         loader.start();
 	}
     
+    private Runnable refresher = new Runnable() {
+		@Override
+		public void run() {
+			if (viewer != null)
+				viewer.refreshContents();
+
+			/* Run again at the next minute boundary. */
+			timer.postDelayed(refresher, 60000 - (System.currentTimeMillis() % 60000));
+		}
+    };
+    
     @Override
     protected void onResume() {
     	if (redraw) {
@@ -122,6 +138,7 @@ public class ScheduleViewActivity extends Activity {
     	if (sched != null) {
     		sched.resume();
     	}
+    	refresher.run();
     	super.onResume();
     }
     
@@ -132,6 +149,7 @@ public class ScheduleViewActivity extends Activity {
     		sched.sleep();
     	}
     	super.onPause();
+    	timer.removeCallbacks(refresher);
     }
     
     private void onScheduleLoaded() {
@@ -150,6 +168,12 @@ public class ScheduleViewActivity extends Activity {
     	} else if (view == VIEW_NOWNEXT) {
     		setContentView(new NowNext(this, sched));
     	}
+    }
+    
+    @Override
+    public void setContentView(View viewer_) {
+    	viewer = (ScheduleViewer) viewer_;
+    	super.setContentView(viewer_);
     }
     
     @Override
