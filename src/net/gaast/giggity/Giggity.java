@@ -28,6 +28,10 @@ public class Giggity extends Application {
     	return scheduleCache.containsKey(url);
     }
     
+    public void flushSchedule(String url) {
+    	scheduleCache.remove(url);
+    }
+    
     public Schedule getSchedule(String url) throws Exception {
     	if (!hasSchedule(url)) {
     		Schedule sched = new Schedule(this);

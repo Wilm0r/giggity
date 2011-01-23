@@ -83,8 +83,21 @@ public class EventDialog extends AlertDialog {
     	setView(content);
     	super.setOnDismissListener(new OnDismissListener() {
    			public void onDismiss(DialogInterface dialog) {
-   				if (cb != null)
+   				if (cb != null) {
    					item.setRemind(cb.isChecked());
+   					/* See if I'll use this.
+   					if (cb.isChecked()) {
+	   			        Intent intent = new Intent(Intent.ACTION_EDIT);
+	   			        intent.setType("vnd.android.cursor.item/event");
+			            intent.putExtra("beginTime", item.getStartTime().getTime());
+	   			        intent.putExtra("endTime", item.getEndTime().getTime());
+	   			        intent.putExtra("title", item.getTitle());
+	   			        intent.putExtra("eventLocation", item.getLine().getTitle());
+	   			        intent.putExtra("description", item.getDescription());
+	   			        getContext().startActivity(intent);
+   			 		}
+	   			    */
+   				}
    				if (sv != null)
    					item.setStars(sv.getScore());
    				if (dismissPassThru != null)

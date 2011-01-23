@@ -66,6 +66,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     			styles[i].getSimpleName().equals(pref.getString("block_schedule_style", ""))) {
     			try {
 					c = (Colours) styles[i].newInstance();
+					break;
 				} catch (IllegalAccessException e) {
 				} catch (InstantiationException e) {
 				}

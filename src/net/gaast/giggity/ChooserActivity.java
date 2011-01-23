@@ -9,11 +9,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnCreateContextMenuListener;
 import android.view.View.OnKeyListener;
 import android.widget.AdapterView;
+import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -55,6 +61,16 @@ public class ChooserActivity extends Activity {
     	        startActivity(intent);
 			}
     	});
+    	list.setLongClickable(true);
+    	list.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
+			@Override
+			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+				AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
+				menu.setHeaderTitle(scheds.get((int)mi.id).getTitle());
+				menu.add("Refresh");
+				menu.add("Remove");
+			}
+    	});
     	
     	/* Filling in the list in onResume(). */
     	
@@ -94,6 +110,23 @@ public class ChooserActivity extends Activity {
     	
     	cont.addView(bottom);
     	setContentView(cont);
+    }
+    
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+		AdapterContextMenuInfo mi = (AdapterContextMenuInfo) item.getMenuInfo();
+        Giggity app = (Giggity) getApplication();
+        if (mi.id == scheds.size()) {
+        	/* QR code item */
+        } else if (item.getTitle().equals("Refresh")) {
+			app.flushSchedule(scheds.get((int)mi.id).getUrl());
+			/* Is this a hack? */
+			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
+		} else {
+			app.getDb().removeSchedule(scheds.get((int)mi.id).getUrl());
+			onResume();
+		}
+		return false;
     }
     
     @Override

@@ -187,6 +187,14 @@ public class Db {
 			row.put("sch_day", day);
 			db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 		}
+		
+		public void removeSchedule(String url) {
+			Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{url});
+			while (q.moveToNext()) {
+				db.delete("schedule", "sch_id = ?", new String[]{"" + q.getInt(0)});
+				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
+			}
+		}
 	}
 	
 	public class DbSchedule {
