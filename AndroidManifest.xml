@@ -1,28 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-      package="net.gaast.giggity"
-      android:versionCode="1"
-      android:versionName="0.6">
-    <application android:label="@string/app_name" android:name="Giggity" android:icon="@drawable/deoxide_icon_48x48">
-		<activity android:configChanges="keyboardHidden|orientation" android:name="ScheduleViewActivity">
-			<intent-filter>
-				
-				
-			</intent-filter>
-		</activity>
-	<activity android:name="SettingsActivity"></activity>
-<activity android:name="ChooserActivity"><intent-filter><action android:name="android.intent.action.MAIN"></action>
-<category android:name="android.intent.category.LAUNCHER"></category>
-</intent-filter>
-</activity>
-</application>
-	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-
-
-<uses-sdk android:minSdkVersion="4"></uses-sdk>
-
-
-
-</manifest> 
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="net.gaast.giggity" android:versionCode="1" android:versionName="0.6">
+  <application android:label="@string/app_name" android:name="Giggity" android:icon="@drawable/deoxide_icon_48x48">
+    <activity android:configChanges="keyboardHidden|orientation" android:name="ScheduleViewActivity">
+      <meta-data android:name="android.app.default_searchable" android:value=".SearchActivity" />
+    </activity>
+    <activity android:name="SearchActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.SEARCH"/>
+      </intent-filter>
+      <meta-data android:resource="@xml/searchable" android:name="android.app.searchable"/>
+    </activity>
+    <activity android:name="SettingsActivity"/>
+    <activity android:name="ChooserActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+  </application>
+  <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+  <uses-sdk android:minSdkVersion="4"/>
+</manifest>

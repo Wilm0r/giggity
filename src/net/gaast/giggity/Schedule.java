@@ -18,6 +18,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.Calendar;
 import java.util.Date;
@@ -361,6 +362,35 @@ public class Schedule {
 	
 	public Item getItem(String id) {
 		return allItems.get(id);
+	}
+	
+	public AbstractList<Item> searchItems(String q_) {
+		/* No, sorry, this is no full text search. It's ugly and amateuristic,
+		 * but hopefully sufficient. Full text search would probably require
+		 * me to keep full copies of all schedules in SQLite (or find some
+		 * other FTS solution). And we have the whole thing in RAM anyway so
+		 * this search is pretty fast.
+		 */
+		LinkedList<Item> ret = new LinkedList<Item>();
+		String[] q = q_.toLowerCase().split("\\s+");
+		Iterator<Line> tenti = getTents().iterator();
+		while (tenti.hasNext()) {
+			Line line = tenti.next();
+			Iterator<Item> itemi = line.getItems().iterator();
+			while (itemi.hasNext()) {
+				Item item = itemi.next();
+				String d = (item.getTitle() + " " + item.getDescription()).toLowerCase();
+				int i;
+				for (i = 0; i < q.length; i ++) {
+					if (!d.contains(q[i]))
+						break;
+				}
+				if (i == q.length)
+					ret.add(item);
+			}
+		}
+		
+		return (AbstractList<Item>) ret;
 	}
 	
 	/* Some "proprietary" file format I started with. Should 

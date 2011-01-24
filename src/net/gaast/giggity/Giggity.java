@@ -10,6 +10,7 @@ public class Giggity extends Application {
 	Db.Connection dbc;
 	
 	HashMap<String,Schedule> scheduleCache;
+	Schedule lastSchedule;
 	
     public void onCreate() {
     	super.onCreate();
@@ -38,6 +39,11 @@ public class Giggity extends Application {
     		sched.loadSchedule(url);
     		scheduleCache.put(url, sched);
     	}
-    	return scheduleCache.get(url);
+    	return (lastSchedule = scheduleCache.get(url));
+    }
+    
+    public Schedule getLastSchedule() {
+    	/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
+    	return lastSchedule;
     }
 }
