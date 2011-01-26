@@ -227,7 +227,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		public void setBackgroundColor(int color) {
 			bgcolor = color;
 			if (item != null && item.getRemind()) {
-				super.setBackgroundColor(0xff00cf00);
+				super.setBackgroundColor(c.itembg[3]);
 			} else {
 				super.setBackgroundColor(bgcolor);
 			}
@@ -286,7 +286,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				Element cell = (Element) child.getChildAt(i);
 				long diff = System.currentTimeMillis() - cal.getTimeInMillis(); 
 				if (diff >= 0 && diff < 1800000) {
-					cell.setBackgroundColor(0xFF00CF00);
+					cell.setBackgroundColor(c.clockbg[2]);
 					cell.setTextColor(c.clockfg[1]);
 				} else if (cal.get(Calendar.MINUTE) == 0) {
 					cell.setBackgroundColor(c.clockbg[0]);
@@ -308,10 +308,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		public int tentbg[], tentfg[];
 		
 		public Colours() {
-			clockbg = new int[2];
-			clockfg = new int[2];
-			itembg = new int[2];
-			itemfg = new int[2];
+			clockbg = new int[3];
+			clockfg = new int[3];
+			itembg = new int[4];
+			itemfg = new int[4];
 			tentbg = new int[2];
 			tentfg = new int[2];
 		}
@@ -324,11 +324,15 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			background = 0xFFFFFFFF;
 			clockbg[0] = 0xFF3F3F3F;
 			clockbg[1] = 0xFF000000;
+			clockbg[2] = 0xFF00CF00;
 			itembg[0] = 0xFF3F3F3F;
 			itembg[1] = 0xFF000000;
+			itembg[2] = 0xFF00CF00;
+			itembg[3] = 0xFF00CF00;
 			tentbg[0] = 0xFF3F3F3F;
 			tentbg[1] = 0xFF000000;
-			clockfg[0] = clockfg[1] = itemfg[0] = itemfg[1] =
+			clockfg[0] = clockfg[1] = clockfg[2] = itemfg[0] =
+				itemfg[1] = itemfg[2] = itemfg[3] =
 				tentfg[0] = tentfg[1] = 0xFFFFFFFF;
 		}
 	}
@@ -339,13 +343,16 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			background = 0xFFF9FCDA;
 			clockbg[0] = 0xFFF5FC49;
 			clockbg[1] = 0xFFF8FC9C;
+			clockbg[2] = 0xFF00CF00;
 			itembg[0] = 0xFFE0EFFC;
 			itembg[1] = 0xFFC2E1FC;
+			itembg[2] = 0xFF00CF00;
+			itembg[3] = 0xFF00CF00;
 			tentbg[0] = 0xFFFAFCB8;
 			tentbg[1] = 0xFFF8FC9C;
-			clockfg[0] = clockfg[1] = itemfg[0] = itemfg[1] =
+			clockfg[0] = clockfg[1] = clockfg[2] = itemfg[0] = itemfg[1] =
 				tentfg[0] = tentfg[1] = 0xFF000000;
-			itemfg[0] = itemfg[1] = 0xFF000000;
+			itemfg[0] = itemfg[1] = itemfg[2] = itemfg[3] = 0xFF000000;
 		}
 	}
 
