@@ -44,11 +44,13 @@ public class SSLRage {
 		TrustManager tm[] = new TrustManager[] { new SSLRage().new MitmMeTrustManager() };
 		SSLContext ctx;
 		try {
-			ctx = SSLContext.getInstance("SSL");
+			ctx = SSLContext.getInstance("TLS");
 			ctx.init(new KeyManager[0], tm, new SecureRandom());
 		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 			return null;
 		} catch (KeyManagementException e) {
+			e.printStackTrace();
 			return null;
 		}
 		return (SSLSocketFactory) ctx.getSocketFactory ();
