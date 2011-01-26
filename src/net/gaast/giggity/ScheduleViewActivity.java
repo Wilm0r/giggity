@@ -131,6 +131,10 @@ public class ScheduleViewActivity extends Activity {
     
     @Override
     protected void onResume() {
+    	/* Bugfix: Search sets day to -1, have to revert that. */
+    	if (view != VIEW_NOWNEXT && sched != null && sched.getDays().size() > 1)
+    		sched.setDay(sched.getDb().getDay());
+		
     	if (redraw) {
     		onScheduleLoaded();
     		redraw = false;
