@@ -64,6 +64,15 @@ public class Db {
 					                               "sci_id_s VarChar(128), " +
 					                               "sci_remind Boolean, " +
 					                               "sci_stars Integer(2) Null)");
+			
+			/* Seed it with FOSDEM 2011. At some point I should make this more
+			 * fancy, but no time now. :-/ */
+			ContentValues row = new ContentValues();
+			row.put("sch_id_s", "e036bee3470d06c83601446025102bd6a58d6d99");
+			row.put("sch_title", "FOSDEM 2011");
+			row.put("sch_url", "http://fosdem.org/2011/schedule/xml");
+			row.put("sch_atime", new Date().getTime() / 1000);
+			db.insert("schedule", null, row);
 		}
 	
 		@Override
