@@ -189,6 +189,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		bottomClock = new Clock(ctx, base, end);
 		bottomClock.setScrollEventListener(this);
 		addView(bottomClock);
+		
+		setBackgroundColor(c.background);
 	}
 	
 	/* If the user scrolls one view, keep the others in sync. */
