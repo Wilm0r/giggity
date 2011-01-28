@@ -51,12 +51,16 @@ public class ChooserActivity extends Activity {
 	private ArrayList<Db.DbSchedule> scheds;
 	ListView list;
 	EditText urlBox;
+	Db.Connection db;
 	
 	final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
+    	
+    	Giggity app = (Giggity) getApplication();
+    	db = app.getDb();
     	
     	list = new ListView(this);
     	list.setOnItemClickListener(new OnItemClickListener() {
@@ -142,7 +146,7 @@ public class ChooserActivity extends Activity {
 			/* Is this a hack? */
 			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
 		} else {
-			app.getDb().removeSchedule(scheds.get((int)mi.id).getUrl());
+			db.removeSchedule(scheds.get((int)mi.id).getUrl());
 			onResume();
 		}
 		return false;
@@ -154,8 +158,8 @@ public class ChooserActivity extends Activity {
     	 * pick up new items) when returning to the chooser. */
     	super.onResume();
     	
-    	Giggity app = (Giggity) getApplication();
-    	scheds = app.getDb().getScheduleList();
+    	db.resume();
+    	scheds = db.getScheduleList();
     	LinkedList<String> listc = new LinkedList<String>();
     	
     	int i;
@@ -166,6 +170,12 @@ public class ChooserActivity extends Activity {
     	listc.add("Scan QR code...");
     	
     	list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listc));
+    }
+    
+    @Override
+    public void onPause() {
+    	super.onPause();
+    	db.sleep();
     }
     
     private void openNewUrl() {

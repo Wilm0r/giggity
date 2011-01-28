@@ -31,6 +31,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.TextView;
 
 public class Db {
 	Helper dbh;
@@ -103,7 +104,7 @@ public class Db {
 		private int day;
 		
 		public Connection() {
-			db = dbh.getWritableDatabase();
+			resume();
 		}
 		
 		protected void finalize() {
@@ -111,7 +112,7 @@ public class Db {
 		}
 		
 		public void sleep() {
-			Log.d("DeoxideDb", "sleep()");
+			Log.d("DeoxideDb", "sleep()" + db);
 			if (db != null) {
 				db.close();
 				db = null;
@@ -121,7 +122,9 @@ public class Db {
 		public void resume() {
 			if (db == null) {
 				db = dbh.getWritableDatabase();
+				Log.d("DeoxideDb", "open: " + db.isOpen());
 			}
+			Log.d("DeoxideDb", "resume()" + db);
 		}
 		
 		public void setSchedule(Schedule sched_, String url) {
