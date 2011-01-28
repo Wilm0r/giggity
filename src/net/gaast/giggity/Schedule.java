@@ -290,15 +290,23 @@ public class Schedule {
 		/* Yeah, I know this is ugly, and actually reasonably fragile. For now it
 		 * just seems somewhat more efficient than doing something smarter, and
 		 * I want to avoid doing XML-specific stuff here already. */
-		if (head.contains("<icalendar") && head.contains("<vcalendar")) {
-			loadXcal(in);
-		} else if (head.contains("<schedule") && head.contains("<conference")) {
-			loadPentabarf(in);
-		} else if (head.contains("<schedule") && head.contains("<line")) {
-			loadDeox(in);
-		} else {
-			Log.d("head", head);
-			throw new RuntimeException("File format not recognized");
+		try {
+			if (head.contains("<icalendar") && head.contains("<vcalendar")) {
+				loadXcal(in);
+			} else if (head.contains("<schedule") && head.contains("<conference")) {
+				loadPentabarf(in);
+			} else if (head.contains("<schedule") && head.contains("<line")) {
+				loadDeox(in);
+			} else {
+				Log.d("head", head);
+				throw new RuntimeException("File format not recognized");
+			}
+		} catch (RuntimeException e) {
+			/* If there's a cache file, delete it. Either we're reading from,
+			 * or we just wrote a corrupted file. */
+			if (fn != null)
+				fn.delete();
+			throw e;
 		}
 		
 		try {
