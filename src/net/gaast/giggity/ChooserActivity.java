@@ -54,6 +54,7 @@ public class ChooserActivity extends Activity {
 	Db.Connection db;
 	
 	final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
+	final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,7 @@ public class ChooserActivity extends Activity {
 					} catch (android.content.ActivityNotFoundException e) {
 					    new AlertDialog.Builder(ChooserActivity.this)
 					      .setMessage("Please install the Barcode Scanner app")
+					      .setTitle("Error")
 					      .show();
 					}
 			        return;
@@ -92,6 +94,7 @@ public class ChooserActivity extends Activity {
 				menu.setHeaderTitle(scheds.get((int)mi.id).getTitle());
 				menu.add("Refresh");
 				menu.add("Remove");
+				menu.add("Show URL...");
 			}
     	});
     	
@@ -145,9 +148,21 @@ public class ChooserActivity extends Activity {
 			app.flushSchedule(scheds.get((int)mi.id).getUrl());
 			/* Is this a hack? */
 			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
-		} else {
+		} else if (item.getTitle().equals("Remove")) {
 			db.removeSchedule(scheds.get((int)mi.id).getUrl());
 			onResume();
+		} else {
+			try {
+			    Intent intent = new Intent(BARCODE_ENCODE);
+			    intent.putExtra("ENCODE_TYPE", "TEXT_TYPE");
+			    intent.putExtra("ENCODE_DATA", scheds.get((int)mi.id).getUrl());
+			    startActivity(intent);
+			} catch (android.content.ActivityNotFoundException e) {
+			    new AlertDialog.Builder(ChooserActivity.this)
+			      .setTitle(scheds.get((int)mi.id).getTitle())
+			      .setMessage(scheds.get((int)mi.id).getUrl())
+			      .show();
+			}
 		}
 		return false;
     }
