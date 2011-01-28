@@ -19,12 +19,12 @@
 
 package net.gaast.giggity;
 
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
 
-public class SearchActivity extends ScheduleListActivity {
+public class SearchActivity extends Activity {
 	Schedule sched;
 	Giggity app;
 
@@ -52,7 +52,9 @@ public class SearchActivity extends ScheduleListActivity {
     	
     	sched.setDay(-1);
     	String query = getIntent().getStringExtra(SearchManager.QUERY);
-		setList(sched.searchItems(query));
+		ScheduleListView lv = new ScheduleListView(this);
+		lv.setList(sched.searchItems(query));
+		setContentView(lv);
 		setTitle("Results for \"" + query + "\" in " + sched.getTitle());
 	}
 }

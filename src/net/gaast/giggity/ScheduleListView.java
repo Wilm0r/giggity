@@ -23,34 +23,41 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 
-import android.app.ListActivity;
+import android.content.Context;
 import android.graphics.Typeface;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
-public class ScheduleListActivity extends ListActivity {
+public class ScheduleListView extends ListView {
 	AbstractList<?> list;
+	Context ctx;
     
+	public ScheduleListView(Context ctx_) {
+		super(ctx_);
+		ctx = ctx_;
+		
+		this.setOnItemClickListener(new OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+				EventDialog evd = new EventDialog(ctx, (Schedule.Item) list.get(position));
+				evd.show();
+			}
+		});
+	}
+	
     protected void setList(AbstractList<?> list_) {
     	list = list_;
-		setListAdapter(new EventAdapter(list));
+		setAdapter(new EventAdapter(list));
     }
     
     protected AbstractList<?> getList() {
     	return list;
-    }
-    
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-    	Log.d("ctx", ""+getApplicationContext());
-		EventDialog evd = new EventDialog(this, (Schedule.Item) list.get(position));
-		evd.show();
     }
     
     private class EventAdapter extends BaseAdapter {
@@ -85,14 +92,14 @@ public class ScheduleListActivity extends ListActivity {
 			if (items.get(position).getClass() == Schedule.Item.class) {
 				int n = 0;
 				Schedule.Item i = (Schedule.Item) items.get(position);
-				RelativeLayout v = new RelativeLayout(getApplication());
+				RelativeLayout v = new RelativeLayout(ctx);
 				Format df = new SimpleDateFormat("EE d MMM");
 				Format tf = new SimpleDateFormat("HH:mm");
 				
 				TextView title, room, time, date;
 				RelativeLayout.LayoutParams p;
 				
-				time = new TextView(getApplication());
+				time = new TextView(ctx);
 				time.setText(tf.format(i.getStartTime()) + "-" + tf.format(i.getEndTime()) + "  ");
 				time.setTextSize(16);
 				time.setId(++n);
@@ -100,7 +107,7 @@ public class ScheduleListActivity extends ListActivity {
 				p.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				v.addView(time, p);
 				
-				date = new TextView(getApplication());
+				date = new TextView(ctx);
 				date.setText(df.format(i.getStartTime()) + "  ");
 				date.setTextSize(12);
 				date.setId(++n);
@@ -110,7 +117,7 @@ public class ScheduleListActivity extends ListActivity {
 				p.addRule(RelativeLayout.ALIGN_RIGHT, time.getId());
 				v.addView(date, p);
 				
-				title = new TextView(getApplication());
+				title = new TextView(ctx);
 				title.setText(i.getTitle());
 				title.setTextSize(16);
 				title.setId(++n);
@@ -120,7 +127,7 @@ public class ScheduleListActivity extends ListActivity {
 				p.addRule(RelativeLayout.ALIGN_TOP, time.getId());
 				v.addView(title, p);
 				
-				room = new TextView(getApplication());
+				room = new TextView(ctx);
 				room.setText(i.getLine().getTitle());
 				room.setTextSize(12);
 				room.setId(++n);
@@ -132,7 +139,7 @@ public class ScheduleListActivity extends ListActivity {
 				
 				return v;
 			} else {
-				TextView tv = new TextView(getApplication());
+				TextView tv = new TextView(ctx);
 				tv.setText((position > 0 ? "\n" : "") + (String) items.get(position));
 				tv.setTextSize(18);
 				tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
