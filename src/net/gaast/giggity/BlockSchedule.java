@@ -64,11 +64,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
     SharedPreferences pref;
     
-	private static final int HourHeight = 16;
-	private static final int TentHeight = 48;
-	private static final int TentWidth = 32;
-	
+    private double SizeScale;
 	private int HourWidth;
+	private int HourHeight = 18;
+	private int TentHeight = 48;
+	private int TentWidth = 32;
 	
 	BlockSchedule(Activity ctx, Schedule sched_) {
 		super(ctx);
@@ -101,6 +101,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
     	setOrientation(LinearLayout.VERTICAL);
     	
         HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
+        SizeScale = HourWidth / 72.0;
+        HourHeight *= SizeScale;
+        TentHeight *= SizeScale;
+        TentWidth *= SizeScale;
     	
     	schedCont = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE);
     	schedCont.setBackgroundColor(c.background);
@@ -226,7 +230,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			setHeight(TentHeight);
 			setTextColor(0xFFFFFFFF);
 			setPadding(0, 3, 0, 0);
-			setTextSize(8);
+			/* sqrt because 8 is pretty small already and scaling the font 
+			 * linearly with the rest won't create more space for long titles */
+			setTextSize((float) (8 * Math.sqrt(SizeScale)));
 		}
 		
 		public void setItem(Schedule.Item item_) {
