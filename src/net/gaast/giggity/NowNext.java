@@ -19,17 +19,15 @@
 
 package net.gaast.giggity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
-import android.widget.ScrollView;
-import android.widget.TableLayout;
 
-public class NowNext extends ScrollView implements ScheduleViewer {
+public class NowNext extends ScheduleListView implements ScheduleViewer {
 	private Schedule sched;
-	private TableLayout table;
 	Context ctx;
 	
 	public NowNext(Context ctx_, Schedule sched_) {
@@ -40,17 +38,17 @@ public class NowNext extends ScrollView implements ScheduleViewer {
 		refreshContents();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void refreshContents() {
 		Iterator<Schedule.Line> tenti;
 		Date now = new Date();
 		LinkedList<Schedule.Item> nextList = new LinkedList<Schedule.Item>();
+		ArrayList fullList = new ArrayList();
 		Iterator<Schedule.Item> itemi;
 		Schedule.Item item = null;
 
-		table = new TableLayout(getContext());
-		
-		table.addView(TimeTable.makeText(ctx, "Now:"));
+		fullList.add("Now:");
 		
 		tenti = sched.getTents().iterator();
 		while (tenti.hasNext()) {
@@ -60,7 +58,7 @@ public class NowNext extends ScrollView implements ScheduleViewer {
 			while (itemi.hasNext()) {
 				item = itemi.next();
 				if (item.getStartTime().before(now) && item.getEndTime().after(now)) {
-					table.addView(new TimeTable.ItemRow(getContext(), item, 0));
+					fullList.add(item);
 				} else if (item.getStartTime().after(now)) {
 					nextList.add(item);
 					break;
@@ -68,17 +66,8 @@ public class NowNext extends ScrollView implements ScheduleViewer {
 			}
 		}
 		
-		table.addView(TimeTable.makeText(ctx, "Next:"));
-		
-		itemi = nextList.iterator();
-		while (itemi.hasNext()) {
-			item = itemi.next();
-			table.addView(new TimeTable.ItemRow(getContext(), item, 0));
-		}
-		
-		table.setColumnShrinkable(2, true);
-	
-		this.removeAllViews();
-		addView(table);
+		fullList.add("\n\nNext:");
+		fullList.addAll(nextList);
+		setList(fullList);
 	}
 }

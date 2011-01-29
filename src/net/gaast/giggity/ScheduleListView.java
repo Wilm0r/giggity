@@ -37,6 +37,8 @@ import android.widget.TextView;
 public class ScheduleListView extends ListView {
 	AbstractList<?> list;
 	Context ctx;
+	
+	private boolean compact = false;
     
 	public ScheduleListView(Context ctx_) {
 		super(ctx_);
@@ -58,6 +60,10 @@ public class ScheduleListView extends ListView {
     
     protected AbstractList<?> getList() {
     	return list;
+    }
+    
+    protected void setCompact(boolean compact_) {
+    	compact = compact_;
     }
     
     private class EventAdapter extends BaseAdapter {
@@ -107,16 +113,6 @@ public class ScheduleListView extends ListView {
 				p.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 				v.addView(time, p);
 				
-				date = new TextView(ctx);
-				date.setText(df.format(i.getStartTime()) + "  ");
-				date.setTextSize(12);
-				date.setId(++n);
-				p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				p.addRule(RelativeLayout.BELOW, time.getId());
-				p.addRule(RelativeLayout.ALIGN_LEFT, time.getId());
-				p.addRule(RelativeLayout.ALIGN_RIGHT, time.getId());
-				v.addView(date, p);
-				
 				title = new TextView(ctx);
 				title.setText(i.getTitle());
 				title.setTextSize(16);
@@ -127,20 +123,32 @@ public class ScheduleListView extends ListView {
 				p.addRule(RelativeLayout.ALIGN_TOP, time.getId());
 				v.addView(title, p);
 				
-				room = new TextView(ctx);
-				room.setText(i.getLine().getTitle());
-				room.setTextSize(12);
-				room.setId(++n);
-				p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				p.addRule(RelativeLayout.BELOW, title.getId());
-				p.addRule(RelativeLayout.ALIGN_LEFT, title.getId());
-				p.addRule(RelativeLayout.ALIGN_RIGHT, title.getId());
-				v.addView(room, p);
+				if (!compact) {
+					date = new TextView(ctx);
+					date.setText(df.format(i.getStartTime()) + "  ");
+					date.setTextSize(12);
+					date.setId(++n);
+					p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					p.addRule(RelativeLayout.BELOW, time.getId());
+					p.addRule(RelativeLayout.ALIGN_LEFT, time.getId());
+					p.addRule(RelativeLayout.ALIGN_RIGHT, time.getId());
+					v.addView(date, p);
+					
+					room = new TextView(ctx);
+					room.setText(i.getLine().getTitle());
+					room.setTextSize(12);
+					room.setId(++n);
+					p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					p.addRule(RelativeLayout.BELOW, title.getId());
+					p.addRule(RelativeLayout.ALIGN_LEFT, title.getId());
+					p.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+					v.addView(room, p);
+				}
 				
 				return v;
 			} else {
 				TextView tv = new TextView(ctx);
-				tv.setText((position > 0 ? "\n" : "") + (String) items.get(position));
+				tv.setText((String) items.get(position));
 				tv.setTextSize(18);
 				tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 				return tv;
