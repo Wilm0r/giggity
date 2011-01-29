@@ -26,6 +26,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +53,13 @@ public class ScheduleListView extends ListView {
 		this.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-				EventDialog evd = new EventDialog(ctx, (Schedule.Item) list.get(position));
+				Schedule.Item item = (Schedule.Item) list.get(position);
+				EventDialog evd = new EventDialog(ctx, item);
+		    	evd.setOnDismissListener(new OnDismissListener() {
+		   			public void onDismiss(DialogInterface dialog) {
+		   				adje.notifyDataSetChanged();
+		   			}
+		   		});
 				evd.show();
 			}
 		});
@@ -159,10 +167,12 @@ public class ScheduleListView extends ListView {
 				}
 				
 				if (i.getRemind())
-					v.setBackgroundColor(0xFF003300);
+					v.setBackgroundColor(0x3300FF00);
 				else if (showNow && i.compareTo(new Date()) == 0)
-					v.setBackgroundColor(0xFF111111);
-				
+					v.setBackgroundColor(0x11FFFFFF);
+				else
+					v.setBackgroundColor(0x00000000);
+
 				return v;
 			} else {
 				TextView tv = new TextView(ctx);
