@@ -87,6 +87,10 @@ public class ScheduleListView extends ListView {
     	showNow = showNow_;
     }
     
+    public void refreshContents() {
+    	adje.notifyDataSetChanged();
+    }
+    
     private class EventAdapter extends BaseAdapter {
     	AbstractList<?> items;
     	

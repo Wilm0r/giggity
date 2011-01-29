@@ -19,6 +19,7 @@
 
 package net.gaast.giggity;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
@@ -54,15 +55,18 @@ public class EventDialog extends AlertDialog {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-    	SimpleDateFormat df = new SimpleDateFormat("HH:mm");
+		Format df = new SimpleDateFormat("EE d MMM");
+    	Format tf = new SimpleDateFormat("HH:mm");
     	Date now = new Date();
 		
 		LinearLayout content = new LinearLayout(getContext());
 		content.setOrientation(LinearLayout.VERTICAL);
 
 		TextView desc = new TextView(getContext());
-		desc.setText(df.format(item.getStartTime().getTime()) + "-" +
-	    		     df.format(item.getEndTime().getTime()) + ": " +
+		desc.setText(tf.format(item.getStartTime().getTime()) + "-" +
+	    		     tf.format(item.getEndTime().getTime()) + " | " +
+	    		     df.format(item.getStartTime()) + " | " +
+	    		     item.getLine().getTitle() + "\n\n" +
 	    		     item.getDescription());
 
 		ScrollView descscr = new ScrollView(getContext());

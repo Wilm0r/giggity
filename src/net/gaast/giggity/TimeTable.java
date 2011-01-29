@@ -184,5 +184,6 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 
 	@Override
 	public void refreshContents() {
+		scroller.refreshContents();
 	}
 }
