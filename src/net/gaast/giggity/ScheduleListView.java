@@ -23,6 +23,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Date;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -40,6 +41,7 @@ public class ScheduleListView extends ListView {
 	Context ctx;
 	
 	private boolean compact = false;
+	private boolean showNow = true;
     
 	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
@@ -71,6 +73,10 @@ public class ScheduleListView extends ListView {
     
     protected void setCompact(boolean compact_) {
     	compact = compact_;
+    }
+    
+    protected void setShowNow(boolean showNow_) {
+    	showNow = showNow_;
     }
     
     private class EventAdapter extends BaseAdapter {
@@ -151,6 +157,11 @@ public class ScheduleListView extends ListView {
 					p.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 					v.addView(room, p);
 				}
+				
+				if (i.getRemind())
+					v.setBackgroundColor(0xFF003300);
+				else if (showNow && i.compareTo(new Date()) == 0)
+					v.setBackgroundColor(0xFF111111);
 				
 				return v;
 			} else {

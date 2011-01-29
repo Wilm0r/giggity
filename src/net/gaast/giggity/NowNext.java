@@ -48,26 +48,47 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 		Iterator<Schedule.Item> itemi;
 		Schedule.Item item = null;
 
-		fullList.add("Now:");
-		
-		tenti = sched.getTents().iterator();
-		while (tenti.hasNext()) {
-			Schedule.Line tent = tenti.next();
-			itemi = tent.getItems().iterator();
-			
-			while (itemi.hasNext()) {
-				item = itemi.next();
-				if (item.getStartTime().before(now) && item.getEndTime().after(now)) {
-					fullList.add(item);
-				} else if (item.getStartTime().after(now)) {
-					nextList.add(item);
-					break;
-				}
+		/* Set the schedule's day to today so we don't show tomorrow's 
+		 * stuff as "next". */
+		Iterator<Date> days;
+		int i = 0;
+		days = sched.getDays().iterator();
+		while (days.hasNext()) {
+			Date day = days.next();
+			long d = now.getTime() - day.getTime();
+			if (d > 0 && d < 86400000) {
+				sched.setDay(i);
+				break;
 			}
+			i ++;
 		}
 		
-		fullList.add("\n\nNext:");
-		fullList.addAll(nextList);
+		if (sched.getDay() == null) {
+			fullList.add("No events today.");
+		} else {
+			fullList.add("Now:");
+			
+			tenti = sched.getTents().iterator();
+			while (tenti.hasNext()) {
+				Schedule.Line tent = tenti.next();
+				itemi = tent.getItems().iterator();
+				
+				while (itemi.hasNext()) {
+					item = itemi.next();
+					if (item.getStartTime().before(now) && item.getEndTime().after(now)) {
+						fullList.add(item);
+					} else if (item.getStartTime().after(now)) {
+						nextList.add(item);
+						break;
+					}
+				}
+			}
+			
+			fullList.add("\n\nNext:");
+			fullList.addAll(nextList);
+			setShowNow(false);
+		}
+		
 		setList(fullList);
 	}
 }

@@ -991,6 +991,17 @@ public class Schedule {
 			return getStartTime().compareTo(another.getStartTime());
 		}
 
+		public int compareTo(Date d) {
+			/* 0 if the event is "now" (d==now), 
+			 * -1 if it's in the future, 
+			 * 1 if it's in the past. */
+			if (d.before(getStartTime()))
+				return -1;
+			else if (getEndTime().after(d))
+				return 0;
+			else
+				return 1;
+		}
 	}
 
 	public class LinkType {
