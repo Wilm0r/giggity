@@ -22,10 +22,10 @@ package net.gaast.giggity;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
+import java.util.ArrayList;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -35,11 +35,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ScheduleListView extends ListView {
-	AbstractList<?> list;
+	ArrayList<?> list;
+	EventAdapter adje;
 	Context ctx;
 	
 	private boolean compact = false;
     
+	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
 		super(ctx_);
 		ctx = ctx_;
@@ -51,11 +53,16 @@ public class ScheduleListView extends ListView {
 				evd.show();
 			}
 		});
+		
+		list = new ArrayList();
+		setAdapter(adje = new EventAdapter(list));
 	}
 	
-    protected void setList(AbstractList<?> list_) {
-    	list = list_;
-		setAdapter(new EventAdapter(list));
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+	protected void setList(AbstractList list_) {
+    	list.clear();
+    	list.addAll(list_);
+    	adje.notifyDataSetChanged();
     }
     
     protected AbstractList<?> getList() {
