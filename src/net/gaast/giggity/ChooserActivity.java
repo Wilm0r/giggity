@@ -91,7 +91,9 @@ public class ChooserActivity extends Activity {
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 				AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
-				menu.setHeaderTitle(scheds.get((int)mi.id).getTitle());
+				if (mi.position == scheds.size())
+					return; /* "Scan QR code..." */
+				menu.setHeaderTitle(scheds.get((int)mi.position).getTitle());
 				menu.add("Refresh");
 				menu.add("Remove");
 				menu.add("Show URL...");
