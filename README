@@ -1,0 +1,6 @@
+This is an Eclipse project. Good luck importing it into your workspace, the
+program's a PITA. Programming Java without it is probably worse though.
+
+Sadly Eclipse has no clue how to handle tabs so this code will only look
+good with tab stop size set to 8 columns. :-(
+
