@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -76,8 +77,10 @@ public class Reminder extends Service {
     	NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     	Notification not;
     	not = new Notification(R.drawable.deoxide_icon_48x48, item.getTitle(), item.getStartTime().getTime());
+    	Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getSchedule().getUrl() + "#" + item.getId()),
+    			                app, ScheduleViewActivity.class);
     	not.setLatestEventInfo(app, item.getTitle(), "Soon in " + item.getLine().getTitle(),
-    			               PendingIntent.getActivity(app, 0, new Intent(app, ChooserActivity.class), 0));
+    			               PendingIntent.getActivity(app, 0, evi, 0));
     	not.flags |= Notification.FLAG_AUTO_CANCEL;
     	not.defaults |= Notification.DEFAULT_SOUND;
     	not.vibrate = coolsong; 

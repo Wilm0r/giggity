@@ -63,6 +63,8 @@ public class ScheduleViewActivity extends Activity {
 
     private SharedPreferences pref;
     
+    private String showEventId;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,15 +73,23 @@ public class ScheduleViewActivity extends Activity {
         pref = PreferenceManager.getDefaultSharedPreferences(app);
         view = Integer.parseInt(pref.getString("default_view", "1"));
         
-        if (app.hasSchedule(getIntent().getDataString())) {
+    	String url = getIntent().getDataString();
+        
+		if (url.contains("#")) {
+			String parts[] = url.split("#", 2);
+			url = parts[0];
+			showEventId = parts[1];
+		}
+		
+        if (app.hasSchedule(url)) {
         	try {
-				sched = app.getSchedule(getIntent().getDataString());
+				sched = app.getSchedule(url);
 			} catch (Exception e) {
 				// Java makes me tired.
 			}
         	onScheduleLoaded();
         } else {
-        	horribleAsyncLoadHack(getIntent().getDataString());
+        	horribleAsyncLoadHack(url);
         }
         
         redraw = false;
@@ -191,6 +201,19 @@ public class ScheduleViewActivity extends Activity {
     		setContentView(new BlockSchedule(this, sched));
     	} else if (view == VIEW_NOWNEXT) {
     		setContentView(new NowNext(this, sched));
+    	}
+    	
+    	if (showEventId != null) {
+    		Schedule.Item item = sched.getItem(showEventId);
+    		if (item != null) {
+				EventDialog evd = new EventDialog(this, item);
+		    	evd.setOnDismissListener(new OnDismissListener() {
+		   			public void onDismiss(DialogInterface dialog) {
+		   				showEventId = null;
+		   			}
+		   		});
+				evd.show();
+    		}
     	}
     }
     

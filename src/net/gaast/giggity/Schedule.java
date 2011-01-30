@@ -70,7 +70,7 @@ public class Schedule {
 	private Giggity app;
 	private Db.Connection db;
 	
-	private String id;
+	private String id, url;
 	private String title;
 
 	private LinkedList<Schedule.Line> tents;
@@ -321,6 +321,7 @@ public class Schedule {
 
 		db = app.getDb();
 		db.setSchedule(this, source);
+		url = source;
 		
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;
@@ -373,6 +374,10 @@ public class Schedule {
 	
 	public String getId() {
 		return id;
+	}
+	
+	public String getUrl() {
+		return url;
 	}
 	
 	public String getTitle() {
