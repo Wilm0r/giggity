@@ -34,4 +34,19 @@
 
 
 
+<PreferenceCategory android:title="Event reminders">
+
+<CheckBoxPreference android:key="reminder_enabled" 
+                    android:summary="Remind me of marked events" 
+                    android:title="Enable reminders">
+</CheckBoxPreference>
+
+<ListPreference android:key="reminder_period"
+                android:dependency="reminder_enabled" 
+                android:title="Minutes before event" 
+                android:defaultValue="5" 
+                android:entries="@array/reminder_periods" 
+                android:entryValues="@array/reminder_periods">
+</ListPreference>
+</PreferenceCategory>
 </PreferenceScreen>

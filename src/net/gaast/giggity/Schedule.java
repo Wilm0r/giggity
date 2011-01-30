@@ -894,6 +894,10 @@ public class Schedule {
 			newData = false;
 		}
 		
+		public Schedule getSchedule() {
+			return Schedule.this;
+		}
+		
 		public void setDescription(String description_) {
 			description = description_;
 		}
@@ -943,6 +947,7 @@ public class Schedule {
 			if (remind != remind_) {
 				remind = remind_;
 				newData |= fullyLoaded;
+				app.updateRemind(this);
 			}
 		}
 		

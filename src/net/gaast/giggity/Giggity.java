@@ -19,9 +19,14 @@
 
 package net.gaast.giggity;
 
+import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.TreeSet;
 
 import android.app.Application;
+import android.content.Intent;
 import android.preference.PreferenceManager;
 
 public class Giggity extends Application {
@@ -31,11 +36,15 @@ public class Giggity extends Application {
 	HashMap<String,Schedule> scheduleCache;
 	Schedule lastSchedule;
 	
+	TreeSet<Schedule.Item> remindItems;
+	//Service reminder;
+	
     public void onCreate() {
     	super.onCreate();
     	db = new Db(this);
     	
     	scheduleCache = new HashMap<String,Schedule>();
+    	remindItems = new TreeSet<Schedule.Item>();
     	
     	PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
     }
@@ -49,7 +58,14 @@ public class Giggity extends Application {
     }
     
     public void flushSchedule(String url) {
-    	scheduleCache.remove(url);
+    	if (hasSchedule(url)) {
+        	Schedule sched = scheduleCache.get(url);
+        	for (Schedule.Item item : new ArrayList<Schedule.Item>(remindItems)) {
+        		if (item.getSchedule() == sched)
+        			remindItems.remove(item);
+        	}
+    	}
+       	scheduleCache.remove(url);
     }
     
     public Schedule getSchedule(String url) throws Exception {
@@ -64,5 +80,19 @@ public class Giggity extends Application {
     public Schedule getLastSchedule() {
     	/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
     	return lastSchedule;
+    }
+    
+    public void updateRemind(Schedule.Item item) {
+    	if (item.getRemind())
+    		remindItems.add(item);
+    	else
+        	remindItems.remove(item);
+    	
+    	/* Poke the service to see if we need to update the timer. */
+    	startService(new Intent(this, Reminder.class));
+    }
+    
+    protected AbstractSet<Schedule.Item> getRemindItems() {
+    	return remindItems;
     }
 }
