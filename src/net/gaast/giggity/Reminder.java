@@ -79,7 +79,7 @@ public class Reminder extends Service {
     	not.setLatestEventInfo(app, item.getTitle(), "Soon in " + item.getLine().getTitle(),
     			               PendingIntent.getActivity(app, 0, new Intent(app, ChooserActivity.class), 0));
     	not.flags |= Notification.FLAG_AUTO_CANCEL;
-    	not.defaults |= Notification.DEFAULT_ALL;
+    	not.defaults |= Notification.DEFAULT_SOUND;
     	not.vibrate = coolsong; 
 
     	nm.notify(1, not);
