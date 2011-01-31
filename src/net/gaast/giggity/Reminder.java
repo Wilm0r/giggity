@@ -28,7 +28,7 @@ public class Reminder extends Service {
 	private long[] coolsong = { 0, 90, 60, 90, 60, 0, 150, 90, 60, 0, 150, 90, 60,
                                 90, 60, 0, 150, 150, 0, 0, 150, 0, 150, 0, 150, 1000 };
 	
-	BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
+	private BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d("reminder", "Who disturbs my slumber?");
@@ -50,9 +50,14 @@ public class Reminder extends Service {
 	}
 	
 	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		unregisterReceiver(alarmReceiver);
+	}
+	
+	@Override
 	public void onStart(Intent intent, int startId) {
-		/* This is run when the service is started or poked. */
-		checkAlarms();
+		/* Don't do anything, just wait for signals. */
 	}
 	
 	private void sendReminder(Schedule.Item item) {
@@ -109,7 +114,6 @@ public class Reminder extends Service {
 		/* Stop the service if there's nothing else left. */
 		if (app.getRemindItems().size() == 0) {
 			Log.d("reminder", "No reminders left, let's stop the nagging");
-			unregisterReceiver(alarmReceiver);
 			stopSelf();
 		}
 	}

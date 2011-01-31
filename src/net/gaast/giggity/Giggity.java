@@ -25,7 +25,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.preference.PreferenceManager;
 
@@ -88,8 +91,12 @@ public class Giggity extends Application {
     	else
         	remindItems.remove(item);
     	
-    	/* Poke the service to see if we need to update the timer. */
+    	/* Start the service in case it's not running yet, and set an alarm 
+    	 * in a second to have it go through all reminders. */
     	startService(new Intent(this, Reminder.class));
+		AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000,
+		       PendingIntent.getBroadcast(this, 0, new Intent(Reminder.ACTION), 0));
     }
     
     protected AbstractSet<Schedule.Item> getRemindItems() {
