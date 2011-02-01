@@ -25,9 +25,10 @@ public class Reminder extends Service {
 	int notid;
 
 	/* Vibrator pattern */
-	private long[] coolsong = { 0, 90, 60, 90, 60, 0, 150, 90, 60, 0, 150, 90, 60,
-                                90, 60, 0, 150, 150, 0, 0, 150, 0, 150, 0, 150, 1000 };
-	
+	private long[] mario = { 0, 90, 60, 90, 60, 0, 150, 90, 60, 0, 150, 120, 30,
+                             90, 60, 0, 150, 150, 0, 0, 150, 0, 150, 0, 150, 1200 };
+	private long[] giggitygoo = { 0, 100, 40, 60, 40, 60, 60, 100, 40, 60, 40, 60, 80, 1200};
+
 	private BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -71,7 +72,10 @@ public class Reminder extends Service {
     			               PendingIntent.getActivity(app, 0, evi, 0));
     	not.flags |= Notification.FLAG_AUTO_CANCEL;
     	not.defaults |= Notification.DEFAULT_SOUND;
-    	not.vibrate = coolsong; 
+    	if ((item.getStartTime().getDate() & 1) == 0)
+    		not.vibrate = giggitygoo;
+    	else
+    		not.vibrate = mario;
 
     	nm.notify(item.hashCode() | (int) (item.getStartTime().getTime() / 1000), not);
 	}

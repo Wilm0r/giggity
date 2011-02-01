@@ -59,6 +59,12 @@ public class ChooserActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
+    	/*//test stuff
+    	Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+    	long[] pattern = {  };
+    	v.vibrate(pattern, -1);
+    	*/
+    	
     	Giggity app = (Giggity) getApplication();
     	db = app.getDb();
     	
