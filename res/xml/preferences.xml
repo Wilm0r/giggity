@@ -38,7 +38,7 @@
 
 <CheckBoxPreference android:key="reminder_enabled" 
                     android:summary="Remind me of marked events" 
-                    android:title="Enable reminders">
+                    android:title="Enable reminders" android:defaultValue="true">
 </CheckBoxPreference>
 
 <ListPreference android:key="reminder_period"

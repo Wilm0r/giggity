@@ -91,12 +91,7 @@ public class Giggity extends Application {
     	else
         	remindItems.remove(item);
     	
-    	/* Start the service in case it's not running yet, and set an alarm 
-    	 * in a second to have it go through all reminders. */
-    	startService(new Intent(this, Reminder.class));
-		AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000,
-		       PendingIntent.getBroadcast(this, 0, new Intent(Reminder.ACTION), 0));
+    	Reminder.poke(this);
     }
     
     protected AbstractSet<Schedule.Item> getRemindItems() {

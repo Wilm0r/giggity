@@ -90,6 +90,12 @@ public class Reminder extends Service {
     	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
     	int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
     	
+    	if (!pref.getBoolean("reminder_enabled", true)) {
+    		Log.d("reminder", "Reminders were disabled, stopping service");
+    		stopSelf();
+    		return;
+    	}
+    	
     	/* Keep it dumb and simple: Go through the list of marked events. If it's
     	 * long ago, drop it. If its reminder time is 30s away from now (either 
     	 * direction), remind the user now. If it's further away, set a timer and
@@ -120,5 +126,18 @@ public class Reminder extends Service {
 			Log.d("reminder", "No reminders left, let's stop the nagging");
 			stopSelf();
 		}
+	}
+	
+	static public void poke(Context ctx) {
+    	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ctx);
+    	if (!pref.getBoolean("reminder_enabled", true))
+    		return;
+
+    	/* Start the service in case it's not running yet, and set an alarm 
+    	 * in a second to have it go through all reminders. */
+    	ctx.startService(new Intent(ctx, Reminder.class));
+		AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+		am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000,
+		       PendingIntent.getBroadcast(ctx, 0, new Intent(Reminder.ACTION), 0));
 	}
 }
