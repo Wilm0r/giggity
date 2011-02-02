@@ -21,15 +21,11 @@ package net.gaast.giggity;
 
 import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.TreeSet;
 
-import android.app.AlarmManager;
 import android.app.Application;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.preference.PreferenceManager;
 
 public class Giggity extends Application {
@@ -86,12 +82,13 @@ public class Giggity extends Application {
     }
     
     public void updateRemind(Schedule.Item item) {
-    	if (item.getRemind())
-    		remindItems.add(item);
-    	else
+    	if (item.getRemind()) {
+    		if (item.compareTo(new Date()) < 0)
+    			remindItems.add(item);
+    	} else
         	remindItems.remove(item);
     	
-    	Reminder.poke(this);
+    	Reminder.poke(this, item);
     }
     
     protected AbstractSet<Schedule.Item> getRemindItems() {

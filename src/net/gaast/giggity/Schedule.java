@@ -214,6 +214,8 @@ public class Schedule {
 		File fn;
 		URL dl;
 		URLConnection dlc;
+		
+		url = source;
 
 		try {
 			dl = new URL(source);
@@ -321,7 +323,6 @@ public class Schedule {
 
 		db = app.getDb();
 		db.setSchedule(this, source);
-		url = source;
 		
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;
@@ -1011,6 +1012,10 @@ public class Schedule {
 				return 0;
 			else
 				return 1;
+		}
+		
+		public String getUrl() {
+			return (getSchedule().getUrl() + "#" + getId()); 
 		}
 	}
 

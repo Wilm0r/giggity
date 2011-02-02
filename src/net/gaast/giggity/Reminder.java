@@ -11,6 +11,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.IBinder;
@@ -33,7 +34,26 @@ public class Reminder extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d("reminder", "Who disturbs my slumber?");
-			checkAlarms();
+			if (intent.getDataString() == null) {
+				Log.e("reminder", "Empty intent. Huh?");
+				return;
+			}
+			String url[] = intent.getDataString().split("#", 2);
+			Schedule sched;
+			try {
+				sched = app.getSchedule(url[0]);
+			} catch (Exception e) {
+				Log.e("reminder", "Urgh, caught exception while reloading schedule (the OS killed us)");
+				e.printStackTrace();
+				return;
+				/* Hope this won't happen too often.. */
+			}
+			Schedule.Item item = sched.getItem(url[1]);
+			if (item != null && item.getRemind())
+				sendReminder(item);
+			else
+				Log.e("reminder", "Item that I was supposed to notify about disappeared");
+			app.getRemindItems().remove(item);
 		}
 	};
 
@@ -44,16 +64,28 @@ public class Reminder extends Service {
 		
 		/* Run our alarm loop if we receive an alarm, or if the current
 		 * time(zone) changed. In that case we may have to reschedule alarms. */
-		Log.d("reminder", "Setting receivers");
-		registerReceiver(alarmReceiver, new IntentFilter(ACTION));
+		Log.d("reminder", "onCreate");
+		IntentFilter filter = new IntentFilter(ACTION);
+		try {
+			filter.addDataType("text/x-giggity");
+			filter.addDataScheme("http");
+			filter.addDataScheme("https");
+		} catch (MalformedMimeTypeException e) {
+			e.printStackTrace();
+		}
+		registerReceiver(alarmReceiver, filter);
+		
+		/*
 		registerReceiver(alarmReceiver, new IntentFilter(Intent.ACTION_TIME_CHANGED));
 		registerReceiver(alarmReceiver, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+		*/
 	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(alarmReceiver);
+		Log.d("reminder", "onDestroy");
 	}
 	
 	@Override
@@ -66,7 +98,7 @@ public class Reminder extends Service {
     	NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     	Notification not;
     	not = new Notification(R.drawable.deoxide_icon_48x48, item.getTitle(), item.getStartTime().getTime());
-    	Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getSchedule().getUrl() + "#" + item.getId()),
+    	Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
     			                app, ScheduleViewActivity.class);
     	not.setLatestEventInfo(app, item.getTitle(), "Soon in " + item.getLine().getTitle(),
     			               PendingIntent.getActivity(app, 0, evi, 0));
@@ -86,58 +118,38 @@ public class Reminder extends Service {
 		return null;
 	}
 	
-	public void checkAlarms() {
+	static public void poke(Giggity app, Schedule.Item item) {
     	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
-    	int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
-    	
-    	if (!pref.getBoolean("reminder_enabled", true)) {
-    		Log.d("reminder", "Reminders were disabled, stopping service");
-    		stopSelf();
+    	if (pref.getBoolean("reminder_enabled", true)) {
+    		/* Doesn't matter if it's already running BTW. */
+    		app.startService(new Intent(app, Reminder.class));
+    	} else {
+    		app.stopService(new Intent(app, Reminder.class));
     		return;
     	}
     	
-    	/* Keep it dumb and simple: Go through the list of marked events. If it's
-    	 * long ago, drop it. If its reminder time is 30s away from now (either 
-    	 * direction), remind the user now. If it's further away, set a timer and
-    	 * stop looking for now. */
-		for (Schedule.Item item : new ArrayList<Schedule.Item>(app.getRemindItems())) {
-			long when = item.getStartTime().getTime() - period -
-			            System.currentTimeMillis();
-			if (when < -30000) {
-				/* Hmm, this one's in the past, so too late to remind. */
-				Log.d("reminder", "Dropping reminder for " + item.getTitle());
-				app.getRemindItems().remove(item);
-			} else if (when > -30000 && when < 30000) {
-				Log.d("reminder", "Generating reminder for " + item.getTitle());
-				sendReminder(item);
-				app.getRemindItems().remove(item);
-			} else {
-				Log.d("reminder", "Next alarm coming up in " + when / 1000 + " seconds for " + item.getTitle());
-				AlarmManager am = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-				am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + when,
-				       PendingIntent.getBroadcast(Reminder.this, 0, new Intent(ACTION), 0));
-				break;
-				/* List is sorted by time so we're done for this iteration. */
-			}
-		}
-		
-		/* Stop the service if there's nothing else left. */
-		if (app.getRemindItems().size() == 0) {
-			Log.d("reminder", "No reminders left, let's stop the nagging");
-			stopSelf();
-		}
+    	if (item != null)
+    		setAlarm(app, item);
+    	else {
+    		for (Schedule.Item i : app.getRemindItems())
+    			setAlarm(app, i);
+    	}
 	}
 	
-	static public void poke(Context ctx) {
-    	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ctx);
-    	if (!pref.getBoolean("reminder_enabled", true))
+	static private void setAlarm(Context app, Schedule.Item item) {
+    	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
+    	int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
+    	long tm = item.getStartTime().getTime() - period;
+    	
+    	if (tm < System.currentTimeMillis()) 
     		return;
 
-    	/* Start the service in case it's not running yet, and set an alarm 
-    	 * in a second to have it go through all reminders. */
-    	ctx.startService(new Intent(ctx, Reminder.class));
-		AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
-		am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + 1000,
-		       PendingIntent.getBroadcast(ctx, 0, new Intent(Reminder.ACTION), 0));
+    	AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
+		Intent i = new Intent(Reminder.ACTION);
+		i.setDataAndType(Uri.parse(item.getUrl()), "text/x-giggity");
+		am.set(AlarmManager.RTC_WAKEUP, tm,
+			       PendingIntent.getBroadcast(app, 0, i, 0));
+		Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
+		      (tm - System.currentTimeMillis()) / 1000 + " seconds");
 	}
 }

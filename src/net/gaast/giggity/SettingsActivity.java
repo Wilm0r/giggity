@@ -32,7 +32,8 @@ public class SettingsActivity extends PreferenceActivity {
     
     @Override 
     public void onDestroy() {
-    	Reminder.poke(this);
+    	/* Maybe alarms were disabled or the period was changed. */
+    	Reminder.poke((Giggity) getApplication(), (Schedule.Item) null);
     	Log.d("prefs", "onDestroy");
     	super.onDestroy();
     }
