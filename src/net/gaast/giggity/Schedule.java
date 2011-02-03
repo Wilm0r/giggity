@@ -412,7 +412,15 @@ public class Schedule {
 			Iterator<Item> itemi = line.getItems().iterator();
 			while (itemi.hasNext()) {
 				Item item = itemi.next();
-				String d = (item.getTitle() + " " + item.getDescription()).toLowerCase();
+				String d = item.getTitle() + " ";
+				if (item.getDescription() != null)
+					d += item.getDescription() + " ";
+				if (item.getTrack() != null)
+					d += item.getTrack() + " ";
+				if (item.getSpeakers() != null)
+					for (String i : item.getSpeakers())
+						d += i + " ";
+				d = d.toLowerCase();
 				int i;
 				for (i = 0; i < q.length; i ++) {
 					if (!d.contains(q[i]))
