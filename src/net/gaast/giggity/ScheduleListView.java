@@ -44,6 +44,7 @@ public class ScheduleListView extends ListView {
 	
 	private boolean compact = false;
 	private boolean showNow = true;
+	private boolean showRemind = true;
     
 	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
@@ -85,6 +86,10 @@ public class ScheduleListView extends ListView {
     
     protected void setShowNow(boolean showNow_) {
     	showNow = showNow_;
+    }
+    
+    protected void setShowRemind(boolean showRemind_) {
+    	showRemind = showRemind_;
     }
     
     public void refreshContents() {
@@ -170,7 +175,7 @@ public class ScheduleListView extends ListView {
 					v.addView(room, p);
 				}
 				
-				if (i.getRemind())
+				if (showRemind && i.getRemind())
 					v.setBackgroundColor(0x3300FF00);
 				else if (showNow && i.compareTo(new Date()) == 0)
 					v.setBackgroundColor(0x11FFFFFF);

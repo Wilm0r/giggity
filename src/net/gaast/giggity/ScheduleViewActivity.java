@@ -49,7 +49,8 @@ public class ScheduleViewActivity extends Activity {
     
     private final static int VIEW_BLOCKSCHEDULE = 1;
     private final static int VIEW_TIMETABLE = 2;
-    private final static int VIEW_NOWNEXT= 3;
+    private final static int VIEW_NOWNEXT = 3;
+    private final static int VIEW_MINE = 4;
     
     private int view;
     
@@ -165,7 +166,7 @@ public class ScheduleViewActivity extends Activity {
     	}
     	
     	/* Bugfix: Search sets day to -1, have to revert that. */
-    	if (view != VIEW_NOWNEXT && sched != null && sched.getDays().size() > 1)
+    	if (view != VIEW_NOWNEXT && view != VIEW_MINE && sched != null && sched.getDays().size() > 1)
     		sched.setDay(sched.getDb().getDay());
 		
     	if (redraw) {
@@ -187,7 +188,7 @@ public class ScheduleViewActivity extends Activity {
     }
     
     private void onScheduleLoaded() {
-    	if (view != VIEW_NOWNEXT && sched.getDays().size() > 1) {
+    	if (view != VIEW_NOWNEXT && view != VIEW_MINE && sched.getDays().size() > 1) {
     		sched.setDay(sched.getDb().getDay());
     		setTitle(df.format(sched.getDay()) + ", " + sched.getTitle());
     	} else {
@@ -201,6 +202,8 @@ public class ScheduleViewActivity extends Activity {
     		setContentView(new BlockSchedule(this, sched));
     	} else if (view == VIEW_NOWNEXT) {
     		setContentView(new NowNext(this, sched));
+    	} else if (view == VIEW_MINE) {
+    		setContentView(new MyItemsView(this, sched));
     	}
     	
     	if (showEventId != null) {
@@ -250,16 +253,20 @@ public class ScheduleViewActivity extends Activity {
    		menu.add(1, 5, 0, "Now and next")
 			.setShortcut('4', 'n')
 			.setIcon(R.drawable.ic_menu_clock_face);
+   		menu.add(1, 6, 0, "My events")
+		    .setShortcut('5', 'm')
+		    .setIcon(android.R.drawable.ic_menu_my_calendar);
     	
     	return true;
     }
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(2).setVisible(view != VIEW_NOWNEXT);
+    	menu.findItem(2).setVisible(view != VIEW_NOWNEXT && view != VIEW_MINE && sched.getDays().size() > 1);
     	menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
     	menu.findItem(4).setVisible(view != VIEW_BLOCKSCHEDULE);
-    	menu.findItem(5).setVisible(view != VIEW_NOWNEXT && sched.getDays().size() > 1);
+    	menu.findItem(5).setVisible(view != VIEW_NOWNEXT);
+    	menu.findItem(6).setVisible(view != VIEW_MINE);
     	return true;
     }
     
@@ -307,6 +314,10 @@ public class ScheduleViewActivity extends Activity {
     		return true;
     	case 5:
     		view = VIEW_NOWNEXT;
+    		onScheduleLoaded();
+    		return true;
+    	case 6:
+    		view = VIEW_MINE;
     		onScheduleLoaded();
     		return true;
     	}
