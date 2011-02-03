@@ -41,7 +41,7 @@ public class Reminder extends Service {
 			String url[] = intent.getDataString().split("#", 2);
 			Schedule sched;
 			try {
-				sched = app.getSchedule(url[0]);
+				sched = app.getSchedule(url[0], true);
 			} catch (Exception e) {
 				Log.e("reminder", "Urgh, caught exception while reloading schedule (the OS killed us)");
 				e.printStackTrace();
@@ -110,6 +110,8 @@ public class Reminder extends Service {
     		not.vibrate = mario;
 
     	nm.notify(item.hashCode() | (int) (item.getStartTime().getTime() / 1000), not);
+    	
+    	Log.d("reminder", "Generated reminder for " + item.getTitle());
 	}
 	
 	@Override

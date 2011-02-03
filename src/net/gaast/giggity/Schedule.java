@@ -189,8 +189,8 @@ public class Schedule {
 		
 		return ret;
 	}
-	
-	public void loadSchedule(String source) {
+
+	public void loadSchedule(String source, boolean online) {
 		id = null;
 		title = null;
 		
@@ -248,7 +248,7 @@ public class Schedule {
 				/* It failed. Maybe we're HTTP only? Maybe even FTP? */
 			}
 			
-			if (network != null && network.isConnected()) {
+			if (online && network != null && network.isConnected()) {
 				int status;
 				try {
 					status = ((HttpURLConnection)dlc).getResponseCode();

@@ -83,7 +83,7 @@ public class ScheduleViewActivity extends Activity {
 		
         if (app.hasSchedule(url)) {
         	try {
-				sched = app.getSchedule(url);
+				sched = app.getSchedule(url, false);
 			} catch (Exception e) {
 				// Java makes me tired.
 			}
@@ -135,7 +135,7 @@ public class ScheduleViewActivity extends Activity {
     		@Override
     		public void run() {
     			try {
-    	    		sched = app.getSchedule(source);
+    	    		sched = app.getSchedule(source, false);
     				resultHandler.sendEmptyMessage(1);
     			} catch (Throwable t) {
     				t.printStackTrace();
