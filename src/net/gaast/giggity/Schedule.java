@@ -539,6 +539,7 @@ public class Schedule {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
 		private String curString;
+		private Schedule.LinkType lt;
 
 		SimpleDateFormat df;
 
@@ -546,6 +547,7 @@ public class Schedule {
 			tentMap = new HashMap<String,Schedule.Line>();
 			df = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
 			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
+			lt = new Schedule.LinkType("link");
 		}
 		
 		@Override
@@ -603,6 +605,10 @@ public class Schedule {
 				
 				if ((s = eventData.get("description")) != null) {
 					item.setDescription(s);
+				}
+				
+				if ((s = eventData.get("url")) != null) {
+					item.addLink(lt, s);
 				}
 
 				if ((line = tentMap.get(location)) == null) {
