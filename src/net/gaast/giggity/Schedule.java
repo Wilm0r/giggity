@@ -1045,7 +1045,13 @@ public class Schedule {
 
 		@Override
 		public int compareTo(Item another) {
-			return getStartTime().compareTo(another.getStartTime());
+			int ret;
+			if ((ret = getStartTime().compareTo(another.getStartTime())) != 0)
+				return ret;
+			else if ((ret = getTitle().compareTo(another.getTitle())) != 0)
+				return ret;
+			else
+				return another.hashCode() - hashCode();
 		}
 
 		public int compareTo(Date d) {
