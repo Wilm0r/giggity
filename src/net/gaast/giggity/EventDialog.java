@@ -63,12 +63,29 @@ public class EventDialog extends AlertDialog {
 		content.setOrientation(LinearLayout.VERTICAL);
 
 		TextView desc = new TextView(getContext());
-		desc.setText(tf.format(item.getStartTime().getTime()) + "-" +
-	    		     tf.format(item.getEndTime().getTime()) + " | " +
-	    		     df.format(item.getStartTime()) + " | " +
-	    		     item.getLine().getTitle() + "\n\n" +
-	    		     item.getDescription());
+		String descs = tf.format(item.getStartTime().getTime()) + "-" +
+	                   tf.format(item.getEndTime().getTime()) + " | " +
+	                   df.format(item.getStartTime()) + " | " +
+	    		       item.getLine().getTitle() + "\n";
 
+		if (item.getSpeakers() != null || item.getTrack() != null) {
+			if (item.getSpeakers() != null) {
+				for (String i : item.getSpeakers())
+					descs += i + ", ";
+				descs = descs.replaceAll(", $", "");
+				
+				if (item.getTrack() != null)
+					descs += " | ";
+			}
+			if (item.getTrack() != null) {
+				descs += item.getTrack();
+			}
+			descs += "\n";
+		}
+		if (item.getDescription() != null)
+			descs += "\n" + item.getDescription();
+		desc.setText(descs);
+		
 		ScrollView descscr = new ScrollView(getContext());
 		descscr.addView(desc);
 		content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));

@@ -670,7 +670,7 @@ public class Schedule {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> propMap;
 		private String curString;
-		private LinkedList<String> links;
+		private LinkedList<String> links, persons;
 		private Schedule.LinkType lt;
 		private Date curDay;
 
@@ -693,6 +693,7 @@ public class Schedule {
 				propMap.put("id", atts.getValue("id"));
 				
 				links = new LinkedList<String>();
+				persons = new LinkedList<String>();
 			} else if (localName == "day") {
 				try {
 					curDay = df.parse(atts.getValue("date"));
@@ -728,7 +729,7 @@ public class Schedule {
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
-			if (localName == "conference") {
+			if (localName.equals("conference")) {
 				title = propMap.get("title");
 				if (propMap.get("day_change") != null) {
 					try {
@@ -737,7 +738,7 @@ public class Schedule {
 						Log.w("Schedule.loadPentabarf", "Couldn't parse day_change: " + propMap.get("day_change"));
 					}
 				}
-			} else if (localName == "event") {
+			} else if (localName.equals("event")) {
 				String id, title, startTimeS, durationS, s, desc;
 				Calendar startTime, endTime;
 				Schedule.Item item;
@@ -789,13 +790,19 @@ public class Schedule {
 				desc = desc.replaceAll("([^\n]) *\n *([a-zA-Z0-9])", "$1 $2");
 				item.setDescription(desc);
 				
-				ListIterator<String> linki = links.listIterator();
-				while (linki.hasNext())
-					item.addLink(lt, linki.next());
+				if ((s = propMap.get("track")) != null)
+					item.setTrack(s);
+				for (String i : links)
+					item.addLink(lt, i);
+				for (String i : persons)
+					item.addSpeaker(i);
 
 				curTent.addItem(item);
 				propMap = null;
 				links = null;
+				persons = null;
+			} else if (localName.equals("person")) {
+				persons.add(curString);
 			} else if (propMap != null) {
 				propMap.put(localName, curString);
 			}
@@ -887,9 +894,11 @@ public class Schedule {
 		private String id;
 		private Line line;
 		private String title;
+		private String track;
 		private String description;
 		private Date startTime, endTime;
 		private LinkedList<Schedule.Item.Link> links;
+		private LinkedList<String> speakers;
 		
 		private boolean remind;
 		private int stars;
@@ -910,6 +919,10 @@ public class Schedule {
 			return Schedule.this;
 		}
 		
+		public void setTrack(String track_) {
+			track = track_;
+		}
+		
 		public void setDescription(String description_) {
 			description = description_;
 		}
@@ -923,8 +936,19 @@ public class Schedule {
 			links.add(link);
 		}
 		
+		public void addSpeaker(String name) {
+			if (speakers == null) {
+				speakers = new LinkedList<String>();
+			}
+			speakers.add(name);
+		}
+		
 		public String getId() {
 			return id;
+		}
+		
+		public String getUrl() {
+			return (getSchedule().getUrl() + "#" + getId()); 
 		}
 		
 		public String getTitle() {
@@ -939,8 +963,16 @@ public class Schedule {
 			return endTime;
 		}
 		
+		public String getTrack() {
+			return track;
+		}
+		
 		public String getDescription() {
 			return description;
+		}
+		
+		public AbstractList<String> getSpeakers() {
+			return speakers;
 		}
 		
 		public void setLine(Line line_) {
@@ -1018,10 +1050,6 @@ public class Schedule {
 				return 0;
 			else
 				return 1;
-		}
-		
-		public String getUrl() {
-			return (getSchedule().getUrl() + "#" + getId()); 
 		}
 	}
 
