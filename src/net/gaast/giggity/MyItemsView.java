@@ -44,6 +44,8 @@ public class MyItemsView extends ScheduleListView implements ScheduleViewer {
 			fullList.add((coming.size() > 0 ? "\n" : "") + "Seen so far:");
 			fullList.addAll(seen);
 		}
+		if (fullList.isEmpty())
+			fullList.add("No items marked yet.");
 		setShowRemind(false);
 		setList(fullList);
 	}
