@@ -241,7 +241,7 @@ public class ScheduleViewActivity extends Activity {
     	menu.add(0, 1, 0, "Settings")
     		.setShortcut('0', 's')
     		.setIcon(android.R.drawable.ic_menu_preferences);
-   		menu.add(1, 2, 0, "Choose day")
+   		menu.add(1, 2, 0, "Change day")
 			.setShortcut('1', 'd')
 			.setIcon(android.R.drawable.ic_menu_day);
    		menu.add(1, 3, 0, "Timetable")
@@ -278,6 +278,14 @@ public class ScheduleViewActivity extends Activity {
     		if (sched.getDay().equals(days.get(i)))
     			cur = i;
     		dayList[i] = df.format(days.get(i));
+    	}
+    	
+    	if (days.size() == 2) {
+    		/* If there are only two days, don't bother showing the dialog, even
+    		 * though we did promise to show it. :-P */
+    		sched.getDb().setDay(1 - cur);
+    		onScheduleLoaded();
+    		return;
     	}
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
