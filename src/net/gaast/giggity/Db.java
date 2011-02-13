@@ -164,6 +164,13 @@ public class Db {
 					        new String[]{"" + schId});
 			while (q.moveToNext()) {
 				Schedule.Item item = sched.getItem(q.getString(1));
+				if (item == null) {
+					/* ZOMGWTF D: */
+					Log.e("DeoxideDb", "Db has info about deleted schedule item " +
+					      q.getString(1) + " remind " + q.getInt(2) + " stars " + q.getInt(3));
+					continue;
+				}
+
 				item.setRemind(q.getInt(2) != 0);
 				item.setStars(q.getInt(3));
 				sciIdMap.put(q.getString(1), new Long(q.getInt(0)));
