@@ -211,7 +211,7 @@ public class Schedule {
 
 		BufferedReader in = null;
 		String head;
-		File fn;
+		File fn, fntmp = null;
 		URL dl;
 		URLConnection dlc;
 		
@@ -226,6 +226,7 @@ public class Schedule {
 			SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
 			
 			fn = new File(app.getCacheDir(), "sched." + hashify(source));
+			fntmp = null;
 			
 			try {
 				/* Do HTTP stuff first, then HTTPS! Once we get a CastClassException, we stop. */
@@ -258,7 +259,8 @@ public class Schedule {
 				}
 				Log.d("HTTP status", ""+dlc.getHeaderField(0));
 				if (status == 200) {
-					Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fn)));
+					fntmp = new File(app.getCacheDir(), "tmp." + hashify(source));
+					Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fntmp)));
 					Reader rawin = new InputStreamReader(dlc.getInputStream());
 					in = new TeeReader(rawin, copy, 4096);
 				} else if (status == 304) {
@@ -284,6 +286,9 @@ public class Schedule {
 
 			head = new String(headc).toLowerCase();
 		} catch (Exception e) {
+			if (fntmp != null)
+				fntmp.delete();
+			
 			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
 			throw new RuntimeException("Network I/O problem: " + e);
@@ -304,9 +309,10 @@ public class Schedule {
 				throw new RuntimeException("File format not recognized");
 			}
 		} catch (RuntimeException e) {
-			/* If there's a cache file, delete it. Either we're reading from,
-			 * or we just wrote a corrupted file. */
-			if (fn != null)
+			/* Delete any possibly corrupted file that we may have now. */
+			if (fntmp != null)
+				fntmp.delete();
+			else
 				fn.delete();
 			throw e;
 		}
@@ -314,6 +320,11 @@ public class Schedule {
 		try {
 			in.close();
 		} catch (IOException e) {}
+		
+		if (fntmp != null) {
+			fntmp.renameTo(fn);
+		}
+		
 		/* Store last-modified date so we can cache more efficiently. */
 		if (dlc != null && dlc.getLastModified() > 0)
 			fn.setLastModified(dlc.getLastModified());
