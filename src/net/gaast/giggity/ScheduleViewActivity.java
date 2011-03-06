@@ -22,6 +22,7 @@ package net.gaast.giggity;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 import android.app.Activity;
@@ -29,7 +30,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -66,6 +70,8 @@ public class ScheduleViewActivity extends Activity {
     
     private String showEventId;
     
+    private BroadcastReceiver tzClose;
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,6 +101,20 @@ public class ScheduleViewActivity extends Activity {
         
         redraw = false;
         timer = new Handler();
+        
+        tzClose = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context arg0, Intent arg1) {
+				ScheduleViewActivity.this.finish();
+			}
+    	};
+    	registerReceiver(tzClose, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+    }
+    
+    @Override
+    public void onDestroy() {
+    	this.unregisterReceiver(tzClose);
+    	super.onDestroy();
     }
     
     private void horribleAsyncLoadHack(String source_) { 

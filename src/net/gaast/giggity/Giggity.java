@@ -23,10 +23,16 @@ import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 public class Giggity extends Application {
 	Db db;
@@ -36,8 +42,8 @@ public class Giggity extends Application {
 	Schedule lastSchedule;
 	
 	TreeSet<Schedule.Item> remindItems;
-	//Service reminder;
 	
+	@Override
     public void onCreate() {
     	super.onCreate();
     	db = new Db(this);
@@ -46,6 +52,36 @@ public class Giggity extends Application {
     	remindItems = new TreeSet<Schedule.Item>();
     	
     	PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
+    	
+    	/* This makes me sad: Most schedule file formats use timezone-unaware times.
+    	 * And Java's Date objects are timezone aware. The result is that if you load
+    	 * a file and then change the timezone on your phone, Giggity will show the
+    	 * wrong times. The easiest fix for now is to just reload everything.. */
+    	registerReceiver(new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context arg0, Intent arg1) {
+				HashSet<String> urls = new HashSet<String>();
+				for (Schedule sched : scheduleCache.values()) {
+					urls.add(sched.getUrl());
+					sched.commit();
+					sched.sleep();
+				}
+				
+				scheduleCache.clear();
+				lastSchedule = null;
+				/* Disabled for now, database initialisation issue. (Crashes on db writes.)
+				 * This means alarms are still wrong but the user will most likely reload
+				 * before that becomes a problem.
+				try {
+					for (String url : urls)
+						getSchedule(url, true);
+				} catch (Exception e) {
+					Log.e("Giggity", "Failed to reload schedules after timezone change..");
+					e.printStackTrace();
+				}
+				*/
+			}
+    	}, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
     }
     
     public Db.Connection getDb() {
