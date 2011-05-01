@@ -77,7 +77,7 @@ public class Schedule {
 	private HashMap<String,Schedule.LinkType> linkTypes;
 	private HashMap<String,Schedule.Item> allItems;
 
-	private Date firstTime, lastTime;
+	private Date firstTime, lastTime; /* TODO: Fill these in at the right place (i.e. not in the format parser.) */
 	private Date curDay, curDayEnd;
 	private Date dayChange;
 	LinkedList<Date> dayList;
@@ -302,6 +302,8 @@ public class Schedule {
 				loadXcal(in);
 			} else if (head.contains("<schedule") && head.contains("<conference")) {
 				loadPentabarf(in);
+			} else if (head.contains("<response") && head.contains("<grouped-summary")) {
+				loadVerdi(in);
 			} else if (head.contains("<schedule") && head.contains("<line")) {
 				loadDeox(in);
 			} else {
@@ -349,6 +351,10 @@ public class Schedule {
 	
 	private void loadPentabarf(BufferedReader in) {
 		loadXml(in, new PentabarfParser());
+	}
+	
+	private void loadVerdi(BufferedReader in) {
+		loadXml(in, new VerdiParser());
 	}
 	
 	private void loadXml(BufferedReader in, ContentHandler parser) {
@@ -861,6 +867,142 @@ public class Schedule {
 	
 		@Override
 		public void skippedEntity(String arg0) throws SAXException {
+		}
+	}
+	
+	/* TODO: Find name. */
+	private class VerdiParser implements ContentHandler {
+		private LinkedList<RawItem> rawItems;
+		private LinkedList<HashMap<String,String>> rawRooms;
+		private HashMap<Integer,Schedule.Line> tentMap;
+		private HashMap<String,String> propMap;
+		private String curString;
+
+		SimpleDateFormat df;
+
+		public VerdiParser() {
+			rawItems = new LinkedList<RawItem>();
+			rawRooms = new LinkedList<HashMap<String,String>>();
+			tentMap = new HashMap<Integer,Schedule.Line>();
+			df = new SimpleDateFormat("yyyy-MM-dd");
+		}
+		
+		@Override
+		public void startElement(String uri, String localName, String qName,
+				Attributes atts) throws SAXException {
+			curString = "";
+			if (localName.equals("event")) {
+				propMap = new HashMap<String,String>();
+				// Don't use the ID, it's far from unique.
+				//propMap.put("id", atts.getValue("id"));
+			} else	if (localName.equals("room")) {
+				propMap = new HashMap<String,String>();
+				propMap.put("id", atts.getValue("id"));
+			} else if (localName.equals("slot")) {
+			    //<slot id="454" date="2010-07-22" hour="18" minute="00" room="3" candidate="4" area="14" 
+				// title="Desenvolvendo aplica&#231;&#245;es Web para o Mercado Mobile" value="6" colspan="2" abstract="Como desenvolver aplica&#231;&#245;es para o mercado mobile, as novas oportunidades, como pequenas empresas e comunidades podem utilizar sistemas integrados a celulares para facilitar a vida das pessoas e aumentar a sua lucratividade"/>
+				String id = atts.getValue("id");
+				String title = atts.getValue("title");
+				
+				Calendar startTime;
+				startTime = new GregorianCalendar();
+				try {
+					startTime.setTime(df.parse(atts.getValue("date")));
+				} catch (ParseException e) {
+					// FAIL D:
+				}
+				startTime.add(Calendar.HOUR, Integer.parseInt(atts.getValue("hour")));
+				startTime.add(Calendar.MINUTE, Integer.parseInt(atts.getValue("minute")));
+
+				Calendar endTime;
+				endTime = new GregorianCalendar();
+				endTime.setTime(startTime.getTime());
+				endTime.add(Calendar.MINUTE, 30 * Integer.parseInt(atts.getValue("colspan")));
+
+				Item item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
+				item.setDescription(atts.getValue("abstract"));
+				rawItems.add(new RawItem(item, Integer.parseInt(atts.getValue("room"))));
+
+				if (firstTime == null || startTime.getTime().before(firstTime))
+					firstTime = startTime.getTime();
+				if (lastTime == null || endTime.getTime().after(lastTime))
+					lastTime = endTime.getTime();
+			}
+		}
+	
+		@Override
+		public void characters(char[] ch, int start, int length) throws SAXException {
+			curString += String.copyValueOf(ch, start, length); 
+		}
+	
+		@Override
+		public void endElement(String uri, String localName, String qName)
+				throws SAXException {
+			if (localName.equals("event")) {
+				title = propMap.get("name");
+			} else if (localName.equals("room")) {
+				Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
+				tents.add(tent);
+				tentMap.put(Integer.parseInt(tent.getId()), tent);
+			} else if (localName.equals("response")) {
+				merge();
+			} else if (propMap != null) {
+				propMap.put(localName, curString);
+			}
+		}
+		
+		@Override
+		public void startDocument() throws SAXException {
+		}
+	
+		@Override
+		public void endDocument() throws SAXException {
+		}
+		
+		@Override
+		public void startPrefixMapping(String arg0, String arg1)
+				throws SAXException {
+			
+		}
+	
+		@Override
+		public void endPrefixMapping(String arg0) throws SAXException {
+		}
+	
+		@Override
+		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
+				throws SAXException {
+		}
+	
+		@Override
+		public void processingInstruction(String arg0, String arg1)
+				throws SAXException {
+		}
+	
+		@Override
+		public void setDocumentLocator(Locator arg0) {
+		}
+	
+		@Override
+		public void skippedEntity(String arg0) throws SAXException {
+		}
+		
+		private void merge() {
+			for (RawItem item : rawItems) {
+				Line tent = tentMap.get(item.room);
+				Log.d("Verdi", "Room " + tent.getTitle() + " " + item.item.getTitle());
+				tent.addItem(item.item);
+			}
+		}
+		
+		private class RawItem {
+			public Item item;
+			public int room;
+			
+			public RawItem(Item item_, int room_) {
+				item = item_;
+				room = room_;
+			}
 		}
 	}
 	
