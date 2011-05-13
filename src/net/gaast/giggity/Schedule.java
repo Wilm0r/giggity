@@ -45,7 +45,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -874,7 +874,7 @@ public class Schedule {
 	private class VerdiParser implements ContentHandler {
 		private LinkedList<RawItem> rawItems;
 		private LinkedList<HashMap<String,String>> rawRooms;
-		private HashMap<Integer,Schedule.Line> tentMap;
+		private TreeMap<Integer,Schedule.Line> tentMap;
 		private HashMap<String,String> propMap;
 		private String curString;
 
@@ -883,7 +883,7 @@ public class Schedule {
 		public VerdiParser() {
 			rawItems = new LinkedList<RawItem>();
 			rawRooms = new LinkedList<HashMap<String,String>>();
-			tentMap = new HashMap<Integer,Schedule.Line>();
+			tentMap = new TreeMap<Integer,Schedule.Line>();
 			df = new SimpleDateFormat("yyyy-MM-dd");
 		}
 		
@@ -942,7 +942,6 @@ public class Schedule {
 				title = propMap.get("name");
 			} else if (localName.equals("room")) {
 				Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
-				tents.add(tent);
 				tentMap.put(Integer.parseInt(tent.getId()), tent);
 			} else if (localName.equals("response")) {
 				merge();
@@ -988,9 +987,11 @@ public class Schedule {
 		}
 		
 		private void merge() {
+			for (Line tent : tentMap.values()) {
+				tents.add(tent);
+			}
 			for (RawItem item : rawItems) {
 				Line tent = tentMap.get(item.room);
-				Log.d("Verdi", "Room " + tent.getTitle() + " " + item.item.getTitle());
 				tent.addItem(item.item);
 			}
 		}
