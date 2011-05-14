@@ -77,7 +77,7 @@ public class Schedule {
 	private HashMap<String,Schedule.LinkType> linkTypes;
 	private HashMap<String,Schedule.Item> allItems;
 
-	private Date firstTime, lastTime; /* TODO: Fill these in at the right place (i.e. not in the format parser.) */
+	private Date firstTime, lastTime;
 	private Date curDay, curDayEnd;
 	private Date dayChange;
 	LinkedList<Date> dayList;
@@ -485,11 +485,6 @@ public class Schedule {
 					startTime = new Date(Long.parseLong(atts.getValue("", "startTime")) * 1000);
 					endTime = new Date(Long.parseLong(atts.getValue("", "endTime")) * 1000);
 					
-					if (firstTime == null || startTime.before(firstTime))
-						firstTime = startTime;
-					if (lastTime == null || endTime.after(lastTime))
-						lastTime = endTime;
-					
 					curItem = new Schedule.Item(atts.getValue("", "id"),
 		                       atts.getValue("", "title"),
 		                       startTime, endTime);
@@ -620,11 +615,6 @@ public class Schedule {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
 					return;
 				}
-
-				if (firstTime == null || startTime.before(firstTime))
-					firstTime = startTime;
-				if (lastTime == null || endTime.after(lastTime))
-					lastTime = endTime;
 
 				item = new Schedule.Item(uid, name, startTime, endTime);
 				
@@ -795,11 +785,6 @@ public class Schedule {
 					return;
 				}
 
-				if (firstTime == null || startTime.getTime().before(firstTime))
-					firstTime = startTime.getTime();
-				if (lastTime == null || endTime.getTime().after(lastTime))
-					lastTime = endTime.getTime();
-
 				item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				
 				desc = "";
@@ -926,11 +911,6 @@ public class Schedule {
 				Item item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				item.setDescription(atts.getValue("abstract"));
 				rawItems.add(new RawItem(item, atts));
-
-				if (firstTime == null || startTime.getTime().before(firstTime))
-					firstTime = startTime.getTime();
-				if (lastTime == null || endTime.getTime().after(lastTime))
-					lastTime = endTime.getTime();
 			} else if (localName.equals("person")) {
 				LinkedList<String> speakers;
 				int id = Integer.parseInt(atts.getValue("candidate"));
@@ -1080,6 +1060,11 @@ public class Schedule {
 			item.setLine(this);
 			items.add(item);
 			allItems.put(item.getId(), item);
+
+			if (firstTime == null || item.getStartTime().before(firstTime))
+				firstTime = item.getStartTime();
+			if (lastTime == null || item.getEndTime().after(lastTime))
+				lastTime = item.getEndTime();
 		}
 		
 		public AbstractSet<Schedule.Item> getItems() {
