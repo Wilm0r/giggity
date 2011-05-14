@@ -874,7 +874,9 @@ public class Schedule {
 	private class VerdiParser implements ContentHandler {
 		private LinkedList<RawItem> rawItems;
 		private LinkedList<HashMap<String,String>> rawRooms;
+		private HashMap<Integer,LinkedList<String>> candidates;
 		private TreeMap<Integer,Schedule.Line> tentMap;
+		
 		private HashMap<String,String> propMap;
 		private String curString;
 
@@ -883,6 +885,7 @@ public class Schedule {
 		public VerdiParser() {
 			rawItems = new LinkedList<RawItem>();
 			rawRooms = new LinkedList<HashMap<String,String>>();
+			candidates = new HashMap<Integer,LinkedList<String>>();
 			tentMap = new TreeMap<Integer,Schedule.Line>();
 			df = new SimpleDateFormat("yyyy-MM-dd");
 		}
@@ -921,12 +924,25 @@ public class Schedule {
 
 				Item item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				item.setDescription(atts.getValue("abstract"));
-				rawItems.add(new RawItem(item, Integer.parseInt(atts.getValue("room"))));
+				rawItems.add(new RawItem(item,
+				                         Integer.parseInt(atts.getValue("room")),
+				                         Integer.parseInt(atts.getValue("candidate"))));
 
 				if (firstTime == null || startTime.getTime().before(firstTime))
 					firstTime = startTime.getTime();
 				if (lastTime == null || endTime.getTime().after(lastTime))
 					lastTime = endTime.getTime();
+			} else if (localName.equals("person")) {
+				LinkedList<String> speakers;
+				int id = Integer.parseInt(atts.getValue("candidate"));
+				if ((speakers = candidates.get(id)) == null)
+					candidates.put(id, (speakers = new LinkedList<String>()));
+				
+				/* Just use main to put the main person at the head of the list. */
+				if (Integer.parseInt(atts.getValue("main")) > 0)
+					speakers.addFirst(atts.getValue("name"));
+				else
+					speakers.addLast(atts.getValue("name"));
 			}
 		}
 	
@@ -991,6 +1007,11 @@ public class Schedule {
 				tents.add(tent);
 			}
 			for (RawItem item : rawItems) {
+				LinkedList<String> speakers;
+				if ((speakers = candidates.get(item.candidate)) != null) {
+					for (String name : speakers)
+						item.item.addSpeaker(name);
+				}
 				Line tent = tentMap.get(item.room);
 				tent.addItem(item.item);
 			}
@@ -999,10 +1020,12 @@ public class Schedule {
 		private class RawItem {
 			public Item item;
 			public int room;
+			public int candidate;
 			
-			public RawItem(Item item_, int room_) {
+			public RawItem(Item item_, int room_, int candidate_) {
 				item = item_;
 				room = room_;
+				candidate = candidate_;
 			}
 		}
 	}
