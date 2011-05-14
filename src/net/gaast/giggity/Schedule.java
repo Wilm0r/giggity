@@ -104,18 +104,20 @@ public class Schedule {
 	
 	public LinkedList<Date> getDays() {
 		if (dayList == null) {
-			dayList = new LinkedList<Date>();
 			Calendar day = new GregorianCalendar();
-			Calendar dayEnd = new GregorianCalendar();
 			day.setTime(firstTime);
 			day.set(Calendar.HOUR_OF_DAY, dayChange.getHours());
 			day.set(Calendar.MINUTE, dayChange.getMinutes());
-			dayEnd.setTime(day.getTime());
-			dayEnd.add(Calendar.DATE, 1);
 			/* Add a day 0 (maybe there's an event before the first day officially
 			 * starts?). Saw this in the CCC Fahrplan for example. */
 			if (day.getTime().after(firstTime))
 				day.add(Calendar.DATE, -1);
+
+			Calendar dayEnd = new GregorianCalendar();
+			dayEnd.setTime(day.getTime());
+			dayEnd.add(Calendar.DATE, 1);
+			
+			dayList = new LinkedList<Date>();
 			while (day.getTime().before(lastTime)) {
 				/* Some schedules have empty days in between. :-/ Skip those. */
 				Iterator<Item> itemi = allItems.values().iterator();
