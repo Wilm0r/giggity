@@ -51,10 +51,17 @@ public class SearchActivity extends Activity {
     	}
     	
     	sched.setDay(-1);
-    	String query = getIntent().getStringExtra(SearchManager.QUERY);
+    	String query;
+    	
 		ScheduleListView lv = new ScheduleListView(this);
-		lv.setList(sched.searchItems(query));
+
+		if ((query = getIntent().getStringExtra(SearchManager.QUERY)) != null) {
+			lv.setList(sched.searchItems(query));
+			setTitle("Results for \"" + query + "\" in " + sched.getTitle());
+		} else if ((query = getIntent().getStringExtra("track")) != null) {
+			lv.setList(sched.searchItems(query));
+			setTitle(sched.getTitle() + ": " + query);
+		}
 		setContentView(lv);
-		setTitle("Results for \"" + query + "\" in " + sched.getTitle());
 	}
 }

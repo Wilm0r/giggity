@@ -20,5 +20,7 @@
 package net.gaast.giggity;
 
 public interface ScheduleViewer {
+	/** Called every minute.
+	 */
 	public void refreshContents();
 }

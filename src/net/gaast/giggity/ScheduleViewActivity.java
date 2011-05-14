@@ -55,6 +55,7 @@ public class ScheduleViewActivity extends Activity {
     private final static int VIEW_TIMETABLE = 2;
     private final static int VIEW_NOWNEXT = 3;
     private final static int VIEW_MINE = 4;
+    private final static int VIEW_TRACKS = 5;
     
     private int view;
     
@@ -224,6 +225,8 @@ public class ScheduleViewActivity extends Activity {
     		setContentView(new NowNext(this, sched));
     	} else if (view == VIEW_MINE) {
     		setContentView(new MyItemsView(this, sched));
+    	} else if (view == VIEW_TRACKS) {
+    		setContentView(new TrackList(this, sched));
     	}
     	
     	if (showEventId != null) {
@@ -267,14 +270,17 @@ public class ScheduleViewActivity extends Activity {
    		menu.add(1, 3, 0, "Timetable")
 			.setShortcut('2', 't')
 			.setIcon(android.R.drawable.ic_menu_agenda);
-   		menu.add(1, 4, 0, "Block schedule")
-			.setShortcut('3', 'b')
+   		menu.add(1, 4, 0, "Tracks")
+   			.setShortcut('3', 'r')
+   			.setIcon(android.R.drawable.ic_menu_agenda);
+   		menu.add(1, 5, 0, "Block schedule")
+			.setShortcut('4', 'b')
 			.setIcon(R.drawable.blockschedule);
-   		menu.add(1, 5, 0, "Now and next")
-			.setShortcut('4', 'n')
+   		menu.add(1, 6, 0, "Now and next")
+			.setShortcut('5', 'n')
 			.setIcon(R.drawable.ic_menu_clock_face);
-   		menu.add(1, 6, 0, "My events")
-		    .setShortcut('5', 'm')
+   		menu.add(1, 7, 0, "My events")
+		    .setShortcut('6', 'm')
 		    .setIcon(android.R.drawable.ic_menu_my_calendar);
     	
     	return true;
@@ -284,9 +290,10 @@ public class ScheduleViewActivity extends Activity {
     public boolean onPrepareOptionsMenu(Menu menu) {
     	menu.findItem(2).setVisible(view != VIEW_NOWNEXT && view != VIEW_MINE && sched.getDays().size() > 1);
     	menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
-    	menu.findItem(4).setVisible(view != VIEW_BLOCKSCHEDULE);
-    	menu.findItem(5).setVisible(view != VIEW_NOWNEXT);
-    	menu.findItem(6).setVisible(view != VIEW_MINE);
+    	menu.findItem(4).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
+    	menu.findItem(5).setVisible(view != VIEW_BLOCKSCHEDULE);
+    	menu.findItem(6).setVisible(view != VIEW_NOWNEXT);
+    	menu.findItem(7).setVisible(view != VIEW_MINE);
     	return true;
     }
     
@@ -337,14 +344,18 @@ public class ScheduleViewActivity extends Activity {
     		onScheduleLoaded();
     		return true;
     	case 4:
-    		view = VIEW_BLOCKSCHEDULE;
+    		view = VIEW_TRACKS;
     		onScheduleLoaded();
     		return true;
     	case 5:
-    		view = VIEW_NOWNEXT;
+    		view = VIEW_BLOCKSCHEDULE;
     		onScheduleLoaded();
     		return true;
     	case 6:
+    		view = VIEW_NOWNEXT;
+    		onScheduleLoaded();
+    		return true;
+    	case 7:
     		view = VIEW_MINE;
     		onScheduleLoaded();
     		return true;

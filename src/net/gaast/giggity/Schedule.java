@@ -40,9 +40,11 @@ import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
@@ -76,6 +78,7 @@ public class Schedule {
 	private LinkedList<Schedule.Line> tents;
 	private HashMap<String,Schedule.LinkType> linkTypes;
 	private HashMap<String,Schedule.Item> allItems;
+	private Collection<String> tracks;
 
 	private Date firstTime, lastTime;
 	private Date curDay, curDayEnd;
@@ -199,6 +202,7 @@ public class Schedule {
 		allItems = new HashMap<String,Schedule.Item>();
 		linkTypes = new HashMap<String,Schedule.LinkType>();
 		tents = new LinkedList<Schedule.Line>();
+		tracks = null;
 		
 		firstTime = null;
 		lastTime = null;
@@ -414,6 +418,10 @@ public class Schedule {
 	
 	public Item getItem(String id) {
 		return allItems.get(id);
+	}
+	
+	public Collection<String> getTracks() {
+		return tracks;
 	}
 	
 	public AbstractList<Item> searchItems(String q_) {
@@ -690,11 +698,14 @@ public class Schedule {
 		private LinkedList<String> links, persons;
 		private Schedule.LinkType lt;
 		private Date curDay;
+		private HashSet<String> trackSet;
 
 		SimpleDateFormat df, tf;
 
 		public PentabarfParser() {
 			tentMap = new HashMap<String,Schedule.Line>();
+			trackSet = new HashSet<String>();
+			
 			df = new SimpleDateFormat("yyyy-MM-dd");
 			tf = new SimpleDateFormat("HH:mm");
 			
@@ -802,8 +813,10 @@ public class Schedule {
 				desc = desc.replaceAll("([^\n]) *\n *([a-zA-Z0-9])", "$1 $2");
 				item.setDescription(desc);
 				
-				if ((s = propMap.get("track")) != null)
+				if ((s = propMap.get("track")) != null && !s.equals("")) {
 					item.setTrack(s);
+					trackSet.add(s);
+				}
 				for (String i : links)
 					item.addLink(lt, i);
 				for (String i : persons)
@@ -815,6 +828,9 @@ public class Schedule {
 				persons = null;
 			} else if (localName.equals("person")) {
 				persons.add(curString);
+			} else if (localName.equals("response")) {
+				if (!trackSet.isEmpty())
+					tracks = trackSet;
 			} else if (propMap != null) {
 				propMap.put(localName, curString);
 			}
@@ -861,7 +877,7 @@ public class Schedule {
 	private class VerdiParser implements ContentHandler {
 		private LinkedList<RawItem> rawItems;
 		private HashMap<Integer,LinkedList<String>> candidates;
-		private HashMap<Integer,String> areas;
+		private TreeMap<Integer,String> trackMap;
 		private TreeMap<Integer,Schedule.Line> tentMap;
 		
 		private HashMap<String,String> propMap;
@@ -872,7 +888,7 @@ public class Schedule {
 		public VerdiParser() {
 			rawItems = new LinkedList<RawItem>();
 			candidates = new HashMap<Integer,LinkedList<String>>();
-			areas = new HashMap<Integer,String>();
+			trackMap = new TreeMap<Integer,String>();
 			tentMap = new TreeMap<Integer,Schedule.Line>();
 			df = new SimpleDateFormat("yyyy-MM-dd");
 		}
@@ -941,7 +957,7 @@ public class Schedule {
 				Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
 				tentMap.put(Integer.parseInt(tent.getId()), tent);
 			} else if (localName.equals("area")) {
-				areas.put(Integer.parseInt(propMap.get("id")), propMap.get("name"));
+				trackMap.put(Integer.parseInt(propMap.get("id")), propMap.get("name"));
 			} else if (localName.equals("response")) {
 				merge();
 			} else if (propMap != null) {
@@ -997,13 +1013,15 @@ public class Schedule {
 				}
 				
 				String area;
-				if ((area = areas.get(item.area)) != null) {
+				if ((area = trackMap.get(item.area)) != null) {
 					item.item.setTrack(area);
 				}
 				
 				Line tent = tentMap.get(item.room);
 				tent.addItem(item.item);
 			}
+			
+			tracks = trackMap.values();
 		}
 		
 		private class RawItem {
