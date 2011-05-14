@@ -873,8 +873,8 @@ public class Schedule {
 	/* TODO: Find name. */
 	private class VerdiParser implements ContentHandler {
 		private LinkedList<RawItem> rawItems;
-		private LinkedList<HashMap<String,String>> rawRooms;
 		private HashMap<Integer,LinkedList<String>> candidates;
+		private HashMap<Integer,String> areas;
 		private TreeMap<Integer,Schedule.Line> tentMap;
 		
 		private HashMap<String,String> propMap;
@@ -884,8 +884,8 @@ public class Schedule {
 
 		public VerdiParser() {
 			rawItems = new LinkedList<RawItem>();
-			rawRooms = new LinkedList<HashMap<String,String>>();
 			candidates = new HashMap<Integer,LinkedList<String>>();
+			areas = new HashMap<Integer,String>();
 			tentMap = new TreeMap<Integer,Schedule.Line>();
 			df = new SimpleDateFormat("yyyy-MM-dd");
 		}
@@ -901,9 +901,10 @@ public class Schedule {
 			} else	if (localName.equals("room")) {
 				propMap = new HashMap<String,String>();
 				propMap.put("id", atts.getValue("id"));
+			} else	if (localName.equals("area")) {
+				propMap = new HashMap<String,String>();
+				propMap.put("id", atts.getValue("id"));
 			} else if (localName.equals("slot")) {
-			    //<slot id="454" date="2010-07-22" hour="18" minute="00" room="3" candidate="4" area="14" 
-				// title="Desenvolvendo aplica&#231;&#245;es Web para o Mercado Mobile" value="6" colspan="2" abstract="Como desenvolver aplica&#231;&#245;es para o mercado mobile, as novas oportunidades, como pequenas empresas e comunidades podem utilizar sistemas integrados a celulares para facilitar a vida das pessoas e aumentar a sua lucratividade"/>
 				String id = atts.getValue("id");
 				String title = atts.getValue("title");
 				
@@ -924,9 +925,7 @@ public class Schedule {
 
 				Item item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				item.setDescription(atts.getValue("abstract"));
-				rawItems.add(new RawItem(item,
-				                         Integer.parseInt(atts.getValue("room")),
-				                         Integer.parseInt(atts.getValue("candidate"))));
+				rawItems.add(new RawItem(item, atts));
 
 				if (firstTime == null || startTime.getTime().before(firstTime))
 					firstTime = startTime.getTime();
@@ -959,6 +958,8 @@ public class Schedule {
 			} else if (localName.equals("room")) {
 				Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
 				tentMap.put(Integer.parseInt(tent.getId()), tent);
+			} else if (localName.equals("area")) {
+				areas.put(Integer.parseInt(propMap.get("id")), propMap.get("name"));
 			} else if (localName.equals("response")) {
 				merge();
 			} else if (propMap != null) {
@@ -1012,6 +1013,12 @@ public class Schedule {
 					for (String name : speakers)
 						item.item.addSpeaker(name);
 				}
+				
+				String area;
+				if ((area = areas.get(item.area)) != null) {
+					item.item.setTrack(area);
+				}
+				
 				Line tent = tentMap.get(item.room);
 				tent.addItem(item.item);
 			}
@@ -1020,12 +1027,31 @@ public class Schedule {
 		private class RawItem {
 			public Item item;
 			public int room;
+			public int area;
 			public int candidate;
 			
-			public RawItem(Item item_, int room_, int candidate_) {
+			public RawItem(Item item_, Attributes atts) {
 				item = item_;
-				room = room_;
-				candidate = candidate_;
+				
+				String s;
+				try {
+					if ((s = atts.getValue("room")) != null)
+						room = Integer.parseInt(s);
+				} catch (NumberFormatException e) {
+					room = -1;
+				}
+				try {
+					if ((s = atts.getValue("area")) != null)
+						area = Integer.parseInt(s);
+				} catch (NumberFormatException e) {
+					area = -1;
+				}
+				try {
+					if ((s = atts.getValue("candidate")) != null)
+						candidate = Integer.parseInt(s);
+				} catch (NumberFormatException e) {
+					candidate = -1;
+				}
 			}
 		}
 	}
