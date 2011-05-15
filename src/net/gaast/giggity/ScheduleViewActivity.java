@@ -272,7 +272,7 @@ public class ScheduleViewActivity extends Activity {
 			.setIcon(android.R.drawable.ic_menu_agenda);
    		menu.add(1, 4, 0, "Tracks")
    			.setShortcut('3', 'r')
-   			.setIcon(android.R.drawable.ic_menu_agenda);
+   			.setIcon(R.drawable.tracks);
    		menu.add(1, 5, 0, "Block schedule")
 			.setShortcut('4', 'b')
 			.setIcon(R.drawable.blockschedule);
