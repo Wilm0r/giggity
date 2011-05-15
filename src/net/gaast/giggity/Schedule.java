@@ -38,9 +38,9 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
+import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -77,8 +77,8 @@ public class Schedule {
 
 	private LinkedList<Schedule.Line> tents;
 	private HashMap<String,Schedule.LinkType> linkTypes;
-	private HashMap<String,Schedule.Item> allItems;
-	private Collection<String> tracks;
+	private TreeMap<String,Schedule.Item> allItems;
+	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
 
 	private Date firstTime, lastTime;
 	private Date curDay, curDayEnd;
@@ -199,10 +199,10 @@ public class Schedule {
 		id = null;
 		title = null;
 		
-		allItems = new HashMap<String,Schedule.Item>();
+		allItems = new TreeMap<String,Schedule.Item>();
 		linkTypes = new HashMap<String,Schedule.LinkType>();
 		tents = new LinkedList<Schedule.Line>();
-		tracks = null;
+		trackMap = null; /* Only assign if we have track info. */
 		
 		firstTime = null;
 		lastTime = null;
@@ -420,8 +420,8 @@ public class Schedule {
 		return allItems.get(id);
 	}
 	
-	public Collection<String> getTracks() {
-		return tracks;
+	public AbstractMap<String,TreeSet<Schedule.Item>> getTracks() {
+		return (AbstractMap<String,TreeSet<Schedule.Item>>) trackMap;
 	}
 	
 	public AbstractList<Item> searchItems(String q_) {
@@ -828,9 +828,6 @@ public class Schedule {
 				persons = null;
 			} else if (localName.equals("person")) {
 				persons.add(curString);
-			} else if (localName.equals("response")) {
-				if (!trackSet.isEmpty())
-					tracks = trackSet;
 			} else if (propMap != null) {
 				propMap.put(localName, curString);
 			}
@@ -1020,8 +1017,6 @@ public class Schedule {
 				Line tent = tentMap.get(item.room);
 				tent.addItem(item.item);
 			}
-			
-			tracks = trackMap.values();
 		}
 		
 		private class RawItem {
@@ -1137,6 +1132,17 @@ public class Schedule {
 		
 		public void setTrack(String track_) {
 			track = track_;
+			
+			if (trackMap == null)
+				trackMap = new HashMap<String,TreeSet<Schedule.Item>>();
+			
+			TreeSet<Schedule.Item> items;
+			if ((items = trackMap.get(track)) == null) {
+				items = new TreeSet<Schedule.Item>();
+				trackMap.put(track, items);
+			}
+			
+			items.add(this);
 		}
 		
 		public void setDescription(String description_) {

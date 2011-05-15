@@ -32,7 +32,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 public class Giggity extends Application {
 	Db db;

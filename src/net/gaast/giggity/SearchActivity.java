@@ -19,6 +19,9 @@
 
 package net.gaast.giggity;
 
+import java.util.AbstractList;
+import java.util.LinkedList;
+
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
@@ -59,7 +62,7 @@ public class SearchActivity extends Activity {
 			lv.setList(sched.searchItems(query));
 			setTitle("Results for \"" + query + "\" in " + sched.getTitle());
 		} else if ((query = getIntent().getStringExtra("track")) != null) {
-			lv.setList(sched.searchItems(query));
+			lv.setList((AbstractList<Schedule.Item>) new LinkedList<Schedule.Item>(sched.getTracks().get(query)));
 			setTitle(sched.getTitle() + ": " + query);
 		}
 		setContentView(lv);

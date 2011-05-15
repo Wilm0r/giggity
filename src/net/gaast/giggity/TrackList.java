@@ -2,7 +2,6 @@ package net.gaast.giggity;
 
 import java.util.LinkedList;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -21,11 +20,13 @@ public class TrackList extends ListView implements ScheduleViewer {
 		ctx = context;
 		sched = sched_;
 		
-		tracks = new LinkedList<String>(sched.getTracks());
+		tracks = new LinkedList<String>(sched.getTracks().keySet());
 		setAdapter(new ArrayAdapter<String>(ctx, android.R.layout.simple_list_item_1, tracks));
 		setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
+				/* Using SearchActivity here may not be that obvious, but it does mostly do what 
+				 * I need and gives good back button behaviour. */
 				Intent i = new Intent(ctx, SearchActivity.class);
 				i.setAction(Intent.ACTION_SEARCH);
 				i.putExtra("track", tracks.get(pos));
