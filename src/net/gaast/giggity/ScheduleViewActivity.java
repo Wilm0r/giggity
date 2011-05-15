@@ -186,7 +186,8 @@ public class ScheduleViewActivity extends Activity {
     	}
     	
     	/* Bugfix: Search sets day to -1, have to revert that. */
-    	if (view != VIEW_NOWNEXT && view != VIEW_MINE && sched != null && sched.getDays().size() > 1)
+    	if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS &&
+    	    sched != null && sched.getDays().size() > 1)
     		sched.setDay(sched.getDb().getDay());
 		
     	if (redraw) {
@@ -208,7 +209,7 @@ public class ScheduleViewActivity extends Activity {
     }
     
     private void onScheduleLoaded() {
-    	if (view != VIEW_NOWNEXT && view != VIEW_MINE && sched.getDays().size() > 1) {
+    	if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1) {
     		sched.setDay(sched.getDb().getDay());
     		setTitle(df.format(sched.getDay()) + ", " + sched.getTitle());
     	} else {
@@ -287,7 +288,7 @@ public class ScheduleViewActivity extends Activity {
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(2).setVisible(view != VIEW_NOWNEXT && view != VIEW_MINE && sched.getDays().size() > 1);
+    	menu.findItem(2).setVisible(view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1);
     	menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
     	menu.findItem(4).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
     	menu.findItem(5).setVisible(view != VIEW_BLOCKSCHEDULE);
