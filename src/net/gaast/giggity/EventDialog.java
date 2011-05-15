@@ -19,13 +19,11 @@
 
 package net.gaast.giggity;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -33,14 +31,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class EventDialog extends AlertDialog {
+public class EventDialog extends Dialog {
+	private Context ctx;
 	private Schedule.Item item;
 	private OnDismissListener dismissPassThru;
 
@@ -50,56 +51,61 @@ public class EventDialog extends AlertDialog {
 	public EventDialog(Context ctx_, Schedule.Item item_) {
 		super(ctx_);
 
+		ctx = ctx_;
 		item = item_;
 	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		Format df = new SimpleDateFormat("EE d MMM");
-    	Format tf = new SimpleDateFormat("HH:mm");
-    	Date now = new Date();
+		/* Rendering our own title (ScheduleItemView) */
+    	requestWindowFeature(Window.FEATURE_NO_TITLE);
 		
-		LinearLayout content = new LinearLayout(getContext());
-		content.setOrientation(LinearLayout.VERTICAL);
-
-		TextView desc = new TextView(getContext());
-		String descs = tf.format(item.getStartTime().getTime()) + "-" +
-	                   tf.format(item.getEndTime().getTime()) + " | " +
-	                   df.format(item.getStartTime()) + " | " +
-	    		       item.getLine().getTitle() + "\n";
-
-		if (item.getSpeakers() != null || item.getTrack() != null) {
-			if (item.getSpeakers() != null) {
-				for (String i : item.getSpeakers())
-					descs += i + ", ";
-				descs = descs.replaceAll(", $", "");
-				
-				if (item.getTrack() != null)
-					descs += " | ";
-			}
-			if (item.getTrack() != null) {
-				descs += item.getTrack();
-			}
-			descs += "\n";
+		String descs = "";
+		if (item.getSpeakers() != null) {
+			if (item.getSpeakers().size() > 1)
+				descs += "Speakers: ";
+			else
+				descs += "Speaker: ";
+			for (String i : item.getSpeakers())
+				descs += i + ", ";
+			descs = descs.replaceAll(", $", "\n\n");
 		}
 		if (item.getDescription() != null)
-			descs += "\n" + item.getDescription();
-		desc.setText(descs);
+			descs += item.getDescription();
 		
-		ScrollView descscr = new ScrollView(getContext());
-		descscr.addView(desc);
-		content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 2));
+		LinearLayout content = new LinearLayout(ctx);
+		content.setOrientation(LinearLayout.VERTICAL);
 
-		LinearLayout bottomBox = new LinearLayout(getContext());
+		/* Title, styled like in ScheduleListView. */
+		content.addView(new ScheduleItemView(ctx, item, ScheduleItemView.SHORT_TITLE),
+		                new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
+		
+		/* Separator line between dialog title and rest. */
+		ImageView line = new ImageView(ctx);
+		line.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.divider_horizontal_dark));
+		line.setScaleType(ImageView.ScaleType.FIT_XY);
+		content.addView(line, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
+		
+		/* Big text field with abstract, description, etc. */
+		TextView desc = new TextView(ctx);
+		desc.setText(descs);
+		ScrollView descscr = new ScrollView(ctx);
+		descscr.addView(desc);
+		content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+
+		/* Bottom box is some stuff next to each other: Remind checkbox/stars, web buttons. */
+		LinearLayout bottomBox = new LinearLayout(ctx);
 		bottomBox.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
 
-		if (item.getStartTime().after(now)) {
-			cb = new CheckBox(getContext());
+		if (item.getStartTime().after(new Date())) {
+			/* Show "Remind me" only if the event is in the future. */
+			cb = new CheckBox(ctx);
 			cb.setText("Remind me");
 			cb.setChecked(item.getRemind());
 			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		} else {
-			sv = new StarsView(getContext());
+			/* Otherwise, stars to rate the event. Using my own StarsView because the stock one's too huge. */
+			sv = new StarsView(ctx);
 			sv.setNumStars(5);
 			sv.setScore(item.getStars());
 			/* Bigger surface for easier touching. */
@@ -107,20 +113,20 @@ public class EventDialog extends AlertDialog {
 			bottomBox.addView(sv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1));
 		}
 		
+		/* Web buttons, on the right. */
 		LinkedList<Schedule.Item.Link> links = item.getLinks();
 		if (links != null) {
 			Iterator<Schedule.Item.Link> linki = links.listIterator();
 			while (linki.hasNext()) {
 				Schedule.Item.Link link = linki.next();
-				LinkButton btn = new LinkButton(getContext(), link);
+				LinkButton btn = new LinkButton(ctx, link);
 				bottomBox.addView(btn);
 			}
 		}
 
-		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
 
-		setTitle(item.getTitle());
-    	setView(content);
+    	setContentView(content);
     	super.setOnDismissListener(new OnDismissListener() {
    			public void onDismiss(DialogInterface dialog) {
    				if (cb != null) {
@@ -134,7 +140,7 @@ public class EventDialog extends AlertDialog {
 	   			        intent.putExtra("title", item.getTitle());
 	   			        intent.putExtra("eventLocation", item.getLine().getTitle());
 	   			        intent.putExtra("description", item.getDescription());
-	   			        getContext().startActivity(intent);
+	   			        ctx.startActivity(intent);
    			 		}
 	   			    */
    				}
@@ -163,7 +169,7 @@ public class EventDialog extends AlertDialog {
 	    	Uri uri = Uri.parse(link.getUrl());
 	    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 	    	intent.addCategory(Intent.CATEGORY_BROWSABLE);
-	    	getContext().startActivity(intent);
+	    	ctx.startActivity(intent);
 		}
 	}
 	

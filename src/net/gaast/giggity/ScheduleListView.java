@@ -19,11 +19,8 @@
 
 package net.gaast.giggity;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,18 +31,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ScheduleListView extends ListView {
 	ArrayList<?> list;
 	EventAdapter adje;
 	Context ctx;
+	int itemViewFlags = ScheduleItemView.SHOW_NOW | ScheduleItemView.SHOW_REMIND;
 	
-	private boolean compact = false;
-	private boolean showNow = true;
-	private boolean showRemind = true;
-    
 	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
 		super(ctx_);
@@ -80,16 +73,25 @@ public class ScheduleListView extends ListView {
     	return list;
     }
     
-    protected void setCompact(boolean compact_) {
-    	compact = compact_;
+    protected void setCompact(boolean compact) {
+    	if (compact)
+    		itemViewFlags |= ScheduleItemView.COMPACT;
+    	else
+    		itemViewFlags &= ~ScheduleItemView.COMPACT;
     }
     
-    protected void setShowNow(boolean showNow_) {
-    	showNow = showNow_;
+    protected void setShowNow(boolean showNow) {
+    	if (showNow)
+    		itemViewFlags |= ScheduleItemView.SHOW_NOW;
+    	else
+    		itemViewFlags &= ~ScheduleItemView.SHOW_NOW;
     }
     
-    protected void setShowRemind(boolean showRemind_) {
-    	showRemind = showRemind_;
+    protected void setShowRemind(boolean showRemind) {
+    	if (showRemind)
+    		itemViewFlags |= ScheduleItemView.SHOW_REMIND;
+    	else
+    		itemViewFlags &= ~ScheduleItemView.SHOW_REMIND;
     }
     
     public void refreshContents() {
@@ -126,63 +128,7 @@ public class ScheduleListView extends ListView {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (items.get(position).getClass() == Schedule.Item.class) {
-				int n = 0;
-				Schedule.Item i = (Schedule.Item) items.get(position);
-				RelativeLayout v = new RelativeLayout(ctx);
-				Format df = new SimpleDateFormat("EE d MMM");
-				Format tf = new SimpleDateFormat("HH:mm");
-				
-				TextView title, room, time, date;
-				RelativeLayout.LayoutParams p;
-				
-				time = new TextView(ctx);
-				time.setText(tf.format(i.getStartTime()) + "-" + tf.format(i.getEndTime()) + "  ");
-				time.setTextSize(16);
-				time.setId(++n);
-				p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				p.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-				v.addView(time, p);
-				
-				title = new TextView(ctx);
-				title.setText(i.getTitle());
-				title.setTextSize(16);
-				title.setId(++n);
-				p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				p.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-				p.addRule(RelativeLayout.RIGHT_OF, time.getId());
-				p.addRule(RelativeLayout.ALIGN_TOP, time.getId());
-				v.addView(title, p);
-				
-				if (!compact) {
-					date = new TextView(ctx);
-					date.setText(df.format(i.getStartTime()) + "  ");
-					date.setTextSize(12);
-					date.setId(++n);
-					p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-					p.addRule(RelativeLayout.BELOW, time.getId());
-					p.addRule(RelativeLayout.ALIGN_LEFT, time.getId());
-					p.addRule(RelativeLayout.ALIGN_RIGHT, time.getId());
-					v.addView(date, p);
-					
-					room = new TextView(ctx);
-					room.setText(i.getLine().getTitle());
-					room.setTextSize(12);
-					room.setId(++n);
-					p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-					p.addRule(RelativeLayout.BELOW, title.getId());
-					p.addRule(RelativeLayout.ALIGN_LEFT, title.getId());
-					p.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-					v.addView(room, p);
-				}
-				
-				if (showRemind && i.getRemind())
-					v.setBackgroundColor(0x3300FF00);
-				else if (showNow && i.compareTo(new Date()) == 0)
-					v.setBackgroundColor(0x11FFFFFF);
-				else
-					v.setBackgroundColor(0x00000000);
-
-				return v;
+				return new ScheduleItemView(ctx, (Schedule.Item) items.get(position), itemViewFlags);
 			} else {
 				TextView tv = new TextView(ctx);
 				tv.setText((String) items.get(position));

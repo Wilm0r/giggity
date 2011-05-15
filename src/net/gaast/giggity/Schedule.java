@@ -1146,7 +1146,7 @@ public class Schedule {
 		}
 		
 		public void setDescription(String description_) {
-			description = description_;
+			description = description_.replaceAll("\\s+$", "").replaceAll("^\\s+", "");
 		}
 		
 		public void addLink(Schedule.LinkType type, String url) {
