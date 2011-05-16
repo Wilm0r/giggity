@@ -91,7 +91,7 @@ public class Schedule {
 		app = ctx;
 	}
 
-	private String hashify(String url) {
+	public static String hashify(String url) {
 		String ret = "";
 		try {
 			MessageDigest md5 = MessageDigest.getInstance("SHA-1");

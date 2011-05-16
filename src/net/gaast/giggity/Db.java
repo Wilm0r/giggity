@@ -33,10 +33,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class Db {
-	Helper dbh;
+	private Helper dbh;
+	private static final int dbVersion = 2;
 	
 	public Db(Application app_) {
-		dbh = new Helper(app_, "giggity", null, 1);
+		dbh = new Helper(app_, "giggity", null, dbVersion);
 	}
 	
 	public Connection getConnection() {
@@ -65,30 +66,38 @@ public class Db {
 					                               "sci_remind Boolean, " +
 					                               "sci_stars Integer(2) Null)");
 			
-			/* Seed it with FOSDEM 2011. At some point I should make this more
-			 * fancy, but no time now. :-/ */
-			ContentValues row = new ContentValues();
-			row.put("sch_id_s", "e036bee3470d06c83601446025102bd6a58d6d99");
-			row.put("sch_title", "FOSDEM 2011");
-			row.put("sch_url", "http://fosdem.org/2011/schedule/xml");
-			row.put("sch_atime", new Date().getTime() / 1000);
-			db.insert("schedule", null, row);
+			upgradeData(db, 0, dbVersion);
 		}
 	
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			int v = oldVersion;
 			Log.i("DeoxideDb", "Upgrading from database version " + oldVersion + " to " + newVersion);
-
-			switch (oldVersion) {
-			case 1:
-			/*
-				db.execSQL("Alter Table schedule Add Column sch_url VarChar(256)");
-				db.execSQL("Alter Table schedule Add Column sch_atime Integer");
-			case 2:
-				db.execSQL("Alter Table schedule Add Column sch_title VarChar(128)");
-			case 5:
-				db.execSQL("Alter Table schedule Add Column sch_day Integer");
-			*/
+			while (v < newVersion) {
+				v++;
+				/* Nothing to do for now. */
+			}
+			upgradeData(db, oldVersion, newVersion);
+		}
+		
+		/* For ease of use, seed the main menu with some known schedules. */
+		public void upgradeData(SQLiteDatabase db, int oldVersion, int newVersion) {
+			final String[][] seed = {
+				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011"},
+				{"2", "http://www.pgcon.org/2011/schedule/schedule.en.xml", "PGCon 2011"},
+			};
+			long ts = new Date().getTime() / 1000;
+			for (String[] i: seed) {
+				int v = Integer.parseInt(i[0]);
+				Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{i[1]});
+				if (v > oldVersion && v <= newVersion && q.getCount() == 0) {
+					ContentValues row = new ContentValues();
+					row.put("sch_id_s", Schedule.hashify(i[1]));
+					row.put("sch_url", i[1]);
+					row.put("sch_title", i[2]);
+					row.put("sch_atime", ts++);
+					db.insert("schedule", null, row);
+				}
 			}
 		}
 	}
