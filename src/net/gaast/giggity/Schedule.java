@@ -876,6 +876,7 @@ public class Schedule {
 		private HashMap<Integer,LinkedList<String>> candidates;
 		private TreeMap<Integer,String> trackMap;
 		private TreeMap<Integer,Schedule.Line> tentMap;
+		private TreeMap<Integer,Schedule.Line> tentMapSorted;
 		
 		private String curString;
 		
@@ -888,6 +889,7 @@ public class Schedule {
 			candidates = new HashMap<Integer,LinkedList<String>>();
 			trackMap = new TreeMap<Integer,String>();
 			tentMap = new TreeMap<Integer,Schedule.Line>();
+			tentMapSorted = new TreeMap<Integer,Schedule.Line>();
 			propMapStack = new LinkedList<HashMap<String,String>>();
 			df = new SimpleDateFormat("yyyy-MM-dd");
 		}
@@ -964,6 +966,8 @@ public class Schedule {
 				} else if (localName.equals("room")) {
 					Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
 					tentMap.put(Integer.parseInt(tent.getId()), tent);
+					if (propMap.containsKey("position"))
+						tentMapSorted.put(Integer.parseInt(propMap.get("position")), tent);
 				} else if (localName.equals("area")) {
 					trackMap.put(Integer.parseInt(propMap.get("id")), propMap.get("name"));
 				}
@@ -1013,9 +1017,14 @@ public class Schedule {
 		
 		private void merge() {
 			/* Since data can be in the file in any order, put all the pieces together at the end. */
-			for (Line tent : tentMap.values()) {
+
+			/* Only use the "position" field list if all tents had it. */
+			if (tentMapSorted.size() != tentMap.size())
+				tentMapSorted = tentMap;
+			for (Line tent : tentMapSorted.values()) {
 				tents.add(tent);
 			}
+			
 			for (RawItem item : rawItems) {
 				LinkedList<String> speakers;
 				if ((speakers = candidates.get(item.candidate)) != null) {
