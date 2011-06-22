@@ -340,6 +340,9 @@ public class Schedule {
 		if (id == null)
 			id = hashify(source);
 
+		if (title == null)
+			title = source;
+		
 		db = app.getDb();
 		db.setSchedule(this, source);
 		
@@ -808,10 +811,7 @@ public class Schedule {
 				if ((s = propMap.get("description")) != null) {
 					desc += s;
 				}
-				/* Replace newlines with spaces unless there are two of them,
-				 * or if the following line starts with a character. */
-				desc = desc.replaceAll("([^\n]) *\n *([a-zA-Z0-9])", "$1 $2");
-				item.setDescription(desc);
+				item.setDescription(rewrap(desc));
 				
 				if ((s = propMap.get("track")) != null && !s.equals("")) {
 					item.setTrack(s);
@@ -877,8 +877,9 @@ public class Schedule {
 		private TreeMap<Integer,String> trackMap;
 		private TreeMap<Integer,Schedule.Line> tentMap;
 		
-		private HashMap<String,String> propMap;
 		private String curString;
+		
+		private LinkedList<HashMap<String,String>> propMapStack;
 
 		SimpleDateFormat df;
 
@@ -887,12 +888,15 @@ public class Schedule {
 			candidates = new HashMap<Integer,LinkedList<String>>();
 			trackMap = new TreeMap<Integer,String>();
 			tentMap = new TreeMap<Integer,Schedule.Line>();
+			propMapStack = new LinkedList<HashMap<String,String>>();
 			df = new SimpleDateFormat("yyyy-MM-dd");
 		}
 		
 		@Override
 		public void startElement(String uri, String localName, String qName,
 				Attributes atts) throws SAXException {
+			HashMap<String,String> propMap = null;
+			
 			curString = "";
 			if (localName.equals("event")) {
 				propMap = new HashMap<String,String>();
@@ -924,7 +928,7 @@ public class Schedule {
 				endTime.add(Calendar.MINUTE, 30 * Integer.parseInt(atts.getValue("colspan")));
 
 				Item item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
-				item.setDescription(atts.getValue("abstract"));
+				item.setDescription(rewrap(atts.getValue("abstract")));
 				rawItems.add(new RawItem(item, atts));
 			} else if (localName.equals("person")) {
 				LinkedList<String> speakers;
@@ -938,6 +942,7 @@ public class Schedule {
 				else
 					speakers.addLast(atts.getValue("name"));
 			}
+			propMapStack.addFirst(propMap);
 		}
 	
 		@Override
@@ -948,16 +953,23 @@ public class Schedule {
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
-			if (localName.equals("event")) {
-				title = propMap.get("name");
-			} else if (localName.equals("room")) {
-				Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
-				tentMap.put(Integer.parseInt(tent.getId()), tent);
-			} else if (localName.equals("area")) {
-				trackMap.put(Integer.parseInt(propMap.get("id")), propMap.get("name"));
-			} else if (localName.equals("response")) {
-				merge();
-			} else if (propMap != null) {
+			HashMap<String,String> propMap;
+			Log.d("end", localName);
+			
+			if ((propMap = propMapStack.removeFirst()) != null) {
+				/* If for the current tag we had a propMap, use it and destroy it. */
+				if (localName.equals("event")) {
+					if (propMap.containsKey("name"))
+						title = propMap.get("name");
+				} else if (localName.equals("room")) {
+					Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
+					tentMap.put(Integer.parseInt(tent.getId()), tent);
+				} else if (localName.equals("area")) {
+					trackMap.put(Integer.parseInt(propMap.get("id")), propMap.get("name"));
+				}
+			} else if (propMapStack.size() > 0 &&
+					   (propMap = propMapStack.getFirst()) != null) {
+				/* Alternatively, we may be busy filling in a propMap. */
 				propMap.put(localName, curString);
 			}
 		}
@@ -968,6 +980,7 @@ public class Schedule {
 	
 		@Override
 		public void endDocument() throws SAXException {
+			merge();
 		}
 		
 		@Override
@@ -999,6 +1012,7 @@ public class Schedule {
 		}
 		
 		private void merge() {
+			/* Since data can be in the file in any order, put all the pieces together at the end. */
 			for (Line tent : tentMap.values()) {
 				tents.add(tent);
 			}
@@ -1342,5 +1356,14 @@ public class Schedule {
 			super.close();
 			writer.close();
 		}
+	}
+	
+	static String rewrap(String desc) {
+		/* Replace newlines with spaces unless there are two of them,
+		 * or if the following line starts with a character. */
+		if (desc != null)
+			return desc.replace("\r", "").replaceAll("([^\n]) *\n *([a-zA-Z0-9])", "$1 $2");
+		else
+			return null;
 	}
 }
