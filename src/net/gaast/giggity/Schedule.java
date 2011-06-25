@@ -956,7 +956,6 @@ public class Schedule {
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
 			HashMap<String,String> propMap;
-			Log.d("end", localName);
 			
 			if ((propMap = propMapStack.removeFirst()) != null) {
 				/* If for the current tag we had a propMap, use it and destroy it. */

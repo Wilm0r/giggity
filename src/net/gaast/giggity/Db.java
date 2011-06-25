@@ -34,7 +34,7 @@ import android.util.Log;
 
 public class Db {
 	private Helper dbh;
-	private static final int dbVersion = 2;
+	private static final int dbVersion = 3;
 	
 	public Db(Application app_) {
 		dbh = new Helper(app_, "giggity", null, dbVersion);
@@ -84,7 +84,7 @@ public class Db {
 		public void upgradeData(SQLiteDatabase db, int oldVersion, int newVersion) {
 			final String[][] seed = {
 				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011"},
-				{"2", "http://www.pgcon.org/2011/schedule/schedule.en.xml", "PGCon 2011"},
+				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12"},
 			};
 			long ts = new Date().getTime() / 1000;
 			for (String[] i: seed) {
