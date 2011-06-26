@@ -261,7 +261,10 @@ public class Db {
 		}
 		
 		public String getTitle() {
-			return title;
+			if (title != null)
+				return title;
+			else
+				return url;
 		}
 	}
 }
