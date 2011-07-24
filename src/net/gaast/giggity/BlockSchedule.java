@@ -34,6 +34,7 @@ import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -186,7 +187,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
 		mainTable = new LinearLayout(app);
 		mainTable.addView(tentHeadersScr);
-		mainTable.addView(schedContScr);
+		mainTable.addView(schedContScr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
     	addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
     	
 		bottomClock = new Clock(ctx, base, end);
