@@ -40,9 +40,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
@@ -64,7 +69,9 @@ public class ScheduleViewActivity extends Activity {
 	 * (I.e. when returning from the settings menu.) */
 	private boolean redraw;
 	private Handler timer;
-	ScheduleViewer viewer;
+	
+	private LinearLayout bigScreen;
+	private ScheduleViewer viewer;
 
     private SharedPreferences pref;
     
@@ -109,6 +116,10 @@ public class ScheduleViewActivity extends Activity {
 			}
     	};
     	registerReceiver(tzClose, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+    	
+    	bigScreen = new LinearLayout(this);
+    	updateOrientation();
+    	setContentView(bigScreen);
     }
     
     @Override
@@ -218,15 +229,15 @@ public class ScheduleViewActivity extends Activity {
     	}
     	
     	if (view == VIEW_TIMETABLE) {
-    		setContentView(new TimeTable(this, sched));
+    		setScheduleView(new TimeTable(this, sched));
     	} else if (view == VIEW_BLOCKSCHEDULE) {
-    		setContentView(new BlockSchedule(this, sched));
+    		setScheduleView(new BlockSchedule(this, sched));
     	} else if (view == VIEW_NOWNEXT) {
-    		setContentView(new NowNext(this, sched));
+    		setScheduleView(new NowNext(this, sched));
     	} else if (view == VIEW_MINE) {
-    		setContentView(new MyItemsView(this, sched));
+    		setScheduleView(new MyItemsView(this, sched));
     	} else if (view == VIEW_TRACKS) {
-    		setContentView(new TrackList(this, sched));
+    		setScheduleView(new TrackList(this, sched));
     	}
     	
     	if (showEventId != null) {
@@ -243,18 +254,31 @@ public class ScheduleViewActivity extends Activity {
     	}
     }
     
-    @Override
-    public void setContentView(View viewer_) {
+    private void updateOrientation() {
+    	Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+    	if (display.getOrientation() == Configuration.ORIENTATION_PORTRAIT)
+        	bigScreen.setOrientation(LinearLayout.HORIZONTAL);
+    	else
+        	bigScreen.setOrientation(LinearLayout.VERTICAL);
+    }
+    
+    public void setScheduleView(View viewer_) {
     	viewer = (ScheduleViewer) viewer_;
-    	super.setContentView(viewer_);
+    	bigScreen.removeAllViews();
+    	bigScreen.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
+    	
+    	/*
+    	TextView tv = new TextView(this);
+    	tv.setText("Hello World!");
+    	bigScreen.addView(tv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
+    	*/
     }
     
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
     	super.onConfigurationChanged(newConfig);
     	Log.i("BlockScheduleActivity", "Configuration changed");
-    	/* We really don't have to do anything special here. The
-    	 * layouts will take care of everything. */
+    	updateOrientation();
     }
     
     @Override
