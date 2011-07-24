@@ -261,27 +261,30 @@ public class ScheduleViewActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
     	
-    	menu.add(0, 1, 0, "Settings")
+    	menu.add(Menu.NONE, 1, 7, "Settings")
     		.setShortcut('0', 's')
     		.setIcon(android.R.drawable.ic_menu_preferences);
-   		menu.add(1, 2, 0, "Change day")
+   		menu.add(Menu.NONE, 2, 5, "Change day")
 			.setShortcut('1', 'd')
 			.setIcon(android.R.drawable.ic_menu_day);
-   		menu.add(1, 3, 0, "Timetable")
+   		menu.add(Menu.NONE, 3, 2, "Timetable")
 			.setShortcut('2', 't')
 			.setIcon(android.R.drawable.ic_menu_agenda);
-   		menu.add(1, 4, 0, "Tracks")
+   		menu.add(Menu.NONE, 4, 3, "Tracks")
    			.setShortcut('3', 'r')
    			.setIcon(R.drawable.tracks);
-   		menu.add(1, 5, 0, "Block schedule")
+   		menu.add(Menu.NONE, 5, 0, "Block schedule")
 			.setShortcut('4', 'b')
 			.setIcon(R.drawable.blockschedule);
-   		menu.add(1, 6, 0, "Now and next")
+   		menu.add(Menu.NONE, 6, 1, "Now and next")
 			.setShortcut('5', 'n')
 			.setIcon(R.drawable.ic_menu_clock_face);
-   		menu.add(1, 7, 0, "My events")
+   		menu.add(Menu.NONE, 7, 4, "My events")
 		    .setShortcut('6', 'm')
 		    .setIcon(android.R.drawable.ic_menu_my_calendar);
+   		menu.add(Menu.NONE, 8, 6, "Search")
+   			.setShortcut('7', 'c')
+   			.setIcon(android.R.drawable.ic_menu_search);
     	
     	return true;
     }
@@ -358,6 +361,9 @@ public class ScheduleViewActivity extends Activity {
     	case 7:
     		view = VIEW_MINE;
     		onScheduleLoaded();
+    		return true;
+    	case 8:
+    		this.onSearchRequested();
     		return true;
     	}
     	return super.onOptionsItemSelected(item);
