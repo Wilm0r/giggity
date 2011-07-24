@@ -120,10 +120,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
-		tentHeaders = new ShuffleLayout(ctx, 0);
+		tentHeaders = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE /*0*/);
 		tentHeaders.setShuffleEventListener(this);
 		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL |
-				(pref.getBoolean("block_schedule_tent_shuffling", true) ?
+				(/*pref.getBoolean("block_schedule_tent_shuffling", */(false) ?
 						SimpleScroller.DISABLE_DRAG_SCROLL : 0));
     	tentHeadersScr.addView(tentHeaders);
         tentHeadersScr.setScrollEventListener(this);

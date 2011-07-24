@@ -23,11 +23,10 @@
 		                android:entryValues="@array/block_schedule_element_sizes_values"
 		                android:defaultValue="72" />
 	
-		<CheckBoxPreference android:defaultValue="true"
-		                    android:key="block_schedule_tent_shuffling"
+<!-- 		<CheckBoxPreference android:key="block_schedule_tent_shuffling"
 		                    android:summary="Drag row titles to reorder them"
-		                    android:title="Allow row shuffling" />
-
+		                    android:title="Allow row shuffling" android:defaultValue="false"/>
+-->
 	
 </PreferenceCategory>
 
