@@ -29,6 +29,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -59,7 +60,36 @@ public class EventDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		/* Rendering our own title (ScheduleItemView) */
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+    	setContentView(genDialog());
+    	
+    	super.setOnDismissListener(new OnDismissListener() {
+   			public void onDismiss(DialogInterface dialog) {
+   				if (cb != null) {
+   					item.setRemind(cb.isChecked());
+   					/* See if I'll use this.
+   					if (cb.isChecked()) {
+	   			        Intent intent = new Intent(Intent.ACTION_EDIT);
+	   			        intent.setType("vnd.android.cursor.item/event");
+			            intent.putExtra("beginTime", item.getStartTime().getTime());
+	   			        intent.putExtra("endTime", item.getEndTime().getTime());
+	   			        intent.putExtra("title", item.getTitle());
+	   			        intent.putExtra("eventLocation", item.getLine().getTitle());
+	   			        intent.putExtra("description", item.getDescription());
+	   			        ctx.startActivity(intent);
+   			 		}
+	   			    */
+   				}
+   				if (sv != null)
+   					item.setStars(sv.getScore());
+   				if (dismissPassThru != null)
+   					dismissPassThru.onDismiss(dialog);
+   			}
+   		});
+
+    	super.onCreate(savedInstanceState);
+	}
+	
+	public LinearLayout genDialog() {
 		String descs = "";
 		if (item.getSpeakers() != null) {
 			if (item.getSpeakers().size() > 1)
@@ -125,33 +155,8 @@ public class EventDialog extends Dialog {
 		}
 
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
-
-    	setContentView(content);
-    	super.setOnDismissListener(new OnDismissListener() {
-   			public void onDismiss(DialogInterface dialog) {
-   				if (cb != null) {
-   					item.setRemind(cb.isChecked());
-   					/* See if I'll use this.
-   					if (cb.isChecked()) {
-	   			        Intent intent = new Intent(Intent.ACTION_EDIT);
-	   			        intent.setType("vnd.android.cursor.item/event");
-			            intent.putExtra("beginTime", item.getStartTime().getTime());
-	   			        intent.putExtra("endTime", item.getEndTime().getTime());
-	   			        intent.putExtra("title", item.getTitle());
-	   			        intent.putExtra("eventLocation", item.getLine().getTitle());
-	   			        intent.putExtra("description", item.getDescription());
-	   			        ctx.startActivity(intent);
-   			 		}
-	   			    */
-   				}
-   				if (sv != null)
-   					item.setStars(sv.getScore());
-   				if (dismissPassThru != null)
-   					dismissPassThru.onDismiss(dialog);
-   			}
-   		});
-
-		super.onCreate(savedInstanceState);
+		
+		return content;
 	}
 	
 	private class LinkButton extends ImageButton implements ImageButton.OnClickListener {
@@ -178,5 +183,16 @@ public class EventDialog extends Dialog {
 		/* Multiple listeners are not supported, but this hack solves
 		 * that problem for me. */
 		dismissPassThru = l;
+	}
+	
+	@Override
+	public void show() {
+		try {
+			ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
+			if (sva.setEventDialog(this))
+				return;
+		} catch (ClassCastException e) {
+		}
+    	super.show();
 	}
 }

@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
@@ -34,13 +35,13 @@ import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener, ScheduleViewer {
 	Giggity app;
     Schedule sched;
+    Activity ctx;
     
     Colours c;
 
@@ -70,8 +71,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	private int TentHeight = 48;
 	private int TentWidth = 32;
 	
-	BlockSchedule(Activity ctx, Schedule sched_) {
-		super(ctx);
+	BlockSchedule(Activity ctx_, Schedule sched_) {
+		super(ctx_);
+		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
     	sched = sched_;
     	pref = PreferenceManager.getDefaultSharedPreferences(app);
@@ -240,7 +242,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					EventDialog evd = new EventDialog(getContext(), item);
+					EventDialog evd = new EventDialog(ctx, item);
 			    	evd.setOnDismissListener(new OnDismissListener() {
 			   			public void onDismiss(DialogInterface dialog) {
 			   				setBackgroundColor(bgcolor);

@@ -47,7 +47,6 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
@@ -72,6 +71,7 @@ public class ScheduleViewActivity extends Activity {
 	
 	private LinearLayout bigScreen;
 	private ScheduleViewer viewer;
+	private View eventDialog;
 
     private SharedPreferences pref;
     
@@ -86,6 +86,11 @@ public class ScheduleViewActivity extends Activity {
         
         pref = PreferenceManager.getDefaultSharedPreferences(app);
         view = Integer.parseInt(pref.getString("default_view", "1"));
+    	
+    	bigScreen = new LinearLayout(this);
+    	Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
+    	updateOrientation(display.getOrientation());
+    	setContentView(bigScreen);
         
     	String url = getIntent().getDataString();
         
@@ -116,10 +121,6 @@ public class ScheduleViewActivity extends Activity {
 			}
     	};
     	registerReceiver(tzClose, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
-    	
-    	bigScreen = new LinearLayout(this);
-    	updateOrientation();
-    	setContentView(bigScreen);
     }
     
     @Override
@@ -254,12 +255,11 @@ public class ScheduleViewActivity extends Activity {
     	}
     }
     
-    private void updateOrientation() {
-    	Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-    	if (display.getOrientation() == Configuration.ORIENTATION_PORTRAIT)
-        	bigScreen.setOrientation(LinearLayout.HORIZONTAL);
-    	else
+    private void updateOrientation(int orientation) {
+    	if (orientation == Configuration.ORIENTATION_PORTRAIT)
         	bigScreen.setOrientation(LinearLayout.VERTICAL);
+    	else
+    		bigScreen.setOrientation(LinearLayout.HORIZONTAL);
     }
     
     public void setScheduleView(View viewer_) {
@@ -274,11 +274,22 @@ public class ScheduleViewActivity extends Activity {
     	*/
     }
     
+    public boolean setEventDialog(EventDialog d) {
+    	int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+    	if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+    		bigScreen.removeView(eventDialog);
+	    	eventDialog = d.genDialog();
+	    	bigScreen.addView(eventDialog, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
+	    	return true;
+    	} else
+    		return false;
+    }
+    
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
     	super.onConfigurationChanged(newConfig);
     	Log.i("BlockScheduleActivity", "Configuration changed");
-    	updateOrientation();
+    	updateOrientation(newConfig.orientation);
     }
     
     @Override
