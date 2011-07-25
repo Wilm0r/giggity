@@ -26,10 +26,10 @@ import java.util.LinkedList;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -41,7 +41,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-public class EventDialog extends Dialog {
+public class EventDialog extends Dialog implements OnDismissListener {
 	private Context ctx;
 	private Schedule.Item item;
 	private OnDismissListener dismissPassThru;
@@ -60,36 +60,14 @@ public class EventDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		/* Rendering our own title (ScheduleItemView) */
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
-    	setContentView(genDialog());
+    	setContentView(genDialog(false));
     	
-    	super.setOnDismissListener(new OnDismissListener() {
-   			public void onDismiss(DialogInterface dialog) {
-   				if (cb != null) {
-   					item.setRemind(cb.isChecked());
-   					/* See if I'll use this.
-   					if (cb.isChecked()) {
-	   			        Intent intent = new Intent(Intent.ACTION_EDIT);
-	   			        intent.setType("vnd.android.cursor.item/event");
-			            intent.putExtra("beginTime", item.getStartTime().getTime());
-	   			        intent.putExtra("endTime", item.getEndTime().getTime());
-	   			        intent.putExtra("title", item.getTitle());
-	   			        intent.putExtra("eventLocation", item.getLine().getTitle());
-	   			        intent.putExtra("description", item.getDescription());
-	   			        ctx.startActivity(intent);
-   			 		}
-	   			    */
-   				}
-   				if (sv != null)
-   					item.setStars(sv.getScore());
-   				if (dismissPassThru != null)
-   					dismissPassThru.onDismiss(dialog);
-   			}
-   		});
+    	super.setOnDismissListener(this);
 
     	super.onCreate(savedInstanceState);
 	}
 	
-	public LinearLayout genDialog() {
+	public LinearLayout genDialog(boolean big) {
 		String descs = "";
 		if (item.getSpeakers() != null) {
 			if (item.getSpeakers().size() > 1)
@@ -107,8 +85,8 @@ public class EventDialog extends Dialog {
 		content.setOrientation(LinearLayout.VERTICAL);
 
 		/* Title, styled like in ScheduleListView. */
-		content.addView(new ScheduleItemView(ctx, item, ScheduleItemView.SHORT_TITLE),
-		                new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
+		View title = new ScheduleItemView(ctx, item, ScheduleItemView.SHORT_TITLE);
+		content.addView(title, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
 		
 		/* Separator line between dialog title and rest. */
 		ImageView line = new ImageView(ctx);
@@ -156,6 +134,11 @@ public class EventDialog extends Dialog {
 
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
 		
+		if (big) {
+			title.setPadding(8, 8, 8, 6);
+			desc.setPadding(8, 6, 8, 8);
+		}
+		
 		return content;
 	}
 	
@@ -184,7 +167,29 @@ public class EventDialog extends Dialog {
 		 * that problem for me. */
 		dismissPassThru = l;
 	}
-	
+
+	public void onDismiss(DialogInterface dialog) {
+		if (cb != null) {
+			item.setRemind(cb.isChecked());
+			/* See if I'll use this.
+			if (cb.isChecked()) {
+	        Intent intent = new Intent(Intent.ACTION_EDIT);
+	        intent.setType("vnd.android.cursor.item/event");
+            intent.putExtra("beginTime", item.getStartTime().getTime());
+	        intent.putExtra("endTime", item.getEndTime().getTime());
+	        intent.putExtra("title", item.getTitle());
+	        intent.putExtra("eventLocation", item.getLine().getTitle());
+	        intent.putExtra("description", item.getDescription());
+	        ctx.startActivity(intent);
+	 		}
+	    */
+		}
+		if (sv != null)
+			item.setStars(sv.getScore());
+		if (dismissPassThru != null)
+			dismissPassThru.onDismiss(dialog);
+	}
+
 	@Override
 	public void show() {
 		try {

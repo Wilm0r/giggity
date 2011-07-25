@@ -27,7 +27,6 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;

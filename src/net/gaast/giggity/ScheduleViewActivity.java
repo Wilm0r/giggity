@@ -71,7 +71,8 @@ public class ScheduleViewActivity extends Activity {
 	
 	private LinearLayout bigScreen;
 	private ScheduleViewer viewer;
-	private View eventDialog;
+	private View eventDialogView;
+	private EventDialog eventDialog;
 
     private SharedPreferences pref;
     
@@ -214,6 +215,8 @@ public class ScheduleViewActivity extends Activity {
     
     @Override
     protected void onPause() {
+    	setEventDialog(null);
+    	
     	if (sched != null) {
     		sched.commit();
     		sched.sleep();
@@ -273,10 +276,16 @@ public class ScheduleViewActivity extends Activity {
     public boolean setEventDialog(EventDialog d) {
     	int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
     	if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
-    		bigScreen.removeView(eventDialog);
-	    	eventDialog = d.genDialog();
-	    	eventDialog.setBackgroundResource(android.R.drawable.dialog_frame);
-	    	bigScreen.addView(eventDialog, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
+    		bigScreen.removeView(eventDialogView);
+    		if (eventDialog != null)
+    			eventDialog.onDismiss(null);
+    		
+	    	eventDialog = d;
+	    	if (d != null) {
+		    	eventDialogView = d.genDialog(true);
+		    	eventDialogView.setBackgroundResource(android.R.drawable.dialog_frame);
+		    	bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
+	    	}
 	    	return true;
     	} else
     		return false;
