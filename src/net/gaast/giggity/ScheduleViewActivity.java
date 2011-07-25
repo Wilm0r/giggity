@@ -51,8 +51,8 @@ import android.widget.LinearLayout;
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
 public class ScheduleViewActivity extends Activity {
-	private Schedule sched;
-    private Giggity app;
+	protected Schedule sched;
+    protected Giggity app;
     
     private final static int VIEW_BLOCKSCHEDULE = 1;
     private final static int VIEW_TIMETABLE = 2;

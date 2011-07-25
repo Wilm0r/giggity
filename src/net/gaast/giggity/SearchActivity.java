@@ -28,9 +28,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class SearchActivity extends ScheduleViewActivity {
-	Schedule sched;
-	Giggity app;
-
 	@Override
     public void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
