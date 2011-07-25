@@ -88,8 +88,7 @@ public class ScheduleViewActivity extends Activity {
         view = Integer.parseInt(pref.getString("default_view", "1"));
     	
     	bigScreen = new LinearLayout(this);
-    	Display display = ((WindowManager) getSystemService(WINDOW_SERVICE)).getDefaultDisplay();
-    	updateOrientation(display.getOrientation());
+    	updateOrientation(getResources().getConfiguration().orientation);
     	setContentView(bigScreen);
         
     	String url = getIntent().getDataString();
@@ -265,13 +264,7 @@ public class ScheduleViewActivity extends Activity {
     public void setScheduleView(View viewer_) {
     	viewer = (ScheduleViewer) viewer_;
     	bigScreen.removeAllViews();
-    	bigScreen.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
-    	
-    	/*
-    	TextView tv = new TextView(this);
-    	tv.setText("Hello World!");
-    	bigScreen.addView(tv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
-    	*/
+    	bigScreen.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
     }
     
     public boolean setEventDialog(EventDialog d) {
@@ -279,7 +272,8 @@ public class ScheduleViewActivity extends Activity {
     	if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
     		bigScreen.removeView(eventDialog);
 	    	eventDialog = d.genDialog();
-	    	bigScreen.addView(eventDialog, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
+	    	eventDialog.setBackgroundResource(android.R.drawable.dialog_frame);
+	    	bigScreen.addView(eventDialog, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
 	    	return true;
     	} else
     		return false;
