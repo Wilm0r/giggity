@@ -33,7 +33,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ScheduleListView extends ListView {
+public class ScheduleListView extends ListView implements ScheduleViewer {
 	ArrayList<?> list;
 	EventAdapter adje;
 	Context ctx;
@@ -94,6 +94,7 @@ public class ScheduleListView extends ListView {
     		itemViewFlags &= ~ScheduleItemView.SHOW_REMIND;
     }
     
+    @Override
     public void refreshContents() {
     	adje.notifyDataSetChanged();
     }

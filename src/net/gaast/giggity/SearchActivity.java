@@ -27,7 +27,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class SearchActivity extends Activity {
+public class SearchActivity extends ScheduleViewActivity {
 	Schedule sched;
 	Giggity app;
 
@@ -65,6 +65,6 @@ public class SearchActivity extends Activity {
 			lv.setList((AbstractList<Schedule.Item>) new LinkedList<Schedule.Item>(sched.getTracks().get(query)));
 			setTitle(sched.getTitle() + ": " + query);
 		}
-		setContentView(lv);
+		setScheduleView(lv);
 	}
 }

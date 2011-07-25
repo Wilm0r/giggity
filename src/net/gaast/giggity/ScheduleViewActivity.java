@@ -91,6 +91,20 @@ public class ScheduleViewActivity extends Activity {
     	updateOrientation(getResources().getConfiguration().orientation);
     	setContentView(bigScreen);
         
+        redraw = false;
+        timer = new Handler();
+        
+        tzClose = new BroadcastReceiver() {
+			@Override
+			public void onReceive(Context arg0, Intent arg1) {
+				ScheduleViewActivity.this.finish();
+			}
+    	};
+    	registerReceiver(tzClose, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+        
+        if (!getIntent().getAction().equals(Intent.ACTION_VIEW))
+        	return;
+
     	String url = getIntent().getDataString();
         
 		if (url.contains("#")) {
@@ -109,17 +123,6 @@ public class ScheduleViewActivity extends Activity {
         } else {
         	horribleAsyncLoadHack(url);
         }
-        
-        redraw = false;
-        timer = new Handler();
-        
-        tzClose = new BroadcastReceiver() {
-			@Override
-			public void onReceive(Context arg0, Intent arg1) {
-				ScheduleViewActivity.this.finish();
-			}
-    	};
-    	registerReceiver(tzClose, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
     }
     
     @Override
