@@ -30,6 +30,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.View;
@@ -70,12 +71,15 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	private int TentHeight = 48;
 	private int TentWidth = 32;
 	
+	private Handler timer;
+	
 	BlockSchedule(Activity ctx_, Schedule sched_) {
 		super(ctx_);
 		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
     	sched = sched_;
     	pref = PreferenceManager.getDefaultSharedPreferences(app);
+    	timer = new Handler();
 
     	/* Not working yet. :-( */
     	Class[] styles = getClass().getDeclaredClasses();
@@ -245,6 +249,22 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			    	evd.setOnDismissListener(new OnDismissListener() {
 			   			public void onDismiss(DialogInterface dialog) {
 			   				setBackgroundColor(bgcolor);
+			   			    
+			   				/* FIXME: Work-around for what seems to be an annoying Android 3.1
+			   				 * bug. Somehow about now, it forgets what our background colour should
+			   				 * be (becomes black). Only until the user selects another item, or
+			   				 * scrolls, do we get our correct background colour back. Running
+			   				 * invalidate() inside a timer (doing it immediately does *not*
+			   				 * work) is the only work-around I can think of (and it's ugly,
+			   				 * the black background is visible for a split second).
+			   				 */
+			   				Runnable resetBackground = new Runnable() {
+			   					@Override
+			   					public void run() {
+			   						BlockSchedule.this.invalidate();
+			   					}
+			   			    };
+	   						timer.postDelayed(resetBackground, 0);
 			   			}
 			   		});
 					evd.show();
