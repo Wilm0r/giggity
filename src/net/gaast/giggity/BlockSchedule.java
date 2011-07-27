@@ -248,20 +248,15 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 					EventDialog evd = new EventDialog(ctx, item);
 			    	evd.setOnDismissListener(new OnDismissListener() {
 			   			public void onDismiss(DialogInterface dialog) {
-			   				setBackgroundColor(bgcolor);
-			   			    
-			   				/* FIXME: Work-around for what seems to be an annoying Android 3.1
-			   				 * bug. Somehow about now, it forgets what our background colour should
-			   				 * be (becomes black). Only until the user selects another item, or
-			   				 * scrolls, do we get our correct background colour back. Running
-			   				 * invalidate() inside a timer (doing it immediately does *not*
-			   				 * work) is the only work-around I can think of (and it's ugly,
-			   				 * the black background is visible for a split second).
+			   				/* Android 3.0+ bug: For some reason, if we change our bgcolor here, the
+			   				 * background colour for the surrounding views turns black - but only
+			   				 * until the user scrolls/selects another item. If we change the color
+			   				 * via a timer instead, we're fine.
 			   				 */
 			   				Runnable resetBackground = new Runnable() {
 			   					@Override
 			   					public void run() {
-			   						BlockSchedule.this.invalidate();
+			   						setBackgroundColor(bgcolor);
 			   					}
 			   			    };
 	   						timer.postDelayed(resetBackground, 0);
