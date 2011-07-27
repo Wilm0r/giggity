@@ -34,7 +34,7 @@ import android.util.Log;
 
 public class Db {
 	private Helper dbh;
-	private static final int dbVersion = 4;
+	private static final int dbVersion = 5;
 	
 	public Db(Application app_) {
 		dbh = new Helper(app_, "giggity", null, dbVersion);
@@ -86,6 +86,7 @@ public class Db {
 				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011"},
 				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12"},
 				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11"},
+				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon"},
 			};
 			long ts = new Date().getTime() / 1000;
 			for (String[] i: seed) {
