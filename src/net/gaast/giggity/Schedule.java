@@ -1313,10 +1313,31 @@ public class Schedule {
 		}
 		
 		public void setIconUrl(String url_) {
+			/* Permanent caching, if you change the icon, change the URL.. 
+			 * At least we only save a cached copy if the file was parsed successfully. */
+			File fn = new File(app.getCacheDir(), "icon." + hashify(url_)), fntmp = null;
+			
 			try {
-				URL dl = new URL(url_);
-				InputStream in = dl.openStream();
-				iconDrawable = Drawable.createFromStream(in, id);
+				if (fn.canRead()) {
+					iconDrawable = Drawable.createFromPath(fn.getPath());
+				} else {
+					/* %@#&)@*&@#%& Java has 3275327 different kinds of streams/readers or whatever.
+					 * TeeReader won't work here so just go for the fucking kludge.
+					 */
+					fntmp = new File(app.getCacheDir(), "tmp." + hashify(url_));
+					FileOutputStream copy = new FileOutputStream(fntmp);
+					byte[] b = new byte[1024];
+					int len;
+					URL dl = new URL(url_);
+					InputStream in = dl.openStream();
+					while ((len = in.read(b)) != -1) {
+						copy.write(b, 0, len);
+					}
+					
+					iconDrawable = Drawable.createFromPath(fntmp.getPath());
+					fn.delete();
+					fntmp.renameTo(fn);
+				}
 			} catch (Exception e) {
 				Log.e("setIconUrl", "Error while dowloading icon " + url_);
 				e.printStackTrace();
