@@ -200,7 +200,7 @@ html = html.replace("&amp;", "&")
 html = unicode(html, "utf-8")
 
 #sched = Schedule("nl.dancevalley.2011", "Dance Valley 2011")
-sched = Schedule("f8a7a056267dc8ef0ce2728bf078e741", "Dance Valley 2011")
+sched = Schedule("90428e2c6f63e2661cf2c086e465195785613d44", "Dance Valley 2011")
 for thtml in html.split("<strong>"):
 	lines = [line.strip() for line in re.split("<.*?>", thtml) if line.strip()]
 	if lines:
