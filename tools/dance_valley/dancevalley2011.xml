@@ -2,12 +2,18 @@
 <schedule xmlns="http://gaa.st/giggity#sched" id="90428e2c6f63e2661cf2c086e465195785613d44" title="Dance Valley 2011">
   <linkType icon="http://wilmer.gaa.st/deoxide/google.png" id="google"/>
   <linkType icon="http://wilmer.gaa.st/deoxide/lastfm.png" id="lastfm"/>
+  <linkType icon="http://wilmer.gaa.st/deoxide/wikipedia.png" id="wikipedia"/>
+  <linkType icon="http://wilmer.gaa.st/deoxide/myspace.png" id="myspace"/>
+  <linkType icon="http://wilmer.gaa.st/deoxide/discogs.png" id="discogs"/>
   <line id="mainstage" title="Mainstage">
     <item endTime="1312628400" id="bennyroyal" startTime="1312624800" title="Benny Royal">
+      <itemLink href="http://www.myspace.com/bennyroyal" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Benny+Royal" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Benny+Royal" type="google"/>
     </item>
     <item endTime="1312632000" id="caritalania" startTime="1312628400" title="Carita la Ni&#xF1;a">
-      <itemLink href="http://www.google.com/search?q=Carita+la+Ni&#xF1;a" type="google"/>
+      <itemLink href="http://www.myspace.com/caritalanina" type="myspace"/>
+      <itemLink href="http://www.google.com/search?q=Carita+la+Ni%C3%B1a" type="google"/>
     </item>
     <item endTime="1312635600" id="lilith" startTime="1312632000" title="Lilith">
       <itemDescription>&#x201C;Lilith&#x201D; is the name for at least nine different artists:
@@ -33,12 +39,16 @@ www.myspace.com/lilithpoland
 
 Tags: gothic, gothic rock, polish, female vocalists, gothic metal</itemDescription>
       <itemLink href="http://www.last.fm/music/Lilith" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Lilith" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Lilith" type="google"/>
     </item>
     <item endTime="1312639200" id="trevorrockcliffe" startTime="1312635600" title="Trevor Rockcliffe">
+      <itemLink href="http://www.myspace.com/trevorrockcliffe" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Trevor+Rockcliffe" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Trevor+Rockcliffe" type="google"/>
     </item>
     <item endTime="1312642800" id="koengroeneveldvsahmetsendil" startTime="1312639200" title="Koen Groeneveld VS Ahmet Sendil">
+      <itemLink href="http://www.myspace.com/koengroeneveld" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Koen+Groeneveld+VS+Ahmet+Sendil" type="google"/>
     </item>
     <item endTime="1312646400" id="djmadskillz" startTime="1312642800" title="DJ Madskillz">
@@ -46,6 +56,8 @@ Tags: gothic, gothic rock, polish, female vocalists, gothic metal</itemDescripti
 
 Tags: tech house, dutch, electro, lounge, house</itemDescription>
       <itemLink href="http://www.last.fm/music/DJ+Madskillz" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/djmadskillz1" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/DJ+Madskillz" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=DJ+Madskillz" type="google"/>
     </item>
     <item endTime="1312651800" id="fergie" startTime="1312646400" title="Fergie">
@@ -63,6 +75,8 @@ B) Fergie (real name Robert Ferguson) is a electronic music artist and DJ from L
 
 Tags: pop, rnb, female vocalists, hip-hop, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Fergie" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Fergie_(singer)" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/fergie" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Fergie" type="google"/>
     </item>
     <item endTime="1312657200" id="avicii" startTime="1312651800" title="Avicii">
@@ -76,6 +90,9 @@ Also known as Tim Berg
 
 Tags: house, electronic, progressive house, electro house, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Avicii" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Avicii" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/avicii" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Avicii" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Avicii" type="google"/>
     </item>
     <item endTime="1312664400" id="steveangello" startTime="1312657200" title="Steve Angello">
@@ -89,11 +106,17 @@ Angello produces under several different aliases. On his own, he has called hims
 
 Tags: house, electro, electronic, progressive house, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Steve+Angello" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Steve_Angello" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/steveangello" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Steve+Angello" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Steve+Angello" type="google"/>
     </item>
   </line>
   <line id="abovebeyondsgrouptherapystage" title="Above &amp; Beyond's Group Therapy stage">
     <item endTime="1312629300" id="boomjinx" startTime="1312624800" title="Boomjinx">
+      <itemLink href="http://en.wikipedia.org/wiki/Boom_Jinx" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/boomjinx" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Boom+Jinx" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Boomjinx" type="google"/>
     </item>
     <item endTime="1312633800" id="matzo" startTime="1312629300" title="Mat Zo">
@@ -105,6 +128,9 @@ By mid-2007, Mat Zo had remixed the likes of Andy Moor and Markus Schulz. He bec
 
 Tags: trance, progressive trance, melodic trance, electronic, anjunabeats</itemDescription>
       <itemLink href="http://www.last.fm/music/Mat+Zo" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Mat_Zo" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/matzomusic" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Mat+Zo" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Mat+Zo" type="google"/>
     </item>
     <item endTime="1312638300" id="johnocallaghan" startTime="1312633800" title="John O' Callaghan">
@@ -119,8 +145,11 @@ In 2009 he released his second artist album &#x201C;Never Fade Away&#x201D;, whi
 2) John O&#x2019;Callaghan is the singer of the Arizona American based pop group, &#x2018;The Maine&#x2019;.
 
 Tags: trance, vocal trance, uplifting trance, progressive trance, melodic trance</itemDescription>
-      <itemLink href="http://www.last.fm/music/John+O'+Callaghan" type="lastfm"/>
-      <itemLink href="http://www.google.com/search?q=John+O'+Callaghan" type="google"/>
+      <itemLink href="http://www.last.fm/music/John+O%27+Callaghan" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/John_O&amp;#39;Callaghan_(DJ)" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/johnocallaghan" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/John+O&amp;#39;Callaghan" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=John+O%27+Callaghan" type="google"/>
     </item>
     <item endTime="1312643700" id="super8tab" startTime="1312638300" title="Super 8 &amp; Tab">
       <itemDescription>Only a select number of modern trance artists can convincingly say they are taking the sound to the next level. Although the humble, softly spoken duo would never shout it out themselves, Super8 &amp; Tab are undoubtedly among them.
@@ -132,8 +161,11 @@ Through their own energising DJ sets, Super8 &amp; Tab themselves have conquered
 Now an integral part of the Anjunabeats family, Super8 &amp; Tab first caused a fervour with the breakthrough success of tracks like &#x2018;First Aid&#x2019; and the definitive &#x2018;Helsiniki Scorchin&#x2019;. Since establishing themselves as the label&#x2019;s best selling artist behind Above &amp; Beyond, the Finnish trailblazers have delivered trance of the highest quality ever since - their ethereal epic &#x2018;Suru&#x2019; was picked out by DJmagazine as &#x201C;the tent-pole release of Anjuna&#x2019;s summer&#x201D;, while &#x2018;Elektra&#x2019; conquered the download charts and festival stages with equal aplomb in 2008.
 
 Tags: trance, uplifting trance, progressive trance, anjunabeats, electronic</itemDescription>
-      <itemLink href="http://www.last.fm/music/Super+8+&amp;+Tab" type="lastfm"/>
-      <itemLink href="http://www.google.com/search?q=Super+8+&amp;+Tab" type="google"/>
+      <itemLink href="http://www.last.fm/music/Super+8+%26+Tab" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Super8_%26_Tab" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/super8anddjtab" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Super8+%26+Tab" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=Super+8+%26+Tab" type="google"/>
     </item>
     <item endTime="1312649100" id="cosmicgate" startTime="1312643700" title="Cosmic Gate">
       <itemDescription>Cosmic Gate is a German trance, progressive trance and hard trance duo made up of Claus Terhoeven (aka Nic Chagall) and Stefan Bossems (DJ Bossi). They are best known for their singles &#x201C;Exploration of Space&#x201D;, &#x201C;The Drums&#x201D;, and &#x201C;The Truth.&#x201D; Cosmic Gate has done remixes for popular DJs including Ti&#xEB;sto, Armin van Buuren, and Ferry Corsten. Cosmic Gate&#x2019;s heavy, analogue trance sound is considered by many to be the definition of hard trance.
@@ -178,6 +210,9 @@ DJ mixes
 
 Tags: trance, progressive trance, hard trance, electronic, vocal trance</itemDescription>
       <itemLink href="http://www.last.fm/music/Cosmic+Gate" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Cosmic_Gate" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/cosmicgate" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Cosmic+Gate" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Cosmic+Gate" type="google"/>
     </item>
     <item endTime="1312653600" id="jaytech" startTime="1312649100" title="Jaytech">
@@ -189,14 +224,18 @@ Cementing his position as one of the leading lights within deep, uplifting elect
 
 Tags: progressive house, trance, progressive trance, house, progressive</itemDescription>
       <itemLink href="http://www.last.fm/music/Jaytech" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/jaytech" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Jaytech" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Jaytech" type="google"/>
     </item>
     <item endTime="1312664400" id="abovebeyond" startTime="1312653600" title="Above &amp; Beyond">
       <itemDescription>Above &amp; Beyond are a British trance music group formed in 2000 and consists of the members Jono Grant, Tony McGuinness, and Paavo Siljam&#xE4;ki. The trio are popular in the electronic dance music scene for their forward-thinking uplifting trance productions and collaborations with renowned vocalists. They have their own record label, Anjunabeats, which releases trance &amp; progressive music, and they also host their own weekly radio show, Trance Around the World. The group&#x2019;s tracks are regularly played by DJs around the world, including Armin van Buuren, Gareth Emery, Ferry Corsten, ATB, and Kyau &amp; Albert. On 28 October 2010 DJ Magazine announced the results of their annual Top 100 DJ Poll, with Above &amp; Beyond placed at #5 in the world.
 
 Tags: trance, progressive trance, vocal trance, electronic, dance</itemDescription>
-      <itemLink href="http://www.last.fm/music/Above+&amp;+Beyond" type="lastfm"/>
-      <itemLink href="http://www.google.com/search?q=Above+&amp;+Beyond" type="google"/>
+      <itemLink href="http://www.last.fm/music/Above+%26+Beyond" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Above_%26_Beyond_(band)" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/aboveandbeyond" type="myspace"/>
+      <itemLink href="http://www.google.com/search?q=Above+%26+Beyond" type="google"/>
     </item>
   </line>
   <line id="prydafriends" title="Pryda | Friends">
@@ -205,6 +244,7 @@ Tags: trance, progressive trance, vocal trance, electronic, dance</itemDescripti
 
 Tags: house, progressive house, need to rate</itemDescription>
       <itemLink href="http://www.last.fm/music/Jeremy+Olander" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/jeremyolander" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Jeremy+Olander" type="google"/>
     </item>
     <item endTime="1312637400" id="timgreen" startTime="1312632000" title="Tim Green">
@@ -212,6 +252,8 @@ Tags: house, progressive house, need to rate</itemDescription>
 
 Tags: tech house, minimal, minimal techno, electronic, house</itemDescription>
       <itemLink href="http://www.last.fm/music/Tim+Green" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Tim_Green" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/tg909" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Tim+Green" type="google"/>
     </item>
     <item endTime="1312642800" id="funkdvoid" startTime="1312637400" title="Funk d'Void">
@@ -220,8 +262,10 @@ Tags: tech house, minimal, minimal techno, electronic, house</itemDescription>
 His new LP &#x201C;Second Skin&#x201D; promises a new arena for Lars to showcase his talents as he is constantly looking for new sounds and inspiration - whilst never losing that visceral, emotional core to his music and performances.
 
 Tags: techno, electronic, tech house, tech-house, idm</itemDescription>
-      <itemLink href="http://www.last.fm/music/Funk+d'Void" type="lastfm"/>
-      <itemLink href="http://www.google.com/search?q=Funk+d'Void" type="google"/>
+      <itemLink href="http://www.last.fm/music/Funk+d%27Void" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/funkdvoid" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Funk+D&amp;#39;Void" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=Funk+d%27Void" type="google"/>
     </item>
     <item endTime="1312653600" id="ericprydz" startTime="1312642800" title="Eric Prydz">
       <itemDescription>Eric Prydz is a Swedish DJ and producer best known for his 2004 hit single &#x201C;Call On Me&#x201D;, his remix of Pink Floyd&#x2019;s &#x201C;Another Brick In The Wall&#x201D; (known as &#x201C;Proper Education&#x201D;) and more recently the anthem &#x201C;Pjanoo&#x201D;.
@@ -236,6 +280,9 @@ Although it is reported that Eric Prydz has a fear a flying, he does not let tha
 
 Tags: house, dance, electronic, trance, techno</itemDescription>
       <itemLink href="http://www.last.fm/music/Eric+Prydz" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Eric_Prydz" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/ericprydz" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Eric+Prydz" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Eric+Prydz" type="google"/>
     </item>
     <item endTime="1312660800" id="radioslave" startTime="1312653600" title="Radio Slave">
@@ -258,6 +305,8 @@ Last, but by no means least etc, etc, etc, is Radio Slave.
 
 Tags: minimal, techno, house, minimal techno, electronic</itemDescription>
       <itemLink href="http://www.last.fm/music/Radio+Slave" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/rekid" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Radio+Slave" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Radio+Slave" type="google"/>
     </item>
   </line>
@@ -272,9 +321,12 @@ Besides his huge (mainly dutch) amount of dj-gigs, Benny&#x2019;s main focus now
 
 Tags: electronic, techno, trance, minimal techno, spotify</itemDescription>
       <itemLink href="http://www.last.fm/music/Benny+Rodrigues" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/bennyrodrigues" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Benny+Rodrigues" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Benny+Rodrigues" type="google"/>
     </item>
     <item endTime="1312633800" id="maniklive" startTime="1312630200" title="M A N I K Live">
+      <itemLink href="http://www.myspace.com/manikmetalmusic/videos/manik-live/32217982" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=M+A+N+I+K+Live" type="google"/>
     </item>
     <item endTime="1312638300" id="djsneak" startTime="1312633800" title="DJ Sneak">
@@ -288,6 +340,9 @@ Cajmere released some of Sneak&#x2019;s pivotal tracks and helped bring internat
 
 Tags: house, chicago house, electronic, deep house, techno</itemDescription>
       <itemLink href="http://www.last.fm/music/DJ+Sneak" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/DJ_Sneak" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/sneakthedj" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/DJ+Sneak" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=DJ+Sneak" type="google"/>
     </item>
     <item endTime="1312642800" id="davidesquillace" startTime="1312638300" title="Davide Squillace">
@@ -303,6 +358,8 @@ Three years later he set up his second label, MINISKETCH, geared towards more mi
 
 Tags: minimal, electronic, techno, minimal techno artists, techno house</itemDescription>
       <itemLink href="http://www.last.fm/music/Davide+Squillace" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/davidesquillace" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Davide+Squillace" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Davide+Squillace" type="google"/>
     </item>
     <item endTime="1312647300" id="stevebug" startTime="1312642800" title="Steve Bug">
@@ -311,9 +368,12 @@ itself as the number one source for stripped down futuristic house music with am
 
 Tags: minimal, techno, minimal techno, electronic, minimal house</itemDescription>
       <itemLink href="http://www.last.fm/music/Steve+Bug" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/buginmyspace" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Steve+Bug" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Steve+Bug" type="google"/>
     </item>
     <item endTime="1312650000" id="kinklive" startTime="1312647300" title="KiNK Live">
+      <itemLink href="http://www.myspace.com/kinkpbpm" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=KiNK+Live" type="google"/>
     </item>
     <item endTime="1312656300" id="joshwink" startTime="1312650000" title="Josh Wink">
@@ -321,6 +381,9 @@ Tags: minimal, techno, minimal techno, electronic, minimal house</itemDescriptio
 
 Tags: techno, house, minimal, electronic, tech house</itemDescription>
       <itemLink href="http://www.last.fm/music/Josh+Wink" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Josh_Wink" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/joshwink" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Josh+Wink" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Josh+Wink" type="google"/>
     </item>
     <item endTime="1312660800" id="shlomiaber" startTime="1312656300" title="Shlomi Aber">
@@ -329,6 +392,8 @@ grooves. His musical inspirations cannot defined by one genre, as they draw upon
 
 Tags: minimal, techno, electronic, progressive house, house</itemDescription>
       <itemLink href="http://www.last.fm/music/Shlomi+Aber" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/shlomiaber" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Shlomi+Aber" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Shlomi+Aber" type="google"/>
     </item>
   </line>
@@ -342,6 +407,8 @@ Jim currently holds a residency at Bristols best tech/prog/house night, Empathy 
 
 Tags: progressive house, house, minimal, tech-house, electronic</itemDescription>
       <itemLink href="http://www.last.fm/music/Jim+Rivers" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/jimriversdj" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Jim+Rivers" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Jim+Rivers" type="google"/>
     </item>
     <item endTime="1312635600" id="jonrundell" startTime="1312630200" title="Jon Rundell">
@@ -349,6 +416,8 @@ Tags: progressive house, house, minimal, tech-house, electronic</itemDescription
 
 Tags: techno, electronic, minimal, minimal techno, acid</itemDescription>
       <itemLink href="http://www.last.fm/music/Jon+Rundell" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/jonrundell" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Jon+Rundell" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Jon+Rundell" type="google"/>
     </item>
     <item endTime="1312641000" id="robertbabicz" startTime="1312635600" title="Robert Babicz">
@@ -356,6 +425,9 @@ Tags: techno, electronic, minimal, minimal techno, acid</itemDescription>
 
 Tags: minimal, techno, minimal techno, electronic, tech house</itemDescription>
       <itemLink href="http://www.last.fm/music/Robert+Babicz" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Robert_Babicz" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/robertbabicz" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Robert+Babicz" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Robert+Babicz" type="google"/>
     </item>
     <item endTime="1312646400" id="yousef" startTime="1312641000" title="Yousef">
@@ -370,6 +442,9 @@ It is clear that Yousef loves to travel (lucky then with the amount he does) &#x
 
 Tags: house, deep, underground, bbc radio 1, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Yousef" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Ramzi_Yousef" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/yousefcircus" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Yousef" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Yousef" type="google"/>
     </item>
     <item endTime="1312650900" id="layobushwacka" startTime="1312646400" title="Layo &amp; Bushwacka">
@@ -380,8 +455,11 @@ By 1999 they&#x2019;d already composed their debut album, &#x2018;Low Life&#x201
 Their sophomore album followed in 2002, this time released on the mighty XL Recordings. Entitled &#x2018;Night Works&#x2019;, the record featured their unforgettable top ten hit &#x2018;Love Story&#x2019;, and took their sound onto a bigger and broader canvas, selling 100,000 copies in the process.
 
 Tags: electronic, house, breakbeat, dance, electronica</itemDescription>
-      <itemLink href="http://www.last.fm/music/Layo+&amp;+Bushwacka" type="lastfm"/>
-      <itemLink href="http://www.google.com/search?q=Layo+&amp;+Bushwacka" type="google"/>
+      <itemLink href="http://www.last.fm/music/Layo+%26+Bushwacka" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Layo_%26_Bushwacka!" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/olmetorecords" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Layo+%26+Bushwacka!" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=Layo+%26+Bushwacka" type="google"/>
     </item>
     <item endTime="1312656300" id="umek" startTime="1312650900" title="Umek">
       <itemDescription>Born in 1976, in Ljubljana, Slovenia, Uro&#x161; Umek began DJing in 1993. He and his friends helped develop the dance music scene in Slovenia, and between them they were responsible for putting on the first large scale parties in Slovenia. The result has been that Umek is Slovenia&#x2019;s most famous techno DJ, and a prolific producer. His current style is the combination of many different roots, which the more long term Umek fans may recognise. Starting with a rough, uncompromising edge he quickly built a reputation in the studio. However, more recently he has moved towards a funkier sound&#x2026;
@@ -390,6 +468,9 @@ Most of his tracks are named after medicines or other substances.
 
 Tags: techno, minimal, electronic, electro, electronica</itemDescription>
       <itemLink href="http://www.last.fm/music/Umek" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/DJ_Umek" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/djumek" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Umek" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Umek" type="google"/>
     </item>
   </line>
@@ -406,6 +487,8 @@ Due to the fact that both releases were received so well by the international da
 
 Tags: electronic, house, progressive trance, iboga records, psychedelic</itemDescription>
       <itemLink href="http://www.last.fm/music/C-Jay" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/C._Jay_Cox" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/cjaysessions" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=C-Jay" type="google"/>
     </item>
     <item endTime="1312632000" id="eelkeklein" startTime="1312628400" title="Eelke Klein">
@@ -413,6 +496,9 @@ Tags: electronic, house, progressive trance, iboga records, psychedelic</itemDes
 
 Tags: progressive house, electronic, house, tech house, progressive</itemDescription>
       <itemLink href="http://www.last.fm/music/Eelke+Klein" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Eelke_Kleijn" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/eelkekleijn" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Eelke+Kleijn" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Eelke+Klein" type="google"/>
     </item>
     <item endTime="1312637400" id="henrysaiz" startTime="1312632000" title="Henry Saiz">
@@ -423,6 +509,7 @@ His fist vinyl, &#x201C;Mamut Ep&#x201D;, released by Logicalnoise, is a really 
 
 Tags: minimal, techno, tech house, neotrance, electronic</itemDescription>
       <itemLink href="http://www.last.fm/music/Henry+Saiz" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/henrysaiz" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Henry+Saiz" type="google"/>
     </item>
     <item endTime="1312642800" id="jameszabiela" startTime="1312637400" title="James Zabiela">
@@ -434,6 +521,9 @@ James gained fame in 2000 by winning Muzik Magazine&#x2019;s Bedroom Bedlam comp
 
 Tags: progressive house, electronic, house, progressive, electronica</itemDescription>
       <itemLink href="http://www.last.fm/music/James+Zabiela" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/James_Zabiela" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/jameszabiela" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/James+Zabiela" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=James+Zabiela" type="google"/>
     </item>
     <item endTime="1312648200" id="nickwarren" startTime="1312642800" title="Nick Warren">
@@ -443,6 +533,9 @@ To this day, Warren remains at the forefront of club culture: he packs clubs and
 
 Tags: progressive house, electronic, house, electronica, chillout</itemDescription>
       <itemLink href="http://www.last.fm/music/Nick+Warren" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Nick_Warren" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/nickwarrenhope" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Nick+Warren" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Nick+Warren" type="google"/>
     </item>
     <item endTime="1312653600" id="dannyhowells" startTime="1312648200" title="Danny Howells">
@@ -456,6 +549,9 @@ Danny&#x2019;s infectious personality and individual style is what really puts h
 
 Tags: house, progressive house, electronic, progressive, lounge</itemDescription>
       <itemLink href="http://www.last.fm/music/Danny+Howells" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Danny_Howells" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/dannyhowells" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Danny+Howells" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Danny+Howells" type="google"/>
     </item>
     <item endTime="1312660800" id="hernancattaneo" startTime="1312653600" title="Hernan Cattaneo">
@@ -469,6 +565,9 @@ As a DJ with an ever increasing fanbase, he rose to #22 and then to #6 on the DJ
 
 Tags: progressive house, house, progressive, electronic, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Hernan+Cattaneo" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Hern%C3%A1n_Catt%C3%A1neo" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/hernancattaneo" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Hern%C3%A1n+Catt%C3%A1neo" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Hernan+Cattaneo" type="google"/>
     </item>
   </line>
@@ -486,13 +585,17 @@ To develop himself Phonic Funk has also devoted himself to the producing side of
 
 Tags: spotify, deep, funky, chillout, house</itemDescription>
       <itemLink href="http://www.last.fm/music/Phonic+Funk" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/phonicfunkmusic" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Phonic+Funk" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Phonic+Funk" type="google"/>
     </item>
     <item endTime="1312633800" id="balearicsoul" startTime="1312630200" title="Balearic Soul">
+      <itemLink href="http://www.myspace.com/balearicsoul" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Balearic+Soul" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Balearic+Soul" type="google"/>
     </item>
     <item endTime="1312637400" id="hardsoullivefeatrooggregvanbuerenmaevisacquaglennhelderbergetlew" startTime="1312633800" title="Hardsoul live! (feat. Roog, Greg van Bueren, Maevis Acqua, Glenn Helder, Berget Lewis, Sven Figee en ZO! Gospelchoir">
-      <itemLink href="http://www.google.com/search?q=Hardsoul+live!+(feat.+Roog,+Greg+van+Bueren,+Maevis+Acqua,+Glenn+Helder,+Berget+Lewis,+Sven+Figee+en+ZO!+Gospelchoir" type="google"/>
+      <itemLink href="http://www.google.com/search?q=Hardsoul+live%21+%28feat.+Roog%2C+Greg+van+Bueren%2C+Maevis+Acqua%2C+Glenn+Helder%2C+Berget+Lewis%2C+Sven+Figee+en+ZO%21+Gospelchoir" type="google"/>
     </item>
     <item endTime="1312641000" id="roog" startTime="1312637400" title="Roog">
       <itemDescription>Roog (real name Rogier van Bueren) started buying records at the tender age of 7 years late 70&#x2019;s. Thru out the 80&#x2019;s he started playing at school parties, birthday parties and weddings. At the beginning of the 90&#x2019;s he fell in love with house music, the music that he heard while clubbing in Amsterdam&#x2019;s legendary clubs RoXY and iT. Roog has graduated from law school with a specialisation in Intellectual Property. Roog has been voted number 1 house dj of Holland last 3 years by Dutch Magazine; Bassic Groove, was voted most popular club dj of Holland 2004 by Nieuwe Revu Magazine and was the highest ranked house dj in the Dutch Dj Award poll of 2003 and 2004. Roog is playing an astonishing average of 225 gigs a year in and outside Holland. Roog played main stage at Sensation in the Ajax Soccer stadium to 40.000 people in 2001, which was broadcasted live by TMF and radio 538. This event brought him, from well known in the underground house scene, to the Dutch DJ super league. Roog has compiled 7 cd&#x2019;s till date. The
@@ -500,6 +603,9 @@ sound of Love and Dedication (United/Zomba, 2000) was the first compilation unde
 
 Tags: sexy house, spectrum rock, hiphop, electronica hiphop, experimental</itemDescription>
       <itemLink href="http://www.last.fm/music/Roog" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Roog" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/rooghardsoul" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/DJ+Roog" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Roog" type="google"/>
     </item>
     <item endTime="1312644600" id="copyright" startTime="1312641000" title="Copyright">
@@ -512,6 +618,7 @@ long to finally deliver their debut long player? &#x201C;I think we wanted to wa
 
 Tags: house, funky house, soulful house, canadian, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Copyright" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Copyright" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Copyright" type="google"/>
     </item>
     <item endTime="1312650000" id="thenewibericanleaugue" startTime="1312644600" title="The New Iberican Leaugue">
@@ -536,6 +643,9 @@ Ren&#xE9;: We are still very proud of Give It Up. It was created on a small mixe
 
 Tags: house, dance, electronic, club, vocal house</itemDescription>
       <itemLink href="http://www.last.fm/music/Chocolate+Puma" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Zki_%26_Dobre" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/chocolatepumamusic" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Chocolate+Puma" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Chocolate+Puma" type="google"/>
     </item>
     <item endTime="1312657200" id="thecubeguys" startTime="1312653600" title="The Cube Guys">
@@ -549,22 +659,26 @@ Luca is a guy really keen on music and technology since he was very young, he st
 
 Tags: house, dance, funky, electronic, electroclash</itemDescription>
       <itemLink href="http://www.last.fm/music/The+Cube+Guys" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/cubeguys" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=The+Cube+Guys" type="google"/>
     </item>
     <item endTime="1312660800" id="reneameszbaggibegovic" startTime="1312657200" title="Rene Amesz &amp; Baggi Begovic">
-      <itemLink href="http://www.google.com/search?q=Rene+Amesz+&amp;+Baggi+Begovic" type="google"/>
+      <itemLink href="http://www.myspace.com/reneamesz" type="myspace"/>
+      <itemLink href="http://www.google.com/search?q=Rene+Amesz+%26+Baggi+Begovic" type="google"/>
     </item>
   </line>
   <line id="roogshousemc" title="Roog's House (MC)">
     <item endTime="1312653600" id="ifanmc" startTime="1312633800" title="I/Fan (MC)">
-      <itemLink href="http://www.google.com/search?q=I/Fan+(MC)" type="google"/>
+      <itemLink href="http://www.google.com/search?q=I/Fan+%28MC%29" type="google"/>
     </item>
     <item endTime="1312660800" id="rogamc" startTime="1312653600" title="Roga (MC)">
-      <itemLink href="http://www.google.com/search?q=Roga+(MC)" type="google"/>
+      <itemLink href="http://www.myspace.com/hiphoplogoscrew/videos/video/104482260" type="myspace"/>
+      <itemLink href="http://www.google.com/search?q=Roga+%28MC%29" type="google"/>
     </item>
   </line>
   <line id="beatloverz" title="Beatloverz">
     <item endTime="1312628400" id="briandalton" startTime="1312624800" title="Brian Dalton">
+      <itemLink href="http://en.wikipedia.org/wiki/File:Brian_Dalton_IIG_Awards.jpg" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Brian+Dalton" type="google"/>
     </item>
     <item endTime="1312632000" id="housereligion" startTime="1312628400" title="House Religion">
@@ -583,6 +697,8 @@ These day&#x2019;s allmost every high rated DJ has a few Romero records in his b
 
 Tags: house, electro house, minimal techno, minimal, electronic</itemDescription>
       <itemLink href="http://www.last.fm/music/Nicky+Romero" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/nickyromeromusic" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Nicky+Romero" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Nicky+Romero" type="google"/>
     </item>
     <item endTime="1312639200" id="themartinezbrothers" startTime="1312635600" title="The Martinez Brothers">
@@ -594,6 +710,8 @@ Within the last year, the duo has been rising through the ranks by rocking some 
 
 Tags: deep house, house, electronic, usa, minimal</itemDescription>
       <itemLink href="http://www.last.fm/music/The+Martinez+Brothers" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/themartinezbros" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Martinez+Brothers,+The" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=The+Martinez+Brothers" type="google"/>
     </item>
     <item endTime="1312642800" id="quintino" startTime="1312639200" title="Quintino">
@@ -601,6 +719,8 @@ Tags: deep house, house, electronic, usa, minimal</itemDescription>
 
 Tags: house, spotify, dance, electro house, electronica</itemDescription>
       <itemLink href="http://www.last.fm/music/Quintino" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Quintino" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/marceloquintinocinalli" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Quintino" type="google"/>
     </item>
     <item endTime="1312646400" id="mastiksoul" startTime="1312642800" title="Mastiksoul">
@@ -613,9 +733,13 @@ The dj work increases in this period and he plays in important clubs such as Rex
 
 Tags: house, electronic, minimal, tech, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Mastiksoul" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Mastiksoul" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/mastiksoul" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Mastik+Soul" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Mastiksoul" type="google"/>
     </item>
     <item endTime="1312650000" id="shermanology" startTime="1312646400" title="Shermanology">
+      <itemLink href="http://www.myspace.com/shermanologymusic" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Shermanology" type="google"/>
     </item>
     <item endTime="1312653600" id="hardwell" startTime="1312650000" title="Hardwell">
@@ -633,6 +757,8 @@ There&#x2019;s a new kid on the block, and he&#x2019;s here to stay.
 
 Tags: house, electro, dance, minimal, electro house</itemDescription>
       <itemLink href="http://www.last.fm/music/Hardwell" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Hardwell_Castle" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/deejayhardwell" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Hardwell" type="google"/>
     </item>
     <item endTime="1312657200" id="boemklatsch" startTime="1312653600" title="Boemklatsch">
@@ -642,28 +768,37 @@ The last years have been a rollercoaster ride for these guys. They&#x2019;ve sta
 
 Tags: hip-hop, electro, lowlands 2009, hip hop, aanheid</itemDescription>
       <itemLink href="http://www.last.fm/music/Boemklatsch" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/boemklatsch" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Boemklatsch" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Boemklatsch" type="google"/>
     </item>
     <item endTime="1312660800" id="vatogonzalezftmctjen" startTime="1312657200" title="Vato Gonzalez ft MC Tjen">
+      <itemLink href="http://www.myspace.com/vatogonzalez" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Vato+Gonzalez+ft+MC+Tjen" type="google"/>
     </item>
   </line>
   <line id="beatloverzmc" title="Beatloverz (MC)">
     <item endTime="1312635600" id="mcjollygood" startTime="1312624800" title="MC Jollygood">
+      <itemLink href="http://www.discogs.com/search?type=all&amp;q=Dj+Dyna+%26+Mc+Jolly+Good" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=MC+Jollygood" type="google"/>
     </item>
     <item endTime="1312650000" id="mcmitchcrown" startTime="1312635600" title="MC Mitch Crown">
+      <itemLink href="http://www.myspace.com/mitchcrown" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=MC+Mitch+Crown" type="google"/>
     </item>
     <item endTime="1312660800" id="zawdimc" startTime="1312650000" title="Zawdi MC">
+      <itemLink href="http://www.myspace.com/zawdi" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Zawdi+MC" type="google"/>
     </item>
   </line>
   <line id="beatloverzmc2" title="Beatloverz (MC)">
     <item endTime="1312635600" id="isax" startTime="1312628400" title="I-Sax">
+      <itemLink href="http://www.myspace.com/isaxinjah" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=I-Sax" type="google"/>
     </item>
     <item endTime="1312653600" id="andreirusso" startTime="1312642800" title="Andrei Russo">
+      <itemLink href="http://www.myspace.com/andreirusso" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Andrei+Russo" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Andrei+Russo" type="google"/>
     </item>
   </line>
@@ -675,6 +810,8 @@ Andy Farley [US-Chicago] is a young minimal techno/tech house DJ/producer, famed
 
 Tags: hard house, techno, hard dance, dance, tidy</itemDescription>
       <itemLink href="http://www.last.fm/music/Andy+Farley" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/andyfarleydj" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Andy+Farley" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Andy+Farley" type="google"/>
     </item>
     <item endTime="1312635600" id="fausto" startTime="1312630200" title="Fausto">
@@ -701,6 +838,7 @@ DJ Fausto was born&#x2026;
 
 Tags: portuguese, portugal, folk, hardstyle, portuguese folk</itemDescription>
       <itemLink href="http://www.last.fm/music/Fausto" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Fausto_Coppi" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Fausto" type="google"/>
     </item>
     <item endTime="1312639200" id="jp" startTime="1312635600" title="JP">
@@ -721,6 +859,7 @@ The whole Freak Out EP experiance takes you through 5 magical tracks loaded with
 
 Tags: psytrance, psychedelic, electronic, fullon, full-on trance</itemDescription>
       <itemLink href="http://www.last.fm/music/JP" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/.jp" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=JP" type="google"/>
     </item>
     <item endTime="1312642800" id="scotproject" startTime="1312639200" title="Scot Project">
@@ -734,6 +873,9 @@ Bringing deeper, dirtier trance to his sets, DJ Scot Project combines hard percu
 
 Tags: hard trance, trance, techno, electronic, dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Scot+Project" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Scot_Project" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/scotprojectofficial" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/DJ+Scot+Project" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Scot+Project" type="google"/>
     </item>
     <item endTime="1312646400" id="organdonors" startTime="1312642800" title="Organ Donors">
@@ -741,6 +883,8 @@ Tags: hard trance, trance, techno, electronic, dance</itemDescription>
 
 Tags: hard trance, trance, hard house, dance, hard dance</itemDescription>
       <itemLink href="http://www.last.fm/music/Organ+Donors" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Organ_donation" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/organdonorsdj" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Organ+Donors" type="google"/>
     </item>
     <item endTime="1312650000" id="tomharding" startTime="1312646400" title="Tom Harding">
@@ -750,6 +894,9 @@ He was also the Resident DJ of the monthly HQ parties @ Melkweg, Amsterdam.
 
 Tags: hard house, hard trance, rock, stoner rock, trance</itemDescription>
       <itemLink href="http://www.last.fm/music/Tom+Harding" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Thomas_Harding" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/recordertom" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Tom+Harding" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Tom+Harding" type="google"/>
     </item>
     <item endTime="1312653600" id="tidyboys" startTime="1312650000" title="Tidy Boys">
@@ -757,6 +904,8 @@ Tags: hard house, hard trance, rock, stoner rock, trance</itemDescription>
 
 Tags: favourite artists, trance, tech trance, seen live, hard house</itemDescription>
       <itemLink href="http://www.last.fm/music/Tidy+Boys" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/User:Nick_Cooper/The_Tidy_Boys" type="wikipedia"/>
+      <itemLink href="http://www.discogs.com/artist/Tidy+Boys" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Tidy+Boys" type="google"/>
     </item>
     <item endTime="1312657200" id="yoji" startTime="1312653600" title="Yoji">
@@ -764,14 +913,20 @@ Tags: favourite artists, trance, tech trance, seen live, hard house</itemDescrip
 
 Tags: techno, hard trance, japanese, japan, hard techno</itemDescription>
       <itemLink href="http://www.last.fm/music/Yoji" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Yoji_(DJ)" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/yojibiomehanikaofficial" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Yoji+Biomehanika" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Yoji" type="google"/>
     </item>
     <item endTime="1312660800" id="andywhitby" startTime="1312657200" title="Andy Whitby">
+      <itemLink href="http://www.myspace.com/djandywhitby" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Andy+Whitby" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Andy+Whitby" type="google"/>
     </item>
   </line>
   <line id="hqmc" title="HQ (MC)">
     <item endTime="1312660800" id="mcdasilva" startTime="1312624800" title="MC Da Silva">
+      <itemLink href="http://www.discogs.com/artist/MC+Da+Silva" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=MC+Da+Silva" type="google"/>
     </item>
   </line>
@@ -785,6 +940,7 @@ Work on their full-length indie debut, If This Is the End&#x2026;, began in the 
 
 Tags: female vocalists, post-hardcore, alternative rock, rock, alternative</itemDescription>
       <itemLink href="http://www.last.fm/music/Thera" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Minoan_eruption" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Thera" type="google"/>
     </item>
     <item endTime="1312632000" id="nitrouz" startTime="1312628400" title="Nitrouz">
@@ -798,9 +954,12 @@ In 2008 it seemed JP&#x2019;s dream of becoming a world renowned DJ/Producer and
 
 Tags: hard trance, hardstyle</itemDescription>
       <itemLink href="http://www.last.fm/music/Nitrouz" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/producerdjnitrouz" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/NitrouZ" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Nitrouz" type="google"/>
     </item>
     <item endTime="1312635600" id="kodex" startTime="1312632000" title="Kodex">
+      <itemLink href="http://www.myspace.com/kreationkodex" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Kodex" type="google"/>
     </item>
     <item endTime="1312640100" id="abyssjudge" startTime="1312635600" title="Abyss &amp; Judge">
@@ -817,8 +976,10 @@ After sending a mix-cd to Q-dance Gevrey performed in the talent room of Qlubtem
 Judge:
 
 Tags: hardstyle, shuffle, techno, hard techno, makes me wanna shuffle</itemDescription>
-      <itemLink href="http://www.last.fm/music/Abyss+&amp;+Judge" type="lastfm"/>
-      <itemLink href="http://www.google.com/search?q=Abyss+&amp;+Judge" type="google"/>
+      <itemLink href="http://www.last.fm/music/Abyss+%26+Judge" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/abyssjudge" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Abyss+%26+Judge" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=Abyss+%26+Judge" type="google"/>
     </item>
     <item endTime="1312643700" id="activator" startTime="1312640100" title="Activator">
       <itemDescription>There are multiple artists with the name Activator.
@@ -847,10 +1008,14 @@ Jimmy - drums
 
 Tags: hardstyle, stoner rock, hardbass, italian hardstyle, psychedelic rock</itemDescription>
       <itemLink href="http://www.last.fm/music/Activator" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Activator" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/activatorwins" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Activator" type="google"/>
     </item>
     <item endTime="1312648200" id="alexkiddkutskiexperience" startTime="1312643700" title="Alex Kidd &amp; Kutski Experience">
-      <itemLink href="http://www.google.com/search?q=Alex+Kidd+&amp;+Kutski+Experience" type="google"/>
+      <itemLink href="http://www.myspace.com/djalexkidddotcom/blog/540198737" type="myspace"/>
+      <itemLink href="http://www.discogs.com/Alex-Kidd-Kutski-Goodgreef-Present-The-Alex-Kidd-Kutski-Experience/release/2407427" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=Alex+Kidd+%26+Kutski+Experience" type="google"/>
     </item>
     <item endTime="1312650000" id="toneshifterz" startTime="1312648200" title="Toneshifterz">
       <itemDescription>Toneshifterz, aka Elie &amp; Olcay, is an upcoming hardstyle project from Sydney, Australia. They are signed to Fusion Records, home to famous hardstyle artists like Zany, Noisecontrollers and Donkey Rollers.
@@ -862,6 +1027,8 @@ Toneshifterz now are, and have been signed to the renowned Fusion Records and ha
 
 Tags: hardstyle, rave, shuffle, hard dance, australian hardstyle</itemDescription>
       <itemLink href="http://www.last.fm/music/Toneshifterz" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/toneshifterz" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Toneshifterz" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Toneshifterz" type="google"/>
     </item>
     <item endTime="1312654500" id="dblockstefan" startTime="1312650000" title="D-Block &amp; S-te-fan">
@@ -880,8 +1047,11 @@ Nowadays they are the happy owners of the &#x201C;Scantraxx Evolutionz&#x201D;, 
 More info at: http://www.dblock-stefan.com/
 
 Tags: hardstyle, hardbass, jumpstyle, nu-style, house</itemDescription>
-      <itemLink href="http://www.last.fm/music/D-Block+&amp;+S-te-fan" type="lastfm"/>
-      <itemLink href="http://www.google.com/search?q=D-Block+&amp;+S-te-fan" type="google"/>
+      <itemLink href="http://www.last.fm/music/D-Block+%26+S-te-fan" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/D-Block_%26_S-te-Fan" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/dbstf" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/D-Block+%26+S-te-Fan" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=D-Block+%26+S-te-fan" type="google"/>
     </item>
     <item endTime="1312658100" id="dutchmaster" startTime="1312654500" title="Dutch Master">
       <itemDescription>1.
@@ -897,6 +1067,7 @@ For this artist see www.slimshore.nl
 
 Tags: hardstyle, techno, jumpstyle, hardbass, dutch</itemDescription>
       <itemLink href="http://www.last.fm/music/Dutch+Master" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Dutch_Masters_(cigar)" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Dutch+Master" type="google"/>
     </item>
     <item endTime="1312662600" id="showtek" startTime="1312658100" title="Showtek">
@@ -910,19 +1081,27 @@ Besides their great teamwork as Showtek, they also have their own solo projects.
 
 Tags: hardstyle, techno, jumpstyle, hardtrance, hardbass</itemDescription>
       <itemLink href="http://www.last.fm/music/Showtek" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Showtek" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/showtekmusic" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Showtek" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Showtek" type="google"/>
     </item>
   </line>
   <line id="showtekpresentsdutchmasterworksmc" title="Showtek presents Dutch Master Works (MC)">
     <item endTime="1312662600" id="mcthawatcher" startTime="1312624800" title="MC Tha Watcher">
+      <itemLink href="http://www.myspace.com/mcthawatcher" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/MC+Tha+Watcher" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=MC+Tha+Watcher" type="google"/>
     </item>
   </line>
   <line id="enhancedmusicpresentshardtechnotitans" title="Enhanced Music presents Hard Techno Titans">
     <item endTime="1312630200" id="alexkvittalive" startTime="1312624800" title="Alex Kvitta Live">
+      <itemLink href="http://www.myspace.com/alexkvitta/photos/35325638" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Alex+Kvitta+Live" type="google"/>
     </item>
     <item endTime="1312635600" id="djboldvspaullangley" startTime="1312630200" title="DJ Bold vs Paul Langley">
+      <itemLink href="http://www.myspace.com/paullangley/photos/41678258#!" type="myspace"/>
+      <itemLink href="http://www.discogs.com/search?type=all&amp;q=Paul+Langley+%26+DJ+Rush" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=DJ+Bold+vs+Paul+Langley" type="google"/>
     </item>
     <item endTime="1312641000" id="frankkvitta" startTime="1312635600" title="Frank Kvitta">
@@ -932,6 +1111,8 @@ Having released and releases planned on labels such as lifeform, artillery, carn
 
 Tags: schranz, hard techno, hardtechno, electronic, kvitta</itemDescription>
       <itemLink href="http://www.last.fm/music/Frank+Kvitta" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/frankkvitta" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Frank+Kvitta" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Frank+Kvitta" type="google"/>
     </item>
     <item endTime="1312646400" id="robertnatus" startTime="1312641000" title="Robert Natus">
@@ -945,9 +1126,13 @@ The turn of his intensive life time dream into truth turned him to one of the mo
 
 Tags: schranz, hard techno, techno, german, hardtechno</itemDescription>
       <itemLink href="http://www.last.fm/music/Robert+Natus" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Robert_Natus" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/robertnatus" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Robert+Natus" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Robert+Natus" type="google"/>
     </item>
     <item endTime="1312650900" id="arkusplive" startTime="1312646400" title="Arkus P Live">
+      <itemLink href="http://www.myspace.com/video/bahiajakrussel/live-arkus-p-at-lagoa-pounding-and-techno-music/103394435" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Arkus+P+Live" type="google"/>
     </item>
     <item endTime="1312656300" id="petduo" startTime="1312650900" title="Pet Duo">
@@ -957,26 +1142,35 @@ s&#xF3; pet salva!
 
 Tags: schranz, hard techno, techno, hardtechno, fucking amazing techno</itemDescription>
       <itemLink href="http://www.last.fm/music/Pet+Duo" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/petduo" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/PET+Duo" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Pet+Duo" type="google"/>
     </item>
     <item endTime="1312660800" id="borisslive" startTime="1312656300" title="Boris S Live">
+      <itemLink href="http://www.myspace.com/hardfactory/blog/486926078" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Boris+S+Live" type="google"/>
     </item>
   </line>
   <line id="nachtboetiek" title="Nachtboetiek">
     <item endTime="1312628400" id="enricodeluca" startTime="1312624800" title="Enrico de Luca">
+      <itemLink href="http://www.myspace.com/enricodelucamusic" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Enrico+de+Luca" type="google"/>
     </item>
     <item endTime="1312628400" id="emielroch" startTime="1312624800" title="Emiel Roch&#xE9;">
-      <itemLink href="http://www.google.com/search?q=Emiel+Roch&#xE9;" type="google"/>
+      <itemLink href="http://www.myspace.com/pdjmusic" type="myspace"/>
+      <itemLink href="http://www.google.com/search?q=Emiel+Roch%C3%A9" type="google"/>
     </item>
     <item endTime="1312631100" id="rubenvitalis" startTime="1312628400" title="Ruben Vitalis">
+      <itemLink href="http://www.myspace.com/rubenvitalis" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Ruben+Vitalis" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Ruben+Vitalis" type="google"/>
     </item>
     <item endTime="1312634700" id="mikes" startTime="1312631100" title="Mike S">
       <itemLink href="http://www.google.com/search?q=Mike+S" type="google"/>
     </item>
     <item endTime="1312637400" id="groovenatics" startTime="1312634700" title="Groovenatics">
+      <itemLink href="http://www.myspace.com/groovenatics" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Groovenatics" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Groovenatics" type="google"/>
     </item>
     <item endTime="1312641000" id="jean" startTime="1312637400" title="Jean">
@@ -990,10 +1184,11 @@ website: www.jeanmusiconline.com
 
 Tags: breakbeat, touhou, pop, pop latino, doujin ongaku</itemDescription>
       <itemLink href="http://www.last.fm/music/Jean" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Jeans" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Jean" type="google"/>
     </item>
     <item endTime="1312644600" id="gelazershagspeareladybeeftthedarkraver" startTime="1312641000" title="Gelazer! Shagspeare &amp; Lady Bee ft. The Darkraver">
-      <itemLink href="http://www.google.com/search?q=Gelazer!+Shagspeare+&amp;+Lady+Bee+ft.+The+Darkraver" type="google"/>
+      <itemLink href="http://www.google.com/search?q=Gelazer%21+Shagspeare+%26+Lady+Bee+ft.+The+Darkraver" type="google"/>
     </item>
     <item endTime="1312650000" id="spider" startTime="1312644600" title="Spider">
       <itemDescription>There is more than one artist called Spider
@@ -1012,6 +1207,7 @@ Spiders (order Araneae) are air-breathing arthropods that have eight legs, and c
 
 Tags: folk, acoustic, singer-songwriter, female vocalists, indie</itemDescription>
       <itemLink href="http://www.last.fm/music/Spider" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Spider" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Spider" type="google"/>
     </item>
     <item endTime="1312653600" id="randykatana" startTime="1312650000" title="Randy Katana">
@@ -1023,6 +1219,9 @@ Currently Randy Katana is working on an album that will specifically project his
 
 Tags: trance, hard trance, dance, electronic, tech-trance</itemDescription>
       <itemLink href="http://www.last.fm/music/Randy+Katana" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Randy_Katana" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/randykatana" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Randy+Katana" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Randy+Katana" type="google"/>
     </item>
     <item endTime="1312657200" id="mem" startTime="1312653600" title="MEM">
@@ -1034,6 +1233,8 @@ Mem&#x2019;s existence has been characterized by its closely-knit cast of musici
 
 Tags: trance, progressive trance, mellow, jazz, progressive</itemDescription>
       <itemLink href="http://www.last.fm/music/MEM" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Mem" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/memmusic" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=MEM" type="google"/>
     </item>
     <item endTime="1312660800" id="bingoplayers" startTime="1312657200" title="Bingo Players">
@@ -1045,11 +1246,14 @@ After that, Dutch house mogul, ErickE&#x2019;s &#x201C;Wanna Go Again&#x201D;, w
 
 Tags: house, electronic, dirty house, techno, electro</itemDescription>
       <itemLink href="http://www.last.fm/music/Bingo+Players" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/bingoplayers" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Bingo+Players" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Bingo+Players" type="google"/>
     </item>
   </line>
   <line id="nachtboetiekmc" title="Nachtboetiek (MC)">
     <item endTime="1312646400" id="mcboogshe" startTime="1312624800" title="MC Boogshe">
+      <itemLink href="http://www.myspace.com/boogshe" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=MC+Boogshe" type="google"/>
     </item>
     <item endTime="1312660800" id="mcladybee" startTime="1312646400" title="MC Lady Bee">
@@ -1058,12 +1262,17 @@ Tags: house, electronic, dirty house, techno, electro</itemDescription>
   </line>
   <line id="evlo" title="EVLO">
     <item endTime="1312628400" id="miquelet" startTime="1312624800" title="Miquelet">
+      <itemLink href="http://en.wikipedia.org/wiki/Miquelet" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/miquelettheclown" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Miquelet" type="google"/>
     </item>
     <item endTime="1312632000" id="kosmetiq" startTime="1312628400" title="KosmetiQ">
+      <itemLink href="http://www.myspace.com/kosmetiq" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Kosmetiq" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=KosmetiQ" type="google"/>
     </item>
     <item endTime="1312637400" id="onnik" startTime="1312632000" title="Onnik">
+      <itemLink href="http://www.myspace.com/deejayonnik" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Onnik" type="google"/>
     </item>
     <item endTime="1312644600" id="loulouplayers" startTime="1312637400" title="Loulou Players">
@@ -1077,13 +1286,17 @@ Since September 2006, Kolombo has joined Mugwump: a project where he produced mu
 
 Tags: electro, house, minimal, to listen, seen live</itemDescription>
       <itemLink href="http://www.last.fm/music/Loulou+Players" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/loulou_players" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Loulou+Players" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Loulou+Players" type="google"/>
     </item>
     <item endTime="1312651800" id="prinz" startTime="1312644600" title="Prinz">
+      <itemLink href="http://en.wikipedia.org/wiki/Birgit_Prinz" type="wikipedia"/>
       <itemLink href="http://www.google.com/search?q=Prinz" type="google"/>
     </item>
     <item endTime="1312660800" id="paullomaxdreguazzelli" startTime="1312651800" title="Paul Lomax &amp; Dre Guazzelli">
-      <itemLink href="http://www.google.com/search?q=Paul+Lomax+&amp;+Dre+Guazzelli" type="google"/>
+      <itemLink href="http://www.myspace.com/paullomaxibiza/stream" type="myspace"/>
+      <itemLink href="http://www.google.com/search?q=Paul+Lomax+%26+Dre+Guazzelli" type="google"/>
     </item>
   </line>
   <line id="bombdiggytropicalbass" title="Bomb Diggy : Tropical Bass">
@@ -1097,6 +1310,7 @@ Tags: tropical bass</itemDescription>
       <itemLink href="http://www.google.com/search?q=Bomb+Diggy+Crew" type="google"/>
     </item>
     <item endTime="1312633800" id="narainashad" startTime="1312630200" title="Narain Ashad">
+      <itemLink href="http://www.myspace.com/djnarainashad" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Narain+Ashad" type="google"/>
     </item>
     <item endTime="1312635600" id="bombdiggycrew2" startTime="1312633800" title="Bomb Diggy Crew">
@@ -1109,7 +1323,9 @@ Tags: tropical bass</itemDescription>
       <itemLink href="http://www.google.com/search?q=Bomb+Diggy+Crew" type="google"/>
     </item>
     <item endTime="1312641000" id="hatnhoodie" startTime="1312635600" title="Hat'n Hoodie">
-      <itemLink href="http://www.google.com/search?q=Hat'n+Hoodie" type="google"/>
+      <itemLink href="http://www.myspace.com/hatnhoodie" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Hat&amp;#39;n&amp;#39;Hoodie" type="discogs"/>
+      <itemLink href="http://www.google.com/search?q=Hat%27n+Hoodie" type="google"/>
     </item>
     <item endTime="1312642800" id="bombdiggycrew3" startTime="1312641000" title="Bomb Diggy Crew">
       <itemDescription>Imagine bright coloured airhorns honking in a rainforest, sweaty dancefloors on hot beaches, a club in the middle of the jungle in Africa, beats from different continents but with the same purpose: making the boys smile and the girls scream on the dancefloor!
@@ -1124,6 +1340,7 @@ Tags: tropical bass</itemDescription>
       <itemDescription>Diamond Bass is Joel IIdefonso, a 28 year old Portugese artist living in Lisboa. Regularly playing in clubs around Lisboa and Porto, his production fuses House, Kuduro, Baile Funk and Dubstep. He has collaborated with J-WOW Buraka Som Sistema.
 </itemDescription>
       <itemLink href="http://www.last.fm/music/Diamond+Bass" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/diamond.bass" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Diamond+Bass" type="google"/>
     </item>
     <item endTime="1312651800" id="munchi" startTime="1312648200" title="Munchi">
@@ -1131,6 +1348,8 @@ Tags: tropical bass</itemDescription>
 
 Tags: moombahton, house, breakcore, roskilde 2011, munchi</itemDescription>
       <itemLink href="http://www.last.fm/music/Munchi" type="lastfm"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Munchi&amp;#39;s_Ford_World_Rally_Team" type="wikipedia"/>
+      <itemLink href="http://www.myspace.com/originalmunchi" type="myspace"/>
       <itemLink href="http://www.google.com/search?q=Munchi" type="google"/>
     </item>
     <item endTime="1312657200" id="baobinga" startTime="1312651800" title="Baobinga">
@@ -1140,27 +1359,33 @@ www.myspace.com/baobinga
 
 Tags: breakbeat, breaks, electronic, dubstep, electronica</itemDescription>
       <itemLink href="http://www.last.fm/music/Baobinga" type="lastfm"/>
+      <itemLink href="http://www.myspace.com/baobinga" type="myspace"/>
+      <itemLink href="http://www.discogs.com/artist/Baobinga" type="discogs"/>
       <itemLink href="http://www.google.com/search?q=Baobinga" type="google"/>
     </item>
   </line>
   <line id="radioderozepanters" title="Radio de Roze Panters">
     <item endTime="1312660800" id="featuring" startTime="1312624800" title="featuring: De Sheik, Gewoon Super, Der Pudel, Duo Penaughty, Jay Baron &amp; Maze, Nelis, Misjah, MC Pompheimer,">
-      <itemLink href="http://www.google.com/search?q=featuring:" type="google"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Featuring" type="wikipedia"/>
+      <itemLink href="http://www.google.com/search?q=featuring%3A" type="google"/>
     </item>
   </line>
   <line id="whatishappeninghere" title="What Is Happening Here">
     <item endTime="1312660800" id="featuring2" startTime="1312624800" title="featuring: Miaw, Kroons, Robert de Hiro, Saskia Rocks, Zupa, Frenky D, Jean D'Egbert,">
-      <itemLink href="http://www.google.com/search?q=featuring:" type="google"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Featuring" type="wikipedia"/>
+      <itemLink href="http://www.google.com/search?q=featuring%3A" type="google"/>
     </item>
   </line>
   <line id="dutchacidfamily" title="Dutch Acid Family">
     <item endTime="1312660800" id="featuring3" startTime="1312624800" title="featuring: Lady Lago, Mickey Louder, dj polo, mcManus, Mantra Flow, Dj Zen,">
-      <itemLink href="http://www.google.com/search?q=featuring:" type="google"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Featuring" type="wikipedia"/>
+      <itemLink href="http://www.google.com/search?q=featuring%3A" type="google"/>
     </item>
   </line>
   <line id="smirnoffcube" title="Smirnoff Cube">
     <item endTime="1312660800" id="featuring4" startTime="1312624800" title="featuring: Nachtbrakers, Guerilla Speakerz, Memphis Maniacs, Ralvero, Hitmeister D + guest, Taras van der Voorde, 3&#x2019;s A Crowd, MC Spyder,">
-      <itemLink href="http://www.google.com/search?q=featuring:" type="google"/>
+      <itemLink href="http://en.wikipedia.org/wiki/Featuring" type="wikipedia"/>
+      <itemLink href="http://www.google.com/search?q=featuring%3A" type="google"/>
     </item>
   </line>
 </schedule>

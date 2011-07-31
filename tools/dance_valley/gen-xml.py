@@ -21,6 +21,9 @@ class GiggityObject(object):
 		else:
 			return "%s%d" % (id, n)	
 
+	# On second thought, this one seems to work due to black magic.
+	# The set() above is instantiated only once and shared by all
+	# objects? Oh well..
 	def makeid(self, name):
 		id = re.sub("[^a-z0-9]+", "", name.lower())[:64]
 		n = 1
@@ -124,15 +127,17 @@ def fetch(url):
 		head, body = cont.split("\n\n", 1)
 		f_url, code = head.split("\n")[0:2]
 		if (f_url != url):
-			raise Exception("URL mismatch in cache")
+			raise Exception("URL mismatch in cache (%s %s)" % (hash, url))
 		if int(code) != 200:
 			return None
 	
 	else:
 		f = file(fn, "w")
 		f.write("%s\n" % (url,))
+		opener = urllib2.build_opener()
+		opener.addheaders = [('User-agent', 'Giggity/0.9')]
 		try:
-			u = urllib2.urlopen(url)
+			u = opener.open(url)
 		except urllib2.HTTPError, e:
 			f.write("%d\n\n" % (e.code,))
 			return None
@@ -151,17 +156,43 @@ def dehtml(html):
 	os.unlink(fn)
 	return text
 
+def googlelinks(item):
+	ret = []
+	httpname = urllib2.quote(item.name.encode("utf-8")).replace("%20", "+")
+	url = "http://www.google.com/search?num=20&q=%s" % httpname.encode("utf-8")
+	html = fetch(url)
+	
+	for link in re.findall(r'<a href="([^"]*)" class=l\b', html):
+		if link.startswith("http"):
+			ret.append(link.replace("&amp;", "&"))
+	
+	return ret
+
 def findlinks(item):
 	ret = []
 	
-	httpname = item.name.replace(" ", "+")
+	httpname = urllib2.quote(item.name.encode("utf-8")).replace("%20", "+")
 	url = "http://www.last.fm/music/" + httpname.encode("utf-8")
 	html = fetch(url)
 	if html:
 		ret.append(Link(url, "lastfm"))
 	
-	ret.append(Link("http://www.google.com/search?q=%s" % httpname, "google"))
+	misctypes = [("wikipedia", "^en\.wikipedia\.org/"),
+	             ("myspace", "^myspace\.com/"),
+	             ("discogs", "^discogs\.com/"),
+	             ]
 	
+	for type, regex in misctypes:
+		for link in googlelinks(item):
+			m = re.match("^https?://(www\.)?(.*)", link)
+			short = m.group(2)
+			if re.match(regex, short):
+				ret.append(Link(link, type))
+				break
+	
+	# And in case all the other links suck..
+	ret.append(Link("http://www.google.com/search?q=%s" % httpname, "google"))
+
 	return ret
 
 def finddesc(item):
@@ -230,5 +261,8 @@ for thtml in html.split("<strong>"):
 
 sched.linktypes.append(LinkType("google", "http://wilmer.gaa.st/deoxide/google.png"))
 sched.linktypes.append(LinkType("lastfm", "http://wilmer.gaa.st/deoxide/lastfm.png"))
+sched.linktypes.append(LinkType("wikipedia", "http://wilmer.gaa.st/deoxide/wikipedia.png"))
+sched.linktypes.append(LinkType("myspace", "http://wilmer.gaa.st/deoxide/myspace.png"))
+sched.linktypes.append(LinkType("discogs", "http://wilmer.gaa.st/deoxide/discogs.png"))
 
 file("dancevalley.xml", "w").write(tostring(sched.xml()))
