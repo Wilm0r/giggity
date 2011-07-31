@@ -145,11 +145,10 @@ def fetch(url):
 def dehtml(html):
 	fn = tempfile.mktemp(suffix=".html")
 	file(fn, "w").write(html)
-	w3m = subprocess.Popen(["/usr/bin/w3m", "-dump", fn], stdout=subprocess.PIPE)
+	w3m = subprocess.Popen(["/usr/bin/w3m", "-cols", "100000", "-dump", fn], stdout=subprocess.PIPE)
 	text = unicode(w3m.stdout.read(), "utf-8")
 	w3m.communicate()
 	os.unlink(fn)
-	text = re.sub("([^\n]) *\n *([a-zA-Z0-9])", "\\1 \\2", text)
 	return text
 
 def findlinks(item):
