@@ -9,6 +9,7 @@ import tempfile
 import time
 import urllib2
 
+from HTMLParser import HTMLParser
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 from xml.sax.saxutils import unescape
 
@@ -164,7 +165,7 @@ def googlelinks(item):
 	
 	for link in re.findall(r'<a href="([^"]*)" class=l\b', html):
 		if link.startswith("http"):
-			ret.append(link.replace("&amp;", "&"))
+			ret.append(HTMLParser.unescape.__func__(HTMLParser, link))
 	
 	return ret
 
@@ -177,16 +178,24 @@ def findlinks(item):
 	if html:
 		ret.append(Link(url, "lastfm"))
 	
-	misctypes = [("wikipedia", "^en\.wikipedia\.org/"),
-	             ("myspace", "^myspace\.com/"),
-	             ("discogs", "^discogs\.com/"),
+	def wpmusictest(url, m):
+		print item.name, url, m.group()
+		url = "http://en.wikipedia.org/w/index.php?title=%s&action=edit" % m.group(1)
+		html = fetch(url)
+		print "{{infobox musical artist" in html.lower()
+		return "{{infobox musical artist" in html.lower()
+	
+	misctypes = [("wikipedia", "^en\.wikipedia\.org/wiki/(.*)", wpmusictest),
+	             ("myspace", "^myspace\.com/", None),
+	             ("discogs", "^discogs\.com/", None),
 	             ]
 	
-	for type, regex in misctypes:
+	for type, regex, func in misctypes:
 		for link in googlelinks(item):
 			m = re.match("^https?://(www\.)?(.*)", link)
 			short = m.group(2)
-			if re.match(regex, short):
+			m = re.match(regex, short)
+			if m and (not func or func(link, m)):
 				ret.append(Link(link, type))
 				break
 	
