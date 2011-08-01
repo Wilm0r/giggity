@@ -45,6 +45,17 @@ public class StarsView extends LinearLayout implements OnTouchListener {
 		setOnTouchListener(this);
 	}
 	
+	@Override
+	protected void onLayout (boolean changed, int l, int t, int r, int b) {
+		int w, i;
+		w = r - l;
+		for (i = 0; i < numStars; i ++) {
+			stars[i].setAdjustViewBounds(true);
+			stars[i].setMaxWidth(w / numStars);
+		}
+		super.onLayout(changed, l, t, r, b);
+	}
+	
 	public void setNumStars(int numStars_) {
 		int i;
 		

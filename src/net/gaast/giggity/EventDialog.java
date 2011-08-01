@@ -110,7 +110,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			cb = new CheckBox(ctx);
 			cb.setText(R.string.remind_me);
 			cb.setChecked(item.getRemind());
-			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		} else {
 			/* Otherwise, stars to rate the event. Using my own StarsView because the stock one's too huge. */
 			sv = new StarsView(ctx);
@@ -118,18 +118,20 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			sv.setScore(item.getStars());
 			/* Bigger surface for easier touching. */
 			sv.setMinimumHeight(48);
-			bottomBox.addView(sv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.FILL_PARENT, 1));
+			bottomBox.addView(sv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		}
 		
 		/* Web buttons, on the right. */
 		LinkedList<Schedule.Item.Link> links = item.getLinks();
 		if (links != null) {
+			LinearLayout webButtons = new LinearLayout(ctx);
 			Iterator<Schedule.Item.Link> linki = links.listIterator();
 			while (linki.hasNext()) {
 				Schedule.Item.Link link = linki.next();
 				LinkButton btn = new LinkButton(ctx, link);
-				bottomBox.addView(btn);
+				webButtons.addView(btn);
 			}
+			bottomBox.addView(webButtons, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 		}
 
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
