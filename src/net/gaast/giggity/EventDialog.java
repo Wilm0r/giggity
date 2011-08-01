@@ -71,9 +71,9 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		String descs = "";
 		if (item.getSpeakers() != null) {
 			if (item.getSpeakers().size() > 1)
-				descs += "Speakers: ";
+				descs += ctx.getResources().getString(R.string.speakers) + " ";
 			else
-				descs += "Speaker: ";
+				descs += ctx.getResources().getString(R.string.speaker) + " ";
 			for (String i : item.getSpeakers())
 				descs += i + ", ";
 			descs = descs.replaceAll(", $", "\n\n");
@@ -108,7 +108,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		if (item.getStartTime().after(new Date())) {
 			/* Show "Remind me" only if the event is in the future. */
 			cb = new CheckBox(ctx);
-			cb.setText("Remind me");
+			cb.setText(R.string.remind_me);
 			cb.setChecked(item.getRemind());
 			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		} else {

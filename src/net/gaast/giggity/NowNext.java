@@ -64,9 +64,9 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 		}
 		
 		if (sched.getDay() == null) {
-			fullList.add("No events today.");
+			fullList.add(this.getResources().getString(R.string.no_events_today));
 		} else {
-			fullList.add("Now:");
+			fullList.add(this.getResources().getString(R.string.now));
 			
 			tenti = sched.getTents().iterator();
 			while (tenti.hasNext()) {
@@ -84,7 +84,7 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 				}
 			}
 			
-			fullList.add("\n\nNext:");
+			fullList.add("\n\n" + this.getResources().getString(R.string.next));
 			fullList.addAll(nextList);
 			setShowNow(false);
 		}

@@ -139,7 +139,7 @@ public class ScheduleViewActivity extends Activity {
         final ProgressDialog prog;
         
         prog = new ProgressDialog(this);
-        prog.setMessage("Loading schedule data...");
+        prog.setMessage(this.getResources().getString(R.string.loading_schedule));
         prog.setIndeterminate(true);
         prog.show();
 
@@ -155,7 +155,7 @@ public class ScheduleViewActivity extends Activity {
 		    		prog.dismiss();
 		    		
 		    		new AlertDialog.Builder(ScheduleViewActivity.this)
-						.setTitle("Load error")
+						.setTitle(R.string.loading_error)
 						.setMessage(msg.obj.toString())
 						.show()
 			    		.setOnDismissListener(new OnDismissListener() {
@@ -302,28 +302,28 @@ public class ScheduleViewActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
     	
-    	menu.add(Menu.NONE, 1, 7, "Settings")
+    	menu.add(Menu.NONE, 1, 7, R.string.settings)
     		.setShortcut('0', 's')
     		.setIcon(android.R.drawable.ic_menu_preferences);
-   		menu.add(Menu.NONE, 2, 5, "Change day")
+   		menu.add(Menu.NONE, 2, 5, R.string.change_day)
 			.setShortcut('1', 'd')
 			.setIcon(android.R.drawable.ic_menu_day);
-   		menu.add(Menu.NONE, 3, 2, "Timetable")
+   		menu.add(Menu.NONE, 3, 2, R.string.timetable)
 			.setShortcut('2', 't')
 			.setIcon(android.R.drawable.ic_menu_agenda);
-   		menu.add(Menu.NONE, 4, 3, "Tracks")
+   		menu.add(Menu.NONE, 4, 3, R.string.tracks)
    			.setShortcut('3', 'r')
    			.setIcon(R.drawable.tracks);
-   		menu.add(Menu.NONE, 5, 0, "Block schedule")
+   		menu.add(Menu.NONE, 5, 0, R.string.block_schedule)
 			.setShortcut('4', 'b')
 			.setIcon(R.drawable.blockschedule);
-   		menu.add(Menu.NONE, 6, 1, "Now and next")
+   		menu.add(Menu.NONE, 6, 1, R.string.now_next)
 			.setShortcut('5', 'n')
 			.setIcon(R.drawable.ic_menu_clock_face);
-   		menu.add(Menu.NONE, 7, 4, "My events")
+   		menu.add(Menu.NONE, 7, 4, R.string.my_events)
 		    .setShortcut('6', 'm')
 		    .setIcon(android.R.drawable.ic_menu_my_calendar);
-   		menu.add(Menu.NONE, 8, 6, "Search")
+   		menu.add(Menu.NONE, 8, 6, R.string.search)
    			.setShortcut('7', 'c')
    			.setIcon(android.R.drawable.ic_menu_search);
     	

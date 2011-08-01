@@ -37,15 +37,15 @@ public class MyItemsView extends ScheduleListView implements ScheduleViewer {
 			}
 		}
 		if (coming.size() > 0) {
-			fullList.add("Coming up:");
+			fullList.add(getResources().getString(R.string.coming_up));
 			fullList.addAll(coming);
 		}
 		if (seen.size() > 0) {
-			fullList.add((coming.size() > 0 ? "\n" : "") + "Seen so far:");
+			fullList.add((coming.size() > 0 ? "\n" : "") + this.getResources().getString(R.string.seen_so_far));
 			fullList.addAll(seen);
 		}
 		if (fullList.isEmpty())
-			fullList.add("No items marked yet.");
+			fullList.add(getResources().getString(R.string.none_marked));
 		setShowRemind(false);
 		setList(fullList);
 	}

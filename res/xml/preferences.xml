@@ -3,22 +3,36 @@
         xmlns:android="http://schemas.android.com/apk/res/android">
 	
 	<ListPreference android:key="default_view"
-	                android:title="Default view"
-	                android:dialogTitle="Default view"
-	                android:positiveButtonText="OK"
-	                android:negativeButtonText="Cancel"
+	                android:title="@string/default_view"
+	                android:dialogTitle="@string/default_view"
+	                android:positiveButtonText="@string/ok"
+	                android:negativeButtonText="@string/cancel"
 	                android:entries="@array/default_view"
 	                android:entryValues="@array/default_view_values" 
 	                android:defaultValue="1" />
 	
-	<CheckBoxPreference android:key="strict_ssl" android:summary="Do proper HTTPS certificate validation" android:title="Strict SSL" android:defaultValue="false"></CheckBoxPreference><PreferenceCategory android:title="Block schedule">
+	<CheckBoxPreference android:key="strict_ssl"
+                        android:summary="@string/strict_ssl_sub"
+                        android:title="@string/strict_ssl"
+                        android:defaultValue="false"></CheckBoxPreference>
 	
-		<ListPreference android:title="Style" android:key="block_schedule_style" android:defaultValue="Light" android:dialogTitle="Style" android:negativeButtonText="Cancel" android:positiveButtonText="OK" android:entries="@array/block_schedule_styles" android:entryValues="@array/block_schedule_styles"></ListPreference><ListPreference android:key="block_schedule_element_size"
-		                android:title="Block size"
-		                android:summary="Size of a block schedule block"
-		                android:dialogTitle="Block size"
-		                android:positiveButtonText="OK"
-		                android:negativeButtonText="Cancel"
+	    <PreferenceCategory android:title="@string/block_schedule">
+	
+		<ListPreference android:title="@string/block_schedule_style"
+		                android:key="block_schedule_style"
+		                android:defaultValue="Light"
+		                android:dialogTitle="@string/block_schedule_style"
+		                android:negativeButtonText="@string/cancel"
+		                android:positiveButtonText="@string/ok"
+		                android:entries="@array/block_schedule_styles"
+		                android:entryValues="@array/block_schedule_styles"></ListPreference>
+
+        <ListPreference android:key="block_schedule_element_size"
+		                android:title="@string/block_schedule_element_size"
+		                android:summary="@string/block_schedule_element_size_sub"
+		                android:dialogTitle="@string/block_schedule_element_size"
+		                android:positiveButtonText="@string/ok"
+		                android:negativeButtonText="@string/ok"
 		                android:entries="@array/block_schedule_element_sizes"
 		                android:entryValues="@array/block_schedule_element_sizes_values"
 		                android:defaultValue="72" />
@@ -33,16 +47,16 @@
 
 
 
-<PreferenceCategory android:title="Event reminders">
+<PreferenceCategory android:title="@string/reminder">
 
 <CheckBoxPreference android:key="reminder_enabled" 
-                    android:summary="Remind me of marked events" 
-                    android:title="Enable reminders" android:defaultValue="true">
+                    android:summary="@string/reminder_enabled_sub" 
+                    android:title="@string/reminder_enabled" android:defaultValue="true">
 </CheckBoxPreference>
 
 <ListPreference android:key="reminder_period"
                 android:dependency="reminder_enabled" 
-                android:title="Minutes before event" 
+                android:title="@string/reminder_period" 
                 android:defaultValue="5" 
                 android:entries="@array/reminder_periods" 
                 android:entryValues="@array/reminder_periods">

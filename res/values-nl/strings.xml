@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Giggity</string>
+    <string name="search_hint">Programma doorzoeken</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Annuleren</string>
+    
+    <!--  Settings -->
+    <string name="default_view">Standaard weergave</string>
+    <string name="strict_ssl">Strikte SSL</string>
+    <string name="strict_ssl_sub">SSL certificaten van HTTPS servers controleren</string>
+    
+	<string name="block_schedule_style">Stijl</string>
+	<string name="block_schedule">Blokenschema</string>
+	<string name="block_schedule_element_size_sub">Blok- en lettergrootte</string>
+	<string name="block_schedule_element_size">Blokgrootte</string>
+
+	<string name="reminder">Herinneringen</string>
+	<string name="reminder_enabled">Inschakelen</string>
+	<string name="reminder_enabled_sub">Waarschuw als een gemarkeerd item begint</string>
+	<string name="reminder_period">Minuten voor aanvang</string>
+	
+	<!-- EventDialog -->
+	<string name="speaker">Spreker:</string>
+	<string name="speakers">Sprekers:</string>
+	<string name="remind_me">Onthouden</string>
+	
+	<!-- ScheduleViewActivity -->
+	<string name="loading_schedule">Programma laden...</string>
+	<string name="loading_error">Laadfout</string>
+	<!-- Menu -->
+	<string name="settings">Instellingen</string>
+	<string name="change_day">Andere dag</string>
+	<string name="timetable">Timetable</string>
+	<string name="tracks">Tracks</string>
+	<string name="now_next">Nu en straks</string>
+	<string name="my_events">Mijn items</string>
+	<string name="search">Zoeken</string>
+	
+	<!-- NowNext -->
+	<string name="no_events_today">Niks op het programma vandaag.</string>
+	<string name="now">Nu:</string>
+	<string name="next">Straks:</string>
+	
+	<!-- MyItemsView -->
+	<string name="coming_up">Nog te gaan:</string>
+	<string name="seen_so_far">Voorbij:</string>
+	<string name="none_marked">Nog niks gemarkeerd.</string>
+	
+	<!-- ChooserActivity -->
+	<string name="scan_qr">QR code scannen...</string>
+</resources>

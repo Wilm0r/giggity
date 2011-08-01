@@ -189,7 +189,7 @@ public class ChooserActivity extends Activity {
     		listc.add(scheds.get(i).getTitle());
     	}
     	/* TODO: Figure out how to detect if Barcode Scanner is installed here. */
-    	listc.add("Scan QR code...");
+    	listc.add(getResources().getString(R.string.scan_qr));
     	
     	list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listc));
     }

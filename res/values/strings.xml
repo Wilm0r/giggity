@@ -2,4 +2,52 @@
 <resources>
     <string name="app_name">Giggity</string>
     <string name="search_hint">Search events</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    
+    <!--  Settings -->
+    <string name="default_view">Default view</string>
+    <string name="strict_ssl">Strict SSL</string>
+    <string name="strict_ssl_sub">Do proper HTTPS certificate validation</string>
+    
+	<string name="block_schedule_style">Style</string>
+	<string name="block_schedule">Block schedule</string>
+	<string name="block_schedule_element_size_sub">Size of a block schedule block</string>
+	<string name="block_schedule_element_size">Block size</string>
+
+	<string name="reminder">Event reminders</string>
+	<string name="reminder_enabled_sub">Remind me of marked events</string>
+	<string name="reminder_enabled">Enable reminders</string>
+	<string name="reminder_period">Minutes before event</string>
+	
+	<!-- EventDialog -->
+	<string name="speaker">Speaker:</string>
+	<string name="speakers">Speakers:</string>
+	<string name="remind_me">Remind me</string>
+	
+	<!-- ScheduleViewActivity -->
+	<string name="loading_schedule">Loading schedule data...</string>
+	<string name="loading_error">Load error</string>
+	<!-- Menu -->
+	<string name="settings">Settings</string>
+	<string name="change_day">Change day</string>
+	<string name="timetable">Timetable</string>
+	<string name="tracks">Tracks</string>
+	<string name="now_next">Now and next</string>
+	<string name="my_events">My events</string>
+	<string name="search">Search</string>
+	
+	<!-- NowNext -->
+	<string name="no_events_today">No events today.</string>
+	<string name="now">Now:</string>
+	<string name="next">Next:</string>
+	
+	<!-- MyItemsView -->
+	<string name="coming_up">Coming up:</string>
+	<string name="seen_so_far">Seen so far:</string>
+	<string name="none_marked">No items marked yet.</string>
+	
+	<!-- ChooserActivity -->
+	<string name="scan_qr">Scan QR code...</string>
 </resources>
