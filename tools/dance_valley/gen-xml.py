@@ -182,7 +182,6 @@ def findlinks(item):
 		print item.name, url, m.group()
 		url = "http://en.wikipedia.org/w/index.php?title=%s&action=edit" % m.group(1)
 		html = fetch(url)
-		print "{{infobox musical artist" in html.lower()
 		return "{{infobox musical artist" in html.lower()
 	
 	misctypes = [("wikipedia", "^en\.wikipedia\.org/wiki/(.*)", wpmusictest),
