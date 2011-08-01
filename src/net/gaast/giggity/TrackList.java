@@ -26,6 +26,9 @@ public class TrackList extends ListView implements ScheduleViewer {
 		ctx = context;
 		sched = sched_;
 		
+		if (sched.getTracks() == null)
+			return;
+		
 		tracks = new TrackAdapter(sched.getTracks());
 		setAdapter(tracks);
 		
