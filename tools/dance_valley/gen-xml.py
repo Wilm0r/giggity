@@ -186,6 +186,7 @@ def findlinks(item):
 	
 	misctypes = [("wikipedia", "^en\.wikipedia\.org/wiki/(.*)", wpmusictest),
 	             ("myspace", "^myspace\.com/", None),
+	             ("soundcloud", "^soundcloud\.com/", None),
 	             ("discogs", "^discogs\.com/", None),
 	             ]
 	
@@ -271,6 +272,7 @@ sched.linktypes.append(LinkType("google", "http://wilmer.gaa.st/deoxide/google.p
 sched.linktypes.append(LinkType("lastfm", "http://wilmer.gaa.st/deoxide/lastfm.png"))
 sched.linktypes.append(LinkType("wikipedia", "http://wilmer.gaa.st/deoxide/wikipedia.png"))
 sched.linktypes.append(LinkType("myspace", "http://wilmer.gaa.st/deoxide/myspace.png"))
+sched.linktypes.append(LinkType("soundcloud", "http://wilmer.gaa.st/deoxide/soundcloud.png"))
 sched.linktypes.append(LinkType("discogs", "http://wilmer.gaa.st/deoxide/discogs.png"))
 
 file("dancevalley.xml", "w").write(tostring(sched.xml()))
