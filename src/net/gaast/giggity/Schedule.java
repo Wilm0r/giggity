@@ -194,6 +194,13 @@ public class Schedule {
 		
 		return ret;
 	}
+	
+	/* If true, this schedule defines link types so icons should suffice.
+	 * If false, we have no types and should show full URLs.
+	 */
+	public boolean hasLinkTypes() {
+		return linkTypes.size() > 1;
+	}
 
 	public void loadSchedule(String source, boolean online) {
 		id = null;

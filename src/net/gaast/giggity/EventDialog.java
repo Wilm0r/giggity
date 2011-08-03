@@ -20,7 +20,6 @@
 package net.gaast.giggity;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.app.Dialog;
@@ -30,10 +29,12 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -98,7 +99,21 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		TextView desc = new TextView(ctx);
 		desc.setText(descs);
 		ScrollView descscr = new ScrollView(ctx);
-		descscr.addView(desc);
+		if (!item.getSchedule().hasLinkTypes() && item.getLinks() != null) {
+			LinearLayout descLinks = new LinearLayout(ctx);
+			descLinks.setOrientation(LinearLayout.VERTICAL);
+			descLinks.addView(desc);
+			
+			for (Schedule.Item.Link link : item.getLinks()) {
+				LinkButton btn = new LinkButton(ctx, link);
+				btn.showUrl(true);
+				descLinks.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+			}
+			descscr.addView(descLinks);
+			desc.setPadding(0, 0, 0, 32);
+		} else
+			descscr.addView(desc);
+		
 		content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 
 		/* Bottom box is some stuff next to each other: Remind checkbox/stars, web buttons. */
@@ -121,37 +136,54 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			bottomBox.addView(sv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		}
 		
-		/* Web buttons, on the right. */
-		LinkedList<Schedule.Item.Link> links = item.getLinks();
-		if (links != null) {
-			LinearLayout webButtons = new LinearLayout(ctx);
-			Iterator<Schedule.Item.Link> linki = links.listIterator();
-			while (linki.hasNext()) {
-				Schedule.Item.Link link = linki.next();
-				LinkButton btn = new LinkButton(ctx, link);
-				webButtons.addView(btn);
+		/* Web buttons on the right, if we have types. */
+		if (item.getSchedule().hasLinkTypes()) {
+			LinkedList<Schedule.Item.Link> links = item.getLinks();
+			if (links != null) {
+				LinearLayout webButtons = new LinearLayout(ctx);
+				for (Schedule.Item.Link link : links) {
+					LinkButton btn = new LinkButton(ctx, link);
+					webButtons.addView(btn);
+				}
+				bottomBox.addView(webButtons, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 			}
-			bottomBox.addView(webButtons, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 		}
 
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
 		
 		if (big) {
 			title.setPadding(8, 8, 8, 6);
-			desc.setPadding(8, 6, 8, 8);
+			descscr.setPadding(8, 6, 8, 8);
 		}
 		
 		return content;
 	}
 	
-	private class LinkButton extends ImageButton implements ImageButton.OnClickListener {
+	private class LinkButton extends FrameLayout implements ImageButton.OnClickListener {
 		Schedule.Item.Link link;
 		
 		public LinkButton(Context ctx, Schedule.Item.Link link_) {
 			super(ctx);
 			link = link_;
-			setImageDrawable(link.getType().getIcon());
-			setOnClickListener(this);
+			showUrl(false);
+		}
+		
+		public void showUrl(boolean show) {
+			this.removeAllViews();
+			if (show) {
+				TextView url = new TextView(ctx);
+				url.setText("• " + link.getUrl());
+				url.setEllipsize(TextUtils.TruncateAt.END);
+				url.setOnClickListener(this);
+				url.setSingleLine();
+				url.setPadding(0, 2, 0, 2);
+				addView(url);
+			} else {
+				ImageButton btn = new ImageButton(ctx);
+				btn.setImageDrawable(link.getType().getIcon());
+				btn.setOnClickListener(this);
+				addView(btn);
+			}
 		}
 		
 		@Override
