@@ -34,7 +34,7 @@ import android.util.Log;
 
 public class Db {
 	private Helper dbh;
-	private static final int dbVersion = 6;
+	private static final int dbVersion = 7;
 	
 	public Db(Application app_) {
 		dbh = new Helper(app_, "giggity", null, dbVersion);
@@ -88,6 +88,7 @@ public class Db {
 				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11"},
 				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon"},
 				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011"},
+				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011"},
 			};
 			long ts = new Date().getTime() / 1000;
 			for (String[] i: seed) {
