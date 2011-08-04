@@ -225,6 +225,15 @@ public class ScheduleViewActivity extends Activity {
     	timer.removeCallbacks(refresher);
     }
     
+    @Override
+    protected void onStop() {
+    	/* TODO: Remove the event dialog *here*. It's a bit annoying that it disappears even 
+    	 * when you just open a browser link, but I'm too worried about introducing bugs if
+    	 * I reshuffle this stuff more (the database code is very fragile). And hardly anyone
+    	 * seems to be using Giggity on a tablet anyway.. */
+    	super.onStop();
+    }
+    
     private void onScheduleLoaded() {
     	if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1) {
     		sched.setDay(sched.getDb().getDay());
