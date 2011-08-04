@@ -18,7 +18,8 @@
 
 	<string name="reminder">Herinneringen</string>
 	<string name="reminder_enabled">Inschakelen</string>
-	<string name="reminder_enabled_sub">Waarschuw als een gemarkeerd item begint</string>
+	<string name="reminder_enabled_sub_on">Waarschuw als een gemarkeerd item begint</string>
+	<string name="reminder_enabled_sub_off">Geen waarschuwing als een gemarkeerd item begint</string>
 	<string name="reminder_period">Minuten voor aanvang</string>
 	
 	<!-- EventDialog -->
@@ -27,7 +28,7 @@
 	<string name="remind_me">Onthouden</string>
 	
 	<!-- ScheduleViewActivity -->
-	<string name="loading_schedule">Programma laden...</string>
+	<string name="loading_schedule">Laden...</string>
 	<string name="loading_error">Laadfout</string>
 	<!-- Menu -->
 	<string name="settings">Instellingen</string>
@@ -50,4 +51,7 @@
 	
 	<!-- ChooserActivity -->
 	<string name="scan_qr">QR code scannen...</string>
+	<string name="refresh">Verversen</string>
+	<string name="remove">Verwijderen</string>
+	<string name="show_url">URL weergeven...</string>
 </resources>

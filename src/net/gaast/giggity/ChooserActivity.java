@@ -28,6 +28,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -99,9 +100,9 @@ public class ChooserActivity extends Activity {
 				if (mi.position == scheds.size())
 					return; /* "Scan QR code..." */
 				menu.setHeaderTitle(scheds.get((int)mi.position).getTitle());
-				menu.add("Refresh");
-				menu.add("Remove");
-				menu.add("Show URL...");
+				menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
+				menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
+				menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
 			}
     	});
     	
@@ -149,13 +150,14 @@ public class ChooserActivity extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo mi = (AdapterContextMenuInfo) item.getMenuInfo();
         Giggity app = (Giggity) getApplication();
+        Log.d("menu", ""+ item.getOrder());
         if (mi.id == scheds.size()) {
         	/* QR code item */
-        } else if (item.getTitle().equals("Refresh")) {
+        } else if (item.getItemId() == 0) {
 			app.flushSchedule(scheds.get((int)mi.id).getUrl());
 			/* Is this a hack? */
 			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
-		} else if (item.getTitle().equals("Remove")) {
+		} else if (item.getItemId() == 1) {
 			db.removeSchedule(scheds.get((int)mi.id).getUrl());
 			onResume();
 		} else {

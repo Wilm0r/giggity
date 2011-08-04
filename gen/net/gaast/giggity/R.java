@@ -36,55 +36,59 @@ public final class R {
         public static final int block_schedule_element_size_sub=0x7f050009;
         public static final int block_schedule_style=0x7f050007;
         public static final int cancel=0x7f050003;
-        public static final int change_day=0x7f050015;
+        public static final int change_day=0x7f050016;
         /**  MyItemsView 
  MyItemsView 
          */
-        public static final int coming_up=0x7f05001e;
+        public static final int coming_up=0x7f05001f;
         /**   Settings 
   Settings 
          */
         public static final int default_view=0x7f050004;
-        public static final int loading_error=0x7f050013;
+        public static final int loading_error=0x7f050014;
         /**  ScheduleViewActivity 
  ScheduleViewActivity 
          */
-        public static final int loading_schedule=0x7f050012;
-        public static final int my_events=0x7f050019;
-        public static final int next=0x7f05001d;
+        public static final int loading_schedule=0x7f050013;
+        public static final int my_events=0x7f05001a;
+        public static final int next=0x7f05001e;
         /**  NowNext 
  NowNext 
          */
-        public static final int no_events_today=0x7f05001b;
-        public static final int none_marked=0x7f050020;
-        public static final int now=0x7f05001c;
-        public static final int now_next=0x7f050018;
+        public static final int no_events_today=0x7f05001c;
+        public static final int none_marked=0x7f050021;
+        public static final int now=0x7f05001d;
+        public static final int now_next=0x7f050019;
         public static final int ok=0x7f050002;
-        public static final int remind_me=0x7f050011;
+        public static final int refresh=0x7f050023;
+        public static final int remind_me=0x7f050012;
         public static final int reminder=0x7f05000b;
-        public static final int reminder_enabled=0x7f05000d;
-        public static final int reminder_enabled_sub=0x7f05000c;
-        public static final int reminder_period=0x7f05000e;
+        public static final int reminder_enabled=0x7f05000e;
+        public static final int reminder_enabled_sub_off=0x7f05000d;
+        public static final int reminder_enabled_sub_on=0x7f05000c;
+        public static final int reminder_period=0x7f05000f;
+        public static final int remove=0x7f050024;
         /**  ChooserActivity 
  ChooserActivity 
          */
-        public static final int scan_qr=0x7f050021;
-        public static final int search=0x7f05001a;
+        public static final int scan_qr=0x7f050022;
+        public static final int search=0x7f05001b;
         public static final int search_hint=0x7f050001;
-        public static final int seen_so_far=0x7f05001f;
+        public static final int seen_so_far=0x7f050020;
         /**  Menu 
  Menu 
          */
-        public static final int settings=0x7f050014;
+        public static final int settings=0x7f050015;
+        public static final int show_url=0x7f050025;
         /**  EventDialog 
  EventDialog 
          */
-        public static final int speaker=0x7f05000f;
-        public static final int speakers=0x7f050010;
+        public static final int speaker=0x7f050010;
+        public static final int speakers=0x7f050011;
         public static final int strict_ssl=0x7f050005;
         public static final int strict_ssl_sub=0x7f050006;
-        public static final int timetable=0x7f050016;
-        public static final int tracks=0x7f050017;
+        public static final int timetable=0x7f050017;
+        public static final int tracks=0x7f050018;
     }
     public static final class xml {
         public static final int preferences=0x7f030000;

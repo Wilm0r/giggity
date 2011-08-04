@@ -50,8 +50,7 @@
 <PreferenceCategory android:title="@string/reminder">
 
 <CheckBoxPreference android:key="reminder_enabled" 
-                    android:summary="@string/reminder_enabled_sub" 
-                    android:title="@string/reminder_enabled" android:defaultValue="true">
+                    android:title="@string/reminder_enabled" android:defaultValue="true" android:summaryOff="@string/reminder_enabled_sub_off" android:summaryOn="@string/reminder_enabled_sub_on">
 </CheckBoxPreference>
 
 <ListPreference android:key="reminder_period"

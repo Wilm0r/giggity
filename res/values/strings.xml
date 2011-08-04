@@ -9,7 +9,7 @@
     <!--  Settings -->
     <string name="default_view">Default view</string>
     <string name="strict_ssl">Strict SSL</string>
-    <string name="strict_ssl_sub">Do proper HTTPS certificate validation</string>
+    <string name="strict_ssl_sub">Proper HTTPS certificate validation</string>
     
 	<string name="block_schedule_style">Style</string>
 	<string name="block_schedule">Block schedule</string>
@@ -17,7 +17,8 @@
 	<string name="block_schedule_element_size">Block size</string>
 
 	<string name="reminder">Event reminders</string>
-	<string name="reminder_enabled_sub">Remind me of marked events</string>
+	<string name="reminder_enabled_sub_on">Remind me of marked events</string>
+	<string name="reminder_enabled_sub_off">Don\'t remind me of marked events</string>
 	<string name="reminder_enabled">Enable reminders</string>
 	<string name="reminder_period">Minutes before event</string>
 	
@@ -50,4 +51,7 @@
 	
 	<!-- ChooserActivity -->
 	<string name="scan_qr">Scan QR code...</string>
+	<string name="refresh">Refresh</string>
+	<string name="remove">Remove</string>
+	<string name="show_url">Show URL...</string>
 </resources>
