@@ -471,8 +471,8 @@ public class Schedule {
 		return (AbstractList<Item>) ret;
 	}
 	
-	/* Some "proprietary" file format I started with. Should 
-	 * probably remove it in favour of xcal and Pentabarf. */
+	/* Some "proprietary" file format I started with. Actually the most suitable when I
+	 * generate my own schedules so I'll definitely *not* deprecate it. */
 	private class DeoxParser implements ContentHandler {
 		private Schedule.Line curTent;
 		private Schedule.Item curItem;
@@ -736,7 +736,7 @@ public class Schedule {
 				try {
 					curDay = df.parse(atts.getValue("date"));
 				} catch (ParseException e) {
-					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
+					Log.w("Schedule.loadPentabarf", "Can't parse date: " + e);
 					return;
 				}
 			} else if (localName == "room") {
@@ -811,6 +811,11 @@ public class Schedule {
 				item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				
 				desc = "";
+				if ((s = propMap.get("subtitle")) != null) {
+					s.replaceAll("\n*$", "");
+					if (s != "")
+						desc += "― " + s + "\n\n";
+				}
 				if ((s = propMap.get("abstract")) != null) {
 					s.replaceAll("\n*$", "");
 					desc += s + "\n\n";
