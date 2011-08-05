@@ -19,6 +19,8 @@
 
 package net.gaast.giggity;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -28,13 +30,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class Db {
 	private Helper dbh;
-	private static final int dbVersion = 7;
+	private static final int dbVersion = 8;
 	
 	public Db(Application app_) {
 		dbh = new Helper(app_, "giggity", null, dbVersion);
@@ -58,6 +61,8 @@ public class Db {
 					                          "sch_title VarChar(128), " +
 					                          "sch_url VarChar(256), " +
 					                          "sch_atime Integer, " +
+					                          "sch_start Integer, " +
+					                          "sch_end Integer, " +
 					                          "sch_id_s VarChar(128)," +
 					                          "sch_day Integer)");
 			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
@@ -75,24 +80,43 @@ public class Db {
 			Log.i("DeoxideDb", "Upgrading from database version " + oldVersion + " to " + newVersion);
 			while (v < newVersion) {
 				v++;
-				/* Nothing to do for now. */
+				if (v == 8) {
+					/* Version 8 adds start/end time columns to the db. */
+					try {
+						db.execSQL("Alter Table schedule Add Column sch_start Integer");
+						db.execSQL("Alter Table schedule Add Column sch_end Integer");
+					} catch (SQLiteException e) {
+						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+						e.printStackTrace();
+					}
+				}
 			}
 			upgradeData(db, oldVersion, newVersion);
 		}
 		
 		/* For ease of use, seed the main menu with some known schedules. */
 		public void upgradeData(SQLiteDatabase db, int oldVersion, int newVersion) {
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			final String[][] seed = {
-				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011"},
-				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12"},
-				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11"},
-				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon"},
-				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011"},
-				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011"},
+				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011",                    "2011-02-05", "2011-02-06"},
+				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12", "2011-06-29", "2011-07-02"},
+				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11",   "2011-07-24", "2011-07-30"},
+				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon",              "2011-08-20", "2011-08-21"},
+				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011", "2011-08-06", "2011-08-06"},
+				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011",
+				                                                                               "2011-08-09", "2011-08-14"},
+				{"8", "http://localhost/", "bla", "2011-08-08", "2011-08-08" },
 			};
 			long ts = new Date().getTime() / 1000;
 			for (String[] i: seed) {
 				int v = Integer.parseInt(i[0]);
+				long start, end;
+				try {
+					start = df.parse(i[3]).getTime() / 1000 + 43200;
+					end = df.parse(i[4]).getTime() / 1000 + 43200;
+				} catch (ParseException e) {
+					start = end = ts;
+				}
 				Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{i[1]});
 				if (v > oldVersion && v <= newVersion && q.getCount() == 0) {
 					ContentValues row = new ContentValues();
@@ -100,7 +124,16 @@ public class Db {
 					row.put("sch_url", i[1]);
 					row.put("sch_title", i[2]);
 					row.put("sch_atime", ts++);
+					row.put("sch_start", start);
+					row.put("sch_end", end);
 					db.insert("schedule", null, row);
+				} else if(oldVersion < 8 && q.getCount() == 1) {
+					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
+					ContentValues row = new ContentValues();
+					q.moveToNext();
+					row.put("sch_start", start);
+					row.put("sch_end", end);
+					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
 				}
 			}
 		}

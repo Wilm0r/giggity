@@ -9,14 +9,14 @@ package net.gaast.giggity;
 
 public final class R {
     public static final class array {
-        public static final int block_schedule_element_sizes=0x7f040000;
-        public static final int block_schedule_element_sizes_values=0x7f040001;
-        public static final int block_schedule_styles=0x7f040002;
-        public static final int default_view=0x7f040003;
+        public static final int block_schedule_element_sizes=0x7f050000;
+        public static final int block_schedule_element_sizes_values=0x7f050001;
+        public static final int block_schedule_styles=0x7f050002;
+        public static final int default_view=0x7f050003;
         /**  Eww, ordering a bit odd since tracks was added later. 
          */
-        public static final int default_view_values=0x7f040004;
-        public static final int reminder_periods=0x7f040005;
+        public static final int default_view_values=0x7f050004;
+        public static final int reminder_periods=0x7f050005;
     }
     public static final class attr {
     }
@@ -29,69 +29,78 @@ public final class R {
         public static final int star_yellow=0x7f020005;
         public static final int tracks=0x7f020006;
     }
+    public static final class id {
+        public static final int TextView01=0x7f070000;
+        public static final int TextView02=0x7f070001;
+        public static final int TextView03=0x7f070003;
+        public static final int TextView04=0x7f070002;
+    }
+    public static final class layout {
+        public static final int test=0x7f030000;
+    }
     public static final class string {
-        public static final int app_name=0x7f050000;
-        public static final int block_schedule=0x7f050008;
-        public static final int block_schedule_element_size=0x7f05000a;
-        public static final int block_schedule_element_size_sub=0x7f050009;
-        public static final int block_schedule_style=0x7f050007;
-        public static final int cancel=0x7f050003;
-        public static final int change_day=0x7f050016;
+        public static final int app_name=0x7f060000;
+        public static final int block_schedule=0x7f060008;
+        public static final int block_schedule_element_size=0x7f06000a;
+        public static final int block_schedule_element_size_sub=0x7f060009;
+        public static final int block_schedule_style=0x7f060007;
+        public static final int cancel=0x7f060003;
+        public static final int change_day=0x7f060016;
         /**  MyItemsView 
  MyItemsView 
          */
-        public static final int coming_up=0x7f05001f;
+        public static final int coming_up=0x7f06001f;
         /**   Settings 
   Settings 
          */
-        public static final int default_view=0x7f050004;
-        public static final int loading_error=0x7f050014;
+        public static final int default_view=0x7f060004;
+        public static final int loading_error=0x7f060014;
         /**  ScheduleViewActivity 
  ScheduleViewActivity 
          */
-        public static final int loading_schedule=0x7f050013;
-        public static final int my_events=0x7f05001a;
-        public static final int next=0x7f05001e;
+        public static final int loading_schedule=0x7f060013;
+        public static final int my_events=0x7f06001a;
+        public static final int next=0x7f06001e;
         /**  NowNext 
  NowNext 
          */
-        public static final int no_events_today=0x7f05001c;
-        public static final int none_marked=0x7f050021;
-        public static final int now=0x7f05001d;
-        public static final int now_next=0x7f050019;
-        public static final int ok=0x7f050002;
-        public static final int refresh=0x7f050023;
-        public static final int remind_me=0x7f050012;
-        public static final int reminder=0x7f05000b;
-        public static final int reminder_enabled=0x7f05000e;
-        public static final int reminder_enabled_sub_off=0x7f05000d;
-        public static final int reminder_enabled_sub_on=0x7f05000c;
-        public static final int reminder_period=0x7f05000f;
-        public static final int remove=0x7f050024;
+        public static final int no_events_today=0x7f06001c;
+        public static final int none_marked=0x7f060021;
+        public static final int now=0x7f06001d;
+        public static final int now_next=0x7f060019;
+        public static final int ok=0x7f060002;
+        public static final int refresh=0x7f060023;
+        public static final int remind_me=0x7f060012;
+        public static final int reminder=0x7f06000b;
+        public static final int reminder_enabled=0x7f06000e;
+        public static final int reminder_enabled_sub_off=0x7f06000d;
+        public static final int reminder_enabled_sub_on=0x7f06000c;
+        public static final int reminder_period=0x7f06000f;
+        public static final int remove=0x7f060024;
         /**  ChooserActivity 
  ChooserActivity 
          */
-        public static final int scan_qr=0x7f050022;
-        public static final int search=0x7f05001b;
-        public static final int search_hint=0x7f050001;
-        public static final int seen_so_far=0x7f050020;
+        public static final int scan_qr=0x7f060022;
+        public static final int search=0x7f06001b;
+        public static final int search_hint=0x7f060001;
+        public static final int seen_so_far=0x7f060020;
         /**  Menu 
  Menu 
          */
-        public static final int settings=0x7f050015;
-        public static final int show_url=0x7f050025;
+        public static final int settings=0x7f060015;
+        public static final int show_url=0x7f060025;
         /**  EventDialog 
  EventDialog 
          */
-        public static final int speaker=0x7f050010;
-        public static final int speakers=0x7f050011;
-        public static final int strict_ssl=0x7f050005;
-        public static final int strict_ssl_sub=0x7f050006;
-        public static final int timetable=0x7f050017;
-        public static final int tracks=0x7f050018;
+        public static final int speaker=0x7f060010;
+        public static final int speakers=0x7f060011;
+        public static final int strict_ssl=0x7f060005;
+        public static final int strict_ssl_sub=0x7f060006;
+        public static final int timetable=0x7f060017;
+        public static final int tracks=0x7f060018;
     }
     public static final class xml {
-        public static final int preferences=0x7f030000;
-        public static final int searchable=0x7f030001;
+        public static final int preferences=0x7f040000;
+        public static final int searchable=0x7f040001;
     }
 }
