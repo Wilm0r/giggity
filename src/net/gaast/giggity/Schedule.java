@@ -159,6 +159,7 @@ public class Schedule {
 		curDayEnd = dayEnd.getTime();
 	}
 	
+	/** Get earliest item.startTime */
 	public Date getFirstTime() {
 		if (curDay == null)
 			return firstTime;
@@ -177,6 +178,7 @@ public class Schedule {
 		return ret;
 	}
 	
+	/** Get highest item.endTime */
 	public Date getLastTime() {
 		if (curDay == null)
 			return lastTime;

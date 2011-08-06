@@ -105,7 +105,6 @@ public class Db {
 				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011", "2011-08-06", "2011-08-06"},
 				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011",
 				                                                                               "2011-08-09", "2011-08-14"},
-				{"8", "http://localhost/", "bla", "2011-08-08", "2011-08-08" },
 			};
 			long ts = new Date().getTime() / 1000;
 			for (String[] i: seed) {
@@ -184,6 +183,8 @@ public class Db {
 			row.put("sch_title", sched.getTitle());
 			row.put("sch_url", url);
 			row.put("sch_atime", new Date().getTime() / 1000);
+			row.put("sch_start", sched.getFirstTime().getTime() / 1000);
+			row.put("sch_end", sched.getLastTime().getTime() / 1000);
 			
 			q = db.rawQuery("Select sch_id, sch_day From schedule Where sch_id_s = ?",
 					        new String[]{sched.getId()});
