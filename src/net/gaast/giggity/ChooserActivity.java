@@ -19,12 +19,10 @@
 
 package net.gaast.giggity;
 
-import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 
 import net.gaast.giggity.Db.DbSchedule;
 import android.app.Activity;
@@ -33,7 +31,9 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -57,10 +57,12 @@ import android.widget.TextView;
 
 public class ChooserActivity extends Activity {
 	private ArrayList<Db.DbSchedule> scheds;
-	ListView list;
 	EditText urlBox;
 	Db.Connection db;
-	
+
+	ListView list;
+	ScheduleAdapter lista;
+
 	final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
 	final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
 	
@@ -130,6 +132,21 @@ public class ChooserActivity extends Activity {
 				}
 			}
     	});
+    	urlBox.addTextChangedListener(new TextWatcher() {
+			@Override
+			public void afterTextChanged(Editable arg0) {
+				setButtons();
+			}
+
+			@Override
+			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			}
+
+			@Override
+			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+			}
+    		
+    	});
     	bottom.addView(urlBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
     	
     	addButton = new ImageButton(this);
@@ -161,8 +178,20 @@ public class ChooserActivity extends Activity {
     	});
     	bottom.addView(qrButton);
     	
+    	setButtons();
     	cont.addView(bottom);
     	setContentView(cont);
+    }
+    
+    private void setButtons() {
+		String url = urlBox.getText().toString();
+		boolean gotUrl = false;
+		if (url.length() > 7)
+			gotUrl = true;
+		else if (!"http://".startsWith(url))
+			gotUrl = true;
+		addButton.setVisibility(gotUrl ? View.VISIBLE : View.GONE);
+		qrButton.setVisibility(gotUrl ? View.GONE : View.VISIBLE);
     }
     
     @Override
@@ -203,17 +232,8 @@ public class ChooserActivity extends Activity {
     	
     	db.resume();
     	scheds = db.getScheduleList();
-    	LinkedList<String> listc = new LinkedList<String>();
-    	
-    	int i;
-    	for (i = 0; i < scheds.size(); i ++) {
-    		listc.add(scheds.get(i).getTitle());
-    	}
-    	/* TODO: Figure out how to detect if Barcode Scanner is installed here. */
-    	listc.add(getResources().getString(R.string.scan_qr));
-    	
-    	//list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, listc));
-    	list.setAdapter(new ScheduleAdapter(scheds));
+    	lista = new ScheduleAdapter(scheds);
+    	list.setAdapter(lista);
     }
     
     @Override
@@ -223,7 +243,10 @@ public class ChooserActivity extends Activity {
     }
     
     private void openNewUrl() {
-    	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlBox.getText().toString()),
+    	String url = urlBox.getText().toString();
+    	if (!url.contains("://"))
+    		url = "http://" + url;
+    	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
                                    this, ScheduleViewActivity.class);
     	startActivity(intent);
     }
@@ -233,7 +256,7 @@ public class ChooserActivity extends Activity {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 urlBox.setText(intent.getStringExtra("SCAN_RESULT"));
-                urlBox.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+                openNewUrl();
             }
         }
     }
@@ -257,15 +280,15 @@ public class ChooserActivity extends Activity {
     		
     		list = new ArrayList<Element>();
 			if (now.size() > 0) {
-				list.add(new Element("Now:"));
+				list.add(new Element(R.string.chooser_now));
 				list.addAll(now);
 			}
 			if (later.size() > 0) {
-				list.add(new Element("Later:"));
+				list.add(new Element(R.string.chooser_later));
 				list.addAll(later);
 			}
 			if (past.size() > 0) {
-				list.add(new Element("Past:"));
+				list.add(new Element(R.string.chooser_past));
 				list.addAll(past);
 			}
     	}
@@ -301,6 +324,10 @@ public class ChooserActivity extends Activity {
 			
 			public Element(String header_) {
 				header = header_;
+			}
+			
+			public Element(int res) {
+				header = ChooserActivity.this.getResources().getString(res);
 			}
 			
 			public Element(DbSchedule item_) {
