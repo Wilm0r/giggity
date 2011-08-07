@@ -197,26 +197,28 @@ public class ChooserActivity extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo mi = (AdapterContextMenuInfo) item.getMenuInfo();
         Giggity app = (Giggity) getApplication();
-        if (item.getItemId() == 0) {
+        DbSchedule sched = (DbSchedule) lista.getItem((int)mi.id);
+        if (sched == null) {
+        } else if (item.getItemId() == 0) {
         	/* Refresh. */
-			app.flushSchedule(scheds.get((int)mi.id).getUrl());
+			app.flushSchedule(sched.getUrl());
 			/* Is this a hack? */
 			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
-			db.removeSchedule(scheds.get((int)mi.id).getUrl());
+			db.removeSchedule(sched.getUrl());
 			onResume();
 		} else {
 			/* Show URL; try a QR code but fall back to a dialog if the app is not installed. */
 			try {
 			    Intent intent = new Intent(BARCODE_ENCODE);
 			    intent.putExtra("ENCODE_TYPE", "TEXT_TYPE");
-			    intent.putExtra("ENCODE_DATA", scheds.get((int)mi.id).getUrl());
+			    intent.putExtra("ENCODE_DATA", sched.getUrl());
 			    startActivity(intent);
 			} catch (android.content.ActivityNotFoundException e) {
 			    new AlertDialog.Builder(ChooserActivity.this)
-			      .setTitle(scheds.get((int)mi.id).getTitle())
-			      .setMessage(scheds.get((int)mi.id).getUrl())
+			      .setTitle(sched.getTitle())
+			      .setMessage(sched.getUrl())
 			      .show();
 			}
 		}
