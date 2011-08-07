@@ -48,7 +48,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 	private OnDismissListener dismissPassThru;
 
 	private CheckBox cb;
-	private StarsView sv; 
+	private StarsView sv;
 
 	public EventDialog(Context ctx_, Schedule.Item item_) {
 		super(ctx_);
@@ -69,6 +69,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 	}
 	
 	public LinearLayout genDialog(boolean big) {
+		Giggity app = (Giggity) ctx.getApplicationContext();
 		String descs = "";
 		if (item.getSpeakers() != null) {
 			if (item.getSpeakers().size() > 1)
@@ -110,7 +111,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				descLinks.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 			}
 			descscr.addView(descLinks);
-			desc.setPadding(0, 0, 0, 32);
+			app.setPadding(desc, 0, 0, 0, 16);
 		} else
 			descscr.addView(desc);
 		
@@ -152,8 +153,8 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
 		
 		if (big) {
-			title.setPadding(8, 8, 8, 6);
-			descscr.setPadding(8, 6, 8, 8);
+			app.setPadding(title, 8 , 8, 8, 6);
+			app.setPadding(descscr, 8, 6, 8, 8);
 		}
 		
 		return content;
@@ -176,7 +177,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				url.setEllipsize(TextUtils.TruncateAt.END);
 				url.setOnClickListener(this);
 				url.setSingleLine();
-				url.setPadding(0, 2, 0, 2);
+				url.setPadding(0, 3, 0, 3);
 				addView(url);
 			} else {
 				ImageButton btn = new ImageButton(ctx);

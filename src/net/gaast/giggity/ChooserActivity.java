@@ -334,13 +334,14 @@ public class ChooserActivity extends Activity {
 			}
 			
 			public View getView() {
+				Giggity app = (Giggity) getApplication();
 				if (item != null) {
 					LinearLayout ret = new LinearLayout(ChooserActivity.this);
 					TextView title, when;
 					
 					title = new TextView(ChooserActivity.this);
 					title.setText(item.getTitle());
-					title.setTextSize(24);
+					title.setTextSize(22);
 					ret.addView(title);
 					
 					when = new TextView(ChooserActivity.this);
@@ -349,13 +350,15 @@ public class ChooserActivity extends Activity {
 					ret.addView(when);
 					
 					ret.setOrientation(LinearLayout.VERTICAL);
+					app.setPadding(ret, 0, 3, 0, 4);
 					
 					return ret;
 				} else {
 					TextView ret = new TextView(ChooserActivity.this);
-					ret.setText("\n" + header);
+					ret.setText(header);
 					ret.setTextSize(18);
 					ret.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+					app.setPadding(ret, 0, 24, 0, 3);
 
 					return ret;
 				}

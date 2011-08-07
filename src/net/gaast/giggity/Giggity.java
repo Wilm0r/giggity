@@ -32,6 +32,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.preference.PreferenceManager;
+import android.view.View;
 
 public class Giggity extends Application {
 	Db db;
@@ -136,5 +137,15 @@ public class Giggity extends Application {
     
     protected AbstractSet<Schedule.Item> getRemindItems() {
     	return remindItems;
+    }
+    
+    public int dp2px(int dp) {
+		float scale = getResources().getDisplayMetrics().density;
+		return (int) (scale * dp);
+    }
+    
+    /** Sigh */
+    public void setPadding(View view, int left, int top, int right, int bottom) {
+    	view.setPadding(dp2px(left), dp2px(top), dp2px(right), dp2px(bottom));
     }
 }
