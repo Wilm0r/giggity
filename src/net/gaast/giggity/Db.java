@@ -250,9 +250,9 @@ public class Db {
 			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
 			Cursor q;
 			
-			q = db.rawQuery("Select sch_url, sch_id_s, sch_title From schedule Order By sch_atime Desc", null);
+			q = db.rawQuery("Select * From schedule Order By sch_atime Desc", null);
 			while (q.moveToNext()) {
-				ret.add(new DbSchedule(q.getString(0), q.getString(1), q.getString(2)));
+				ret.add(new DbSchedule(q));
 			}
 			q.close();
 			
@@ -283,11 +283,14 @@ public class Db {
 	
 	public class DbSchedule {
 		private String url, id, title;
+		private Date start, end;
 		
-		public DbSchedule(String url_, String id_, String title_) {
-			url = url_;
-			id = id_;
-			title = title_;
+		public DbSchedule(Cursor q) {
+			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
+			id = q.getString(q.getColumnIndexOrThrow("sch_id_s"));
+			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
+			start = new Date(q.getLong(q.getColumnIndexOrThrow("sch_start")) * 1000);
+			end = new Date(q.getLong(q.getColumnIndexOrThrow("sch_end")) * 1000);
 		}
 		
 		public String getUrl() {
@@ -303,6 +306,14 @@ public class Db {
 				return title;
 			else
 				return url;
+		}
+		
+		public Date getStart() {
+			return start;
+		}
+		
+		public Date getEnd() {
+			return end;
 		}
 	}
 }
