@@ -85,13 +85,12 @@ public class ChooserActivity extends Activity {
     	list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				if (id == scheds.size()) {
-					/* "Scan QR code..." */
-			        return;
+				DbSchedule item = (DbSchedule) lista.getItem(position);
+				if (item != null) {
+	    	        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
+			                   view.getContext(), ScheduleViewActivity.class);
+	    	        startActivity(intent);
 				}
-    	        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(scheds.get((int)id).getUrl()),
-		                   view.getContext(), ScheduleViewActivity.class);
-    	        startActivity(intent);
 			}
     	});
     	list.setLongClickable(true);
@@ -198,17 +197,17 @@ public class ChooserActivity extends Activity {
     public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo mi = (AdapterContextMenuInfo) item.getMenuInfo();
         Giggity app = (Giggity) getApplication();
-        Log.d("menu", ""+ item.getOrder());
-        if (mi.id == scheds.size()) {
-        	/* QR code item */
-        } else if (item.getItemId() == 0) {
+        if (item.getItemId() == 0) {
+        	/* Refresh. */
 			app.flushSchedule(scheds.get((int)mi.id).getUrl());
 			/* Is this a hack? */
 			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
 		} else if (item.getItemId() == 1) {
+			/* Delete. */
 			db.removeSchedule(scheds.get((int)mi.id).getUrl());
 			onResume();
 		} else {
+			/* Show URL; try a QR code but fall back to a dialog if the app is not installed. */
 			try {
 			    Intent intent = new Intent(BARCODE_ENCODE);
 			    intent.putExtra("ENCODE_TYPE", "TEXT_TYPE");

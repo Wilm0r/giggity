@@ -50,8 +50,10 @@
 	<string name="none_marked">Nog niks gemarkeerd.</string>
 	
 	<!-- ChooserActivity -->
-	<string name="scan_qr">QR code scannen...</string>
 	<string name="refresh">Verversen</string>
 	<string name="remove">Verwijderen</string>
 	<string name="show_url">URL weergeven...</string>
+	<string name="chooser_now">Huidige evenementen:</string>
+	<string name="chooser_later">Toekomstige evenementen:</string>
+	<string name="chooser_past">Afgelopen evenementen:</string>
 </resources>
