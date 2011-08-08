@@ -34,7 +34,6 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -56,16 +55,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 public class ChooserActivity extends Activity {
-	private ArrayList<Db.DbSchedule> scheds;
-	EditText urlBox;
-	Db.Connection db;
+	private Db.Connection db;
 
-	ListView list;
-	ScheduleAdapter lista;
+	private ListView list;
+	private ScheduleAdapter lista;
 
-	final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
-	final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
+	private final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
+	private final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
 	
+	private EditText urlBox;
 	private ImageButton addButton, qrButton;
 	
     @Override
@@ -98,12 +96,13 @@ public class ChooserActivity extends Activity {
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 				AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
-				if (mi.position == scheds.size())
-					return; /* "Scan QR code..." */
-				menu.setHeaderTitle(scheds.get((int)mi.position).getTitle());
-				menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
-				menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
-				menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
+		        DbSchedule sched = (DbSchedule) lista.getItem((int)mi.id);
+		        if (sched != null) {
+					menu.setHeaderTitle(sched.getTitle());
+					menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
+					menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
+					menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
+		        }
 			}
     	});
     	
@@ -202,7 +201,6 @@ public class ChooserActivity extends Activity {
         } else if (item.getItemId() == 0) {
         	/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			/* Is this a hack? */
 			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
@@ -232,8 +230,7 @@ public class ChooserActivity extends Activity {
     	super.onResume();
     	
     	db.resume();
-    	scheds = db.getScheduleList();
-    	lista = new ScheduleAdapter(scheds);
+    	lista = new ScheduleAdapter(db.getScheduleList());
     	list.setAdapter(lista);
     }
     
@@ -322,10 +319,6 @@ public class ChooserActivity extends Activity {
 		private class Element {
 			String header;
 			DbSchedule item;
-			
-			public Element(String header_) {
-				header = header_;
-			}
 			
 			public Element(int res) {
 				header = ChooserActivity.this.getResources().getString(res);
