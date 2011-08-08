@@ -341,7 +341,7 @@ public class ScheduleViewActivity extends Activity {
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(2).setVisible(view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1);
+    	menu.findItem(2).setVisible((view == VIEW_BLOCKSCHEDULE || view == VIEW_TIMETABLE) && sched.getDays().size() > 1);
     	menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
     	menu.findItem(4).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
     	menu.findItem(5).setVisible(view != VIEW_BLOCKSCHEDULE);
@@ -369,7 +369,7 @@ public class ScheduleViewActivity extends Activity {
     	}
     	
     	AlertDialog.Builder builder = new AlertDialog.Builder(this);
-    	builder.setTitle("Choose day");
+    	builder.setTitle(R.string.change_day);
     	builder.setSingleChoiceItems(dayList, cur, new DialogInterface.OnClickListener() {
     	    public void onClick(DialogInterface dialog, int item) {
     	    	sched.getDb().setDay(item);
