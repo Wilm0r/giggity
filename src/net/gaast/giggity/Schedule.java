@@ -49,6 +49,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -252,6 +253,8 @@ public class Schedule {
 				((HttpURLConnection)dlc).setRequestProperty("User-Agent", "Giggity, " + ua);
 				*/
 				
+				((HttpURLConnection)dlc).addRequestProperty("Accept-Encoding", "gzip");
+				
 				if (fn.canRead() && fn.lastModified() > 0) {
 					/* TODO: Not sure if it's a great idea to use inode metadata to store
 					 * modified-since data, but it works so far.. */
@@ -272,14 +275,20 @@ public class Schedule {
 					/* Assume success if this isn't HTTP.. */
 					status = 200;
 				}
-				Log.d("HTTP status", ""+dlc.getHeaderField(0));
+				Log.d("Schedule.loadSchedule", "HTTP status "+dlc.getHeaderField(0));
 				if (status == 200) {
 					fntmp = new File(app.getCacheDir(), "tmp." + hashify(source));
 					Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fntmp)));
-					Reader rawin = new InputStreamReader(dlc.getInputStream());
+					Reader rawin;
+					String enc = dlc.getContentEncoding();
+					Log.d("Schedule.loadSchedule", "HTTP encoding " + enc);
+					if (enc != null && enc.contains("gzip"))
+						rawin = new InputStreamReader(new GZIPInputStream(dlc.getInputStream()));
+					else
+						rawin = new InputStreamReader(dlc.getInputStream());
 					in = new TeeReader(rawin, copy, 4096);
 				} else if (status == 304) {
-					Log.i("loadSchedule", "HTTP 304, using cached copy");
+					Log.i("Schedule.loadSchedule", "HTTP 304, using cached copy");
 					/* Just continue, in = null so we'll read from cache. */
 				} else {
 					throw new RuntimeException("Download error: " + dlc.getHeaderField(0));
