@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 
 public class SearchActivity extends ScheduleViewActivity {
 	@Override
@@ -63,5 +64,10 @@ public class SearchActivity extends ScheduleViewActivity {
 			setTitle(sched.getTitle() + ": " + query);
 		}
 		setScheduleView(lv);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return false;
 	}
 }
