@@ -330,6 +330,8 @@ public class Schedule {
 				loadVerdi(in);
 			} else if (head.contains("<schedule") && head.contains("<line")) {
 				loadDeox(in);
+			} else if (head.contains("begin:vcalendar")) {
+				loadIcal(in);
 			} else {
 				Log.d("head", head);
 				throw new RuntimeException("File format not recognized");
@@ -355,11 +357,14 @@ public class Schedule {
 		if (dlc != null && dlc.getLastModified() > 0)
 			fn.setLastModified(dlc.getLastModified());
 		
+		if (title == null)
+			if (id != null)
+				title = id;
+			else
+				title = source;
+
 		if (id == null)
 			id = hashify(source);
-
-		if (title == null)
-			title = source;
 		
 		db = app.getDb();
 		db.setSchedule(this, source);
@@ -392,6 +397,59 @@ public class Schedule {
 			Log.e("Schedule.loadXml", "XML parse exception: " + e);
 			e.printStackTrace();
 			throw new RuntimeException("XML parsing problem: " + e);
+		}
+	}
+	
+	private void loadIcal(BufferedReader in) {
+		/* Luckily the structure of iCal maps pretty well to its xCal counterpart.
+		 * That's what this function does.
+		 * Tested against http://yapceurope.lv/ye2011/timetable.ics and the FOSDEM
+		 * 2011 iCal export (but please don't use this unless the event offers
+		 * nothing else). */ 
+		XcalParser p = new XcalParser();
+		String line, s;
+		try {
+			line = "";
+			while (true) {
+				s = in.readLine();
+				if (s != null && s.startsWith(" ")) {
+					line += s.substring(1);
+					/* Line continuation. Get the rest before we process anything. */
+					continue;
+				} else if (line.contains(":")) {
+					String split[] = line.split(":", 2);
+					String key, value;
+					key = split[0].toLowerCase();
+					value = split[1];
+					if (key.equals("begin")) {
+						/* Some blocks (including vevent, the only one we need)
+						 * have proper begin:vevent and end:vevent dividers. */
+						p.startElement("", value.toLowerCase(), "", null);
+					} else if (key.equals("end")) {
+						p.endElement("", value.toLowerCase(), "");
+					} else {
+						/* Chop off attributes. Could pass them but not reading them anyway. */
+						if (key.contains(";"))
+							key = key.substring(0, key.indexOf(";"));
+						value = value.replace("\\n", "\n").replace("\\,", ",")
+						             .replace("\\;", ";").replace("\\\\", "\\");
+						/* Fake <key>value</key> */
+						p.startElement("", key, "", null);
+						p.characters(value.toCharArray(), 0, value.length());
+						p.endElement("", key, "");
+					}
+				}
+				if (s != null)
+					line = s;
+				else
+					break;
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Read error: " + e);
+		} catch (SAXException e) {
+			e.printStackTrace();
+			throw new RuntimeException("Parse error: " + e);
 		}
 	}
 
@@ -605,7 +663,8 @@ public class Schedule {
 		public void startElement(String uri, String localName, String qName,
 				Attributes atts) throws SAXException {
 			curString = "";
-			if (localName == "vevent") {
+			if (localName.equals("vevent")) {
+				Log.d("Event", "New event");
 				eventData = new HashMap<String,String>();
 			}
 		}
@@ -618,13 +677,11 @@ public class Schedule {
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
-			if (localName == "vevent") {
+			if (localName.equals("vevent")) {
 				String uid, name, location, startTimeS, endTimeS, s;
 				Date startTime, endTime;
 				Schedule.Item item;
 				Schedule.Line line;
-				
-				// Log.d("Event:", eventData.get("summary") + " in " + eventData.get("location"));
 				
 				if ((uid = eventData.get("uid")) == null ||
 				    (name = eventData.get("summary")) == null ||
@@ -633,10 +690,6 @@ public class Schedule {
 				    (endTimeS = eventData.get("dtend")) == null) {
 					Log.w("Schedule.loadXcal", "Invalid event, some attributes are missing.");
 					return;
-				}
-				
-				if ((s = eventData.get("attendee")) != null) {
-					name += " (" + s + ")";
 				}
 				
 				try {
@@ -665,9 +718,9 @@ public class Schedule {
 				line.addItem(item);
 				
 				eventData = null;
-			} else if (localName == "x-wr-calname") {
+			} else if (localName.equals("x-wr-calname")) {
 				id = curString;
-			} else if (localName == "x-wr-caldesc") {
+			} else if (localName.equals("x-wr-caldesc")) {
 				title = curString;
 			} else if (eventData != null) {
 				eventData.put(localName, curString);
@@ -737,20 +790,20 @@ public class Schedule {
 		public void startElement(String uri, String localName, String qName,
 				Attributes atts) throws SAXException {
 			curString = "";
-			if (localName == "conference" || localName == "event") {
+			if (localName.equals("conference") || localName.equals("event")) {
 				propMap = new HashMap<String,String>();
 				propMap.put("id", atts.getValue("id"));
 				
 				links = new LinkedList<String>();
 				persons = new LinkedList<String>();
-			} else if (localName == "day") {
+			} else if (localName.equals("day")) {
 				try {
 					curDay = df.parse(atts.getValue("date"));
 				} catch (ParseException e) {
 					Log.w("Schedule.loadPentabarf", "Can't parse date: " + e);
 					return;
 				}
-			} else if (localName == "room") {
+			} else if (localName.equals("room")) {
 				String name = atts.getValue("name");
 				Schedule.Line line;
 				
@@ -763,7 +816,7 @@ public class Schedule {
 					tentMap.put(name, line);
 				}
 				curTent = line;
-			} else if (localName == "link" && links != null) {
+			} else if (localName.equals("link") && links != null) {
 				String href = atts.getValue("href");
 				if (href != null)
 					links.add(href);
