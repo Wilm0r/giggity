@@ -37,7 +37,7 @@ import android.util.Log;
 
 public class Db {
 	private Helper dbh;
-	private static final int dbVersion = 8;
+	private static final int dbVersion = 9;
 	
 	public Db(Application app_) {
 		dbh = new Helper(app_, "giggity", null, dbVersion);
@@ -98,28 +98,33 @@ public class Db {
 		public void upgradeData(SQLiteDatabase db, int oldVersion, int newVersion) {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			final String[][] seed = {
-				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011",                    "2011-02-05", "2011-02-06"},
-				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12", "2011-06-29", "2011-07-02"},
-				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11",   "2011-07-24", "2011-07-30"},
-				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon",              "2011-08-20", "2011-08-21"},
-				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011", "2011-08-06", "2011-08-06"},
-				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011",
-				                                                                               "2011-08-09", "2011-08-14"},
+				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011", null,                    "2011-02-05", "2011-02-06"},
+				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12", null, "2011-06-29", "2011-07-02"},
+				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11", null,   "2011-07-24", "2011-07-30"},
+				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon", null,              "2011-08-20", "2011-08-21"},
+				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011", null, "2011-08-06", "2011-08-06"},
+				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011", null,
+					"2011-08-09", "2011-08-14"},
+				{"9", "http://yapceurope.lv/ye2011/timetable.ics", "YAPC::Europe 2011", "YAPC::Europe 2011",
+					"2011-08-13", "2011-08-19"},
 			};
 			long ts = new Date().getTime() / 1000;
 			for (String[] i: seed) {
 				int v = Integer.parseInt(i[0]);
 				long start, end;
 				try {
-					start = df.parse(i[3]).getTime() / 1000 + 43200;
-					end = df.parse(i[4]).getTime() / 1000 + 43200;
+					start = df.parse(i[4]).getTime() / 1000 + 43200;
+					end = df.parse(i[5]).getTime() / 1000 + 43200;
 				} catch (ParseException e) {
 					start = end = ts;
 				}
 				Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{i[1]});
 				if (v > oldVersion && v <= newVersion && q.getCount() == 0) {
 					ContentValues row = new ContentValues();
-					row.put("sch_id_s", Schedule.hashify(i[1]));
+					if (i[3] == null)
+						row.put("sch_id_s", Schedule.hashify(i[1]));
+					else
+						row.put("sch_id_s", i[3]);
 					row.put("sch_url", i[1]);
 					row.put("sch_title", i[2]);
 					row.put("sch_atime", ts++);
