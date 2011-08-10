@@ -101,12 +101,12 @@ public class Db {
 				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011", null,                    "2011-02-05", "2011-02-06"},
 				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12", null, "2011-06-29", "2011-07-02"},
 				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11", null,   "2011-07-24", "2011-07-30"},
-				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon", null,              "2011-08-20", "2011-08-21"},
 				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011", null, "2011-08-06", "2011-08-06"},
 				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011", null,
 					"2011-08-09", "2011-08-14"},
 				{"9", "http://yapceurope.lv/ye2011/timetable.ics", "YAPC::Europe 2011", "YAPC::Europe 2011",
 					"2011-08-13", "2011-08-19"},
+				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon", null,              "2011-08-20", "2011-08-21"},
 			};
 			long ts = new Date().getTime() / 1000;
 			for (String[] i: seed) {
