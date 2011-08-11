@@ -37,7 +37,7 @@ import android.util.Log;
 
 public class Db {
 	private Helper dbh;
-	private static final int dbVersion = 9;
+	private static final int dbVersion = 10;
 	
 	public Db(Application app_) {
 		dbh = new Helper(app_, "giggity", null, dbVersion);
@@ -106,6 +106,8 @@ public class Db {
 					"2011-08-09", "2011-08-14"},
 				{"9", "http://yapceurope.lv/ye2011/timetable.ics", "YAPC::Europe 2011", "YAPC::Europe 2011",
 					"2011-08-13", "2011-08-19"},
+				{"10", "http://wilmer.gaa.st/deoxide/loveland2011.xml", "Loveland Festival 2011", "nl.lovelandfestival.2011",
+					"2011-08-13", "2011-08-13"},
 				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon", null,              "2011-08-20", "2011-08-21"},
 			};
 			long ts = new Date().getTime() / 1000;
@@ -113,8 +115,18 @@ public class Db {
 				int v = Integer.parseInt(i[0]);
 				long start, end;
 				try {
-					start = df.parse(i[4]).getTime() / 1000 + 43200;
-					end = df.parse(i[5]).getTime() / 1000 + 43200;
+					start = df.parse(i[4]).getTime() / 1000;
+					end = df.parse(i[5]).getTime() / 1000;
+					if (start != end) {
+						/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
+						 * once we load the schedule for the first time. */
+						start += 43200;
+						end += 43200;
+					} else {
+						/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
+						start += 21600;
+						end += 64800;
+					}
 				} catch (ParseException e) {
 					start = end = ts;
 				}
@@ -127,7 +139,7 @@ public class Db {
 						row.put("sch_id_s", i[3]);
 					row.put("sch_url", i[1]);
 					row.put("sch_title", i[2]);
-					row.put("sch_atime", ts++);
+					row.put("sch_atime", ts--);
 					row.put("sch_start", start);
 					row.put("sch_end", end);
 					db.insert("schedule", null, row);
