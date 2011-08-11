@@ -1,5 +1,7 @@
 #!/usr/bin/python
+# coding=utf-8
 
+import codecs
 import datetime
 import hashlib
 import os
@@ -11,7 +13,6 @@ import urllib2
 
 from HTMLParser import HTMLParser
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
-from xml.sax.saxutils import unescape
 
 class GiggityObject(object):
 	ids = set()
@@ -117,8 +118,8 @@ class LinkType(GiggityObject):
 		return top
 
 def maketime(time):
-	h, m = time.split(":")
-	return datetime.datetime(2011, 8, 6, int(h), int(m))
+	h, m = time.split(".")
+	return datetime.datetime(2011, 8, 13, int(h), int(m))
 
 def fetch(url):
 	hash = hashlib.md5(url).hexdigest()
@@ -150,7 +151,7 @@ def fetch(url):
 
 def dehtml(html):
 	fn = tempfile.mktemp(suffix=".html")
-	file(fn, "w").write(html)
+	codecs.open(fn, "w", encoding="utf-8").write(html)
 	w3m = subprocess.Popen(["/usr/bin/w3m", "-cols", "100000", "-dump", fn], stdout=subprocess.PIPE)
 	text = unicode(w3m.stdout.read(), "utf-8")
 	w3m.communicate()
@@ -171,15 +172,15 @@ def googlelinks(item):
 
 def findlinks(item):
 	ret = []
+	name = re.sub(r" *\([a-zA-Z]+\)", "", item.name)
 	
-	httpname = urllib2.quote(item.name.encode("utf-8")).replace("%20", "+")
+	httpname = urllib2.quote(name.encode("utf-8")).replace("%20", "+")
 	url = "http://www.last.fm/music/" + httpname.encode("utf-8")
 	html = fetch(url)
 	if html:
 		ret.append(Link(url, "lastfm"))
 	
 	def wpmusictest(url, m):
-		print item.name, url, m.group()
 		url = "http://en.wikipedia.org/w/index.php?title=%s&action=edit" % m.group(1)
 		html = fetch(url)
 		return "{{infobox musical artist" in html.lower()
@@ -187,7 +188,7 @@ def findlinks(item):
 	misctypes = [("wikipedia", "^en\.wikipedia\.org/wiki/(.*)", wpmusictest),
 	             ("myspace", "^myspace\.com/", None),
 	             ("soundcloud", "^soundcloud\.com/", None),
-	             ("discogs", "^discogs\.com/", None),
+	#             ("discogs", "^discogs\.com/", None),
 	             ]
 	
 	for type, regex, func in misctypes:
@@ -200,7 +201,8 @@ def findlinks(item):
 				break
 	
 	# And in case all the other links suck..
-	ret.append(Link("http://www.google.com/search?q=%s" % httpname, "google"))
+	if len(ret) < 4:
+		ret.append(Link("http://www.google.com/search?q=%s" % httpname, "google"))
 
 	return ret
 
@@ -218,7 +220,8 @@ def finddesc(item):
 		html = fetch(url)
 		m = re.search("<div id=\"wikiAbstract\">(.*?)<div class=\"wikiOptions\">", html, re.S)
 		if m:
-			desc = dehtml(m.group(1))
+			desch = unicode(m.group(1), "utf-8")
+			desc = dehtml(desch)
 		else:
 			print "No decent description for %s, removing last.fm link.." % item.name
 			item.links = [link for link in item.links if link.url != url]
@@ -232,41 +235,60 @@ def finddesc(item):
 		if desc and tags:
 			desc += "\nTags: %s" % ", ".join(tags)
 	
+	key = re.sub(r" *\([a-zA-Z]+\)", "", item.name)
+	key = re.sub(r"[^a-z0-9]", "", key.lower())
+	if key not in descs:
+		key += "live"
+	if key in descs:
+		desc = descs[key]['desc']
+		item.links.append(Link(descs[key]['yt'], 'youtube'))
+	else:
+		print "No decent description for %s :-(" % item.name
 	return desc
 
-html = file("times.html", "r").read()
-html = html.replace("&amp;", "&")
+
+html = file("lov-lineup.html", "r").read()
 html = unicode(html, "utf-8")
 
+all = re.findall(r'<h3 class="dj-name">(.*?)</h3>.*?<div class="dj-description">(.*?)(http://www\.youtube\.com/[^"]+).*?</div>', html, re.S)
+
+descs = {}
+for key, desc, youtube in all:
+	key = HTMLParser.unescape.__func__(HTMLParser, key)
+	key = re.sub(r" *\([a-zA-Z]+\)", "", key)
+	key = re.sub(r"[^a-z0-9]", "", key.lower())
+	d = dehtml(desc)
+	descs[key] = {'desc': d, 'yt': youtube.replace('/embed/', '/watch?v=')}
+
+
+html = file("lovl11times.txt", "r").read()
+html = unicode(html, "utf-8")
+html = html.replace(u"–", u"-")
+
 #sched = Schedule("nl.dancevalley.2011", "Dance Valley 2011")
-sched = Schedule("90428e2c6f63e2661cf2c086e465195785613d44", "Dance Valley 2011")
-for thtml in html.split("<strong>"):
-	lines = [line.strip() for line in re.split("<.*?>", thtml) if line.strip()]
-	if lines:
-		tent = Tent(lines[0])
+sched = Schedule("nl.lovelandfestival.2011", "Loveland Festival 2011")
+tent = None
+for line in html.splitlines():
+
+	line = line.strip()
+	m = re.search("^((\d+\.\d+)[- ]+(\d+\.\d+)) *(.*?)$", line)
+	
+	if m and tent:
+		_, start, end, name = m.groups()
+		
+		item = Item(name)
+		item.start = maketime(start)
+		item.end = maketime(end)
+		
+		item.links += findlinks(item)
+		item.description = finddesc(item)
+		
+		tent.items.append(item)
+	
+	elif line:
+		tent = Tent(line)
 		sched.tents.append(tent)
-		laststart = None
-		for line in lines[1:]:
-			m = re.search("^((\d+:\d+)[- ]+(\d+:\d+))? *(.*)$", line)
-			_, start, end, name = m.groups()
-			
-			if not start or not end:
-				tent.items[-1].name += " %s," % name
-				pass
-			else:
-				item = Item(name)
-				item.start = maketime(start)
-				item.end = maketime(end)
-				
-				item.links += findlinks(item)
-				item.description = finddesc(item)
-				
-				if laststart and (start < laststart):
-					tent = Tent("%s (MC)" % lines[0])
-					sched.tents.append(tent)
-				laststart = start
-				
-				tent.items.append(item)
+		
 
 sched.linktypes.append(LinkType("google", "http://wilmer.gaa.st/deoxide/google.png"))
 sched.linktypes.append(LinkType("lastfm", "http://wilmer.gaa.st/deoxide/lastfm.png"))
@@ -274,5 +296,6 @@ sched.linktypes.append(LinkType("wikipedia", "http://wilmer.gaa.st/deoxide/wikip
 sched.linktypes.append(LinkType("myspace", "http://wilmer.gaa.st/deoxide/myspace.png"))
 sched.linktypes.append(LinkType("soundcloud", "http://wilmer.gaa.st/deoxide/soundcloud.png"))
 sched.linktypes.append(LinkType("discogs", "http://wilmer.gaa.st/deoxide/discogs.png"))
+sched.linktypes.append(LinkType("youtube", "http://wilmer.gaa.st/deoxide/youtube.png"))
 
-file("dancevalley.xml", "w").write(tostring(sched.xml()))
+file("lovl11.xml", "w").write(tostring(sched.xml()))
