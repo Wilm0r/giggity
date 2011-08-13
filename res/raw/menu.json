@@ -1,0 +1,64 @@
+{
+	"version": 10,
+	"schedules": [
+		{
+			"version": 1,
+			"url": "http://fosdem.org/2011/schedule/xml",
+			"title": "FOSDEM 2011",
+			"start": "2011-02-05",
+			"end": "2011-02-06",
+		},
+		{
+			"version": 3,
+			"url": "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1",
+			"title": "FISL12",
+			"start": "2011-06-29",
+			"end": "2011-07-02",
+		},
+		{
+			"version": 4, 
+			"url": "http://penta.debconf.org/dc11_schedule/schedule.en.xml",
+			"title": "DebConf11",
+			"start": "2011-07-24",
+			"end": "2011-07-30",
+		},
+		{
+			"version": 6,
+			"url": "http://wilmer.gaa.st/deoxide/dancevalley2011.xml",
+			"title": "Dance Valley 2011",
+			"start": "2011-08-06",
+			"end": "2011-08-06",
+		},
+		{
+			"version": 7, 
+			"url": "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml",
+			"title": "Chaos Communication Camp 2011",
+			"start": "2011-08-09",
+			"end": "2011-08-14",
+		},
+		{
+			"version": 9, 
+			"url": "http://yapceurope.lv/ye2011/timetable.ics",
+			"title": "YAPC::Europe 2011",
+			"id": "YAPC::Europe 2011",
+			"start": "2011-08-13",
+			"end": "2011-08-19",
+		},
+		{
+			"version": 10,
+			"url": "http://wilmer.gaa.st/deoxide/loveland2011.xml",
+			"title": "Loveland Festival 2011",
+			"id": "nl.lovelandfestival.2011",
+			"start": "2011-08-13",
+			"end": "2011-08-13",
+		},
+		{
+			"version": 5, 
+			"url": "http://programm.froscon.org/2011/schedule.xml",
+			"title": "FrOSCon",
+			"start": "2011-08-20",
+			"end": "2011-08-21",
+		},
+	],
+}
+			
