@@ -169,6 +169,15 @@ public class Fetcher {
 		}
 		
 		@Override
+		public String readLine() throws IOException {
+			String ret;
+			ret = super.readLine();
+			if (writer != null && !waiting && ret != null)
+				writer.write(ret + "\n");
+			return ret;
+		}
+		
+		@Override
 		public void close() throws IOException {
 			super.close();
 			writer.close();
