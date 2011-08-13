@@ -19,6 +19,7 @@
 
 package net.gaast.giggity;
 
+import java.io.IOException;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -147,5 +148,9 @@ public class Giggity extends Application {
     /** Sigh */
     public void setPadding(View view, int left, int top, int right, int bottom) {
     	view.setPadding(dp2px(left), dp2px(top), dp2px(right), dp2px(bottom));
+    }
+    
+    public Fetcher fetch(String url, boolean online) throws IOException {
+    	return new Fetcher(this, url, online);
     }
 }
