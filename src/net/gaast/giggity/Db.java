@@ -19,27 +19,34 @@
 
 package net.gaast.giggity;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class Db {
+	private Giggity app;
 	private Helper dbh;
 	private static final int dbVersion = 10;
 	
 	public Db(Application app_) {
+		app = (Giggity) app_;
 		dbh = new Helper(app_, "giggity", null, dbVersion);
 	}
 	
@@ -97,62 +104,77 @@ public class Db {
 		/* For ease of use, seed the main menu with some known schedules. */
 		public void upgradeData(SQLiteDatabase db, int oldVersion, int newVersion) {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			final String[][] seed = {
-				{"1", "http://fosdem.org/2011/schedule/xml", "FOSDEM 2011", null,                    "2011-02-05", "2011-02-06"},
-				{"3", "http://fisl.org.br/12/papers_ng/public/fast_grid?event_id=1", "FISL12", null, "2011-06-29", "2011-07-02"},
-				{"4", "http://penta.debconf.org/dc11_schedule/schedule.en.xml", "DebConf11", null,   "2011-07-24", "2011-07-30"},
-				{"6", "http://wilmer.gaa.st/deoxide/dancevalley2011.xml", "Dance Valley 2011", null, "2011-08-06", "2011-08-06"},
-				{"7", "http://events.ccc.de/camp/2011/Fahrplan/schedule.en.xml", "Chaos Communication Camp 2011", null,
-					"2011-08-09", "2011-08-14"},
-				{"9", "http://yapceurope.lv/ye2011/timetable.ics", "YAPC::Europe 2011", "YAPC::Europe 2011",
-					"2011-08-13", "2011-08-19"},
-				{"10", "http://wilmer.gaa.st/deoxide/loveland2011.xml", "Loveland Festival 2011", "nl.lovelandfestival.2011",
-					"2011-08-13", "2011-08-13"},
-				{"5", "http://programm.froscon.org/2011/schedule.xml", "FrOSCon", null,              "2011-08-20", "2011-08-21"},
-			};
 			long ts = new Date().getTime() / 1000;
-			for (String[] i: seed) {
-				int v = Integer.parseInt(i[0]);
-				long start, end;
-				try {
-					start = df.parse(i[4]).getTime() / 1000;
-					end = df.parse(i[5]).getTime() / 1000;
-					if (start != end) {
-						/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
-						 * once we load the schedule for the first time. */
-						start += 43200;
-						end += 43200;
-					} else {
-						/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
-						start += 21600;
-						end += 64800;
+			JSONObject seed = loadSeed();
+			try {
+				JSONArray scheds = seed.getJSONArray("schedules");
+				int i;
+				for (i = 0; i < scheds.length(); i ++) {
+					JSONObject sched = scheds.getJSONObject(i);
+					int v = sched.getInt("version");
+					long start, end;
+					try {
+						start = df.parse(sched.getString("start")).getTime() / 1000;
+						end = df.parse(sched.getString("end")).getTime() / 1000;
+						if (start != end) {
+							/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
+							 * once we load the schedule for the first time. */
+							start += 43200;
+							end += 43200;
+						} else {
+							/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
+							start += 21600;
+							end += 64800;
+						}
+					} catch (ParseException e) {
+						start = end = ts;
 					}
-				} catch (ParseException e) {
-					start = end = ts;
+					Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.getString("url")});
+					if (v > oldVersion && v <= newVersion && q.getCount() == 0) {
+						ContentValues row = new ContentValues();
+						if (sched.has("id"))
+							row.put("sch_id_s", sched.getString("id"));
+						else
+							row.put("sch_id_s", Schedule.hashify(sched.getString("url")));
+						row.put("sch_url", sched.getString("url"));
+						row.put("sch_title", sched.getString("title"));
+						row.put("sch_atime", ts--);
+						row.put("sch_start", start);
+						row.put("sch_end", end);
+						db.insert("schedule", null, row);
+					} else if(oldVersion < 8 && q.getCount() == 1) {
+						/* We're upgrading from < 8 so we have to backfill the start/end columns. */
+						ContentValues row = new ContentValues();
+						q.moveToNext();
+						row.put("sch_start", start);
+						row.put("sch_end", end);
+						db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+					}
 				}
-				Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{i[1]});
-				if (v > oldVersion && v <= newVersion && q.getCount() == 0) {
-					ContentValues row = new ContentValues();
-					if (i[3] == null)
-						row.put("sch_id_s", Schedule.hashify(i[1]));
-					else
-						row.put("sch_id_s", i[3]);
-					row.put("sch_url", i[1]);
-					row.put("sch_title", i[2]);
-					row.put("sch_atime", ts--);
-					row.put("sch_start", start);
-					row.put("sch_end", end);
-					db.insert("schedule", null, row);
-				} else if(oldVersion < 8 && q.getCount() == 1) {
-					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
-					ContentValues row = new ContentValues();
-					q.moveToNext();
-					row.put("sch_start", start);
-					row.put("sch_end", end);
-					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-				}
+			} catch (JSONException e) {
+				e.printStackTrace();
 			}
 		}
+	}
+	
+	private JSONObject loadSeed() {
+		String json = "";
+		JSONObject jso;
+		InputStream inp = app.getResources().openRawResource(R.raw.menu);
+		byte[] buf = new byte[1024];
+		int n;
+		try {
+			while ((n = inp.read(buf, 0, buf.length)) > 0)
+				json += new String(buf, 0, n);
+			jso = new JSONObject(json);
+			Log.d("ver", ""+jso.getInt("version"));
+			Log.d("n", ""+jso.getJSONArray("schedules").length());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			jso = null;
+		}
+		return jso;
 	}
 	
 	public class Connection {

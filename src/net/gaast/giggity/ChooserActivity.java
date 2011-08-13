@@ -79,8 +79,8 @@ public class ChooserActivity extends Activity {
     	Giggity app = (Giggity) getApplication();
     	db = app.getDb();
     	
-    	list = new ListView(this);
-    	list.setOnItemClickListener(new OnItemClickListener() {
+		list = new ListView(this);
+		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 				DbSchedule item = (DbSchedule) lista.getItem(position);
