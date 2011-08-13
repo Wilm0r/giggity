@@ -119,6 +119,7 @@ public class ScheduleViewActivity extends Activity {
 				sched = app.getSchedule(url, false);
 			} catch (Exception e) {
 				// Java makes me tired.
+				e.printStackTrace();
 			}
         	onScheduleLoaded();
         } else {

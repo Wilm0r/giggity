@@ -21,7 +21,6 @@ package net.gaast.giggity;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,20 +35,26 @@ import org.json.JSONObject;
 import android.app.Application;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 public class Db {
 	private Giggity app;
 	private Helper dbh;
 	private static final int dbVersion = 10;
-	
+	private int oldDbVer = dbVersion;
+	private SharedPreferences pref;
+
 	public Db(Application app_) {
 		app = (Giggity) app_;
+		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		dbh = new Helper(app_, "giggity", null, dbVersion);
 	}
 	
@@ -62,6 +67,8 @@ public class Db {
 		public Helper(Context context, String name, CursorFactory factory,
 				int version) {
 			super(context, name, factory, version);
+			
+			updateData(this.getWritableDatabase());
 		}
 	
 		@Override
@@ -80,8 +87,6 @@ public class Db {
 					                               "sci_id_s VarChar(128), " +
 					                               "sci_remind Boolean, " +
 					                               "sci_stars Integer(2) Null)");
-			
-			upgradeData(db, 0, dbVersion);
 		}
 	
 		@Override
@@ -101,17 +106,20 @@ public class Db {
 					}
 				}
 			}
-			upgradeData(db, oldVersion, newVersion);
+			
+			oldDbVer = Math.min(oldDbVer, oldVersion);
 		}
 		
 		/* For ease of use, seed the main menu with some known schedules. */
-		public void upgradeData(SQLiteDatabase db, int oldVersion, int newVersion) {
+		public void updateData(SQLiteDatabase db) {
 			long ts = new Date().getTime() / 1000;
+			int version = pref.getInt("last_menu_seed_version", oldDbVer), newver = version;
 			Seed seed = loadSeed();
 			if (seed == null)
 				return;
 			
 			for (Seed.Schedule sched : seed.schedules) {
+				newver = Math.max(newver, sched.version);
 				if (sched.start.equals(sched.end)) {
 					/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
 					sched.start.setHours(6);
@@ -123,7 +131,7 @@ public class Db {
 					sched.end.setHours(12);
 				}
 				Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
-				if (sched.version > oldVersion && sched.version <= newVersion && q.getCount() == 0) {
+				if (sched.version > version && q.getCount() == 0) {
 					ContentValues row = new ContentValues();
 					if (sched.id != null)
 						row.put("sch_id_s", sched.id);
@@ -135,7 +143,7 @@ public class Db {
 					row.put("sch_start", sched.start.getTime() / 1000);
 					row.put("sch_end", sched.end.getTime() / 1000);
 					db.insert("schedule", null, row);
-				} else if(oldVersion < 8 && q.getCount() == 1) {
+				} else if(oldDbVer < 8 && q.getCount() == 1) {
 					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
 					ContentValues row = new ContentValues();
 					q.moveToNext();
@@ -143,6 +151,12 @@ public class Db {
 					row.put("sch_end", sched.end.getTime() / 1000);
 					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
 				}
+			}
+			if (newver != version) {
+				Editor p = pref.edit();
+				p.putInt("last_menu_seed_version", newver);
+				p.putLong("last_menu_seed_ts", new Date().getTime());
+				p.commit();
 			}
 		}
 	}
