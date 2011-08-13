@@ -19,12 +19,15 @@
 
 package net.gaast.giggity;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -103,61 +106,48 @@ public class Db {
 		
 		/* For ease of use, seed the main menu with some known schedules. */
 		public void upgradeData(SQLiteDatabase db, int oldVersion, int newVersion) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			long ts = new Date().getTime() / 1000;
-			JSONObject seed = loadSeed();
-			try {
-				JSONArray scheds = seed.getJSONArray("schedules");
-				int i;
-				for (i = 0; i < scheds.length(); i ++) {
-					JSONObject sched = scheds.getJSONObject(i);
-					int v = sched.getInt("version");
-					long start, end;
-					try {
-						start = df.parse(sched.getString("start")).getTime() / 1000;
-						end = df.parse(sched.getString("end")).getTime() / 1000;
-						if (start != end) {
-							/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
-							 * once we load the schedule for the first time. */
-							start += 43200;
-							end += 43200;
-						} else {
-							/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
-							start += 21600;
-							end += 64800;
-						}
-					} catch (ParseException e) {
-						start = end = ts;
-					}
-					Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.getString("url")});
-					if (v > oldVersion && v <= newVersion && q.getCount() == 0) {
-						ContentValues row = new ContentValues();
-						if (sched.has("id"))
-							row.put("sch_id_s", sched.getString("id"));
-						else
-							row.put("sch_id_s", Schedule.hashify(sched.getString("url")));
-						row.put("sch_url", sched.getString("url"));
-						row.put("sch_title", sched.getString("title"));
-						row.put("sch_atime", ts--);
-						row.put("sch_start", start);
-						row.put("sch_end", end);
-						db.insert("schedule", null, row);
-					} else if(oldVersion < 8 && q.getCount() == 1) {
-						/* We're upgrading from < 8 so we have to backfill the start/end columns. */
-						ContentValues row = new ContentValues();
-						q.moveToNext();
-						row.put("sch_start", start);
-						row.put("sch_end", end);
-						db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-					}
+			Seed seed = loadSeed();
+			if (seed == null)
+				return;
+			
+			for (Seed.Schedule sched : seed.schedules) {
+				if (sched.start.equals(sched.end)) {
+					/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
+					sched.start.setHours(6);
+					sched.end.setHours(18);
+				} else {
+					/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
+					 * once we load the schedule for the first time. */
+					sched.start.setHours(12);
+					sched.end.setHours(12);
 				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+				Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
+				if (sched.version > oldVersion && sched.version <= newVersion && q.getCount() == 0) {
+					ContentValues row = new ContentValues();
+					if (sched.id != null)
+						row.put("sch_id_s", sched.id);
+					else
+						row.put("sch_id_s", Schedule.hashify(sched.url));
+					row.put("sch_url", sched.url);
+					row.put("sch_title", sched.title);
+					row.put("sch_atime", ts--);
+					row.put("sch_start", sched.start.getTime() / 1000);
+					row.put("sch_end", sched.end.getTime() / 1000);
+					db.insert("schedule", null, row);
+				} else if(oldVersion < 8 && q.getCount() == 1) {
+					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
+					ContentValues row = new ContentValues();
+					q.moveToNext();
+					row.put("sch_start", sched.start.getTime() / 1000);
+					row.put("sch_end", sched.end.getTime() / 1000);
+					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+				}
 			}
 		}
 	}
 	
-	private JSONObject loadSeed() {
+	private Seed loadSeed() {
 		String json = "";
 		JSONObject jso;
 		InputStream inp = app.getResources().openRawResource(R.raw.menu);
@@ -165,16 +155,62 @@ public class Db {
 		int n;
 		try {
 			while ((n = inp.read(buf, 0, buf.length)) > 0)
-				json += new String(buf, 0, n);
-			jso = new JSONObject(json);
-			Log.d("ver", ""+jso.getInt("version"));
-			Log.d("n", ""+jso.getJSONArray("schedules").length());
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			jso = null;
+				json += new String(buf, 0, n, "utf-8");
+		} catch (IOException e) {
+			Log.e("DeoxideDb.loadSeed", "IO Error");
+			e.printStackTrace();
+			return null;
 		}
-		return jso;
+		try {
+			jso = new JSONObject(json);
+			return new Seed(jso);
+		} catch (JSONException e) {
+			Log.e("DeoxideDb.loadSeed", "Parse Error");
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	/**
+	 * Instead of using gson, I'm using this little class to contain all the JSON logic.
+	 * Feed it a JSONObject and if it's well-formed, it'll contain all the menu seed info
+	 * I need. */
+	private static class Seed {
+		LinkedList<Seed.Schedule> schedules;
+		
+		public Seed(JSONObject jso) throws JSONException {
+			schedules = new LinkedList<Seed.Schedule>();
+			
+			JSONArray scheds = jso.getJSONArray("schedules");
+			int i;
+			for (i = 0; i < scheds.length(); i ++) {
+				JSONObject sched = scheds.getJSONObject(i);
+				schedules.add(new Schedule(sched));
+			}
+		}
+		
+		private static class Schedule {
+			int version;
+			String id, url, title;
+			Date start, end;
+			
+			public Schedule(JSONObject jso) throws JSONException {
+				version = jso.getInt("version");
+				if (jso.has("id"))
+					id = jso.getString("id");
+				url = jso.getString("url");
+				title = jso.getString("title");
+				
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				try {
+					start = df.parse(jso.getString("start"));
+					end = df.parse(jso.getString("end"));
+				} catch (ParseException e) {
+					Log.e("DeoxideDb.Seed.Schedule", "Corrupted start/end date.");
+					start = end = new Date();
+				}
+			}
+		}
 	}
 	
 	public class Connection {
