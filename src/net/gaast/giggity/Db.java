@@ -68,7 +68,8 @@ public class Db {
 				int version) {
 			super(context, name, factory, version);
 			
-			updateData(this.getWritableDatabase());
+			if (oldDbVer < dbVersion)
+				updateData(this.getWritableDatabase(), false);
 		}
 	
 		@Override
@@ -109,67 +110,91 @@ public class Db {
 			
 			oldDbVer = Math.min(oldDbVer, oldVersion);
 		}
-		
-		/* For ease of use, seed the main menu with some known schedules. */
-		public void updateData(SQLiteDatabase db) {
-			long ts = new Date().getTime() / 1000;
-			int version = pref.getInt("last_menu_seed_version", oldDbVer), newver = version;
-			Seed seed = loadSeed();
-			if (seed == null)
-				return;
-			
-			for (Seed.Schedule sched : seed.schedules) {
-				newver = Math.max(newver, sched.version);
-				if (sched.start.equals(sched.end)) {
-					/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
-					sched.start.setHours(6);
-					sched.end.setHours(18);
-				} else {
-					/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
-					 * once we load the schedule for the first time. */
-					sched.start.setHours(12);
-					sched.end.setHours(12);
-				}
-				Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
-				if (sched.version > version && q.getCount() == 0) {
-					ContentValues row = new ContentValues();
-					if (sched.id != null)
-						row.put("sch_id_s", sched.id);
-					else
-						row.put("sch_id_s", Schedule.hashify(sched.url));
-					row.put("sch_url", sched.url);
-					row.put("sch_title", sched.title);
-					row.put("sch_atime", ts--);
-					row.put("sch_start", sched.start.getTime() / 1000);
-					row.put("sch_end", sched.end.getTime() / 1000);
-					db.insert("schedule", null, row);
-				} else if(oldDbVer < 8 && q.getCount() == 1) {
-					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
-					ContentValues row = new ContentValues();
-					q.moveToNext();
-					row.put("sch_start", sched.start.getTime() / 1000);
-					row.put("sch_end", sched.end.getTime() / 1000);
-					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-				}
-			}
-			if (newver != version) {
-				Editor p = pref.edit();
-				p.putInt("last_menu_seed_version", newver);
-				p.putLong("last_menu_seed_ts", new Date().getTime());
-				p.commit();
-			}
-		}
 	}
 	
-	private Seed loadSeed() {
+	/* For ease of use, seed the main menu with some known schedules. */
+	public void updateData(SQLiteDatabase db, boolean online) {
+		Seed seed = loadSeed(online ? SeedSource.ONLINE : SeedSource.CACHED);
+		Seed localSeed = loadSeed(SeedSource.BUILT_IN);
+		/* Pick the best one. localSeed *can* be newer than the cached one. Should not
+		 * ever be newer than the online one though. */
+		if (seed != null && localSeed != null) {
+			if (localSeed.version > seed.version)
+				seed = localSeed;
+		} else {
+			if (seed == null)
+				seed = localSeed;
+			if (seed == null)
+				return;
+		}
+
+		long ts = new Date().getTime() / 1000;
+		int version = pref.getInt("last_menu_seed_version", oldDbVer), newver = version;
+		for (Seed.Schedule sched : seed.schedules) {
+			newver = Math.max(newver, sched.version);
+			if (sched.start.equals(sched.end)) {
+				/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
+				sched.start.setHours(6);
+				sched.end.setHours(18);
+			} else {
+				/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
+				 * once we load the schedule for the first time. */
+				sched.start.setHours(12);
+				sched.end.setHours(12);
+			}
+			Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
+			if (sched.version > version && q.getCount() == 0) {
+				ContentValues row = new ContentValues();
+				if (sched.id != null)
+					row.put("sch_id_s", sched.id);
+				else
+					row.put("sch_id_s", Schedule.hashify(sched.url));
+				row.put("sch_url", sched.url);
+				row.put("sch_title", sched.title);
+				row.put("sch_atime", ts--);
+				row.put("sch_start", sched.start.getTime() / 1000);
+				row.put("sch_end", sched.end.getTime() / 1000);
+				db.insert("schedule", null, row);
+			} else if(oldDbVer < 8 && q.getCount() == 1) {
+				/* We're upgrading from < 8 so we have to backfill the start/end columns. */
+				ContentValues row = new ContentValues();
+				q.moveToNext();
+				row.put("sch_start", sched.start.getTime() / 1000);
+				row.put("sch_end", sched.end.getTime() / 1000);
+				db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+			}
+		}
+		
+		if (newver != version) {
+			Editor p = pref.edit();
+			p.putInt("last_menu_seed_version", newver);
+			p.commit();
+		}
+	}
+
+	private enum SeedSource {
+		BUILT_IN,
+		CACHED,
+		ONLINE,
+	}
+	private final String SEED_URL = "http://wilmer.gaa.st/deoxide/menu.json";
+	private final long SEED_FETCH_INTERVAL = 60000; //86400 * 1000; /* Once a day. */
+	
+	private Seed loadSeed(SeedSource source) {
 		String json = "";
 		JSONObject jso;
-		InputStream inp = app.getResources().openRawResource(R.raw.menu);
-		byte[] buf = new byte[1024];
-		int n;
+		Fetcher f = null;
 		try {
-			while ((n = inp.read(buf, 0, buf.length)) > 0)
-				json += new String(buf, 0, n, "utf-8");
+			if (source == SeedSource.BUILT_IN) {
+				InputStream inp = app.getResources().openRawResource(R.raw.menu);
+				byte[] buf = new byte[1024];
+				int n;
+				while ((n = inp.read(buf, 0, buf.length)) > 0)
+					json += new String(buf, 0, n, "utf-8");
+			} else {
+				f = app.fetch(SEED_URL, source == SeedSource.ONLINE);
+				json = f.slurp();
+			}
 		} catch (IOException e) {
 			Log.e("DeoxideDb.loadSeed", "IO Error");
 			e.printStackTrace();
@@ -177,10 +202,16 @@ public class Db {
 		}
 		try {
 			jso = new JSONObject(json);
-			return new Seed(jso);
+			Seed ret = new Seed(jso);
+			if (f != null)
+				f.keep();
+			Log.d("DeoxideDb.loadSeed", "Fetched seed version " + ret.version + " from " + source.toString());
+			return ret;
 		} catch (JSONException e) {
 			Log.e("DeoxideDb.loadSeed", "Parse Error");
 			e.printStackTrace();
+			if (f != null)
+				f.cancel();
 			return null;
 		}
 	}
@@ -190,11 +221,13 @@ public class Db {
 	 * Feed it a JSONObject and if it's well-formed, it'll contain all the menu seed info
 	 * I need. */
 	private static class Seed {
+		int version;
 		LinkedList<Seed.Schedule> schedules;
 		
 		public Seed(JSONObject jso) throws JSONException {
-			schedules = new LinkedList<Seed.Schedule>();
+			version = jso.getInt("version");
 			
+			schedules = new LinkedList<Seed.Schedule>();
 			JSONArray scheds = jso.getJSONArray("schedules");
 			int i;
 			for (i = 0; i < scheds.length(); i ++) {
@@ -338,6 +371,19 @@ public class Db {
 		public ArrayList<DbSchedule> getScheduleList() {
 			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
 			Cursor q;
+			long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
+			boolean online = seedAge < 0 || seedAge > SEED_FETCH_INTERVAL;
+			
+			Log.d("DeoxideDb.getScheduleList", "seedAge " + seedAge + " online " + online);
+			
+			/* Check if there are updates first. */
+			updateData(db, online);
+			if (online) {
+				
+				Editor p = pref.edit();
+				p.putLong("last_menu_seed_ts", System.currentTimeMillis());
+				p.commit();
+			}
 			
 			q = db.rawQuery("Select * From schedule Order By sch_atime Desc", null);
 			while (q.moveToNext()) {

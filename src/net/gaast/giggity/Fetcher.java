@@ -35,6 +35,8 @@ public class Fetcher {
 	public Fetcher(Giggity app_, String url, boolean online) throws IOException {
 		app = app_;
 
+		Log.d("Fetcher", "Creating fetcher for " + url + " online=" + online);
+		
 		fn = new File(app.getCacheDir(), "sched." + Schedule.hashify(url));
 		fntmp = null;
 
@@ -84,9 +86,9 @@ public class Fetcher {
 				String enc = dlc.getContentEncoding();
 				Log.d("Fetcher", "HTTP encoding " + enc);
 				if (enc != null && enc.contains("gzip"))
-					rawin = new InputStreamReader(new GZIPInputStream(dlc.getInputStream()));
+					rawin = new InputStreamReader(new GZIPInputStream(dlc.getInputStream()), "utf-8");
 				else
-					rawin = new InputStreamReader(dlc.getInputStream());
+					rawin = new InputStreamReader(dlc.getInputStream(), "utf-8");
 				in = new TeeReader(rawin, copy, 4096);
 			} else if (status == 304) {
 				Log.i("Fetcher", "HTTP 304, using cached copy");
@@ -108,6 +110,21 @@ public class Fetcher {
 	
 	public BufferedReader getReader() {
 		return in;
+	}
+	
+	public String slurp() {
+		String ret = "";
+		char[] buf = new char[1024];
+		int n;
+		
+		try {
+			while ((n = in.read(buf, 0, buf.length)) > 0)
+				ret += new String(buf, 0, n);
+		} catch (IOException e) {
+			e.printStackTrace();
+			ret = null;
+		}
+		return ret;
 	}
 
 	/** If the file is usable, keep it cached. */
