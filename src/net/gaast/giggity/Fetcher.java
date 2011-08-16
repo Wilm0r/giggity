@@ -30,12 +30,19 @@ public class Fetcher {
 	private Giggity app;
 	private File fn, fntmp = null;
 	private URLConnection dlc;
-	private BufferedReader in; 
+	private BufferedReader in;
 	
-	public Fetcher(Giggity app_, String url, boolean online) throws IOException {
+	public enum Source {
+		CACHE,			/* Get from cache or fail. */
+		CACHE_ONLINE,	/* Prefer cache, but fetch if possible. */
+		ONLINE_CACHE,	/* Check online (304 -> cache). */
+		ONLINE,			/* Fetch online, ignore cached version. */
+	}
+	
+	public Fetcher(Giggity app_, String url, Source source) throws IOException {
 		app = app_;
 
-		Log.d("Fetcher", "Creating fetcher for " + url + " online=" + online);
+		Log.d("Fetcher", "Creating fetcher for " + url + " source=" + source);
 		
 		fn = new File(app.getCacheDir(), "sched." + Schedule.hashify(url));
 		fntmp = null;
@@ -43,6 +50,11 @@ public class Fetcher {
 		NetworkInfo network = ((ConnectivityManager)
 				app.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo(); 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
+
+		if ((source == Source.ONLINE_CACHE || source == Source.ONLINE) &&
+		    (network == null || !network.isConnected())) {
+			throw new IOException("No network connection available.");
+		}
 		
 		URL dl = new URL(url);
 		dlc = dl.openConnection();
@@ -58,7 +70,7 @@ public class Fetcher {
 			
 			((HttpURLConnection)dlc).addRequestProperty("Accept-Encoding", "gzip");
 			
-			if (fn.canRead() && fn.lastModified() > 0) {
+			if (source != Source.ONLINE && fn.canRead() && fn.lastModified() > 0) {
 				/* TODO: Not sure if it's a great idea to use inode metadata to store
 				 * modified-since data, but it works so far.. */
 				dlc.setIfModifiedSince(fn.lastModified());
@@ -69,8 +81,8 @@ public class Fetcher {
 		} catch (ClassCastException e) {
 			/* It failed. Maybe we're HTTP only? Maybe even FTP? */
 		}
-		
-		if (online && network != null && network.isConnected()) {
+
+		if (source != Source.CACHE && network != null && network.isConnected()) {
 			int status;
 			try {
 				status = ((HttpURLConnection)dlc).getResponseCode();

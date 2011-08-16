@@ -150,7 +150,7 @@ public class Giggity extends Application {
     	view.setPadding(dp2px(left), dp2px(top), dp2px(right), dp2px(bottom));
     }
     
-    public Fetcher fetch(String url, boolean online) throws IOException {
-    	return new Fetcher(this, url, online);
+    public Fetcher fetch(String url, Fetcher.Source source) throws IOException {
+    	return new Fetcher(this, url, source);
     }
 }

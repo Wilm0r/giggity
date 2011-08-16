@@ -232,7 +232,7 @@ public class Schedule {
 		BufferedReader in;
 		
 		try {
-			f = app.fetch(source, online);
+			f = app.fetch(source, online ? Fetcher.Source.ONLINE_CACHE : Fetcher.Source.CACHE);
 			in = f.getReader();
 			char[] headc = new char[detectHeaderSize];
 			

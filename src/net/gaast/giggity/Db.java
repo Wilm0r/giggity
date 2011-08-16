@@ -124,12 +124,20 @@ public class Db {
 		} else {
 			if (seed == null)
 				seed = localSeed;
-			if (seed == null)
+			if (seed == null) {
+				Log.w("DeoxideDb.updateData", "Failed to fetch both seeds, uh oh..");
 				return;
+			}
 		}
 
-		long ts = new Date().getTime() / 1000;
 		int version = pref.getInt("last_menu_seed_version", oldDbVer), newver = version;
+		
+		if (seed.version <= version && oldDbVer == dbVersion) {
+			/* No updates required, both data and structure are up to date. */
+			return;
+		}
+		
+		long ts = new Date().getTime() / 1000;
 		for (Seed.Schedule sched : seed.schedules) {
 			newver = Math.max(newver, sched.version);
 			if (sched.start.equals(sched.end)) {
@@ -173,9 +181,9 @@ public class Db {
 	}
 
 	private enum SeedSource {
-		BUILT_IN,
-		CACHED,
-		ONLINE,
+		BUILT_IN,		/* Embedded copy. */
+		CACHED,			/* Cached copy, or refetch if missing. */
+		ONLINE,			/* Poll for an update. */
 	}
 	private final String SEED_URL = "http://wilmer.gaa.st/deoxide/menu.json";
 	private final long SEED_FETCH_INTERVAL = 60000; //86400 * 1000; /* Once a day. */
@@ -192,7 +200,8 @@ public class Db {
 				while ((n = inp.read(buf, 0, buf.length)) > 0)
 					json += new String(buf, 0, n, "utf-8");
 			} else {
-				f = app.fetch(SEED_URL, source == SeedSource.ONLINE);
+				f = app.fetch(SEED_URL, source == SeedSource.ONLINE ?
+				                        Fetcher.Source.ONLINE_CACHE : Fetcher.Source.CACHE_ONLINE);
 				json = f.slurp();
 			}
 		} catch (IOException e) {
