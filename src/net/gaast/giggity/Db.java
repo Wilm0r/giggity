@@ -201,7 +201,7 @@ public class Db {
 					json += new String(buf, 0, n, "utf-8");
 			} else {
 				f = app.fetch(SEED_URL, source == SeedSource.ONLINE ?
-				                        Fetcher.Source.ONLINE_CACHE : Fetcher.Source.CACHE_ONLINE);
+				                        Fetcher.Source.ONLINE : Fetcher.Source.CACHE_ONLINE);
 				json = f.slurp();
 			}
 		} catch (IOException e) {
