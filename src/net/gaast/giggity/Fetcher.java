@@ -84,7 +84,8 @@ public class Fetcher {
 			/* It failed. Maybe we're HTTP only? Maybe even FTP? */
 		}
 
-		if (source != Source.CACHE && network != null && network.isConnected()) {
+		if (source != Source.CACHE && !(fn.canRead() && source == Source.CACHE_ONLINE) &&
+		    network != null && network.isConnected()) {
 			int status;
 			try {
 				status = ((HttpURLConnection)dlc).getResponseCode();
