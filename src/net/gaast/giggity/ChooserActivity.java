@@ -37,6 +37,7 @@ import android.text.TextWatcher;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -259,6 +260,28 @@ public class ChooserActivity extends Activity {
         }
     }
     
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	super.onCreateOptionsMenu(menu);
+    	
+    	menu.add(Menu.NONE, 1, 7, R.string.settings)
+    		.setShortcut('0', 's')
+    		.setIcon(android.R.drawable.ic_menu_preferences);
+    	
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    	case 1:
+    		Intent intent = new Intent(this, SettingsActivity.class);
+    		startActivity(intent);
+    		return true;
+    	}
+    	return super.onOptionsItemSelected(item);
+    }
+
     private class ScheduleAdapter extends BaseAdapter {
     	ArrayList<Element> list;
     	
