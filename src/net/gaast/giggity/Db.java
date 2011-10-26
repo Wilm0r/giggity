@@ -48,7 +48,7 @@ import android.util.Log;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 10;
+	private static final int dbVersion = 11;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -79,6 +79,7 @@ public class Db {
 					                          "sch_title VarChar(128), " +
 					                          "sch_url VarChar(256), " +
 					                          "sch_atime Integer, " +
+					                          "sch_rtime Integer, " +
 					                          "sch_start Integer, " +
 					                          "sch_end Integer, " +
 					                          "sch_id_s VarChar(128)," +
@@ -101,6 +102,14 @@ public class Db {
 					try {
 						db.execSQL("Alter Table schedule Add Column sch_start Integer");
 						db.execSQL("Alter Table schedule Add Column sch_end Integer");
+					} catch (SQLiteException e) {
+						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+						e.printStackTrace();
+					}
+				} else if (v == 11) {
+					/* Version 10 adds rtime column. */
+					try {
+						db.execSQL("Alter Table schedule Add Column sch_rtime Integer");
 					} catch (SQLiteException e) {
 						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
 						e.printStackTrace();
@@ -186,7 +195,7 @@ public class Db {
 		ONLINE,			/* Poll for an update. */
 	}
 	private final String SEED_URL = "http://wilmer.gaa.st/deoxide/menu.json";
-	private final long SEED_FETCH_INTERVAL = 60000; //86400 * 1000; /* Once a day. */
+	private final long SEED_FETCH_INTERVAL = 86400 * 1000; /* Once a day. */
 	
 	private Seed loadSeed(SeedSource source) {
 		String json = "";
@@ -302,7 +311,7 @@ public class Db {
 			Log.d("DeoxideDb", "resume()" + db);
 		}
 		
-		public void setSchedule(Schedule sched_, String url) {
+		public void setSchedule(Schedule sched_, String url, boolean fresh) {
 			ContentValues row;
 			Cursor q;
 			
@@ -316,6 +325,8 @@ public class Db {
 			row.put("sch_atime", new Date().getTime() / 1000);
 			row.put("sch_start", sched.getFirstTime().getTime() / 1000);
 			row.put("sch_end", sched.getLastTime().getTime() / 1000);
+			if (fresh)
+				row.put("sch_rtime", new Date().getTime() / 1000);
 			
 			q = db.rawQuery("Select sch_id, sch_day From schedule Where sch_id_s = ?",
 					        new String[]{sched.getId()});
@@ -422,6 +433,14 @@ public class Db {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + q.getInt(0)});
 				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
 			}
+		}
+		
+		public Date getScheduleRtime(String url) {
+			Cursor q = db.rawQuery("Select sch_rtime From schedule Where sch_url = ?", new String[]{url});
+			if (q.getCount() != 1)
+				return null;
+			q.moveToFirst();
+			return new Date(q.getLong(0) * 1000);
 		}
 	}
 	

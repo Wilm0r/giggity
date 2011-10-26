@@ -286,7 +286,7 @@ public class Schedule {
 			id = hashify(source);
 		
 		db = app.getDb();
-		db.setSchedule(this, source);
+		db.setSchedule(this, source, f.getSource() == Fetcher.Source.ONLINE);
 		
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;

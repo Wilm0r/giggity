@@ -10,13 +10,18 @@
 	                android:entries="@array/default_view"
 	                android:entryValues="@array/default_view_values" 
 	                android:defaultValue="1" />
-	
+<!-- 
+	<CheckBoxPreference android:key="always_refresh" 
+	                    android:title="@string/always_refresh"
+	                    android:defaultValue="false"
+	                    android:summaryOff="@string/always_refresh_sub_off" />
+-->
 	<CheckBoxPreference android:key="strict_ssl"
                         android:summary="@string/strict_ssl_sub"
                         android:title="@string/strict_ssl"
-                        android:defaultValue="false"></CheckBoxPreference>
+                        android:defaultValue="false" />
 	
-	    <PreferenceCategory android:title="@string/block_schedule">
+	<PreferenceCategory android:title="@string/block_schedule">
 	
 		<ListPreference android:title="@string/block_schedule_style"
 		                android:key="block_schedule_style"
@@ -25,7 +30,7 @@
 		                android:negativeButtonText="@string/cancel"
 		                android:positiveButtonText="@string/ok"
 		                android:entries="@array/block_schedule_styles"
-		                android:entryValues="@array/block_schedule_styles"></ListPreference>
+		                android:entryValues="@array/block_schedule_styles" />
 
         <ListPreference android:key="block_schedule_element_size"
 		                android:title="@string/block_schedule_element_size"
@@ -42,23 +47,26 @@
 		                    android:title="Allow row shuffling" android:defaultValue="false"/>
 -->
 	
-</PreferenceCategory>
+	</PreferenceCategory>
 
 
 
 
-<PreferenceCategory android:title="@string/reminder">
+	<PreferenceCategory android:title="@string/reminder">
+	
+		<CheckBoxPreference android:key="reminder_enabled" 
+		                    android:title="@string/reminder_enabled"
+		                    android:defaultValue="true"
+		                    android:summaryOff="@string/reminder_enabled_sub_off"
+		                    android:summaryOn="@string/reminder_enabled_sub_on" />
+		
+		<ListPreference android:key="reminder_period"
+		                android:dependency="reminder_enabled" 
+		                android:title="@string/reminder_period" 
+		                android:defaultValue="5" 
+		                android:entries="@array/reminder_periods" 
+		                android:entryValues="@array/reminder_periods" />
+	
+	</PreferenceCategory>
 
-<CheckBoxPreference android:key="reminder_enabled" 
-                    android:title="@string/reminder_enabled" android:defaultValue="true" android:summaryOff="@string/reminder_enabled_sub_off" android:summaryOn="@string/reminder_enabled_sub_on">
-</CheckBoxPreference>
-
-<ListPreference android:key="reminder_period"
-                android:dependency="reminder_enabled" 
-                android:title="@string/reminder_period" 
-                android:defaultValue="5" 
-                android:entries="@array/reminder_periods" 
-                android:entryValues="@array/reminder_periods">
-</ListPreference>
-</PreferenceCategory>
 </PreferenceScreen>
