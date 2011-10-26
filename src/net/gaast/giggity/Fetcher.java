@@ -41,10 +41,11 @@ public class Fetcher {
 		ONLINE_NOCACHE,	/* Fetch online, ignore cached version. */
 	}
 	
-	public Fetcher(Giggity app_, String url, Source source) throws IOException {
+	public Fetcher(Giggity app_, String url, Source prefSource) throws IOException {
 		app = app_;
+		source = null;
 
-		Log.d("Fetcher", "Creating fetcher for " + url + " source=" + source);
+		Log.d("Fetcher", "Creating fetcher for " + url + " prefSource=" + prefSource);
 		
 		fn = new File(app.getCacheDir(), "sched." + Schedule.hashify(url));
 		fntmp = null;
@@ -53,7 +54,7 @@ public class Fetcher {
 				app.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo(); 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
 
-		if ((source == Source.ONLINE || source == Source.ONLINE_NOCACHE) &&
+		if ((prefSource == Source.ONLINE || prefSource == Source.ONLINE_NOCACHE) &&
 		    (network == null || !network.isConnected())) {
 			throw new IOException("No network connection available.");
 		}
@@ -72,7 +73,7 @@ public class Fetcher {
 			
 			((HttpURLConnection)dlc).addRequestProperty("Accept-Encoding", "gzip");
 			
-			if (source != Source.ONLINE_NOCACHE && fn.canRead() && fn.lastModified() > 0) {
+			if (prefSource != Source.ONLINE_NOCACHE && fn.canRead() && fn.lastModified() > 0) {
 				/* TODO: Not sure if it's a great idea to use inode metadata to store
 				 * modified-since data, but it works so far.. */
 				dlc.setIfModifiedSince(fn.lastModified());
@@ -84,7 +85,7 @@ public class Fetcher {
 			/* It failed. Maybe we're HTTP only? Maybe even FTP? */
 		}
 
-		if (source != Source.CACHE && !(fn.canRead() && source == Source.CACHE_ONLINE) &&
+		if (prefSource != Source.CACHE && !(fn.canRead() && prefSource == Source.CACHE_ONLINE) &&
 		    network != null && network.isConnected()) {
 			int status;
 			try {
@@ -108,6 +109,7 @@ public class Fetcher {
 				source = Source.ONLINE;
 			} else if (status == 304) {
 				Log.i("Fetcher", "HTTP 304, using cached copy");
+				source = Source.ONLINE; /* We're reading cache, but 304 means it should be equivalent. */
 				/* Just continue, in = null so we'll read from cache. */
 			} else {
 				throw new IOException("Download error: " + dlc.getHeaderField(0));
@@ -118,7 +120,8 @@ public class Fetcher {
 			/* We have no download stream and should use the cached copy (i.e. we're offline). */
 			in = new BufferedReader(new InputStreamReader(new FileInputStream(fn)));
 			dlc = null;
-			source = Source.CACHE;
+			if (source != Source.ONLINE)
+				source = Source.CACHE;
 		} else if (in == null) {
 			throw new IOException("No network connection or cached copy available.");
 		}
