@@ -28,9 +28,11 @@ import net.gaast.giggity.Db.DbSchedule;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -67,6 +69,8 @@ public class ChooserActivity extends Activity {
 	private EditText urlBox;
 	private ImageButton addButton, qrButton;
 	
+	private SharedPreferences pref;
+	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
@@ -79,6 +83,7 @@ public class ChooserActivity extends Activity {
     	
     	Giggity app = (Giggity) getApplication();
     	db = app.getDb();
+    	pref = PreferenceManager.getDefaultSharedPreferences(app);
     	
 		list = new ListView(this);
 		list.setOnItemClickListener(new OnItemClickListener() {
@@ -86,9 +91,7 @@ public class ChooserActivity extends Activity {
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 				DbSchedule item = (DbSchedule) lista.getItem(position);
 				if (item != null) {
-	    	        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
-			                   view.getContext(), ScheduleViewActivity.class);
-	    	        startActivity(intent);
+					openSchedule(item, false);
 				}
 			}
     	});
@@ -124,7 +127,7 @@ public class ChooserActivity extends Activity {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN &&
 				    keyCode == KeyEvent.KEYCODE_ENTER) {
-					openNewUrl();
+					openSchedule(urlBox.getText().toString(), false);
 					return true;
 				} else {
 					return false;
@@ -153,7 +156,7 @@ public class ChooserActivity extends Activity {
     	addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openNewUrl();
+				openSchedule(urlBox.getText().toString(), false);
 			}
     	});
     	bottom.addView(addButton);
@@ -202,7 +205,7 @@ public class ChooserActivity extends Activity {
         } else if (item.getItemId() == 0) {
         	/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			list.getOnItemClickListener().onItemClick(null, list, mi.position, mi.id);
+			openSchedule(sched, true);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
 			db.removeSchedule(sched.getUrl());
@@ -241,21 +244,29 @@ public class ChooserActivity extends Activity {
     	db.sleep();
     }
     
-    private void openNewUrl() {
-    	String url = urlBox.getText().toString();
+    private void openSchedule(String url, boolean prefOnline) {
     	if (!url.contains("://"))
     		url = "http://" + url;
     	Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
                                    this, ScheduleViewActivity.class);
+    	intent.putExtra("PREFER_CACHED", !prefOnline);
     	startActivity(intent);
+    }
+    
+    private void openSchedule(DbSchedule event, boolean prefOnline) {
+    	if (!prefOnline) {
+    		if (pref.getBoolean("always_refresh", false) ||
+    		    new Date().getTime() - event.getRtime().getTime() > 86400000)
+    			prefOnline = true;
+    	}
+    	openSchedule(event.getUrl(), prefOnline);
     }
     
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
-                urlBox.setText(intent.getStringExtra("SCAN_RESULT"));
-                openNewUrl();
+                openSchedule(intent.getStringExtra("SCAN_RESULT"), false);
             }
         }
     }

@@ -10,12 +10,12 @@
 	                android:entries="@array/default_view"
 	                android:entryValues="@array/default_view_values" 
 	                android:defaultValue="1" />
-<!-- 
+
 	<CheckBoxPreference android:key="always_refresh" 
 	                    android:title="@string/always_refresh"
 	                    android:defaultValue="false"
 	                    android:summaryOff="@string/always_refresh_sub_off" />
--->
+
 	<CheckBoxPreference android:key="strict_ssl"
                         android:summary="@string/strict_ssl_sub"
                         android:title="@string/strict_ssl"

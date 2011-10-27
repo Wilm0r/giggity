@@ -104,18 +104,10 @@ public class Giggity extends Application {
        	scheduleCache.remove(url);
     }
     
-    public Schedule getSchedule(String url, boolean offline) throws Exception {
+    public Schedule getSchedule(String url, Fetcher.Source source) throws Exception {
     	if (!hasSchedule(url)) {
     		Schedule sched = new Schedule(this);
-			if (offline) {
-				/* Reminder shouldn't touch the network unless really necessary. */
-				try {
-					sched.loadSchedule(url, false);
-				} catch (Exception e) {
-					return getSchedule(url, false);
-				}
-			} else
-				sched.loadSchedule(url, true);
+			sched.loadSchedule(url, source);
 	   		scheduleCache.put(url, sched);
     	}
     	return (lastSchedule = scheduleCache.get(url));

@@ -434,19 +434,11 @@ public class Db {
 				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
 			}
 		}
-		
-		public Date getScheduleRtime(String url) {
-			Cursor q = db.rawQuery("Select sch_rtime From schedule Where sch_url = ?", new String[]{url});
-			if (q.getCount() != 1)
-				return null;
-			q.moveToFirst();
-			return new Date(q.getLong(0) * 1000);
-		}
 	}
 	
 	public class DbSchedule {
 		private String url, id, title;
-		private Date start, end;
+		private Date start, end, atime, rtime;
 		
 		public DbSchedule(Cursor q) {
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
@@ -454,6 +446,8 @@ public class Db {
 			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
 			start = new Date(q.getLong(q.getColumnIndexOrThrow("sch_start")) * 1000);
 			end = new Date(q.getLong(q.getColumnIndexOrThrow("sch_end")) * 1000);
+			atime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_atime")) * 1000);
+			rtime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_rtime")) * 1000);
 		}
 		
 		public String getUrl() {
@@ -477,6 +471,14 @@ public class Db {
 		
 		public Date getEnd() {
 			return end;
+		}
+		
+		public Date getAtime() {
+			return atime;
+		}
+		
+		public Date getRtime() {
+			return rtime;
 		}
 	}
 }

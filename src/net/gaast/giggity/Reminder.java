@@ -39,7 +39,7 @@ public class Reminder extends Service {
 			String url[] = intent.getDataString().split("#", 2);
 			Schedule sched;
 			try {
-				sched = app.getSchedule(url[0], true);
+				sched = app.getSchedule(url[0], Fetcher.Source.CACHE_ONLINE);
 			} catch (Exception e) {
 				Log.e("reminder", "Urgh, caught exception while reloading schedule (the OS killed us)");
 				e.printStackTrace();
@@ -98,6 +98,7 @@ public class Reminder extends Service {
     	not = new Notification(R.drawable.deoxide_icon_48x48, item.getTitle(), item.getStartTime().getTime());
     	Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
     			                app, ScheduleViewActivity.class);
+    	evi.putExtra("PREFER_CACHED", true);
     	not.setLatestEventInfo(app, item.getTitle(), "Soon in " + item.getLine().getTitle(),
     			               PendingIntent.getActivity(app, 0, evi, 0));
     	not.flags |= Notification.FLAG_AUTO_CANCEL;

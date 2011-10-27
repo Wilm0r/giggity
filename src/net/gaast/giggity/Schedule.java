@@ -205,8 +205,8 @@ public class Schedule {
 		return linkTypes.size() > 1;
 	}
 
-	public void loadSchedule(String source, boolean online) throws IOException {
-		url = source;
+	public void loadSchedule(String url_, Fetcher.Source source) throws IOException {
+		url = url_;
 		
 		id = null;
 		title = null;
@@ -232,7 +232,7 @@ public class Schedule {
 		BufferedReader in;
 		
 		try {
-			f = app.fetch(source, online ? Fetcher.Source.ONLINE_CACHE : Fetcher.Source.CACHE);
+			f = app.fetch(url, source);
 			in = f.getReader();
 			char[] headc = new char[detectHeaderSize];
 			
@@ -280,13 +280,13 @@ public class Schedule {
 			if (id != null)
 				title = id;
 			else
-				title = source;
+				title = url;
 
 		if (id == null)
-			id = hashify(source);
+			id = hashify(url);
 		
 		db = app.getDb();
-		db.setSchedule(this, source, f.getSource() == Fetcher.Source.ONLINE);
+		db.setSchedule(this, url, f.getSource() == Fetcher.Source.ONLINE);
 		
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;

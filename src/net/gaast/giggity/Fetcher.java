@@ -35,7 +35,7 @@ public class Fetcher {
 	
 	public enum Source {
 		CACHE,			/* Get from cache or fail. */
-		CACHE_ONLINE,	/* Prefer cache, but fetch if possible. */
+		CACHE_ONLINE,	/* Get from cache, allow fetch if not available. */
 		ONLINE_CACHE,	/* Check online if we can, otherwise use cache. */
 		ONLINE,			/* Check online (304 -> cache). */
 		ONLINE_NOCACHE,	/* Fetch online, ignore cached version. */

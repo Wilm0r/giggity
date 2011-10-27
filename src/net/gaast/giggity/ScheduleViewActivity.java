@@ -105,8 +105,13 @@ public class ScheduleViewActivity extends Activity {
         
         if (!getIntent().getAction().equals(Intent.ACTION_VIEW))
         	return;
-
+        
     	String url = getIntent().getDataString();
+    	Fetcher.Source fs;
+        if (getIntent().getBooleanExtra("PREFER_CACHED", false))
+        	fs = Fetcher.Source.CACHE_ONLINE;
+        else
+        	fs = Fetcher.Source.ONLINE_CACHE;
         
 		if (url.contains("#")) {
 			String parts[] = url.split("#", 2);
@@ -116,14 +121,14 @@ public class ScheduleViewActivity extends Activity {
 		
         if (app.hasSchedule(url)) {
         	try {
-				sched = app.getSchedule(url, false);
+				sched = app.getSchedule(url, fs);
 			} catch (Exception e) {
 				// Java makes me tired.
 				e.printStackTrace();
 			}
         	onScheduleLoaded();
         } else {
-        	horribleAsyncLoadHack(url);
+        	horribleAsyncLoadHack(url, fs);
         }
     }
     
@@ -133,8 +138,9 @@ public class ScheduleViewActivity extends Activity {
     	super.onDestroy();
     }
     
-    private void horribleAsyncLoadHack(String source_) { 
-        final String source;
+    private void horribleAsyncLoadHack(String url_, Fetcher.Source source_) { 
+    	final String url = url_;
+    	final Fetcher.Source source = source_;
         final Thread loader;
         final Handler resultHandler;
         final ProgressDialog prog;
@@ -144,8 +150,6 @@ public class ScheduleViewActivity extends Activity {
         prog.setIndeterminate(true);
         prog.show();
 
-        source = source_;
-        
 	    resultHandler = new Handler() {
 	    	@Override
 	    	public void handleMessage(Message msg) {
@@ -172,7 +176,7 @@ public class ScheduleViewActivity extends Activity {
     		@Override
     		public void run() {
     			try {
-    	    		sched = app.getSchedule(source, false);
+    	    		sched = app.getSchedule(url, source);
     				resultHandler.sendEmptyMessage(1);
     			} catch (Throwable t) {
     				t.printStackTrace();
