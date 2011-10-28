@@ -398,7 +398,16 @@ public class Schedule {
 	}
 	
 	public LinkedList<Schedule.Line> getTents() {
-		return tents;
+		if (curDay == null)
+			return tents;
+
+		LinkedList<Line> ret = new LinkedList<Line>();
+		for (Line line : tents) {
+			if (line.getItems().size() > 0)
+				ret.add(line);
+		}
+		
+		return ret;
 	}
 	
 	public Schedule.LinkType getLinkType(String id) {
