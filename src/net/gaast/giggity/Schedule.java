@@ -20,19 +20,11 @@
 package net.gaast.giggity;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
@@ -49,21 +41,14 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.zip.GZIPInputStream;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.preference.PreferenceManager;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Xml;
 
@@ -87,6 +72,7 @@ public class Schedule {
 	LinkedList<Date> dayList;
 
 	private boolean fullyLoaded;
+	private Handler progressHandler;
 	
 	public Schedule(Giggity ctx) {
 		app = ctx;
@@ -204,6 +190,10 @@ public class Schedule {
 	public boolean hasLinkTypes() {
 		return linkTypes.size() > 1;
 	}
+	
+	public void setProgressHandler(Handler handler) {
+		progressHandler = handler;
+	}
 
 	public void loadSchedule(String url_, Fetcher.Source source) throws IOException {
 		url = url_;
@@ -233,6 +223,7 @@ public class Schedule {
 		
 		try {
 			f = app.fetch(url, source);
+			f.setProgressHandler(progressHandler);
 			in = f.getReader();
 			char[] headc = new char[detectHeaderSize];
 			

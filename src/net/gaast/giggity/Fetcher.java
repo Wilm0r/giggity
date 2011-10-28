@@ -4,9 +4,9 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -32,6 +33,8 @@ public class Fetcher {
 	private URLConnection dlc;
 	private BufferedReader in;
 	private Source source;
+	private Handler progressHandler;
+	private long flen;
 	
 	public enum Source {
 		CACHE,			/* Get from cache or fail. */
@@ -97,14 +100,21 @@ public class Fetcher {
 			}
 			if (status == 200) {
 				fntmp = new File(app.getCacheDir(), "tmp." + Schedule.hashify(url));
-				Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fntmp)));
+				Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fntmp), "utf-8"));
 				Reader rawin;
 				String enc = dlc.getContentEncoding();
+				
+				InputStream is = dlc.getInputStream();
+				if (dlc.getContentLength() > -1) {
+					flen = dlc.getContentLength();
+					is = new ProgressStream(is);
+				}
+				
 				Log.d("Fetcher", "HTTP encoding " + enc);
 				if (enc != null && enc.contains("gzip"))
-					rawin = new InputStreamReader(new GZIPInputStream(dlc.getInputStream()), "utf-8");
+					rawin = new InputStreamReader(new GZIPInputStream(is), "utf-8");
 				else
-					rawin = new InputStreamReader(dlc.getInputStream(), "utf-8");
+					rawin = new InputStreamReader(is, "utf-8");
 				in = new TeeReader(rawin, copy, 4096);
 				source = Source.ONLINE;
 			} else if (status == 304) {
@@ -118,7 +128,8 @@ public class Fetcher {
 
 		if (in == null && fn.canRead()) {
 			/* We have no download stream and should use the cached copy (i.e. we're offline). */
-			in = new BufferedReader(new InputStreamReader(new FileInputStream(fn)));
+			flen = fn.length();
+			in = new BufferedReader(new InputStreamReader(new ProgressStream(new FileInputStream(fn)), "utf-8"));
 			dlc = null;
 			if (source != Source.ONLINE)
 				source = Source.CACHE;
@@ -127,6 +138,9 @@ public class Fetcher {
 		}
 	}
 	
+	public void setProgressHandler(Handler handler) {
+		progressHandler = handler;
+	}
 	
 	public BufferedReader getReader() {
 		return in;
@@ -180,8 +194,8 @@ public class Fetcher {
 	
 	/* I want to keep local cached copies of schedule files. This reader makes that easy. */
 	private class TeeReader extends BufferedReader {
-		Writer writer;
-		boolean waiting;
+		private Writer writer;
+		private boolean waiting;
 		
 		public TeeReader(Reader in, Writer out, int buf) {
 			super(in, buf);
@@ -222,6 +236,52 @@ public class Fetcher {
 		public void close() throws IOException {
 			super.close();
 			writer.close();
+		}
+	}
+	
+	private class ProgressStream extends InputStream {
+		private InputStream in;
+		private boolean waiting;
+		private long offset;
+
+		public ProgressStream(InputStream in_) {
+			in = in_;
+		}
+		
+		@Override
+		public int read() throws IOException {
+			if (!waiting)
+				offset++;
+			return in.read();
+		}
+		
+		@Override
+		public int read(byte b[], int off, int len) throws IOException {
+			int ret = in.read(b, off, len);
+			if (!waiting) {
+				offset += ret;
+				if (progressHandler != null && flen > 0 && ret > 0) {
+					progressHandler.sendEmptyMessage((int) (100L * offset / flen));
+				}
+			}
+			return ret;
+		}
+		
+		@Override
+		public int read(byte b[]) throws IOException {
+			return read(b, 0, b.length);
+		}
+		
+		@Override
+		public void mark(int limit) {
+			in.mark(limit);
+			waiting = true;
+		}
+		
+		@Override
+		public void reset() throws IOException {
+			in.reset();
+			waiting = false;
 		}
 	}
 }

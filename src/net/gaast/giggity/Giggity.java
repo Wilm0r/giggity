@@ -32,6 +32,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
 
@@ -104,15 +105,20 @@ public class Giggity extends Application {
        	scheduleCache.remove(url);
     }
     
-    public Schedule getSchedule(String url, Fetcher.Source source) throws Exception {
+    public Schedule getSchedule(String url, Fetcher.Source source, Handler progress) throws Exception {
     	if (!hasSchedule(url)) {
     		Schedule sched = new Schedule(this);
+    		sched.setProgressHandler(progress);
 			sched.loadSchedule(url, source);
 	   		scheduleCache.put(url, sched);
     	}
     	return (lastSchedule = scheduleCache.get(url));
     }
-    
+
+    public Schedule getSchedule(String url, Fetcher.Source source) throws Exception {
+    	return getSchedule(url, source, null);
+    }
+
     public Schedule getLastSchedule() {
     	/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
     	return lastSchedule;

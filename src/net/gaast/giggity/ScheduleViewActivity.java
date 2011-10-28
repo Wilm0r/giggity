@@ -145,17 +145,27 @@ public class ScheduleViewActivity extends Activity {
         final Handler resultHandler;
         final ProgressDialog prog;
         
+        final int DONE = 999999;
+        
         prog = new ProgressDialog(this);
         prog.setMessage(this.getResources().getString(R.string.loading_schedule));
         prog.setIndeterminate(true);
+		prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+		prog.setMax(1);
         prog.show();
 
 	    resultHandler = new Handler() {
 	    	@Override
 	    	public void handleMessage(Message msg) {
-	    		if (msg.what > 0) {
+	    		if (msg.what == DONE) {
 	    			onScheduleLoaded();
 		    		prog.dismiss();
+	    		} else if (msg.what > 0 ) {
+	    			if (prog.getMax() == 1) {
+	        			prog.setIndeterminate(false);
+		    			prog.setMax(100);
+	    			}
+	    			prog.setProgress(msg.what);
 	    		} else {
 		    		prog.dismiss();
 		    		
@@ -176,8 +186,8 @@ public class ScheduleViewActivity extends Activity {
     		@Override
     		public void run() {
     			try {
-    	    		sched = app.getSchedule(url, source);
-    				resultHandler.sendEmptyMessage(1);
+    	    		sched = app.getSchedule(url, source, resultHandler);
+    				resultHandler.sendEmptyMessage(DONE);
     			} catch (Throwable t) {
     				t.printStackTrace();
     				resultHandler.sendMessage(Message.obtain(resultHandler, 0, t));
