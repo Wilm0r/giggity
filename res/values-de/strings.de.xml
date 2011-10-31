@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Giggity</string>
+    <string name="search_hint">Veranstaltungen suchen</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Abbrechen</string>
+    
+    <!--  Settings -->
+    <string name="default_view">Standardansicht</string>
+    <string name="always_refresh">Programm immer aktualisieren</string>
+    <string name="always_refresh_sub_off">Täglich nach neuer Version suchen</string>
+    <string name="strict_ssl">Striktes SSL</string>
+    <string name="strict_ssl_sub">Überprüfung des HTTPS Zertifikats</string>
+    
+	<string name="block_schedule_style">Stil</string>
+	<string name="block_schedule">Programmübersicht</string>
+	<string name="block_schedule_element_size_sub">Größe der Zeitabschnitte</string>
+	<string name="block_schedule_element_size">Abschnittsgröße</string>
+
+	<string name="reminder">Veranstaltungserinnerungen</string>
+	<string name="reminder_enabled_sub_on">An markierte Veranstaltungen erinnern</string>
+	<string name="reminder_enabled_sub_off">Nicht an markierte Veranstaltungen erinnern</string>
+	<string name="reminder_enabled">Erinnerungen aktivieren</string>
+	<string name="reminder_period">Minuten vor der Veranstaltung</string>
+
+	<!-- EventDialog -->
+	<string name="speaker">Sprecher:</string>
+	<string name="speakers">Sprecher:</string>
+	<string name="remind_me">An Veranstaltung erinnern</string>
+
+	<!-- ScheduleViewActivity -->
+	<string name="loading_schedule">Lade Programm...</string>
+	<string name="loading_error">Fehler beim Laden</string>
+	<!-- Menu -->
+	<string name="settings">Einstellungen</string>
+	<string name="change_day">Tag ändern</string>
+	<string name="timetable">Zeitplan</string>
+	<string name="tracks">Tracks</string>
+	<string name="now_next">Jetzt und gleich</string>
+	<string name="my_events">Meine Veranstaltungen</string>
+	<string name="search">Suche</string>
+
+	<!-- NowNext -->
+	<string name="no_events_today">Heute keine Veranstaltungen.</string>
+	<string name="now">Jetzt:</string>
+	<string name="next">Gleich:</string>
+
+	<!-- MyItemsView -->
+	<string name="coming_up">Kommende Veranstaltungen:</string>
+	<string name="seen_so_far">Schon besuchte Veranstaltungen:</string>
+	<string name="none_marked">Noch keine Veranstaltung markiert.</string>
+
+	<!-- ChooserActivity -->
+	<string name="refresh">Aktualisieren</string>
+	<string name="remove">Entfernen</string>
+	<string name="show_url">URL anzeigen...</string>
+	<string name="chooser_now">Aktuelle Veranstaltungen:</string>
+	<string name="chooser_later">Kommende Veranstaltungen:</string>
+	<string name="chooser_past">Bisherige Veranstaltungen:</string>
+</resources>
