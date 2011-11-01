@@ -1,5 +1,5 @@
 {
-	"version": 11,
+	"version": 2011110100,
 	"schedules": [
 		{
 			"version": 1,
@@ -60,7 +60,7 @@
 			"end": "2011-08-21"
 		},
 		{
-			"version": 11,
+			"version": 2011110100,
 			"url": "http://programm.openrheinruhr.de/2011/schedule.en.xml",
 			"title": "OpenRheinRuhr 2011",
 			"start": "2011-11-12",
