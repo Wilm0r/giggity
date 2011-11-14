@@ -1,0 +1,5556 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<!-- v3.63, 3565, 2011-11-03 05:50:26 -0700 -->
+<title>IETF 82 Meeting Agenda</title>
+<link rel="stylesheet" type="text/css" href="/css/yui/yui-20100305.css"></link>
+<link rel="stylesheet" type="text/css" href="/css/base2.css"></link>
+<style type="text/css">
+
+table#agenda { border: 0; border-collapse:collapse; }
+#agenda td { padding-right:2em; }
+#agenda tr.meeting-date td { padding-top:1em; padding-right:0;}
+
+table#wg-selector { border:1px solid black; border-collapse:collapse; }
+#wg-selector td,#wg-selector th { border:1px solid black; padding: 2px}
+#wg-selector div.selected { background-color: #D0D0FF; cursor: pointer; }
+#wg-selector div.unselected { background-color: #FFFFFF; cursor: pointer; }
+#wg-selector td.inactive div { background-color: #EEEEEE; color: #808080; cursor:default;}
+#wg-selector.hidden { display: none; }
+#wg-selector-toggle-text { text-decoration: underline; cursor: pointer; }
+#wg-selector-triangle-right { vertical-align: text-top; }
+#wg-selector-triangle-down { vertical-align: text-top; }
+
+#weekview.hidden { display: none; }
+#weekview { border: none; margin: 0 0 0 0;}
+#ical-link.hidden { display: none; }
+#ical-link { margin: 10px 0 0 0; padding: 10px; text-align: center; background-color: #2647a0; color: #FFFFFF }
+#ical-link A:link { color: #FFFFFF; }
+#ical-link A:visited { color: #FFFFFF; }
+#ical-link A:active { color: #FF00FF; }
+#ical-link A:hover { color: #FF0000; }
+
+img.hidden { display: none; }
+
+.ietf-agenda-palette { border-collapse:collapse; border:2px solid black; background:white; overflow:hidden; }
+.ietf-agenda-palette td { border:1px solid black; }
+.ietf-agenda-palette td { padding: 4px; text-align:center;}
+.ietf-agenda-palette td a { text-decoration:none; }
+.bgnone {}
+.bgaqua, .bgaqua a { background-color: aqua; color: black; }
+.bgblue, .bgblue a { background-color: blue; color: black; }
+.bgfuchsia, .bgfuchsia a { background-color: fuchsia; color: black; }
+.bggray, .bggray a { background-color: gray; color: white; }
+.bggreen, .bggreen a { background-color: green; color: white; }
+.bglime, .bglime a { background-color: lime; color: black; }
+.bgmaroon, .bgmaroon a { background-color: maroon; color: white; }
+.bgnavy, .bgnavy a { background-color: navy; color: white; }
+.bgolive, .bgolive a { background-color: olive; color: white; }
+.bgpurple, .bgpurple a { background-color: purple; color: white; }
+.bgred, .bgred a { background-color: red; color: black; }
+.bgsilver, .bgsilver a { background-color: silver; color: black; }
+.bgteal, .bgteal a { background-color: teal; color: white; }
+.bgwhite, .bgwhite a { background-color: white; color: black; }
+.bgyellow, .bgyellow a { background-color: yellow; color: black; }
+.bgblack, .bgblack a { background-color: black; color: white; }
+.groupagenda { display:none; }
+
+
+</style>
+
+<script type="text/javascript" src='/js/agenda2.js'></script>
+<script type="text/javascript">
+
+  var lastfrag;
+
+  function setGroupState()
+  {
+    var frag = window.location.hash.replace("#",'');
+    window.setTimeout("setGroupState()",1000);
+    if (frag == lastfrag) { return; }
+
+    var weekview = document.getElementById('weekview');
+    var ical_link = document.getElementById('ical-link');
+    var ical_href = document.getElementById('ical-href');
+
+    lastfrag = frag;
+
+    var fragment = frag.split(',');
+
+    if (frag.length)
+    {
+      weekview.setAttribute("src","week-view.html#"+frag);
+      weekview.className = '';
+      ical_href.setAttribute("href","agenda.ics?"+frag);
+      ical_link.className = '';
+    }
+    else
+    {
+      weekview.className = 'hidden';
+      ical_link.className = 'hidden';
+    }
+
+    var selectors = document.getElementsByTagName('div');
+    var re = RegExp("^selector-");
+    var re2 = RegExp("^selector-(" + fragment.join('|') + ")$");
+
+    for (var i=0 ; i<selectors.length; i++)
+    {
+      if (re.test(selectors[i].id))
+      {
+        var wg = selectors[i].textContent?selectors[i].textContent:selectors[i].text;
+        var area_groups = document.getElementById(wg + "-groups");
+        if (re2.test(selectors[i].id))
+        {
+          selectors[i].className="selected";
+          if (area_groups)
+          {
+            area_groups.className = 'inactive';
+          }
+        }
+        else
+        {
+          selectors[i].className="unselected";
+          if (area_groups)
+          {
+            area_groups.className = '';
+          }
+        }
+      }
+    }
+    var rows = document.getElementsByTagName('tr');
+    var hidenone = false;
+    if (frag.length == 0) { hidenone=true; }
+
+    var re = RegExp("-(" + fragment.join('|') + ")($|-)");
+
+    for (var i = 0; i < rows.length; i++)
+    {
+      if (rows[i].className == 'groupagenda' || rows[i].className == 'grouprow')
+      {
+        if (re.test(rows[i].id) || (hidenone && rows[i].className == 'grouprow'))
+        {
+          rows[i].style.display="table-row";
+          if (rows[i].className == 'groupagenda')
+          {
+            var iframe = rows[i].firstElementChild.nextElementSibling.firstElementChild;
+            if (iframe.getAttribute("xsrc") != iframe.getAttribute("src"))
+            {
+              iframe.setAttribute("src",iframe.getAttribute("xsrc"));
+            }
+            r(iframe);
+          }
+        }
+        else
+        {
+          rows[i].style.display="none";
+        }
+      }
+    }
+
+
+  }
+
+  /* Resizes an IFRAME to fit its contents */
+  function r(obj)
+  {
+    try
+    {
+      docHeight = obj.contentWindow.document.body.scrollHeight;
+      obj.height = docHeight;
+    }
+    catch (e) {}
+  }
+
+  function toggle(selection)
+  {
+    var active = selection.className;
+    var wg = selection.textContent?selection.textContent:selection.text;
+
+    if (active == "selected")
+    {
+      var re = new RegExp('(^|#|,)' + wg + "(,|$)");
+      window.location.hash = window.location.hash.replace(re,"$2")
+
+    }
+    else
+    {
+      if (window.location.hash.replace("#","").length == 0)
+      {
+        window.location.hash = wg;
+      }
+      else
+      {
+        window.location.hash += "," + wg;
+      }
+
+    }
+    window.location.hash = window.location.hash.replace(/^#?,/,'');
+    setGroupState();
+  }
+
+  function toggle_wg_selector ()
+  {
+    var wg_selector = document.getElementById('wg-selector');
+    var triangle_right = document.getElementById('wg-selector-triangle-right');
+    var triangle_down = document.getElementById('wg-selector-triangle-down');
+    if (wg_selector.className == 'hidden')
+    {
+      wg_selector.className = '';
+      triangle_right.className = 'hidden';
+      triangle_down.className = '';
+    }
+    else
+    {
+      wg_selector.className = 'hidden';
+      triangle_right.className = '';
+      triangle_down.className = 'hidden';
+    }
+  }
+</script>
+
+
+<script type="text/javascript">
+IETF = {};
+IETF.user_groups = {  };
+</script>
+
+<link rel="icon" href="/images/ietf-icon-blue.bmp" />
+
+<link rel="search" href="/js/datatracker-search.xml" type="application/opensearchdescription+xml" title="IETF Datatracker Search" />
+</head>
+<body class="yui-skin-sam" onload='setGroupState();updateAgendaColors()'>
+<div style="background-color:#313163;color:white;font-size:150%;height:35px;" class="noprint">
+<img src="/images/ietflogo-blue-small.png" width="60" height="34" style="vertical-align:middle;padding-left:8px;" alt=""/><span style="padding-left:15px;font-weight:bold;letter-spacing:0.1em;">datatracker.ietf.org </span>
+</div>
+
+
+<div id="ietf-login" class="noprint">
+<a href="https://datatracker.ietf.org/accounts/login/?next=/meeting/82/agenda.html" rel="nofollow">Sign In</a>
+</div>
+
+
+<table style="margin-left:8px;margin-top:8px;" width="98%;">
+<tr valign="top">
+<td style="width:130px;padding-right:8px;" class="noprint">
+<div class="ietf-navbar">
+
+ 
+
+<ul>
+<li class="sect first">Accounts</li>
+  <li><a href="/accounts/">New Account</a></li>
+
+
+
+
+<li class="sect first">Working Groups</li>
+
+  <li style="padding-bottom:0;"><div id="wgs" class="yuimenu"><div class="bd" style="border:0;">
+  <ul class="first-of-type" style="padding:0;">
+  <!-- begin wg_menu -->
+  
+
+
+<li class="yuimenuitem"><a class="yuimenuitemlabel">Applications</a><div id="wgs-app" class="yuimenu"><div class="bd"><ul>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/appsawg/">appsawg &mdash; Applications Area Working Group</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/core/">core &mdash; Constrained RESTful Environments</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/eai/">eai &mdash; Email Address Internationalization</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ftpext2/">ftpext2 &mdash; FTP Extensions, 2nd edition</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/httpbis/">httpbis &mdash; Hypertext Transfer Protocol Bis</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/hybi/">hybi &mdash; BiDirectional or Server-Initiated HTTP</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/iri/">iri &mdash; Internationalized Resource Identifiers</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/marf/">marf &mdash; Messaging Abuse Reporting Format</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/paws/">paws &mdash; Protocol to Access WS database</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/precis/">precis &mdash; Preparation and Comparison of Internationalized Strings</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/repute/">repute &mdash; Reputation Services</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/sieve/">sieve &mdash; Sieve Mail Filtering Language</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/urnbis/">urnbis &mdash; Uniform Resource Names, Revised</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/vcarddav/">vcarddav &mdash; vCard and CardDAV</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/websec/">websec &mdash; Web Security</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/yam/">yam &mdash; Yet Another Mail</a></li>
+</ul></div></div></li>
+
+
+
+
+
+<li class="yuimenuitem"><a class="yuimenuitemlabel">Internet</a><div id="wgs-int" class="yuimenu"><div class="bd"><ul>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/6lowpan/">6lowpan &mdash; IPv6 over Low power WPAN</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/6man/">6man &mdash; IPv6 Maintenance</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ancp/">ancp &mdash; Access Node Control Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/autoconf/">autoconf &mdash; Ad-Hoc Network Autoconfiguration</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/csi/">csi &mdash; Cga &amp; Send maIntenance</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/dhc/">dhc &mdash; Dynamic Host Configuration</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/dnsext/">dnsext &mdash; DNS Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/hip/">hip &mdash; Host Identity Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/homenet/">homenet &mdash; Home Networking</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/intarea/">intarea &mdash; Internet Area Working Group</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/l2tpext/">l2tpext &mdash; Layer Two Tunneling Protocol Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/lisp/">lisp &mdash; Locator/ID Separation Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/lwig/">lwig &mdash; Light-Weight Implementation Guidance</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mext/">mext &mdash; Mobility EXTensions for IPv6</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mif/">mif &mdash; Multiple Interfaces</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mip4/">mip4 &mdash; Mobility for IPv4</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/multimob/">multimob &mdash; Multicast Mobility</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/netext/">netext &mdash; Network-Based Mobility Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ntp/">ntp &mdash; Network Time Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/pcp/">pcp &mdash; Port Control Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/pppext/">pppext &mdash; Point-to-Point Protocol Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/savi/">savi &mdash; Source Address Validation Improvements</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/softwire/">softwire &mdash; Softwires</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/tictoc/">tictoc &mdash; Timing over IP Connection and Transfer of Clock</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/trill/">trill &mdash; Transparent Interconnection of Lots of Links</a></li>
+</ul></div></div></li>
+
+
+
+<li class="yuimenuitem"><a class="yuimenuitemlabel">Ops &amp; Mgmt</a><div id="wgs-ops" class="yuimenu"><div class="bd"><ul>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/6renum/">6renum &mdash; IPv6 Site Renumbering</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/adslmib/">adslmib &mdash; ADSL MIB</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/armd/">armd &mdash; Address Resolution for Massive numbers of hosts in the Data center</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/bmwg/">bmwg &mdash; Benchmarking Methodology</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/dime/">dime &mdash; Diameter Maintenance and Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/dnsop/">dnsop &mdash; Domain Name System Operations</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/eman/">eman &mdash; Energy Management</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/grow/">grow &mdash; Global Routing Operations</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ipfix/">ipfix &mdash; IP Flow Information Export</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mboned/">mboned &mdash; MBONE Deployment</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/netconf/">netconf &mdash; Network Configuration</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/netmod/">netmod &mdash; NETCONF Data Modeling Language</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/opsawg/">opsawg &mdash; Operations and Management Area Working Group</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/opsec/">opsec &mdash; Operational Security Capabilities for IP Network Infrastructure</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/radext/">radext &mdash; RADIUS EXTensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/v6ops/">v6ops &mdash; IPv6 Operations</a></li>
+</ul></div></div></li>
+
+
+
+<li class="yuimenuitem"><a class="yuimenuitemlabel">RAI</a><div id="wgs-rai" class="yuimenu"><div class="bd"><ul>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/atoca/">atoca &mdash; Authority-to-Citizen Alert</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/avtcore/">avtcore &mdash; Audio/Video Transport Core Maintenance</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/avtext/">avtext &mdash; Audio/Video Transport Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/bfcpbis/">bfcpbis &mdash; Binary Floor Control Protocol Bis </a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/bliss/">bliss &mdash; Basic Level of Interoperability for SIP Services</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/clue/">clue &mdash; ControLling mUltiple streams for tElepresence</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/codec/">codec &mdash; Internet Wideband Audio Codec</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/cuss/">cuss &mdash; Call Control UUI Service for SIP</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/dispatch/">dispatch &mdash; Dispatch</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/drinks/">drinks &mdash; Data for Reachability of Inter/tra-NetworK SIP</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ecrit/">ecrit &mdash; Emergency Context Resolution with Internet Technologies</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/geopriv/">geopriv &mdash; Geographic Location/Privacy</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mediactrl/">mediactrl &mdash; Media Server Control</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mmusic/">mmusic &mdash; Multiparty Multimedia Session Control</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/p2psip/">p2psip &mdash; Peer-to-Peer Session Initiation Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/payload/">payload &mdash; Audio/Video Transport Payloads</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/rtcweb/">rtcweb &mdash; Real-Time Communication in WEB-browsers</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/salud/">salud &mdash; Sip ALerting for User Devices</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/simple/">simple &mdash; SIP for Instant Messaging and Presence Leveraging Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/sipclf/">sipclf &mdash; SIP Common Log Format</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/sipcore/">sipcore &mdash; Session Initiation Protocol Core</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/siprec/">siprec &mdash; SIP Recording</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/soc/">soc &mdash; SIP Overload Control</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/speechsc/">speechsc &mdash; Speech Services Control</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/splices/">splices &mdash; looSely-couPLed sIp deviCES</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/vipr/">vipr &mdash; Verification Involving PSTN Reachability</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/xmpp/">xmpp &mdash; Extensible Messaging and Presence Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/xrblock/">xrblock &mdash; Metric Blocks for use with RTCP&#39;s Extended Report Framework</a></li>
+</ul></div></div></li>
+
+
+
+<li class="yuimenuitem"><a class="yuimenuitemlabel">Routing</a><div id="wgs-rtg" class="yuimenu"><div class="bd"><ul>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/bfd/">bfd &mdash; Bidirectional Forwarding Detection</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ccamp/">ccamp &mdash; Common Control and Measurement Plane</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/forces/">forces &mdash; Forwarding and Control Element Separation</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/idr/">idr &mdash; Inter-Domain Routing</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/isis/">isis &mdash; IS-IS for IP Internets</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/karp/">karp &mdash; Keying and Authentication for Routing Protocols</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/l2vpn/">l2vpn &mdash; Layer 2 Virtual Private Networks</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/l3vpn/">l3vpn &mdash; Layer 3 Virtual Private Networks</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/manet/">manet &mdash; Mobile Ad-hoc Networks</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mpls/">mpls &mdash; Multiprotocol Label Switching</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ospf/">ospf &mdash; Open Shortest Path First IGP</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/pce/">pce &mdash; Path Computation Element</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/pim/">pim &mdash; Protocol Independent Multicast</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/pwe3/">pwe3 &mdash; Pseudowire Emulation Edge to Edge</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/roll/">roll &mdash; Routing Over Low power and Lossy networks</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/rtgwg/">rtgwg &mdash; Routing Area Working Group</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/sidr/">sidr &mdash; Secure Inter-Domain Routing</a></li>
+</ul></div></div></li>
+
+
+
+<li class="yuimenuitem"><a class="yuimenuitemlabel">Security</a><div id="wgs-sec" class="yuimenu"><div class="bd"><ul>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/abfab/">abfab &mdash; Application Bridging for Federated Access Beyond web</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/dane/">dane &mdash; DNS-based Authentication of Named Entities</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/emu/">emu &mdash; EAP Method Update</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/hokey/">hokey &mdash; Handover Keying</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ipsecme/">ipsecme &mdash; IP Security Maintenance and Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/jose/">jose &mdash; Javascript Object Signing and Encryption</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/kitten/">kitten &mdash; Common Authentication Technology Next Generation</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/krb-wg/">krb-wg &mdash; Kerberos</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mile/">mile &mdash; Managed Incident Lightweight Exchange</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/nea/">nea &mdash; Network Endpoint Assessment</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/oauth/">oauth &mdash; Web Authorization Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/pkix/">pkix &mdash; Public-Key Infrastructure (X.509)</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/tls/">tls &mdash; Transport Layer Security</a></li>
+</ul></div></div></li>
+
+
+
+<li class="yuimenuitem"><a class="yuimenuitemlabel">Transport</a><div id="wgs-tsv" class="yuimenu"><div class="bd"><ul>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/alto/">alto &mdash; Application-Layer Traffic Optimization</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/behave/">behave &mdash; Behavior Engineering for Hindrance Avoidance</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/cdni/">cdni &mdash; Content Delivery Networks Interconnection</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/conex/">conex &mdash; Congestion Exposure</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/dccp/">dccp &mdash; Datagram Congestion Control Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/decade/">decade &mdash; Decoupled Application Data Enroute</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/fecframe/">fecframe &mdash; FEC Framework</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ippm/">ippm &mdash; IP Performance Metrics</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ledbat/">ledbat &mdash; Low Extra Delay Background Transport</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/mptcp/">mptcp &mdash; Multipath TCP</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/nfsv4/">nfsv4 &mdash; Network File System Version 4</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/pcn/">pcn &mdash; Congestion and Pre-Congestion Notification</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/ppsp/">ppsp &mdash; Peer to Peer Streaming Protocol</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/rmt/">rmt &mdash; Reliable Multicast Transport</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/storm/">storm &mdash; STORage Maintenance</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/tcpm/">tcpm &mdash; TCP Maintenance and Minor Extensions</a></li>
+<li class="yuimenuitem"><a class="yuimenuitemlabel" href="/wg/tsvwg/">tsvwg &mdash; Transport Area Working Group</a></li>
+</ul></div></div></li>
+
+
+
+  <!-- end wg_menu -->
+  </ul>
+  </div></div></li>
+  
+  <li style="padding-top:0;"><a href="/wg/">Active WGs</a></li>
+  <li><a href="http://tools.ietf.org/wg/concluded">Concluded WGs</a></li>
+  <li><a href="http://www.ietf.org/list/nonwg.html">Non-WG Lists</a></li>
+ 
+<li class="sect">Drafts&nbsp;&amp;&nbsp;RFCs</li>
+  <li><a href="/doc/">Search</a></li>
+  <li><form action="/doc/search/" method="get" style="padding-bottom:0;margin-bottom:0;"><input type="text" style="margin-left:10px; width:100px; border:1px solid #89d;" name="name" /><input type="hidden" name="activeDrafts" value="on"/><input type="hidden" name="rfcs" value="on"/></form></li>
+  <li><a href="/submit/">Submit a draft</a></li> 
+
+
+<li class="sect">Meetings</li>
+  <li><a href="/meeting/agenda/">Agenda</a></li>
+  <li><a href="/meeting/">Materials</a></li>
+  <li><a href="http://www.ietf.org/meeting/proceedings.html">Past Proceedings</a></li>
+  <li><a href="http://www.ietf.org/meeting/upcoming.html">Upcoming</a></li>
+
+<li class="sect">Other Documents</li>
+  <li><a href="/ipr/">IPR Disclosures</a></li>
+  <li><a href="/liaison/">Liaison&nbsp;Statements</a></li>
+  <li><a href="/iesg/agenda/">IESG Agenda</a></li>
+  
+<li class="sect">Related Sites</li>
+  <li><a href="http://www.ietf.org/">Main IETF site</a></li>
+  <li><a href="http://tools.ietf.org/">IETF tools</a></li>
+  <li><a href="http://www.iab.org/">IAB</a></li>
+  <li><a href="http://www.rfc-editor.org/">RFC Editor</a></li>
+  <li><a href="http://iaoc.ietf.org">IASA/IAOC/Trust</a></li>
+  <li><a href="http://www.iana.org/">IANA</a></li>
+  <li><a href="http://www.irtf.org/">IRTF</a></li>
+</ul>
+
+</div>
+<div style="width: 100%; text-align: center; padding-top:4px;font-size:69%;">
+
+Version 3.63, 2011-11-03
+<br/>
+
+<a href="http://tools.ietf.org/tools/ietfdb/newticket">Report a bug</a>
+</div>
+</td>
+<td>
+
+<div style="padding:0 8px 0 8px;">
+
+<h1>IETF 82 Meeting Agenda</h1>
+<p>Taipei, November 13-18, 2011<br />
+Updated 2011-11-11 01:48:20 PST</p>
+<div class="noprint">
+(There's also a <a href="/meeting/82/agenda.txt">plaintext agenda</a> and a <a href="http://tools.ietf.org/agenda/82/">tools-style agenda</a> available)</div>
+
+<p><strong>IETF agendas are subject to change, up to and during the meeting.</strong></p>
+
+
+
+
+
+You can customize the agenda below to show only selected working group sessions.  To be able to return to the customized view later, bookmark the resulting URL:
+<div class="noprint" onclick="toggle_wg_selector()">
+   <img id="wg-selector-triangle-right" src="/images/triangle-right.png" />
+   <img id="wg-selector-triangle-down" src="/images/triangle-down.png"/ class="hidden" >
+   <span id="wg-selector-toggle-text">Select working group sessions</style>
+</div>
+<table id="wg-selector" width="100%" class="hidden">
+  <tr>
+    
+      <th><div id='selector-APP' class="unselected" onclick="toggle(this)">APP</div></th>
+    
+      <th><div id='selector-GEN' class="unselected" onclick="toggle(this)">GEN</div></th>
+    
+      <th><div id='selector-INT' class="unselected" onclick="toggle(this)">INT</div></th>
+    
+      <th><div id='selector-OPS' class="unselected" onclick="toggle(this)">OPS</div></th>
+    
+      <th><div id='selector-RAI' class="unselected" onclick="toggle(this)">RAI</div></th>
+    
+      <th><div id='selector-RTG' class="unselected" onclick="toggle(this)">RTG</div></th>
+    
+      <th><div id='selector-SEC' class="unselected" onclick="toggle(this)">SEC</div></th>
+    
+      <th><div id='selector-TSV' class="unselected" onclick="toggle(this)">TSV</div></th>
+    
+    <th><div id='selector-IRTF' class="unselected" onclick="toggle(this)">IRTF</div></th>
+  </tr>
+
+  <tr>
+    
+      <td valign="top" id="APP-groups">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-apparea' class="unselected" onclick="toggle(this)">apparea</div>
+        
+      
+        
+          <div id='selector-appsawg' class="unselected" onclick="toggle(this)">appsawg</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-core' class="unselected" onclick="toggle(this)">core</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-eai' class="unselected" onclick="toggle(this)">eai</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-iri' class="unselected" onclick="toggle(this)">iri</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-paws' class="unselected" onclick="toggle(this)">paws</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-precis' class="unselected" onclick="toggle(this)">precis</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-repute' class="unselected" onclick="toggle(this)">repute</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-websec' class="unselected" onclick="toggle(this)">websec</div>
+        
+      
+        
+          <div id='selector-weirds' class="unselected" onclick="toggle(this)">weirds</div>
+        
+      
+        
+      
+      </td>
+    
+      <td valign="top" id="GEN-groups">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+      </td>
+    
+      <td valign="top" id="INT-groups">
+      
+        
+          <div id='selector-6man' class="unselected" onclick="toggle(this)">6man</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-ancp' class="unselected" onclick="toggle(this)">ancp</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-dhc' class="unselected" onclick="toggle(this)">dhc</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-homenet' class="unselected" onclick="toggle(this)">homenet</div>
+        
+      
+        
+      
+        
+          <div id='selector-intarea' class="unselected" onclick="toggle(this)">intarea</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-lisp' class="unselected" onclick="toggle(this)">lisp</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-mext' class="unselected" onclick="toggle(this)">mext</div>
+        
+      
+        
+          <div id='selector-mif' class="unselected" onclick="toggle(this)">mif</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-multimob' class="unselected" onclick="toggle(this)">multimob</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-netext' class="unselected" onclick="toggle(this)">netext</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-pcp' class="unselected" onclick="toggle(this)">pcp</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-savi' class="unselected" onclick="toggle(this)">savi</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-softwire' class="unselected" onclick="toggle(this)">softwire</div>
+        
+      
+        
+      
+        
+          <div id='selector-tictoc' class="unselected" onclick="toggle(this)">tictoc</div>
+        
+      
+        
+      
+        
+          <div id='selector-trill' class="unselected" onclick="toggle(this)">trill</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+      </td>
+    
+      <td valign="top" id="OPS-groups">
+      
+        
+      
+        
+          <div id='selector-6renum' class="unselected" onclick="toggle(this)">6renum</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-armd' class="unselected" onclick="toggle(this)">armd</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-bmwg' class="unselected" onclick="toggle(this)">bmwg</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-dime' class="unselected" onclick="toggle(this)">dime</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-eman' class="unselected" onclick="toggle(this)">eman</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-grow' class="unselected" onclick="toggle(this)">grow</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-ipfix' class="unselected" onclick="toggle(this)">ipfix</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-mboned' class="unselected" onclick="toggle(this)">mboned</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-multrans' class="unselected" onclick="toggle(this)">multrans</div>
+        
+      
+        
+      
+        
+          <div id='selector-netconf' class="unselected" onclick="toggle(this)">netconf</div>
+        
+      
+        
+      
+        
+          <div id='selector-netmod' class="unselected" onclick="toggle(this)">netmod</div>
+        
+      
+        
+      
+        
+          <div id='selector-opsarea' class="unselected" onclick="toggle(this)">opsarea</div>
+        
+      
+        
+          <div id='selector-opsawg' class="unselected" onclick="toggle(this)">opsawg</div>
+        
+      
+        
+          <div id='selector-opsec' class="unselected" onclick="toggle(this)">opsec</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-radext' class="unselected" onclick="toggle(this)">radext</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-v6ops' class="unselected" onclick="toggle(this)">v6ops</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+      </td>
+    
+      <td valign="top" id="RAI-groups">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-atoca' class="unselected" onclick="toggle(this)">atoca</div>
+        
+      
+        
+          <div id='selector-avtcore' class="unselected" onclick="toggle(this)">avtcore</div>
+        
+      
+        
+          <div id='selector-avtext' class="unselected" onclick="toggle(this)">avtext</div>
+        
+      
+        
+      
+        
+          <div id='selector-bfcpbis' class="unselected" onclick="toggle(this)">bfcpbis</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-clue' class="unselected" onclick="toggle(this)">clue</div>
+        
+      
+        
+          <div id='selector-codec' class="unselected" onclick="toggle(this)">codec</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-cuss' class="unselected" onclick="toggle(this)">cuss</div>
+        
+      
+        
+      
+        
+          <div id='selector-dcon' class="unselected" onclick="toggle(this)">dcon</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-dispatch' class="unselected" onclick="toggle(this)">dispatch</div>
+        
+      
+        
+          <div id='selector-drinks' class="unselected" onclick="toggle(this)">drinks</div>
+        
+      
+        
+      
+        
+          <div id='selector-ecrit' class="unselected" onclick="toggle(this)">ecrit</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-geopriv' class="unselected" onclick="toggle(this)">geopriv</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-mmusic' class="unselected" onclick="toggle(this)">mmusic</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-p2psip' class="unselected" onclick="toggle(this)">p2psip</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-rtcweb' class="unselected" onclick="toggle(this)">rtcweb</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-sipcore' class="unselected" onclick="toggle(this)">sipcore</div>
+        
+      
+        
+          <div id='selector-siprec' class="unselected" onclick="toggle(this)">siprec</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-vipr' class="unselected" onclick="toggle(this)">vipr</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-xrblock' class="unselected" onclick="toggle(this)">xrblock</div>
+        
+      
+      </td>
+    
+      <td valign="top" id="RTG-groups">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-ccamp' class="unselected" onclick="toggle(this)">ccamp</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-forces' class="unselected" onclick="toggle(this)">forces</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-idr' class="unselected" onclick="toggle(this)">idr</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-karp' class="unselected" onclick="toggle(this)">karp</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-l2vpn' class="unselected" onclick="toggle(this)">l2vpn</div>
+        
+      
+        
+          <div id='selector-l3vpn' class="unselected" onclick="toggle(this)">l3vpn</div>
+        
+      
+        
+      
+        
+          <div id='selector-manet' class="unselected" onclick="toggle(this)">manet</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-mpls' class="unselected" onclick="toggle(this)">mpls</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-pce' class="unselected" onclick="toggle(this)">pce</div>
+        
+      
+        
+      
+        
+          <div id='selector-pim' class="unselected" onclick="toggle(this)">pim</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-pwe3' class="unselected" onclick="toggle(this)">pwe3</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-roll' class="unselected" onclick="toggle(this)">roll</div>
+        
+      
+        
+      
+        
+          <div id='selector-rtgarea' class="unselected" onclick="toggle(this)">rtgarea</div>
+        
+      
+        
+          <div id='selector-rtgwg' class="unselected" onclick="toggle(this)">rtgwg</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-sdn' class="unselected" onclick="toggle(this)">sdn</div>
+        
+      
+        
+          <div id='selector-sidr' class="unselected" onclick="toggle(this)">sidr</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+      </td>
+    
+      <td valign="top" id="SEC-groups">
+      
+        
+      
+        
+      
+        
+          <div id='selector-abfab' class="unselected" onclick="toggle(this)">abfab</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-dane' class="unselected" onclick="toggle(this)">dane</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-emu' class="unselected" onclick="toggle(this)">emu</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-jose' class="unselected" onclick="toggle(this)">jose</div>
+        
+      
+        
+      
+        
+          <div id='selector-kitten' class="unselected" onclick="toggle(this)">kitten</div>
+        
+      
+        
+          <div id='selector-krb-wg' class="unselected" onclick="toggle(this)">krb-wg</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-mile' class="unselected" onclick="toggle(this)">mile</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-nea' class="unselected" onclick="toggle(this)">nea</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-oauth' class="unselected" onclick="toggle(this)">oauth</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-pkix' class="unselected" onclick="toggle(this)">pkix</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-saag' class="unselected" onclick="toggle(this)">saag</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-tls' class="unselected" onclick="toggle(this)">tls</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+      </td>
+    
+      <td valign="top" id="TSV-groups">
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-alto' class="unselected" onclick="toggle(this)">alto</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-behave' class="unselected" onclick="toggle(this)">behave</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-cdni' class="unselected" onclick="toggle(this)">cdni</div>
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-conex' class="unselected" onclick="toggle(this)">conex</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-decade' class="unselected" onclick="toggle(this)">decade</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-ppsp' class="unselected" onclick="toggle(this)">ppsp</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-tcpm' class="unselected" onclick="toggle(this)">tcpm</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+          <div id='selector-tsvwg' class="unselected" onclick="toggle(this)">tsvwg</div>
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+      </td>
+    
+
+      <td valign="top" id="IRTF-groups">
+      
+        <div id='selector-hiprg' class="unselected" onclick="toggle(this)">hiprg</div>
+      
+        <div id='selector-irtf' class="unselected" onclick="toggle(this)">irtf</div>
+      
+        <div id='selector-samrg' class="unselected" onclick="toggle(this)">samrg</div>
+      
+      </td>
+
+  </tr>
+</table>
+
+<div id="ical-link" class="hidden"><span style="font-size:150%">Week View</span><br/><a id="ical-href" href="agenda.ics"><em>Download as an ical file</em></a></div>
+
+<iframe id="weekview" class="hidden" width="100%" height="600px" src="about:blank"></iframe>
+
+<table id="agenda" width="100%">
+
+   
+      <tr class="meeting-date">
+	 <td colspan="4">
+	   <h2 class="ietf-divider">SATURDAY, November 12, 2011</h2>
+	 </td>
+      </tr>
+      
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    0930-1800  Code Sprint - <a href="http://tools.ietf.org/agenda/82/venue/?room=4f-vip">4F VIP</a>
+	 </td>
+      </tr>
+      
+   
+
+   
+      <tr class="meeting-date">
+	 <td colspan="4">
+	   <h2 class="ietf-divider">SUNDAY, November 13, 2011</h2>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    1100-1900  IETF Registration
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=1f-north-extended">1F North Extended</a>
+	 </td>
+      </tr>
+      
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    1000-1200  IEPG Meeting - <a href="http://tools.ietf.org/agenda/82/venue/?room=101c">101C</a>
+	 </td>
+      </tr>
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    1300-1450  Newcomers&#39; Orientation - <a href="http://tools.ietf.org/agenda/82/venue/?room=102">102</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    1300-1450  Newcomers&#39; Orientation (Mandarin) - <a href="http://tools.ietf.org/agenda/82/venue/?room=101c">101C</a>
+	 </td>
+      </tr>
+      
+   
+
+   
+   
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    1500-1650  Routing, Bridging and Switching Tutorial - <a href="http://tools.ietf.org/agenda/82/venue/?room=101c">101C</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    1500-1650  Document Lifecycle - <a href="http://tools.ietf.org/agenda/82/venue/?room=102">102</a>
+	 </td>
+      </tr>
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    1600-1700  Newcomer&#39;s Meet and Greet (open to newcomers and WG chairs) - <a href="http://tools.ietf.org/agenda/82/venue/?room=103">103</a>
+	 </td>
+      </tr>
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    1700-1900  Welcome Reception - <a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet">3F Banquet</a>
+	 </td>
+      </tr>
+      
+   
+
+   
+      <tr class="meeting-date">
+	 <td colspan="4">
+	   <h2 class="ietf-divider">MONDAY, November 14, 2011</h2>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    0800-1800  IETF Registration
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=1f-north-extended">1F North Extended</a>
+	 </td>
+      </tr>
+      
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    0800-0900  Beverages
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>0900-1130  Morning Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-mon-0900-APP-apparea" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>APP</td>
+	 <td>apparea</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-APP-apparea',this);" title="color tag this line"/ class="noprint">
+	    Applications Area Open Meeting 
+	    <br/> - Combined with APPSAWG
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/apparea-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/apparea-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-APP-apparea" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+	  <b>No Agenda Submitted</b>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-0900-APP-appsawg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/appsawg/">appsawg</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-APP-appsawg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/appsawg.txt" title="session agenda">Applications Area Working Group WG</a>
+	    <br/> - Combined with APPSAREA
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/appsawg-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/appsawg-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-APP-appsawg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/appsawg.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-0900-INT-6man" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/6man/">6man</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-INT-6man',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/6man.html" title="session agenda">IPv6 Maintenance WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/6man-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/6man-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-INT-6man" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/6man.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-0900-OPS-bmwg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/bmwg/">bmwg</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-OPS-bmwg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/bmwg.txt" title="session agenda">Benchmarking Methodology WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/bmwg-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/bmwg-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-OPS-bmwg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/bmwg.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-0900-OPS-radext" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/radext/">radext</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-OPS-radext',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/radext.txt" title="session agenda">RADIUS EXTensions WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/radext-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/radext-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-OPS-radext" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/radext.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-0900-RAI-clue" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/clue/">clue</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-RAI-clue',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/clue.html" title="session agenda">ControLling mUltiple streams for tElepresence WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/clue-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/clue-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-RAI-clue" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/clue.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-0900-RTG-mpls" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/mpls/">mpls</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-RTG-mpls',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mpls.txt" title="session agenda">Multiprotocol Label Switching WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mpls-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mpls-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-RTG-mpls" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mpls.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-0900-SEC-dane" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/dane/">dane</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-0900-SEC-dane',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/dane.txt" title="session agenda">DNS-based Authentication of Named Entities WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/dane-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/dane-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-0900-SEC-dane" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/dane.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1130-1300  Break
+	    
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1300-1500  Afternoon Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-mon-1300-INT-softwire" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/softwire/">softwire</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1300-INT-softwire',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/softwire.txt" title="session agenda">Softwires WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/softwire-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/softwire-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1300-INT-softwire" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/softwire.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1300-RAI-avtcore" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/avtcore/">avtcore</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1300-RAI-avtcore',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/avtcore.html" title="session agenda">Audio/Video Transport Core Maintenance WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/avtcore-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/avtcore-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1300-RAI-avtcore" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/avtcore.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1300-RTG-l2vpn" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/l2vpn/">l2vpn</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1300-RTG-l2vpn',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/l2vpn.txt" title="session agenda">Layer 2 Virtual Private Networks WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/l2vpn-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/l2vpn-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1300-RTG-l2vpn" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/l2vpn.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1300-RTG-roll" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/roll/">roll</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1300-RTG-roll',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/roll.txt" title="session agenda">Routing Over Low power and Lossy networks WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/roll-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/roll-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1300-RTG-roll" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/roll.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1300-SEC-jose" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/jose/">jose</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1300-SEC-jose',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/jose.txt" title="session agenda">Javascript Object Signing and Encryption WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/jose-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/jose-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1300-SEC-jose" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/jose.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1510-1610  Afternoon Session II</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-mon-1510-INT-mext" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/mext/">mext</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1510-INT-mext',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mext.txt" title="session agenda">Mobility EXTensions for IPv6 WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mext-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mext-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1510-INT-mext" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mext.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1510-OPS-opsec" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/opsec/">opsec</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1510-OPS-opsec',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/opsec.txt" title="session agenda">Operational Security Capabilities for IP Network Infrastructure WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/opsec-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/opsec-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1510-OPS-opsec" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/opsec.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1510-RAI-cuss" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/cuss/">cuss</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1510-RAI-cuss',this);" title="color tag this line"/ class="noprint">
+	    Call Control UUI Service for SIP WG
+	    <br/> - CANCELED
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/cuss-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/cuss-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1510-RAI-cuss" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+	  <b>No Agenda Submitted</b>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1510-RAI-dcon" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RAI</td>
+	 <td>dcon</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1510-RAI-dcon',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/dcon.txt" title="session agenda">Distributed Conferencing BOF</a>
+	    <br/> - Room changed FROM 3F Banquet
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/dcon-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/dcon-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1510-RAI-dcon" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/dcon.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1510-RTG-forces" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/forces/">forces</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1510-RTG-forces',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/forces.txt" title="session agenda">Forwarding and Control Element Separation WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/forces-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/forces-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1510-RTG-forces" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/forces.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-mon-1510-TSV-tsvwg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/tsvwg/">tsvwg</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-mon-1510-TSV-tsvwg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/tsvwg.txt" title="session agenda">Transport Area Working Group WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/tsvwg-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/tsvwg-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-mon-1510-TSV-tsvwg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/tsvwg.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1610-1630  Beverage and Snack Break I
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1630-1930  Technical Plenary</b>
+	    
+	    
+	       <b>- <a href="http://tools.ietf.org/agenda/82/venue/?room=201">201</a></b><br/>
+	       <pre>1630 - 1930 Technical Plenary
+
+1630 - 1700 Welcome
+1. Welcome - Bernard Aboba
+2. IRTF Chair&#39;s Report - Lars Eggert
+3. IAB Chair&#39;s Report - Bernard Aboba
+4. RSOC Report - Fred Baker
+
+1700 - 1915 Technical Session: &quot;Interconnecting Smart Objects with the Internet&quot;
+
+The desire to connect almost anything to the Internet is greater than ever. There are many reasons for 
+incorporating IP into every day devices. For some the reasons may be driven by lower cost, the need to 
+interwork with other Internet applications, the desire to implement particular protocols, or simply 
+the availability of source code. As IP meets constrained devices, new use cases and requirements are 
+being raised and the IETF has ongoing efforts to address them in Working Groups such as CORE, 6LOWPAN, 
+and ROLL. Many other IETF activities are also applicable to constrained devices.
+
+To learn more about architectural challenges the IAB held a workshop on &#39;Interconnecting Smart Objects 
+with the Internet&#39; prior to the IETF 72 meeting in Prague and published a report soon afterwards,
+available at http://tools.ietf.org/html/draft-iab-smart-object-workshop
+
+The report illustrates some of the challenges the industry is facing in an attempt to improve 
+interoperability in areas where IP has not been used before. This technical plenary is 
+devoted to the topic of smart objects and will summarize the workshop and solicit feedback 
+from the wider IETF community.  Jari Arkko will summarize the workshop report and 
+Hannes Tschofenig will moderate the panel discussion where Fred Baker, Zach Shelby, 
+Carsten Bormann, and Robert Assimiti will share their views with the community.
+
+5. Introduction (5 min) - Hannes Tschofenig 
+6. Smart Objects Workshop Report (15 min) - Jari Arkko
+7.  Panel (moderated by Hannes Tschofenig)
+     - Fred Baker
+     - Robert Assimiti
+     - Zach Shelby
+     - Carsten Bormann  
+
+1915 - 1930 IAB Open Microphone Session
+
+1930 Adjourn </pre>
+	    
+	 </td>
+      </tr>
+      
+   
+
+   
+      <tr class="meeting-date">
+	 <td colspan="4">
+	   <h2 class="ietf-divider">TUESDAY, November 15, 2011</h2>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    0800-1800  IETF Registration
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=1f-north-extended">1F North Extended</a>
+	 </td>
+      </tr>
+      
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    0800-0900  Beverages
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>0900-1130  Morning Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-tue-0900-APP-paws" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/paws/">paws</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-APP-paws',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/paws.txt" title="session agenda">Protocol to Access WS database WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/paws-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/paws-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-APP-paws" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/paws.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-INT-homenet" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/homenet/">homenet</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-INT-homenet',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/homenet.txt" title="session agenda">Home Networking WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/homenet-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/homenet-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-INT-homenet" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/homenet.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-OPS-opsarea" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>OPS</td>
+	 <td>opsarea</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-OPS-opsarea',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/opsarea.txt" title="session agenda">Operations &amp; Management Area Open Meeting </a>
+	    <br/> - Combined with OPSAWG
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/opsarea-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/opsarea-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-OPS-opsarea" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/opsarea.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-OPS-opsawg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/opsawg/">opsawg</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-OPS-opsawg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/opsawg.txt" title="session agenda">Operations and Management Area Working Group WG</a>
+	    <br/> - Combined with OPSAREA
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/opsawg-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/opsawg-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-OPS-opsawg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/opsawg.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-RAI-rtcweb" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/rtcweb/">rtcweb</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-RAI-rtcweb',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/rtcweb.txt" title="session agenda">Real-Time Communication in WEB-browsers WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/rtcweb-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/rtcweb-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-RAI-rtcweb" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/rtcweb.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-RTG-idr" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/idr/">idr</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-RTG-idr',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/idr.txt" title="session agenda">Inter-Domain Routing WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/idr-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/idr-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-RTG-idr" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/idr.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-RTG-pim" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/pim/">pim</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-RTG-pim',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/pim.txt" title="session agenda">Protocol Independent Multicast WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/pim-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/pim-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-RTG-pim" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/pim.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-SEC-emu" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/emu/">emu</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-SEC-emu',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/emu.txt" title="session agenda">EAP Method Update WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/emu-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/emu-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-SEC-emu" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/emu.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-0900-TSV-ppsp" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/ppsp/">ppsp</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-0900-TSV-ppsp',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/ppsp.txt" title="session agenda">Peer to Peer Streaming Protocol WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/ppsp-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/ppsp-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-0900-TSV-ppsp" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/ppsp.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1130-1300  Break
+	    
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1300-1500  Afternoon Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-tue-1300-APP-eai" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/eai/">eai</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-APP-eai',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/eai.txt" title="session agenda">Email Address Internationalization WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/eai-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/eai-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-APP-eai" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/eai.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-INT-multimob" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/multimob/">multimob</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-INT-multimob',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/multimob.html" title="session agenda">Multicast Mobility WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/multimob-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/multimob-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-INT-multimob" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/multimob.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-INT-trill" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/trill/">trill</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-INT-trill',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/trill.txt" title="session agenda">Transparent Interconnection of Lots of Links WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/trill-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/trill-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-INT-trill" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/trill.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-IRTF-irtf" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>IRTF</td>
+	 <td>irtf</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-IRTF-irtf',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/IRTF.txt" title="session agenda">IRTF Open Meeting </a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/IRTF-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/IRTF-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-IRTF-irtf" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/IRTF.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-OPS-netmod" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/netmod/">netmod</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-OPS-netmod',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/netmod.txt" title="session agenda">NETCONF Data Modeling Language WG</a>
+	    <br/> - Room changed FROM 101C
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/netmod-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/netmod-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-OPS-netmod" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/netmod.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-RAI-dispatch" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/dispatch/">dispatch</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-RAI-dispatch',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/dispatch.html" title="session agenda">Dispatch WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/dispatch-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/dispatch-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-RAI-dispatch" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/dispatch.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-RTG-ccamp" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/ccamp/">ccamp</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-RTG-ccamp',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/ccamp.htm" title="session agenda">Common Control and Measurement Plane WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/ccamp-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/ccamp-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-RTG-ccamp" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/ccamp.htm" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-RTG-sidr" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/sidr/">sidr</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-RTG-sidr',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/sidr.html" title="session agenda">Secure Inter-Domain Routing WG</a>
+	    <br/> - Moved FROM Friday Morning Session I 0900-1100
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/sidr-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/sidr-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-RTG-sidr" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/sidr.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1300-SEC-pkix" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/pkix/">pkix</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1300-SEC-pkix',this);" title="color tag this line"/ class="noprint">
+	    Public-Key Infrastructure (X.509) WG
+	    <br/> - CANCELED
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/pkix-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/pkix-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1300-SEC-pkix" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+	  <b>No Agenda Submitted</b>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1500-1520  Beverage and Snack Break I
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1520-1700  Afternoon Session II</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-tue-1520-APP-precis" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/precis/">precis</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1520-APP-precis',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/precis.txt" title="session agenda">Preparation and Comparison of Internationalized Strings WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/precis-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/precis-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1520-APP-precis" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/precis.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1520-INT-mif" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/mif/">mif</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1520-INT-mif',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mif.txt" title="session agenda">Multiple Interfaces WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mif-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mif-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1520-INT-mif" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mif.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1520-INT-softwire" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/softwire/">softwire</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1520-INT-softwire',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/softwire.txt" title="session agenda">Softwires WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/softwire-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/softwire-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1520-INT-softwire" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/softwire.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1520-RAI-geopriv" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/geopriv/">geopriv</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1520-RAI-geopriv',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/geopriv.txt" title="session agenda">Geographic Location/Privacy WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/geopriv-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/geopriv-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1520-RAI-geopriv" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/geopriv.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1520-RAI-xrblock" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/xrblock/">xrblock</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1520-RAI-xrblock',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/xrblock.txt" title="session agenda">Metric Blocks for use with RTCP&#39;s Extended Report Framework WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/xrblock-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/xrblock-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1520-RAI-xrblock" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/xrblock.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1520-RTG-rtgarea" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>RTG</td>
+	 <td>rtgarea</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1520-RTG-rtgarea',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/rtgarea.txt" title="session agenda">Routing Area Open Meeting </a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/rtgarea-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/rtgarea-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1520-RTG-rtgarea" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/rtgarea.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1710-1810  Afternoon Session III</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-tue-1710-INT-mif" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/mif/">mif</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1710-INT-mif',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mif.txt" title="session agenda">Multiple Interfaces WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mif-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mif-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1710-INT-mif" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mif.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1710-INT-savi" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/savi/">savi</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1710-INT-savi',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/savi.txt" title="session agenda">Source Address Validation Improvements WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/savi-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/savi-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1710-INT-savi" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/savi.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1710-OPS-armd" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/armd/">armd</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1710-OPS-armd',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/armd.html" title="session agenda">Address Resolution for Massive numbers of hosts in the Data center WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/armd-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/armd-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1710-OPS-armd" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/armd.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1710-OPS-netconf" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/netconf/">netconf</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1710-OPS-netconf',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/netconf.txt" title="session agenda">Network Configuration WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/netconf-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/netconf-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1710-OPS-netconf" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/netconf.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1710-RAI-sipcore" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/sipcore/">sipcore</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1710-RAI-sipcore',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/sipcore.html" title="session agenda">Session Initiation Protocol Core WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/sipcore-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/sipcore-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1710-RAI-sipcore" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/sipcore.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1710-RTG-rtgarea" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>RTG</td>
+	 <td>rtgarea</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1710-RTG-rtgarea',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/rtgarea.txt" title="session agenda">Routing Area Open Meeting </a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/rtgarea-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/rtgarea-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1710-RTG-rtgarea" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/rtgarea.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-tue-1710-SEC-kitten" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/kitten/">kitten</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-tue-1710-SEC-kitten',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/kitten.txt" title="session agenda">Common Authentication Technology Next Generation WG</a>
+	    <br/> - Moved FROM Tuesday 1520-1700 Afternoon Session II
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/kitten-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/kitten-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-tue-1710-SEC-kitten" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/kitten.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+      <tr class="meeting-date">
+	 <td colspan="4">
+	   <h2 class="ietf-divider">WEDNESDAY, November 16, 2011</h2>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    0800-1700  IETF Registration
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=1f-north-extended">1F North Extended</a>
+	 </td>
+      </tr>
+      
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    0800-0900  Beverages
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>0900-1130  Morning Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-wed-0900-APP-weirds" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>APP</td>
+	 <td>weirds</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-APP-weirds',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/weirds.txt" title="session agenda">WHOIS-based Extensible Internet Registration Data Service  BOF</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/weirds-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/weirds-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-APP-weirds" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/weirds.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-0900-INT-netext" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/netext/">netext</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-INT-netext',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/netext.txt" title="session agenda">Network-Based Mobility Extensions WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/netext-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/netext-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-INT-netext" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/netext.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-0900-OPS-v6ops" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/v6ops/">v6ops</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-OPS-v6ops',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/v6ops.html" title="session agenda">IPv6 Operations WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/v6ops-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/v6ops-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-OPS-v6ops" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/v6ops.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-0900-RAI-bfcpbis" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/bfcpbis/">bfcpbis</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-RAI-bfcpbis',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/bfcpbis.txt" title="session agenda">Binary Floor Control Protocol Bis  WG</a>
+	    <br/> - Combined with ECRIT
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/bfcpbis-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/bfcpbis-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-RAI-bfcpbis" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/bfcpbis.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-0900-RAI-ecrit" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/ecrit/">ecrit</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-RAI-ecrit',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/ecrit.txt" title="session agenda">Emergency Context Resolution with Internet Technologies WG</a>
+	    <br/> - Combined with BFCPBIS
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/ecrit-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/ecrit-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-RAI-ecrit" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/ecrit.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-0900-RTG-pwe3" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/pwe3/">pwe3</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-RTG-pwe3',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/pwe3.txt" title="session agenda">Pseudowire Emulation Edge to Edge WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/pwe3-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/pwe3-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-RTG-pwe3" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/pwe3.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-0900-TSV-cdni" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/cdni/">cdni</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-TSV-cdni',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/cdni.html" title="session agenda">Content Delivery Networks Interconnection WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/cdni-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/cdni-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-TSV-cdni" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/cdni.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-0900-TSV-tcpm" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/tcpm/">tcpm</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-0900-TSV-tcpm',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/tcpm.txt" title="session agenda">TCP Maintenance and Minor Extensions WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/tcpm-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/tcpm-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-0900-TSV-tcpm" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/tcpm.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1130-1300  Break
+	    
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1300-1500  Afternoon Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-wed-1300-APP-websec" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/websec/">websec</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1300-APP-websec',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/websec.txt" title="session agenda">Web Security WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/websec-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/websec-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1300-APP-websec" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/websec.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1300-INT-intarea" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/intarea/">intarea</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1300-INT-intarea',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/intarea.txt" title="session agenda">Internet Area Working Group WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/intarea-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/intarea-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1300-INT-intarea" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/intarea.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1300-OPS-eman" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/eman/">eman</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1300-OPS-eman',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/eman.txt" title="session agenda">Energy Management WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/eman-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/eman-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1300-OPS-eman" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/eman.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1300-RAI-codec" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/codec/">codec</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1300-RAI-codec',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/codec.txt" title="session agenda">Internet Wideband Audio Codec WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/codec-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/codec-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1300-RAI-codec" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/codec.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1300-RTG-karp" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/karp/">karp</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1300-RTG-karp',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/karp.html" title="session agenda">Keying and Authentication for Routing Protocols WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/karp-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/karp-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1300-RTG-karp" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/karp.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1300-RTG-manet" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/manet/">manet</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1300-RTG-manet',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/manet.txt" title="session agenda">Mobile Ad-hoc Networks WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/manet-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/manet-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1300-RTG-manet" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/manet.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1300-TSV-alto" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/alto/">alto</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1300-TSV-alto',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/alto.html" title="session agenda">Application-Layer Traffic Optimization WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/alto-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/alto-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1300-TSV-alto" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/alto.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1510-1610  Afternoon Session II</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-wed-1510-APP-repute" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/repute/">repute</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1510-APP-repute',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/repute.txt" title="session agenda">Reputation Services WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/repute-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/repute-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1510-APP-repute" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/repute.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1510-INT-trill" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/trill/">trill</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1510-INT-trill',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/trill.txt" title="session agenda">Transparent Interconnection of Lots of Links WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/trill-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/trill-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1510-INT-trill" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/trill.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1510-RAI-avtext" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/avtext/">avtext</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1510-RAI-avtext',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/avtext.txt" title="session agenda">Audio/Video Transport Extensions WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/avtext-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/avtext-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1510-RAI-avtext" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/avtext.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1510-RTG-l3vpn" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/l3vpn/">l3vpn</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1510-RTG-l3vpn',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/l3vpn.txt" title="session agenda">Layer 3 Virtual Private Networks WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/l3vpn-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/l3vpn-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1510-RTG-l3vpn" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/l3vpn.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-wed-1510-SEC-mile" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/mile/">mile</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-wed-1510-SEC-mile',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mile.txt" title="session agenda">Managed Incident Lightweight Exchange WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mile-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mile-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-wed-1510-SEC-mile" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mile.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1610-1630  Beverage and Snack Break I
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1630-1930  IETF Operations and Administration Plenary</b>
+	    
+	       <b>- <a href="http://tools.ietf.org/agenda/82/venue/?room=201">201</a></b><br/>
+	       <pre>Administrative Plenary
+
+   1. Welcome
+   2. Host Presentation
+   3. Postel Award
+   4. Itojun Service Award
+   5. Reporting
+       - IETF Chair Report
+       - NOC Report
+       - IAOC Chair &amp; IAD Reports
+       - Trust Chair Report
+       - NomCom Chair Report
+   6. Recognition
+   7. IAOC Open Mic
+   8. IESG Open Mic
+</pre>
+	    
+	    
+	 </td>
+      </tr>
+      
+   
+
+   
+      <tr class="meeting-date">
+	 <td colspan="4">
+	   <h2 class="ietf-divider">THURSDAY, November 17, 2011</h2>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    0800-1700  IETF Registration
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=1f-north-extended">1F North Extended</a>
+	 </td>
+      </tr>
+      
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    0800-0900  Beverages
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>0900-1130  Morning Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-thu-0900-APP-iri" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/iri/">iri</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-APP-iri',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/iri.txt" title="session agenda">Internationalized Resource Identifiers WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/iri-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/iri-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-APP-iri" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/iri.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-0900-INT-dhc" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/dhc/">dhc</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-INT-dhc',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/dhc.html" title="session agenda">Dynamic Host Configuration WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/dhc-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/dhc-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-INT-dhc" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/dhc.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-0900-IRTF-hiprg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>IRTF</td>
+	 <td>hiprg</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-IRTF-hiprg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/HIPRG.txt" title="session agenda">Host Identity Protocol </a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/HIPRG-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/HIPRG-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-IRTF-hiprg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/HIPRG.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-0900-OPS-mboned" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/mboned/">mboned</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-OPS-mboned',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mboned.html" title="session agenda">MBONE Deployment WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mboned-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mboned-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-OPS-mboned" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mboned.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-0900-RAI-rtcweb" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/rtcweb/">rtcweb</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-RAI-rtcweb',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/rtcweb.txt" title="session agenda">Real-Time Communication in WEB-browsers WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/rtcweb-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/rtcweb-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-RAI-rtcweb" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/rtcweb.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-0900-RTG-l2vpn" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/l2vpn/">l2vpn</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-RTG-l2vpn',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/l2vpn.txt" title="session agenda">Layer 2 Virtual Private Networks WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/l2vpn-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/l2vpn-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-RTG-l2vpn" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/l2vpn.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-0900-SEC-nea" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/nea/">nea</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-SEC-nea',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/nea.txt" title="session agenda">Network Endpoint Assessment WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/nea-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/nea-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-SEC-nea" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/nea.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-0900-TSV-conex" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/conex/">conex</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-0900-TSV-conex',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/conex.txt" title="session agenda">Congestion Exposure WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/conex-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/conex-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-0900-TSV-conex" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/conex.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1130-1300  Break
+	    
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1300-1500  Afternoon Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-thu-1300-INT-tictoc" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/tictoc/">tictoc</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1300-INT-tictoc',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/tictoc.txt" title="session agenda">Timing over IP Connection and Transfer of Clock WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/tictoc-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/tictoc-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1300-INT-tictoc" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/tictoc.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1300-OPS-v6ops" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/v6ops/">v6ops</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1300-OPS-v6ops',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/v6ops.html" title="session agenda">IPv6 Operations WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/v6ops-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/v6ops-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1300-OPS-v6ops" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/v6ops.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1300-RAI-p2psip" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/p2psip/">p2psip</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1300-RAI-p2psip',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/p2psip.html" title="session agenda">Peer-to-Peer Session Initiation Protocol WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/p2psip-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/p2psip-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1300-RAI-p2psip" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/p2psip.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1300-RTG-pce" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/pce/">pce</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1300-RTG-pce',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/pce.html" title="session agenda">Path Computation Element WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/pce-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/pce-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1300-RTG-pce" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/pce.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1300-RTG-rtgwg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/rtgwg/">rtgwg</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1300-RTG-rtgwg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/rtgwg.htm" title="session agenda">Routing Area Working Group WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/rtgwg-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/rtgwg-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1300-RTG-rtgwg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/rtgwg.htm" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1300-SEC-oauth" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/oauth/">oauth</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1300-SEC-oauth',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/oauth.txt" title="session agenda">Web Authorization Protocol WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/oauth-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/oauth-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1300-SEC-oauth" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/oauth.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1500-1520  Beverage Break
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1520-1720  Afternoon Session II</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-thu-1520-APP-core" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/core/">core</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-APP-core',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/core.txt" title="session agenda">Constrained RESTful Environments WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/core-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/core-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-APP-core" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/core.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1520-INT-ancp" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/ancp/">ancp</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-INT-ancp',this);" title="color tag this line"/ class="noprint">
+	    Access Node Control Protocol WG
+	    <br/> - CANCELED
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/ancp-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/ancp-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-INT-ancp" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+	  <b>No Agenda Submitted</b>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1520-OPS-grow" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/grow/">grow</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-OPS-grow',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/grow.txt" title="session agenda">Global Routing Operations WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/grow-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/grow-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-OPS-grow" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/grow.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1520-OPS-ipfix" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/ipfix/">ipfix</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-OPS-ipfix',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/ipfix.txt" title="session agenda">IP Flow Information Export WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/ipfix-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/ipfix-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-OPS-ipfix" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/ipfix.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1520-RAI-siprec" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/siprec/">siprec</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-RAI-siprec',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/siprec.html" title="session agenda">SIP Recording WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/siprec-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/siprec-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-RAI-siprec" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/siprec.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1520-RTG-mpls" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/mpls/">mpls</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-RTG-mpls',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mpls.txt" title="session agenda">Multiprotocol Label Switching WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mpls-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mpls-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-RTG-mpls" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mpls.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1520-SEC-saag" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>SEC</td>
+	 <td>saag</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-SEC-saag',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/saag.txt" title="session agenda">Security Area Open Meeting </a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/saag-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/saag-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-SEC-saag" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/saag.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1520-TSV-behave" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/behave/">behave</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1520-TSV-behave',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/behave.html" title="session agenda">Behavior Engineering for Hindrance Avoidance WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/behave-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/behave-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1520-TSV-behave" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/behave.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1720-1740  Beverage and Snack Break II
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1740-1940  Afternoon Session III</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-thu-1740-INT-lisp" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/lisp/">lisp</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-INT-lisp',this);" title="color tag this line"/ class="noprint">
+	    Locator/ID Separation Protocol WG
+	    <br/> - Canceled
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/lisp-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/lisp-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-INT-lisp" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+	  <b>No Agenda Submitted</b>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1740-IRTF-samrg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101a" title="room map">101A</a></td>
+	 
+	 <td>IRTF</td>
+	 <td>samrg</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-IRTF-samrg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/SAMRG.txt" title="session agenda">Scalable Adaptive Multicast Research Group </a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/SAMRG-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/SAMRG-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-IRTF-samrg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/SAMRG.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1740-OPS-dime" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101d" title="room map">101D</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/dime/">dime</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-OPS-dime',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/dime.txt" title="session agenda">Diameter Maintenance and Extensions WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/dime-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/dime-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-OPS-dime" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/dime.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1740-OPS-multrans" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-abc" title="room map">201 ABC</a></td>
+	 
+	 <td>OPS</td>
+	 <td>multrans</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-OPS-multrans',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/multrans.txt" title="session agenda">Multicast Transition  BOF</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/multrans-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/multrans-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-OPS-multrans" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/multrans.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1740-RAI-vipr" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/vipr/">vipr</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-RAI-vipr',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/vipr.txt" title="session agenda">Verification Involving PSTN Reachability WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/vipr-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/vipr-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-RAI-vipr" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/vipr.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1740-RTG-sdn" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>RTG</td>
+	 <td>sdn</td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-RTG-sdn',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/sdn.htm" title="session agenda">Software Driven Networks  BOF</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/sdn-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/sdn-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-RTG-sdn" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/sdn.htm" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1740-SEC-tls" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/tls/">tls</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-SEC-tls',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/tls.txt" title="session agenda">Transport Layer Security WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/tls-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/tls-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-SEC-tls" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/tls.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-thu-1740-TSV-decade" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>TSV</td>
+	 <td><a href="/wg/decade/">decade</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-thu-1740-TSV-decade',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/decade.html" title="session agenda">Decoupled Application Data Enroute WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/decade-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/decade-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-thu-1740-TSV-decade" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/decade.html" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+      <tr class="meeting-date">
+	 <td colspan="4">
+	   <h2 class="ietf-divider">FRIDAY, November 18, 2011</h2>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    0800-1100  IETF Registration
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=1f-north-extended">1F North Extended</a>
+	 </td>
+      </tr>
+      
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    0800-0900  Beverages
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>0900-1100  Morning Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-fri-0900-INT-pcp" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>INT</td>
+	 <td><a href="/wg/pcp/">pcp</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-0900-INT-pcp',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/pcp.htm" title="session agenda">Port Control Protocol WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/pcp-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/pcp-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-0900-INT-pcp" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/pcp.htm" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-0900-RAI-mmusic" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/mmusic/">mmusic</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-0900-RAI-mmusic',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/mmusic.htm" title="session agenda">Multiparty Multimedia Session Control WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/mmusic-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/mmusic-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-0900-RAI-mmusic" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/mmusic.htm" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-0900-RTG-ccamp" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>RTG</td>
+	 <td><a href="/wg/ccamp/">ccamp</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-0900-RTG-ccamp',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/ccamp.htm" title="session agenda">Common Control and Measurement Plane WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/ccamp-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/ccamp-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-0900-RTG-ccamp" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/ccamp.htm" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-0900-SEC-krb-wg" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/krb-wg/">krb-wg</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-0900-SEC-krb-wg',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/krb-wg.txt" title="session agenda">Kerberos WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/krb-wg-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/krb-wg-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-0900-SEC-krb-wg" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/krb-wg.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <br />
+	    1100-1120  Beverage and Snack Break I
+	     - <a href="http://tools.ietf.org/agenda/82/venue/?room=common-area">Common Area</a>
+	 </td>
+      </tr>
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1120-1220  Afternoon Session I</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-fri-1120-APP-core" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/core/">core</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1120-APP-core',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/core.txt" title="session agenda">Constrained RESTful Environments WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/core-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/core-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1120-APP-core" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/core.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-1120-OPS-6renum" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/6renum/">6renum</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1120-OPS-6renum',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/6renum.txt" title="session agenda">IPv6 Site Renumbering WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/6renum-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/6renum-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1120-OPS-6renum" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/6renum.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-1120-RAI-atoca" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=102" title="room map">102</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/atoca/">atoca</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1120-RAI-atoca',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/atoca.txt" title="session agenda">Authority-to-Citizen Alert WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/atoca-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/atoca-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1120-RAI-atoca" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/atoca.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-1120-RAI-drinks" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/drinks/">drinks</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1120-RAI-drinks',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/drinks.txt" title="session agenda">Data for Reachability of Inter/tra-NetworK SIP WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/drinks-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/drinks-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1120-RAI-drinks" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/drinks.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-1120-SEC-abfab" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/abfab/">abfab</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1120-SEC-abfab',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/abfab.txt" title="session agenda">Application Bridging for Federated Access Beyond web WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/abfab-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/abfab-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1120-SEC-abfab" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/abfab.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+   
+   
+      
+      <tr>
+	 <td colspan="4">
+	    <b>1230-1330  Afternoon Session II</b>
+	    
+	    
+	 </td>
+      </tr>
+      
+      
+      <tr id="82-fri-1230-APP-core" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101b" title="room map">101B</a></td>
+	 
+	 <td>APP</td>
+	 <td><a href="/wg/core/">core</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1230-APP-core',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/core.txt" title="session agenda">Constrained RESTful Environments WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/core-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/core-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1230-APP-core" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/core.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-1230-OPS-6renum" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=201-def" title="room map">201 DEF</a></td>
+	 
+	 <td>OPS</td>
+	 <td><a href="/wg/6renum/">6renum</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1230-OPS-6renum',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/6renum.txt" title="session agenda">IPv6 Site Renumbering WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/6renum-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/6renum-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1230-OPS-6renum" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/6renum.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-1230-RAI-drinks" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=101c" title="room map">101C</a></td>
+	 
+	 <td>RAI</td>
+	 <td><a href="/wg/drinks/">drinks</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1230-RAI-drinks',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/drinks.txt" title="session agenda">Data for Reachability of Inter/tra-NetworK SIP WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/drinks-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/drinks-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1230-RAI-drinks" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/drinks.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      <tr id="82-fri-1230-SEC-abfab" class="grouprow">
+	 <td><a href="http://tools.ietf.org/agenda/82/venue/?room=3f-banquet" title="room map">3F Banquet</a></td>
+	 
+	 <td>SEC</td>
+	 <td><a href="/wg/abfab/">abfab</a></td>
+	 <td>
+            <table width="100%"><tr><td>
+            <img src="/images/color-palette-4x4.gif" alt="" onclick="pickAgendaColor('82-fri-1230-SEC-abfab',this);" title="color tag this line"/ class="noprint">
+	    <a href="http://www.ietf.org/proceedings/82/agenda/abfab.txt" title="session agenda">Application Bridging for Federated Access Beyond web WG</a>
+	    
+           </td><td align="right">drafts:&nbsp;<a href="/meeting/82/agenda/abfab-drafts.tgz">tar</a>|<a href="/meeting/82/agenda/abfab-drafts.pdf">pdf</a></td></tr></table>
+	 </td>
+	 
+      </tr>
+      <tr id="agenda-82-fri-1230-SEC-abfab" class="groupagenda">
+        <td></td>
+        <td colspan="3">
+	  
+          <iframe width="100%" height="400px" src="about:blank" xsrc="/meeting/82/agenda/abfab.txt" onload="r(this)"></iframe>
+	  
+        </td>
+      </tr>
+      
+      
+   
+
+</table>
+
+
+
+
+
+<script type="text/javascript" src="/js/lib/jquery-1.5.1.min.js"></script>
+<script type="text/javascript" src="/js/yui/yui-20100305.js"></script> 
+<script type="text/javascript">
+//<![CDATA[
+YAHOO.util.Event.onContentReady("wgs", function () {
+    var oMenu = new YAHOO.widget.Menu("wgs", { position: "static", hidedelay:  750, lazyload: true });
+    oMenu.render();      
+});      
+
+
+//]]>
+</script>
+<script type="text/javascript" src="/js/base.js"></script>
+
+
+ 
+</div>
+<div id="ietf-extras"></div>
+</td></tr></table>
+
+
+
+</body></html>
