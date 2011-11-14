@@ -207,6 +207,12 @@ for row in rows:
 			# This seems to happen with canceled events..
 			continue
 		fullname = getinside(full[0])
+		
+		wga = htmlfind(cols[2], "a")
+		links = []
+		if wga:
+			links.append(Link("https://datatracker.ietf.org" + wga[0].attributes["href"], "link"))
+		
 		ag_url = full[0].attributes["href"]
 		agenda = None
 		if ag_url.endswith(".txt"):
@@ -214,6 +220,8 @@ for row in rows:
 				agenda = unicode(fetch(ag_url), "utf-8")
 			except UnicodeDecodeError, e:
 				agenda = unicode(fetch(ag_url), "iso8859-1")
+		else:
+			links.append(Link(ag_url, "link"))
 		
 		if room in rooms:
 			roomo = rooms.get(room, None)
@@ -227,6 +235,7 @@ for row in rows:
 		item.start = slot_start
 		item.end = slot_end
 		item.description = agenda
+		item.links = links
 		roomo.items.append(item)
 		
 		pass
@@ -270,6 +279,8 @@ for row in rows:
 			roomo.items.append(item)
 		
 		print (room, slot_start, text)
+
+sched.linktypes.append(LinkType("link", "http://wilmer.gaa.st/deoxide/konq.png"))
 
 sortlist = [rooms[r] for r in sorted(rooms.iterkeys())]
 sched.tents = sortlist

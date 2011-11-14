@@ -1,4 +1,4 @@
-<schedule id="org.ietf.82" title="IETF 82 Taipei" xmlns="http://gaa.st/giggity#sched"><line id="101a" title="101A"><item endTime="1321241400" id="82-mon-0900-OPS-bmwg" startTime="1321232400" title="bmwg - Benchmarking Methodology WG (OPS)"><itemDescription>Benchmarking Methodology WG (bmwg)
+<schedule id="org.ietf.82" title="IETF 82 Taipei" xmlns="http://gaa.st/giggity#sched"><linkType icon="http://wilmer.gaa.st/deoxide/konq.png" id="link" /><line id="101a" title="101A"><item endTime="1321241400" id="82-mon-0900-OPS-bmwg" startTime="1321232400" title="bmwg - Benchmarking Methodology WG (OPS)"><itemDescription>Benchmarking Methodology WG (bmwg)
   
 MONDAY, November 14, 2011
 0900-1130  Morning Session I
@@ -123,7 +123,7 @@ z. Software Update Benchmarking Brief Update
  
 LAST. AOB 
 
- </itemDescription></item><item endTime="1321258200" id="82-mon-1510-OPS-opsec" startTime="1321254600" title="opsec - Operational Security Capabilities for IP Network Infrastructure WG (OPS)"><itemDescription>o MONDAY, November 14, 2011
+ </itemDescription><itemLink href="https://datatracker.ietf.org/wg/bmwg/" type="link" /></item><item endTime="1321258200" id="82-mon-1510-OPS-opsec" startTime="1321254600" title="opsec - Operational Security Capabilities for IP Network Infrastructure WG (OPS)"><itemDescription>o MONDAY, November 14, 2011
 1510-1610 Afternoon Session II
 101A
 ===================================================== 
@@ -152,7 +152,7 @@ o Revision to the Charter / Updating Milestones
 
 o Any other business					Remainder
   Open mic / performance art.
-</itemDescription></item><item endTime="1321327800" id="82-tue-0900-RTG-pim" startTime="1321318800" title="pim - Protocol Independent Multicast WG (RTG)"><itemDescription>Meeting slot: Tuesday 0900-1130
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/opsec/" type="link" /></item><item endTime="1321327800" id="82-tue-0900-RTG-pim" startTime="1321318800" title="pim - Protocol Independent Multicast WG (RTG)"><itemDescription>Meeting slot: Tuesday 0900-1130
 
 Agenda bashing, document status                Mike/Stig      15 min
 
@@ -164,7 +164,7 @@ draft-hou-pim-drlb-00                          Sri Vallepalli 20 min
 draft-zzhang-pim-bidir-rp-prune-graft-00       Jeffrey Zhang  20 min
 draft-wijnands-pim-source-discovery-bsr-00     Ice Wijnands   20 min
 draft-karan-mofrr-01                           Dino/Ice       20 min
-</itemDescription></item><item endTime="1321340400" id="82-tue-1300-OPS-netmod" startTime="1321333200" title="netmod - NETCONF Data Modeling Language WG (OPS)"><itemDescription>WG:        NETMOD
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/pim/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-OPS-netmod" startTime="1321333200" title="netmod - NETCONF Data Modeling Language WG (OPS)"><itemDescription>WG:        NETMOD
 Meeting:   IETF 82
 Location:  Taipei, Taiwan
 WG Chairs: David Kessens
@@ -216,7 +216,7 @@ November, 2011-11-15, 13:00-15:00, Meeting Room: 101A
 
       {please identify issues in advance}
 
-</itemDescription></item><item endTime="1321351800" id="82-tue-1710-OPS-netconf" startTime="1321348200" title="netconf - Network Configuration WG (OPS)"><itemDescription>
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/netmod/" type="link" /></item><item endTime="1321351800" id="82-tue-1710-OPS-netconf" startTime="1321348200" title="netconf - Network Configuration WG (OPS)"><itemDescription>
 Agenda for NETCONF WG Session
 -----------------------------
 
@@ -256,7 +256,7 @@ Room: 101A
    AOB
 
 
-</itemDescription></item><item endTime="1321414200" id="82-wed-0900-TSV-tcpm" startTime="1321405200" title="tcpm - TCP Maintenance and Minor Extensions WG (TSV)"><itemDescription>TCP Maintenance and Minor Extensions Working Group
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/netconf/" type="link" /></item><item endTime="1321414200" id="82-wed-0900-TSV-tcpm" startTime="1321405200" title="tcpm - TCP Maintenance and Minor Extensions WG (TSV)"><itemDescription>TCP Maintenance and Minor Extensions Working Group
 IETF 82 - Taipei, Taiwan
 Wednesday, November 16, 2011, 9:00-11:30
 ==================================================
@@ -308,7 +308,7 @@ Per Hurtig
 TCP and SCTP RTO Restart
 draft-hurtig-tcpm-rtorestart
 15min
-</itemDescription></item><item endTime="1321431000" id="82-wed-1510-APP-repute" startTime="1321427400" title="repute - Reputation Services WG (APP)"><itemDescription>
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/tcpm/" type="link" /></item><item endTime="1321431000" id="82-wed-1510-APP-repute" startTime="1321427400" title="repute - Reputation Services WG (APP)"><itemDescription>
 REPUTE working group agenda - Taipei
 
 1.  Hello and Agenda Bashing (5 min)
@@ -332,7 +332,7 @@ REPUTE working group agenda - Taipei
     - SAMPLE-SIZE parameter currently has no units; is this a problem?
     - Ditch the plain text format and always go with XML?
     - Are RFC5322.FROM and RFC5321.MAILFROM identity tags needed?
-    - Need or want to distinguish between DKIM and SPF? </itemDescription></item><item endTime="1321500600" id="82-thu-0900-SEC-nea" startTime="1321491600" title="nea - Network Endpoint Assessment WG (SEC)"><itemDescription>Agenda for IETF 82 NEA WG meeting=================================Date: Thursday, Nov 17 2011Time: 0900-1130 CST (GMT+8) WG Charter: http://www.ietf.org/html.charters/nea-charter.htmlWG Tools: http://tools.ietf.org/wg/neaWG email: nea@ietf.org0900 Administrivia     Blue Sheets     Jabber &amp; Minute scribes     Agenda bashing0905 WG Status0910 NEA Reference Model0915 Discuss and Resolve WGLC PT-TLS Comments   http://www.ietf.org/internet-drafts/draft-ietf-nea-pt-tls-01.txt1000 Discuss and Resolve PT-EAP Issues   http://www.ietf.org/id/draft-ietf-nea-pt-eap-00.txt1115 Next Steps1130 Adjourn</itemDescription></item><item endTime="1321513200" id="82-thu-1300-INT-tictoc" startTime="1321506000" title="tictoc - Timing over IP Connection and Transfer of Clock WG (INT)"><itemDescription>IETF-82 TICTOC WG Agenda
+    - Need or want to distinguish between DKIM and SPF? </itemDescription><itemLink href="https://datatracker.ietf.org/wg/repute/" type="link" /></item><item endTime="1321500600" id="82-thu-0900-SEC-nea" startTime="1321491600" title="nea - Network Endpoint Assessment WG (SEC)"><itemDescription>Agenda for IETF 82 NEA WG meeting=================================Date: Thursday, Nov 17 2011Time: 0900-1130 CST (GMT+8) WG Charter: http://www.ietf.org/html.charters/nea-charter.htmlWG Tools: http://tools.ietf.org/wg/neaWG email: nea@ietf.org0900 Administrivia     Blue Sheets     Jabber &amp; Minute scribes     Agenda bashing0905 WG Status0910 NEA Reference Model0915 Discuss and Resolve WGLC PT-TLS Comments   http://www.ietf.org/internet-drafts/draft-ietf-nea-pt-tls-01.txt1000 Discuss and Resolve PT-EAP Issues   http://www.ietf.org/id/draft-ietf-nea-pt-eap-00.txt1115 Next Steps1130 Adjourn</itemDescription><itemLink href="https://datatracker.ietf.org/wg/nea/" type="link" /></item><item endTime="1321513200" id="82-thu-1300-INT-tictoc" startTime="1321506000" title="tictoc - Timing over IP Connection and Transfer of Clock WG (INT)"><itemDescription>IETF-82 TICTOC WG Agenda
 ========================
 Thursday, 17 Nov 2011, 1300-1500  
 
@@ -366,7 +366,7 @@ Thursday, 17 Nov 2011, 1300-1500
      draft-zhang-tictoc-pdv-lsp-00
 
 11.  Wrap-up / Way Forward
-</itemDescription></item><item endTime="1321530000" id="82-thu-1740-IRTF-samrg" startTime="1321522800" title="samrg - Scalable Adaptive Multicast Research Group (IRTF)"><itemDescription>
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/tictoc/" type="link" /></item><item endTime="1321530000" id="82-thu-1740-IRTF-samrg" startTime="1321522800" title="samrg - Scalable Adaptive Multicast Research Group (IRTF)"><itemDescription>
 IRTF SAM RG Meeting, IETF 82
 Thursday, November 17, 2011, 1740 - 1940
 
@@ -452,7 +452,7 @@ http://datatracker.ietf.org/doc/draft-mawatari-softwire-464xlat/ (10 min)
 
 
 
-</itemDescription></item><item endTime="1321258200" id="82-mon-1510-TSV-tsvwg" startTime="1321254600" title="tsvwg - Transport Area Working Group WG (TSV)"><itemDescription>IETF-82, Taipei, Taiwan 
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/softwire/" type="link" /></item><item endTime="1321258200" id="82-mon-1510-TSV-tsvwg" startTime="1321254600" title="tsvwg - Transport Area Working Group WG (TSV)"><itemDescription>IETF-82, Taipei, Taiwan 
 
 TSVWG
 WG Chairs: James Polk &lt;jmpolk@cisco.com&gt;
@@ -492,7 +492,7 @@ draft-touch-tsvwg-port-use
 Joe - Shared Use of Experimental TCP Options                (10 min)   5
 draft-touch-tcpm-experimental-options-00
 
-Michio Honda - Towards Extending the TCP Option Space       (10 min)   6</itemDescription></item><item endTime="1321327800" id="82-tue-0900-SEC-emu" startTime="1321318800" title="emu - EAP Method Update WG (SEC)"><itemDescription>EMU Working Group Agenda 
+Michio Honda - Towards Extending the TCP Option Space       (10 min)   6</itemDescription><itemLink href="https://datatracker.ietf.org/wg/tsvwg/" type="link" /></item><item endTime="1321327800" id="82-tue-0900-SEC-emu" startTime="1321318800" title="emu - EAP Method Update WG (SEC)"><itemDescription>EMU Working Group Agenda 
 IETF 82
 TUESDAY, November 15, 2011 0900-1130
 ---------------------------------------
@@ -507,7 +507,7 @@ http://tools.ietf.org/html/draft-ietf-emu-eap-tunnel-method-01
 
 4. EAP Applicability Statement Update (10 min)
 http://tools.ietf.org/html/draft-winter-abfab-eapapplicability-01
-</itemDescription></item><item endTime="1321340400" id="82-tue-1300-INT-multimob" startTime="1321333200" title="multimob - Multicast Mobility WG (INT)" /><item endTime="1321347600" id="82-tue-1520-RAI-xrblock" startTime="1321341600" title="xrblock - Metric Blocks for use with RTCP's Extended Report Framework WG (RAI)"><itemDescription>Metric Blocks for use with RTCP's Extended Report Framework (xrblock)          
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/emu/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-INT-multimob" startTime="1321333200" title="multimob - Multicast Mobility WG (INT)"><itemLink href="https://datatracker.ietf.org/wg/multimob/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/multimob.html" type="link" /></item><item endTime="1321347600" id="82-tue-1520-RAI-xrblock" startTime="1321341600" title="xrblock - Metric Blocks for use with RTCP's Extended Report Framework WG (RAI)"><itemDescription>Metric Blocks for use with RTCP's Extended Report Framework (xrblock)          
 ========================================================================
 
 Chairs: David Bryan &lt;bryan@ethernot.org&gt;
@@ -562,7 +562,7 @@ Agenda IETF 82, Taipei
 
 16:55 Closing and Next Steps                            (Chairs, 5)
 
-17:00 End</itemDescription></item><item endTime="1321351800" id="82-tue-1710-OPS-armd" startTime="1321348200" title="armd - Address Resolution for Massive numbers of hosts in the Data center WG (OPS)" /><item endTime="1321414200" id="82-wed-0900-INT-netext" startTime="1321405200" title="netext - Network-Based Mobility Extensions WG (INT)"><itemDescription>Rev: 5
+17:00 End</itemDescription><itemLink href="https://datatracker.ietf.org/wg/xrblock/" type="link" /></item><item endTime="1321351800" id="82-tue-1710-OPS-armd" startTime="1321348200" title="armd - Address Resolution for Massive numbers of hosts in the Data center WG (OPS)"><itemLink href="https://datatracker.ietf.org/wg/armd/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/armd.html" type="link" /></item><item endTime="1321414200" id="82-wed-0900-INT-netext" startTime="1321405200" title="netext - Network-Based Mobility Extensions WG (INT)"><itemDescription>Rev: 5
 
 Network-Based Mobility Extensions (NetExt) WG meeting
 
@@ -617,7 +617,7 @@ Remote participation info:
 Presentation slides will be available 2 hours prior to the meeting at:
  https://datatracker.ietf.org/public/meeting_materials.cgi?meeting_num=82
  (Under Netext in the Internet area)
-</itemDescription></item><item endTime="1321426800" id="82-wed-1300-OPS-eman" startTime="1321419600" title="eman - Energy Management WG (OPS)"><itemDescription>EMAN draft agenda, IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/netext/" type="link" /></item><item endTime="1321426800" id="82-wed-1300-OPS-eman" startTime="1321419600" title="eman - Energy Management WG (OPS)"><itemDescription>EMAN draft agenda, IETF 82
 Wednesday, November 16th 2011, Room, 101B
 
 
@@ -659,7 +659,7 @@ Wednesday, November 16th 2011, Room, 101B
 9. Open microphone: whatever time is left
 
          
-Regards, Bruce and Benoit.</itemDescription></item><item endTime="1321431000" id="82-wed-1510-INT-trill" startTime="1321427400" title="trill - Transparent Interconnection of Lots of Links WG (INT)"><itemDescription>TRILL Working Group Agenda, IETF 82
+Regards, Bruce and Benoit.</itemDescription><itemLink href="https://datatracker.ietf.org/wg/eman/" type="link" /></item><item endTime="1321431000" id="82-wed-1510-INT-trill" startTime="1321427400" title="trill - Transparent Interconnection of Lots of Links WG (INT)"><itemDescription>TRILL Working Group Agenda, IETF 82
 Grand Hyatt Hotel, Taipei, Taiwan, 
 Chairs: Erik Nordmark, Donald E. Eastlake 3rd 
 
@@ -717,7 +717,7 @@ TRILL OAM SECTION:
          draft-yizhou-trill-multi-destination-ping-01
 
 5 min.  Wrap-Up, Chairs
-</itemDescription></item><item endTime="1321500600" id="82-thu-0900-OPS-mboned" startTime="1321491600" title="mboned - MBONE Deployment WG (OPS)" /><item endTime="1321521600" id="82-thu-1520-OPS-ipfix" startTime="1321514400" title="ipfix - IP Flow Information Export WG (OPS)"><itemDescription>===========================================
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/trill/" type="link" /></item><item endTime="1321500600" id="82-thu-0900-OPS-mboned" startTime="1321491600" title="mboned - MBONE Deployment WG (OPS)"><itemLink href="https://datatracker.ietf.org/wg/mboned/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/mboned.html" type="link" /></item><item endTime="1321521600" id="82-thu-1520-OPS-ipfix" startTime="1321514400" title="ipfix - IP Flow Information Export WG (OPS)"><itemDescription>===========================================
 IP Flow Information Export WG (ipfix)
 DRAFT-03   Agenda for IETF 82, Taipei
 Thursday, November 17, 1520-1720, Room 101B
@@ -797,7 +797,7 @@ Presentation slides will be available at
 Participation via jabber is offered at ipfix@jabber.ietf.org
 
 ------------------
-</itemDescription></item><item endTime="1321530000" id="82-thu-1740-RAI-vipr" startTime="1321522800" title="vipr - Verification Involving PSTN Reachability WG (RAI)"><itemDescription>VIPR WG -- IETF 82, Taipei, Taiwan
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/ipfix/" type="link" /></item><item endTime="1321530000" id="82-thu-1740-RAI-vipr" startTime="1321522800" title="vipr - Verification Involving PSTN Reachability WG (RAI)"><itemDescription>VIPR WG -- IETF 82, Taipei, Taiwan
 Thursday, November 17, 17:40-19:40
 
 Mailing list: vipr@ietf.org
@@ -810,7 +810,7 @@ Agenda:
 17:40 - Administrivia (Note Well, Blue Sheets) [Chairs]
 17:45 - Status Update, -overview draft adoption? [Chairs]
 17:50 - Open Issues in -reload-usage, -pvp, and -antispam etc (details to follow) [Petit-Huguenin]
-19:30 - Other issues, open mic</itemDescription></item><item endTime="1321585200" id="82-fri-0900-INT-pcp" startTime="1321578000" title="pcp - Port Control Protocol WG (INT)" /><item endTime="1321590000" id="82-fri-1120-APP-core" startTime="1321586400" title="core - Constrained RESTful Environments WG (APP)"><itemDescription>CORE WG Agenda for IETF 82
+19:30 - Other issues, open mic</itemDescription><itemLink href="https://datatracker.ietf.org/wg/vipr/" type="link" /></item><item endTime="1321585200" id="82-fri-0900-INT-pcp" startTime="1321578000" title="pcp - Port Control Protocol WG (INT)"><itemLink href="https://datatracker.ietf.org/wg/pcp/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/pcp.htm" type="link" /></item><item endTime="1321590000" id="82-fri-1120-APP-core" startTime="1321586400" title="core - Constrained RESTful Environments WG (APP)"><itemDescription>CORE WG Agenda for IETF 82
 Version 2.3
 
 
@@ -948,7 +948,7 @@ Objective:
 Objective: plan the work up to the fulfillment of our milestones.
 
 13:30   end
-</itemDescription></item><item endTime="1321594200" id="82-fri-1230-APP-core" startTime="1321590600" title="core - Constrained RESTful Environments WG (APP)"><itemDescription>CORE WG Agenda for IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/core/" type="link" /></item><item endTime="1321594200" id="82-fri-1230-APP-core" startTime="1321590600" title="core - Constrained RESTful Environments WG (APP)"><itemDescription>CORE WG Agenda for IETF 82
 Version 2.3
 
 
@@ -1086,7 +1086,7 @@ Objective:
 Objective: plan the work up to the fulfillment of our milestones.
 
 13:30   end
-</itemDescription></item></line><line id="101c" title="101C"><item endTime="1321156800" id="iepgmeeting" startTime="1321149600" title="IEPG Meeting" /><item endTime="1321167000" id="newcomersorientationmandarin" startTime="1321160400" title="Newcomers' Orientation (Mandarin)" /><item endTime="1321174200" id="routingbridgingandswitchingtutorial" startTime="1321167600" title="Routing, Bridging and Switching Tutorial" /><item endTime="1321241400" id="82-mon-0900-SEC-dane" startTime="1321232400" title="dane - DNS-based Authentication of Named Entities WG (SEC)"><itemDescription>DNS-based Authentication of Named Entities (DANE) WG
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/core/" type="link" /></item></line><line id="101c" title="101C"><item endTime="1321156800" id="iepgmeeting" startTime="1321149600" title="IEPG Meeting" /><item endTime="1321167000" id="newcomersorientationmandarin" startTime="1321160400" title="Newcomers' Orientation (Mandarin)" /><item endTime="1321174200" id="routingbridgingandswitchingtutorial" startTime="1321167600" title="Routing, Bridging and Switching Tutorial" /><item endTime="1321241400" id="82-mon-0900-SEC-dane" startTime="1321232400" title="dane - DNS-based Authentication of Named Entities WG (SEC)"><itemDescription>DNS-based Authentication of Named Entities (DANE) WG
  
 MONDAY, November 14, 2011
 0900-1130 Morning Session I
@@ -1123,7 +1123,7 @@ o Any other business					Remainder
   Open mic / performance art.
   Everyone.
 
-</itemDescription></item><item endTime="1321254000" id="82-mon-1300-RAI-avtcore" startTime="1321246800" title="avtcore - Audio/Video Transport Core Maintenance WG (RAI)" /><item endTime="1321258200" id="82-mon-1510-INT-mext" startTime="1321254600" title="mext - Mobility EXTensions for IPv6 WG (INT)"><itemDescription>----------------------------------------------------------------------
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/dane/" type="link" /></item><item endTime="1321254000" id="82-mon-1300-RAI-avtcore" startTime="1321246800" title="avtcore - Audio/Video Transport Core Maintenance WG (RAI)"><itemLink href="https://datatracker.ietf.org/wg/avtcore/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/avtcore.html" type="link" /></item><item endTime="1321258200" id="82-mon-1510-INT-mext" startTime="1321254600" title="mext - Mobility EXTensions for IPv6 WG (INT)"><itemDescription>----------------------------------------------------------------------
 Agenda of the MEXT (DMM) WG meeting at IETF 82
 MONDAY, November 14, 2011
 1510-1610  Afternoon Session II, room 101C
@@ -1173,7 +1173,7 @@ Time permitting additional document presentations:
  o Negotiation of security protocol for Mobile IPv6 operation .
     draft-patil-mext-sec-negotiate-03
    Bruno Faria
-</itemDescription></item><item endTime="1321327800" id="82-tue-0900-TSV-ppsp" startTime="1321318800" title="ppsp - Peer to Peer Streaming Protocol WG (TSV)"><itemDescription>PPSP Working Group Draft Agenda
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/mext/" type="link" /></item><item endTime="1321327800" id="82-tue-0900-TSV-ppsp" startTime="1321318800" title="ppsp - Peer to Peer Streaming Protocol WG (TSV)"><itemDescription>PPSP Working Group Draft Agenda
 IETF 82,Taipei
 TUESDAY, November 15, 2011 0900-1130
 ---------------------------------------
@@ -1207,7 +1207,7 @@ TUESDAY, November 15, 2011 1130-1300
 
 
 
-</itemDescription></item><item endTime="1321340400" id="82-tue-1300-RTG-sidr" startTime="1321333200" title="sidr - Secure Inter-Domain Routing WG (RTG)" /><item endTime="1321347600" id="82-tue-1520-RAI-geopriv" startTime="1321341600" title="geopriv - Geographic Location/Privacy WG (RAI)"><itemDescription>5m  Chairs' intro &amp; administrivia
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/ppsp/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-RTG-sidr" startTime="1321333200" title="sidr - Secure Inter-Domain Routing WG (RTG)"><itemLink href="https://datatracker.ietf.org/wg/sidr/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/sidr.html" type="link" /></item><item endTime="1321347600" id="82-tue-1520-RAI-geopriv" startTime="1321341600" title="geopriv - Geographic Location/Privacy WG (RAI)"><itemDescription>5m  Chairs' intro &amp; administrivia
 
 20m draft-ietf-geopriv-policy-25
    Goal: Review latest changes, last chance before WGLC
@@ -1218,7 +1218,7 @@ TUESDAY, November 15, 2011 1130-1300
 40m draft-ietf-geopriv-relative-location-02
    Goal: Review latest changes, gauge WG consensus
 
-15m AOB</itemDescription></item><item endTime="1321351800" id="82-tue-1710-SEC-kitten" startTime="1321348200" title="kitten - Common Authentication Technology Next Generation WG (SEC)"><itemDescription>Kitten Working Group (WG) Agenda
+15m AOB</itemDescription><itemLink href="https://datatracker.ietf.org/wg/geopriv/" type="link" /></item><item endTime="1321351800" id="82-tue-1710-SEC-kitten" startTime="1321348200" title="kitten - Common Authentication Technology Next Generation WG (SEC)"><itemDescription>Kitten Working Group (WG) Agenda
 
 Meeting : IETF 82, Taipei, Taiwan (Taipei International Convention Center)
 Co-Chair: Tom Yu &lt;tlyu@mit.edu&gt;
@@ -1262,7 +1262,7 @@ Review and Milestones (5 min)
 Open mic (5 min)
 
 ==============================================================
-</itemDescription></item><item endTime="1321414200" id="82-wed-0900-TSV-cdni" startTime="1321405200" title="cdni - Content Delivery Networks Interconnection WG (TSV)" /><item endTime="1321426800" id="82-wed-1300-RAI-codec" startTime="1321419600" title="codec - Internet Wideband Audio Codec WG (RAI)"><itemDescription>
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/kitten/" type="link" /></item><item endTime="1321414200" id="82-wed-0900-TSV-cdni" startTime="1321405200" title="cdni - Content Delivery Networks Interconnection WG (TSV)"><itemLink href="https://datatracker.ietf.org/wg/cdni/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/cdni.html" type="link" /></item><item endTime="1321426800" id="82-wed-1300-RAI-codec" startTime="1321419600" title="codec - Internet Wideband Audio Codec WG (RAI)"><itemDescription>
 Draft Codec Agenda - Ver 2
 
 0. Liaisons  (Chairs - 15 min)
@@ -1275,7 +1275,7 @@ Draft Codec Agenda - Ver 2
    Hum to publish or not
    draft-ietf-codec-opus-10
 
-</itemDescription></item><item endTime="1321431000" id="82-wed-1510-RAI-avtext" startTime="1321427400" title="avtext - Audio/Video Transport Extensions WG (RAI)"><itemDescription>Audio/Video Transport Extensions (avtext)
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/codec/" type="link" /></item><item endTime="1321431000" id="82-wed-1510-RAI-avtext" startTime="1321427400" title="avtext - Audio/Video Transport Extensions WG (RAI)"><itemDescription>Audio/Video Transport Extensions (avtext)
 ======================================================================
 
 Chairs: Magnus Westerlund &lt;magnus.westerlund@ericsson.com&gt;
@@ -1298,7 +1298,7 @@ Agenda IETF 82, Taipei
       draft-westerlund-avtext-rtp-stream-pause-00
 
 16:10 End
-</itemDescription></item><item endTime="1321500600" id="82-thu-0900-APP-iri" startTime="1321491600" title="iri - Internationalized Resource Identifiers WG (APP)"><itemDescription>Internationalized Resource Identifiers WG (iri)
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/avtext/" type="link" /></item><item endTime="1321500600" id="82-thu-0900-APP-iri" startTime="1321491600" title="iri - Internationalized Resource Identifiers WG (APP)"><itemDescription>Internationalized Resource Identifiers WG (iri)
 AGENDA for IETF 82, Taipei, Taiwan
 
 Date:           THURSDAY, November 17, 2011
@@ -1326,7 +1326,7 @@ Jabber:         xmpp:iri@jabber.ietf.org
              draft-ietf-iri-3987bis
 *  20 min   IRI Processing Spec 
 *  15 min   Open Floor
-*   5 min   Closing / Next Steps</itemDescription></item><item endTime="1321513200" id="82-thu-1300-SEC-oauth" startTime="1321506000" title="oauth - Web Authorization Protocol WG (SEC)"><itemDescription>OAuth meeting agenda for IETF 82
+*   5 min   Closing / Next Steps</itemDescription><itemLink href="https://datatracker.ietf.org/wg/iri/" type="link" /></item><item endTime="1321513200" id="82-thu-1300-SEC-oauth" startTime="1321506000" title="oauth - Web Authorization Protocol WG (SEC)"><itemDescription>OAuth meeting agenda for IETF 82
 
 Presenters MUST send presentation slides to the chairs by end of day on
 Saturday, 12 Nov 2011. Send PDF (preferred) or PPT to 
@@ -1389,7 +1389,7 @@ http://datatracker.ietf.org/doc/draft-ietf-oauth-v2-threatmodel/
   http://tools.ietf.org/html/draft-jones-simple-web-discovery-00
 
 4. Conclusion &amp; Next Steps
-</itemDescription></item><item endTime="1321521600" id="82-thu-1520-RAI-siprec" startTime="1321514400" title="siprec - SIP Recording WG (RAI)" /><item endTime="1321530000" id="82-thu-1740-TSV-decade" startTime="1321522800" title="decade - Decoupled Application Data Enroute WG (TSV)" /><item endTime="1321585200" id="82-fri-0900-RAI-mmusic" startTime="1321578000" title="mmusic - Multiparty Multimedia Session Control WG (RAI)" /><item endTime="1321590000" id="82-fri-1120-RAI-drinks" startTime="1321586400" title="drinks - Data for Reachability of Inter/tra-NetworK SIP WG (RAI)"><itemDescription>          DRINKS WG MEETING (IETF 82)
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/oauth/" type="link" /></item><item endTime="1321521600" id="82-thu-1520-RAI-siprec" startTime="1321514400" title="siprec - SIP Recording WG (RAI)"><itemLink href="https://datatracker.ietf.org/wg/siprec/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/siprec.html" type="link" /></item><item endTime="1321530000" id="82-thu-1740-TSV-decade" startTime="1321522800" title="decade - Decoupled Application Data Enroute WG (TSV)"><itemLink href="https://datatracker.ietf.org/wg/decade/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/decade.html" type="link" /></item><item endTime="1321585200" id="82-fri-0900-RAI-mmusic" startTime="1321578000" title="mmusic - Multiparty Multimedia Session Control WG (RAI)"><itemLink href="https://datatracker.ietf.org/wg/mmusic/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/mmusic.htm" type="link" /></item><item endTime="1321590000" id="82-fri-1120-RAI-drinks" startTime="1321586400" title="drinks - Data for Reachability of Inter/tra-NetworK SIP WG (RAI)"><itemDescription>          DRINKS WG MEETING (IETF 82)
           ===========================
 
           IETF 82 - Taipei, Taiwan
@@ -1446,7 +1446,7 @@ http://datatracker.ietf.org/doc/draft-ietf-oauth-v2-threatmodel/
 
 
 
- </itemDescription></item><item endTime="1321594200" id="82-fri-1230-RAI-drinks" startTime="1321590600" title="drinks - Data for Reachability of Inter/tra-NetworK SIP WG (RAI)"><itemDescription>          DRINKS WG MEETING (IETF 82)
+ </itemDescription><itemLink href="https://datatracker.ietf.org/wg/drinks/" type="link" /></item><item endTime="1321594200" id="82-fri-1230-RAI-drinks" startTime="1321590600" title="drinks - Data for Reachability of Inter/tra-NetworK SIP WG (RAI)"><itemDescription>          DRINKS WG MEETING (IETF 82)
           ===========================
 
           IETF 82 - Taipei, Taiwan
@@ -1503,7 +1503,7 @@ http://datatracker.ietf.org/doc/draft-ietf-oauth-v2-threatmodel/
 
 
 
- </itemDescription></item></line><line id="101d" title="101D"><item endTime="1321241400" id="82-mon-0900-OPS-radext" startTime="1321232400" title="radext - RADIUS EXTensions WG (OPS)"><itemDescription>RADEXT WG IETF 82 Agenda
+ </itemDescription><itemLink href="https://datatracker.ietf.org/wg/drinks/" type="link" /></item></line><line id="101d" title="101D"><item endTime="1321241400" id="82-mon-0900-OPS-radext" startTime="1321232400" title="radext - RADIUS EXTensions WG (OPS)"><itemDescription>RADEXT WG IETF 82 Agenda
 
 Chairs:
 Jouni Korhonen &lt;jouni.korhonen at nsn.com&gt;
@@ -1551,7 +1551,7 @@ Discussion and Wrap-up (35 minutes)
 
 11:10 - 11:25 AM Next Steps: WG Chairs &amp; ADs (15 minutes) 
 WG Goals/Milestones status 
-</itemDescription></item><item endTime="1321258200" id="82-mon-1510-RTG-forces" startTime="1321254600" title="forces - Forwarding and Control Element Separation WG (RTG)"><itemDescription>ForCES Working Group, MONDAY, November 14, 2011, Taipei, Taiwan.
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/radext/" type="link" /></item><item endTime="1321258200" id="82-mon-1510-RTG-forces" startTime="1321254600" title="forces - Forwarding and Control Element Separation WG (RTG)"><itemDescription>ForCES Working Group, MONDAY, November 14, 2011, Taipei, Taiwan.
 CHAIR: Joel Halpern &lt;jmh@joelhalpern.com&gt;
 
 ========
@@ -1566,7 +1566,7 @@ CHAIR: Joel Halpern &lt;jmh@joelhalpern.com&gt;
 	(10 minutes)
 * Wrap up and adjourn - Chair 
 	(5 minutes)
-</itemDescription></item><item endTime="1321327800" id="82-tue-0900-APP-paws" startTime="1321318800" title="paws - Protocol to Access WS database WG (APP)"><itemDescription>1. Administrivia (5 min)
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/forces/" type="link" /></item><item endTime="1321327800" id="82-tue-0900-APP-paws" startTime="1321318800" title="paws - Protocol to Access WS database WG (APP)"><itemDescription>1. Administrivia (5 min)
 Blue sheets, minutes taker, jabber proxy, jabber scribe?
 2. WG doc status (5 min)
 3. PAWS Use Cases presentation (Raj, JC, 20 min)
@@ -1576,7 +1576,7 @@ Blue sheets, minutes taker, jabber proxy, jabber scribe?
 6. PAWS Data Model presentation (Jesse, 30 min)
 7. PAWS protocol framework (30 min)
 8. Next steps discussion (10 min)
-</itemDescription></item><item endTime="1321340400" id="82-tue-1300-APP-eai" startTime="1321333200" title="eai - Email Address Internationalization WG (APP)"><itemDescription>IETF 82 EAI Agenda
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/paws/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-APP-eai" startTime="1321333200" title="eai - Email Address Internationalization WG (APP)"><itemDescription>IETF 82 EAI Agenda
 
 	Email Address Internationalization (EAI)
 
@@ -1633,7 +1633,7 @@ Blue sheets, minutes taker, jabber proxy, jabber scribe?
     draft-ietf-eai-frmwrk-4952bis-12
     draft-ietf-eai-5721bis-02
     draft-ietf-eai-5738bis-01
-    draft-ietf-eai-popimap-downgrade-03</itemDescription></item><item endTime="1321347600" id="82-tue-1520-APP-precis" startTime="1321341600" title="precis - Preparation and Comparison of Internationalized Strings WG (APP)"><itemDescription>===============================
+    draft-ietf-eai-popimap-downgrade-03</itemDescription><itemLink href="https://datatracker.ietf.org/wg/eai/" type="link" /></item><item endTime="1321347600" id="82-tue-1520-APP-precis" startTime="1321341600" title="precis - Preparation and Comparison of Internationalized Strings WG (APP)"><itemDescription>===============================
 IETF Precis WG
 Agenda for IETF 82, Taipei, TW
 
@@ -1658,7 +1658,7 @@ mailing list: precis@ietf.org
 4. Next steps
 
 Marc &amp; Yoneya, co-chairs
-</itemDescription></item><item endTime="1321351800" id="82-tue-1710-INT-savi" startTime="1321348200" title="savi - Source Address Validation Improvements WG (INT)"><itemDescription>---------------------------------------------------------------------
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/precis/" type="link" /></item><item endTime="1321351800" id="82-tue-1710-INT-savi" startTime="1321348200" title="savi - Source Address Validation Improvements WG (INT)"><itemDescription>---------------------------------------------------------------------
 Agenda of the SAVI working group meeting at IETF 82
 Tuesday, November 15, 2011, 17:10 - 18:10, 101D
 ---------------------------------------------------------------------
@@ -1688,7 +1688,7 @@ o SAVI MIB
 http://tools.ietf.org/html/draft-an-savi-mib-01
 
 
-</itemDescription></item><item endTime="1321426800" id="82-wed-1300-RTG-manet" startTime="1321419600" title="manet - Mobile Ad-hoc Networks WG (RTG)"><itemDescription>Mobile Ad hoc Networks (MANET) Agenda
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/savi/" type="link" /></item><item endTime="1321426800" id="82-wed-1300-RTG-manet" startTime="1321419600" title="manet - Mobile Ad-hoc Networks WG (RTG)"><itemDescription>Mobile Ad hoc Networks (MANET) Agenda
 
 Meeting		:	IETF 82 Wednesday November 16, 2011
 
@@ -1737,7 +1737,7 @@ AGENDA
 	- draft-ietf-manet-dlep-01
 
  o Open Microphone - Discussion, Related Work &amp; Announcements
-   - Interops, Implementations, Other Items</itemDescription></item><item endTime="1321431000" id="82-wed-1510-SEC-mile" startTime="1321427400" title="mile - Managed Incident Lightweight Exchange WG (SEC)"><itemDescription>==========================================================
+   - Interops, Implementations, Other Items</itemDescription><itemLink href="https://datatracker.ietf.org/wg/manet/" type="link" /></item><item endTime="1321431000" id="82-wed-1510-SEC-mile" startTime="1321427400" title="mile - Managed Incident Lightweight Exchange WG (SEC)"><itemDescription>==========================================================
 Managed Incident Lightweight Exchange (mile) Working Group
 
           DRAFT Agenda for IETF 82, Taipei
@@ -1817,7 +1817,7 @@ Presentation slides will be available at
 
 
 
-</itemDescription></item><item endTime="1321500600" id="82-thu-0900-IRTF-hiprg" startTime="1321491600" title="hiprg - Host Identity Protocol (IRTF)"><itemDescription>THURSDAY, November 17, 2011
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/mile/" type="link" /></item><item endTime="1321500600" id="82-thu-0900-IRTF-hiprg" startTime="1321491600" title="hiprg - Host Identity Protocol (IRTF)"><itemDescription>THURSDAY, November 17, 2011
 0900-1130 Morning Session I
 
 Andrei Gurtov/CWC. Pink Sheets. HIPRG Status update   (10 m)
@@ -1971,7 +1971,7 @@ Objective:
 Objective: plan the work up to the fulfillment of our milestones.
 
 13:30   end
-</itemDescription></item><item endTime="1321530000" id="82-thu-1740-OPS-dime" startTime="1321522800" title="dime - Diameter Maintenance and Extensions WG (OPS)"><itemDescription>Diameter Maintenance and Extensions
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/core/" type="link" /></item><item endTime="1321530000" id="82-thu-1740-OPS-dime" startTime="1321522800" title="dime - Diameter Maintenance and Extensions WG (OPS)"><itemDescription>Diameter Maintenance and Extensions
 
 == Logistics =================================================================
 
@@ -2039,7 +2039,7 @@ Conflicts: lisp, samrg, multrans (bof), vipr, sdn (bof), tls, decade
                                                                   total &gt;85min
                                                                    
 
-</itemDescription></item></line><line id="102" title="102"><item endTime="1321167000" id="newcomersorientation" startTime="1321160400" title="Newcomers' Orientation" /><item endTime="1321174200" id="documentlifecycle" startTime="1321167600" title="Document Lifecycle" /><item endTime="1321241400" id="82-mon-0900-APP-appsawg" startTime="1321232400" title="appsawg - Applications Area Working Group WG (APP)"><itemDescription>AppsAWG meeting agenda for IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/dime/" type="link" /></item></line><line id="102" title="102"><item endTime="1321167000" id="newcomersorientation" startTime="1321160400" title="Newcomers' Orientation" /><item endTime="1321174200" id="documentlifecycle" startTime="1321167600" title="Document Lifecycle" /><item endTime="1321241400" id="82-mon-0900-APP-appsawg" startTime="1321232400" title="appsawg - Applications Area Working Group WG (APP)"><itemDescription>AppsAWG meeting agenda for IETF 82
 
 Presenters please send presentation slides to the chairs by end of day on
 Sunday, 13 Nov 2011.
@@ -2101,7 +2101,7 @@ Basic Device Classification (Bruce Nordman) - 5 min
 
 Open mic, as time permits - 10 min or more
 
-</itemDescription></item><item endTime="1321254000" id="82-mon-1300-RTG-roll" startTime="1321246800" title="roll - Routing Over Low power and Lossy networks WG (RTG)"><itemDescription>Agenda/admin (Chairs - 5mn) [5]  	        
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/appsawg/" type="link" /></item><item endTime="1321254000" id="82-mon-1300-RTG-roll" startTime="1321246800" title="roll - Routing Over Low power and Lossy networks WG (RTG)"><itemDescription>Agenda/admin (Chairs - 5mn) [5]  	        
 
 1) WG Status (Chairs - 10 mn) [15] 
 
@@ -2126,7 +2126,7 @@ draft-sehgal-roll-rpl-mib-01 (Juergen - 5mn) - NOT IN CHARTER - [80]
 
 8) DIS Modifications - draft-goyal-roll-dis-modifications-00
 (Dominique Barthel - 10mn) [90]
-</itemDescription></item><item endTime="1321258200" id="82-mon-1510-RAI-dcon" startTime="1321254600" title="dcon - Distributed Conferencing BOF (RAI)"><itemDescription>DCON BOF, Monday, November 14, 2011, 1510-1610, room 3F Banquet
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/roll/" type="link" /></item><item endTime="1321258200" id="82-mon-1510-RAI-dcon" startTime="1321254600" title="dcon - Distributed Conferencing BOF (RAI)"><itemDescription>DCON BOF, Monday, November 14, 2011, 1510-1610, room 3F Banquet
 (Distributed Conferencing)
 Chairs:  Simon Pietro Romano, Brian Rosen
 Mailing list: dcon@ietf.org
@@ -2226,7 +2226,7 @@ AGENDA
     X. Xu
 
 
-</itemDescription></item><item endTime="1321340400" id="82-tue-1300-INT-trill" startTime="1321333200" title="trill - Transparent Interconnection of Lots of Links WG (INT)"><itemDescription>TRILL Working Group Agenda, IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/opsawg/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-INT-trill" startTime="1321333200" title="trill - Transparent Interconnection of Lots of Links WG (INT)"><itemDescription>TRILL Working Group Agenda, IETF 82
 Grand Hyatt Hotel, Taipei, Taiwan, 
 Chairs: Erik Nordmark, Donald E. Eastlake 3rd 
 
@@ -2284,7 +2284,7 @@ TRILL OAM SECTION:
          draft-yizhou-trill-multi-destination-ping-01
 
 5 min.  Wrap-Up, Chairs
-</itemDescription></item><item endTime="1321351800" id="82-tue-1710-RAI-sipcore" startTime="1321348200" title="sipcore - Session Initiation Protocol Core WG (RAI)" /><item endTime="1321414200" id="82-wed-0900-APP-weirds" startTime="1321405200" title="weirds - WHOIS-based Extensible Internet Registration Data Service BOF (APP)"><itemDescription>Agenda for WEIRDS BoF, IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/trill/" type="link" /></item><item endTime="1321351800" id="82-tue-1710-RAI-sipcore" startTime="1321348200" title="sipcore - Session Initiation Protocol Core WG (RAI)"><itemLink href="https://datatracker.ietf.org/wg/sipcore/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/sipcore.html" type="link" /></item><item endTime="1321414200" id="82-wed-0900-APP-weirds" startTime="1321405200" title="weirds - WHOIS-based Extensible Internet Registration Data Service BOF (APP)"><itemDescription>Agenda for WEIRDS BoF, IETF 82
  2011-11-10
 
     0.  Agenda bashing.
@@ -2318,7 +2318,7 @@ http://tools.ietf.org/html/draft-fiorelli-weirds-rws-00
 RELEVANT OTHER READING:
 
 http://usenix.org/publications/login/2011-10/openpdfs/Newton.pdf
-</itemDescription></item><item endTime="1321426800" id="82-wed-1300-RTG-karp" startTime="1321419600" title="karp - Keying and Authentication for Routing Protocols WG (RTG)" /><item endTime="1321431000" id="82-wed-1510-RTG-l3vpn" startTime="1321427400" title="l3vpn - Layer 3 Virtual Private Networks WG (RTG)"><itemDescription>L3VPN @ IETF82 in Taipei
+</itemDescription></item><item endTime="1321426800" id="82-wed-1300-RTG-karp" startTime="1321419600" title="karp - Keying and Authentication for Routing Protocols WG (RTG)"><itemLink href="https://datatracker.ietf.org/wg/karp/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/karp.html" type="link" /></item><item endTime="1321431000" id="82-wed-1510-RTG-l3vpn" startTime="1321427400" title="l3vpn - Layer 3 Virtual Private Networks WG (RTG)"><itemDescription>L3VPN @ IETF82 in Taipei
 
 VPN4DC session
 ==============
@@ -2342,7 +2342,7 @@ discussion time in the order below:
 
 - draft-kumaki-murai-l3vpn-rsvp-te
 - draft-chen-mpls-p2mp-ingress-protection &amp; draft-chen-mpls-p2mp-egress-protection
-</itemDescription></item><item endTime="1321500600" id="82-thu-0900-INT-dhc" startTime="1321491600" title="dhc - Dynamic Host Configuration WG (INT)" /><item endTime="1321513200" id="82-thu-1300-RAI-p2psip" startTime="1321506000" title="p2psip - Peer-to-Peer Session Initiation Protocol WG (RAI)" /><item endTime="1321521600" id="82-thu-1520-OPS-grow" startTime="1321514400" title="grow - Global Routing Operations WG (OPS)" /><item endTime="1321590000" id="82-fri-1120-RAI-atoca" startTime="1321586400" title="atoca - Authority-to-Citizen Alert WG (RAI)"><itemDescription>ATOCA Agenda for IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/l3vpn/" type="link" /></item><item endTime="1321500600" id="82-thu-0900-INT-dhc" startTime="1321491600" title="dhc - Dynamic Host Configuration WG (INT)"><itemLink href="https://datatracker.ietf.org/wg/dhc/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/dhc.html" type="link" /></item><item endTime="1321513200" id="82-thu-1300-RAI-p2psip" startTime="1321506000" title="p2psip - Peer-to-Peer Session Initiation Protocol WG (RAI)"><itemLink href="https://datatracker.ietf.org/wg/p2psip/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/p2psip.html" type="link" /></item><item endTime="1321521600" id="82-thu-1520-OPS-grow" startTime="1321514400" title="grow - Global Routing Operations WG (OPS)"><itemLink href="https://datatracker.ietf.org/wg/grow/" type="link" /></item><item endTime="1321590000" id="82-fri-1120-RAI-atoca" startTime="1321586400" title="atoca - Authority-to-Citizen Alert WG (RAI)"><itemDescription>ATOCA Agenda for IETF 82
 Friday, November 18, Room 102
 
 Note Well, Agenda Bash           (Chairs)             5
@@ -2355,7 +2355,7 @@ Registration and Delivery        (Richard Barnes)    20
   &lt;draft-barnes-atoca-delivery&gt;
   &lt;draft-barnes-atoca-meta&gt;
 
-</itemDescription></item></line><line id="103" title="103"><item endTime="1321174800" id="newcomersmeetandgreetopentonewcomersandwgchairs" startTime="1321171200" title="Newcomer's Meet and Greet (open to newcomers and WG chairs)" /></line><line id="1fnorthextended" title="1F North Extended"><item endTime="1321182000" id="ietfregistration" startTime="1321153200" title="IETF Registration" /><item endTime="1321264800" id="ietfregistration2" startTime="1321228800" title="IETF Registration" /><item endTime="1321351200" id="ietfregistration3" startTime="1321315200" title="IETF Registration" /><item endTime="1321434000" id="ietfregistration4" startTime="1321401600" title="IETF Registration" /><item endTime="1321520400" id="ietfregistration5" startTime="1321488000" title="IETF Registration" /><item endTime="1321585200" id="ietfregistration6" startTime="1321574400" title="IETF Registration" /></line><line id="201" title="201"><item endTime="1321270200" id="technicalplenary" startTime="1321259400" title="Technical Plenary"><itemDescription>
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/atoca/" type="link" /></item></line><line id="103" title="103"><item endTime="1321174800" id="newcomersmeetandgreetopentonewcomersandwgchairs" startTime="1321171200" title="Newcomer's Meet and Greet (open to newcomers and WG chairs)" /></line><line id="1fnorthextended" title="1F North Extended"><item endTime="1321182000" id="ietfregistration" startTime="1321153200" title="IETF Registration" /><item endTime="1321264800" id="ietfregistration2" startTime="1321228800" title="IETF Registration" /><item endTime="1321351200" id="ietfregistration3" startTime="1321315200" title="IETF Registration" /><item endTime="1321434000" id="ietfregistration4" startTime="1321401600" title="IETF Registration" /><item endTime="1321520400" id="ietfregistration5" startTime="1321488000" title="IETF Registration" /><item endTime="1321585200" id="ietfregistration6" startTime="1321574400" title="IETF Registration" /></line><line id="201" title="201"><item endTime="1321270200" id="technicalplenary" startTime="1321259400" title="Technical Plenary"><itemDescription>
 	    1630-1930  Technical Plenary
 	    
 	    
@@ -2422,7 +2422,7 @@ Carsten Bormann, and Robert Assimiti will share their views with the community.
 
 	    
 	    
-	 </itemDescription></item></line><line id="201abc" title="201 ABC"><item endTime="1321241400" id="82-mon-0900-RAI-clue" startTime="1321232400" title="clue - ControLling mUltiple streams for tElepresence WG (RAI)" /><item endTime="1321254000" id="82-mon-1300-RTG-l2vpn" startTime="1321246800" title="l2vpn - Layer 2 Virtual Private Networks WG (RTG)"><itemDescription>IETF 82: Layer 2 Virtual Private Network WG (l2vpn) Agenda
+	 </itemDescription></item></line><line id="201abc" title="201 ABC"><item endTime="1321241400" id="82-mon-0900-RAI-clue" startTime="1321232400" title="clue - ControLling mUltiple streams for tElepresence WG (RAI)"><itemLink href="https://datatracker.ietf.org/wg/clue/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/clue.html" type="link" /></item><item endTime="1321254000" id="82-mon-1300-RTG-l2vpn" startTime="1321246800" title="l2vpn - Layer 2 Virtual Private Networks WG (RTG)"><itemDescription>IETF 82: Layer 2 Virtual Private Network WG (l2vpn) Agenda
 
 Chairs: Nabil Bitar
         Giles Heron
@@ -2499,7 +2499,7 @@ Session Two - Thursday November 17th 2011, 0900-1130
     55 minutes
     
 *) Meeting Closes
-</itemDescription></item><item endTime="1321327800" id="82-tue-0900-RAI-rtcweb" startTime="1321318800" title="rtcweb - Real-Time Communication in WEB-browsers WG (RAI)"><itemDescription>Real-Time Communication in WEB-browsers (RTCWEB) WG
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/l2vpn/" type="link" /></item><item endTime="1321327800" id="82-tue-0900-RAI-rtcweb" startTime="1321318800" title="rtcweb - Real-Time Communication in WEB-browsers WG (RAI)"><itemDescription>Real-Time Communication in WEB-browsers (RTCWEB) WG
 =====================================================================
 
 Chairs:	Magnus Westerlund &lt;magnus.westerlund@ericsson.com&gt;
@@ -2543,7 +2543,7 @@ Chairs:	Magnus Westerlund &lt;magnus.westerlund@ericsson.com&gt;
       draft-cbran-rtcweb-codec-01
 
 11:00 Data Transport						 (?)
-      draft-jesup-rtcweb-data-01</itemDescription></item><item endTime="1321340400" id="82-tue-1300-IRTF-irtf" startTime="1321333200" title="irtf - IRTF Open Meeting (IRTF)"><itemDescription>Preliminary Agenda
+      draft-jesup-rtcweb-data-01</itemDescription><itemLink href="https://datatracker.ietf.org/wg/rtcweb/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-IRTF-irtf" startTime="1321333200" title="irtf - IRTF Open Meeting (IRTF)"><itemDescription>Preliminary Agenda
 IRTF Open Meeting
 Taipei, Taiwan
 TUESDAY, November 15, 2011
@@ -2593,7 +2593,7 @@ Presentation &amp; discussion of proposals for new IRTF research groups
  5.1 draft-korhonen-mif-ra-offload-03 &#163;&#168;Yi DING, 15 min)
  5.2 draft-chen-mif-happy-eyeballs-extension-02 (Dan, 10 min)
 
-</itemDescription></item><item endTime="1321351800" id="82-tue-1710-INT-mif" startTime="1321348200" title="mif - Multiple Interfaces WG (INT)"><itemDescription>1 Agenda bashing (Chairs, 5 min)
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/mif/" type="link" /></item><item endTime="1321351800" id="82-tue-1710-INT-mif" startTime="1321348200" title="mif - Multiple Interfaces WG (INT)"><itemDescription>1 Agenda bashing (Chairs, 5 min)
 2 documents (Chairs, 10 min)
    draft-ietf-mif-problem-statement-15 RFC 6419
    draft-ietf-mif-current-practices-12 RFC 6418
@@ -2606,7 +2606,7 @@ Presentation &amp; discussion of proposals for new IRTF research groups
  5.1 draft-korhonen-mif-ra-offload-03 &#163;&#168;Yi DING, 15 min)
  5.2 draft-chen-mif-happy-eyeballs-extension-02 (Dan, 10 min)
 
-</itemDescription></item><item endTime="1321414200" id="82-wed-0900-RTG-pwe3" startTime="1321405200" title="pwe3 - Pseudowire Emulation Edge to Edge WG (RTG)"><itemDescription>**********************************************************************
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/mif/" type="link" /></item><item endTime="1321414200" id="82-wed-0900-RTG-pwe3" startTime="1321405200" title="pwe3 - Pseudowire Emulation Edge to Edge WG (RTG)"><itemDescription>**********************************************************************
 IETF 82 PWE3 - WEDNESDAY, November 16, 2011 - 09:00-11:30 (150 min)  Room 201 ABC
 **********************************************************************
 Chairs: Matthew Bocci and Andy Malis
@@ -2658,7 +2658,7 @@ WEBEX INFORMATION FOR THE PWE3 SESSION(S)
 
 PWE3 Webex Session - No Webex this time. 
 
-</itemDescription></item><item endTime="1321426800" id="82-wed-1300-APP-websec" startTime="1321419600" title="websec - Web Security WG (APP)"><itemDescription>-------------------------------------------------------------------------
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/pwe3/" type="link" /></item><item endTime="1321426800" id="82-wed-1300-APP-websec" startTime="1321419600" title="websec - Web Security WG (APP)"><itemDescription>-------------------------------------------------------------------------
 Web Security WG (websec)
 
 https://datatracker.ietf.org/wg/websec/charter/
@@ -2685,7 +2685,7 @@ AGENDA:
 (frame-options?)
 
 
-</itemDescription></item><item endTime="1321500600" id="82-thu-0900-RAI-rtcweb" startTime="1321491600" title="rtcweb - Real-Time Communication in WEB-browsers WG (RAI)"><itemDescription>Real-Time Communication in WEB-browsers (RTCWEB) WG
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/websec/" type="link" /></item><item endTime="1321500600" id="82-thu-0900-RAI-rtcweb" startTime="1321491600" title="rtcweb - Real-Time Communication in WEB-browsers WG (RAI)"><itemDescription>Real-Time Communication in WEB-browsers (RTCWEB) WG
 =====================================================================
 
 Chairs:	Magnus Westerlund &lt;magnus.westerlund@ericsson.com&gt;
@@ -2729,7 +2729,7 @@ Chairs:	Magnus Westerlund &lt;magnus.westerlund@ericsson.com&gt;
       draft-cbran-rtcweb-codec-01
 
 11:00 Data Transport						 (?)
-      draft-jesup-rtcweb-data-01</itemDescription></item><item endTime="1321513200" id="82-thu-1300-RTG-rtgwg" startTime="1321506000" title="rtgwg - Routing Area Working Group WG (RTG)" /><item endTime="1321521600" id="82-thu-1520-SEC-saag" startTime="1321514400" title="saag - Security Area Open Meeting (SEC)"><itemDescription>SAAG Agenda, IETF 82
+      draft-jesup-rtcweb-data-01</itemDescription><itemLink href="https://datatracker.ietf.org/wg/rtcweb/" type="link" /></item><item endTime="1321513200" id="82-thu-1300-RTG-rtgwg" startTime="1321506000" title="rtgwg - Routing Area Working Group WG (RTG)"><itemLink href="https://datatracker.ietf.org/wg/rtgwg/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/rtgwg.htm" type="link" /></item><item endTime="1321521600" id="82-thu-1520-SEC-saag" startTime="1321514400" title="saag - Security Area Open Meeting (SEC)"><itemDescription>SAAG Agenda, IETF 82
 
 THURSDAY, November 17, 2011
 1520-1720 Afternoon Session II
@@ -2865,7 +2865,7 @@ Taesik Cheung, 10min
 
 draft-chen-mpls-p2mp-ingress-protection-04
 draft-chen-mpls-p2mp-egress-protection-04
-Huaimo Chen, 10min</itemDescription></item><item endTime="1321327800" id="82-tue-0900-INT-homenet" startTime="1321318800" title="homenet - Home Networking WG (INT)"><itemDescription>IETF 82
+Huaimo Chen, 10min</itemDescription><itemLink href="https://datatracker.ietf.org/wg/mpls/" type="link" /></item><item endTime="1321327800" id="82-tue-0900-INT-homenet" startTime="1321318800" title="homenet - Home Networking WG (INT)"><itemDescription>IETF 82
 Homenet Working Group
 15th November 2011
 
@@ -2898,7 +2898,7 @@ Homenet Working Group
     draft-haddad-homenet-gateway-visibility-00 (Wassim Haddad)
 
 11:30  Close
-</itemDescription></item><item endTime="1321340400" id="82-tue-1300-RAI-dispatch" startTime="1321333200" title="dispatch - Dispatch WG (RAI)" /><item endTime="1321347600" id="82-tue-1520-RTG-rtgarea" startTime="1321341600" title="rtgarea - Routing Area Open Meeting (RTG)"><itemDescription>
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/homenet/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-RAI-dispatch" startTime="1321333200" title="dispatch - Dispatch WG (RAI)"><itemLink href="https://datatracker.ietf.org/wg/dispatch/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/dispatch.html" type="link" /></item><item endTime="1321347600" id="82-tue-1520-RTG-rtgarea" startTime="1321341600" title="rtgarea - Routing Area Open Meeting (RTG)"><itemDescription>
 
     Routing Area Open Meeting Agenda
            for the
@@ -2938,7 +2938,7 @@ Homenet Working Group
 
    
 
-</itemDescription></item><item endTime="1321414200" id="82-wed-0900-OPS-v6ops" startTime="1321405200" title="v6ops - IPv6 Operations WG (OPS)" /><item endTime="1321426800" id="82-wed-1300-INT-intarea" startTime="1321419600" title="intarea - Internet Area Working Group WG (INT)"><itemDescription>intarea WG Agenda 
+</itemDescription></item><item endTime="1321414200" id="82-wed-0900-OPS-v6ops" startTime="1321405200" title="v6ops - IPv6 Operations WG (OPS)"><itemLink href="https://datatracker.ietf.org/wg/v6ops/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/v6ops.html" type="link" /></item><item endTime="1321426800" id="82-wed-1300-INT-intarea" startTime="1321419600" title="intarea - Internet Area Working Group WG (INT)"><itemDescription>intarea WG Agenda 
 IETF 82
 WEDNESDAY, November 16, 2011
 1300-1500 Afternoon Session I
@@ -2987,7 +2987,7 @@ work related to providing L2 network virtualization service over an L3
 overlay network. The main work will be performed in l2vpn but the work
 is connected to several INT area working groups and hence is being
 presented here to publicize the work.
-</itemDescription></item><item endTime="1321500600" id="82-thu-0900-TSV-conex" startTime="1321491600" title="conex - Congestion Exposure WG (TSV)"><itemDescription>--------------------------------------------------------------
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/intarea/" type="link" /></item><item endTime="1321500600" id="82-thu-0900-TSV-conex" startTime="1321491600" title="conex - Congestion Exposure WG (TSV)"><itemDescription>--------------------------------------------------------------
 CONEX WG agenda
 IETF82 meeting
 
@@ -3013,7 +3013,7 @@ Mirja 10 min
 10-15mins 
 
 --------------------------------------------------------------
-</itemDescription></item><item endTime="1321513200" id="82-thu-1300-OPS-v6ops" startTime="1321506000" title="v6ops - IPv6 Operations WG (OPS)" /><item endTime="1321521600" id="82-thu-1520-RTG-mpls" startTime="1321514400" title="mpls - Multiprotocol Label Switching WG (RTG)"><itemDescription>WG status
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/conex/" type="link" /></item><item endTime="1321513200" id="82-thu-1300-OPS-v6ops" startTime="1321506000" title="v6ops - IPv6 Operations WG (OPS)"><itemLink href="https://datatracker.ietf.org/wg/v6ops/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/v6ops.html" type="link" /></item><item endTime="1321521600" id="82-thu-1520-RTG-mpls" startTime="1321514400" title="mpls - Multiprotocol Label Switching WG (RTG)"><itemDescription>WG status
 chairs, 15min
 
 MPLS-TP feature developments and Interoperability
@@ -3105,7 +3105,7 @@ Taesik Cheung, 10min
 
 draft-chen-mpls-p2mp-ingress-protection-04
 draft-chen-mpls-p2mp-egress-protection-04
-Huaimo Chen, 10min</itemDescription></item><item endTime="1321530000" id="82-thu-1740-RTG-sdn" startTime="1321522800" title="sdn - Software Driven Networks BOF (RTG)" /><item endTime="1321585200" id="82-fri-0900-SEC-krb-wg" startTime="1321578000" title="krb-wg - Kerberos WG (SEC)"><itemDescription>Kerberos WG (krb-wg)
+Huaimo Chen, 10min</itemDescription><itemLink href="https://datatracker.ietf.org/wg/mpls/" type="link" /></item><item endTime="1321530000" id="82-thu-1740-RTG-sdn" startTime="1321522800" title="sdn - Software Driven Networks BOF (RTG)"><itemLink href="http://www.ietf.org/proceedings/82/agenda/sdn.htm" type="link" /></item><item endTime="1321585200" id="82-fri-0900-SEC-krb-wg" startTime="1321578000" title="krb-wg - Kerberos WG (SEC)"><itemDescription>Kerberos WG (krb-wg)
 
 Meeting : IETF 82, Taipei International Convention Center, Taipei, Taiwan
 Chairs  : Sam Hartman &lt;hartmans-ietf@mit.edu&gt;
@@ -3147,7 +3147,7 @@ Technical Discussion (90 min)
   - Adoption of GSS Preauth - chairs
 
 Open Mic (whatever is left)
-</itemDescription></item><item endTime="1321590000" id="82-fri-1120-OPS-6renum" startTime="1321586400" title="6renum - IPv6 Site Renumbering WG (OPS)"><itemDescription>IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/krb-wg/" type="link" /></item><item endTime="1321590000" id="82-fri-1120-OPS-6renum" startTime="1321586400" title="6renum - IPv6 Site Renumbering WG (OPS)"><itemDescription>IETF 82
 6RENUM Working Group
 18th November 2011
 
@@ -3174,7 +3174,7 @@ Open Mic (whatever is left)
 13:00 - 13:30	  Open Discussion
 
 13:30  Close
-</itemDescription></item><item endTime="1321594200" id="82-fri-1230-OPS-6renum" startTime="1321590600" title="6renum - IPv6 Site Renumbering WG (OPS)"><itemDescription>IETF 82
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/6renum/" type="link" /></item><item endTime="1321594200" id="82-fri-1230-OPS-6renum" startTime="1321590600" title="6renum - IPv6 Site Renumbering WG (OPS)"><itemDescription>IETF 82
 6RENUM Working Group
 18th November 2011
 
@@ -3201,7 +3201,7 @@ Open Mic (whatever is left)
 13:00 - 13:30	  Open Discussion
 
 13:30  Close
-</itemDescription></item></line><line id="3fbanquet" title="3F Banquet"><item endTime="1321182000" id="welcomereception" startTime="1321174800" title="Welcome Reception" /><item endTime="1321241400" id="82-mon-0900-INT-6man" startTime="1321232400" title="6man - IPv6 Maintenance WG (INT)" /><item endTime="1321254000" id="82-mon-1300-SEC-jose" startTime="1321246800" title="jose - Javascript Object Signing and Encryption WG (SEC)"><itemDescription>Agenda for JOSE WG Session
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/6renum/" type="link" /></item></line><line id="3fbanquet" title="3F Banquet"><item endTime="1321182000" id="welcomereception" startTime="1321174800" title="Welcome Reception" /><item endTime="1321241400" id="82-mon-0900-INT-6man" startTime="1321232400" title="6man - IPv6 Maintenance WG (INT)"><itemLink href="https://datatracker.ietf.org/wg/6man/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/6man.html" type="link" /></item><item endTime="1321254000" id="82-mon-1300-SEC-jose" startTime="1321246800" title="jose - Javascript Object Signing and Encryption WG (SEC)"><itemDescription>Agenda for JOSE WG Session
 ======================
 
 Administrative:
@@ -3220,7 +3220,7 @@ Future:
 
 Discussion (20 min)
 
-</itemDescription></item><item endTime="1321327800" id="82-tue-0900-RTG-idr" startTime="1321318800" title="idr - Inter-Domain Routing WG (RTG)"><itemDescription>Interdomain Routing (IDR) WG
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/jose/" type="link" /></item><item endTime="1321327800" id="82-tue-0900-RTG-idr" startTime="1321318800" title="idr - Inter-Domain Routing WG (RTG)"><itemDescription>Interdomain Routing (IDR) WG
 
 TUESDAY, November 15, 2011
 0900-1130  Morning Session I
@@ -3262,7 +3262,7 @@ o draft-ietf-idr-optional-transitive-04, merger with
 
 Speaker shuffling time                                  5 minutes 
 
-Total                                                   1 hour 35 minutes</itemDescription></item><item endTime="1321340400" id="82-tue-1300-RTG-ccamp" startTime="1321333200" title="ccamp - Common Control and Measurement Plane WG (RTG)" /><item endTime="1321347600" id="82-tue-1520-INT-softwire" startTime="1321341600" title="softwire - Softwires WG (INT)"><itemDescription>Monday session (120 min)
+Total                                                   1 hour 35 minutes</itemDescription><itemLink href="https://datatracker.ietf.org/wg/idr/" type="link" /></item><item endTime="1321340400" id="82-tue-1300-RTG-ccamp" startTime="1321333200" title="ccamp - Common Control and Measurement Plane WG (RTG)"><itemLink href="https://datatracker.ietf.org/wg/ccamp/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/ccamp.htm" type="link" /></item><item endTime="1321347600" id="82-tue-1520-INT-softwire" startTime="1321341600" title="softwire - Softwires WG (INT)"><itemDescription>Monday session (120 min)
 ----------------------
 * Report from interim meeting 20 min
 
@@ -3321,7 +3321,7 @@ http://datatracker.ietf.org/doc/draft-mawatari-softwire-464xlat/ (10 min)
 
 
 
-</itemDescription></item><item endTime="1321414200" id="82-wed-0900-RAI-bfcpbis" startTime="1321405200" title="bfcpbis - Binary Floor Control Protocol Bis WG (RAI)"><itemDescription>Binary Floor Control Protocol Bis (bfcpbis)
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/softwire/" type="link" /></item><item endTime="1321414200" id="82-wed-0900-RAI-bfcpbis" startTime="1321405200" title="bfcpbis - Binary Floor Control Protocol Bis WG (RAI)"><itemDescription>Binary Floor Control Protocol Bis (bfcpbis)
 =======================================================
 
 Chairs:	Keith Drage &lt;keith.drage@alcatel-lucent.com&gt;
@@ -3337,7 +3337,7 @@ Agenda IETF 82, Taipei
 	draft-sandbakken-dispatch-bfcp-udp-03
       http://tools.ietf.org/html/draft-sandbakken-dispatch-bfcp-udp-03
 09:50 Next Steps                                     (Chairs, 10)
-10:00 End</itemDescription></item><item endTime="1321414200" id="82-wed-0900-RAI-ecrit" startTime="1321405200" title="ecrit - Emergency Context Resolution with Internet Technologies WG (RAI)"><itemDescription>ECRIT Agenda
+10:00 End</itemDescription><itemLink href="https://datatracker.ietf.org/wg/bfcpbis/" type="link" /></item><item endTime="1321414200" id="82-wed-0900-RAI-ecrit" startTime="1321405200" title="ecrit - Emergency Context Resolution with Internet Technologies WG (RAI)"><itemDescription>ECRIT Agenda
 
 IETF82
 WEDNESDAY, November 16, 2011
@@ -3371,7 +3371,7 @@ http://datatracker.ietf.org/doc/draft-ietf-ecrit-psap-callback/
 Intention: Discuss open issues
 
 5 min * Questions &amp; Answers
-</itemDescription></item><item endTime="1321426800" id="82-wed-1300-TSV-alto" startTime="1321419600" title="alto - Application-Layer Traffic Optimization WG (TSV)" /><item endTime="1321500600" id="82-thu-0900-RTG-l2vpn" startTime="1321491600" title="l2vpn - Layer 2 Virtual Private Networks WG (RTG)"><itemDescription>IETF 82: Layer 2 Virtual Private Network WG (l2vpn) Agenda
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/ecrit/" type="link" /></item><item endTime="1321426800" id="82-wed-1300-TSV-alto" startTime="1321419600" title="alto - Application-Layer Traffic Optimization WG (TSV)"><itemLink href="https://datatracker.ietf.org/wg/alto/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/alto.html" type="link" /></item><item endTime="1321500600" id="82-thu-0900-RTG-l2vpn" startTime="1321491600" title="l2vpn - Layer 2 Virtual Private Networks WG (RTG)"><itemDescription>IETF 82: Layer 2 Virtual Private Network WG (l2vpn) Agenda
 
 Chairs: Nabil Bitar
         Giles Heron
@@ -3448,7 +3448,7 @@ Session Two - Thursday November 17th 2011, 0900-1130
     55 minutes
     
 *) Meeting Closes
-</itemDescription></item><item endTime="1321513200" id="82-thu-1300-RTG-pce" startTime="1321506000" title="pce - Path Computation Element WG (RTG)" /><item endTime="1321521600" id="82-thu-1520-TSV-behave" startTime="1321514400" title="behave - Behavior Engineering for Hindrance Avoidance WG (TSV)" /><item endTime="1321530000" id="82-thu-1740-SEC-tls" startTime="1321522800" title="tls - Transport Layer Security WG (SEC)"><itemDescription>TLS Working Group Agenda 
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/l2vpn/" type="link" /></item><item endTime="1321513200" id="82-thu-1300-RTG-pce" startTime="1321506000" title="pce - Path Computation Element WG (RTG)"><itemLink href="https://datatracker.ietf.org/wg/pce/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/pce.html" type="link" /></item><item endTime="1321521600" id="82-thu-1520-TSV-behave" startTime="1321514400" title="behave - Behavior Engineering for Hindrance Avoidance WG (TSV)"><itemLink href="https://datatracker.ietf.org/wg/behave/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/behave.html" type="link" /></item><item endTime="1321530000" id="82-thu-1740-SEC-tls" startTime="1321522800" title="tls - Transport Layer Security WG (SEC)"><itemDescription>TLS Working Group Agenda 
 IETF 82
 THURSDAY, November 17, 2011 1740-1940
 ---------------------------------------
@@ -3471,7 +3471,7 @@ draft-agl-tls-nextproto-00
 
 
 
-</itemDescription></item><item endTime="1321585200" id="82-fri-0900-RTG-ccamp" startTime="1321578000" title="ccamp - Common Control and Measurement Plane WG (RTG)" /><item endTime="1321590000" id="82-fri-1120-SEC-abfab" startTime="1321586400" title="abfab - Application Bridging for Federated Access Beyond web WG (SEC)"><itemDescription>abfab (Friday - 2 hrs)
+</itemDescription><itemLink href="https://datatracker.ietf.org/wg/tls/" type="link" /></item><item endTime="1321585200" id="82-fri-0900-RTG-ccamp" startTime="1321578000" title="ccamp - Common Control and Measurement Plane WG (RTG)"><itemLink href="https://datatracker.ietf.org/wg/ccamp/" type="link" /><itemLink href="http://www.ietf.org/proceedings/82/agenda/ccamp.htm" type="link" /></item><item endTime="1321590000" id="82-fri-1120-SEC-abfab" startTime="1321586400" title="abfab - Application Bridging for Federated Access Beyond web WG (SEC)"><itemDescription>abfab (Friday - 2 hrs)
 
 * Agenda bashing and Note Well (10 min)
 
@@ -3486,7 +3486,7 @@ draft-agl-tls-nextproto-00
 * Technical discussion (45 mins)
 
 * Administrivia and AOB (5 min)
-- Updating the milestones and timeline</itemDescription></item><item endTime="1321594200" id="82-fri-1230-SEC-abfab" startTime="1321590600" title="abfab - Application Bridging for Federated Access Beyond web WG (SEC)"><itemDescription>abfab (Friday - 2 hrs)
+- Updating the milestones and timeline</itemDescription><itemLink href="https://datatracker.ietf.org/wg/abfab/" type="link" /></item><item endTime="1321594200" id="82-fri-1230-SEC-abfab" startTime="1321590600" title="abfab - Application Bridging for Federated Access Beyond web WG (SEC)"><itemDescription>abfab (Friday - 2 hrs)
 
 * Agenda bashing and Note Well (10 min)
 
@@ -3501,4 +3501,4 @@ draft-agl-tls-nextproto-00
 * Technical discussion (45 mins)
 
 * Administrivia and AOB (5 min)
-- Updating the milestones and timeline</itemDescription></item></line><line id="4fvip" title="4F VIP"><item endTime="1321092000" id="codesprint" startTime="1321061400" title="Code Sprint" /></line><line id="commonarea" title="Common Area"><item endTime="1321232400" id="beverages" startTime="1321228800" title="Beverages" /><item endTime="1321259400" id="beverageandsnackbreaki" startTime="1321258200" title="Beverage and Snack Break I" /><item endTime="1321318800" id="beverages2" startTime="1321315200" title="Beverages" /><item endTime="1321341600" id="beverageandsnackbreaki2" startTime="1321340400" title="Beverage and Snack Break I" /><item endTime="1321405200" id="beverages3" startTime="1321401600" title="Beverages" /><item endTime="1321432200" id="beverageandsnackbreaki3" startTime="1321431000" title="Beverage and Snack Break I" /><item endTime="1321491600" id="beverages4" startTime="1321488000" title="Beverages" /><item endTime="1321514400" id="beveragebreak" startTime="1321513200" title="Beverage Break" /><item endTime="1321522800" id="beverageandsnackbreakii" startTime="1321521600" title="Beverage and Snack Break II" /><item endTime="1321578000" id="beverages5" startTime="1321574400" title="Beverages" /><item endTime="1321586400" id="beverageandsnackbreaki4" startTime="1321585200" title="Beverage and Snack Break I" /></line></schedule>
+- Updating the milestones and timeline</itemDescription><itemLink href="https://datatracker.ietf.org/wg/abfab/" type="link" /></item></line><line id="4fvip" title="4F VIP"><item endTime="1321092000" id="codesprint" startTime="1321061400" title="Code Sprint" /></line><line id="commonarea" title="Common Area"><item endTime="1321232400" id="beverages" startTime="1321228800" title="Beverages" /><item endTime="1321259400" id="beverageandsnackbreaki" startTime="1321258200" title="Beverage and Snack Break I" /><item endTime="1321318800" id="beverages2" startTime="1321315200" title="Beverages" /><item endTime="1321341600" id="beverageandsnackbreaki2" startTime="1321340400" title="Beverage and Snack Break I" /><item endTime="1321405200" id="beverages3" startTime="1321401600" title="Beverages" /><item endTime="1321432200" id="beverageandsnackbreaki3" startTime="1321431000" title="Beverage and Snack Break I" /><item endTime="1321491600" id="beverages4" startTime="1321488000" title="Beverages" /><item endTime="1321514400" id="beveragebreak" startTime="1321513200" title="Beverage Break" /><item endTime="1321522800" id="beverageandsnackbreakii" startTime="1321521600" title="Beverage and Snack Break II" /><item endTime="1321578000" id="beverages5" startTime="1321574400" title="Beverages" /><item endTime="1321586400" id="beverageandsnackbreaki4" startTime="1321585200" title="Beverage and Snack Break I" /></line></schedule>
