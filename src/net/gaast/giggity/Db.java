@@ -180,6 +180,7 @@ public class Db {
 				row.put("sch_end", sched.end.getTime() / 1000);
 				db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
 			}
+			q.close();
 		}
 		
 		if (newver != version) {
@@ -195,7 +196,7 @@ public class Db {
 		ONLINE,			/* Poll for an update. */
 	}
 	private final String SEED_URL = "http://wilmer.gaa.st/deoxide/menu.json";
-	private final long SEED_FETCH_INTERVAL = 86400 * 1000; /* Once a day. */
+	public static final long SEED_FETCH_INTERVAL = 86400 * 1000; /* Once a day. */
 	
 	private Seed loadSeed(SeedSource source) {
 		String json = "";
@@ -391,20 +392,7 @@ public class Db {
 		public ArrayList<DbSchedule> getScheduleList() {
 			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
 			Cursor q;
-			long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
-			boolean online = seedAge < 0 || seedAge > SEED_FETCH_INTERVAL;
-			
-			Log.d("DeoxideDb.getScheduleList", "seedAge " + seedAge + " online " + online);
-			
-			/* Check if there are updates first. */
-			updateData(db, online);
-			if (online) {
-				
-				Editor p = pref.edit();
-				p.putLong("last_menu_seed_ts", System.currentTimeMillis());
-				p.commit();
-			}
-			
+
 			q = db.rawQuery("Select * From schedule Order By sch_atime Desc", null);
 			while (q.moveToNext()) {
 				ret.add(new DbSchedule(q));
@@ -412,6 +400,10 @@ public class Db {
 			q.close();
 			
 			return ret;
+		}
+		
+		public void refreshScheduleList() {
+			updateData(db, true);
 		}
 		
 		public int getDay() {
@@ -433,6 +425,7 @@ public class Db {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + q.getInt(0)});
 				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
 			}
+			q.close();
 		}
 	}
 	

@@ -29,6 +29,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
@@ -85,6 +87,18 @@ public class ChooserActivity extends Activity {
     	db = app.getDb();
     	pref = PreferenceManager.getDefaultSharedPreferences(app);
     	
+		long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
+		if (seedAge < 0 || seedAge > Db.SEED_FETCH_INTERVAL) {
+			Log.d("ChooserActivity", "seedAge " + seedAge);
+			
+			/* Check if there are updates first. */
+			db.refreshScheduleList();
+			
+			Editor p = pref.edit();
+			p.putLong("last_menu_seed_ts", System.currentTimeMillis());
+			p.commit();
+		}
+		
 		list = new ListView(this);
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
