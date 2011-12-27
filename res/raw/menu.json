@@ -65,6 +65,13 @@
 			"title": "OpenRheinRuhr 2011",
 			"start": "2011-11-12",
 			"end": "2011-11-13"
+		},
+		{
+			"version": 2011122700,
+			"url": "http://events.ccc.de/congress/2011/Fahrplan/schedule.en.xml",
+			"title": "28th Chaos Communication Congress",
+			"start": "2011-12-27",
+			"end": "2011-12-30"
 		}
 	]
 }
