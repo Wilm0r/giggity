@@ -33,6 +33,8 @@ import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.InputType;
@@ -48,6 +50,7 @@ import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
 import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -77,7 +80,10 @@ public class ChooserActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
     	super.onCreate(savedInstanceState);
     	
-    	/*//test stuff
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        requestWindowFeature(Window.FEATURE_PROGRESS);
+        
+        /*//test stuff
     	Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
     	long[] pattern = {  };
     	v.vibrate(pattern, -1);
@@ -87,17 +93,7 @@ public class ChooserActivity extends Activity {
     	db = app.getDb();
     	pref = PreferenceManager.getDefaultSharedPreferences(app);
     	
-		long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
-		if (seedAge < 0 || seedAge > Db.SEED_FETCH_INTERVAL) {
-			Log.d("ChooserActivity", "seedAge " + seedAge);
-			
-			/* Check if there are updates first. */
-			db.refreshScheduleList();
-			
-			Editor p = pref.edit();
-			p.putLong("last_menu_seed_ts", System.currentTimeMillis());
-			p.commit();
-		}
+    	refreshSeed();
 		
 		list = new ListView(this);
 		list.setOnItemClickListener(new OnItemClickListener() {
@@ -199,6 +195,46 @@ public class ChooserActivity extends Activity {
     	setContentView(cont);
     }
     
+    private void refreshSeed() {
+		long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
+		if (seedAge < 0 || seedAge > Db.SEED_FETCH_INTERVAL) {
+			Log.d("ChooserActivity", "seedAge " + seedAge);
+			
+	        final Thread loader;
+	        final Handler resultHandler;
+
+		    resultHandler = new Handler() {
+		    	@Override
+		    	public void handleMessage(Message msg) {
+		    		if (msg.what == 1) {
+		    			Editor p = pref.edit();
+		    			p.putLong("last_menu_seed_ts", System.currentTimeMillis());
+		    			p.commit();
+		    			
+		    	    	lista = new ScheduleAdapter(db.getScheduleList());
+		    	    	list.setAdapter(lista);
+
+		    	    	setProgressBarIndeterminateVisibility(false);
+		    	        setProgressBarVisibility(false);
+		    		}
+		    	}
+		    };
+
+	        loader = new Thread() {
+	    		@Override
+	    		public void run() {
+	    			db.refreshScheduleList();
+	    			resultHandler.sendEmptyMessage(1);
+	    		}
+	        };
+
+	        setProgressBarIndeterminateVisibility(true);
+	        setProgressBarVisibility(true);
+
+	        loader.start();
+		}
+    }
+    
     private void setButtons() {
 		String url = urlBox.getText().toString();
 		boolean gotUrl = false;
@@ -289,9 +325,12 @@ public class ChooserActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
     	super.onCreateOptionsMenu(menu);
     	
+    	menu.add(Menu.NONE, 2, 6, R.string.refresh)
+	        .setShortcut('0', 'r')
+	        .setIcon(R.drawable.ic_menu_refresh);
     	menu.add(Menu.NONE, 1, 7, R.string.settings)
-    		.setShortcut('0', 's')
-    		.setIcon(android.R.drawable.ic_menu_preferences);
+		    .setShortcut('0', 's')
+		    .setIcon(android.R.drawable.ic_menu_preferences);
     	
     	return true;
     }
@@ -299,6 +338,9 @@ public class ChooserActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
+    	case 2:
+    		refreshSeed();
+    		return true;
     	case 1:
     		Intent intent = new Intent(this, SettingsActivity.class);
     		startActivity(intent);
