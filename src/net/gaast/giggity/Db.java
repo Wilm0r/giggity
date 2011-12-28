@@ -89,6 +89,8 @@ public class Db {
 					                               "sci_id_s VarChar(128), " +
 					                               "sci_remind Boolean, " +
 					                               "sci_stars Integer(2) Null)");
+			
+			oldDbVer = 0;
 		}
 	
 		@Override

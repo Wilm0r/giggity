@@ -93,7 +93,7 @@ public class ChooserActivity extends Activity {
     	db = app.getDb();
     	pref = PreferenceManager.getDefaultSharedPreferences(app);
     	
-    	refreshSeed();
+    	refreshSeed(false);
 		
 		list = new ListView(this);
 		list.setOnItemClickListener(new OnItemClickListener() {
@@ -195,9 +195,9 @@ public class ChooserActivity extends Activity {
     	setContentView(cont);
     }
     
-    private void refreshSeed() {
+    private void refreshSeed(boolean force) {
 		long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
-		if (seedAge < 0 || seedAge > Db.SEED_FETCH_INTERVAL) {
+		if (force || seedAge < 0 || seedAge > Db.SEED_FETCH_INTERVAL) {
 			Log.d("ChooserActivity", "seedAge " + seedAge);
 			
 	        final Thread loader;
@@ -339,7 +339,7 @@ public class ChooserActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
     	switch (item.getItemId()) {
     	case 2:
-    		refreshSeed();
+    		refreshSeed(true);
     		return true;
     	case 1:
     		Intent intent = new Intent(this, SettingsActivity.class);
