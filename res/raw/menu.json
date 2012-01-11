@@ -1,5 +1,5 @@
 {
-	"version": 2011122700,
+	"version": 2012011100,
 	"schedules": [
 		{
 			"version": 1,
@@ -72,6 +72,13 @@
 			"title": "28th Chaos Communication Congress",
 			"start": "2011-12-27",
 			"end": "2011-12-30"
+		},
+		{
+			"version": 2012011100,
+			"url": "http://fosdem.org/2012/schedule/xml",
+			"title": "FOSDEM 2012",
+			"start": "2012-02-04",
+			"end": "2012-02-05"
 		}
 	]
 }
