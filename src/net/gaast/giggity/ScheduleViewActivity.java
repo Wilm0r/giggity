@@ -50,8 +50,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-/* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
-
 public class ScheduleViewActivity extends Activity {
 	protected Schedule sched;
     protected Giggity app;
@@ -142,7 +140,7 @@ public class ScheduleViewActivity extends Activity {
 			}
         	onScheduleLoaded();
         } else {
-        	horribleAsyncLoadHack(url, fs);
+        	loadScheduleAsync(url, fs);
         }
     }
     
@@ -152,7 +150,7 @@ public class ScheduleViewActivity extends Activity {
     	super.onDestroy();
     }
     
-    private void horribleAsyncLoadHack(String url_, Fetcher.Source source_) { 
+    private void loadScheduleAsync(String url_, Fetcher.Source source_) { 
     	final String url = url_;
     	final Fetcher.Source source = source_;
         final Thread loader;
