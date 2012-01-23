@@ -43,10 +43,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -448,6 +448,24 @@ public class ScheduleViewActivity extends Activity {
     	return super.onOptionsItemSelected(item);
     }
     
+    public void onScroll() {
+    	if (sched.getDays().size() > 1)
+    		days.show();
+    }
+    
+    /* Ugly convenience function to be used by schedule viewers to indicate
+     * that the user scrolled so we should show day switch buttons. */
+    public static void onScroll(Context ctx) {
+    	ScheduleViewActivity me;
+    	try {
+    		me = (ScheduleViewActivity) ctx;
+    	} catch (ClassCastException e) {
+    		e.printStackTrace();
+    		return;
+    	}
+    	me.onScroll();
+    }
+    
     private class DayButtons extends RelativeLayout {
     	private Button dayPrev, dayNext;
     	private Handler h;
@@ -464,7 +482,7 @@ public class ScheduleViewActivity extends Activity {
         	lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         	lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         	addView(dayPrev, lp);
-            
+
         	dayNext = new Button(ScheduleViewActivity.this);
         	dayNext.setText(">");
         	lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -481,7 +499,7 @@ public class ScheduleViewActivity extends Activity {
         	dayNext.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					daySwitch(1);
+					daySwitch(+1);
 				}
         	});
         	
@@ -500,17 +518,24 @@ public class ScheduleViewActivity extends Activity {
     		if (sched.getDays().size() <= 1 || viewer.multiDay())
     			return;
     		
+    		/* Z ordering in RelativeLayouts seems to be most-recently-added,
+    		 * so we have to keep bringing the buttons to front. :-/ */
     		this.bringToFront();
     		if (this.getVisibility() != View.VISIBLE) {
 	        	setVisibility(View.VISIBLE);
 	    		days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_in));
     		}
     		
+    		/* Set a timer if we're now fading in the buttons, or reset it if
+    		 * they're already on screen. */
     		h.removeCallbacks(hideEv);
     		h.postDelayed(hideEv, 2000);
     	}
     	
     	public void hide() {
+    		/* During the animation, visibility will be overriden to visible.
+    		 * Which means I can already set it to hidden now and the right
+    		 * thing will happen after the animation. */
         	setVisibility(View.INVISIBLE);
     		days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_out));
     	}

@@ -218,6 +218,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		} else if (src == tentHeadersScr) {
 			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
 		}
+		ScheduleViewActivity.onScroll(ctx);
 	}
 
 	@Override

@@ -42,6 +42,7 @@ import android.widget.TextView;
 public class TimeTable extends RelativeLayout implements ScheduleViewer {
 	Giggity app;
 	Schedule sched;
+	Activity ctx;
 	
 	Gallery tents;
 	ScheduleListView scroller;
@@ -49,8 +50,9 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 	OnItemSelectedListener tentsel;
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public TimeTable(Activity ctx, Schedule sched_) {
-		super(ctx);
+	public TimeTable(Activity ctx_, Schedule sched_) {
+		super(ctx_);
+		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
 		sched = sched_;
 
@@ -109,6 +111,7 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
     		private boolean scrolling = false;
 			@Override
 			public void onScroll(AbsListView v, int first, int visible, int total) {
+				ScheduleViewActivity.onScroll(ctx);
 				if (!scrolling)
 					return;
 				/* Find the first real item currently on-screen. */
