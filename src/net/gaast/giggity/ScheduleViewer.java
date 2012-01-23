@@ -23,4 +23,5 @@ public interface ScheduleViewer {
 	/** Called every minute.
 	 */
 	public void refreshContents();
+	public boolean multiDay();
 }

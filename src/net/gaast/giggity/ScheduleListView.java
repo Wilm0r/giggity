@@ -139,4 +139,9 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			}
 		}
     }
+    
+	@Override
+    public boolean multiDay() {
+    	return false;
+    }
 }

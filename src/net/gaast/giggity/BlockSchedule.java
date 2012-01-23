@@ -73,6 +73,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	
 	private Handler timer;
 	
+	@SuppressWarnings("deprecation")
 	BlockSchedule(Activity ctx_, Schedule sched_) {
 		super(ctx_);
 		ctx = ctx_;
@@ -404,4 +405,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		topClock.update();
 		bottomClock.update();
 	}
+    
+	@Override
+    public boolean multiDay() {
+    	return false;
+    }
 }

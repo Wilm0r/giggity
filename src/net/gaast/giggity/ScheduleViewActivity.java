@@ -40,13 +40,15 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
-import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 /* Sorry, this class is a glorious hack because I don't have a clue how Java and threading work. :-) */
 
@@ -71,8 +73,10 @@ public class ScheduleViewActivity extends Activity {
 	
 	private LinearLayout bigScreen;
 	private ScheduleViewer viewer;
+	private RelativeLayout viewerContainer;
 	private View eventDialogView;
 	private EventDialog eventDialog;
+	private DayButtons days;
 
     private SharedPreferences pref;
     
@@ -91,7 +95,17 @@ public class ScheduleViewActivity extends Activity {
     	bigScreen = new LinearLayout(this);
     	updateOrientation(getResources().getConfiguration().orientation);
     	setContentView(bigScreen);
-        
+    	
+    	viewerContainer = new RelativeLayout(this);
+    	bigScreen.addView((View) viewerContainer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
+    	RelativeLayout.LayoutParams lp;
+    	lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+    	lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+    	lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+    	lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+    	days = new DayButtons(this);
+    	viewerContainer.addView(days, lp);
+    	
         redraw = false;
         timer = new Handler();
         
@@ -216,8 +230,7 @@ public class ScheduleViewActivity extends Activity {
     	}
     	
     	/* Bugfix: Search sets day to -1, have to revert that. */
-    	if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS &&
-    	    sched != null && sched.getDays().size() > 1)
+    	if (sched != null && sched.getDays().size() > 1 && !viewer.multiDay())
     		sched.setDay(sched.getDb().getDay());
 		
     	if (redraw) {
@@ -292,9 +305,12 @@ public class ScheduleViewActivity extends Activity {
     }
     
     public void setScheduleView(View viewer_) {
+    	if (viewer != null)
+    		viewerContainer.removeView((View) viewer);
     	viewer = (ScheduleViewer) viewer_;
-    	bigScreen.removeAllViews();
-    	bigScreen.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
+    	viewerContainer.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
+    	
+    	days.show();
     }
     
     public boolean setEventDialog(EventDialog d) {
@@ -356,7 +372,7 @@ public class ScheduleViewActivity extends Activity {
     
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-    	menu.findItem(2).setVisible((view == VIEW_BLOCKSCHEDULE || view == VIEW_TIMETABLE) && sched.getDays().size() > 1);
+    	menu.findItem(2).setVisible(!viewer.multiDay() && sched.getDays().size() > 1);
     	menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
     	menu.findItem(4).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
     	menu.findItem(5).setVisible(view != VIEW_BLOCKSCHEDULE);
@@ -432,5 +448,84 @@ public class ScheduleViewActivity extends Activity {
     		return true;
     	}
     	return super.onOptionsItemSelected(item);
+    }
+    
+    private class DayButtons extends RelativeLayout {
+    	private Button dayPrev, dayNext;
+    	private Handler h;
+    	private Runnable hideEv;
+    	
+    	public DayButtons(Context ctx) {
+    		super(ctx);
+
+        	RelativeLayout.LayoutParams lp;
+        	
+        	dayPrev = new Button(ScheduleViewActivity.this);
+        	dayPrev.setText("<");
+        	lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        	lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        	lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        	addView(dayPrev, lp);
+            
+        	dayNext = new Button(ScheduleViewActivity.this);
+        	dayNext.setText(">");
+        	lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        	lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        	lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        	addView(dayNext, lp);
+        	
+        	dayPrev.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					daySwitch(-1);
+				}
+        	});
+        	dayNext.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					daySwitch(1);
+				}
+        	});
+        	
+        	setVisibility(View.INVISIBLE);
+        	
+        	h = new Handler();
+        	hideEv = new Runnable() {
+				@Override
+				public void run() {
+					hide();
+				}
+    		};
+    	}
+    	
+    	public void show() {
+    		if (sched.getDays().size() <= 1 || viewer.multiDay())
+    			return;
+    		
+    		this.bringToFront();
+    		if (this.getVisibility() != View.VISIBLE) {
+	        	setVisibility(View.VISIBLE);
+	    		days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_in));
+    		}
+    		
+    		h.removeCallbacks(hideEv);
+    		h.postDelayed(hideEv, 2000);
+    	}
+    	
+    	public void hide() {
+        	setVisibility(View.INVISIBLE);
+    		days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_out));
+    	}
+    	
+    	private void daySwitch(int d) {
+        	LinkedList<Date> days = sched.getDays();
+        	int i, cur = -1;
+        	for (i = 0; i < days.size(); i ++)
+        		if (sched.getDay().equals(days.get(i)))
+        			cur = i;
+        	
+	    	sched.getDb().setDay((cur + d + days.size()) % days.size());
+	    	onScheduleLoaded();
+    	}
     }
 }

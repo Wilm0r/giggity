@@ -122,4 +122,9 @@ public class TrackList extends ListView implements ScheduleViewer {
 			return v;
 		}
     }
+    
+	@Override
+    public boolean multiDay() {
+    	return true;
+    }
 }

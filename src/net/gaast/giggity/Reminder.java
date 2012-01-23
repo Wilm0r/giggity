@@ -95,7 +95,7 @@ public class Reminder extends Service {
 		/* Generate a notification. */
     	NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     	Notification not;
-    	not = new Notification(R.drawable.deoxide_icon_48x48, item.getTitle(), item.getStartTime().getTime());
+    	not = new Notification(R.drawable.deoxide_icon, item.getTitle(), item.getStartTime().getTime());
     	Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
     			                app, ScheduleViewActivity.class);
     	evi.putExtra("PREFER_CACHED", true);

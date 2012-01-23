@@ -186,4 +186,9 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 	public void refreshContents() {
 		scroller.refreshContents();
 	}
+    
+	@Override
+    public boolean multiDay() {
+    	return false;
+    }
 }
