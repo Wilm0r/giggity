@@ -49,11 +49,11 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 				Schedule.Item item = (Schedule.Item) list.get(position);
 				EventDialog evd = new EventDialog(ctx, item);
-		    	evd.setOnDismissListener(new OnDismissListener() {
-		   			public void onDismiss(DialogInterface dialog) {
-		   				adje.notifyDataSetChanged();
-		   			}
-		   		});
+				evd.setOnDismissListener(new OnDismissListener() {
+					public void onDismiss(DialogInterface dialog) {
+						adje.notifyDataSetChanged();
+					}
+				});
 				evd.show();
 			}
 		});
@@ -62,50 +62,50 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		setAdapter(adje = new EventAdapter(list));
 	}
 	
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void setList(AbstractList list_) {
-    	list.clear();
-    	list.addAll(list_);
-    	adje.notifyDataSetChanged();
-    }
-    
-    protected AbstractList<?> getList() {
-    	return list;
-    }
-    
-    protected void setCompact(boolean compact) {
-    	if (compact)
-    		itemViewFlags |= ScheduleItemView.COMPACT;
-    	else
-    		itemViewFlags &= ~ScheduleItemView.COMPACT;
-    }
-    
-    protected void setShowNow(boolean showNow) {
-    	if (showNow)
-    		itemViewFlags |= ScheduleItemView.SHOW_NOW;
-    	else
-    		itemViewFlags &= ~ScheduleItemView.SHOW_NOW;
-    }
-    
-    protected void setShowRemind(boolean showRemind) {
-    	if (showRemind)
-    		itemViewFlags |= ScheduleItemView.SHOW_REMIND;
-    	else
-    		itemViewFlags &= ~ScheduleItemView.SHOW_REMIND;
-    }
-    
-    @Override
-    public void refreshContents() {
-    	adje.notifyDataSetChanged();
-    }
-    
-    private class EventAdapter extends BaseAdapter {
-    	AbstractList<?> items;
-    	
-    	public EventAdapter(AbstractList<?> items_) {
-    		items = items_;
-    	}
-    	
+		list.clear();
+		list.addAll(list_);
+		adje.notifyDataSetChanged();
+	}
+	
+	protected AbstractList<?> getList() {
+		return list;
+	}
+	
+	protected void setCompact(boolean compact) {
+		if (compact)
+			itemViewFlags |= ScheduleItemView.COMPACT;
+		else
+			itemViewFlags &= ~ScheduleItemView.COMPACT;
+	}
+	
+	protected void setShowNow(boolean showNow) {
+		if (showNow)
+			itemViewFlags |= ScheduleItemView.SHOW_NOW;
+		else
+			itemViewFlags &= ~ScheduleItemView.SHOW_NOW;
+	}
+	
+	protected void setShowRemind(boolean showRemind) {
+		if (showRemind)
+			itemViewFlags |= ScheduleItemView.SHOW_REMIND;
+		else
+			itemViewFlags &= ~ScheduleItemView.SHOW_REMIND;
+	}
+	
+	@Override
+	public void refreshContents() {
+		adje.notifyDataSetChanged();
+	}
+	
+	private class EventAdapter extends BaseAdapter {
+		AbstractList<?> items;
+		
+		public EventAdapter(AbstractList<?> items_) {
+			items = items_;
+		}
+		
 		@Override
 		public int getCount() {
 			return items.size();
@@ -138,10 +138,10 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				return tv;
 			}
 		}
-    }
-    
+	}
+	
 	@Override
-    public boolean multiDay() {
-    	return false;
-    }
+	public boolean multiDay() {
+		return false;
+	}
 }

@@ -24,17 +24,17 @@ import android.preference.PreferenceActivity;
 import android.util.Log;
 
 public class SettingsActivity extends PreferenceActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-    	super.onCreate(savedInstanceState);
-    	addPreferencesFromResource(R.xml.preferences);
-    }
-    
-    @Override 
-    public void onDestroy() {
-    	/* Maybe alarms were disabled or the period was changed. */
-    	Reminder.poke((Giggity) getApplication(), (Schedule.Item) null);
-    	Log.d("prefs", "onDestroy");
-    	super.onDestroy();
-    }
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.preferences);
+	}
+	
+	@Override 
+	public void onDestroy() {
+		/* Maybe alarms were disabled or the period was changed. */
+		Reminder.poke((Giggity) getApplication(), (Schedule.Item) null);
+		Log.d("prefs", "onDestroy");
+		super.onDestroy();
+	}
 }

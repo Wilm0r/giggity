@@ -25,7 +25,7 @@ public class Reminder extends Service {
 
 	/* Vibrator pattern */
 	private long[] mario = { 0, 90, 60, 90, 60, 0, 150, 90, 60, 0, 150, 120, 30,
-                             90, 60, 0, 150, 150, 0, 0, 150, 0, 150, 0, 150, 1200 };
+                                 90, 60, 0, 150, 150, 0, 0, 150, 0, 150, 0, 150, 1200 };
 	private long[] giggitygoo = { 0, 100, 40, 60, 40, 60, 60, 100, 40, 60, 40, 60, 80, 1200};
 
 	private BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
@@ -93,24 +93,24 @@ public class Reminder extends Service {
 	
 	private void sendReminder(Schedule.Item item) {
 		/* Generate a notification. */
-    	NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-    	Notification not;
-    	not = new Notification(R.drawable.deoxide_icon, item.getTitle(), item.getStartTime().getTime());
-    	Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
-    			                app, ScheduleViewActivity.class);
-    	evi.putExtra("PREFER_CACHED", true);
-    	not.setLatestEventInfo(app, item.getTitle(), "Soon in " + item.getLine().getTitle(),
-    			               PendingIntent.getActivity(app, 0, evi, 0));
-    	not.flags |= Notification.FLAG_AUTO_CANCEL;
-    	not.defaults |= Notification.DEFAULT_SOUND;
-    	if ((item.getStartTime().getDate() & 1) == 0)
-    		not.vibrate = giggitygoo;
-    	else
-    		not.vibrate = mario;
+		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		Notification not;
+		not = new Notification(R.drawable.deoxide_icon, item.getTitle(), item.getStartTime().getTime());
+		Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
+								app, ScheduleViewActivity.class);
+		evi.putExtra("PREFER_CACHED", true);
+		not.setLatestEventInfo(app, item.getTitle(), "Soon in " + item.getLine().getTitle(),
+							   PendingIntent.getActivity(app, 0, evi, 0));
+		not.flags |= Notification.FLAG_AUTO_CANCEL;
+		not.defaults |= Notification.DEFAULT_SOUND;
+		if ((item.getStartTime().getDate() & 1) == 0)
+			not.vibrate = giggitygoo;
+		else
+			not.vibrate = mario;
 
-    	nm.notify(item.hashCode() | (int) (item.getStartTime().getTime() / 1000), not);
-    	
-    	Log.d("reminder", "Generated reminder for " + item.getTitle());
+		nm.notify(item.hashCode() | (int) (item.getStartTime().getTime() / 1000), not);
+		
+		Log.d("reminder", "Generated reminder for " + item.getTitle());
 	}
 	
 	@Override
@@ -120,36 +120,36 @@ public class Reminder extends Service {
 	}
 	
 	static public void poke(Giggity app, Schedule.Item item) {
-    	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
-    	if (pref.getBoolean("reminder_enabled", true)) {
-    		/* Doesn't matter if it's already running BTW. */
-    		app.startService(new Intent(app, Reminder.class));
-    	} else {
-    		app.stopService(new Intent(app, Reminder.class));
-    		return;
-    	}
-    	
-    	if (item != null)
-    		setAlarm(app, item);
-    	else {
-    		for (Schedule.Item i : app.getRemindItems())
-    			setAlarm(app, i);
-    	}
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
+		if (pref.getBoolean("reminder_enabled", true)) {
+			/* Doesn't matter if it's already running BTW. */
+			app.startService(new Intent(app, Reminder.class));
+		} else {
+			app.stopService(new Intent(app, Reminder.class));
+			return;
+		}
+		
+		if (item != null)
+			setAlarm(app, item);
+		else {
+			for (Schedule.Item i : app.getRemindItems())
+				setAlarm(app, i);
+		}
 	}
 	
 	static private void setAlarm(Context app, Schedule.Item item) {
-    	SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
-    	int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
-    	long tm = item.getStartTime().getTime() - period;
-    	
-    	if (tm < System.currentTimeMillis()) 
-    		return;
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
+		int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
+		long tm = item.getStartTime().getTime() - period;
+		
+		if (tm < System.currentTimeMillis()) 
+			return;
 
-    	AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
+		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(Reminder.ACTION);
 		i.setDataAndType(Uri.parse(item.getUrl()), "text/x-giggity");
 		am.set(AlarmManager.RTC_WAKEUP, tm,
-			       PendingIntent.getBroadcast(app, 0, i, 0));
+		       PendingIntent.getBroadcast(app, 0, i, 0));
 		Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
 		      (tm - System.currentTimeMillis()) / 1000 + " seconds");
 	}

@@ -49,10 +49,10 @@ public class MyItemsView extends ScheduleListView implements ScheduleViewer {
 		setShowRemind(false);
 		setList(fullList);
 	}
-    
+	
 	@Override
-    public boolean multiDay() {
-    	return true;
-    }
+	public boolean multiDay() {
+		return true;
+	}
 }
 

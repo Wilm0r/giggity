@@ -72,18 +72,18 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 				fullList.add(item);
 			}
 		}
-    	
-    	scroller = new ScheduleListView(ctx);
+		
+		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
 		scroller.setList(fullList);
 		addView(scroller, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
 		tents = new Gallery(ctx);
-    	tents.setAdapter(new TentListAdapter(ctx, sched_.getTents()));
+		tents.setAdapter(new TentListAdapter(ctx, sched_.getTents()));
 		addView(tents, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 		/* Set up some navigation listeners. */
-    	tentsel = new OnItemSelectedListener() {
+		tentsel = new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
@@ -104,11 +104,11 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
-    	};
-    	tents.setOnItemSelectedListener(tentsel);
-    	
-    	scroller.setOnScrollListener(new OnScrollListener() {
-    		private boolean scrolling = false;
+		};
+		tents.setOnItemSelectedListener(tentsel);
+		
+		scroller.setOnScrollListener(new OnScrollListener() {
+			private boolean scrolling = false;
 			@Override
 			public void onScroll(AbsListView v, int first, int visible, int total) {
 				ScheduleViewActivity.onScroll(ctx);
@@ -139,7 +139,7 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 				
 				scrolling = scrollState != OnScrollListener.SCROLL_STATE_IDLE;
 			}
-    	});
+		});
 	}
 	
 	private class TentListAdapter extends BaseAdapter {
@@ -189,9 +189,9 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 	public void refreshContents() {
 		scroller.refreshContents();
 	}
-    
+	
 	@Override
-    public boolean multiDay() {
-    	return false;
-    }
+	public boolean multiDay() {
+		return false;
+	}
 }

@@ -49,17 +49,17 @@ public class TrackList extends ListView implements ScheduleViewer {
 	public void refreshContents() {
 		/* No periodic refresh required. */
 	}
-    
-    private class TrackAdapter extends BaseAdapter {
-    	private final AbstractMap<String,TreeSet<Schedule.Item>> tracks;
-    	private final ArrayList<String> keys;
-    	
-    	public TrackAdapter(AbstractMap<String,TreeSet<Schedule.Item>> tracks_) {
-    		tracks = tracks_;
-    		keys = new ArrayList<String>(tracks.keySet());
-    		Collections.sort(keys);
-    	}
-    	
+	
+	private class TrackAdapter extends BaseAdapter {
+		private final AbstractMap<String,TreeSet<Schedule.Item>> tracks;
+		private final ArrayList<String> keys;
+		
+		public TrackAdapter(AbstractMap<String,TreeSet<Schedule.Item>> tracks_) {
+			tracks = tracks_;
+			keys = new ArrayList<String>(tracks.keySet());
+			Collections.sort(keys);
+		}
+		
 		@Override
 		public int getCount() {
 			return keys.size();
@@ -121,10 +121,10 @@ public class TrackList extends ListView implements ScheduleViewer {
 
 			return v;
 		}
-    }
-    
+	}
+	
 	@Override
-    public boolean multiDay() {
-    	return true;
-    }
+	public boolean multiDay() {
+		return true;
+	}
 }

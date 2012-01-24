@@ -485,7 +485,7 @@ public class Schedule {
 				linkTypes.put(id, lt);
 			} else if (localName == "line") {
 				curTent = new Schedule.Line(atts.getValue("", "id"),
-						                    atts.getValue("", "title"));
+				                            atts.getValue("", "title"));
 			} else if (localName == "item") {
 				Date startTime, endTime;
 	
@@ -494,8 +494,8 @@ public class Schedule {
 					endTime = new Date(Long.parseLong(atts.getValue("", "endTime")) * 1000);
 					
 					curItem = new Schedule.Item(atts.getValue("", "id"),
-		                       atts.getValue("", "title"),
-		                       startTime, endTime);
+					                            atts.getValue("", "title"),
+					                            startTime, endTime);
 				} catch (NumberFormatException e) {
 					Log.w("Schedule.loadDeox", "Error while parsing date: " + e);
 				}

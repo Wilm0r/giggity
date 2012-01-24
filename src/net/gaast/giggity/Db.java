@@ -76,19 +76,19 @@ public class Db {
 		public void onCreate(SQLiteDatabase db) {
 			Log.i("DeoxideDb", "Creating new database");
 			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
-					                          "sch_title VarChar(128), " +
-					                          "sch_url VarChar(256), " +
-					                          "sch_atime Integer, " +
-					                          "sch_rtime Integer, " +
-					                          "sch_start Integer, " +
-					                          "sch_end Integer, " +
-					                          "sch_id_s VarChar(128)," +
-					                          "sch_day Integer)");
+			                                  "sch_title VarChar(128), " +
+			                                  "sch_url VarChar(256), " +
+			                                  "sch_atime Integer, " +
+			                                  "sch_rtime Integer, " +
+			                                  "sch_start Integer, " +
+			                                  "sch_end Integer, " +
+			                                  "sch_id_s VarChar(128)," +
+			                                  "sch_day Integer)");
 			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
-					                               "sci_sch_id Integer Not Null, " +
-					                               "sci_id_s VarChar(128), " +
-					                               "sci_remind Boolean, " +
-					                               "sci_stars Integer(2) Null)");
+			                                       "sci_sch_id Integer Not Null, " +
+			                                       "sci_id_s VarChar(128), " +
+			                                       "sci_remind Boolean, " +
+			                                       "sci_stars Integer(2) Null)");
 			
 			oldDbVer = 0;
 		}
@@ -332,7 +332,7 @@ public class Db {
 				row.put("sch_rtime", new Date().getTime() / 1000);
 			
 			q = db.rawQuery("Select sch_id, sch_day From schedule Where sch_id_s = ?",
-					        new String[]{sched.getId()});
+			                new String[]{sched.getId()});
 			
 			if (q.getCount() == 0) {
 				row.put("sch_day", 0);
@@ -351,8 +351,8 @@ public class Db {
 			q.close();
 			
 			q = db.rawQuery("Select sci_id, sci_id_s, sci_remind, sci_stars " +
-					        "From schedule_item Where sci_sch_id = ?",
-					        new String[]{"" + schId});
+			                "From schedule_item Where sci_sch_id = ?",
+			                new String[]{"" + schId});
 			while (q.moveToNext()) {
 				Schedule.Item item = sched.getItem(q.getString(1));
 				if (item == null) {
@@ -387,7 +387,7 @@ public class Db {
 						  "sci_id = ?", new String[]{"" + sciId.longValue()});
 			} else {
 				sciIdMap.put(item.getId(),
-						     new Long(db.insert("schedule_item", null, row)));
+				             new Long(db.insert("schedule_item", null, row)));
 			}
 		}
 		

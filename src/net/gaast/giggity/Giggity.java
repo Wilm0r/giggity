@@ -46,20 +46,20 @@ public class Giggity extends Application {
 	TreeSet<Schedule.Item> remindItems;
 	
 	@Override
-    public void onCreate() {
-    	super.onCreate();
-    	db = new Db(this);
-    	
-    	scheduleCache = new HashMap<String,Schedule>();
-    	remindItems = new TreeSet<Schedule.Item>();
-    	
-    	PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
-    	
-    	/* This makes me sad: Most schedule file formats use timezone-unaware times.
-    	 * And Java's Date objects are timezone aware. The result is that if you load
-    	 * a file and then change the timezone on your phone, Giggity will show the
-    	 * wrong times. The easiest fix for now is to just reload everything.. */
-    	registerReceiver(new BroadcastReceiver() {
+	public void onCreate() {
+		super.onCreate();
+		db = new Db(this);
+		
+		scheduleCache = new HashMap<String,Schedule>();
+		remindItems = new TreeSet<Schedule.Item>();
+		
+		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
+		
+		/* This makes me sad: Most schedule file formats use timezone-unaware times.
+		 * And Java's Date objects are timezone aware. The result is that if you load
+		 * a file and then change the timezone on your phone, Giggity will show the
+		 * wrong times. The easiest fix for now is to just reload everything.. */
+		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context arg0, Intent arg1) {
 				HashSet<String> urls = new HashSet<String>();
@@ -83,72 +83,72 @@ public class Giggity extends Application {
 				}
 				*/
 			}
-    	}, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
-    }
-    
-    public Db.Connection getDb() {
-    	return db.getConnection();
-    }
-    
-    public boolean hasSchedule(String url) {
-    	return scheduleCache.containsKey(url);
-    }
-    
-    public void flushSchedule(String url) {
-    	if (hasSchedule(url)) {
-        	Schedule sched = scheduleCache.get(url);
-        	for (Schedule.Item item : new ArrayList<Schedule.Item>(remindItems)) {
-        		if (item.getSchedule() == sched)
-        			remindItems.remove(item);
-        	}
-    	}
-       	scheduleCache.remove(url);
-    }
-    
-    public Schedule getSchedule(String url, Fetcher.Source source, Handler progress) throws Exception {
-    	if (!hasSchedule(url)) {
-    		Schedule sched = new Schedule(this);
-    		sched.setProgressHandler(progress);
+		}, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+	}
+	
+	public Db.Connection getDb() {
+		return db.getConnection();
+	}
+	
+	public boolean hasSchedule(String url) {
+		return scheduleCache.containsKey(url);
+	}
+	
+	public void flushSchedule(String url) {
+		if (hasSchedule(url)) {
+			Schedule sched = scheduleCache.get(url);
+			for (Schedule.Item item : new ArrayList<Schedule.Item>(remindItems)) {
+				if (item.getSchedule() == sched)
+					remindItems.remove(item);
+			}
+		}
+		scheduleCache.remove(url);
+	}
+	
+	public Schedule getSchedule(String url, Fetcher.Source source, Handler progress) throws Exception {
+		if (!hasSchedule(url)) {
+			Schedule sched = new Schedule(this);
+			sched.setProgressHandler(progress);
 			sched.loadSchedule(url, source);
-	   		scheduleCache.put(url, sched);
-    	}
-    	return (lastSchedule = scheduleCache.get(url));
-    }
+			scheduleCache.put(url, sched);
+		}
+		return (lastSchedule = scheduleCache.get(url));
+	}
 
-    public Schedule getSchedule(String url, Fetcher.Source source) throws Exception {
-    	return getSchedule(url, source, null);
-    }
+	public Schedule getSchedule(String url, Fetcher.Source source) throws Exception {
+		return getSchedule(url, source, null);
+	}
 
-    public Schedule getLastSchedule() {
-    	/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
-    	return lastSchedule;
-    }
-    
-    public void updateRemind(Schedule.Item item) {
-    	if (item.getRemind()) {
-    		if (item.compareTo(new Date()) < 0)
-    			remindItems.add(item);
-    	} else
-        	remindItems.remove(item);
-    	
-    	Reminder.poke(this, item);
-    }
-    
-    protected AbstractSet<Schedule.Item> getRemindItems() {
-    	return remindItems;
-    }
-    
-    public int dp2px(int dp) {
+	public Schedule getLastSchedule() {
+		/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
+		return lastSchedule;
+	}
+	
+	public void updateRemind(Schedule.Item item) {
+		if (item.getRemind()) {
+			if (item.compareTo(new Date()) < 0)
+				remindItems.add(item);
+		} else
+			remindItems.remove(item);
+		
+		Reminder.poke(this, item);
+	}
+	
+	protected AbstractSet<Schedule.Item> getRemindItems() {
+		return remindItems;
+	}
+	
+	public int dp2px(int dp) {
 		float scale = getResources().getDisplayMetrics().density;
 		return (int) (scale * dp);
-    }
-    
-    /** Sigh */
-    public void setPadding(View view, int left, int top, int right, int bottom) {
-    	view.setPadding(dp2px(left), dp2px(top), dp2px(right), dp2px(bottom));
-    }
-    
-    public Fetcher fetch(String url, Fetcher.Source source) throws IOException {
-    	return new Fetcher(this, url, source);
-    }
+	}
+	
+	/** Sigh */
+	public void setPadding(View view, int left, int top, int right, int bottom) {
+		view.setPadding(dp2px(left), dp2px(top), dp2px(right), dp2px(bottom));
+	}
+	
+	public Fetcher fetch(String url, Fetcher.Source source) throws IOException {
+		return new Fetcher(this, url, source);
+	}
 }

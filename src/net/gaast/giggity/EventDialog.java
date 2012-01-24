@@ -60,12 +60,12 @@ public class EventDialog extends Dialog implements OnDismissListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		/* Rendering our own title (ScheduleItemView) */
-    	requestWindowFeature(Window.FEATURE_NO_TITLE);
-    	setContentView(genDialog(false));
-    	
-    	super.setOnDismissListener(this);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		setContentView(genDialog(false));
+		
+		super.setOnDismissListener(this);
 
-    	super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 	}
 	
 	public LinearLayout genDialog(boolean big) {
@@ -189,10 +189,10 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		
 		@Override
 		public void onClick(View v) {
-	    	Uri uri = Uri.parse(link.getUrl());
-	    	Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-	    	intent.addCategory(Intent.CATEGORY_BROWSABLE);
-	    	ctx.startActivity(intent);
+			Uri uri = Uri.parse(link.getUrl());
+			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+			intent.addCategory(Intent.CATEGORY_BROWSABLE);
+			ctx.startActivity(intent);
 		}
 	}
 	
@@ -208,16 +208,16 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			item.setRemind(cb.isChecked());
 			/* See if I'll use this.
 			if (cb.isChecked()) {
-	        Intent intent = new Intent(Intent.ACTION_EDIT);
-	        intent.setType("vnd.android.cursor.item/event");
-            intent.putExtra("beginTime", item.getStartTime().getTime());
-	        intent.putExtra("endTime", item.getEndTime().getTime());
-	        intent.putExtra("title", item.getTitle());
-	        intent.putExtra("eventLocation", item.getLine().getTitle());
-	        intent.putExtra("description", item.getDescription());
-	        ctx.startActivity(intent);
-	 		}
-	    */
+				Intent intent = new Intent(Intent.ACTION_EDIT);
+				intent.setType("vnd.android.cursor.item/event");
+				intent.putExtra("beginTime", item.getStartTime().getTime());
+				intent.putExtra("endTime", item.getEndTime().getTime());
+				intent.putExtra("title", item.getTitle());
+				intent.putExtra("eventLocation", item.getLine().getTitle());
+				intent.putExtra("description", item.getDescription());
+				ctx.startActivity(intent);
+			}
+		*/
 		}
 		if (sv != null)
 			item.setStars(sv.getScore());
@@ -233,6 +233,6 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				return;
 		} catch (ClassCastException e) {
 		}
-    	super.show();
+		super.show();
 	}
 }

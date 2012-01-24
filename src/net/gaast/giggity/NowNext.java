@@ -91,9 +91,9 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 		
 		setList(fullList);
 	}
-    
+	
 	@Override
-    public boolean multiDay() {
-    	return true;
-    }
+	public boolean multiDay() {
+		return true;
+	}
 }

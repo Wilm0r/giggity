@@ -40,32 +40,32 @@ import android.widget.TextView;
 
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener, ScheduleViewer {
 	Giggity app;
-    Schedule sched;
-    Activity ctx;
-    
-    Colours c;
+	Schedule sched;
+	Activity ctx;
+	
+	Colours c;
 
-    /* This object is pretty messy. :-/ It contains the
-     * following widgets: */
-    
-    /* Clocks at the top and bottom */
-    Clock topClock;
-    Clock bottomClock;
-    
-    /* mainTable is the middle part of the screen */
-    LinearLayout mainTable;
-    /* Separate this to keep them on screen when scrolling */
-    ShuffleLayout tentHeaders;
-    SimpleScroller tentHeadersScr;
+	/* This object is pretty messy. :-/ It contains the
+	 * following widgets: */
+	
+	/* Clocks at the top and bottom */
+	Clock topClock;
+	Clock bottomClock;
+	
+	/* mainTable is the middle part of the screen */
+	LinearLayout mainTable;
+	/* Separate this to keep them on screen when scrolling */
+	ShuffleLayout tentHeaders;
+	SimpleScroller tentHeadersScr;
 
-    /* schedCont will contain all the actual data rows,
-     * we'll get scrolling by stuffing it inside schedContScr. */
-    ShuffleLayout schedCont;
-    SimpleScroller schedContScr;
+	/* schedCont will contain all the actual data rows,
+	 * we'll get scrolling by stuffing it inside schedContScr. */
+	ShuffleLayout schedCont;
+	SimpleScroller schedContScr;
 
-    SharedPreferences pref;
-    
-    private double SizeScale;
+	SharedPreferences pref;
+	
+	private double SizeScale;
 	private int HourWidth;
 	private int HourHeight = 18;
 	private int TentHeight = 48;
@@ -78,44 +78,44 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		super(ctx_);
 		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
-    	sched = sched_;
-    	pref = PreferenceManager.getDefaultSharedPreferences(app);
-    	timer = new Handler();
+		sched = sched_;
+		pref = PreferenceManager.getDefaultSharedPreferences(app);
+		timer = new Handler();
 
-    	/* Not working yet. :-( */
-    	Class[] styles = getClass().getDeclaredClasses();
-    	int i;
-    	c = new Light();
-    	for (i = 0; i < styles.length; i ++) {
-    		if (styles[i].getSuperclass() == Colours.class &&
-    			styles[i].getSimpleName().equals(pref.getString("block_schedule_style", ""))) {
-    			try {
+		/* Not working yet. :-( */
+		Class[] styles = getClass().getDeclaredClasses();
+		int i;
+		c = new Light();
+		for (i = 0; i < styles.length; i ++) {
+			if (styles[i].getSuperclass() == Colours.class &&
+				styles[i].getSimpleName().equals(pref.getString("block_schedule_style", ""))) {
+				try {
 					c = (Colours) styles[i].newInstance();
 					break;
 				} catch (IllegalAccessException e) {
 				} catch (InstantiationException e) {
 				}
 			}
-    	}
-    	
-    	int x, y;
-    	Calendar base, cal, end;
-    	LinkedList<Schedule.Line> tents;
-    	ListIterator<Schedule.Line> tenti;
-    	Element cell;
-    	
-    	setOrientation(LinearLayout.VERTICAL);
-    	
-        HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
-        SizeScale = HourWidth / 72.0;
-        HourHeight *= SizeScale;
-        TentHeight *= SizeScale;
-        TentWidth *= SizeScale;
-    	
-    	schedCont = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE);
-    	schedCont.setBackgroundColor(c.background);
-    	schedCont.setMinimumHeight(sched.getTents().size());
-    	
+		}
+		
+		int x, y;
+		Calendar base, cal, end;
+		LinkedList<Schedule.Line> tents;
+		ListIterator<Schedule.Line> tenti;
+		Element cell;
+		
+		setOrientation(LinearLayout.VERTICAL);
+		
+		HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
+		SizeScale = HourWidth / 72.0;
+		HourHeight *= SizeScale;
+		TentHeight *= SizeScale;
+		TentWidth *= SizeScale;
+		
+		schedCont = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE);
+		schedCont.setBackgroundColor(c.background);
+		schedCont.setMinimumHeight(sched.getTents().size());
+		
 		base = Calendar.getInstance();
 		base.setTime(sched.getFirstTime());
 		base.set(Calendar.MINUTE, 0);
@@ -132,19 +132,19 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL |
 				(/*pref.getBoolean("block_schedule_tent_shuffling", */(false) ?
 						SimpleScroller.DISABLE_DRAG_SCROLL : 0));
-    	tentHeadersScr.addView(tentHeaders);
-        tentHeadersScr.setScrollEventListener(this);
-        
+		tentHeadersScr.addView(tentHeaders);
+		tentHeadersScr.setScrollEventListener(this);
+		
 		y = 0;
 		tents = sched.getTents();
 		tenti = tents.listIterator();
-    	while (tenti.hasNext()) {
-    		Iterator<Schedule.Item> gigi;
-    		Schedule.Line tent = tenti.next();
-    		AbsoluteLayout line;
+		while (tenti.hasNext()) {
+			Iterator<Schedule.Item> gigi;
+			Schedule.Line tent = tenti.next();
+			AbsoluteLayout line;
 			int posx, h, w;
-    		
-    		/* Tent name on the first column. */
+			
+			/* Tent name on the first column. */
 			cell = new Element(ctx);
 			cell.setWidth(TentWidth);
 			cell.setText(tent.getTitle());
@@ -152,15 +152,15 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			cell.setTextColor(c.tentfg[y&1]);
 			tentHeaders.addView(cell);
 
-    		cal = Calendar.getInstance();
-    		cal.setTime(base.getTime());
-    		cal.add(Calendar.MINUTE, -15);
+			cal = Calendar.getInstance();
+			cal.setTime(base.getTime());
+			cal.add(Calendar.MINUTE, -15);
 
-        	x = 0;
-        	y ++;
-        	h = TentHeight;
-        	line = new AbsoluteLayout(ctx);
-        	
+			x = 0;
+			y ++;
+			h = TentHeight;
+			line = new AbsoluteLayout(ctx);
+			
 			gigi = tent.getItems().iterator();
 			while (gigi.hasNext()) {
 				Schedule.Item gig = gigi.next();
@@ -185,17 +185,17 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			
 			/* TODO: Grrrr, how do I get the width of topClock for here? :-/ */
 			schedCont.addView(line, new LinearLayout.LayoutParams(-1, h));
-    	}
+		}
 
-    	schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
-        schedContScr.addView(schedCont);
-        schedContScr.setScrollEventListener(this);
+		schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
+		schedContScr.addView(schedCont);
+		schedContScr.setScrollEventListener(this);
 
 		mainTable = new LinearLayout(app);
 		mainTable.addView(tentHeadersScr);
 		mainTable.addView(schedContScr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
-    	addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-    	
+		addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		
 		bottomClock = new Clock(ctx, base, end);
 		bottomClock.setScrollEventListener(this);
 		addView(bottomClock);
@@ -248,22 +248,22 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				@Override
 				public void onClick(View v) {
 					EventDialog evd = new EventDialog(ctx, item);
-			    	evd.setOnDismissListener(new OnDismissListener() {
-			   			public void onDismiss(DialogInterface dialog) {
-			   				/* Android 3.0+ bug: For some reason, if we change our bgcolor here, the
-			   				 * background colour for the surrounding views turns black - but only
-			   				 * until the user scrolls/selects another item. If we change the color
-			   				 * via a timer instead, we're fine.
-			   				 */
-			   				Runnable resetBackground = new Runnable() {
-			   					@Override
-			   					public void run() {
-			   						setBackgroundColor(bgcolor);
-			   					}
-			   			    };
-	   						timer.postDelayed(resetBackground, 0);
-			   			}
-			   		});
+					evd.setOnDismissListener(new OnDismissListener() {
+						public void onDismiss(DialogInterface dialog) {
+							/* Android 3.0+ bug: For some reason, if we change our bgcolor here, the
+							 * background colour for the surrounding views turns black - but only
+							 * until the user scrolls/selects another item. If we change the color
+							 * via a timer instead, we're fine.
+							 */
+							Runnable resetBackground = new Runnable() {
+								@Override
+								public void run() {
+									setBackgroundColor(bgcolor);
+								}
+							};
+							timer.postDelayed(resetBackground, 0);
+						}
+					});
 					evd.show();
 				}
 			});
@@ -406,9 +406,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		topClock.update();
 		bottomClock.update();
 	}
-    
+	
 	@Override
-    public boolean multiDay() {
-    	return false;
-    }
+	public boolean multiDay() {
+		return false;
+	}
 }
