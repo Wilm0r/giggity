@@ -261,7 +261,9 @@ public class Fetcher {
 			if (!waiting) {
 				offset += ret;
 				if (progressHandler != null && flen > 0 && ret > 0) {
-					progressHandler.sendEmptyMessage((int) (100L * offset / flen));
+					int prog = (int) (100L * offset / flen);
+					if (prog > 0)
+						progressHandler.sendEmptyMessage((int) (100L * offset / flen));
 				}
 			}
 			return ret;

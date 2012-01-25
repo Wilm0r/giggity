@@ -183,7 +183,7 @@ public class ScheduleViewActivity extends Activity {
 					
 					new AlertDialog.Builder(ScheduleViewActivity.this)
 						.setTitle(R.string.loading_error)
-						.setMessage(msg.obj.toString())
+						.setMessage(msg.obj != null ? msg.obj.toString() : "(null)")
 						.show()
 						.setOnDismissListener(new OnDismissListener() {
 							public void onDismiss(DialogInterface dialog) {
@@ -515,7 +515,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 		
 		public void show() {
-			if (sched.getDays().size() <= 1 || viewer.multiDay())
+			if (sched == null || viewer == null || sched.getDays().size() <= 1 || viewer.multiDay())
 				return;
 			
 			/* Z ordering in RelativeLayouts seems to be most-recently-added,
