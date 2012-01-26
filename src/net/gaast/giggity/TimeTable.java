@@ -20,7 +20,6 @@
 package net.gaast.giggity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.app.Activity;
@@ -36,18 +35,18 @@ import android.widget.BaseAdapter;
 import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 public class TimeTable extends RelativeLayout implements ScheduleViewer {
-	Giggity app;
-	Schedule sched;
-	Activity ctx;
+	private Giggity app;
+	private Schedule sched;
+	private Activity ctx;
 	
-	Gallery tents;
-	ScheduleListView scroller;
-	TableLayout table;
-	OnItemSelectedListener tentsel;
+	private Gallery tentSel;
+	private OnItemSelectedListener tentSelL;
+	private ScheduleListView scroller;
+	
+	private LinkedList<Schedule.Line> tents; 
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public TimeTable(Activity ctx_, Schedule sched_) {
@@ -55,20 +54,13 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
 		sched = sched_;
+		tents = sched.getTents();
 
-		Iterator<Schedule.Line> tenti;
 		ArrayList fullList = new ArrayList();
-		Iterator<Schedule.Item> itemi;
-		Schedule.Item item = null;
 		
-		tenti = sched.getTents().iterator();
-		while (tenti.hasNext()) {
-			Schedule.Line tent = tenti.next();
-			itemi = tent.getItems().iterator();
+		for (Schedule.Line tent : tents) {
 			fullList.add("\n\n" + tent.getTitle());
-			
-			while (itemi.hasNext()) {
-				item = itemi.next();
+			for (Schedule.Item item : tent.getItems()) {
 				fullList.add(item);
 			}
 		}
@@ -78,20 +70,19 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 		scroller.setList(fullList);
 		addView(scroller, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 
-		tents = new Gallery(ctx);
-		tents.setAdapter(new TentListAdapter(ctx, sched_.getTents()));
-		addView(tents, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		tentSel = new Gallery(ctx);
+		tentSel.setAdapter(new TentListAdapter(ctx, tents));
+		addView(tentSel, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
 
 		/* Set up some navigation listeners. */
-		tentsel = new OnItemSelectedListener() {
+		tentSelL = new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				int to;
 				for (to = 0; to < scroller.getCount(); to++) {
 					try {
-						if (((Schedule.Item)scroller.getList().get(to)).getLine() ==
-							sched.getTents().get(position)) {
+						if (((Schedule.Item)scroller.getList().get(to)).getLine() == tents.get(position)) {
 							scroller.setSelection(to - 1);
 							break;
 						}
@@ -105,7 +96,7 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		};
-		tents.setOnItemSelectedListener(tentsel);
+		tentSel.setOnItemSelectedListener(tentSelL);
 		
 		scroller.setOnScrollListener(new OnScrollListener() {
 			private boolean scrolling = false;
@@ -120,9 +111,9 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 				if (first == total)
 					return; /* Hmm. Just titles, no events? */
 				int to;
-				for (to = 0; to < sched.getTents().size(); to ++)
-					if (sched.getTents().get(to) == ((Schedule.Item)scroller.getList().get(first)).getLine())
-						tents.setSelection(to);
+				for (to = 0; to < tents.size(); to ++)
+					if (tents.get(to) == ((Schedule.Item)scroller.getList().get(first)).getLine())
+						tentSel.setSelection(to);
 			}
 
 			/* This function is supposed to kill feedback loops between the 
@@ -133,9 +124,9 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 			public void onScrollStateChanged(AbsListView v, int scrollState) {
 				/* Disable this listener while scrolling to avoid the feedback loop. */
 				if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-					tents.setOnItemSelectedListener(null);
+					tentSel.setOnItemSelectedListener(null);
 				else if (scrollState == OnScrollListener.SCROLL_STATE_IDLE)
-					tents.setOnItemSelectedListener(tentsel);
+					tentSel.setOnItemSelectedListener(tentSelL);
 				
 				scrolling = scrollState != OnScrollListener.SCROLL_STATE_IDLE;
 			}
