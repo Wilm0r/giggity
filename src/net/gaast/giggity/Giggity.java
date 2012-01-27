@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -132,6 +133,7 @@ public class Giggity extends Application {
 			remindItems.remove(item);
 		
 		Reminder.poke(this, item);
+		Widget.updateWidget(this);
 	}
 	
 	protected AbstractSet<Schedule.Item> getRemindItems() {
@@ -150,5 +152,16 @@ public class Giggity extends Application {
 	
 	public Fetcher fetch(String url, Fetcher.Source source) throws IOException {
 		return new Fetcher(this, url, source);
+	}
+	
+	public static String dateRange(Date start, Date end) {
+		String ret = "";
+		if (start.getDate() == end.getDate() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
+			ret = new SimpleDateFormat("d MMMM").format(end);
+		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
+			ret = "" + start.getDate() + "-" + new SimpleDateFormat("d MMMM").format(end);
+		else
+			ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
+		return ret + " " + (1900 + end.getYear());
 	}
 }

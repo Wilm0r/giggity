@@ -37,8 +37,10 @@ public class ScheduleItemView extends RelativeLayout {
 		title.setText(item.getTitle());
 		title.setTextSize(16);
 		title.setId(++n);
-		if ((flags & SHORT_TITLE) > 0)
+		if ((flags & SHORT_TITLE) > 0) {
+			title.setLines(1);
 			title.setEllipsize(TextUtils.TruncateAt.END);
+		}
 		p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 		p.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 		p.addRule(RelativeLayout.RIGHT_OF, time.getId());

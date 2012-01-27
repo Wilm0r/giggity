@@ -300,9 +300,12 @@ public class Db {
 		
 		public void sleep() {
 			Log.d("DeoxideDb", "sleep()" + db);
+			new Exception().printStackTrace();
 			if (db != null) {
 				db.close();
 				db = null;
+			} else {
+				Log.d("DeoxideDb", "db was already null?");
 			}
 		}
 		

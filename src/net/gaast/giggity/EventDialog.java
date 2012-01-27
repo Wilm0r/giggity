@@ -87,7 +87,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		content.setOrientation(LinearLayout.VERTICAL);
 
 		/* Title, styled like in ScheduleListView. */
-		View title = new ScheduleItemView(ctx, item, ScheduleItemView.SHORT_TITLE);
+		View title = new ScheduleItemView(ctx, item, 0); //ScheduleItemView.SHORT_TITLE);
 		content.addView(title, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
 		
 		/* Separator line between dialog title and rest. */

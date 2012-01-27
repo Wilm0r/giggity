@@ -430,7 +430,7 @@ public class ChooserActivity extends Activity {
 					ret.addView(title);
 					
 					when = new TextView(ChooserActivity.this);
-					when.setText(dateRange(item.getStart(), item.getEnd()));
+					when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
 					when.setTextSize(12);
 					ret.addView(when);
 					
@@ -447,17 +447,6 @@ public class ChooserActivity extends Activity {
 
 					return ret;
 				}
-			}
-			
-			private String dateRange(Date start, Date end) {
-				String ret = "";
-				if (start.getDate() == end.getDate() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
-					ret = new SimpleDateFormat("d MMMM").format(end);
-				else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
-					ret = "" + start.getDate() + "-" + new SimpleDateFormat("d MMMM").format(end);
-				else
-					ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
-				return ret + " " + (1900 + end.getYear());
 			}
 		}
 	}
