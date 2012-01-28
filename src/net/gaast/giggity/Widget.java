@@ -67,7 +67,7 @@ public class Widget extends AppWidgetProvider {
 			
 			Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(url), app, ScheduleViewActivity.class);
 			evi.putExtra("PREFER_CACHED", true);
-			PendingIntent pi = PendingIntent.getBroadcast(app, 0, evi, 0);
+			PendingIntent pi = PendingIntent.getActivity(app, 0, evi, 0);
 			v.setOnClickPendingIntent(R.id.title, pi);
 
 			v.setTextViewText(R.id.title, title);
