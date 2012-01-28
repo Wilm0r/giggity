@@ -19,6 +19,8 @@
 
 package net.gaast.giggity;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +38,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -46,7 +49,6 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -293,6 +295,18 @@ public class ScheduleViewActivity extends Activity {
 				evd.show();
 			}
 		}
+		
+		/* Need to call invalidateOptionsMenu now but it's API 11+ only. :-( */
+		try {
+			Method inval = Activity.class.getMethod("invalidateOptionsMenu", new Class[] {});
+			inval.invoke(this);
+		} catch (NoSuchMethodException e) {
+			/* This should mean we're on an older phone, where we don't have to care. 
+			 * onPrepareOptionsMenu is called whenever the user presses the menu/option button. */
+		} catch (IllegalArgumentException e) {
+		} catch (IllegalAccessException e) {
+		} catch (InvocationTargetException e) {
+		}
 	}
 	
 	private void updateOrientation(int orientation) {
@@ -370,6 +384,9 @@ public class ScheduleViewActivity extends Activity {
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+		if (viewer == null || sched == null)
+			return false;
+		
 		menu.findItem(2).setVisible(!viewer.multiDay() && sched.getDays().size() > 1);
 		menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
 		menu.findItem(4).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
