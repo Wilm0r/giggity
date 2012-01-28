@@ -67,6 +67,7 @@ public class ChooserActivity extends Activity {
 
 	private ListView list;
 	private ScheduleAdapter lista;
+	private Handler seedRefreshMenu;
 
 	private final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
 	private final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
@@ -201,9 +202,8 @@ public class ChooserActivity extends Activity {
 			Log.d("ChooserActivity", "seedAge " + seedAge);
 			
 			final Thread loader;
-			final Handler resultHandler;
-
-			resultHandler = new Handler() {
+			
+			seedRefreshMenu = new Handler() {
 				@Override
 				public void handleMessage(Message msg) {
 					if (msg.what == 1) {
@@ -224,7 +224,10 @@ public class ChooserActivity extends Activity {
 				@Override
 				public void run() {
 					db.refreshScheduleList();
-					resultHandler.sendEmptyMessage(1);
+					if (seedRefreshMenu != null)
+						seedRefreshMenu.sendEmptyMessage(1);
+					else
+						Log.d("Chooser", "I had a handler but you eated it");
 				}
 			};
 
@@ -292,6 +295,7 @@ public class ChooserActivity extends Activity {
 	public void onPause() {
 		super.onPause();
 		db.sleep();
+		seedRefreshMenu = null;
 	}
 	
 	private void openSchedule(String url, boolean prefOnline) {
