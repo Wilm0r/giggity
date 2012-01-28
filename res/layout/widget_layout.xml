@@ -3,7 +3,7 @@
     android:id="@+id/layout"
     android:layout_width="294dp"
     android:layout_height="72dp"
-    android:background="@drawable/widget_gradient"
+    android:background="@drawable/widget_bg"
     android:paddingBottom="1dp"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
@@ -13,16 +13,17 @@
         android:id="@+id/imageView1"
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:contentDescription="Giggity logo"
         android:src="@drawable/deoxide_icon" />
 
     <TextView
-        android:id="@+id/comingUp"
+        android:id="@+id/top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/imageView1"
         android:layout_marginLeft="4dp"
         android:layout_toRightOf="@+id/imageView1"
-        android:text="Coming up"
+        android:text="@string/app_name"
         android:textAppearance="?android:attr/textAppearanceSmall" />
     
     <TextView
@@ -32,17 +33,19 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:text="-"
+        android:singleLine="true"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
-        android:id="@+id/time"
+        android:id="@+id/bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:text="foo"
+        android:singleLine="true"
+        android:ellipsize="start"
+        android:text=""
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
 </RelativeLayout>

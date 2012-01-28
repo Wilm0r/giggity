@@ -58,4 +58,10 @@
 	<string name="chooser_now">Huidige evenementen:</string>
 	<string name="chooser_later">Toekomstige evenementen:</string>
 	<string name="chooser_past">Afgelopen evenementen:</string>
+	
+	<!--  Widget -->
+	<string name="widg_longdate">EEEE d MMMM \'om\' HH:mm</string>
+	<string name="widg_shortdate">EEEE \'om\' HH:mm</string>
+	<string name="widg_in_room">in</string>
+	<string name="widg_soon">Binnenkort</string>
 </resources>

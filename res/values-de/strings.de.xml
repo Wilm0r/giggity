@@ -58,4 +58,10 @@
 	<string name="chooser_now">Aktuelle Veranstaltungen:</string>
 	<string name="chooser_later">Kommende Veranstaltungen:</string>
 	<string name="chooser_past">Bisherige Veranstaltungen:</string>
+	
+	<!--  Widget -->
+	<string name="widg_longdate">EEEE d MMMM \'um\' HH:mm</string>
+	<string name="widg_shortdate">EEEE \'um\' HH:mm</string>
+	<string name="widg_in_room">in</string>
+	<string name="widg_soon">Demnächst</string>
 </resources>
