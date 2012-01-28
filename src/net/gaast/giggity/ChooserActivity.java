@@ -289,6 +289,10 @@ public class ChooserActivity extends Activity {
 		db.resume();
 		lista = new ScheduleAdapter(db.getScheduleList());
 		list.setAdapter(lista);
+		
+		/* For some reason Honeycomb+ show the progress indicator by default if the feature is enabled? */
+		setProgressBarIndeterminateVisibility(false);
+		setProgressBarVisibility(false);
 	}
 	
 	@Override
