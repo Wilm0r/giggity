@@ -19,6 +19,8 @@
 
 package net.gaast.giggity;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -71,6 +73,22 @@ public class EventDialog extends Dialog implements OnDismissListener {
 	public LinearLayout genDialog(boolean big) {
 		Giggity app = (Giggity) ctx.getApplicationContext();
 		String descs = "";
+		boolean overlap = false;
+		
+		for (Schedule.Item other : app.getRemindItems()) {
+			if (item != other && other.overlaps(item)) {
+				Format tf = new SimpleDateFormat("HH:mm");
+
+				descs += ctx.getResources().getString(R.string.overlap) + " " + other.getTitle() +
+				         " (" + tf.format(other.getStartTime()) + "-" + tf.format(other.getEndTime()) + ")\n";
+				overlap = true;
+			} else if (other.getStartTime().after(item.getEndTime())){
+				break;
+			}
+		}
+		if (overlap)
+			descs += "\n";
+		
 		if (item.getSpeakers() != null) {
 			if (item.getSpeakers().size() > 1)
 				descs += ctx.getResources().getString(R.string.speakers) + " ";
@@ -80,6 +98,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				descs += i + ", ";
 			descs = descs.replaceAll(", $", "\n\n");
 		}
+		
 		if (item.getDescription() != null)
 			descs += item.getDescription();
 		

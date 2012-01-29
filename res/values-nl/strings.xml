@@ -14,7 +14,7 @@
     <string name="strict_ssl_sub">SSL certificaten van HTTPS servers controleren</string>
     
 	<string name="block_schedule_style">Stijl</string>
-	<string name="block_schedule">Blokenschema</string>
+	<string name="block_schedule">Blokkenschema</string>
 	<string name="block_schedule_element_size_sub">Blok- en lettergrootte</string>
 	<string name="block_schedule_element_size">Blokgrootte</string>
 
@@ -28,7 +28,8 @@
 	<string name="speaker">Spreker:</string>
 	<string name="speakers">Sprekers:</string>
 	<string name="remind_me">Onthouden</string>
-	
+	<string name="overlap">!! Overlapt met</string>
+		
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Laden...</string>
 	<string name="loading_error">Laadfout</string>

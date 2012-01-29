@@ -28,7 +28,8 @@
 	<string name="speaker">Speaker:</string>
 	<string name="speakers">Speakers:</string>
 	<string name="remind_me">Remind me</string>
-	
+	<string name="overlap">!! Overlaps with</string>
+		
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Loading schedule data...</string>
 	<string name="loading_error">Load error</string>

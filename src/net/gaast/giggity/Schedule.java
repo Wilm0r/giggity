@@ -1295,6 +1295,12 @@ public class Schedule {
 			else
 				return 1;
 		}
+		
+		public boolean overlaps(Item other) {
+			return ((other.getStartTime().after(getStartTime()) && other.getStartTime().before(getEndTime())) ||
+			        (other.getEndTime().after(getStartTime()) && other.getEndTime().before(getEndTime())) ||
+			        (!other.getStartTime().after(getStartTime()) && !other.getEndTime().before(getEndTime())));
+		}
 	}
 
 	public class LinkType {
