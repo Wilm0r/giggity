@@ -51,6 +51,7 @@ public class Db {
 	private static final int dbVersion = 11;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
+	private int refCount = 0;
 
 	public Db(Application app_) {
 		app = (Giggity) app_;
@@ -299,22 +300,31 @@ public class Db {
 		}
 		
 		public void sleep() {
-			Log.d("DeoxideDb", "sleep()" + db);
-			new Exception().printStackTrace();
 			if (db != null) {
-				db.close();
+				refCount--;
+				
+				if (refCount == 0)
+					db.close();
+				
 				db = null;
 			} else {
 				Log.d("DeoxideDb", "db was already null?");
 			}
+			
+			Log.d("DeoxideDb", "sleep()" + refCount + " " + db);
+			new Exception().printStackTrace();
 		}
 		
 		public void resume() {
 			if (db == null) {
+				refCount++;
+				
 				db = dbh.getWritableDatabase();
 				Log.d("DeoxideDb", "open: " + db.isOpen());
 			}
-			Log.d("DeoxideDb", "resume()" + db);
+			
+			Log.d("DeoxideDb", "resume()" + refCount + " " + db);
+			new Exception().printStackTrace();
 		}
 		
 		public void setSchedule(Schedule sched_, String url, boolean fresh) {

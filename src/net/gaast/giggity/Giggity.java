@@ -38,8 +38,7 @@ import android.preference.PreferenceManager;
 import android.view.View;
 
 public class Giggity extends Application {
-	Db db;
-	Db.Connection dbc;
+	private Db db;
 	
 	HashMap<String,Schedule> scheduleCache;
 	Schedule lastSchedule;
