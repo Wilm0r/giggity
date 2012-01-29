@@ -63,6 +63,7 @@ public class SearchActivity extends ScheduleViewActivity {
 			lv.setList((AbstractList<Schedule.Item>) new LinkedList<Schedule.Item>(sched.getTracks().get(query)));
 			setTitle(sched.getTitle() + ": " + query);
 		}
+		lv.setMultiDay(true);
 		setScheduleView(lv);
 	}
 

@@ -140,8 +140,15 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		}
 	}
 	
+	/* Need to change this to true in SearchActivity. */
+	private boolean multiDay = false;
+	
 	@Override
 	public boolean multiDay() {
-		return false;
+		return multiDay;
+	}
+	
+	public void setMultiDay(boolean md) {
+		multiDay = md;
 	}
 }
