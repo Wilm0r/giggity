@@ -26,7 +26,7 @@
       </intent-filter>
     </activity>
     <service android:name="Reminder" android:enabled="true"></service>
-    <receiver android:icon="@drawable/deoxide_icon" android:name="Widget" android:label="Giggity Widget">
+    <receiver android:icon="@drawable/deoxide_icon" android:name="Widget" android:label="Giggity">
         <intent-filter>
             <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
         </intent-filter>
