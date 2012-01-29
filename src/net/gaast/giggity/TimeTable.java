@@ -59,7 +59,18 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 		ArrayList fullList = new ArrayList();
 		
 		for (Schedule.Line tent : tents) {
-			fullList.add("\n\n" + tent.getTitle());
+			String track = null;
+			for (Schedule.Item item : tent.getItems()) {
+				if (item.getTrack() == null)
+					break;
+				else if (track == null)
+					track = item.getTrack();
+				else if (!track.equals(item.getTrack())) {
+					track = null;
+					break;
+				}
+			}
+			fullList.add("\n\n" + tent.getTitle() + (track == null ? "" : " (" + track + ")"));
 			for (Schedule.Item item : tent.getItems()) {
 				fullList.add(item);
 			}
