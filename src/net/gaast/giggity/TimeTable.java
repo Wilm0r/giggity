@@ -75,15 +75,23 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 				fullList.add(item);
 			}
 		}
-		
+
+		RelativeLayout.LayoutParams lp;
+
 		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
 		scroller.setList(fullList);
-		addView(scroller, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+		scroller.setId(1);
+		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		//lp.addRule(RelativeLayout.BELOW, 2);
+		addView(scroller, lp);
 
 		tentSel = new Gallery(ctx);
 		tentSel.setAdapter(new TentListAdapter(ctx, tents));
-		addView(tentSel, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+		tentSel.setId(2);
+		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		//lp.addRule(RelativeLayout.ABOVE, 1);
+		addView(tentSel, lp);
 
 		/* Set up some navigation listeners. */
 		tentSelL = new OnItemSelectedListener() {
