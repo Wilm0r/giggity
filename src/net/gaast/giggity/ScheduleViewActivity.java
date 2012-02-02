@@ -310,6 +310,12 @@ public class ScheduleViewActivity extends Activity {
 		}
 	}
 	
+	/** Called by EventDialog when an item is deleted. Not passing an argument 
+	 * since more than one item can be deleted at once. */
+	protected void onItemHidden() {
+		onScheduleLoaded();
+	}
+	
 	private void updateOrientation(int orientation) {
 		if (orientation == Configuration.ORIENTATION_PORTRAIT)
 			bigScreen.setOrientation(LinearLayout.VERTICAL);

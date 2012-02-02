@@ -60,7 +60,7 @@ public class SearchActivity extends ScheduleViewActivity {
 			lv.setList(sched.searchItems(query));
 			setTitle("Results for \"" + query + "\" in " + sched.getTitle());
 		} else if ((query = getIntent().getStringExtra("track")) != null) {
-			lv.setList((AbstractList<Schedule.Item>) new LinkedList<Schedule.Item>(sched.getTracks().get(query)));
+			lv.setList((AbstractList<Schedule.Item>) new LinkedList<Schedule.Item>(sched.getTrackItems(query)));
 			setTitle(sched.getTitle() + ": " + query);
 		}
 		lv.setMultiDay(true);

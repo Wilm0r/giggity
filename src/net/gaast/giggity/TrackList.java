@@ -1,9 +1,8 @@
 package net.gaast.giggity;
 
-import java.util.AbstractMap;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.TreeSet;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +28,7 @@ public class TrackList extends ListView implements ScheduleViewer {
 		if (sched.getTracks() == null)
 			return;
 		
-		tracks = new TrackAdapter(sched.getTracks());
+		tracks = new TrackAdapter(sched);
 		setAdapter(tracks);
 		
 		setOnItemClickListener(new OnItemClickListener() {
@@ -51,12 +50,12 @@ public class TrackList extends ListView implements ScheduleViewer {
 	}
 	
 	private class TrackAdapter extends BaseAdapter {
-		private final AbstractMap<String,TreeSet<Schedule.Item>> tracks;
+		private final Schedule sched;
 		private final ArrayList<String> keys;
 		
-		public TrackAdapter(AbstractMap<String,TreeSet<Schedule.Item>> tracks_) {
-			tracks = tracks_;
-			keys = new ArrayList<String>(tracks.keySet());
+		public TrackAdapter(Schedule sched) {
+			this.sched = sched;
+			keys = sched.getTracks();
 			Collections.sort(keys);
 		}
 		
@@ -94,9 +93,9 @@ public class TrackList extends ListView implements ScheduleViewer {
 
 			/* If all talks are in the same room, include it in the subtitle. */
 			String subtitle_txt = "";
-			TreeSet<Schedule.Item> items = tracks.get(keys.get(position));
+			AbstractList<Schedule.Item> items = (AbstractList<Schedule.Item>) sched.getTrackItems(keys.get(position));
 			if (items.size() > 0) {
-				subtitle_txt = items.first().getLine().getTitle();
+				subtitle_txt = items.get(0).getLine().getTitle();
 				for (Schedule.Item item : items) {
 					if (!item.getLine().getTitle().equals(subtitle_txt)) {
 						subtitle_txt = "";
@@ -107,7 +106,7 @@ public class TrackList extends ListView implements ScheduleViewer {
 					subtitle_txt += ", ";
 				}
 			}
-			subtitle_txt += tracks.get(keys.get(position)).size() + " items";
+			subtitle_txt += items.size() + " items";
 			
 			subtitle = new TextView(ctx);
 			subtitle.setText(subtitle_txt);

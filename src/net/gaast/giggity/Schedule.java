@@ -30,8 +30,8 @@ import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
-import java.util.AbstractMap;
 import java.util.AbstractSet;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -398,9 +398,6 @@ public class Schedule {
 	}
 	
 	public LinkedList<Schedule.Line> getTents() {
-		if (curDay == null)
-			return tents;
-
 		LinkedList<Line> ret = new LinkedList<Line>();
 		for (Line line : tents) {
 			if (line.getItems().size() > 0)
@@ -418,8 +415,30 @@ public class Schedule {
 		return allItems.get(id);
 	}
 	
-	public AbstractMap<String,TreeSet<Schedule.Item>> getTracks() {
-		return (AbstractMap<String,TreeSet<Schedule.Item>>) trackMap;
+	public ArrayList<String> getTracks() {
+		ArrayList<String> ret = new ArrayList<String>();
+		
+		for (String name : trackMap.keySet()) {
+			for (Item item : trackMap.get(name)) {
+				if (!item.getHidden()) {
+					ret.add(name);
+					break;
+				}
+			}
+		}
+		
+		return ret;
+	}
+	
+	public ArrayList<Item> getTrackItems(String track) {
+		ArrayList<Item> ret = new ArrayList<Item>();
+		
+		for (Item item : trackMap.get(track)) {
+			if (!item.getHidden())
+				ret.add(item);
+		}
+		
+		return ret;
 	}
 	
 	public AbstractList<Item> searchItems(String q_) {
@@ -1099,18 +1118,16 @@ public class Schedule {
 		}
 		
 		public AbstractSet<Schedule.Item> getItems() {
-			if (curDay == null)
-				return items;
-			
-			Calendar dayStart = new GregorianCalendar();
-			dayStart.setTime(curDay);
-			
 			TreeSet<Schedule.Item> ret = new TreeSet<Schedule.Item>();
-			Iterator<Schedule.Item> itemi = items.iterator();
-			while (itemi.hasNext()) {
-				Schedule.Item item = itemi.next();
-				if (item.getStartTime().after(dayStart.getTime()) &&
-					item.getEndTime().before(curDayEnd))
+			Calendar dayStart = new GregorianCalendar();
+			
+			if (curDay != null)
+				dayStart.setTime(curDay);
+			
+			for (Item item : items) {
+				if (!item.getHidden() &&
+				    (curDay == null || (item.getStartTime().after(dayStart.getTime()) &&
+				                        item.getEndTime().before(curDayEnd))))
 					ret.add(item);
 			}
 			return ret;
@@ -1128,6 +1145,7 @@ public class Schedule {
 		private LinkedList<String> speakers;
 		
 		private boolean remind;
+		private boolean hidden;
 		private int stars;
 		private boolean newData;
 		
@@ -1138,6 +1156,7 @@ public class Schedule {
 			endTime = endTime_;
 			
 			remind = false;
+			setHidden(false);
 			stars = -1;
 			newData = false;
 		}
@@ -1236,7 +1255,18 @@ public class Schedule {
 		public boolean getRemind() {
 			return remind;
 		}
+
+		public void setHidden(boolean hidden) {
+			if (hidden != this.hidden) {
+				this.hidden = hidden;
+				newData |= fullyLoaded;
+			}
+		}
 		
+		public boolean getHidden() {
+			return hidden;
+		}
+
 		public void setStars(int stars_) {
 			if (stars != stars_) {
 				stars = stars_;

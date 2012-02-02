@@ -21,9 +21,11 @@ package net.gaast.giggity;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -43,6 +45,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EventDialog extends Dialog implements OnDismissListener {
 	private Context ctx;
@@ -168,11 +171,14 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				bottomBox.addView(webButtons, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 			}
 		}
+		
+		ImageButton delButton = new DeleteButton(ctx);
+		bottomBox.addView(delButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 
 		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
 		
 		if (big) {
-			app.setPadding(title, 8 , 8, 8, 6);
+			app.setPadding(title,   8, 8, 8, 6);
 			app.setPadding(descscr, 8, 6, 8, 8);
 		}
 		
@@ -212,6 +218,60 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			intent.addCategory(Intent.CATEGORY_BROWSABLE);
 			ctx.startActivity(intent);
+		}
+	}
+	
+	private class DeleteButton extends ImageButton implements ImageButton.OnClickListener {
+		public DeleteButton(Context context) {
+			super(context);
+			setImageResource(android.R.drawable.ic_delete);
+			setPadding(0, 0, 0, 0);
+			setOnClickListener(this);
+		}
+
+		@Override
+		public void onClick(View moi) {
+			CharSequence[] delWhat;
+			
+			/* BOO to setItems() for not supporting something more flexible than a static array. */
+			if (item.getTrack() != null) {
+				delWhat = new CharSequence[3];
+				delWhat[2] = "...whole track";
+			} else {
+				delWhat = new CharSequence[2];
+			}
+			delWhat[0] = "...this item";
+			delWhat[1] = "...whole room";
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+			builder.setTitle("Hide...");
+			builder.setItems(delWhat, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int what) {
+					switch (what) {
+					case 0:
+						item.setHidden(true);
+						break;
+					case 1:
+						for (Schedule.Item other : item.getLine().getItems())
+							other.setHidden(true);
+						break;
+					case 2:
+						for (Schedule.Line line : item.getSchedule().getTents())
+							for (Schedule.Item other : line.getItems())
+								if (other.getTrack() != null && other.getTrack().equals(item.getTrack()))
+									other.setHidden(true);
+						break;
+					}
+					try {
+						ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
+						sva.onItemHidden();
+					} catch (ClassCastException e) {
+					}
+					EventDialog.this.dismiss();
+				}
+			});
+			AlertDialog alert = builder.create();
+			alert.show();
 		}
 	}
 	

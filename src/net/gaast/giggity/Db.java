@@ -48,7 +48,7 @@ import android.util.Log;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 11;
+	private static final int dbVersion = 12;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 	private int refCount = 0;
@@ -89,6 +89,7 @@ public class Db {
 			                                       "sci_sch_id Integer Not Null, " +
 			                                       "sci_id_s VarChar(128), " +
 			                                       "sci_remind Boolean, " +
+			                                       "sci_hidden Boolean, " +
 			                                       "sci_stars Integer(2) Null)");
 			
 			oldDbVer = 0;
@@ -113,6 +114,14 @@ public class Db {
 					/* Version 10 adds rtime column. */
 					try {
 						db.execSQL("Alter Table schedule Add Column sch_rtime Integer");
+					} catch (SQLiteException e) {
+						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+						e.printStackTrace();
+					}
+				} else if (v == 12) {
+					/* Version 12 adds hidden column. */
+					try {
+						db.execSQL("Alter Table schedule_item Add Column sci_hidden Boolean");
 					} catch (SQLiteException e) {
 						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
 						e.printStackTrace();
@@ -363,7 +372,7 @@ public class Db {
 			Log.i("DeoxideDb", "schedId: " + schId);
 			q.close();
 			
-			q = db.rawQuery("Select sci_id, sci_id_s, sci_remind, sci_stars " +
+			q = db.rawQuery("Select sci_id, sci_id_s, sci_remind, sci_hidden, sci_stars " +
 			                "From schedule_item Where sci_sch_id = ?",
 			                new String[]{"" + schId});
 			while (q.moveToNext()) {
@@ -376,7 +385,8 @@ public class Db {
 				}
 
 				item.setRemind(q.getInt(2) != 0);
-				item.setStars(q.getInt(3));
+				item.setHidden(q.getInt(3) != 0);
+				item.setStars(q.getInt(4));
 				sciIdMap.put(q.getString(1), new Long(q.getInt(0)));
 				
 				Log.d("DeoxideDb", "Item from db " + item.getTitle() + " remind " + q.getInt(2) + " stars " + q.getInt(3));
@@ -391,6 +401,7 @@ public class Db {
 			row.put("sci_sch_id", schId);
 			row.put("sci_id_s", item.getId());
 			row.put("sci_remind", item.getRemind());
+			row.put("sci_hidden", item.getHidden());
 			row.put("sci_stars", item.getStars());
 			
 			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") + " stars " + row.getAsString("sci_stars"));
