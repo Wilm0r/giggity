@@ -20,15 +20,17 @@
 package net.gaast.giggity;
 
 import java.util.AbstractList;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
-import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
 public class SearchActivity extends ScheduleViewActivity {
+	private ScheduleListView lv;
+	private AbstractList<Schedule.Item> items;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -54,15 +56,16 @@ public class SearchActivity extends ScheduleViewActivity {
 		sched.setDay(-1);
 		String query;
 		
-		ScheduleListView lv = new ScheduleListView(this);
+		lv = new ScheduleListView(this);
 
 		if ((query = getIntent().getStringExtra(SearchManager.QUERY)) != null) {
-			lv.setList(sched.searchItems(query));
+			items = sched.searchItems(query);
 			setTitle("Results for \"" + query + "\" in " + sched.getTitle());
 		} else if ((query = getIntent().getStringExtra("track")) != null) {
-			lv.setList((AbstractList<Schedule.Item>) new LinkedList<Schedule.Item>(sched.getTrackItems(query)));
+			items = sched.getTrackItems(query);
 			setTitle(sched.getTitle() + ": " + query);
 		}
+		lv.setList(items);
 		lv.setMultiDay(true);
 		setScheduleView(lv);
 	}
@@ -70,5 +73,21 @@ public class SearchActivity extends ScheduleViewActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		return false;
+	}
+	
+	@Override
+	protected void onItemHidden() {
+		ArrayList<Schedule.Item> newlist = new ArrayList<Schedule.Item>();
+		
+		for (Schedule.Item item : items) {
+			if (!item.getHidden())
+				newlist.add(item);
+		}
+		
+		if (newlist.isEmpty())
+			finish();
+		
+		lv.setList(newlist);
+		lv.refreshContents();
 	}
 }

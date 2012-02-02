@@ -264,6 +264,7 @@ public class ScheduleViewActivity extends Activity {
 	}
 	
 	private void onScheduleLoaded() {
+		/* TODO: User viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
 		if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
 			setTitle(df.format(sched.getDay()) + ", " + sched.getTitle());
