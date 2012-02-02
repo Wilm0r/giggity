@@ -416,8 +416,10 @@ public class Schedule {
 	}
 	
 	public ArrayList<String> getTracks() {
-		ArrayList<String> ret = new ArrayList<String>();
+		if (trackMap == null)
+			return null;
 		
+		ArrayList<String> ret = new ArrayList<String>();
 		for (String name : trackMap.keySet()) {
 			for (Item item : trackMap.get(name)) {
 				if (!item.getHidden()) {
@@ -431,8 +433,10 @@ public class Schedule {
 	}
 	
 	public ArrayList<Item> getTrackItems(String track) {
-		ArrayList<Item> ret = new ArrayList<Item>();
+		if (trackMap == null)
+			return null;
 		
+		ArrayList<Item> ret = new ArrayList<Item>();
 		for (Item item : trackMap.get(track)) {
 			if (!item.getHidden())
 				ret.add(item);
