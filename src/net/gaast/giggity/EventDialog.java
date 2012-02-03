@@ -236,15 +236,15 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			/* BOO to setItems() for not supporting something more flexible than a static array. */
 			if (item.getTrack() != null) {
 				delWhat = new CharSequence[3];
-				delWhat[2] = "...whole track";
+				delWhat[2] = ctx.getResources().getString(R.string.hide_track);
 			} else {
 				delWhat = new CharSequence[2];
 			}
-			delWhat[0] = "...this item";
-			delWhat[1] = "...whole room";
+			delWhat[0] = ctx.getResources().getString(R.string.hide_item);
+			delWhat[1] = ctx.getResources().getString(R.string.hide_room);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-			builder.setTitle("Hide...");
+			builder.setTitle(R.string.hide_what);
 			builder.setItems(delWhat, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int what) {
 					switch (what) {

@@ -29,7 +29,11 @@
 	<string name="speakers">Speakers:</string>
 	<string name="remind_me">Remind me</string>
 	<string name="overlap">!! Overlaps with</string>
-		
+	<string name="hide_what">Hide...</string>
+	<string name="hide_item">...this item</string>
+	<string name="hide_room">...entire room</string>
+	<string name="hide_track">...entire track</string>
+				
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Loading schedule data...</string>
 	<string name="loading_error">Load error</string>
@@ -54,6 +58,7 @@
 	
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>
+	<string name="unhide">Recover hidden items</string>
 	<string name="remove">Remove</string>
 	<string name="show_url">Show URL...</string>
 	<string name="chooser_now">Current events:</string>

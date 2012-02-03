@@ -453,13 +453,19 @@ public class Db {
 			}
 			q.close();
 		}
+		
+		private void flushHidden(int id) {
+			db.execSQL("Update schedule_item Set sci_hidden = 0 Where sci_sch_id = ?", new String[] {"" + id});
+		}
 	}
 	
 	public class DbSchedule {
+		private int id_n;
 		private String url, id, title;
 		private Date start, end, atime, rtime;
 		
 		public DbSchedule(Cursor q) {
+			id_n = q.getInt(q.getColumnIndexOrThrow("sch_id")); 
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
 			id = q.getString(q.getColumnIndexOrThrow("sch_id_s"));
 			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
@@ -498,6 +504,12 @@ public class Db {
 		
 		public Date getRtime() {
 			return rtime;
+		}
+		
+		public void flushHidden() {
+			Connection db = getConnection();
+			db.flushHidden(id_n);
+			db.sleep();
 		}
 	}
 }

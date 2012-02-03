@@ -29,7 +29,11 @@
 	<string name="speakers">Sprekers:</string>
 	<string name="remind_me">Onthouden</string>
 	<string name="overlap">!! Overlapt met</string>
-		
+	<string name="hide_what">Verberg...</string>
+	<string name="hide_item">...dit item</string>
+	<string name="hide_room">...gehele zaal</string>
+	<string name="hide_track">...gehele track</string>
+			
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Laden...</string>
 	<string name="loading_error">Laadfout</string>
@@ -54,6 +58,7 @@
 	
 	<!-- ChooserActivity -->
 	<string name="refresh">Verversen</string>
+	<string name="unhide">Verborgen items herstellen</string>
 	<string name="remove">Verwijderen</string>
 	<string name="show_url">URL weergeven...</string>
 	<string name="chooser_now">Huidige evenementen:</string>
