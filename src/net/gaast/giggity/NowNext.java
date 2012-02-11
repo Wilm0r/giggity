@@ -21,7 +21,6 @@ package net.gaast.giggity;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 import android.content.Context;
@@ -41,20 +40,14 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void refreshContents() {
-		Iterator<Schedule.Line> tenti;
 		Date now = new Date();
 		LinkedList<Schedule.Item> nextList = new LinkedList<Schedule.Item>();
 		ArrayList fullList = new ArrayList();
-		Iterator<Schedule.Item> itemi;
-		Schedule.Item item = null;
 
 		/* Set the schedule's day to today so we don't show tomorrow's 
 		 * stuff as "next". */
-		Iterator<Date> days;
 		int i = 0;
-		days = sched.getDays().iterator();
-		while (days.hasNext()) {
-			Date day = days.next();
+		for (Date day : sched.getDays()) {
 			long d = now.getTime() - day.getTime();
 			if (d > 0 && d < 86400000) {
 				sched.setDay(i);
@@ -68,13 +61,8 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 		} else {
 			fullList.add(this.getResources().getString(R.string.now));
 			
-			tenti = sched.getTents().iterator();
-			while (tenti.hasNext()) {
-				Schedule.Line tent = tenti.next();
-				itemi = tent.getItems().iterator();
-				
-				while (itemi.hasNext()) {
-					item = itemi.next();
+			for (Schedule.Line tent : sched.getTents()) {
+				for (Schedule.Item item : tent.getItems()) {
 					if (item.getStartTime().before(now) && item.getEndTime().after(now)) {
 						fullList.add(item);
 					} else if (item.getStartTime().after(now)) {

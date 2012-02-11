@@ -22,9 +22,7 @@ package net.gaast.giggity;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.ListIterator;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -101,7 +99,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		int x, y;
 		Calendar base, cal, end;
 		LinkedList<Schedule.Line> tents;
-		ListIterator<Schedule.Line> tenti;
 		Element cell;
 		
 		setOrientation(LinearLayout.VERTICAL);
@@ -137,10 +134,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		
 		y = 0;
 		tents = sched.getTents();
-		tenti = tents.listIterator();
-		while (tenti.hasNext()) {
-			Iterator<Schedule.Item> gigi;
-			Schedule.Line tent = tenti.next();
+		for (Schedule.Line tent : tents) {
 			AbsoluteLayout line;
 			int posx, h, w;
 			
@@ -161,10 +155,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			h = TentHeight;
 			line = new AbsoluteLayout(ctx);
 			
-			gigi = tent.getItems().iterator();
-			while (gigi.hasNext()) {
-				Schedule.Item gig = gigi.next();
-				
+			for ( Schedule.Item gig : tent.getItems()) {
 				posx = (int) ((gig.getStartTime().getTime() -
 				               cal.getTime().getTime()) *
 				              HourWidth / 3600000);

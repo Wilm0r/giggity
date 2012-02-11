@@ -37,7 +37,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -110,9 +109,7 @@ public class Schedule {
 			dayList = new LinkedList<Date>();
 			while (day.getTime().before(lastTime)) {
 				/* Some schedules have empty days in between. :-/ Skip those. */
-				Iterator<Item> itemi = allItems.values().iterator();
-				while (itemi.hasNext()) {
-					Schedule.Item item = itemi.next();
+				for (Schedule.Item item : allItems.values()) {
 					if (item.getStartTime().compareTo(day.getTime()) >= 0 &&
 						item.getEndTime().compareTo(dayEnd.getTime()) <= 0) {
 						dayList.add(day.getTime());
@@ -152,9 +149,7 @@ public class Schedule {
 			return firstTime;
 		
 		Date ret = null;
-		Iterator<Item> itemi = allItems.values().iterator();
-		while (itemi.hasNext()) {
-			Schedule.Item item = itemi.next();
+		for (Schedule.Item item : allItems.values()) {
 			if (item.getStartTime().compareTo(curDay) >= 0 &&
 				item.getEndTime().compareTo(curDayEnd) <= 0) {
 				if (ret == null || item.getStartTime().before(ret))
@@ -171,9 +166,7 @@ public class Schedule {
 			return lastTime;
 		
 		Date ret = null;
-		Iterator<Item> itemi = allItems.values().iterator();
-		while (itemi.hasNext()) {
-			Schedule.Item item = itemi.next();
+		for (Schedule.Item item : allItems.values()) {
 			if (item.getStartTime().compareTo(curDay) >= 0 &&
 				item.getEndTime().compareTo(curDayEnd) <= 0) {
 				if (ret == null || item.getEndTime().after(ret))
@@ -364,11 +357,8 @@ public class Schedule {
 	}
 
 	public void commit() {
-		Iterator<Item> it = allItems.values().iterator();
-		
 		Log.d("Schedule", "Saving all changes to the database");
-		while (it.hasNext()) {
-			Item item = it.next();
+		for (Schedule.Item item : allItems.values()) {
 			item.commit();
 		}
 	}
@@ -454,12 +444,8 @@ public class Schedule {
 		 */
 		LinkedList<Item> ret = new LinkedList<Item>();
 		String[] q = q_.toLowerCase().split("\\s+");
-		Iterator<Line> tenti = getTents().iterator();
-		while (tenti.hasNext()) {
-			Line line = tenti.next();
-			Iterator<Item> itemi = line.getItems().iterator();
-			while (itemi.hasNext()) {
-				Item item = itemi.next();
+		for (Line line : getTents()) {
+			for (Item item : line.getItems()) {
 				String d = item.getTitle() + " ";
 				if (item.getDescription() != null)
 					d += item.getDescription() + " ";
