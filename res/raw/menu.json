@@ -1,5 +1,5 @@
 {
-	"version": 2012011100,
+	"version": 2012021300,
 	"schedules": [
 		{
 			"version": 1,
@@ -79,6 +79,13 @@
 			"title": "FOSDEM 2012",
 			"start": "2012-02-04",
 			"end": "2012-02-05"
+		},
+		{
+			"version": 2012021300,
+			"url": "http://m.devconf.cz/schedule.xml",
+			"title": "Developer conference, Brno",
+			"start": "2012-02-17",
+			"end": "2012-02-18"
 		}
 	]
 }
