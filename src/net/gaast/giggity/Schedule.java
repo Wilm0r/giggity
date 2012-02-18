@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -40,6 +41,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.zip.Deflater;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -1376,5 +1378,74 @@ public class Schedule {
 			return desc.replace("\r", "").replaceAll("([^\n]) *\n *([a-zA-Z0-9])", "$1 $2");
 		else
 			return null;
+	}
+	
+	/* Export all selections/deletions/etc in a byte array. Should export this to other devices
+	 * using QR codes. The format is pretty simple, see the comments. It's zlib-compressed to
+	 * hopefully keep it small enough for a QR rendered on a phone. */
+	public byte[] getSelections() {
+		LinkedList<Item> sels[] = (LinkedList<Item>[]) new LinkedList[4];
+		int i;
+		
+		for (i = 0; i < 4; i ++)
+			sels[i] = new LinkedList<Item>();
+		
+		for (Item item : allItems.values()) {
+			int t = 0;
+			if (item.getRemind())
+				t += 1;
+			if (item.getHidden())
+				t += 2;
+			sels[t].add(item);
+		}
+		
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		try {
+			/* Length of URL, 16 bits network order */
+			byte[] urlb = url.getBytes("utf-8");
+			out.write(urlb.length >> 8);
+			out.write(urlb.length & 0xff);
+			out.write(urlb);
+			for (i = 1; i < 4; i ++) {
+				if (sels[i].size() == 0)
+					continue;
+				
+				/* Type. Bitfield. 1 == remember, 2 == hide */
+				out.write(i);
+				/* Number of items, 16 bits network order */
+				out.write(sels[i].size() >> 8);
+				out.write(sels[i].size() & 0xff);
+				for (Item item : sels[i]) {
+					byte[] id = item.getId().getBytes("utf-8");
+					if (id.length > 255) {
+						/* Way too long. Forget it. :-/ */
+						out.write(0);
+						Log.e("Schedule.getSelections", "Ridiculously long item id: " + item.getId());
+					} else {
+						out.write(id.length);
+						out.write(id);
+					}
+				}
+			}
+			out.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+		
+		/* UGH. Raw arrays in Java. :-( "I just want to compress 200 bytes of data..." */
+		Deflater z = new Deflater(Deflater.BEST_COMPRESSION);
+		z.setInput(out.toByteArray());
+		z.finish();
+		byte[] ret1 = new byte[out.size() * 2 + 100];
+		byte[] ret2 = new byte[z.deflate(ret1) + 1];
+		/* "Version" number. Keep it outside the compressed bit because zlib doesn't have magic numbers.
+		 * I'll use this instead. I mostly need it to separate scanned URL QR codes from this binary data
+		 * so one byte like this is enough. */
+		ret2[0] = 0x01;
+		for (i = 0; i < ret2.length - 1; i ++)
+			ret2[i+1] = ret1[i];
+		
+		return ret2;
 	}
 }
