@@ -19,10 +19,10 @@
 
 package net.gaast.giggity;
 
-import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.zip.DataFormatException;
 
 import net.gaast.giggity.Db.DbSchedule;
 import android.app.Activity;
@@ -331,7 +331,15 @@ public class ChooserActivity extends Activity {
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
-				openSchedule(intent.getStringExtra("SCAN_RESULT"), false);
+				String url = intent.getStringExtra("SCAN_RESULT");
+				byte[] bin = intent.getByteArrayExtra("SCAN_RESULT_BYTE_SEGMENTS_0");
+				try {
+					Schedule.Selections sel = new Schedule.Selections(bin);
+					url = sel.url;
+				} catch (DataFormatException e) {
+					bin = null;
+				}
+				openSchedule(url, false);
 			}
 		}
 	}

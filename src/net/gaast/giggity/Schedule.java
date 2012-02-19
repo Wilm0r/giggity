@@ -20,11 +20,13 @@
 package net.gaast.giggity;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -41,7 +43,9 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -1447,5 +1451,55 @@ public class Schedule {
 			ret2[i+1] = ret1[i];
 		
 		return ret2;
+	}
+	
+	static public class Selections {
+		public String url;
+		public HashMap<String,Integer> selections;
+		
+		public Selections(byte[] in) throws DataFormatException {
+			if (in == null || in[0] != 0x01)
+				throw new DataFormatException("Magic number missing");
+			
+			Inflater unc = new Inflater(); 
+			unc.setInput(in, 1, in.length - 1);
+			byte[] orig = new byte[in.length * 10];
+			int len = unc.inflate(orig);
+			
+			ByteArrayInputStream rd = new ByteArrayInputStream(orig, 0, len);
+			
+			len = rd.read() * 0x100 + rd.read();
+			byte[] urlb = new byte[len];
+			if (rd.read(urlb, 0, len) != len)
+				throw new DataFormatException("Ran out of data while reading URL");
+			try {
+				url = new String(urlb, "utf-8");
+			} catch (UnsupportedEncodingException e) {}
+			
+			selections = new HashMap<String,Integer>();
+			while (rd.available() > 4) {
+				int type = rd.read();
+				
+				if (type > 0x03) {
+					Log.w("Schedule.Selections", "Discarding unknown bits in type: " + type);
+					type &= 0x03;
+				}
+				
+				int i, n = rd.read() * 0x100 + rd.read();
+				for (i = 0; i < n; i ++) {
+					len = rd.read();
+					if (len == -1 || rd.available() < len)
+						throw new DataFormatException("Ran out of data while reading ID");
+					
+					byte[] idb = new byte[len];
+					rd.read(idb, 0, len);
+					String id;
+					try {
+						id = new String(idb, "utf-8");
+					} catch (UnsupportedEncodingException e) {continue;}
+					selections.put(id, type);
+				}
+			}
+		}
 	}
 }
