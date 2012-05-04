@@ -1,5 +1,5 @@
 {
-	"version": 2012021300,
+	"version": 2012042900,
 	"schedules": [
 		{
 			"version": 1,
@@ -86,6 +86,13 @@
 			"title": "Developer conference, Brno",
 			"start": "2012-02-17",
 			"end": "2012-02-18"
+		},
+		{
+			"version": 2012042900,
+			"url": "http://summit.ubuntu.com/uds-q.ical",
+			"title": "uds-q",
+			"start": "2012-05-07",
+			"end": "2012-05-11"
 		}
 	]
 }
