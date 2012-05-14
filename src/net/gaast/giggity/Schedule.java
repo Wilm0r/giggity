@@ -1413,6 +1413,7 @@ public class Schedule {
 		
 		public Selections(Schedule sched) {
 			url = sched.getUrl();
+			selections = new HashMap<String,Integer>();
 		}
 		
 		public Selections(byte[] in) throws DataFormatException {
@@ -1432,6 +1433,7 @@ public class Schedule {
 				throw new DataFormatException("Ran out of data while reading URL");
 			try {
 				url = new String(urlb, "utf-8");
+				Log.d("Selections.url", url);
 			} catch (UnsupportedEncodingException e) {}
 			
 			selections = new HashMap<String,Integer>();
@@ -1442,6 +1444,7 @@ public class Schedule {
 					Log.w("Schedule.Selections", "Discarding unknown bits in type: " + type);
 					type &= 0x03;
 				}
+				Log.d("Selections.type", "" + type);
 				
 				int i, n = rd.read() * 0x100 + rd.read();
 				for (i = 0; i < n; i ++) {
@@ -1456,6 +1459,7 @@ public class Schedule {
 						id = new String(idb, "utf-8");
 					} catch (UnsupportedEncodingException e) {continue;}
 					selections.put(id, type);
+					Log.d("Selections.id", id);
 				}
 			}
 		}

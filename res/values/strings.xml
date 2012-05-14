@@ -45,7 +45,10 @@
 	<string name="now_next">Now and next</string>
 	<string name="my_events">My events</string>
 	<string name="search">Search</string>
-	
+	<string name="export_selections">Export selections</string>
+	<string name="no_selections">No selections to be exported</string>
+		
+		
 	<!-- NowNext -->
 	<string name="no_events_today">No events today.</string>
 	<string name="now">Now:</string>
