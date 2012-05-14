@@ -28,6 +28,7 @@ import java.util.LinkedList;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -38,7 +39,6 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -235,7 +235,7 @@ public class ScheduleViewActivity extends Activity {
 			sched.setDay(sched.getDb().getDay());
 		
 		if (redraw) {
-			onScheduleLoaded();
+			redrawSchedule();
 			redraw = false;
 		}
 		refresher.run();
@@ -264,6 +264,15 @@ public class ScheduleViewActivity extends Activity {
 	}
 	
 	private void onScheduleLoaded() {
+		if (getIntent().hasExtra("SELECTIONS")) {
+			Schedule.Selections sel = (Schedule.Selections) getIntent().getSerializableExtra("SELECTIONS");
+			Dialog dia = new ScheduleUI.ImportSelections(this, sched, sel);
+			dia.show();
+		}
+		redrawSchedule();
+	}
+	
+	public void redrawSchedule() {
 		/* TODO: User viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
 		if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
@@ -314,7 +323,7 @@ public class ScheduleViewActivity extends Activity {
 	/** Called by EventDialog when an item is deleted. Not passing an argument 
 	 * since more than one item can be deleted at once. */
 	protected void onItemHidden() {
-		onScheduleLoaded();
+		redrawSchedule();
 	}
 	
 	private void updateOrientation(int orientation) {
@@ -411,7 +420,7 @@ public class ScheduleViewActivity extends Activity {
 			/* If there are only two days, don't bother showing the dialog, even
 			 * though we did promise to show it. :-P */
 			sched.getDb().setDay(1 - cur);
-			onScheduleLoaded();
+			redrawSchedule();
 			return;
 		}
 		
@@ -420,7 +429,7 @@ public class ScheduleViewActivity extends Activity {
 		builder.setSingleChoiceItems(dayList, cur, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				sched.getDb().setDay(item);
-				onScheduleLoaded();
+				redrawSchedule();
 				dialog.dismiss();
 			}
 		});
@@ -441,23 +450,23 @@ public class ScheduleViewActivity extends Activity {
 			return true;
 		case 3:
 			view = VIEW_TIMETABLE;
-			onScheduleLoaded();
+			redrawSchedule();
 			return true;
 		case 4:
 			view = VIEW_TRACKS;
-			onScheduleLoaded();
+			redrawSchedule();
 			return true;
 		case 5:
 			view = VIEW_BLOCKSCHEDULE;
-			onScheduleLoaded();
+			redrawSchedule();
 			return true;
 		case 6:
 			view = VIEW_NOWNEXT;
-			onScheduleLoaded();
+			redrawSchedule();
 			return true;
 		case 7:
 			view = VIEW_MINE;
-			onScheduleLoaded();
+			redrawSchedule();
 			return true;
 		case 8:
 			this.onSearchRequested();
@@ -569,7 +578,7 @@ public class ScheduleViewActivity extends Activity {
 					cur = i;
 			
 			sched.getDb().setDay((cur + d + days.size()) % days.size());
-			onScheduleLoaded();
+			redrawSchedule();
 		}
 	}
 }

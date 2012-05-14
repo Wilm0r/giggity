@@ -57,6 +57,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Xml;
+import android.widget.CheckBox;
 
 public class Schedule {
 	private final int detectHeaderSize = 1024;
@@ -1405,6 +1406,37 @@ public class Schedule {
 			return null;
 		
 		return ret;
+	}
+	
+	public void setSelections(Selections sel, CheckBox[] cbs) {
+		if (!cbs[ScheduleUI.ImportSelections.KEEP_REMIND].isChecked()) {
+			for (Item item : allItems.values()) {
+				item.setRemind(false);
+			}
+		}
+		if (!cbs[ScheduleUI.ImportSelections.KEEP_HIDDEN].isChecked()) {
+			for (Item item : allItems.values()) {
+				item.setHidden(false);
+			}
+		}
+		if (cbs[ScheduleUI.ImportSelections.IMPORT_REMIND].isChecked()) {
+			for (String id : sel.selections.keySet()) {
+				if ((sel.selections.get(id) & 1) > 0) {
+					Item item = allItems.get(id);
+					if (item != null)
+						item.setRemind(true);
+				}
+			}
+		}
+		if (cbs[ScheduleUI.ImportSelections.IMPORT_REMIND].isChecked()) {
+			for (String id : sel.selections.keySet()) {
+				if ((sel.selections.get(id) & 2) > 0) {
+					Item item = allItems.get(id);
+					if (item != null)
+						item.setHidden(true);
+				}
+			}
+		}
 	}
 	
 	static public class Selections implements Serializable {

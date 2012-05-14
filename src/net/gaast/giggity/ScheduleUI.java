@@ -4,7 +4,11 @@ import java.io.UnsupportedEncodingException;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -30,32 +34,54 @@ public class ScheduleUI {
 		ctx.startActivity(intent);
 	}
 	
-	static public class ImportSelections extends Dialog {
+	static public class ImportSelections extends Dialog implements OnClickListener {
 		Context ctx;
 		LinearLayout opts;
 		CheckBox[] cbs;
+		Schedule mine;
+		Schedule.Selections other;
 		
 		static final int KEEP_REMIND = 0;
 		static final int KEEP_HIDDEN = 1;
 		static final int IMPORT_REMIND = 2;
 		static final int IMPORT_HIDDEN = 3;
 		
-		public ImportSelections(Context ctx_, Schedule mine, Schedule.Selections other) {
+		public ImportSelections(Context ctx_, Schedule mine_, Schedule.Selections other_) {
 			super(ctx_);
 			ctx = ctx_;
+			mine = mine_;
+			other = other_;
+			
+			setTitle(R.string.import_selections);
+			setCanceledOnTouchOutside(false);
 			
 			opts = new LinearLayout(ctx);
 			opts.setOrientation(LinearLayout.VERTICAL);
 			
 			cbs = new CheckBox[4];
 			int i;
+			String[] choices = ctx.getResources().getStringArray(R.array.import_selections_options);
 			for (i = 0; i < 4; i ++) {
 				cbs[i] = new CheckBox(ctx);
-				if (i != IMPORT_HIDDEN)
-					cbs[i].setChecked(true);
+				cbs[i].setChecked(i != IMPORT_HIDDEN);
+				cbs[i].setText(choices[i]);
+				opts.addView(cbs[i]);
 			}
 			
+			Button ok = new Button(ctx);
+			ok.setText(R.string.ok);
+			ok.setOnClickListener(this);
+			opts.addView(ok);
 			
+			setContentView(opts);
+		}
+
+		@Override
+		public void onClick(View v) {
+			mine.setSelections(other, cbs);
+			ScheduleViewActivity act = (ScheduleViewActivity) ctx;
+			act.redrawSchedule();
+			dismiss();
 		}
 	}
 }

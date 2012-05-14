@@ -37,4 +37,10 @@
 		<item>10</item>
 		<item>15</item>
 	</string-array>
+	<string-array name="import_selections_options">
+	    <item>Preserve existing reminders</item>
+		<item>Preserve deletions</item>
+		<item>Import new reminders</item>
+		<item>Import deletions</item>
+	</string-array>
 </resources>

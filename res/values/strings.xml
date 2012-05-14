@@ -46,6 +46,7 @@
 	<string name="my_events">My events</string>
 	<string name="search">Search</string>
 	<string name="export_selections">Export selections</string>
+	<string name="import_selections">Import selections</string>
 	<string name="no_selections">No selections to be exported</string>
 		
 		
