@@ -139,7 +139,7 @@ public class ChooserActivity extends Activity {
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN &&
 				    keyCode == KeyEvent.KEYCODE_ENTER) {
-					openSchedule(urlBox.getText().toString(), false);
+					openSchedule(urlBox.getText().toString(), false, null);
 					return true;
 				} else {
 					return false;
@@ -168,7 +168,7 @@ public class ChooserActivity extends Activity {
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openSchedule(urlBox.getText().toString(), false);
+				openSchedule(urlBox.getText().toString(), false, null);
 			}
 		});
 		bottom.addView(addButton);
@@ -309,12 +309,14 @@ public class ChooserActivity extends Activity {
 		seedRefreshMenu = null;
 	}
 	
-	private void openSchedule(String url, boolean prefOnline) {
+	private void openSchedule(String url, boolean prefOnline, Schedule.Selections sel) {
 		if (!url.contains("://"))
 			url = "http://" + url;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
 		                           this, ScheduleViewActivity.class);
 		intent.putExtra("PREFER_CACHED", !prefOnline);
+		if (sel != null)
+			intent.putExtra("SELECTIONS", sel);
 		startActivity(intent);
 	}
 	
@@ -324,7 +326,7 @@ public class ChooserActivity extends Activity {
 			    new Date().getTime() - event.getRtime().getTime() > 86400000)
 				prefOnline = true;
 		}
-		openSchedule(event.getUrl(), prefOnline);
+		openSchedule(event.getUrl(), prefOnline, null);
 	}
 	
 	@Override
@@ -333,13 +335,15 @@ public class ChooserActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				String url = intent.getStringExtra("SCAN_RESULT");
 				byte[] bin = intent.getByteArrayExtra("SCAN_RESULT_BYTE_SEGMENTS_0");
+				Schedule.Selections sel;
 				try {
-					Schedule.Selections sel = new Schedule.Selections(bin);
+					sel = new Schedule.Selections(bin);
 					url = sel.url;
 				} catch (DataFormatException e) {
 					bin = null;
+					sel = null;
 				}
-				openSchedule(url, false);
+				openSchedule(url, false, sel);
 			}
 		}
 	}
