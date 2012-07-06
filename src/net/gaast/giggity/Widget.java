@@ -47,7 +47,7 @@ public class Widget extends AppWidgetProvider {
 				
 				top = df.format(item.getStartTime());
 				title = item.getTitle();
-				if (item.getSpeakers().size() > 0)
+				if (item.getSpeakers() != null && item.getSpeakers().size() > 0)
 					bottom = item.getSpeakers().get(0) + " " + ctx.getResources().getString(R.string.widg_in_room) + " ";
 				bottom += item.getLine().getTitle();
 				url = item.getUrl();
