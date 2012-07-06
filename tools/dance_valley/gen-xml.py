@@ -128,7 +128,7 @@ class LinkType(GiggityObject):
 def maketime(time, today=(2008, 10, 23)):
 	h, m = time.split(":")
 	ret = datetime.datetime(today[0], today[1], today[2], int(h), int(m))
-	if int(h) < 6:
+	if int(h) < 8:
 		ret += datetime.timedelta(1)
 	return ret
 
@@ -275,30 +275,33 @@ for key, desc, youtube in all:
 """
 descs = {}
 
-html = file("lumi.txt", "r").read()
+html = file("bloc2012.txt", "r").read()
 html = unicode(html, "utf-8")
 html = html.replace(u"–", u"-")
 
 #sched = Schedule("nl.dancevalley.2011", "Dance Valley 2011")
 #sched = Schedule("nl.lovelandfestival.2011", "Loveland Festival 2011")
-sched = Schedule("nl.luminosity.2012", "Luminosity Beach Festival 2012")
+#sched = Schedule("nl.luminosity.2012", "Luminosity Beach Festival 2012")
+sched = Schedule("uk.blocweekend.2012", "Bloc.2012")
 tent = None
 dates = {
-	"SATURDAY": (2012, 6, 23),
-	"SUNDAY": (2012, 6, 24),
+	"Friday": (2012, 7, 6),
+	"Saturday": (2012, 7, 7),
 }
 today = 0
 for line in html.splitlines():
 
 	line = line.strip()
-	m = re.search("^((\d+\:\d+)[- ]+(\d+\:\d+)) *(.*?)$", line)
+	#m = re.search("^((\d+\:\d+)[- ]+(\d+\:\d+)) *(.*?)$", line)
+	m = re.search("^((\d+\:\d+)) *(.*?)$", line)
 	
 	if m and tent:
-		_, start, end, name = m.groups()
+		#_, start, end, name = m.groups()
+		_, start, name = m.groups()
 		
 		item = Item(name)
 		item.start = maketime(start, today)
-		item.end = maketime(end, today)
+		item.end = maketime(start, today) + datetime.timedelta(hours=1)
 		
 		item.links += findlinks(item)
 		item.description = finddesc(item)
@@ -324,4 +327,4 @@ sched.linktypes.append(LinkType("soundcloud", "http://wilmer.gaa.st/deoxide/soun
 sched.linktypes.append(LinkType("discogs", "http://wilmer.gaa.st/deoxide/discogs.png"))
 sched.linktypes.append(LinkType("youtube", "http://wilmer.gaa.st/deoxide/youtube.png"))
 
-file("luminosity12.xml", "w").write(tostring(sched.xml()))
+file("bloc2012.xml", "w").write(tostring(sched.xml()))

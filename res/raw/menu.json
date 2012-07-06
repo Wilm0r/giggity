@@ -1,5 +1,5 @@
 {
-	"version": 2012042900,
+	"version": 2012070600,
 	"schedules": [
 		{
 			"version": 1,
@@ -93,6 +93,14 @@
 			"title": "uds-q",
 			"start": "2012-05-07",
 			"end": "2012-05-11"
+		},
+		{
+			"version": 2012070600,
+			"url": "http://wilmer.gaa.st/deoxide/bloc2012.xml",
+			"id": "uk.blocweekend.2012",
+			"title": "Bloc.2012",
+			"start": "2012-07-06",
+			"end": "2012-07-07"
 		}
 	]
 }
