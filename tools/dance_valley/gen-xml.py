@@ -145,6 +145,7 @@ def fetch(url):
 			return None
 	
 	else:
+		print "Downloading %s" % url
 		f = file(fn, "w")
 		f.write("%s\n" % (url,))
 		opener = urllib2.build_opener()
@@ -253,27 +254,37 @@ def finddesc(item):
 		key += "live"
 	if key in descs:
 		desc = descs[key]['desc']
-		item.links.append(Link(descs[key]['yt'], 'youtube'))
+		if "yt" in descs[key]:
+			item.links.append(Link(descs[key]['yt'], 'youtube'))
 	else:
 		print "No decent description for %s :-(" % item.name
 	return desc
 
 
-"""
-html = file("lov-lineup.html", "r").read()
+html = fetch("http://www.blocweekend.com/lineup/")
 html = unicode(html, "utf-8")
 
-all = re.findall(r'<h3 class="dj-name">(.*?)</h3>.*?<div class="dj-description">(.*?)(http://www\.youtube\.com/[^"]+).*?</div>', html, re.S)
+all = re.findall(r'href="(/artist/.*?)">(.*?)</a>', html, re.S)
 
 descs = {}
-for key, desc, youtube in all:
-	key = HTMLParser.unescape.__func__(HTMLParser, key)
+for url, name in all:
+	name = HTMLParser.unescape.__func__(HTMLParser, name)
+	key = name
 	key = re.sub(r" *\([a-zA-Z]+\)", "", key)
 	key = re.sub(r"[^a-z0-9]", "", key.lower())
-	d = dehtml(desc)
-	descs[key] = {'desc': d, 'yt': youtube.replace('/embed/', '/watch?v=')}
-"""
-descs = {}
+	descs[key] = {'url': "http://www.blocweekend.com" + url, 'name': name}
+
+for _, ent in descs.iteritems():
+	html = fetch(ent["url"])
+	html = unicode(html, "utf-8")
+	
+	m = re.search(r'<div id="feature-words">(.*?)id="feature"', html, re.S)
+	desc = re.sub(r'<ul id="social">.*?</ul>', '', m.group(1), flags=re.S)
+	ent["desc"] = dehtml(desc)
+	
+	m = re.search(r'href="(http://www.youtube.com/watch?.*?)"', html)
+	if m:
+		ent["yt"] = m.group(1)
 
 html = file("bloc2012.txt", "r").read()
 html = unicode(html, "utf-8")
@@ -299,8 +310,15 @@ for line in html.splitlines():
 		#_, start, end, name = m.groups()
 		_, start, name = m.groups()
 		
+		if len(tent.items) > 0:
+			tent.items[-1].end = maketime(start, today)
+		
+		if name == "Close":
+			continue
+		
 		item = Item(name)
 		item.start = maketime(start, today)
+		# Start with a guess.
 		item.end = maketime(start, today) + datetime.timedelta(hours=1)
 		
 		item.links += findlinks(item)
