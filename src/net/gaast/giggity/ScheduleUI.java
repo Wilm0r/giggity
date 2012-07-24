@@ -2,6 +2,7 @@ package net.gaast.giggity;
 
 import java.io.UnsupportedEncodingException;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,7 +32,15 @@ public class ScheduleUI {
 		} catch (UnsupportedEncodingException e) {
 			/* Fuck off, Java. */
 		}
-		ctx.startActivity(intent);
+		try {
+			ctx.startActivity(intent);
+		} catch (android.content.ActivityNotFoundException e) {
+			new AlertDialog.Builder(ctx)
+			  .setTitle("Not available")
+			  .setMessage("This functionality needs the ZXing Barcode Scanner application")
+			  .show();
+		}
+
 	}
 	
 	static public class ImportSelections extends Dialog implements OnClickListener {
