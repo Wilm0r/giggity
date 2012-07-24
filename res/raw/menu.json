@@ -1,5 +1,5 @@
 {
-	"version": 2012070600,
+	"version": 2012072500,
 	"schedules": [
 		{
 			"version": 1,
@@ -101,6 +101,13 @@
 			"title": "Bloc.2012",
 			"start": "2012-07-06",
 			"end": "2012-07-07"
+		},
+		{
+			"version": 2012072500,
+			"url": "http://fisl.org.br/13/papers_ng/public/fast_grid?event_id=3",
+			"title": "FISL 13",
+			"start": "2012-07-25",
+			"end": "2012-07-28"
 		}
 	]
 }
