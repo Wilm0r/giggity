@@ -894,6 +894,7 @@ public class Schedule {
 		private LinkedList<HashMap<String,String>> propMapStack;
 
 		SimpleDateFormat df;
+		int minimum_interval;
 
 		public VerdiParser() {
 			rawItems = new LinkedList<RawItem>();
@@ -903,6 +904,7 @@ public class Schedule {
 			tentMapSorted = new TreeMap<Integer,Schedule.Line>();
 			propMapStack = new LinkedList<HashMap<String,String>>();
 			df = new SimpleDateFormat("yyyy-MM-dd");
+			minimum_interval = 30;
 		}
 		
 		@Override
@@ -915,10 +917,15 @@ public class Schedule {
 				propMap = new HashMap<String,String>();
 				// Don't use the ID, it's far from unique.
 				//propMap.put("id", atts.getValue("id"));
-			} else	if (localName.equals("room")) {
+			} else if (localName.equals("hours")) {
+				String interval = atts.getValue("minimum_interval");
+				if (interval != null) {
+					minimum_interval = Integer.parseInt(interval);
+				}
+			} else if (localName.equals("room")) {
 				propMap = new HashMap<String,String>();
 				propMap.put("id", atts.getValue("id"));
-			} else	if (localName.equals("area")) {
+			} else if (localName.equals("area")) {
 				propMap = new HashMap<String,String>();
 				propMap.put("id", atts.getValue("id"));
 			} else if (localName.equals("slot")) {
@@ -938,7 +945,7 @@ public class Schedule {
 				Calendar endTime;
 				endTime = new GregorianCalendar();
 				endTime.setTime(startTime.getTime());
-				endTime.add(Calendar.MINUTE, 30 * Integer.parseInt(atts.getValue("colspan")));
+				endTime.add(Calendar.MINUTE, minimum_interval * Integer.parseInt(atts.getValue("colspan")));
 
 				Item item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				item.setDescription(rewrap(atts.getValue("abstract")));
