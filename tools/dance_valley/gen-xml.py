@@ -185,7 +185,8 @@ def googlelinks(item):
 
 def findlinks(item):
 	ret = []
-	name = re.sub(r" *\([a-zA-Z]+\)", "", item.name)
+	name = re.sub(r" *\([a-zA-Z]+\)$", "", item.name)
+	name = re.sub(" LIVE$", "", name)
 	
 	httpname = urllib2.quote(name.encode("utf-8")).replace("%20", "+")
 	url = "http://www.last.fm/music/" + httpname.encode("utf-8")
@@ -256,7 +257,7 @@ def finddesc(item):
 		desc = descs[key]['desc']
 		if "yt" in descs[key]:
 			item.links.append(Link(descs[key]['yt'], 'youtube'))
-	else:
+	elif not desc:
 		print "No decent description for %s :-(" % item.name
 	return desc
 
@@ -286,29 +287,29 @@ for _, ent in descs.iteritems():
 	if m:
 		ent["yt"] = m.group(1)
 
-html = file("bloc2012.txt", "r").read()
+html = file("lovl12times.txt", "r").read()
 html = unicode(html, "utf-8")
 html = html.replace(u"–", u"-")
 
 #sched = Schedule("nl.dancevalley.2011", "Dance Valley 2011")
-#sched = Schedule("nl.lovelandfestival.2011", "Loveland Festival 2011")
+sched = Schedule("nl.lovelandfestival.2012", "Loveland Festival 2012")
 #sched = Schedule("nl.luminosity.2012", "Luminosity Beach Festival 2012")
-sched = Schedule("uk.blocweekend.2012", "Bloc.2012")
+#sched = Schedule("uk.blocweekend.2012", "Bloc.2012")
 tent = None
 dates = {
 	"Friday": (2012, 7, 6),
 	"Saturday": (2012, 7, 7),
 }
-today = 0
+today = (2012, 8, 11)
 for line in html.splitlines():
 
 	line = line.strip()
-	#m = re.search("^((\d+\:\d+)[- ]+(\d+\:\d+)) *(.*?)$", line)
-	m = re.search("^((\d+\:\d+)) *(.*?)$", line)
+	m = re.search("^((\d+\:\d+)[- ]*(\d+\:\d+)?) *(.*?)$", line)
+	#m = re.search("^((\d+\:\d+)) *(.*?)$", line)
 	
 	if m and tent:
-		#_, start, end, name = m.groups()
-		_, start, name = m.groups()
+		_, start, end, name = m.groups()
+		#_, start, name = m.groups()
 		
 		if len(tent.items) > 0:
 			tent.items[-1].end = maketime(start, today)
@@ -319,7 +320,10 @@ for line in html.splitlines():
 		item = Item(name)
 		item.start = maketime(start, today)
 		# Start with a guess.
-		item.end = maketime(start, today) + datetime.timedelta(hours=1)
+		if end:
+			item.end = maketime(end, today)
+		else:
+			item.end = maketime(start, today) + datetime.timedelta(hours=1)
 		
 		item.links += findlinks(item)
 		item.description = finddesc(item)
@@ -328,7 +332,6 @@ for line in html.splitlines():
 	
 	elif line in dates:
 		today = dates[line]
-		print "new date: %r" % (today,)
 
 	elif line:
 		tent = sched.gettent(line)
@@ -345,4 +348,4 @@ sched.linktypes.append(LinkType("soundcloud", "http://wilmer.gaa.st/deoxide/soun
 sched.linktypes.append(LinkType("discogs", "http://wilmer.gaa.st/deoxide/discogs.png"))
 sched.linktypes.append(LinkType("youtube", "http://wilmer.gaa.st/deoxide/youtube.png"))
 
-file("bloc2012.xml", "w").write(tostring(sched.xml()))
+file("loveland2012.xml", "w").write(tostring(sched.xml()))

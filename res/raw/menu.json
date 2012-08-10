@@ -1,5 +1,5 @@
 {
-	"version": 2012072501,
+	"version": 2012081000,
 	"schedules": [
 		{
 			"version": 1,
@@ -115,6 +115,13 @@
 			"title": "MOCA 2012",
 			"start": "2012-08-25",
 			"end": "2012-08-28"
+		},
+		{
+			"version": 2012081000,
+			"url": "http://wilmer.gaa.st/deoxide/loveland2012.xml",
+			"title": "Loveland Festival 2012",
+			"start": "2012-08-11",
+			"end": "2012-08-11"
 		}
 	]
 }
