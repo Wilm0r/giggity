@@ -1,5 +1,5 @@
 {
-	"version": 2012081000,
+	"version": 2012100900,
 	"schedules": [
 		{
 			"version": 1,
@@ -122,6 +122,13 @@
 			"title": "Loveland Festival 2012",
 			"start": "2012-08-11",
 			"end": "2012-08-11"
+		},
+		{
+			"version": 2012100900,
+			"url": "http://people.freedesktop.org/~vmiklos/2012/libocon2012-schedule.xml",
+			"title": "LibreOffice Conference 2012",
+			"start": "2012-10-17",
+			"end": "2012-10-19"
 		}
 	]
 }
