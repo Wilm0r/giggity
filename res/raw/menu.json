@@ -1,5 +1,5 @@
 {
-	"version": 2012100900,
+	"version": 2012121500,
 	"schedules": [
 		{
 			"version": 1,
@@ -129,6 +129,13 @@
 			"title": "LibreOffice Conference 2012",
 			"start": "2012-10-17",
 			"end": "2012-10-19"
+		},
+		{
+			"version": 2012121500,
+			"url": "http://events.ccc.de/congress/2012/Fahrplan/schedule.en.xml",
+			"title": "29th Chaos Communication Congress",
+			"start": "2012-12-27",
+			"end": "2012-12-30"
 		}
 	]
 }
