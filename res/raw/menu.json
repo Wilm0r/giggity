@@ -1,5 +1,5 @@
 {
-	"version": 2012121500,
+	"version": 2012121501,
 	"schedules": [
 		{
 			"version": 1,
@@ -122,6 +122,13 @@
 			"title": "Loveland Festival 2012",
 			"start": "2012-08-11",
 			"end": "2012-08-11"
+		},
+		{
+			"version": 2012081200,
+			"url": "http://programm.froscon.de/2012/schedule.xml",
+			"title": "FrOSCon",
+			"start": "2012-08-25",
+			"end": "2012-08-26"
 		},
 		{
 			"version": 2012100900,
