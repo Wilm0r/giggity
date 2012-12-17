@@ -734,6 +734,8 @@ public class Schedule {
 			} else if (localName.equals("day")) {
 				try {
 					curDay = df.parse(atts.getValue("date"));
+					curDay.setHours(dayChange.getHours());
+					curDay.setMinutes(dayChange.getMinutes());
 				} catch (ParseException e) {
 					Log.w("Schedule.loadPentabarf", "Can't parse date: " + e);
 					return;
@@ -794,13 +796,17 @@ public class Schedule {
 					startTime = new GregorianCalendar();
 					startTime.setTime(curDay);
 					tmp = tf.parse(startTimeS);
-					startTime.add(Calendar.HOUR, tmp.getHours());
-					startTime.add(Calendar.MINUTE, tmp.getMinutes());
+					startTime.set(Calendar.HOUR_OF_DAY, tmp.getHours());
+					startTime.set(Calendar.MINUTE, tmp.getMinutes());
+					
+					if (startTime.getTime().before(curDay)) {
+						startTime.add(Calendar.DAY_OF_MONTH, 1);
+					}
 					
 					endTime = new GregorianCalendar();
 					endTime.setTime(startTime.getTime());
 					tmp = tf.parse(durationS);
-					endTime.add(Calendar.HOUR, tmp.getHours());
+					endTime.add(Calendar.HOUR_OF_DAY, tmp.getHours());
 					endTime.add(Calendar.MINUTE, tmp.getMinutes());
 				} catch (ParseException e) {
 					Log.w("Schedule.loadPentabarf", "Can't parse date: " + e);
