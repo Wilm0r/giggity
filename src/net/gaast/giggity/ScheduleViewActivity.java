@@ -64,7 +64,8 @@ public class ScheduleViewActivity extends Activity {
 	
 	private int view;
 	
-	private Format df = new SimpleDateFormat("EE d MMMM");
+	private Format dateFormat = new SimpleDateFormat("EE d MMMM");
+	private Format dayFormat = new SimpleDateFormat("EE");
 	
 	/* Set this if when returning to this activity we need a *full* redraw.
 	 * (I.e. when returning from the settings menu.) */
@@ -276,7 +277,10 @@ public class ScheduleViewActivity extends Activity {
 		/* TODO: User viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
 		if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
-			setTitle(df.format(sched.getDay()) + ", " + sched.getTitle());
+			if (sched.eventLength() > (86400 * 5))
+				setTitle(dateFormat.format(sched.getDay()) + ", " + sched.getTitle());
+			else
+				setTitle(dayFormat.format(sched.getDay()) + ", " + sched.getTitle());
 		} else {
 			sched.setDay(-1);
 			setTitle(sched.getTitle());
@@ -403,7 +407,7 @@ public class ScheduleViewActivity extends Activity {
 		for (i = 0; i < days.size(); i ++) {
 			if (sched.getDay().equals(days.get(i)))
 				cur = i;
-			dayList[i] = df.format(days.get(i));
+			dayList[i] = dateFormat.format(days.get(i));
 		}
 		
 		if (days.size() == 2) {

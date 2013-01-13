@@ -131,6 +131,11 @@ public class Schedule {
 		return dayList;
 	}
 	
+	/** Total duration of this event in seconds. */
+	public long eventLength() {
+		return (lastTime.getTime() - firstTime.getTime()) / 1000;
+	}
+	
 	public Date getDay() {
 		return curDay;
 	}
