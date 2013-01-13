@@ -167,6 +167,7 @@ public class ScheduleViewActivity extends Activity {
 		prog.setIndeterminate(true);
 		prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		prog.setCanceledOnTouchOutside(false);
+		prog.setProgressNumberFormat(null);
 		prog.setMax(1);
 		prog.show();
 
