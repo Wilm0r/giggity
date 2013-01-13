@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:orderInCategory="0" android:id="@+id/block_schedule" android:title="@string/block_schedule" android:icon="@drawable/blockschedule" />
+    <item android:orderInCategory="1" android:id="@+id/now_next" android:title="@string/now_next" android:icon="@drawable/ic_menu_clock_face" />
+    <item android:orderInCategory="2" android:id="@+id/timetable" android:title="@string/timetable" android:icon="@android:drawable/ic_menu_agenda" />
+    <item android:orderInCategory="3" android:id="@+id/tracks" android:title="@string/tracks" android:icon="@drawable/tracks" />
+    <item android:orderInCategory="4" android:id="@+id/my_events" android:title="@string/my_events" android:icon="@android:drawable/ic_menu_my_calendar" />
+    <item android:orderInCategory="5" android:id="@+id/change_day" android:title="@string/change_day" android:icon="@android:drawable/ic_menu_day" android:showAsAction="ifRoom"/>
+    <item android:orderInCategory="6" android:id="@+id/search" android:title="@string/search" android:icon="@android:drawable/ic_menu_search" android:showAsAction="always"/>
+    <item android:orderInCategory="7" android:id="@+id/export_selections" android:title="@string/export_selections" android:icon="@drawable/qr_scan" />
+    <item android:orderInCategory="8" android:id="@+id/settings" android:title="@string/settings" android:icon="@android:drawable/ic_menu_preferences" />
+</menu>

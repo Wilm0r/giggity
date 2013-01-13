@@ -19,8 +19,6 @@
 
 package net.gaast.giggity;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -44,6 +42,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -365,25 +364,8 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		
-		menu.add(Menu.NONE, 1, 8, R.string.settings)
-			.setIcon(android.R.drawable.ic_menu_preferences);
-		menu.add(Menu.NONE, 2, 5, R.string.change_day)
-			.setIcon(android.R.drawable.ic_menu_day);
-		menu.add(Menu.NONE, 3, 2, R.string.timetable)
-			.setIcon(android.R.drawable.ic_menu_agenda);
-		menu.add(Menu.NONE, 4, 3, R.string.tracks)
-			.setIcon(R.drawable.tracks);
-		menu.add(Menu.NONE, 5, 0, R.string.block_schedule)
-			.setIcon(R.drawable.blockschedule);
-		menu.add(Menu.NONE, 6, 1, R.string.now_next)
-			.setIcon(R.drawable.ic_menu_clock_face);
-		menu.add(Menu.NONE, 7, 4, R.string.my_events)
-			.setIcon(android.R.drawable.ic_menu_my_calendar);
-		menu.add(Menu.NONE, 8, 6, R.string.search)
-			.setIcon(android.R.drawable.ic_menu_search);
-		menu.add(Menu.NONE, 9, 7, R.string.export_selections)
-		    .setIcon(R.drawable.qr_scan);
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.scheduleviewactivity, menu);
 		return true;
 	}
 	
@@ -392,12 +374,12 @@ public class ScheduleViewActivity extends Activity {
 		if (viewer == null || sched == null)
 			return false;
 		
-		menu.findItem(2).setVisible(!viewer.multiDay() && sched.getDays().size() > 1);
-		menu.findItem(3).setVisible(view != VIEW_TIMETABLE);
-		menu.findItem(4).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
-		menu.findItem(5).setVisible(view != VIEW_BLOCKSCHEDULE);
-		menu.findItem(6).setVisible(view != VIEW_NOWNEXT);
-		menu.findItem(7).setVisible(view != VIEW_MINE);
+		menu.findItem(R.id.change_day).setVisible(!viewer.multiDay() && sched.getDays().size() > 1);
+		menu.findItem(R.id.timetable).setVisible(view != VIEW_TIMETABLE);
+		menu.findItem(R.id.tracks).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
+		menu.findItem(R.id.block_schedule).setVisible(view != VIEW_BLOCKSCHEDULE);
+		menu.findItem(R.id.now_next).setVisible(view != VIEW_NOWNEXT);
+		menu.findItem(R.id.my_events).setVisible(view != VIEW_MINE);
 		return true;
 	}
 	
@@ -435,38 +417,38 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case 1:
+		case R.id.settings:
 			redraw = true;
 			Intent intent = new Intent(this, SettingsActivity.class);
 			startActivity(intent);
 			return true;
-		case 2:
+		case R.id.change_day:
 			showDayDialog();
 			return true;
-		case 3:
+		case R.id.timetable:
 			view = VIEW_TIMETABLE;
 			redrawSchedule();
 			return true;
-		case 4:
+		case R.id.tracks:
 			view = VIEW_TRACKS;
 			redrawSchedule();
 			return true;
-		case 5:
+		case R.id.block_schedule:
 			view = VIEW_BLOCKSCHEDULE;
 			redrawSchedule();
 			return true;
-		case 6:
+		case R.id.now_next:
 			view = VIEW_NOWNEXT;
 			redrawSchedule();
 			return true;
-		case 7:
+		case R.id.my_events:
 			view = VIEW_MINE;
 			redrawSchedule();
 			return true;
-		case 8:
+		case R.id.search:
 			this.onSearchRequested();
 			return true;
-		case 9:
+		case R.id.export_selections:
 			ScheduleUI.exportSelections(this, sched);
 			return true;
 		}
