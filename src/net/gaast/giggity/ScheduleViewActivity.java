@@ -307,17 +307,7 @@ public class ScheduleViewActivity extends Activity {
 			}
 		}
 		
-		/* Need to call invalidateOptionsMenu now but it's API 11+ only. :-( */
-		try {
-			Method inval = Activity.class.getMethod("invalidateOptionsMenu", new Class[] {});
-			inval.invoke(this);
-		} catch (NoSuchMethodException e) {
-			/* This should mean we're on an older phone, where we don't have to care. 
-			 * onPrepareOptionsMenu is called whenever the user presses the menu/option button. */
-		} catch (IllegalArgumentException e) {
-		} catch (IllegalAccessException e) {
-		} catch (InvocationTargetException e) {
-		}
+		this.invalidateOptionsMenu();
 	}
 	
 	/** Called by EventDialog when an item is deleted. Not passing an argument 

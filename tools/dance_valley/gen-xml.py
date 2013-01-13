@@ -262,52 +262,62 @@ def finddesc(item):
 	return desc
 
 
-html = fetch("http://www.blocweekend.com/lineup/")
-html = unicode(html, "utf-8")
-
-all = re.findall(r'href="(/artist/.*?)">(.*?)</a>', html, re.S)
-
-descs = {}
-for url, name in all:
-	name = HTMLParser.unescape.__func__(HTMLParser, name)
-	key = name
-	key = re.sub(r" *\([a-zA-Z]+\)", "", key)
-	key = re.sub(r"[^a-z0-9]", "", key.lower())
-	descs[key] = {'url': "http://www.blocweekend.com" + url, 'name': name}
-
-for _, ent in descs.iteritems():
-	html = fetch(ent["url"])
-	html = unicode(html, "utf-8")
+class FosdemEventParser(HTMLParser):
+	def __init__(self):
+		self.cur = []
+		self.e = {}
+		HTMLParser.__init__(self)
 	
-	m = re.search(r'<div id="feature-words">(.*?)id="feature"', html, re.S)
-	desc = re.sub(r'<ul id="social">.*?</ul>', '', m.group(1), flags=re.S)
-	ent["desc"] = dehtml(desc)
+	def handle_starttag(self, tag, atts):
+		self.cur.append((tag, sorted(atts)))
 	
-	m = re.search(r'href="(http://www.youtube.com/watch?.*?)"', html)
-	if m:
-		ent["yt"] = m.group(1)
+	def handle_endtag(self, tag):
+		if self.cur[-1][0] != tag:
+			print "WTF? %r </%s>" % (self.cur, tag)
+		else:
+			self.cur.pop()
+	
+	def handle_data(self, data):
+		if not self.cur:
+			return
+		
+		if self.cur[-1] == ("li", [("class", "active")]):
+			self.e["title"] = self.e.get("title", "") + data
+		if (("ul", [("class", "side-box")]) in self.cur and
+		    self.cur[-1][0] == "a" and self.cur[-1][1][0][0] == "href"):
+			href = self.cur[-1][1][0][1]
+			if href.startswith("/2013/schedule/"):
+				bits = href.split("/")
+				self.e[bits[3]] = self.e.get(bits[3], "") + data
 
-html = file("lovl12times.txt", "r").read()
-html = unicode(html, "utf-8")
-html = html.replace(u"–", u"-")
 
+BASE_URL = "https://fosdem.org/2013/schedule/event/"
+html = fetch(BASE_URL)
+
+sched = Schedule("org.fosdem.2013", "FOSDEM 2013")
 #sched = Schedule("nl.dancevalley.2011", "Dance Valley 2011")
-sched = Schedule("nl.lovelandfestival.2012", "Loveland Festival 2012")
+#sched = Schedule("nl.lovelandfestival.2012", "Loveland Festival 2012")
 #sched = Schedule("nl.luminosity.2012", "Luminosity Beach Festival 2012")
 #sched = Schedule("uk.blocweekend.2012", "Bloc.2012")
 tent = None
 dates = {
-	"Friday": (2012, 7, 6),
-	"Saturday": (2012, 7, 7),
+	"Saturday": (2013, 2, 2),
+	"Sunday": (2013, 2, 3),
 }
-today = (2012, 8, 11)
+today = (2013, 2, 2)
 for line in html.splitlines():
 
 	line = line.strip()
-	m = re.search("^((\d+\:\d+)[- ]*(\d+\:\d+)?) *(.*?)$", line)
+	m = re.search(r"<img src=\"/icons/folder.gif\".*?href=\"(.*?)\"", line)
 	#m = re.search("^((\d+\:\d+)) *(.*?)$", line)
 	
-	if m and tent:
+	if m:
+		evurl = BASE_URL + m.group(1)
+		ev = fetch(evurl)
+		p = FosdemEventParser()
+		p.feed(ev)
+		print p.e
+		continue
 		_, start, end, name = m.groups()
 		#_, start, name = m.groups()
 		
