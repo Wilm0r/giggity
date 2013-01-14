@@ -36,7 +36,7 @@ import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ShuffleLayout.Listener, ScheduleViewer {
+public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ScheduleViewer {
 	Giggity app;
 	Schedule sched;
 	Activity ctx;
@@ -53,12 +53,12 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	/* mainTable is the middle part of the screen */
 	LinearLayout mainTable;
 	/* Separate this to keep them on screen when scrolling */
-	ShuffleLayout tentHeaders;
+	LinearLayout tentHeaders;
 	SimpleScroller tentHeadersScr;
 
 	/* schedCont will contain all the actual data rows,
 	 * we'll get scrolling by stuffing it inside schedContScr. */
-	ShuffleLayout schedCont;
+	LinearLayout schedCont;
 	SimpleScroller schedContScr;
 
 	SharedPreferences pref;
@@ -109,7 +109,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		TentHeight *= SizeScale;
 		TentWidth *= SizeScale;
 		
-		schedCont = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE);
+		schedCont = new LinearLayout(ctx);
+		schedCont.setOrientation(LinearLayout.VERTICAL);
 		schedCont.setBackgroundColor(c.background);
 		schedCont.setMinimumHeight(sched.getTents().size());
 		
@@ -124,11 +125,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
-		tentHeaders = new ShuffleLayout(ctx, ShuffleLayout.DISABLE_DRAG_SHUFFLE /*0*/);
-		tentHeaders.setShuffleEventListener(this);
-		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL |
-				(/*pref.getBoolean("block_schedule_tent_shuffling", */(false) ?
-						SimpleScroller.DISABLE_DRAG_SCROLL : 0));
+		tentHeaders = new LinearLayout(ctx);
+		tentHeaders.setOrientation(LinearLayout.VERTICAL);
+		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL | 0);
 		tentHeadersScr.addView(tentHeaders);
 		tentHeadersScr.setScrollEventListener(this);
 		
@@ -192,6 +191,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		addView(bottomClock);
 		
 		setBackgroundColor(c.background);
+		//schedCont.setScaleX(0.25F);
+		//schedCont.setScaleY(0.25F);
 	}
 	
 	/* If the user scrolls one view, keep the others in sync. */
@@ -210,11 +211,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
 		}
 		ScheduleViewActivity.onScroll(ctx);
-	}
-
-	@Override
-	public void onSwapEvent(int top) {
-		schedCont.swapChildren(top);
 	}
 
 	protected class Element extends TextView {

@@ -121,11 +121,6 @@ public class SimpleScroller extends FrameLayout {
 		return true;
 	}
 	
-	public boolean onTrackballEvent(MotionEvent ev) {
-		Log.d("tbevent", "" + ev);
-		return true;
-	}
-	
 	public void scrollTo(int x, int y) {
 		if (!isCallingBack) {
 			isCallingBack = true;
