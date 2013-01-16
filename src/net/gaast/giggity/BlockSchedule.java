@@ -30,6 +30,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
@@ -79,6 +80,20 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		sched = sched_;
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		timer = new Handler();
+		
+		setOrientation(LinearLayout.VERTICAL);
+		
+		HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
+		SizeScale = HourWidth / 72.0;
+		HourHeight *= SizeScale;
+		TentHeight *= SizeScale;
+		TentWidth *= SizeScale;
+
+		draw();
+	}
+
+	private void draw() {
+		this.removeAllViews();
 
 		/* Not working yet. :-( */
 		Class[] styles = getClass().getDeclaredClasses();
@@ -100,14 +115,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		Calendar base, cal, end;
 		LinkedList<Schedule.Line> tents;
 		Element cell;
-		
-		setOrientation(LinearLayout.VERTICAL);
-		
-		HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
-		SizeScale = HourWidth / 72.0;
-		HourHeight *= SizeScale;
-		TentHeight *= SizeScale;
-		TentWidth *= SizeScale;
 		
 		schedCont = new LinearLayout(ctx);
 		schedCont.setOrientation(LinearLayout.VERTICAL);
@@ -191,11 +198,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		addView(bottomClock);
 		
 		setBackgroundColor(c.background);
-		//schedCont.setScaleX(0.25F);
-		//schedCont.setScaleY(0.25F);
 	}
 	
 	/* If the user scrolls one view, keep the others in sync. */
+	@Override
 	public void onScrollEvent(SimpleScroller src) {
 		if (src == schedContScr) {
 			topClock.scrollTo(src.getScrollX(), 0);
@@ -211,6 +217,22 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
 		}
 		ScheduleViewActivity.onScroll(ctx);
+	}
+	
+	@Override
+	public void onResizeEvent(SimpleScroller src, float scaleX, float scaleY, int scrollX_, int scrollY_) {
+		final float scrollX = scrollX_;
+		final float scrollY = scrollY_;
+		HourWidth *= scaleX;
+		TentHeight *= scaleY;
+		SizeScale *= scaleX;
+		draw();
+		this.post(new Runnable() {
+			@Override
+			public void run() {
+				schedContScr.scrollTo((int) scrollX, (int) scrollY);	
+			}
+		});
 	}
 
 	protected class Element extends TextView {

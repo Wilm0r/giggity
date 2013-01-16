@@ -31,6 +31,7 @@ public class SimpleScroller extends FrameLayout {
 	
 	private int dragScrollX, dragScrollY;
 	private float dragStartX, dragStartY;
+	private float distStartX, distStartY;
 	boolean isCallingBack;
 	
 	private final int dragThreshold = 8;
@@ -85,29 +86,26 @@ public class SimpleScroller extends FrameLayout {
 		} else if (ev.getAction() == MotionEvent.ACTION_DOWN) {
 			dragStartX = ev.getX();
 			dragStartY = ev.getY();
+			dragScrollX = getScrollX();
+			dragScrollY = getScrollY();
 			return false;
 		} else if (ev.getAction() == MotionEvent.ACTION_MOVE &&
 				   (Math.abs(dragStartX - ev.getX()) +
 				    Math.abs(dragStartY - ev.getY())) > dragThreshold) {
-			dragScrollX = getScrollX();
-			dragScrollY = getScrollY();
 			return true;
+		} else if (ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN) {
+			return onTouchEvent(ev);
 		}
 		
 		return false;
 	}
 	
 	public boolean onTouchEvent(MotionEvent ev) {
+		View c = this.getChildAt(0);
 		if ((flags & DISABLE_DRAG_SCROLL) > 0) {
 			/* Pass the events to the "child". */
 			return false;
-		} else if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-			dragStartX = ev.getX();
-			dragStartY = ev.getY();
-			dragScrollX = getScrollX();
-			dragScrollY = getScrollY();
-		}
-		else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+		} else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
 			int newx, newy, maxx, maxy;
 			
 			maxx = getChildAt(0).getWidth() - getWidth();
@@ -117,6 +115,22 @@ public class SimpleScroller extends FrameLayout {
 			newy = Math.max(0, Math.min(maxy, dragScrollY + (int) (dragStartY - ev.getY()))); 
 			
 			scrollTo(newx, newy);
+			if (ev.getPointerCount() > 1) {
+				c.setScaleX(Math.abs(ev.getX(1) - ev.getX(0)) / distStartX);
+				c.setScaleY(Math.abs(ev.getY(1) - ev.getY(0)) / distStartY);
+				c.setPivotX(ev.getX(0) + getScrollX());
+				c.setPivotY(ev.getY(0) + getScrollY());
+			}
+		} else if (ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN) {
+			distStartX = Math.abs(ev.getX(1) - ev.getX(0));
+			distStartY = Math.abs(ev.getY(1) - ev.getY(0));
+		} else if (ev.getAction() == MotionEvent.ACTION_UP){
+			if (c.getScaleX() != 1.0 || c.getScaleY() != 1.0) {
+				float newx, newy;
+				newx = Math.max(0, getScrollX() - c.getPivotX() + c.getPivotX() * c.getScaleX()); 
+				newy = Math.max(0, getScrollY() - c.getPivotY() + c.getPivotY() * c.getScaleY());
+				listener.onResizeEvent(this, c.getScaleX(), c.getScaleY(), (int) newx, (int) newy);
+			}
 		}
 		return true;
 	}
@@ -151,5 +165,6 @@ public class SimpleScroller extends FrameLayout {
 	
 	public interface Listener {
 		public void onScrollEvent(SimpleScroller src);
+		public void onResizeEvent(SimpleScroller src, float scaleX, float scaleY, int scrollX, int scrollY);
 	}
 }
