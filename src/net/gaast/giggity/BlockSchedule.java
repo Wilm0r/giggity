@@ -65,7 +65,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	SharedPreferences pref;
 	
 	private double SizeScale;
-	private int HourWidth;
+	private int HourWidth = 72;
 	private int HourHeight = 18;
 	private int TentHeight = 48;
 	private int TentWidth = 32;
@@ -83,11 +83,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		
 		setOrientation(LinearLayout.VERTICAL);
 		
-		HourWidth = Integer.parseInt(pref.getString("block_schedule_element_size", "72"));
+		HourWidth = pref.getInt("block_schedule_hour_width", HourWidth);
+		TentHeight = pref.getInt("block_schedule_tent_height", TentHeight);
 		SizeScale = HourWidth / 72.0;
-		HourHeight *= SizeScale;
-		TentHeight *= SizeScale;
-		TentWidth *= SizeScale;
 
 		draw();
 	}
@@ -227,6 +225,14 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		TentHeight *= scaleY;
 		SizeScale *= scaleX;
 		draw();
+		
+		SharedPreferences.Editor ed = pref.edit();
+		ed.putInt("block_schedule_hour_width", HourWidth);
+		ed.putInt("block_schedule_tent_height", TentHeight);
+		ed.apply();
+		
+		/* Need to do this in a timer or it doesn't work, I guess
+		 * because we need the layout code to do a cycle first. */
 		this.post(new Runnable() {
 			@Override
 			public void run() {

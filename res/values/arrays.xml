@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="block_schedule_element_sizes">
-		<item>Small</item>
-		<item>Medium</item>
-		<item>Large</item>
-		<item>Huge</item>
-	</string-array>
-	<string-array name="block_schedule_element_sizes_values">
-		<item>60</item>
-		<item>72</item>
-		<item>96</item>
-		<item>120</item>
-	</string-array>
-	<string-array name="block_schedule_styles">
-		<item>BlackWhite</item>
-		<item>Light</item>
-	</string-array>
 	<string-array name="default_view">
 		<item>Block schedule</item>
 		<item>Timetable</item>

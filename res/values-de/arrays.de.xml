@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string-array name="block_schedule_element_sizes">
-		<item>Klein</item>
-		<item>Mittel</item>
-		<item>Groß</item>
-		<item>Sehr groß</item>
-	</string-array>
 	<!-- Code does not yet support translations here..
 	<string-array name="block_schedule_styles">
 		<item>Schwarz-Weiß</item>

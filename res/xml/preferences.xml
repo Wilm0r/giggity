@@ -20,34 +20,6 @@
                         android:summary="@string/strict_ssl_sub"
                         android:title="@string/strict_ssl"
                         android:defaultValue="false" />
-	
-	<PreferenceCategory android:title="@string/block_schedule">
-	
-		<ListPreference android:title="@string/block_schedule_style"
-		                android:key="block_schedule_style"
-		                android:defaultValue="Light"
-		                android:dialogTitle="@string/block_schedule_style"
-		                android:negativeButtonText="@string/cancel"
-		                android:positiveButtonText="@string/ok"
-		                android:entries="@array/block_schedule_styles"
-		                android:entryValues="@array/block_schedule_styles" />
-
-        <ListPreference android:key="block_schedule_element_size"
-		                android:title="@string/block_schedule_element_size"
-		                android:summary="@string/block_schedule_element_size_sub"
-		                android:dialogTitle="@string/block_schedule_element_size"
-		                android:positiveButtonText="@string/ok"
-		                android:negativeButtonText="@string/ok"
-		                android:entries="@array/block_schedule_element_sizes"
-		                android:entryValues="@array/block_schedule_element_sizes_values"
-		                android:defaultValue="72" />
-	
-<!-- 		<CheckBoxPreference android:key="block_schedule_tent_shuffling"
-		                    android:summary="Drag row titles to reorder them"
-		                    android:title="Allow row shuffling" android:defaultValue="false"/>
--->
-	
-	</PreferenceCategory>
 
 
 
