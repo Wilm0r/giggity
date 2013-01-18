@@ -80,6 +80,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		sched = sched_;
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		timer = new Handler();
+		c = new Light();
 		
 		setOrientation(LinearLayout.VERTICAL);
 		
@@ -92,22 +93,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
 	private void draw() {
 		this.removeAllViews();
-
-		/* Not working yet. :-( */
-		Class[] styles = getClass().getDeclaredClasses();
-		int i;
-		c = new Light();
-		for (i = 0; i < styles.length; i ++) {
-			if (styles[i].getSuperclass() == Colours.class &&
-				styles[i].getSimpleName().equals(pref.getString("block_schedule_style", ""))) {
-				try {
-					c = (Colours) styles[i].newInstance();
-					break;
-				} catch (IllegalAccessException e) {
-				} catch (InstantiationException e) {
-				}
-			}
-		}
 		
 		int x, y;
 		Calendar base, cal, end;
@@ -359,26 +344,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			itemfg = new int[4];
 			tentbg = new int[2];
 			tentfg = new int[2];
-		}
-	}
-
-	@SuppressWarnings("unused")
-	static private class BlackWhite extends Colours {
-		public BlackWhite() {
-			super();
-			background = 0xFFFFFFFF;
-			clockbg[0] = 0xFF3F3F3F;
-			clockbg[1] = 0xFF000000;
-			clockbg[2] = 0xFF00CF00;
-			itembg[0] = 0xFF3F3F3F;
-			itembg[1] = 0xFF000000;
-			itembg[2] = 0xFF00CF00;
-			itembg[3] = 0xFF00CF00;
-			tentbg[0] = 0xFF3F3F3F;
-			tentbg[1] = 0xFF000000;
-			clockfg[0] = clockfg[1] = clockfg[2] = itemfg[0] =
-				itemfg[1] = itemfg[2] = itemfg[3] =
-				tentfg[0] = tentfg[1] = 0xFFFFFFFF;
 		}
 	}
 
