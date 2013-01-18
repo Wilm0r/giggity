@@ -59,16 +59,16 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
 	/* schedCont will contain all the actual data rows,
 	 * we'll get scrolling by stuffing it inside schedContScr. */
-	LinearLayout schedCont;
+	AbsoluteLayout schedCont;
 	SimpleScroller schedContScr;
 
 	SharedPreferences pref;
 	
 	private double SizeScale;
 	private int HourWidth = 72;
-	private int HourHeight = 18;
+	private int HourHeight = 30;
 	private int TentHeight = 48;
-	private int TentWidth = 32;
+	private int TentWidth = 72;
 	
 	private Handler timer;
 	
@@ -114,8 +114,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		LinkedList<Schedule.Line> tents;
 		Element cell;
 		
-		schedCont = new LinearLayout(ctx);
-		schedCont.setOrientation(LinearLayout.VERTICAL);
+		schedCont = new AbsoluteLayout(ctx);
 		schedCont.setBackgroundColor(c.background);
 		schedCont.setMinimumHeight(sched.getTents().size());
 		
@@ -155,9 +154,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			cal.add(Calendar.MINUTE, -15);
 
 			x = 0;
-			y ++;
 			h = TentHeight;
-			line = new AbsoluteLayout(ctx);
 			
 			for ( Schedule.Item gig : tent.getItems()) {
 				posx = (int) ((gig.getStartTime().getTime() -
@@ -174,12 +171,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cell.setTextColor(c.itemfg[((y+x)&1)]);
 				x ++;
 				cell.setText(gig.getTitle());
-				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, 0);
-				line.addView(cell, lp);
+				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, y * h);
+				schedCont.addView(cell, lp);
 			}
-			
-			/* TODO: Grrrr, how do I get the width of topClock for here? :-/ */
-			schedCont.addView(line, new LinearLayout.LayoutParams(-1, h));
+			y ++;
 		}
 
 		schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
@@ -254,7 +249,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			setPadding(0, 3, 0, 0);
 			/* sqrt because 8 is pretty small already and scaling the font 
 			 * linearly with the rest won't create more space for long titles */
-			setTextSize((float) (8 * Math.sqrt(SizeScale)));
+			//setTextSize((float) (8 * Math.sqrt(SizeScale)));
+			setTextSize(9);
 		}
 		
 		public void setItem(Schedule.Item item_) {
@@ -265,18 +261,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 					EventDialog evd = new EventDialog(ctx, item);
 					evd.setOnDismissListener(new OnDismissListener() {
 						public void onDismiss(DialogInterface dialog) {
-							/* Android 3.0+ bug: For some reason, if we change our bgcolor here, the
-							 * background colour for the surrounding views turns black - but only
-							 * until the user scrolls/selects another item. If we change the color
-							 * via a timer instead, we're fine.
-							 */
-							Runnable resetBackground = new Runnable() {
-								@Override
-								public void run() {
-									setBackgroundColor(bgcolor);
-								}
-							};
-							timer.postDelayed(resetBackground, 0);
+							setBackgroundColor(bgcolor);
 						}
 					});
 					evd.show();

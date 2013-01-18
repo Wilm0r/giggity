@@ -31,6 +31,7 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -168,6 +169,21 @@ public class ScheduleViewActivity extends Activity {
 		prog.setCanceledOnTouchOutside(false);
 		prog.setProgressNumberFormat(null);
 		prog.setMax(1);
+		/* 
+		timer.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				//prog.hide();
+				prog.setButton(DialogInterface.BUTTON_NEGATIVE, "Use cached copy", new OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// blaat
+					}
+				});
+				prog.show();
+			}
+		}, 5);
+		*/
 		prog.show();
 
 		resultHandler = new Handler() {
