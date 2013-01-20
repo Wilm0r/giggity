@@ -66,7 +66,6 @@ public class Giggity extends Application {
 				for (Schedule sched : scheduleCache.values()) {
 					urls.add(sched.getUrl());
 					sched.commit();
-					sched.sleep();
 				}
 				
 				scheduleCache.clear();

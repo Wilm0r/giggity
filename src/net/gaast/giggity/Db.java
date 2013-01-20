@@ -51,7 +51,6 @@ public class Db {
 	private static final int dbVersion = 12;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
-	private int refCount = 0;
 
 	public Db(Application app_) {
 		app = (Giggity) app_;
@@ -308,32 +307,16 @@ public class Db {
 			sleep();
 		}
 		
-		public void sleep() {
-			if (db != null) {
-				refCount--;
-				
-				if (refCount == 0)
-					db.close();
-				
-				db = null;
-			} else {
-				Log.d("DeoxideDb", "db was already null?");
-			}
-			
-			Log.d("DeoxideDb", "sleep()" + refCount + " " + db);
-			new Exception().printStackTrace();
+		private void sleep() {
+			if (db != null)
+				db.close();
+			db = null;
 		}
 		
-		public void resume() {
+		private void resume() {
 			if (db == null) {
-				refCount++;
-				
 				db = dbh.getWritableDatabase();
-				Log.d("DeoxideDb", "open: " + db.isOpen());
 			}
-			
-			Log.d("DeoxideDb", "resume()" + refCount + " " + db);
-			new Exception().printStackTrace();
 		}
 		
 		public void setSchedule(Schedule sched_, String url, boolean fresh) {
@@ -353,6 +336,7 @@ public class Db {
 			if (fresh)
 				row.put("sch_rtime", new Date().getTime() / 1000);
 			
+			resume();
 			q = db.rawQuery("Select sch_id, sch_day From schedule Where sch_id_s = ?",
 			                new String[]{sched.getId()});
 			
@@ -392,6 +376,7 @@ public class Db {
 				Log.d("DeoxideDb", "Item from db " + item.getTitle() + " remind " + q.getInt(2) + " stars " + q.getInt(3));
 			}
 			q.close();
+			sleep();
 		}
 		
 		public void saveScheduleItem(Schedule.Item item) {
@@ -406,30 +391,36 @@ public class Db {
 			
 			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") + " stars " + row.getAsString("sci_stars"));
 			
+			resume();
 			if ((sciId = sciIdMap.get(item.getId())) != null) {
 				db.update("schedule_item", row,
 						  "sci_id = ?", new String[]{"" + sciId.longValue()});
 			} else {
 				sciIdMap.put(item.getId(),
-				             new Long(db.insert("schedule_item", null, row)));
+				             Long.valueOf(db.insert("schedule_item", null, row)));
 			}
+			sleep();
 		}
 		
 		public ArrayList<DbSchedule> getScheduleList() {
 			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
 			Cursor q;
 
+			resume();
 			q = db.rawQuery("Select * From schedule Order By sch_atime Desc", null);
 			while (q.moveToNext()) {
 				ret.add(new DbSchedule(q));
 			}
 			q.close();
+			sleep();
 			
 			return ret;
 		}
 		
 		public void refreshScheduleList() {
+			resume();
 			updateData(db, true);
+			sleep();
 		}
 		
 		public int getDay() {
@@ -440,22 +431,28 @@ public class Db {
 			day = day_;
 			ContentValues row;
 			
+			resume();
 			row = new ContentValues();
 			row.put("sch_day", day);
 			db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
+			sleep();
 		}
 		
 		public void removeSchedule(String url) {
+			resume();
 			Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{url});
 			while (q.moveToNext()) {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + q.getInt(0)});
 				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
 			}
 			q.close();
+			sleep();
 		}
 		
 		private void flushHidden(int id) {
+			resume();
 			db.execSQL("Update schedule_item Set sci_hidden = 0 Where sci_sch_id = ?", new String[] {"" + id});
+			sleep();
 		}
 	}
 	

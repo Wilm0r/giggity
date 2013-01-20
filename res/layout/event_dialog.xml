@@ -156,7 +156,7 @@ This all seems enough to bump the major version number. Since, looking at the ti
         android:layout_alignParentLeft="true"
         android:layout_below="@id/description"
         android:orientation="vertical"
-        android:paddingTop="16dp"
+        android:paddingTop="8dp"
         android:visibility="gone" >
 
     </LinearLayout>

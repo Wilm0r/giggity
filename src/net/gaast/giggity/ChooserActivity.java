@@ -293,7 +293,6 @@ public class ChooserActivity extends Activity {
 		 * pick up new items) when returning to the chooser. */
 		super.onResume();
 		
-		db.resume();
 		lista = new ScheduleAdapter(db.getScheduleList());
 		list.setAdapter(lista);
 		
@@ -305,7 +304,6 @@ public class ChooserActivity extends Activity {
 	@Override
 	public void onPause() {
 		super.onPause();
-		db.sleep();
 		seedRefreshMenu = null;
 	}
 	

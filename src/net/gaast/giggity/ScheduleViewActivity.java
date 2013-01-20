@@ -245,10 +245,6 @@ public class ScheduleViewActivity extends Activity {
 	
 	@Override
 	protected void onResume() {
-		if (sched != null) {
-			sched.resume();
-		}
-		
 		/* Bugfix: Search sets day to -1, have to revert that. */
 		if (sched != null && sched.getDays().size() > 1 && !viewer.multiDay())
 			sched.setDay(sched.getDb().getDay());
@@ -267,7 +263,6 @@ public class ScheduleViewActivity extends Activity {
 		
 		if (sched != null) {
 			sched.commit();
-			sched.sleep();
 		}
 		super.onPause();
 		timer.removeCallbacks(refresher);

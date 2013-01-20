@@ -68,7 +68,6 @@ public class Widget extends AppWidgetProvider {
 					break;
 				}
 			}
-			db.sleep();
 		}
 		
 		if (title.equals("")) {

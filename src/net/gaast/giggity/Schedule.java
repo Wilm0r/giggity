@@ -385,14 +385,8 @@ public class Schedule {
 		}
 	}
 	
-	public void sleep() {
-		db.sleep();
-	}
-	
-	public void resume() {
-		db.resume();
-	}
-	
+	/** Would like to kill this, but still used for remembering currently 
+	 * viewed day for a schedule. */
 	public Db.Connection getDb() {
 		return db;
 	}
