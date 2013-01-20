@@ -298,14 +298,14 @@ public class ScheduleViewActivity extends Activity {
 		
 		if (view == VIEW_TIMETABLE) {
 			setScheduleView(new TimeTable(this, sched));
-		} else if (view == VIEW_BLOCKSCHEDULE) {
-			setScheduleView(new BlockSchedule(this, sched));
 		} else if (view == VIEW_NOWNEXT) {
 			setScheduleView(new NowNext(this, sched));
 		} else if (view == VIEW_MINE) {
 			setScheduleView(new MyItemsView(this, sched));
 		} else if (view == VIEW_TRACKS) {
 			setScheduleView(new TrackList(this, sched));
+		} else /* if (view == VIEW_BLOCKSCHEDULE) */ {
+			setScheduleView(new BlockSchedule(this, sched));
 		}
 		
 		if (showEventId != null) {
@@ -431,7 +431,13 @@ public class ScheduleViewActivity extends Activity {
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
-	
+
+	private void setView(int view_) {
+		view = view_;
+		setEventDialog(null, null);
+		redrawSchedule();
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -444,24 +450,19 @@ public class ScheduleViewActivity extends Activity {
 			showDayDialog();
 			return true;
 		case R.id.timetable:
-			view = VIEW_TIMETABLE;
-			redrawSchedule();
+			setView(VIEW_TIMETABLE);
 			return true;
 		case R.id.tracks:
-			view = VIEW_TRACKS;
-			redrawSchedule();
+			setView(VIEW_TRACKS);
 			return true;
 		case R.id.block_schedule:
-			view = VIEW_BLOCKSCHEDULE;
-			redrawSchedule();
+			setView(VIEW_BLOCKSCHEDULE);
 			return true;
 		case R.id.now_next:
-			view = VIEW_NOWNEXT;
-			redrawSchedule();
+			setView(VIEW_NOWNEXT);
 			return true;
 		case R.id.my_events:
-			view = VIEW_MINE;
-			redrawSchedule();
+			setView(VIEW_MINE);
 			return true;
 		case R.id.search:
 			this.onSearchRequested();
