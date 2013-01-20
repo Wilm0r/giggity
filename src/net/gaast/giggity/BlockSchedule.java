@@ -28,12 +28,15 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -100,8 +103,23 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		Element cell;
 		
 		schedCont = new AbsoluteLayout(ctx);
-		schedCont.setBackgroundColor(c.background);
-		schedCont.setMinimumHeight(sched.getTents().size());
+		//schedCont.setBackgroundColor(c.background);
+		//schedCont.setMinimumHeight(sched.getTents().size());
+		
+		Bitmap bmp = Bitmap.createBitmap(HourWidth, 16, Bitmap.Config.ARGB_8888);
+		bmp.setHasAlpha(true);
+		for (x = 0; x < HourWidth; x++) {
+			int dot = 0x00000000;
+			if (x == HourWidth / 4)
+				dot = c.clockbg[0];
+			else if (x == HourWidth / 4 * 3)
+				dot = c.clockbg[0];
+			for (y = 0; y < 16; y ++)
+				bmp.setPixel(x, y, dot);
+		}
+		BitmapDrawable bg = new BitmapDrawable(bmp);
+		bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		schedCont.setBackgroundDrawable(bg);
 		
 		base = Calendar.getInstance();
 		base.setTime(sched.getFirstTime());
@@ -119,11 +137,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL | 0);
 		tentHeadersScr.addView(tentHeaders);
 		tentHeadersScr.setScrollEventListener(this);
+		//schedCont.setMinimumHeight(1000); /* To make the lines run to the bottom. */
 		
 		y = 0;
 		tents = sched.getTents();
 		for (Schedule.Line tent : tents) {
-			AbsoluteLayout line;
 			int posx, h, w;
 			
 			/* Tent name on the first column. */
