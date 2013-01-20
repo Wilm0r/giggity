@@ -31,6 +31,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
@@ -42,6 +43,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.zip.DataFormatException;
@@ -154,6 +156,13 @@ public class Schedule {
 		dayEnd.setTime(curDay);
 		dayEnd.add(Calendar.DAY_OF_MONTH, 1);
 		curDayEnd = dayEnd.getTime();
+	}
+	
+	public Format getDayFormat() {
+		if (eventLength() > (86400 * 5))
+			return new SimpleDateFormat("EE d MMMM");
+		else
+			return new SimpleDateFormat("EE");
 	}
 	
 	/** Get earliest item.startTime */
@@ -822,9 +831,9 @@ public class Schedule {
 				
 				desc = "";
 				if ((s = propMap.get("subtitle")) != null) {
-					s.replaceAll("\n*$", "");
+					s = s.trim();
 					if (s != "")
-						desc += "― " + s + "\n\n";
+						item.setSubtitle(s);
 				}
 				if ((s = propMap.get("abstract")) != null) {
 					s.replaceAll("\n*$", "");
@@ -1153,7 +1162,7 @@ public class Schedule {
 	public class Item implements Comparable<Item> {
 		private String id;
 		private Line line;
-		private String title;
+		private String title, subtitle;
 		private String track;
 		private String description;
 		private Date startTime, endTime;
@@ -1228,6 +1237,14 @@ public class Schedule {
 			return title;
 		}
 		
+		public String getSubtitle() {
+			return subtitle;
+		}
+		
+		public void setSubtitle(String s) {
+			subtitle = s;
+		}
+
 		public Date getStartTime() {
 			return startTime;
 		}

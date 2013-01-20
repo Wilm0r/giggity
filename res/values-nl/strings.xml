@@ -27,8 +27,9 @@
 	<!-- EventDialog -->
 	<string name="speaker">Spreker:</string>
 	<string name="speakers">Sprekers:</string>
+	<string name="track">Thema:</string>
 	<string name="remind_me">Onthouden</string>
-	<string name="overlap">!! Overlapt met</string>
+	<string name="overlap">Overlapt met</string>
 	<string name="hide_what">Verberg...</string>
 	<string name="hide_item">...dit item</string>
 	<string name="hide_room">...gehele zaal</string>
@@ -41,7 +42,7 @@
 	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>
 	<string name="timetable">Timetable</string>
-	<string name="tracks">Tracks</string>
+	<string name="tracks">Thema\'s</string>
 	<string name="now_next">Nu en straks</string>
 	<string name="my_events">Mijn items</string>
 	<string name="search">Zoeken</string>

@@ -27,8 +27,9 @@
 	<!-- EventDialog -->
 	<string name="speaker">Speaker:</string>
 	<string name="speakers">Speakers:</string>
+	<string name="track">Track:</string>
 	<string name="remind_me">Remind me</string>
-	<string name="overlap">!! Overlaps with</string>
+	<string name="overlap">Overlaps with</string>
 	<string name="hide_what">Hide...</string>
 	<string name="hide_item">...this item</string>
 	<string name="hide_room">...entire room</string>

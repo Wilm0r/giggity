@@ -21,7 +21,6 @@ package net.gaast.giggity;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -43,9 +42,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class EventDialog extends Dialog implements OnDismissListener {
 	private Context ctx;
@@ -73,75 +72,85 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		super.onCreate(savedInstanceState);
 	}
 	
-	public LinearLayout genDialog(boolean big) {
+	public View genDialog(boolean big) {
 		Giggity app = (Giggity) ctx.getApplicationContext();
-		String descs = "";
-		boolean overlap = false;
+		View v, c = getLayoutInflater().inflate(R.layout.event_dialog, null);
+		TextView t;
+		Format tf = new SimpleDateFormat("HH:mm");
+		
+		t = (TextView) c.findViewById(R.id.title);
+		t.setText(item.getTitle());
+
+		t = (TextView) c.findViewById(R.id.subtitle);
+		if (item.getSubtitle() != null) {
+			t.setText(item.getSubtitle());
+		} else {
+			t.setVisibility(View.GONE);
+		}
+		
+		t = (TextView) c.findViewById(R.id.room);
+		t.setText(item.getLine().getTitle());
+		
+		t = (TextView) c.findViewById(R.id.time);
+		t.setText(item.getSchedule().getDayFormat().format(item.getStartTime()) + " " +
+		          tf.format(item.getStartTime()) + "-" + tf.format(item.getEndTime()));
+		
+		t = (TextView) c.findViewById(R.id.track);
+		if (item.getTrack() != null) {
+			t.setText(item.getTrack());
+		} else {
+			t.setVisibility(View.GONE);
+			v = c.findViewById(R.id.headTrack);
+			v.setVisibility(View.GONE);
+		}
+		
+		t = (TextView) c.findViewById(R.id.speaker);
+		if (item.getSpeakers() != null) {
+			String list = "";
+			
+			for (String i : item.getSpeakers())
+				list += i + ", ";
+			list = list.replaceAll(", $", "");
+			
+			t.setText(list);
+			
+			if (item.getSpeakers().size() > 1) {
+				t = (TextView) c.findViewById(R.id.headSpeaker);
+				t.setText(ctx.getResources().getString(R.string.speakers));
+			}
+		} else {
+			t.setVisibility(View.GONE);
+			v = c.findViewById(R.id.headSpeaker);
+			v.setVisibility(View.GONE);
+		}
+
+		String overlaps = null;
 		
 		for (Schedule.Item other : app.getRemindItems()) {
 			if (item != other && other.overlaps(item)) {
-				Format tf = new SimpleDateFormat("HH:mm");
-
-				descs += ctx.getResources().getString(R.string.overlap) + " " + other.getTitle() +
-				         " (" + tf.format(other.getStartTime()) + "-" + tf.format(other.getEndTime()) + ")\n";
-				overlap = true;
+				if (overlaps == null)
+					overlaps = ctx.getResources().getString(R.string.overlap) + " "; 
+				overlaps += other.getTitle() +
+				         " (" + tf.format(other.getStartTime()) + "-" + tf.format(other.getEndTime()) + "), ";
 			} else if (other.getStartTime().after(item.getEndTime())){
 				break;
 			}
 		}
-		if (overlap)
-			descs += "\n";
 		
-		if (item.getSpeakers() != null) {
-			if (item.getSpeakers().size() > 1)
-				descs += ctx.getResources().getString(R.string.speakers) + " ";
-			else
-				descs += ctx.getResources().getString(R.string.speaker) + " ";
-			for (String i : item.getSpeakers())
-				descs += i + ", ";
-			descs = descs.replaceAll(", $", "\n\n");
+		t = (TextView) c.findViewById(R.id.alert);
+		if (overlaps != null) {
+			t.setText(overlaps.replaceAll(", $", ""));
+		} else {
+			t.setVisibility(View.GONE);
+			v = c.findViewById(R.id.headAlert);
+			v.setVisibility(View.GONE);
 		}
 		
-		if (item.getDescription() != null)
-			descs += item.getDescription();
-		
-		LinearLayout content = new LinearLayout(ctx);
-		content.setOrientation(LinearLayout.VERTICAL);
-
-		/* Title, styled like in ScheduleListView. */
-		View title = new ScheduleItemView(ctx, item, 0); //ScheduleItemView.SHORT_TITLE);
-		content.addView(title, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
-		
-		/* Separator line between dialog title and rest. */
-		ImageView line = new ImageView(ctx);
-		line.setImageDrawable(ctx.getResources().getDrawable(android.R.drawable.divider_horizontal_dark));
-		line.setScaleType(ImageView.ScaleType.FIT_XY);
-		content.addView(line, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
-		
-		/* Big text field with abstract, description, etc. */
-		TextView desc = new TextView(ctx);
-		desc.setText(descs);
-		ScrollView descscr = new ScrollView(ctx);
-		if (!item.getSchedule().hasLinkTypes() && item.getLinks() != null) {
-			LinearLayout descLinks = new LinearLayout(ctx);
-			descLinks.setOrientation(LinearLayout.VERTICAL);
-			descLinks.addView(desc);
-			
-			for (Schedule.Item.Link link : item.getLinks()) {
-				LinkButton btn = new LinkButton(ctx, link);
-				btn.showUrl(true);
-				descLinks.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
-			}
-			descscr.addView(descLinks);
-			app.setPadding(desc, 0, 0, 0, 16);
-		} else
-			descscr.addView(desc);
-		
-		content.addView(descscr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		t = (TextView) c.findViewById(R.id.description);
+		t.setText(item.getDescription());
 
 		/* Bottom box is some stuff next to each other: Remind checkbox/stars, web buttons. */
-		LinearLayout bottomBox = new LinearLayout(ctx);
-		bottomBox.setGravity(Gravity.RIGHT | Gravity.CENTER_VERTICAL);
+		LinearLayout bottomBox = (LinearLayout) c.findViewById(R.id.bottomBox);
 
 		if (item.getStartTime().after(new Date())) {
 			/* Show "Remind me" only if the event is in the future. */
@@ -175,14 +184,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		ImageButton delButton = new DeleteButton(ctx);
 		bottomBox.addView(delButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 
-		content.addView(bottomBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 0));
-		
-		if (big) {
-			app.setPadding(title,   8, 8, 8, 6);
-			app.setPadding(descscr, 8, 6, 8, 8);
-		}
-		
-		return content;
+		return c;
 	}
 	
 	private class LinkButton extends FrameLayout implements ImageButton.OnClickListener {

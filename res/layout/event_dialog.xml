@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#000000"
+    android:paddingTop="0dp"
+    android:orientation="vertical" >
+
+<RelativeLayout
+    android:id="@+id/header"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#111111"
+    android:padding="2dp" >
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Linux on the desktop, y u no happen"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <TextView
+        android:id="@+id/subtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/title"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="2050 will be the year, I swear!"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageView
+        android:id="@+id/sep_title"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/subtitle"
+        android:paddingBottom="2dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="2dp"
+        android:scaleType="fitXY"
+        android:src="@android:drawable/divider_horizontal_bright" />
+
+    <TextView
+        android:id="@+id/room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/sep_title"
+        android:layout_toLeftOf="@+id/time"
+        android:text="De grote zael"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/sep_title"
+        android:gravity="right"
+        android:text="Sat 20:00-22:00"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/headTrack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/room"
+        android:text="@string/track"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/track"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/headTrack"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/headTrack"
+        android:gravity="right"
+        android:text="Blaaaaaaat" />
+
+    <TextView
+        android:id="@+id/headSpeaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/headTrack"
+        android:maxLines="1"
+        android:selectAllOnFocus="false"
+        android:text="@string/speaker"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/speaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/headSpeaker"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/headSpeaker"
+        android:layout_toRightOf="@+id/headSpeaker"
+        android:ellipsize="end"
+        android:gravity="right"
+        android:maxLines="2"
+        android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, " />
+
+</RelativeLayout>    
+
+<ScrollView
+    android:id="@+id/scrollDescription"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:padding="2dp" >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <ImageView
+        android:id="@+id/headAlert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:src="@android:drawable/ic_dialog_alert" />
+
+    <TextView
+        android:id="@+id/alert"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/headAlert"
+        android:layout_marginLeft="12dp"
+        android:layout_toRightOf="@+id/headAlert"
+        android:text="Conflicts bla" />
+
+    <TextView
+        android:id="@+id/description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/alert"
+        android:layout_marginTop="4dp"
+        android:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would&apos;ve thought that this one would take even longer than going from 0.7 to 1.0 (which &quot;only&quot; took three years)?
+
+There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the &quot;Duke Nukem Forever&quot; in the BitlBee community. Looks like we won!
+
+This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)
+
+Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would&apos;ve thought that this one would take even longer than going from 0.7 to 1.0 (which &quot;only&quot; took three years)?
+
+There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the &quot;Duke Nukem Forever&quot; in the BitlBee community. Looks like we won!
+
+This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)android:textColorandroid:textColor" />
+    
+</RelativeLayout>
+</ScrollView>
+
+<LinearLayout
+    android:id="@+id/bottomBox"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="right|center_vertical"
+    android:orientation="horizontal" >
+
+</LinearLayout>
+
+</LinearLayout>
