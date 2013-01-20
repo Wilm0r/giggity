@@ -37,6 +37,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -91,6 +92,8 @@ public class ScheduleViewActivity extends Activity {
 		
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		view = Integer.parseInt(pref.getString("default_view", "1"));
+		
+		/* Might be usable somewhere: this.getActionBar().setSubtitle("Blaaaaa"); */
 		
 		bigScreen = new LinearLayout(this);
 		updateOrientation(getResources().getConfiguration().orientation);
@@ -260,7 +263,7 @@ public class ScheduleViewActivity extends Activity {
 	
 	@Override
 	protected void onPause() {
-		setEventDialog(null);
+		//setEventDialog(null, null);
 		
 		if (sched != null) {
 			sched.commit();
@@ -348,24 +351,32 @@ public class ScheduleViewActivity extends Activity {
 		days.show();
 	}
 	
-	public boolean setEventDialog(EventDialog d) {
+	public void setEventDialog(EventDialog d, Schedule.Item item) {
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 		if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
 			bigScreen.removeView(eventDialogView);
 			if (eventDialog != null)
 				eventDialog.onDismiss(null);
 			
-			eventDialog = d;
 			if (d != null) {
 				eventDialogView = d.genDialog(true);
 				eventDialogView.setBackgroundResource(android.R.drawable.dialog_frame);
 				bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
 			}
-			return true;
-		} else
-			return false;
+		} else if (d != null) {
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
+			                           this, ScheduleItemActivity.class);
+			startActivityForResult(intent, 0);
+		}
+		eventDialog = d;
 	}
-	
+
+	@Override
+	protected void onActivityResult(int reqCode, int resCode, Intent data) {
+		if (eventDialog != null)
+			eventDialog.onDismiss(null);
+	}
+
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);

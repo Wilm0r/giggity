@@ -33,17 +33,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class EventDialog extends Dialog implements OnDismissListener {
@@ -287,18 +283,6 @@ public class EventDialog extends Dialog implements OnDismissListener {
 	public void onDismiss(DialogInterface dialog) {
 		if (cb != null) {
 			item.setRemind(cb.isChecked());
-			/* See if I'll use this.
-			if (cb.isChecked()) {
-				Intent intent = new Intent(Intent.ACTION_EDIT);
-				intent.setType("vnd.android.cursor.item/event");
-				intent.putExtra("beginTime", item.getStartTime().getTime());
-				intent.putExtra("endTime", item.getEndTime().getTime());
-				intent.putExtra("title", item.getTitle());
-				intent.putExtra("eventLocation", item.getLine().getTitle());
-				intent.putExtra("description", item.getDescription());
-				ctx.startActivity(intent);
-			}
-		*/
 		}
 		if (sv != null)
 			item.setStars(sv.getScore());
@@ -308,12 +292,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 
 	@Override
 	public void show() {
-		try {
-			ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-			if (sva.setEventDialog(this))
-				return;
-		} catch (ClassCastException e) {
-		}
-		super.show();
+		ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
+		sva.setEventDialog(this, item);
 	}
 }
