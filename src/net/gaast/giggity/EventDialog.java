@@ -34,6 +34,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
@@ -175,6 +176,14 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				}
 				bottomBox.addView(webButtons, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 			}
+		} else if (item.getLinks() != null) {
+			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);
+			for (Schedule.Item.Link link : item.getLinks()) {
+				LinkButton btn = new LinkButton(ctx, link);
+				btn.showUrl(true);
+				g.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+			}
+			g.setVisibility(View.VISIBLE);
 		}
 		
 		ImageButton delButton = new DeleteButton(ctx);

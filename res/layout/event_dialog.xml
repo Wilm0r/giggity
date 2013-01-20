@@ -147,13 +147,19 @@
 
 There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the &quot;Duke Nukem Forever&quot; in the BitlBee community. Looks like we won!
 
-This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)
+This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)" />
 
-Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would&apos;ve thought that this one would take even longer than going from 0.7 to 1.0 (which &quot;only&quot; took three years)?
+    <LinearLayout
+        android:id="@+id/links"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/description"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:visibility="gone" >
 
-There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the &quot;Duke Nukem Forever&quot; in the BitlBee community. Looks like we won!
-
-This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)android:textColorandroid:textColor" />
+    </LinearLayout>
     
 </RelativeLayout>
 </ScrollView>
