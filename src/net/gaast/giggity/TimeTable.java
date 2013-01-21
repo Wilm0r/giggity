@@ -37,7 +37,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-public class TimeTable extends RelativeLayout implements ScheduleViewer {
+public class TimeTable extends LinearLayout implements ScheduleViewer {
 	private Giggity app;
 	private Schedule sched;
 	private Activity ctx;
@@ -55,6 +55,7 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 		app = (Giggity) ctx.getApplication();
 		sched = sched_;
 		tents = sched.getTents();
+		this.setOrientation(LinearLayout.VERTICAL);
 
 		ArrayList fullList = new ArrayList();
 		
@@ -70,7 +71,7 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 					break;
 				}
 			}
-			fullList.add("\n\n" + tent.getTitle() + (track == null ? "" : " (" + track + ")"));
+			fullList.add((fullList.size() > 1 ? "\n\n" : "\n\n") + tent.getTitle() + (track == null ? "" : " (" + track + ")"));
 			for (Schedule.Item item : tent.getItems()) {
 				fullList.add(item);
 			}
@@ -78,20 +79,16 @@ public class TimeTable extends RelativeLayout implements ScheduleViewer {
 
 		RelativeLayout.LayoutParams lp;
 
+		tentSel = new Gallery(ctx);
+		tentSel.setAdapter(new TentListAdapter(ctx, tents));
+		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		addView(tentSel, lp);
+
 		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
 		scroller.setList(fullList);
-		scroller.setId(1);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		//lp.addRule(RelativeLayout.BELOW, 2);
 		addView(scroller, lp);
-
-		tentSel = new Gallery(ctx);
-		tentSel.setAdapter(new TentListAdapter(ctx, tents));
-		tentSel.setId(2);
-		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
-		//lp.addRule(RelativeLayout.ABOVE, 1);
-		addView(tentSel, lp);
 
 		/* Set up some navigation listeners. */
 		tentSelL = new OnItemSelectedListener() {
