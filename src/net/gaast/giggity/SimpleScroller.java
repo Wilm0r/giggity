@@ -39,6 +39,7 @@ public class SimpleScroller extends FrameLayout {
 	public static final int HORIZONTAL = 1;
 	public static final int VERTICAL = 2;
 	public static final int DISABLE_DRAG_SCROLL = 4;
+	public static final int PINCH_TO_ZOOM = 8;
 	
 	public SimpleScroller(Activity ctx, int flags_) {
 		super(ctx);
@@ -47,12 +48,6 @@ public class SimpleScroller extends FrameLayout {
 	
 	public void setScrollEventListener(SimpleScroller.Listener list_) {
 		listener = list_;
-	}
-	
-	protected void measureChild(View child, int parentWidthMeasureSpec, int parentHeightMeasureSpec) {
-		/* TODO Will I have to implement this one as well? */
-		Log.d("measureChild", "" + parentWidthMeasureSpec + " " + parentHeightMeasureSpec);
-		super.measureChild(child, parentWidthMeasureSpec, parentHeightMeasureSpec);
 	}
 	
 	protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed,
@@ -115,7 +110,7 @@ public class SimpleScroller extends FrameLayout {
 			newy = Math.max(0, Math.min(maxy, dragScrollY + (int) (dragStartY - ev.getY()))); 
 			
 			scrollTo(newx, newy);
-			if (ev.getPointerCount() > 1) {
+			if (ev.getPointerCount() > 1 && (flags & PINCH_TO_ZOOM) > 0) {
 				c.setScaleX(Math.abs(ev.getX(1) - ev.getX(0)) / distStartX);
 				c.setScaleY(Math.abs(ev.getY(1) - ev.getY(0)) / distStartY);
 				c.setPivotX(ev.getX(0) + getScrollX());

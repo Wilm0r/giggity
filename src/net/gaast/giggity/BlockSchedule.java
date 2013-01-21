@@ -180,7 +180,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			y ++;
 		}
 
-		schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL);
+		schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL | SimpleScroller.PINCH_TO_ZOOM);
 		schedContScr.addView(schedCont);
 		schedContScr.setScrollEventListener(this);
 
