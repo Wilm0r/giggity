@@ -106,16 +106,17 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		//schedCont.setBackgroundColor(c.background);
 		//schedCont.setMinimumHeight(sched.getTents().size());
 		
-		Bitmap bmp = Bitmap.createBitmap(HourWidth, 16, Bitmap.Config.ARGB_8888);
+		Bitmap bmp = Bitmap.createBitmap(HourWidth, TentHeight, Bitmap.Config.ARGB_8888);
 		bmp.setHasAlpha(true);
 		for (x = 0; x < HourWidth; x++) {
-			int dot = 0x00000000;
-			if (x == HourWidth / 4)
-				dot = c.clockbg[0];
-			else if (x == HourWidth / 4 * 3)
-				dot = c.clockbg[0];
-			for (y = 0; y < 16; y ++)
-				bmp.setPixel(x, y, dot);
+			for (y = 0; y < TentHeight; y ++) {
+				if (x == HourWidth / 4 && (y & 12) > 0)
+					bmp.setPixel(x, y, c.lines);
+				else if (x == HourWidth / 4 * 3 && (y & 8) > 0)
+					bmp.setPixel(x, y, c.lines);
+				else if (y == TentHeight - 1)
+					bmp.setPixel(x, y, c.lines);
+			}
 		}
 		BitmapDrawable bg = new BitmapDrawable(bmp);
 		bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
@@ -164,8 +165,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				               cal.getTime().getTime()) *
 				              HourWidth / 3600000);
 				w    = (int) ((gig.getEndTime().getTime() -
-				               gig.getStartTime().getTime()) *
-				              HourWidth / 3600000);
+				               cal.getTime().getTime()) *
+				              HourWidth / 3600000) - posx;
 				
 				cell = new Element(ctx);
 				cell.setItem(gig);
@@ -174,7 +175,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				cell.setTextColor(c.itemfg[((y+x)&1)]);
 				x ++;
 				cell.setText(gig.getTitle());
-				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h, posx, y * h);
+				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h - 1, posx, y * h);
 				schedCont.addView(cell, lp);
 			}
 			y ++;
@@ -350,7 +351,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	}
 	
 	static private abstract class Colours {
-		public int background;
+		public int background, lines;
 		public int clockbg[], clockfg[];
 		public int itembg[], itemfg[];
 		public int tentbg[], tentfg[];
@@ -369,6 +370,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		public Light() {
 			super();
 			background = 0xFFF9FCDA;
+			lines = 0xFFA3D3FC;
 			clockbg[0] = 0xFFF5FC49;
 			clockbg[1] = 0xFFF8FC9C;
 			clockbg[2] = 0xFF00CF00;
