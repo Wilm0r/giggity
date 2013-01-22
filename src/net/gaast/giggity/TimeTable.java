@@ -62,11 +62,15 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		for (Schedule.Line tent : tents) {
 			String track = null;
 			for (Schedule.Item item : tent.getItems()) {
-				if (item.getTrack() == null)
+				if (item.getTrack() == null) {
+					track = null;
 					break;
-				else if (track == null)
+				} else if (track == null) {
+					/* If the name of the track is in the room name already, don't repeat it. */
+					if (tent.getTitle().toLowerCase().contains(item.getTrack().toLowerCase()))
+						break;
 					track = item.getTrack();
-				else if (!track.equals(item.getTrack())) {
+				} else if (!track.equals(item.getTrack())) {
 					track = null;
 					break;
 				}
