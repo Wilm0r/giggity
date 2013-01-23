@@ -1145,8 +1145,8 @@ public class Schedule {
 			
 			for (Item item : items) {
 				if (!item.getHidden() &&
-				    (curDay == null || (item.getStartTime().after(dayStart.getTime()) &&
-				                        item.getEndTime().before(curDayEnd))))
+				    (curDay == null || (!item.getStartTime().before(dayStart.getTime()) &&
+				                        !item.getEndTime().after(curDayEnd))))
 					ret.add(item);
 			}
 			return ret;
