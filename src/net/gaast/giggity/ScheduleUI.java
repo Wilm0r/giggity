@@ -34,6 +34,7 @@ public class ScheduleUI {
 		}
 		try {
 			ctx.startActivity(intent);
+			Toast.makeText(ctx, R.string.qr_tip, Toast.LENGTH_LONG).show();
 		} catch (android.content.ActivityNotFoundException e) {
 			new AlertDialog.Builder(ctx)
 			  .setTitle("Not available")
