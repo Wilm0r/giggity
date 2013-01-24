@@ -68,8 +68,12 @@ public class Db {
 				int version) {
 			super(context, name, factory, version);
 			
-			if (oldDbVer < dbVersion)
-				updateData(this.getWritableDatabase(), false);
+			if (oldDbVer < dbVersion) {
+				SQLiteDatabase db = getWritableDatabase();
+				db.acquireReference();
+				updateData(db, false);
+				db.releaseReference();
+			}
 		}
 	
 		@Override
@@ -308,15 +312,26 @@ public class Db {
 		}
 		
 		private void sleep() {
+			/*
+			Log.d("db", "sleep" + db);
+			Log.d("myapp", Log.getStackTraceString(new Exception()));
+			*/
 			if (db != null)
-				db.close();
+				db.releaseReference();
 			db = null;
 		}
 		
 		private void resume() {
-			if (db == null) {
+			if (db == null || !db.isOpen() || db.isReadOnly()) {
 				db = dbh.getWritableDatabase();
+				db.acquireReference();
 			}
+			/*
+			Log.d("db0", "resume " + db);
+			if (db != null)
+				Log.d("db0", "" + db.isOpen() + " " + db.isReadOnly());
+			Log.d("myapp", Log.getStackTraceString(new Exception()));
+			*/
 		}
 		
 		public void setSchedule(Schedule sched_, String url, boolean fresh) {
