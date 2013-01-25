@@ -106,11 +106,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		Element cell;
 		
 		schedCont = new AbsoluteLayout(ctx);
-		//schedCont.setBackgroundColor(c.background);
-		//schedCont.setMinimumHeight(sched.getTents().size());
 		
 		Bitmap bmp = Bitmap.createBitmap(HourWidth, TentHeight, Bitmap.Config.ARGB_8888);
-		//bmp.setHasAlpha(true);
 		for (x = 0; x < HourWidth; x++) {
 			for (y = 0; y < TentHeight; y ++) {
 				if (x == HourWidth / 4 && (y & 12) > 0)
@@ -226,7 +223,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		HourWidth *= scaleX;
 		TentHeight *= scaleY;
 		draw();
-		
+
+		HourWidth = Math.max(60, Math.min(HourWidth, 1000));
+		TentHeight = Math.max(60, Math.min(TentHeight, 400));
+
 		SharedPreferences.Editor ed = pref.edit();
 		ed.putInt("block_schedule_hour_width", HourWidth);
 		ed.putInt("block_schedule_tent_height", TentHeight);
