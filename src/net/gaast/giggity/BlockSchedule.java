@@ -33,10 +33,10 @@ import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.AbsoluteLayout;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -67,11 +67,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
 	SharedPreferences pref;
 	
-	private double SizeScale;
-	private int HourWidth = 72;
-	private int HourHeight = 30;
-	private int TentHeight = 48;
-	private int TentWidth = 72;
+	private int HourWidth = 36;
+	private int HourHeight = 15;
+	private int TentHeight = 24;
+	private int TentWidth = 36;
 	
 	private Handler timer;
 	
@@ -87,9 +86,13 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		
 		setOrientation(LinearLayout.VERTICAL);
 		
+		HourWidth *= getResources().getDisplayMetrics().density;
+		HourHeight *= getResources().getDisplayMetrics().density;
+		TentHeight *= getResources().getDisplayMetrics().density;
+		TentWidth *= getResources().getDisplayMetrics().density;
+		
 		HourWidth = pref.getInt("block_schedule_hour_width", HourWidth);
 		TentHeight = pref.getInt("block_schedule_tent_height", TentHeight);
-		SizeScale = HourWidth / 72.0;
 
 		draw();
 	}
@@ -107,7 +110,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		//schedCont.setMinimumHeight(sched.getTents().size());
 		
 		Bitmap bmp = Bitmap.createBitmap(HourWidth, TentHeight, Bitmap.Config.ARGB_8888);
-		bmp.setHasAlpha(true);
+		//bmp.setHasAlpha(true);
 		for (x = 0; x < HourWidth; x++) {
 			for (y = 0; y < TentHeight; y ++) {
 				if (x == HourWidth / 4 && (y & 12) > 0)
@@ -222,7 +225,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		final float scrollY = scrollY_;
 		HourWidth *= scaleX;
 		TentHeight *= scaleY;
-		SizeScale *= scaleX;
 		draw();
 		
 		SharedPreferences.Editor ed = pref.edit();
