@@ -71,6 +71,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	private int HourHeight = 15;
 	private int TentHeight = 24;
 	private int TentWidth = 36;
+	private float fontSize = 9;
 	
 	private Handler timer;
 	
@@ -104,6 +105,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		Calendar base, cal, end;
 		LinkedList<Schedule.Line> tents;
 		Element cell;
+		
+		/* The following is based on blind experimentation, trying to get a reasonable font size
+		 * somewhere between 8 and 14 as the user zooms. */
+		float d = (float) Math.sqrt(HourWidth / 36 * TentHeight / 24) / getResources().getDisplayMetrics().density;
+		fontSize = (float) Math.min(8 + 6 * Math.log(d) / Math.log(20), 14);
 		
 		schedCont = new AbsoluteLayout(ctx);
 		
@@ -253,10 +259,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			setHeight(TentHeight);
 			setTextColor(0xFFFFFFFF);
 			setPadding(0, 3, 0, 0);
-			/* sqrt because 8 is pretty small already and scaling the font 
-			 * linearly with the rest won't create more space for long titles */
-			//setTextSize((float) (8 * Math.sqrt(SizeScale)));
-			setTextSize(9);
+			setTextSize(fontSize);
 		}
 		
 		public void setItem(Schedule.Item item_) {
