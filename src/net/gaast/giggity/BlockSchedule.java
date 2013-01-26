@@ -226,13 +226,14 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	public void onResizeEvent(SimpleScroller src, float scaleX, float scaleY, int scrollX_, int scrollY_) {
 		final float scrollX = scrollX_;
 		final float scrollY = scrollY_;
+
 		HourWidth *= scaleX;
 		TentHeight *= scaleY;
-		draw();
-
 		HourWidth = Math.max(60, Math.min(HourWidth, 1000));
 		TentHeight = Math.max(60, Math.min(TentHeight, 400));
 
+		draw();
+		
 		SharedPreferences.Editor ed = pref.edit();
 		ed.putInt("block_schedule_hour_width", HourWidth);
 		ed.putInt("block_schedule_tent_height", TentHeight);

@@ -21,9 +21,13 @@ package net.gaast.giggity;
 
 import android.app.Activity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 public class SimpleScroller extends FrameLayout {
 	private int flags;
@@ -41,9 +45,12 @@ public class SimpleScroller extends FrameLayout {
 	public static final int DISABLE_DRAG_SCROLL = 4;
 	public static final int PINCH_TO_ZOOM = 8;
 	
+	private TextView resizeImg = null;
+	
 	public SimpleScroller(Activity ctx, int flags_) {
 		super(ctx);
 		flags = flags_;
+		scaleX = scaleY = 1;
 	}
 	
 	public void setScrollEventListener(SimpleScroller.Listener list_) {
@@ -95,8 +102,12 @@ public class SimpleScroller extends FrameLayout {
 		return false;
 	}
 	
+	/* Keep these in class vars for older API compatibility. */ 
+	private float scaleX, scaleY;
+	private float pivotX, pivotY;
+	
 	public boolean onTouchEvent(MotionEvent ev) {
-		View c = this.getChildAt(0);
+		ViewGroup c = (ViewGroup) this.getChildAt(0);
 		if ((flags & DISABLE_DRAG_SCROLL) > 0) {
 			/* Pass the events to the "child". */
 			return false;
@@ -111,21 +122,58 @@ public class SimpleScroller extends FrameLayout {
 			
 			scrollTo(newx, newy);
 			if (ev.getPointerCount() > 1 && (flags & PINCH_TO_ZOOM) > 0) {
+				scaleX = Math.abs(ev.getX(1) - ev.getX(0)) / distStartX;
+				scaleY = Math.abs(ev.getY(1) - ev.getY(0)) / distStartY;
+				pivotX = Math.min(ev.getX(0), ev.getX(1)) + getScrollX();
+				pivotY = Math.min(ev.getY(0), ev.getY(1)) + getScrollY();
+				/* Crappy multitouch support can result in really high/low numbers.
+				 * ×10 seems unlikely already IMHO, so just don't resize in that axis. */
+				if (scaleX > 10 || scaleX < 0.1)
+					scaleX = 1;
+				if (scaleY > 10 || scaleY < 0.1)
+					scaleY = 1;
+				
+				/* Two ways to show the zoom in question. The second is nicer but API11+.
+				 * The first one is there for the people stuck with crappy Gingerbread phones. */
+				
+				/*
+				try {
+					AbsoluteLayout a = (AbsoluteLayout) c;
+					if (resizeImg != null)
+						a.removeView(resizeImg);
+					resizeImg = new TextView(getContext());
+					resizeImg.setText(String.format("×%.2f ×%.2f", scaleX, scaleY));
+					resizeImg.setBackgroundColor(0xFF000000);
+					resizeImg.setGravity(Gravity.CENTER);
+					a.addView(resizeImg, new AbsoluteLayout.LayoutParams((int) Math.abs(ev.getX(0) - ev.getX(1)),
+					                                                     (int) Math.abs(ev.getY(0) - ev.getY(1)),
+					                                                     (int) pivotX, (int) pivotY));
+				} catch (ClassCastException e) {
+					// Oh well.. :-(
+				}
+				*/
+				
 				c.setScaleX(Math.abs(ev.getX(1) - ev.getX(0)) / distStartX);
 				c.setScaleY(Math.abs(ev.getY(1) - ev.getY(0)) / distStartY);
 				c.setPivotX(ev.getX(0) + getScrollX());
 				c.setPivotY(ev.getY(0) + getScrollY());
+				/**/
 			}
 		} else if (ev.getAction() == MotionEvent.ACTION_POINTER_2_DOWN) {
 			distStartX = Math.abs(ev.getX(1) - ev.getX(0));
 			distStartY = Math.abs(ev.getY(1) - ev.getY(0));
 		} else if (ev.getAction() == MotionEvent.ACTION_UP){
-			if (c.getScaleX() != 1.0 || c.getScaleY() != 1.0) {
-				float newx, newy;
-				newx = Math.max(0, getScrollX() - c.getPivotX() + c.getPivotX() * c.getScaleX()); 
-				newy = Math.max(0, getScrollY() - c.getPivotY() + c.getPivotY() * c.getScaleY());
-				listener.onResizeEvent(this, c.getScaleX(), c.getScaleY(), (int) newx, (int) newy);
+			if (resizeImg != null) {
+				c.removeView(resizeImg);
+				resizeImg = null;
 			}
+			if (scaleX != 1.0 || scaleY != 1.0) {
+				float newx, newy;
+				newx = Math.max(0, getScrollX() - pivotX + pivotX * scaleX); 
+				newy = Math.max(0, getScrollY() - pivotY + pivotY * scaleY);
+				listener.onResizeEvent(this, scaleX, scaleY, (int) newx, (int) newy);
+			}
+			scaleX = scaleY = 1;
 		}
 		return true;
 	}
