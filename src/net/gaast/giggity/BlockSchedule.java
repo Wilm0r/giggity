@@ -230,7 +230,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		HourWidth *= scaleX;
 		TentHeight *= scaleY;
 		HourWidth = Math.max(60, Math.min(HourWidth, 1000));
-		TentHeight = Math.max(60, Math.min(TentHeight, 400));
+		TentHeight = Math.max(30, Math.min(TentHeight, 400));
 
 		draw();
 		
