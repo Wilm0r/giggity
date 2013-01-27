@@ -39,6 +39,9 @@ public class ScheduleItemActivity extends Activity {
 				finish();
 				return;
 			}
+		} else {
+			finish();
+			return;
 		}
 		
 		item = sched.getItem(id);
