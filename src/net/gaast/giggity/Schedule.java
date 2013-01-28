@@ -43,9 +43,10 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -82,9 +83,12 @@ public class Schedule {
 
 	private boolean fullyLoaded;
 	private Handler progressHandler;
-	
+
+	private final Schedule.LinkType defaultLinkType;
+
 	public Schedule(Giggity ctx) {
 		app = ctx;
+		defaultLinkType = new Schedule.LinkType("link");
 	}
 
 	public static String hashify(String url) {
@@ -592,7 +596,6 @@ public class Schedule {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
 		private String curString;
-		private Schedule.LinkType lt;
 
 		SimpleDateFormat df;
 
@@ -600,7 +603,6 @@ public class Schedule {
 			tentMap = new HashMap<String,Schedule.Line>();
 			df = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
 			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
-			lt = new Schedule.LinkType("link");
 		}
 		
 		@Override
@@ -650,7 +652,7 @@ public class Schedule {
 				}
 				
 				if ((s = eventData.get("url")) != null) {
-					item.addLink(lt, s);
+					item.addLink(defaultLinkType, s);
 				}
 
 				if ((line = tentMap.get(location)) == null) {
@@ -713,7 +715,6 @@ public class Schedule {
 		private HashMap<String,String> propMap;
 		private String curString;
 		private LinkedList<String> links, persons;
-		private Schedule.LinkType lt;
 		private Date curDay;
 		private HashSet<String> trackSet;
 
@@ -725,8 +726,6 @@ public class Schedule {
 			
 			df = new SimpleDateFormat("yyyy-MM-dd");
 			tf = new SimpleDateFormat("HH:mm");
-			
-			lt = new Schedule.LinkType("link");
 		}
 		
 		@Override
@@ -776,6 +775,7 @@ public class Schedule {
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
+			curString = curString.trim(); // D:
 			if (localName.equals("conference")) {
 				title = propMap.get("title");
 				if (propMap.get("day_change") != null) {
@@ -823,12 +823,14 @@ public class Schedule {
 
 				item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				
-				desc = "";
 				if ((s = propMap.get("subtitle")) != null) {
-					s = s.trim();
 					if (s != "")
 						item.setSubtitle(s);
 				}
+				
+				desc = "";
+				// TODO: IMHO the separation between these two is not used in a meaningful way my most,
+				// or worse, description is just a copy of abstract. Some heuristics would be helpful.
 				if ((s = propMap.get("abstract")) != null) {
 					s.replaceAll("\n*$", "");
 					desc += s + "\n\n";
@@ -843,7 +845,7 @@ public class Schedule {
 					trackSet.add(s);
 				}
 				for (String i : links)
-					item.addLink(lt, i);
+					item.addLink(defaultLinkType, i);
 				for (String i : persons)
 					item.addSpeaker(i);
 
@@ -1200,7 +1202,22 @@ public class Schedule {
 		}
 		
 		public void setDescription(String description_) {
-			description = description_.replaceAll("\\s+$", "").replaceAll("^\\s+", "");
+			description = description_.trim();
+			
+			/* Grab URLs and add them as (clickable) links. */
+			Pattern urlre = Pattern.compile("([a-z]+://|www\\.)[\\]\\[A-Za-z0-9-._~:/?#@!$&'()*+,;=]+");
+			Matcher urls = urlre.matcher(description);
+			while (urls.find()) {
+				String url = urls.group();
+				url = url.replaceAll("[\\])\"'.]*$", "");
+				addLink(defaultLinkType, url);
+			}
+			
+			/* Strip HTML-like stuff. Might strip things I don't want to so only
+			 * do it if the description *starts* with a HTML tag. */
+			if (description.startsWith("<")) {
+				description = description.replaceAll("<[^>]*>", "");
+			}
 		}
 		
 		public void addLink(Schedule.LinkType type, String url) {
@@ -1209,6 +1226,10 @@ public class Schedule {
 			if (links == null) {
 				links = new LinkedList<Schedule.Item.Link>();
 			}
+			for (Schedule.Item.Link l : links)
+				if (l.getUrl().equals(link.getUrl()))
+					return;
+			
 			links.add(link);
 		}
 		
@@ -1319,6 +1340,8 @@ public class Schedule {
 			public Link(Schedule.LinkType type_, String url_) {
 				type = type_;
 				url = url_;
+				if (!url.matches("^[a-z]+://"))
+					url = "http://" + url;
 			}
 			
 			public Schedule.LinkType getType() {
