@@ -1,14 +1,14 @@
 === modified file 'AndroidManifest.xml'
 --- AndroidManifest.xml	2013-01-25 00:38:11 +0000
-+++ AndroidManifest.xml	2013-01-26 17:24:05 +0000
++++ AndroidManifest.xml	2013-01-29 23:09:04 +0000
 @@ -1,25 +1,25 @@
  <?xml version="1.0" encoding="utf-8"?>
  <manifest xmlns:android="http://schemas.android.com/apk/res/android"
            package="net.gaast.giggity" 
--          android:versionCode="24" 
--          android:versionName="0.999.999">
-+          android:versionCode="25" 
-+          android:versionName="0.999.999-gb">
+-          android:versionCode="40" 
+-          android:versionName="1.0">
++          android:versionCode="26" 
++          android:versionName="1.0-gb">
    <uses-permission android:name="android.permission.INTERNET"/>
    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
    <uses-permission android:name="android.permission.VIBRATE"/>
@@ -38,7 +38,7 @@
 
 === modified file 'project.properties'
 --- project.properties	2013-01-13 22:12:52 +0000
-+++ project.properties	2013-01-26 17:19:50 +0000
++++ project.properties	2013-01-29 23:09:04 +0000
 @@ -8,4 +8,4 @@
  # project structure.
  
@@ -48,7 +48,7 @@
 
 === modified file 'res/menu/scheduleviewactivity.xml'
 --- res/menu/scheduleviewactivity.xml	2013-01-13 22:16:05 +0000
-+++ res/menu/scheduleviewactivity.xml	2013-01-26 17:05:46 +0000
++++ res/menu/scheduleviewactivity.xml	2013-01-29 23:09:04 +0000
 @@ -6,7 +6,7 @@
      <item android:orderInCategory="3" android:id="@+id/tracks" android:title="@string/tracks" android:icon="@drawable/tracks" />
      <item android:orderInCategory="4" android:id="@+id/my_events" android:title="@string/my_events" android:icon="@android:drawable/ic_menu_my_calendar" />
@@ -60,9 +60,21 @@
  </menu>
 \ No newline at end of file
 
+=== modified file 'res/xml/widget_info.xml'
+--- res/xml/widget_info.xml	2013-01-29 01:34:32 +0000
++++ res/xml/widget_info.xml	2013-01-29 23:09:18 +0000
+@@ -3,7 +3,5 @@
+     android:initialLayout="@layout/widget_layout"
+     android:minHeight="40dp"
+     android:minWidth="250dp"
+-    android:minResizeWidth="180dp"
+-    android:resizeMode="horizontal"
+     android:updatePeriodMillis="86400000" >
+ </appwidget-provider>
+
 === modified file 'src/net/gaast/giggity/BlockSchedule.java'
---- src/net/gaast/giggity/BlockSchedule.java	2013-01-26 17:05:19 +0000
-+++ src/net/gaast/giggity/BlockSchedule.java	2013-01-26 17:19:00 +0000
+--- src/net/gaast/giggity/BlockSchedule.java	2013-01-27 11:31:15 +0000
++++ src/net/gaast/giggity/BlockSchedule.java	2013-01-29 23:09:04 +0000
 @@ -237,7 +237,8 @@
  		SharedPreferences.Editor ed = pref.edit();
  		ed.putInt("block_schedule_hour_width", HourWidth);
@@ -76,7 +88,7 @@
 
 === modified file 'src/net/gaast/giggity/ScheduleViewActivity.java'
 --- src/net/gaast/giggity/ScheduleViewActivity.java	2013-01-20 21:29:46 +0000
-+++ src/net/gaast/giggity/ScheduleViewActivity.java	2013-01-26 17:05:46 +0000
++++ src/net/gaast/giggity/ScheduleViewActivity.java	2013-01-29 23:09:04 +0000
 @@ -169,7 +169,7 @@
  		prog.setIndeterminate(true);
  		prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -98,7 +110,7 @@
 
 === modified file 'src/net/gaast/giggity/SimpleScroller.java'
 --- src/net/gaast/giggity/SimpleScroller.java	2013-01-26 17:05:19 +0000
-+++ src/net/gaast/giggity/SimpleScroller.java	2013-01-26 17:05:57 +0000
++++ src/net/gaast/giggity/SimpleScroller.java	2013-01-29 23:09:04 +0000
 @@ -136,7 +136,6 @@
  				/* Two ways to show the zoom in question. The second is nicer but API11+.
  				 * The first one is there for the people stuck with crappy Gingerbread phones. */
