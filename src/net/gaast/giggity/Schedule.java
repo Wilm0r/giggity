@@ -1340,7 +1340,7 @@ public class Schedule {
 			public Link(Schedule.LinkType type_, String url_) {
 				type = type_;
 				url = url_;
-				if (!url.matches("^[a-z]+://"))
+				if (!url.matches("^[a-z]+://.*$"))
 					url = "http://" + url;
 			}
 			
