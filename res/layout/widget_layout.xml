@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout"
-    android:layout_width="294dp"
-    android:layout_height="72dp"
-    android:background="@drawable/widget_bg"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:paddingBottom="1dp"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
-    android:paddingTop="1dp" >
+    android:paddingTop="1dp"
+    android:background="@drawable/widget_bg">
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:contentDescription="Giggity logo"
         android:src="@drawable/deoxide_icon" />
 
     <TextView
