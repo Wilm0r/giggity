@@ -1,5 +1,5 @@
 {
-	"version": 2013010900,
+	"version": 2013021500,
 	"schedules": [
 		{
 			"version": 1,
@@ -83,7 +83,7 @@
 		{
 			"version": 2012021300,
 			"url": "http://m.devconf.cz/schedule.xml",
-			"title": "Developer conference, Brno",
+			"title": "Developer conference 2012, Brno",
 			"start": "2012-02-17",
 			"end": "2012-02-18"
 		},
@@ -150,6 +150,13 @@
 			"title": "FOSDEM 2013",
 			"start": "2013-02-02",
 			"end": "2013-02-03"
+		},
+		{
+			"version": 2013021500,
+			"url": "http://mcepl.fedorapeople.org/tmp/devConf2013.xml",
+			"title": "Developer Conference 2013, Brno",
+			"start": "2013-02-23",
+			"end": "2013-02-24"
 		}
 	]
 }
