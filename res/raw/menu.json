@@ -1,5 +1,5 @@
 {
-	"version": 2013021500,
+	"version": 2013060300,
 	"schedules": [
 		{
 			"version": 1,
@@ -157,6 +157,20 @@
 			"title": "Developer Conference 2013, Brno",
 			"start": "2013-02-23",
 			"end": "2013-02-24"
+		},
+		{
+			"version": 2013051900,
+			"url": "https://vcc.linuxtag.org/giggity-lt2013.xml",
+			"title": "LinuxTag 2013",
+			"start": "2013-05-22",
+			"end": "2013-05-25"
+		},
+		{
+			"version": 2013060300,
+			"url": "http://konf.fsf.hu/prog13.xml",
+			"title": "Free Software Conference and Exhibition 2013",
+			"start": "2013-06-08",
+			"end": "2013-06-08"
 		}
 	]
 }
