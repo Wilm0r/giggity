@@ -1,5 +1,5 @@
 {
-	"version": 2013060300,
+	"version": 2013072400,
 	"schedules": [
 		{
 			"version": 1,
@@ -171,6 +171,13 @@
 			"title": "Free Software Conference and Exhibition 2013",
 			"start": "2013-06-08",
 			"end": "2013-06-08"
+		},
+		{
+			"version": 2013072400,
+			"url": "https://program.ohm2013.org/schedule.xml",
+			"title": "OHM2013",
+			"start": "2013-07-31",
+			"end": "2013-08-04"
 		}
 	]
 }
