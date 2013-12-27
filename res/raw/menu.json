@@ -1,5 +1,5 @@
 {
-	"version": 2013072400,
+	"version": 2013122700,
 	"schedules": [
 		{
 			"version": 1,
@@ -51,13 +51,6 @@
 			"id": "nl.lovelandfestival.2011",
 			"start": "2011-08-13",
 			"end": "2011-08-13"
-		},
-		{
-			"version": 5,
-			"url": "http://programm.froscon.org/2011/schedule.xml",
-			"title": "FrOSCon",
-			"start": "2011-08-20",
-			"end": "2011-08-21"
 		},
 		{
 			"version": 2011110100,
@@ -124,13 +117,6 @@
 			"end": "2012-08-11"
 		},
 		{
-			"version": 2012081200,
-			"url": "http://programm.froscon.de/2012/schedule.xml",
-			"title": "FrOSCon",
-			"start": "2012-08-25",
-			"end": "2012-08-26"
-		},
-		{
 			"version": 2012100900,
 			"url": "http://people.freedesktop.org/~vmiklos/2012/libocon2012-schedule.xml",
 			"title": "LibreOffice Conference 2012",
@@ -178,6 +164,27 @@
 			"title": "OHM2013",
 			"start": "2013-07-31",
 			"end": "2013-08-04"
+		},
+		{
+			"version": 2013081200,
+			"url": "http://programm.froscon.de/2013/schedule.xml",
+			"title": "FrOSCon 2013",
+			"start": "2013-08-24",
+			"end": "2013-08-25"
+		},
+		{
+			"version": 2013092100,
+			"url": "http://people.freedesktop.org/~vmiklos/2013/libocon2013-schedule.xml",
+			"title": "LibreOffice Conference 2013",
+			"start": "2013-09-25",
+			"end":   "2013-09-27"
+		},
+		{
+			"version": 2013122700,
+			"url": "http://events.ccc.de/congress/2013/Fahrplan/schedule.xml",
+			"title": "30C3",
+			"start": "2013-12-27",
+			"end":   "2013-12-30"
 		}
 	]
 }

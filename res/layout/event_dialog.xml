@@ -63,13 +63,29 @@
         android:gravity="right"
         android:text="Sat 20:00-22:00"
         android:textStyle="bold" />
+</RelativeLayout>    
 
+<ScrollView
+    android:id="@+id/scrollDescription"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:padding="2dp"
+    android:paddingTop="0dp" >
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    
     <TextView
         android:id="@+id/headTrack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/room"
+        android:layout_alignParentTop="true"
+	    android:background="#111111"
         android:text="@string/track"
         android:textStyle="bold" />
 
@@ -80,6 +96,7 @@
         android:layout_alignBaseline="@+id/headTrack"
         android:layout_alignParentRight="true"
         android:layout_toRightOf="@+id/headTrack"
+	    android:background="#111111"
         android:gravity="right"
         android:text="Blaaaaaaat" />
 
@@ -91,6 +108,7 @@
         android:layout_below="@+id/headTrack"
         android:maxLines="1"
         android:selectAllOnFocus="false"
+	    android:background="#111111"
         android:text="@string/speaker"
         android:textStyle="bold" />
 
@@ -101,37 +119,26 @@
         android:layout_alignBaseline="@+id/headSpeaker"
         android:layout_alignParentRight="true"
         android:layout_alignTop="@+id/headSpeaker"
+        android:layout_alignBottom="@+id/headSpeaker"
         android:layout_toRightOf="@+id/headSpeaker"
         android:ellipsize="end"
+	    android:background="#111111"
         android:gravity="right"
         android:maxLines="2"
         android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, " />
-
-</RelativeLayout>    
-
-<ScrollView
-    android:id="@+id/scrollDescription"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:padding="2dp" >
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
 
     <ImageView
         android:id="@+id/headAlert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/speaker"
         android:src="@android:drawable/ic_dialog_alert" />
 
     <TextView
         android:id="@+id/alert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/speaker"
         android:layout_alignBaseline="@+id/headAlert"
         android:layout_marginLeft="12dp"
         android:layout_toRightOf="@+id/headAlert"
