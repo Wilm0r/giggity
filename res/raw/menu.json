@@ -1,5 +1,5 @@
 {
-	"version": 2013122700,
+	"version": 2014031300,
 	"schedules": [
 		{
 			"version": 1,
@@ -185,6 +185,20 @@
 			"title": "30C3",
 			"start": "2013-12-27",
 			"end":   "2013-12-30"
+		},
+		{
+			"version": 2014010800,
+			"url": "https://fosdem.org/2014/schedule/xml",
+			"title": "FOSDEM 2014",
+			"start": "2014-02-01",
+			"end":   "2014-02-02"
+		},
+		{
+			"version": 2014031300,
+			"url": "http://bcn2014.mini.debconf.org/schedule.xml",
+			"title": "Mini-DebConf Barcelona 2014",
+			"start": "2014-03-14",
+			"end":   "2014-03-16"
 		}
 	]
 }
