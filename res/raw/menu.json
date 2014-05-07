@@ -1,5 +1,5 @@
 {
-	"version": 2014031300,
+	"version": 2014050700,
 	"schedules": [
 		{
 			"version": 1,
@@ -199,6 +199,13 @@
 			"title": "Mini-DebConf Barcelona 2014",
 			"start": "2014-03-14",
 			"end":   "2014-03-16"
+		},
+		{
+			"version": 2014050700,
+			"url": "https://vcc.linuxtag.org/giggity-lt2014.xml",
+			"title": "LinuxTag 2014",
+			"start": "2014-05-08",
+			"end": "2014-05-10"
 		}
 	]
 }
