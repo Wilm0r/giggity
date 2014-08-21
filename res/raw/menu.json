@@ -1,5 +1,5 @@
 {
-	"version": 2014050700,
+	"version": 2014081900,
 	"schedules": [
 		{
 			"version": 1,
@@ -206,6 +206,27 @@
 			"title": "LinuxTag 2014",
 			"start": "2014-05-08",
 			"end": "2014-05-10"
+		},
+		{
+			"version": 2014062500,
+			"url": "http://desy.de/~karsten/EHSM.ics",
+			"title": "Exceptionally Hard & Soft Meeting 2014",
+			"start": "2014-06-27",
+			"end": "2014-06-29"
+		},
+		{
+			"version": 2014081600,
+			"url": "http://programm.froscon.de/2014/schedule.xml",
+			"title": "FrOSCon 2014",
+			"start": "2014-08-23",
+			"end": "2014-08-23"
+		},
+		{
+			"version": 2014081900,
+			"url": "https://summit.debconf.org/debconf14.xml",
+			"title": "DebConf14",
+			"start": "2014-08-23",
+			"end": "2014-08-31"
 		}
 	]
 }
