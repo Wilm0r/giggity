@@ -1,5 +1,5 @@
 {
-	"version": 2014081900,
+	"version": 2014082200,
 	"schedules": [
 		{
 			"version": 1,
@@ -227,6 +227,13 @@
 			"title": "DebConf14",
 			"start": "2014-08-23",
 			"end": "2014-08-31"
+		},
+		{
+			"version": 2014082200,
+			"url": "http://act.yapc.eu/ye2014/timetable.ics",
+			"title": "YAPC::Europe 2014",
+			"start": "2014-08-21",
+			"end": "2014-08-24"
 		}
 	]
 }
