@@ -1,5 +1,5 @@
 {
-	"version": 2014082200,
+	"version": 2014090100,
 	"schedules": [
 		{
 			"version": 1,
@@ -234,6 +234,13 @@
 			"title": "YAPC::Europe 2014",
 			"start": "2014-08-21",
 			"end": "2014-08-24"
+		},
+		{
+			"version": 2014090100,
+			"url": "http://people.freedesktop.org/~vmiklos/2014/libocon2014-schedule.xml",
+			"title": "LibreOffice Conference 2014",
+			"start": "2014-09-03",
+			"end": "2014-09-05"
 		}
 	]
 }
