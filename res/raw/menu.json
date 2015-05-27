@@ -1,5 +1,5 @@
 {
-	"version": 2014122200,
+	"version": 2015052700,
 	"schedules": [
 		{
 			"version": 1,
@@ -255,6 +255,13 @@
 			"title": "FOSDEM 2015",
 			"start": "2015-01-31",
 			"end": "2015-02-01"
+		},
+		{
+			"version": 2015052500,
+			"url": "http://www.tuebix.org/2015/giggity.xml",
+			"title": "TUEBIX 2015",
+			"start": "2015-06-13",
+			"end": "2015-06-13"
 		}
 	]
 }
