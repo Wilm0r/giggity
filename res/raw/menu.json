@@ -1,5 +1,5 @@
 {
-	"version": 2015052700,
+	"version": 2015061200,
 	"schedules": [
 		{
 			"version": 1,
@@ -262,6 +262,13 @@
 			"title": "TUEBIX 2015",
 			"start": "2015-06-13",
 			"end": "2015-06-13"
+		},
+		{
+			"version": 2015061200,
+			"url": "http://piandmore.de/schedule/pam7/schedule.xml",
+			"title": "Pi and More 7",
+			"start": "2015-06-20",
+			"end": "2015-06-20"
 		}
 	]
 }
