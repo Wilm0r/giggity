@@ -1,5 +1,5 @@
 {
-	"version": 2015073100,
+	"version": 2015080600,
 	"schedules": [
 		{
 			"version": 2014122200,
@@ -35,6 +35,13 @@
 			"title": "FrOSCon 2015",
 			"start": "2015-08-22",
 			"end": "2015-08-23"
+		},
+		{
+			"version": 2015080600,
+			"url": "https://events.ccc.de/camp/2015/Fahrplan/schedule.xml",
+			"title": "Chaos Communication Camp 2015",
+			"start": "2015-08-13",
+			"end": "2015-08-15"
 		}
 	]
 }
