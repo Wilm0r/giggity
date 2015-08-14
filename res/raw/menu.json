@@ -1,5 +1,5 @@
 {
-	"version": 2015080600,
+	"version": 2015081400,
 	"schedules": [
 		{
 			"version": 2014122200,
@@ -42,6 +42,13 @@
 			"title": "Chaos Communication Camp 2015",
 			"start": "2015-08-13",
 			"end": "2015-08-15"
+		},
+		{
+			"version": 2015081400,
+			"url": "https://summit.debconf.org/debconf15.xml",
+			"title": "DebConf15",
+			"start": "2015-08-15",
+			"end": "2015-08-22"
 		}
 	]
 }
