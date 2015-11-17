@@ -1,5 +1,5 @@
 {
-	"version": 2015081400,
+	"version": 2015111700,
 	"schedules": [
 		{
 			"version": 2014122200,
@@ -49,6 +49,13 @@
 			"title": "DebConf15",
 			"start": "2015-08-15",
 			"end": "2015-08-22"
+		},
+		{
+			"version": 2015111700,
+			"url": "http://2015.es.pycon.org/schedule/pentabarf.xml",
+			"title": "PyConES 2015",
+			"start": "2015-11-20",
+			"end": "2015-11-22"
 		}
 	]
 }
