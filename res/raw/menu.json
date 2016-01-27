@@ -1,5 +1,5 @@
 {
-	"version": 2015111700,
+	"version": 2016012700,
 	"schedules": [
 		{
 			"version": 2014122200,
@@ -56,6 +56,20 @@
 			"title": "PyConES 2015",
 			"start": "2015-11-20",
 			"end": "2015-11-22"
+		},
+		{
+			"version": 2015122400,
+			"url": "https://events.ccc.de/congress/2015/Fahrplan/schedule.xml",
+			"title": "32. Chaos Communication Congress",
+			"start": "2015-12-27",
+			"end": "2015-12-31"
+		},
+		{
+			"version": 2016012700,
+			"url": "https://fosdem.org/2016/schedule/xml",
+			"title": "FOSDEM 2016",
+			"start": "2016-01-30",
+			"end": "2016-01-30"
 		}
 	]
 }
