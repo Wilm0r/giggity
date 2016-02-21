@@ -389,9 +389,14 @@ public class ScheduleViewActivity extends Activity {
 	
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (viewer == null || sched == null)
-			return false;
-		
+		if (viewer == null || sched == null) {
+			/* Note: I used to return false here which worked and seemed more correct, but ...
+			 * now it looks like Android will keep not showing the menu if I return false just
+			 * the first time? Return true. Menu shouldn't actually be usable as it's out of focus
+			 * so I hope this is safe.. */
+			return true;
+		}
+
 		menu.findItem(R.id.change_day).setVisible(!viewer.multiDay() && sched.getDays().size() > 1);
 		menu.findItem(R.id.timetable).setVisible(view != VIEW_TIMETABLE);
 		menu.findItem(R.id.tracks).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
