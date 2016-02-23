@@ -1,0 +1,7 @@
+# Actually don't want this obfuscation horseshit, I just want to trim
+# off most of the Android support library.
+-dontobfuscate
+
+# Accidentally had Play Services linked in when I ended up adding this.
+#-dontwarn com.google.android.gms.common.**
+#-dontwarn com.google.android.gms.internal.**

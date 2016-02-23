@@ -19,14 +19,9 @@
 
 package net.gaast.giggity;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.zip.DataFormatException;
-
-import net.gaast.giggity.Db.DbSchedule;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -36,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -62,25 +58,33 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
 
-public class ChooserActivity extends Activity {
+import net.gaast.giggity.Db.DbSchedule;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.zip.DataFormatException;
+
+public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
 	private Db.Connection db;
 
+	private SwipeRefreshLayout refresher;
 	private ListView list;
 	private ScheduleAdapter lista;
 	private Handler seedRefreshMenu;
 
 	private final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
 	private final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
-	
+
 	private EditText urlBox;
 	private ImageButton addButton, qrButton;
-	
+
 	private SharedPreferences pref;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		requestWindowFeature(Window.FEATURE_PROGRESS);
 		
@@ -89,13 +93,13 @@ public class ChooserActivity extends Activity {
 		long[] pattern = {  };
 		v.vibrate(pattern, -1);
 		*/
-		
+
 		Giggity app = (Giggity) getApplication();
 		db = app.getDb();
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
-		
+
 		refreshSeed(false);
-		
+
 		list = new ListView(this);
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -111,7 +115,7 @@ public class ChooserActivity extends Activity {
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 				AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
-				DbSchedule sched = (DbSchedule) lista.getItem((int)mi.id);
+				DbSchedule sched = (DbSchedule) lista.getItem((int) mi.id);
 				if (sched != null) {
 					menu.setHeaderTitle(sched.getTitle());
 					menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
@@ -123,10 +127,13 @@ public class ChooserActivity extends Activity {
 		});
 		
 		/* Filling in the list in onResume(). */
-		
+		refresher = new SwipeRefreshLayout(this);
+		refresher.setOnRefreshListener(this);
+		refresher.addView(list);
+
 		LinearLayout cont = new LinearLayout(this);
 		cont.setOrientation(LinearLayout.VERTICAL);
-		cont.addView(list, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
+		cont.addView(refresher, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
 
 		LinearLayout bottom = new LinearLayout(this);
 
@@ -137,13 +144,13 @@ public class ChooserActivity extends Activity {
 		urlBox.setOnKeyListener(new OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN &&
-				    keyCode == KeyEvent.KEYCODE_ENTER) {
-					openSchedule(urlBox.getText().toString(), false, null);
-					return true;
-				} else {
-					return false;
-				}
+			if (event.getAction() == KeyEvent.ACTION_DOWN &&
+					keyCode == KeyEvent.KEYCODE_ENTER) {
+				openSchedule(urlBox.getText().toString(), false, null);
+				return true;
+			} else {
+				return false;
+			}
 			}
 		});
 		urlBox.addTextChangedListener(new TextWatcher() {
@@ -159,51 +166,51 @@ public class ChooserActivity extends Activity {
 			@Override
 			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
 			}
-			
+
 		});
-		bottom.addView(urlBox, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-		
+		bottom.addView(urlBox, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+
 		addButton = new ImageButton(this);
 		addButton.setImageResource(R.drawable.ic_input_add);
 		addButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				openSchedule(urlBox.getText().toString(), false, null);
+			openSchedule(urlBox.getText().toString(), false, null);
 			}
 		});
 		bottom.addView(addButton);
-		
+
 		qrButton = new ImageButton(this);
 		qrButton.setImageResource(R.drawable.qr_scan);
 		qrButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				try {
-					Intent intent = new Intent(BARCODE_SCANNER);
-					intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-					startActivityForResult(intent, 0);
-				} catch (android.content.ActivityNotFoundException e) {
-					new AlertDialog.Builder(ChooserActivity.this)
-					  .setMessage("Please install the Barcode Scanner app")
-					  .setTitle("Error")
-					  .show();
-				}
+			try {
+				Intent intent = new Intent(BARCODE_SCANNER);
+				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+				startActivityForResult(intent, 0);
+			} catch (ActivityNotFoundException e) {
+				new AlertDialog.Builder(ChooserActivity.this)
+						.setMessage("Please install the Barcode Scanner app")
+						.setTitle("Error")
+						.show();
+			}
 			}
 		});
 		bottom.addView(qrButton);
-		
+
 		setButtons();
 		cont.addView(bottom);
 		setContentView(cont);
 	}
-	
+
 	private void refreshSeed(boolean force) {
 		long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
 		if (force || seedAge < 0 || seedAge > Db.SEED_FETCH_INTERVAL) {
 			Log.d("ChooserActivity", "seedAge " + seedAge);
-			
+
 			final Thread loader;
-			
+
 			seedRefreshMenu = new Handler() {
 				@Override
 				public void handleMessage(Message msg) {
@@ -211,7 +218,7 @@ public class ChooserActivity extends Activity {
 						Editor p = pref.edit();
 						p.putLong("last_menu_seed_ts", System.currentTimeMillis());
 						p.commit();
-						
+
 						lista = new ScheduleAdapter(db.getScheduleList());
 						list.setAdapter(lista);
 
@@ -238,7 +245,14 @@ public class ChooserActivity extends Activity {
 			loader.start();
 		}
 	}
-	
+
+	@Override
+	public void onRefresh() {
+		refresher.setRefreshing(true);
+		refreshSeed(true);
+		refresher.setRefreshing(false);
+	}
+
 	private void setButtons() {
 		String url = urlBox.getText().toString();
 		boolean gotUrl = false;
@@ -249,12 +263,12 @@ public class ChooserActivity extends Activity {
 		addButton.setVisibility(gotUrl ? View.VISIBLE : View.GONE);
 		qrButton.setVisibility(gotUrl ? View.GONE : View.VISIBLE);
 	}
-	
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterContextMenuInfo mi = (AdapterContextMenuInfo) item.getMenuInfo();
 		Giggity app = (Giggity) getApplication();
-		DbSchedule sched = (DbSchedule) lista.getItem((int)mi.id);
+		DbSchedule sched = (DbSchedule) lista.getItem((int) mi.id);
 		if (sched == null) {
 		} else if (item.getItemId() == 0) {
 			/* Refresh. */
@@ -277,22 +291,22 @@ public class ChooserActivity extends Activity {
 				intent.putExtra("ENCODE_TYPE", "TEXT_TYPE");
 				intent.putExtra("ENCODE_DATA", sched.getUrl());
 				startActivity(intent);
-			} catch (android.content.ActivityNotFoundException e) {
+			} catch (ActivityNotFoundException e) {
 				new AlertDialog.Builder(ChooserActivity.this)
-				  .setTitle(sched.getTitle())
-				  .setMessage(sched.getUrl())
-				  .show();
+						.setTitle(sched.getTitle())
+						.setMessage(sched.getUrl())
+						.show();
 			}
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void onResume() {
 		/* Do this part in onResume so we automatically re-sort the list (and
 		 * pick up new items) when returning to the chooser. */
 		super.onResume();
-		
+
 		lista = new ScheduleAdapter(db.getScheduleList());
 		list.setAdapter(lista);
 		
@@ -300,33 +314,33 @@ public class ChooserActivity extends Activity {
 		setProgressBarIndeterminateVisibility(false);
 		setProgressBarVisibility(false);
 	}
-	
+
 	@Override
 	public void onPause() {
 		super.onPause();
 		seedRefreshMenu = null;
 	}
-	
+
 	private void openSchedule(String url, boolean prefOnline, Schedule.Selections sel) {
 		if (!url.contains("://"))
 			url = "http://" + url;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
-		                           this, ScheduleViewActivity.class);
+				this, ScheduleViewActivity.class);
 		intent.putExtra("PREFER_CACHED", !prefOnline);
 		if (sel != null)
 			intent.putExtra("SELECTIONS", sel);
 		startActivity(intent);
 	}
-	
+
 	private void openSchedule(DbSchedule event, boolean prefOnline) {
 		if (!prefOnline) {
 			if (pref.getBoolean("always_refresh", false) ||
-			    new Date().getTime() - event.getRtime().getTime() > 86400000)
+					new Date().getTime() - event.getRtime().getTime() > 86400000)
 				prefOnline = true;
 		}
 		openSchedule(event.getUrl(), prefOnline, null);
 	}
-	
+
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
@@ -345,38 +359,32 @@ public class ChooserActivity extends Activity {
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		
-		menu.add(Menu.NONE, 2, 6, R.string.refresh)
-			.setShortcut('0', 'r')
-			.setIcon(R.drawable.ic_menu_refresh);
+
 		menu.add(Menu.NONE, 1, 7, R.string.settings)
-			.setShortcut('0', 's')
-			.setIcon(android.R.drawable.ic_menu_preferences);
-		
+				.setShortcut('0', 's')
+				.setIcon(android.R.drawable.ic_menu_preferences);
+
 		return true;
 	}
-	
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case 2:
-			refreshSeed(true);
-			return true;
-		case 1:
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			return true;
+			case 1:
+				Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	private class ScheduleAdapter extends BaseAdapter {
 		ArrayList<Element> list;
-		
+
 		public ScheduleAdapter(AbstractList<DbSchedule> scheds) {
 			ArrayList<Element> now, later, past;
 			now = new ArrayList<Element>();
@@ -390,7 +398,7 @@ public class ChooserActivity extends Activity {
 				else
 					now.add(new Element(sched));
 			}
-			
+
 			list = new ArrayList<Element>();
 			if (now.size() > 0) {
 				list.add(new Element(R.string.chooser_now));
@@ -405,7 +413,7 @@ public class ChooserActivity extends Activity {
 				list.addAll(past);
 			}
 		}
-		
+
 		@Override
 		public int getCount() {
 			return list.size();
@@ -430,38 +438,38 @@ public class ChooserActivity extends Activity {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			return list.get(position).getView();
 		}
-		
+
 		private class Element {
 			String header;
 			DbSchedule item;
-			
+
 			public Element(int res) {
 				header = ChooserActivity.this.getResources().getString(res);
 			}
-			
+
 			public Element(DbSchedule item_) {
 				item = item_;
 			}
-			
+
 			public View getView() {
 				Giggity app = (Giggity) getApplication();
 				if (item != null) {
 					LinearLayout ret = new LinearLayout(ChooserActivity.this);
 					TextView title, when;
-					
+
 					title = new TextView(ChooserActivity.this);
 					title.setText(item.getTitle());
 					title.setTextSize(22);
 					ret.addView(title);
-					
+
 					when = new TextView(ChooserActivity.this);
 					when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
 					when.setTextSize(12);
 					ret.addView(when);
-					
+
 					ret.setOrientation(LinearLayout.VERTICAL);
 					app.setPadding(ret, 0, 3, 0, 4);
-					
+
 					return ret;
 				} else {
 					TextView ret = new TextView(ChooserActivity.this);
