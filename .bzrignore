@@ -8,3 +8,5 @@ _cache
 /.idea/libraries
 .DS_Store
 /app/build
+/build
+*.apk
