@@ -19,7 +19,7 @@
 	<CheckBoxPreference android:key="strict_ssl"
                         android:summary="@string/strict_ssl_sub"
                         android:title="@string/strict_ssl"
-                        android:defaultValue="false" />
+                        android:defaultValue="true" />
 
 
 
