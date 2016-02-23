@@ -113,7 +113,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			
 			if (item.getSpeakers().size() > 1) {
 				t = (TextView) c.findViewById(R.id.headSpeaker);
-				t.setText(ctx.getResources().getString(R.string.speakers));
+				t.setText(R.string.speakers);
 			}
 		} else {
 			t.setVisibility(View.GONE);
@@ -254,27 +254,27 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			builder.setTitle(R.string.hide_what);
 			builder.setItems(delWhat, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int what) {
-					switch (what) {
-					case 0:
-						item.setHidden(true);
-						break;
-					case 1:
-						for (Schedule.Item other : item.getLine().getItems())
-							other.setHidden(true);
-						break;
-					case 2:
-						for (Schedule.Line line : item.getSchedule().getTents())
-							for (Schedule.Item other : line.getItems())
-								if (other.getTrack() != null && other.getTrack().equals(item.getTrack()))
-									other.setHidden(true);
-						break;
-					}
-					try {
-						ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-						sva.onItemHidden();
-					} catch (ClassCastException e) {
-					}
-					EventDialog.this.dismiss();
+				switch (what) {
+				case 0:
+					item.setHidden(true);
+					break;
+				case 1:
+					for (Schedule.Item other : item.getLine().getItems())
+						other.setHidden(true);
+					break;
+				case 2:
+					for (Schedule.Line line : item.getSchedule().getTents())
+						for (Schedule.Item other : line.getItems())
+							if (other.getTrack() != null && other.getTrack().equals(item.getTrack()))
+								other.setHidden(true);
+					break;
+				}
+				try {
+					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
+					sva.onItemHidden();
+				} catch (ClassCastException e) {
+				}
+				EventDialog.this.dismiss();
 				}
 			});
 			AlertDialog alert = builder.create();
