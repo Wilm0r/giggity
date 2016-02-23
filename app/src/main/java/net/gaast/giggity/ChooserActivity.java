@@ -366,7 +366,8 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		menu.add(Menu.NONE, 1, 7, R.string.settings)
 				.setShortcut('0', 's')
-				.setIcon(android.R.drawable.ic_menu_preferences);
+				.setIcon(android.R.drawable.ic_menu_preferences)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
 		return true;
 	}
