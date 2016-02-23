@@ -2,20 +2,6 @@
 	"version": 2016012700,
 	"schedules": [
 		{
-			"version": 2014122200,
-			"url": "https://events.ccc.de/congress/2014/Fahrplan/schedule.xml",
-			"title": "31. Chaos Communication Congress",
-			"start": "2014-12-27",
-			"end": "2014-12-31"
-		},
-		{
-			"version": 2014122200,
-			"url": "https://fosdem.org/2015/schedule/xml",
-			"title": "FOSDEM 2015",
-			"start": "2015-01-31",
-			"end": "2015-02-01"
-		},
-		{
 			"version": 2015052500,
 			"url": "http://www.tuebix.org/2015/giggity.xml",
 			"title": "TUEBIX 2015",
