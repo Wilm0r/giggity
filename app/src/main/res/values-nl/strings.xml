@@ -69,7 +69,10 @@
 	<string name="chooser_now">Huidige evenementen:</string>
 	<string name="chooser_later">Toekomstige evenementen:</string>
 	<string name="chooser_past">Afgelopen evenementen:</string>
-	
+	<string name="add_dialog">Toevoegen...</string>
+	<string name="qr_scan">QR scannen</string>
+	<string name="enter_url">Voer programma URL in</string>
+
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'om\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'om\' HH:mm</string>

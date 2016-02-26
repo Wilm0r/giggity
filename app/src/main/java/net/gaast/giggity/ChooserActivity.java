@@ -22,6 +22,7 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -32,9 +33,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.text.Editable;
 import android.text.InputType;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -42,9 +41,7 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
-import android.view.View.OnKeyListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -52,7 +49,6 @@ import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
@@ -76,14 +72,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 	private final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
 	private final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
 
-	private EditText urlBox;
-	private ImageButton addButton, qrButton;
-
 	private SharedPreferences pref;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		//this.setTheme(android.R.style.Theme_Holo);
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		requestWindowFeature(Window.FEATURE_PROGRESS);
@@ -104,25 +99,25 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
-				DbSchedule item = (DbSchedule) lista.getItem(position);
-				if (item != null) {
-					openSchedule(item, false);
-				}
+			DbSchedule item = (DbSchedule) lista.getItem(position);
+			if (item != null) {
+				openSchedule(item, false);
+			}
 			}
 		});
 		list.setLongClickable(true);
 		list.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-				AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
-				DbSchedule sched = (DbSchedule) lista.getItem((int) mi.id);
-				if (sched != null) {
-					menu.setHeaderTitle(sched.getTitle());
-					menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
-					menu.add(ContextMenu.NONE, 3, 0, R.string.unhide);
-					menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
-					menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
-				}
+			AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
+			DbSchedule sched = (DbSchedule) lista.getItem((int) mi.id);
+			if (sched != null) {
+				menu.setHeaderTitle(sched.getTitle());
+				menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
+				menu.add(ContextMenu.NONE, 3, 0, R.string.unhide);
+				menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
+				menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
+			}
 			}
 		});
 		
@@ -135,72 +130,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		cont.setOrientation(LinearLayout.VERTICAL);
 		cont.addView(refresher, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
 
-		LinearLayout bottom = new LinearLayout(this);
-
-		urlBox = new EditText(this);
-		urlBox.setText("http://");
-		urlBox.setSingleLine();
-		urlBox.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
-		urlBox.setOnKeyListener(new OnKeyListener() {
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-			if (event.getAction() == KeyEvent.ACTION_DOWN &&
-					keyCode == KeyEvent.KEYCODE_ENTER) {
-				openSchedule(urlBox.getText().toString(), false, null);
-				return true;
-			} else {
-				return false;
-			}
-			}
-		});
-		urlBox.addTextChangedListener(new TextWatcher() {
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				setButtons();
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-			}
-
-			@Override
-			public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-			}
-
-		});
-		bottom.addView(urlBox, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
-
-		addButton = new ImageButton(this);
-		addButton.setImageResource(R.drawable.ic_input_add);
-		addButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-			openSchedule(urlBox.getText().toString(), false, null);
-			}
-		});
-		bottom.addView(addButton);
-
-		qrButton = new ImageButton(this);
-		qrButton.setImageResource(R.drawable.qr_scan);
-		qrButton.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-			try {
-				Intent intent = new Intent(BARCODE_SCANNER);
-				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-				startActivityForResult(intent, 0);
-			} catch (ActivityNotFoundException e) {
-				new AlertDialog.Builder(ChooserActivity.this)
-						.setMessage("Please install the Barcode Scanner app")
-						.setTitle("Error")
-						.show();
-			}
-			}
-		});
-		bottom.addView(qrButton);
-
-		setButtons();
-		cont.addView(bottom);
 		setContentView(cont);
 	}
 
@@ -251,17 +180,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		refresher.setRefreshing(true);
 		refreshSeed(true);
 		refresher.setRefreshing(false);
-	}
-
-	private void setButtons() {
-		String url = urlBox.getText().toString();
-		boolean gotUrl = false;
-		if (url.length() > 7)
-			gotUrl = true;
-		else if (!"http://".startsWith(url))
-			gotUrl = true;
-		addButton.setVisibility(gotUrl ? View.VISIBLE : View.GONE);
-		qrButton.setVisibility(gotUrl ? View.GONE : View.VISIBLE);
 	}
 
 	@Override
@@ -364,9 +282,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
 
-		menu.add(Menu.NONE, 1, 7, R.string.settings)
+		menu.add(Menu.NONE, 1, 5, R.string.settings)
 				.setShortcut('0', 's')
 				.setIcon(android.R.drawable.ic_menu_preferences)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		menu.add(Menu.NONE, 2, 7, R.string.add_dialog)
+				.setShortcut('0', 'a')
+				.setIcon(android.R.drawable.ic_menu_add)
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
 		return true;
@@ -379,8 +301,68 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				Intent intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
 				return true;
+			case 2:
+				showAddDialog();
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void showAddDialog() {
+		AlertDialog.Builder d = new AlertDialog.Builder(this);
+		d.setTitle(R.string.add_dialog);
+
+		final EditText urlBox = new EditText(this);
+		urlBox.setHint(R.string.enter_url);
+		urlBox.setSingleLine();
+		urlBox.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
+		d.setView(urlBox);
+
+		d.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				openSchedule(urlBox.getText().toString(), false, null);
+			}
+		});
+		/* Apparently the "Go"/"Done" button still just simulates an ENTER keypress. Neat!...
+		   http://stackoverflow.com/questions/5677563/listener-for-done-button-on-edittext */
+		urlBox.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN &&
+						keyCode == KeyEvent.KEYCODE_ENTER) {
+					openSchedule(urlBox.getText().toString(), false, null);
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
+
+		d.setNeutralButton(R.string.qr_scan, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+				try {
+					Intent intent = new Intent(BARCODE_SCANNER);
+					intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+					startActivityForResult(intent, 0);
+				} catch (ActivityNotFoundException e) {
+					new AlertDialog.Builder(ChooserActivity.this)
+							.setMessage("Please install the Barcode Scanner app")
+							.setTitle("Error")
+							.show();
+				}
+			}
+		});
+		d.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+
+		d.show();
 	}
 
 	private class ScheduleAdapter extends BaseAdapter {

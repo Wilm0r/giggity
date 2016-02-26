@@ -69,6 +69,9 @@
 	<string name="chooser_now">Current events:</string>
 	<string name="chooser_later">Upcoming events:</string>
 	<string name="chooser_past">Previous events:</string>
+	<string name="add_dialog">Add...</string>
+	<string name="qr_scan">Scan QR</string>
+	<string name="enter_url">Enter schedule URL</string>
 	
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'at\' HH:mm</string>
