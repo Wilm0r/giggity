@@ -188,11 +188,14 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				scr.getHitRect(scrollBounds);
 				View subHeader = c.findViewById(R.id.subHeader);
 				View header = c.findViewById(R.id.header);
-				/* TODO: API level detection. */
-				if (subHeader.getLocalVisibleRect(scrollBounds)) {
-					header.setElevation(0);
-				} else {
-					header.setElevation(app.dp2px(8));
+
+				if (android.os.Build.VERSION.SDK_INT >= 21) {
+					/* Lollipop+. I think owners of older devs will survive without drop shadows, right? :> */
+					if (subHeader.getLocalVisibleRect(scrollBounds)) {
+						header.setElevation(0);
+					} else {
+						header.setElevation(app.dp2px(8));
+					}
 				}
 			}
 		});
