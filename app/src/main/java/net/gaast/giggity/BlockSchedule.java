@@ -238,7 +238,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		ed.putInt("block_schedule_hour_width", HourWidth);
 		ed.putInt("block_schedule_tent_height", TentHeight);
 		ed.apply();
-		
+
 		/* Need to do this in a timer or it doesn't work, I guess
 		 * because we need the layout code to do a cycle first. */
 		this.post(new Runnable() {
@@ -400,6 +400,11 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	
 	@Override
 	public boolean multiDay() {
+		return false;
+	}
+
+	@Override
+	public boolean extendsActionBar() {
 		return false;
 	}
 }

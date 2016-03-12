@@ -80,11 +80,21 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 				fullList.add(item);
 			}
 		}
+		/* Ugly hack to get some empty space at the bottom of the list for nicer scrolling. */
+		fullList.add("\n\n\n\n\n\n\n\n");
 
 		RelativeLayout.LayoutParams lp;
 
+		/* Wannabe Material-style tabs. Gallery's deprecated but I don't like the replacements
+		   all that much. This works, just looks a little different (alpha instead of a thick
+		   underline indicating current tab). */
 		tentSel = new Gallery(ctx);
 		tentSel.setAdapter(new TentListAdapter(ctx, tents));
+		tentSel.setSpacing(0);
+		tentSel.setBackgroundResource(R.color.primary);
+		if (android.os.Build.VERSION.SDK_INT >= 21) {
+			tentSel.setElevation(app.dp2px(8));
+		}
 		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(tentSel, lp);
 
@@ -180,12 +190,12 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView ret = new TextView(ctx);
-			
-			ret.setText(tents.get(position).getTitle());
-			ret.setBackgroundDrawable(ctx.getResources().getDrawable(android.R.drawable.dialog_frame));
+
+			ret.setText(tents.get(position).getTitle().toUpperCase());
+			ret.setBackgroundResource(R.color.primary);
+			app.setPadding(ret, 10, 4, 10, 10);
 			ret.setTextColor(0xffffffff);
-			ret.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
-			ret.setTextSize(10);
+			ret.setTextSize(14);
 			
 			return ret;
 		}
@@ -204,5 +214,10 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 	@Override
 	public boolean multiDay() {
 		return false;
+	}
+
+	@Override
+	public boolean extendsActionBar() {
+		return true;
 	}
 }

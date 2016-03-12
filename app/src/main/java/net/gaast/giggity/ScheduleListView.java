@@ -147,8 +147,13 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	public boolean multiDay() {
 		return multiDay;
 	}
-	
+
 	public void setMultiDay(boolean md) {
 		multiDay = md;
+	}
+
+	@Override
+	public boolean extendsActionBar() {
+		return false;
 	}
 }

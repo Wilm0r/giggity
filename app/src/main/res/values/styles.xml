@@ -10,6 +10,7 @@
 	</style>
 	<style name="BurgerMenuHeader" parent="BurgerMenuItem">
 		<item name="android:background">@color/primary</item>
+		<item name="android:textColor">@color/white_text</item>
 	</style>
 	<style name="BurgerMenuSeparator">
 		<item name="android:layout_height">1dp</item>

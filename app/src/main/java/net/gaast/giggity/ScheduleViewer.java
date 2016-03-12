@@ -20,8 +20,12 @@
 package net.gaast.giggity;
 
 public interface ScheduleViewer {
-	/** Called every minute.
-	 */
+	/* Called every minute. */
 	public void refreshContents();
+
+	/* Allow date switching. Does not apply to now&next for example. */
 	public boolean multiDay();
+
+	/* Currently used by TimeTable only to blend the room tabs with the action bar. */
+	public boolean extendsActionBar();
 }

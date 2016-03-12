@@ -8,4 +8,6 @@
     <!-- light background/nav drawer colours -->
     <color name="light">#CFD8DC</color>
     <color name="light_dark">#B0BEC5</color> <!-- naming is hard! -->
+
+    <color name="white_text">#EEFFFFFF</color>
 </resources>
