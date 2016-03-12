@@ -1215,9 +1215,11 @@ public class Schedule {
 			
 			/* Strip HTML-like stuff. Might strip things I don't want to so only
 			 * do it if the description *starts* with a HTML tag. */
+			/* Trying a new approach now, using Html.fromHtml in EventDialog.
 			if (description.startsWith("<")) {
 				description = description.replaceAll("<[^>]*>", "");
 			}
+			*/
 		}
 		
 		public void addLink(Schedule.LinkType type, String url) {

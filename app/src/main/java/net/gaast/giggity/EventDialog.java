@@ -19,11 +19,6 @@
 
 package net.gaast.giggity;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -33,8 +28,10 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
 import android.text.TextUtils;
-import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -46,6 +43,13 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
+
+import org.xml.sax.XMLReader;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
 
 public class EventDialog extends Dialog implements OnDismissListener {
 	private Context ctx;
@@ -151,7 +155,30 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		}
 		
 		t = (TextView) c.findViewById(R.id.description);
-		t.setText(item.getDescription());
+		String text = item.getDescription();
+		if (text.contains("<p>")) {
+			/* This parser is VERY limited, results aren't great, but let's give it a shot.
+			   I'd really like to avoid using a full-blown WebView.. */
+			Html.TagHandler th = new Html.TagHandler() {
+				@Override
+				public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
+					if (tag.equals("li")) {
+						if (opening) {
+							output.append(" • ");
+						} else {
+							output.append("\n");
+						}
+					} else if (tag.equals("ul") || tag.equals("ol")) {
+						/* For both opening and closing */
+						output.append("\n");
+					}
+				}
+			};
+			Spanned formatted = Html.fromHtml(text, null, th);
+			t.setText(formatted);
+		} else {
+			t.setText(text);
+		}
 
 		final ScrollView scr = (ScrollView) c.findViewById(R.id.scrollDescription);
 		scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
@@ -161,6 +188,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 				scr.getHitRect(scrollBounds);
 				View subHeader = c.findViewById(R.id.subHeader);
 				View header = c.findViewById(R.id.header);
+				/* TODO: API level detection. */
 				if (subHeader.getLocalVisibleRect(scrollBounds)) {
 					header.setElevation(0);
 				} else {
