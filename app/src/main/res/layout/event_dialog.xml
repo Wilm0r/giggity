@@ -182,7 +182,8 @@
         There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the &quot;Duke Nukem Forever&quot; in the BitlBee community. Looks like we won!
 
         This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)"
-                android:textIsSelectable="true"/>
+                android:textIsSelectable="true"
+                android:focusable="false"/>
 
             <LinearLayout
                 android:id="@+id/links"
