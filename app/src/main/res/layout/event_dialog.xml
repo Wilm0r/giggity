@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:text="Linux on the desktop, y u no happen"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:paddingTop="0dp"/>
+        android:paddingTop="0dp"
+        android:textColor="#EEFFFFFF"/>
 
     <TextView
         android:id="@+id/subtitle"
@@ -34,7 +35,7 @@
         android:maxLines="2"
         android:text="2050 will be the year, I swear!"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        />
+        android:textColor="#EEFFFFFF"/>
 
     <TextView
         android:id="@+id/room"
@@ -43,7 +44,8 @@
         android:layout_alignParentLeft="true"
         android:text="De grote zael"
         android:textStyle="bold"
-        android:layout_below="@+id/subtitle"/>
+        android:layout_below="@+id/subtitle"
+        android:textColor="#EEFFFFFF"/>
 
     <TextView
         android:id="@+id/room_time_sep"
@@ -52,7 +54,8 @@
         android:layout_toRightOf="@+id/room"
         android:text=" · "
         android:textStyle="bold"
-        android:layout_below="@+id/subtitle"/>
+        android:layout_below="@+id/subtitle"
+        android:textColor="#EEFFFFFF"/>
 
     <TextView
         android:id="@+id/time"
@@ -61,7 +64,8 @@
         android:layout_toRightOf="@+id/room_time_sep"
         android:text="Sat 20:00-22:00"
         android:textStyle="bold"
-        android:layout_below="@+id/subtitle"/>
+        android:layout_below="@+id/subtitle"
+        android:textColor="#EEFFFFFF"/>
 </RelativeLayout>    
 
 <ScrollView
@@ -95,7 +99,8 @@
                 android:layout_alignParentTop="true"
                 android:text="@string/track"
                 android:textStyle="bold"
-                android:paddingTop="0dp" />
+                android:paddingTop="0dp"
+                android:textColor="#EEFFFFFF"/>
 
             <TextView
                 android:id="@+id/track"
@@ -105,7 +110,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@+id/headTrack"
                 android:text="Blaaaaaaat"
-                android:paddingLeft="4dp"/>
+                android:paddingLeft="4dp"
+                android:textColor="#EEFFFFFF"/>
 
             <TextView
                 android:id="@+id/headSpeaker"
@@ -117,7 +123,8 @@
                 android:selectAllOnFocus="false"
                 android:text="@string/speaker"
                 android:textStyle="bold"
-                android:paddingBottom="2dp"/>
+                android:paddingBottom="3dp"
+                android:textColor="#EEFFFFFF"/>
 
             <TextView
                 android:id="@+id/speaker"
@@ -132,7 +139,9 @@
                 android:maxLines="2"
                 android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
                 android:paddingLeft="4dp"
-                android:paddingBottom="0dp"/>
+                android:paddingBottom="0dp"
+                android:textColor="#EEFFFFFF"
+                android:singleLine="true"/>
         </RelativeLayout>
 
         <RelativeLayout
