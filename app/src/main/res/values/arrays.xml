@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- See if refs to strings are possible here? -->
 	<string-array name="default_view">
 		<item>Block schedule</item>
 		<item>Timetable</item>

@@ -2,7 +2,7 @@
 <resources>
 	<string-array name="default_view">
 		<item>Blokkenschema</item>
-		<item>Timetable</item>
+		<item>Tijdschema</item>
 		<item>Thema\'s</item>
 		<item>Nu en straks</item>
 		<item>Mijn items</item>

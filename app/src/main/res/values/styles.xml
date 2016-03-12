@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="GiggityTheme" parent="android:Theme.DeviceDefault.Light">
-        <item name="android:colorBackground">#03a9f4</item>
-    </style>
+	<style name="Theme.Giggity" parent="@android:style/Theme.Holo.Light">
+	</style>
 
-    <style name="BurgerMenuItem" parent="@android:style/TextAppearance.Medium">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:padding">8dp</item>
-    </style>
+	<style name="BurgerMenuItem" parent="@android:style/TextAppearance.Medium">
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:padding">8dp</item>
+	</style>
+	<style name="BurgerMenuHeader" parent="BurgerMenuItem">
+		<item name="android:background">@color/primary</item>
+	</style>
+	<style name="BurgerMenuSeparator">
+		<item name="android:layout_height">1dp</item>
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:background">@color/accent</item>
+	</style>
 </resources>

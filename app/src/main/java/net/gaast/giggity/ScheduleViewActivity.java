@@ -19,11 +19,6 @@
 
 package net.gaast.giggity;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -31,7 +26,6 @@ import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -42,28 +36,43 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.AbstractCollection;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class ScheduleViewActivity extends Activity {
 	protected Schedule sched;
 	protected Giggity app;
-	
-	private final static int VIEW_BLOCKSCHEDULE = 1;
-	private final static int VIEW_TIMETABLE = 2;
-	private final static int VIEW_NOWNEXT = 3;
-	private final static int VIEW_MINE = 4;
-	private final static int VIEW_TRACKS = 5;
-	
-	private int view;
+
+	/* TODO: oops, with VIEW_* constants gone the default view pref is broken.
+	   Are these constants safe across sessions? */
+	private final static int VIEWS[] = {
+		R.id.block_schedule,
+		R.id.timetable,
+		R.id.now_next,
+		R.id.my_events,
+		R.id.tracks,
+	};
+
+	private int curView;
 	
 	private Format dateFormat = new SimpleDateFormat("EE d MMMM");
 	
@@ -71,7 +80,11 @@ public class ScheduleViewActivity extends Activity {
 	 * (I.e. when returning from the settings menu.) */
 	private boolean redraw;
 	private Handler timer;
-	
+
+	private DrawerLayout drawerLayout;
+	private RelativeLayout drawer;
+	private ActionBarDrawerToggle drawerToggle;
+
 	private LinearLayout bigScreen;
 	private ScheduleViewer viewer;
 	private RelativeLayout viewerContainer;
@@ -91,16 +104,59 @@ public class ScheduleViewActivity extends Activity {
 		app = (Giggity) getApplication();
 		
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
-		view = Integer.parseInt(pref.getString("default_view", "1"));
-		
-		/* Might be usable somewhere: this.getActionBar().setSubtitle("Blaaaaa"); */
-		
-		bigScreen = new LinearLayout(this);
+		curView = Integer.parseInt(pref.getString("default_view", "1"));
+
+		drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.schedule_view_activity, null);
+		// meant to remove the shadow?
+		// drawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
+		View dl = drawerLayout;  /* Shorthand */
+		setContentView(dl);
+		drawer = (RelativeLayout) dl.findViewById(R.id.drawer);
+
+		drawer.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// NOOP at least for now just so touches don't fall through to bigScreen.
+			}
+		});
+
+		ViewGroup menu = (LinearLayout) dl.findViewById(R.id.menu);
+		menu.getChildCount();
+		for (int i = 0; i < menu.getChildCount(); ++i) {
+			View btn = menu.getChildAt(i);
+			btn.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//setView(v.getId());
+					onOptionsItemSelectedInt(v.getId());
+					drawerLayout.closeDrawers();
+				}
+			});
+		}
+
+		/* Hamburger menu! */
+		/* Darn the icon is ugly though. Find a new one? Or see how v7-appcompat affects apk size.. */
+		this.getActionBar().setDisplayHomeAsUpEnabled(true);
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_48dp, R.string.ok, R.string.ok) {
+			@Override
+			public void onDrawerOpened(View drawerView) {
+				super.onDrawerOpened(drawerView);
+				invalidateOptionsMenu();
+			}
+
+			@Override
+			public void onDrawerClosed(View drawerView) {
+				super.onDrawerClosed(drawerView);
+				invalidateOptionsMenu();
+			}
+		};
+
+		bigScreen = (LinearLayout) dl.findViewById(R.id.bigScreen);
 		updateOrientation(getResources().getConfiguration().orientation);
-		setContentView(bigScreen);
-		
-		viewerContainer = new RelativeLayout(this);
-		bigScreen.addView((View) viewerContainer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
+
+		viewerContainer = (RelativeLayout) dl.findViewById(R.id.viewerContainer);
+
+		/* TODO: See if I can do this in XML as well? (It's a custom private view. */
 		RelativeLayout.LayoutParams lp;
 		lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -111,7 +167,9 @@ public class ScheduleViewActivity extends Activity {
 		
 		redraw = false;
 		timer = new Handler();
-		
+
+		/* If the OS informs us that the timezone changes, close this activity so the schedule
+		   gets reloaded. (This because input is usually TZ-unaware while our objects aren't.) */
 		tzClose = new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context arg0, Intent arg1) {
@@ -147,6 +205,12 @@ public class ScheduleViewActivity extends Activity {
 		} else {
 			loadScheduleAsync(url, fs);
 		}
+	}
+
+	@Override
+	protected void onPostCreate(Bundle savedInstanceState) {
+		super.onPostCreate(savedInstanceState);
+		drawerToggle.syncState();
 	}
 	
 	@Override
@@ -284,11 +348,28 @@ public class ScheduleViewActivity extends Activity {
 			dia.show();
 		}
 		redrawSchedule();
+		updateNavDrawer();
 	}
-	
+
+	public void updateNavDrawer() {
+		/* Show currently selected view */
+		for (int v : VIEWS) {
+			drawerLayout.findViewById(v).setBackgroundColor((curView == v) ? 0xFFB0BEC5 : 0xFFCFD8DC);
+		}
+
+		if (sched != null) {
+			LinkedList<Date> days = sched.getDays();
+			TextView dr = (TextView) drawerLayout.findViewById(R.id.date_range);
+			dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
+
+			drawerLayout.findViewById(R.id.tracks).setVisibility(sched.getTracks() != null ? View.VISIBLE : View.GONE);
+			drawerLayout.findViewById(R.id.change_day).setVisibility(sched.getDays().size() > 1 ? View.VISIBLE : View.GONE);
+		}
+	}
+
 	public void redrawSchedule() {
 		/* TODO: User viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
-		if (view != VIEW_NOWNEXT && view != VIEW_MINE && view != VIEW_TRACKS && sched.getDays().size() > 1) {
+		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.tracks && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
 			setTitle(sched.getDayFormat().format(sched.getDay()) + ", " + sched.getTitle());
 		} else {
@@ -296,15 +377,15 @@ public class ScheduleViewActivity extends Activity {
 			setTitle(sched.getTitle());
 		}
 		
-		if (view == VIEW_TIMETABLE) {
+		if (curView == R.id.timetable) {
 			setScheduleView(new TimeTable(this, sched));
-		} else if (view == VIEW_NOWNEXT) {
+		} else if (curView == R.id.now_next) {
 			setScheduleView(new NowNext(this, sched));
-		} else if (view == VIEW_MINE) {
+		} else if (curView == R.id.my_events) {
 			setScheduleView(new MyItemsView(this, sched));
-		} else if (view == VIEW_TRACKS) {
+		} else if (curView == R.id.tracks) {
 			setScheduleView(new TrackList(this, sched));
-		} else /* if (view == VIEW_BLOCKSCHEDULE) */ {
+		} else /* if (curView == R.id.block_schedule) */ {
 			setScheduleView(new BlockSchedule(this, sched));
 		}
 		
@@ -397,12 +478,13 @@ public class ScheduleViewActivity extends Activity {
 			return true;
 		}
 
+		/* TODO: Port to navdrawer */
 		menu.findItem(R.id.change_day).setVisible(!viewer.multiDay() && sched.getDays().size() > 1);
-		menu.findItem(R.id.timetable).setVisible(view != VIEW_TIMETABLE);
-		menu.findItem(R.id.tracks).setVisible(view != VIEW_TRACKS && sched.getTracks() != null);
-		menu.findItem(R.id.block_schedule).setVisible(view != VIEW_BLOCKSCHEDULE);
-		menu.findItem(R.id.now_next).setVisible(view != VIEW_NOWNEXT);
-		menu.findItem(R.id.my_events).setVisible(view != VIEW_MINE);
+		menu.findItem(R.id.timetable).setVisible(curView != R.id.timetable);
+		menu.findItem(R.id.tracks).setVisible(curView != R.id.tracks && sched.getTracks() != null);
+		menu.findItem(R.id.block_schedule).setVisible(curView != R.id.block_schedule);
+		menu.findItem(R.id.now_next).setVisible(curView != R.id.now_next);
+		menu.findItem(R.id.my_events).setVisible(curView != R.id.my_events);
 		return true;
 	}
 	
@@ -438,47 +520,51 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	private void setView(int view_) {
-		view = view_;
+		curView = view_;
 		setEventDialog(null, null);
 		redrawSchedule();
+		updateNavDrawer();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.settings:
-			redraw = true;
-			Intent intent = new Intent(this, SettingsActivity.class);
-			startActivity(intent);
-			return true;
-		case R.id.change_day:
-			showDayDialog();
-			return true;
-		case R.id.timetable:
-			setView(VIEW_TIMETABLE);
-			return true;
-		case R.id.tracks:
-			setView(VIEW_TRACKS);
-			return true;
-		case R.id.block_schedule:
-			setView(VIEW_BLOCKSCHEDULE);
-			return true;
-		case R.id.now_next:
-			setView(VIEW_NOWNEXT);
-			return true;
-		case R.id.my_events:
-			setView(VIEW_MINE);
-			return true;
-		case R.id.search:
-			this.onSearchRequested();
-			return true;
-		case R.id.export_selections:
-			ScheduleUI.exportSelections(this, sched);
+		/* ActionBar arrow/burger goes here as well. */
+		if (drawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
+
+		onOptionsItemSelectedInt(item.getItemId());
+
 		return super.onOptionsItemSelected(item);
 	}
-	
+
+	private boolean onOptionsItemSelectedInt(int id) {
+		switch (id) {
+			case R.id.settings:
+				redraw = true;
+				Intent intent = new Intent(this, SettingsActivity.class);
+				startActivity(intent);
+				return true;
+			case R.id.change_day:
+				showDayDialog();
+				return true;
+			case R.id.search:
+				this.onSearchRequested();
+				return true;
+			case R.id.export_selections:
+				ScheduleUI.exportSelections(this, sched);
+				return true;
+			case R.id.timetable:
+			case R.id.tracks:
+			case R.id.block_schedule:
+			case R.id.now_next:
+			case R.id.my_events:
+				setView(id);
+				return true;
+		}
+		return true; // TODO - void
+	}
+
 	public void onScroll() {
 		if (sched.getDays().size() > 1)
 			days.show();

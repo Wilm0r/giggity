@@ -30,17 +30,21 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.DragEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class EventDialog extends Dialog implements OnDismissListener {
@@ -50,6 +54,8 @@ public class EventDialog extends Dialog implements OnDismissListener {
 
 	private CheckBox cb;
 	private StarsView sv;
+
+	private Giggity app;
 
 	public EventDialog(Context ctx_, Schedule.Item item_) {
 		super(ctx_);
@@ -70,8 +76,9 @@ public class EventDialog extends Dialog implements OnDismissListener {
 	}
 	
 	public View genDialog(boolean big) {
-		Giggity app = (Giggity) ctx.getApplicationContext();
-		View v, c = getLayoutInflater().inflate(R.layout.event_dialog, null);
+		app = (Giggity) ctx.getApplicationContext();
+		View v;
+		final View c = getLayoutInflater().inflate(R.layout.event_dialog, null);
 		TextView t;
 		Format tf = new SimpleDateFormat("HH:mm");
 		
@@ -145,6 +152,22 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		
 		t = (TextView) c.findViewById(R.id.description);
 		t.setText(item.getDescription());
+
+		final ScrollView scr = (ScrollView) c.findViewById(R.id.scrollDescription);
+		scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+			@Override
+			public void onScrollChanged() {
+				Rect scrollBounds = new Rect();
+				scr.getHitRect(scrollBounds);
+				View subHeader = c.findViewById(R.id.subHeader);
+				View header = c.findViewById(R.id.header);
+				if (subHeader.getLocalVisibleRect(scrollBounds)) {
+					header.setElevation(0);
+				} else {
+					header.setElevation(app.dp2px(8));
+				}
+			}
+		});
 
 		/* Bottom box is some stuff next to each other: Remind checkbox/stars, web buttons. */
 		LinearLayout bottomBox = (LinearLayout) c.findViewById(R.id.bottomBox);
@@ -231,9 +254,10 @@ public class EventDialog extends Dialog implements OnDismissListener {
 	private class DeleteButton extends ImageButton implements ImageButton.OnClickListener {
 		public DeleteButton(Context context) {
 			super(context);
-			setImageResource(android.R.drawable.ic_delete);
+			setImageResource(android.R.drawable.ic_menu_delete);
 			setPadding(0, 0, 0, 0);
 			setOnClickListener(this);
+			setBackgroundColor(0x00000000);
 		}
 
 		@Override

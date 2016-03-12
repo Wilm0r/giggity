@@ -45,7 +45,7 @@
 	<!-- Menu -->
 	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>
-	<string name="timetable">Timetable</string>
+	<string name="timetable">Tijdschema</string>
 	<string name="tracks">Thema\'s</string>
 	<string name="now_next">Nu en straks</string>
 	<string name="my_events">Mijn items</string>
