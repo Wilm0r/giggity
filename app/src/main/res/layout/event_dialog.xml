@@ -23,7 +23,7 @@
         android:text="Linux on the desktop, y u no happen"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:paddingTop="0dp"
-        android:textColor="#EEFFFFFF"/>
+        android:textColor="@color/white_text"/>
 
     <TextView
         android:id="@+id/subtitle"
@@ -35,7 +35,7 @@
         android:maxLines="2"
         android:text="2050 will be the year, I swear!"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="#EEFFFFFF"/>
+        android:textColor="@color/white_text"/>
 
     <TextView
         android:id="@+id/room"
@@ -44,7 +44,7 @@
         android:layout_alignParentLeft="true"
         android:text="De grote zael"
         android:layout_below="@+id/subtitle"
-        android:textColor="#EEFFFFFF"/>
+        android:textColor="@color/white_text"/>
 
     <TextView
         android:id="@+id/room_time_sep"
@@ -53,7 +53,7 @@
         android:layout_toRightOf="@+id/room"
         android:text=" · "
         android:layout_below="@+id/subtitle"
-        android:textColor="#EEFFFFFF"
+        android:textColor="@color/white_text"
         android:textStyle="bold"/>
 
     <TextView
@@ -63,7 +63,7 @@
         android:layout_toRightOf="@+id/room_time_sep"
         android:text="Sat 20:00-22:00"
         android:layout_below="@+id/subtitle"
-        android:textColor="#EEFFFFFF"/>
+        android:textColor="@color/white_text"/>
 </RelativeLayout>    
 
 <ScrollView
@@ -98,7 +98,7 @@
                 android:text="@string/track"
                 android:textStyle="bold"
                 android:paddingTop="0dp"
-                android:textColor="#EEFFFFFF"/>
+                android:textColor="@color/white_text"/>
 
             <TextView
                 android:id="@+id/track"
@@ -109,7 +109,7 @@
                 android:layout_toRightOf="@+id/headTrack"
                 android:text="Blaaaaaaat"
                 android:paddingLeft="4dp"
-                android:textColor="#EEFFFFFF"/>
+                android:textColor="@color/white_text"/>
 
             <TextView
                 android:id="@+id/headSpeaker"
@@ -122,7 +122,7 @@
                 android:text="@string/speaker"
                 android:textStyle="bold"
                 android:paddingBottom="3dp"
-                android:textColor="#EEFFFFFF"/>
+                android:textColor="@color/white_text"/>
 
             <TextView
                 android:id="@+id/speaker"
@@ -138,7 +138,7 @@
                 android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
                 android:paddingLeft="4dp"
                 android:paddingBottom="0dp"
-                android:textColor="#EEFFFFFF"
+                android:textColor="@color/white_text"
                 android:singleLine="true"/>
         </RelativeLayout>
 
@@ -182,10 +182,7 @@
         There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the &quot;Duke Nukem Forever&quot; in the BitlBee community. Looks like we won!
 
         This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)"
-                android:textIsSelectable="true"
-                android:password="false"
-                android:clickable="true"
-                android:linksClickable="true"/>
+                android:textIsSelectable="true"/>
 
             <LinearLayout
                 android:id="@+id/links"
