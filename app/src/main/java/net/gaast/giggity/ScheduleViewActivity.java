@@ -63,7 +63,7 @@ public class ScheduleViewActivity extends Activity {
 	protected Giggity app;
 
 	/* TODO: oops, with VIEW_* constants gone the default view pref is broken.
-	   Are these constants safe across sessions? */
+	   Are these constants safe across builds? Uh oh. */
 	private final static int VIEWS[] = {
 		R.id.block_schedule,
 		R.id.timetable,
@@ -107,8 +107,6 @@ public class ScheduleViewActivity extends Activity {
 		curView = Integer.parseInt(pref.getString("default_view", "1"));
 
 		drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.schedule_view_activity, null);
-		// meant to remove the shadow?
-		// drawerLayout.setScrimColor(getResources().getColor(android.R.color.transparent));
 		View dl = drawerLayout;  /* Shorthand */
 		setContentView(dl);
 		drawer = (RelativeLayout) dl.findViewById(R.id.drawer);
@@ -135,9 +133,9 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		/* Hamburger menu! */
-		/* Darn the icon is ugly though. Find a new one? Or see how v7-appcompat affects apk size.. */
+		/* Should still consider v7-appcompat, depending on how much it, again, affects apk size.. */
 		this.getActionBar().setDisplayHomeAsUpEnabled(true);
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_48dp, R.string.ok, R.string.ok) {
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.ok, R.string.ok) {
 			@Override
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
