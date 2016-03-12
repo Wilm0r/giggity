@@ -19,11 +19,6 @@
 
 package net.gaast.giggity;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -39,6 +34,11 @@ import android.view.View;
 import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.LinkedList;
 
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ScheduleViewer {
 	Giggity app;
@@ -67,9 +67,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
 	SharedPreferences pref;
 	
-	private int HourWidth = 36;
+	private int HourWidth = 96;
 	private int HourHeight = 15;
-	private int TentHeight = 24;
+	private int TentHeight = 48;
 	private int TentWidth = 36;
 	private float fontSize = 9;
 	
@@ -91,7 +91,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		HourHeight *= getResources().getDisplayMetrics().density;
 		TentHeight *= getResources().getDisplayMetrics().density;
 		TentWidth *= getResources().getDisplayMetrics().density;
-		
+
 		HourWidth = pref.getInt("block_schedule_hour_width", HourWidth);
 		TentHeight = pref.getInt("block_schedule_tent_height", TentHeight);
 
