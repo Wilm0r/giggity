@@ -9,7 +9,7 @@
 	                android:negativeButtonText="@string/cancel"
 	                android:entries="@array/default_view"
 	                android:entryValues="@array/default_view_values" 
-	                android:defaultValue="1" />
+	                android:defaultValue="net.gaast.giggity:id/block_schedule" />
 
 	<CheckBoxPreference android:key="always_refresh" 
 	                    android:title="@string/always_refresh"

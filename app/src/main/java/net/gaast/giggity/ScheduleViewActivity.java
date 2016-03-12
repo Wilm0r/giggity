@@ -62,8 +62,6 @@ public class ScheduleViewActivity extends Activity {
 	protected Schedule sched;
 	protected Giggity app;
 
-	/* TODO: oops, with VIEW_* constants gone the default view pref is broken.
-	   Are these constants safe across builds? Uh oh. */
 	private final static int VIEWS[] = {
 		R.id.block_schedule,
 		R.id.timetable,
@@ -104,7 +102,7 @@ public class ScheduleViewActivity extends Activity {
 		app = (Giggity) getApplication();
 		
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
-		curView = Integer.parseInt(pref.getString("default_view", "1"));
+		curView = getResources().getIdentifier(pref.getString("default_view", "net.gaast.giggity:id/block_schedule"), null, null);
 
 		drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.schedule_view_activity, null);
 		View dl = drawerLayout;  /* Shorthand */
