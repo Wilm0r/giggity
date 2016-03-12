@@ -11,8 +11,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/primary"
-    android:padding="2dp"
-    android:paddingBottom="4dp">
+    android:paddingBottom="4dp"
+    android:paddingLeft="2dp"
+    android:paddingTop="2dp">
     <!-- only when subheader is invisible: android:elevation="8dp"> -->
 
     <TextView
@@ -35,41 +36,32 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         />
 
-    <ImageView
-        android:id="@+id/sep_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/subtitle"
-        android:paddingTop="3dp"
-        android:scaleType="fitXY" />
-
     <TextView
         android:id="@+id/room"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sep_title"
         android:layout_alignParentLeft="true"
         android:text="De grote zael"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_below="@+id/subtitle"/>
 
     <TextView
         android:id="@+id/room_time_sep"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sep_title"
         android:layout_toRightOf="@+id/room"
         android:text=" · "
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:layout_below="@+id/subtitle"/>
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/sep_title"
         android:layout_toRightOf="@+id/room_time_sep"
         android:text="Sat 20:00-22:00"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_below="@+id/subtitle"/>
 </RelativeLayout>    
 
 <ScrollView
@@ -124,7 +116,8 @@
                 android:maxLines="1"
                 android:selectAllOnFocus="false"
                 android:text="@string/speaker"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:paddingBottom="2dp"/>
 
             <TextView
                 android:id="@+id/speaker"
@@ -138,7 +131,8 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
-                android:paddingLeft="4dp"/>
+                android:paddingLeft="4dp"
+                android:paddingBottom="0dp"/>
         </RelativeLayout>
 
         <RelativeLayout
@@ -148,20 +142,33 @@
             android:paddingRight="2dp"
             android:id="@+id/descriptionBox">
 
-            <TextView
-                android:id="@+id/alert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/headAlert"
-                android:layout_marginLeft="12dp"
-                android:layout_toRightOf="@+id/headAlert"
-                android:text="Conflicts bla" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/alertBox">
+
+                <ImageView
+                    android:id="@+id/headAlert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_warning_black_36dp" />
+
+                <TextView
+                    android:id="@+id/alert"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/headAlert"
+                    android:layout_marginLeft="12dp"
+                    android:layout_toRightOf="@+id/headAlert"
+                    android:text="Conflicts bla" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/alert"
+                android:layout_below="@+id/alertBox"
                 android:layout_marginTop="4dp"
                 android:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would&apos;ve thought that this one would take even longer than going from 0.7 to 1.0 (which &quot;only&quot; took three years)?
 
@@ -181,11 +188,6 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/headAlert"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_warning_black_36dp" />
         </RelativeLayout>
     </LinearLayout>
 
