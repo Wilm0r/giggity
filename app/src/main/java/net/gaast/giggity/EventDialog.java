@@ -183,7 +183,6 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		if (android.os.Build.VERSION.SDK_INT >= 21) {
 			/* Lollipop+. I think owners of older devs will survive without drop shadows, right? :> */
 			final ScrollView scr = (ScrollView) c.findViewById(R.id.scrollDescription);
-			scr.scrollTo(0,0);
 			scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 				@Override
 				public void onScrollChanged() {
