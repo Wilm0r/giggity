@@ -40,57 +40,63 @@
 
 		</LinearLayout>
 
-		<LinearLayout
-			android:id="@+id/menu"
-			android:layout_width="match_parent"
-			android:layout_height="match_parent"
-			android:orientation="vertical"
-			android:layout_below="@+id/header">
+		<ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/header"
+            android:id="@+id/scrollView">
 
-			<!-- choose views -->
-			<TextView
-				android:id="@+id/block_schedule"
-				style="@style/BurgerMenuItem"
-				android:text="@string/block_schedule"/>
+			<LinearLayout
+                android:id="@+id/menu"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-			<TextView
-				android:id="@+id/now_next"
-				style="@style/BurgerMenuItem"
-				android:text="@string/now_next"/>
+                <!-- choose views -->
+                <TextView
+                    android:id="@+id/block_schedule"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/block_schedule"/>
 
-			<TextView
-				android:id="@+id/timetable"
-				style="@style/BurgerMenuItem"
-				android:text="@string/timetable"/>
+                <TextView
+                    android:id="@+id/now_next"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/now_next"/>
 
-			<TextView
-				android:id="@+id/tracks"
-				style="@style/BurgerMenuItem"
-				android:text="@string/tracks"/>
+                <TextView
+                    android:id="@+id/timetable"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/timetable"/>
 
-			<TextView
-				android:id="@+id/my_events"
-				style="@style/BurgerMenuItem"
-				android:text="@string/my_events"/>
+                <TextView
+                    android:id="@+id/tracks"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/tracks"/>
 
-			<View
-				style="@style/BurgerMenuSeparator" />
+                <TextView
+                    android:id="@+id/my_events"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/my_events"/>
 
-			<!-- misc -->
-			<TextView
-				android:id="@+id/change_day"
-				style="@style/BurgerMenuItem"
-				android:text="@string/change_day"/>
+                <View
+                    style="@style/BurgerMenuSeparator" />
 
-			<TextView
-				android:id="@+id/export_selections"
-				style="@style/BurgerMenuItem"
-				android:text="@string/export_selections"/>
+                <!-- misc -->
+                <TextView
+                    android:id="@+id/change_day"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/change_day"/>
 
-			<TextView
-				android:id="@+id/settings"
-				style="@style/BurgerMenuItem"
-				android:text="@string/settings"/>
-		</LinearLayout>
+                <TextView
+                    android:id="@+id/export_selections"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/export_selections"/>
+
+                <TextView
+                    android:id="@+id/settings"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/settings"/>
+            </LinearLayout>
+		</ScrollView>
 	</RelativeLayout>
 </android.support.v4.widget.DrawerLayout>
