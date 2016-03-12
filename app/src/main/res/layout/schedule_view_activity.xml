@@ -81,6 +81,19 @@
                 <View
                     style="@style/BurgerMenuSeparator" />
 
+                <TextView
+                    android:id="@+id/custom"
+                    style="@style/BurgerMenuItem"
+                    android:text="Website"/>
+
+                <TextView
+                    android:id="@+id/custom"
+                    style="@style/BurgerMenuItem"
+                    android:text="Map"/>
+
+                <View
+                    style="@style/BurgerMenuSeparator" />
+
                 <!-- misc -->
                 <TextView
                     android:id="@+id/change_day"

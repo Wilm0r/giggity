@@ -523,31 +523,36 @@ public class ScheduleViewActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
-	private boolean onOptionsItemSelectedInt(int id) {
+	private void onOptionsItemSelectedInt(int id) {
 		switch (id) {
 			case R.id.settings:
 				redraw = true;
 				Intent intent = new Intent(this, SettingsActivity.class);
 				startActivity(intent);
-				return true;
+				break;
 			case R.id.change_day:
 				showDayDialog();
-				return true;
+				break;
 			case R.id.search:
 				this.onSearchRequested();
-				return true;
+				break;
 			case R.id.export_selections:
 				ScheduleUI.exportSelections(this, sched);
-				return true;
+				break;
 			case R.id.timetable:
 			case R.id.tracks:
 			case R.id.block_schedule:
 			case R.id.now_next:
 			case R.id.my_events:
 				setView(id);
-				return true;
+				break;
+			case R.id.custom:
+				Uri uri = Uri.parse("https://fosdem.org/2016/schedule/buildings/");
+				Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+				browser.addCategory(Intent.CATEGORY_BROWSABLE);
+				startActivity(browser);
+				break;
 		}
-		return true; // TODO - void
 	}
 
 	public void onScroll() {
