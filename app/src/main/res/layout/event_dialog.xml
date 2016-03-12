@@ -43,7 +43,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:text="De grote zael"
-        android:textStyle="bold"
         android:layout_below="@+id/subtitle"
         android:textColor="#EEFFFFFF"/>
 
@@ -53,9 +52,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/room"
         android:text=" · "
-        android:textStyle="bold"
         android:layout_below="@+id/subtitle"
-        android:textColor="#EEFFFFFF"/>
+        android:textColor="#EEFFFFFF"
+        android:textStyle="bold"/>
 
     <TextView
         android:id="@+id/time"
@@ -63,7 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/room_time_sep"
         android:text="Sat 20:00-22:00"
-        android:textStyle="bold"
         android:layout_below="@+id/subtitle"
         android:textColor="#EEFFFFFF"/>
 </RelativeLayout>    
