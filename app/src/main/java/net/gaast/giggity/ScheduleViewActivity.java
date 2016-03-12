@@ -467,27 +467,7 @@ public class ScheduleViewActivity extends Activity {
 		inflater.inflate(R.menu.scheduleviewactivity, menu);
 		return true;
 	}
-	
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		if (viewer == null || sched == null) {
-			/* Note: I used to return false here which worked and seemed more correct, but ...
-			 * now it looks like Android will keep not showing the menu if I return false just
-			 * the first time? Return true. Menu shouldn't actually be usable as it's out of focus
-			 * so I hope this is safe.. */
-			return true;
-		}
 
-		/* TODO: Port to navdrawer */
-		menu.findItem(R.id.change_day).setVisible(!viewer.multiDay() && sched.getDays().size() > 1);
-		menu.findItem(R.id.timetable).setVisible(curView != R.id.timetable);
-		menu.findItem(R.id.tracks).setVisible(curView != R.id.tracks && sched.getTracks() != null);
-		menu.findItem(R.id.block_schedule).setVisible(curView != R.id.block_schedule);
-		menu.findItem(R.id.now_next).setVisible(curView != R.id.now_next);
-		menu.findItem(R.id.my_events).setVisible(curView != R.id.my_events);
-		return true;
-	}
-	
 	public void showDayDialog() {
 		LinkedList<Date> days = sched.getDays();
 		CharSequence dayList[] = new CharSequence[days.size()];
