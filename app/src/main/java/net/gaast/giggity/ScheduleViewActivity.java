@@ -352,7 +352,12 @@ public class ScheduleViewActivity extends Activity {
 	public void updateNavDrawer() {
 		/* Show currently selected view */
 		for (int v : VIEWS) {
-			drawerLayout.findViewById(v).setBackgroundColor((curView == v) ? 0xFFB0BEC5 : 0xFFCFD8DC);
+			if (curView == v) {
+				drawerLayout.findViewById(v).setBackground(
+						getResources().getDrawable(R.drawable.menu_gradient));
+			} else {
+				drawerLayout.findViewById(v).setBackgroundColor(0xFFCFD8DC);
+			}
 		}
 
 		if (sched != null) {
@@ -360,8 +365,10 @@ public class ScheduleViewActivity extends Activity {
 			TextView dr = (TextView) drawerLayout.findViewById(R.id.date_range);
 			dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
 
-			drawerLayout.findViewById(R.id.tracks).setVisibility(sched.getTracks() != null ? View.VISIBLE : View.GONE);
-			drawerLayout.findViewById(R.id.change_day).setVisibility(sched.getDays().size() > 1 ? View.VISIBLE : View.GONE);
+			drawerLayout.findViewById(R.id.tracks).setVisibility(
+					sched.getTracks() != null ? View.VISIBLE : View.GONE);
+			drawerLayout.findViewById(R.id.change_day).setVisibility(
+					!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
 		}
 	}
 
@@ -457,7 +464,7 @@ public class ScheduleViewActivity extends Activity {
 		Log.i("BlockScheduleActivity", "Configuration changed");
 		updateOrientation(newConfig.orientation);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
