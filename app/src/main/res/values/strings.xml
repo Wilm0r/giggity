@@ -50,7 +50,10 @@
 	<string name="now_next">Now and next</string>
 	<string name="my_events">My events</string>
 	<string name="search">Search</string>
-		
+	<!-- navdrawer (toggler) -->
+	<string name="navdrawer_on">Show drawer</string>
+	<string name="navdrawer_off">Hide drawer</string>
+
 	<!-- NowNext -->
 	<string name="no_events_today">No events today.</string>
 	<string name="now">Now:</string>

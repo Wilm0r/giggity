@@ -135,7 +135,7 @@ public class ScheduleViewActivity extends Activity {
 		/* Hamburger menu! */
 		/* Should still consider v7-appcompat, depending on how much it, again, affects apk size.. */
 		this.getActionBar().setDisplayHomeAsUpEnabled(true);
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.ok, R.string.ok) {
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.navdrawer_on, R.string.navdrawer_off) {
 			@Override
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
@@ -355,10 +355,9 @@ public class ScheduleViewActivity extends Activity {
 		/* Show currently selected view */
 		for (int v : VIEWS) {
 			if (curView == v) {
-				drawerLayout.findViewById(v).setBackground(
-						getResources().getDrawable(R.drawable.menu_gradient));
+				drawerLayout.findViewById(v).setBackgroundResource(R.drawable.menu_gradient);
 			} else {
-				drawerLayout.findViewById(v).setBackgroundColor(getResources().getColor(R.color.light));
+				drawerLayout.findViewById(v).setBackgroundResource(R.color.light);
 			}
 		}
 
