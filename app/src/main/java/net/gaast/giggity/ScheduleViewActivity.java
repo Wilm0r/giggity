@@ -125,7 +125,7 @@ public class ScheduleViewActivity extends Activity {
 			btn.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					//setView(v.getId());
+					// Not for now as I can't undo it (toggler not calling handlers?) TODO v.setBackground(getResources().getDrawable(R.drawable.menu_gradient));
 					onOptionsItemSelectedInt(v.getId());
 					drawerLayout.closeDrawers();
 				}
@@ -140,6 +140,8 @@ public class ScheduleViewActivity extends Activity {
 			public void onDrawerOpened(View drawerView) {
 				super.onDrawerOpened(drawerView);
 				invalidateOptionsMenu();
+				/* Looks like this code doesn't actually run BTW. Need to figure that out later. */
+				updateNavDrawer();
 			}
 
 			@Override
@@ -356,7 +358,7 @@ public class ScheduleViewActivity extends Activity {
 				drawerLayout.findViewById(v).setBackground(
 						getResources().getDrawable(R.drawable.menu_gradient));
 			} else {
-				drawerLayout.findViewById(v).setBackgroundColor(0xFFCFD8DC);
+				drawerLayout.findViewById(v).setBackgroundColor(getResources().getColor(R.color.light));
 			}
 		}
 

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- material design "primary colours" -->
     <color name="primary">#039be5</color>
     <color name="primary_dark">#0288d1</color>
     <color name="accent">#ff5722</color>
+
+    <!-- light background/nav drawer colours -->
+    <color name="light">#CFD8DC</color>
+    <color name="light_dark">#B0BEC5</color> <!-- naming is hard! -->
 </resources>

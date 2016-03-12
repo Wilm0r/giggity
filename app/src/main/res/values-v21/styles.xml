@@ -4,14 +4,5 @@
         <item name="@android:colorPrimary">@color/primary</item>
         <item name="@android:colorPrimaryDark">@color/primary_dark</item>
         <item name="@android:colorAccent">@color/accent</item>
-        <!-- Sets actionbar text colour. See what else...
-        <item name="android:textColorPrimary">#ffffffff</item>
-        <item name="actionBarStyle">@style/Theme.Giggity.ActionBar</item> -->
     </style>
-    <!-- nope as well
-    <style name="Theme.Giggity.ActionBar" parent="@android:style/Widget.Material.ActionBar.Solid">
-        <item name="titleTextStyle">@style/TextAppearance.Material.Widget.ActionMode.Title</item>
-    </style>
-    <style name="Theme.Giggity.ActionBar.Title" parent="@android:style/TextAppearance.Material.Widget.ActionBar.Title.Inverse" />
-    -->
 </resources>
