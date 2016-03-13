@@ -182,6 +182,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 
 		if (android.os.Build.VERSION.SDK_INT >= 21) {
 			/* Lollipop+. I think owners of older devs will survive without drop shadows, right? :> */
+			/* TODO: Remove check above if I find a way to do drop shadows pre-L. */
 			final ScrollView scr = (ScrollView) c.findViewById(R.id.scrollDescription);
 			scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 				@Override
@@ -191,10 +192,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 					View subHeader = c.findViewById(R.id.subHeader);
 					View header = c.findViewById(R.id.header);
 
-					/* Duplicate check because IntelliJ isn't *that* smart. */
-					if (android.os.Build.VERSION.SDK_INT >= 21) {
-						header.setElevation(subHeader.getLocalVisibleRect(scrollBounds) ? 0 : app.dp2px(8));
-					}
+					app.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
 				}
 			});
 	}

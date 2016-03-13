@@ -92,9 +92,7 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		tentSel.setAdapter(new TentListAdapter(ctx, tents));
 		tentSel.setSpacing(0);
 		tentSel.setBackgroundResource(R.color.primary);
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			tentSel.setElevation(app.dp2px(8));
-		}
+		app.setShadow(tentSel, true);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(tentSel, lp);
 

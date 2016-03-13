@@ -508,9 +508,8 @@ public class ScheduleViewActivity extends Activity {
 		setEventDialog(null, null);
 		redrawSchedule();
 		updateNavDrawer();
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			getActionBar().setElevation(viewer.extendsActionBar() ? 0 : app.dp2px(8));
-		}
+		// TODO: Do this on initial render as well.
+		app.setShadow(getActionBar(), !viewer.extendsActionBar());
 	}
 
 	@Override

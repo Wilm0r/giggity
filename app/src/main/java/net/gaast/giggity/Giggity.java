@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+import android.app.ActionBar;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -161,5 +162,17 @@ public class Giggity extends Application {
 		else
 			ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
 		return ret + " " + (1900 + end.getYear());
+	}
+
+	public void setShadow(View v, boolean on) {
+		if (android.os.Build.VERSION.SDK_INT >= 21) {
+			v.setElevation(on ? dp2px(8) : 0);
+		}
+	}
+
+	public void setShadow(ActionBar v, boolean on) {
+		if (android.os.Build.VERSION.SDK_INT >= 21) {
+			v.setElevation(on ? dp2px(8) : 0);
+		}
 	}
 }
