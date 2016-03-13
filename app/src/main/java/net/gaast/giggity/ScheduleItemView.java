@@ -36,6 +36,7 @@ public class ScheduleItemView extends RelativeLayout {
 		title = new TextView(ctx);
 		title.setText(item.getTitle());
 		title.setTextSize(16);
+		title.setTextColor(getResources().getColor(R.color.dark_text));
 		title.setId(++n);
 		if ((flags & SHORT_TITLE) > 0) {
 			title.setLines(1);

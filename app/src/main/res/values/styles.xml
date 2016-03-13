@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="Theme.Giggity" parent="@android:style/Theme.Holo.Light">
+	<style name="Theme.Giggity" parent="@android:style/Theme.DeviceDefault.Light">
 	</style>
 
 	<style name="BurgerMenuItem" parent="@android:style/TextAppearance">
@@ -10,7 +10,7 @@
 	</style>
 	<style name="BurgerMenuHeader" parent="BurgerMenuItem">
 		<item name="android:background">@color/primary</item>
-		<item name="android:textColor">@color/white_text</item>
+		<item name="android:textColor">@color/light_text</item>
 	</style>
 	<style name="BurgerMenuSeparator">
 		<item name="android:layout_height">1dp</item>

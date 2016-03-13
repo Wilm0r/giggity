@@ -443,6 +443,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					title = new TextView(ChooserActivity.this);
 					title.setText(item.getTitle());
 					title.setTextSize(22);
+					title.setTextColor(getResources().getColor(R.color.dark_text));
 					ret.addView(title);
 
 					when = new TextView(ChooserActivity.this);
@@ -459,6 +460,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					ret.setText(header);
 					ret.setTextSize(18);
 					ret.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+					ret.setTextColor(getResources().getColor(R.color.dark_text));
 					app.setPadding(ret, 0, 24, 0, 3);
 
 					return ret;

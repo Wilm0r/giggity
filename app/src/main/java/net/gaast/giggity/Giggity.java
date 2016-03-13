@@ -170,6 +170,7 @@ public class Giggity extends Application {
 		}
 	}
 
+	/* ActionBar is not a view, just looks a lot like one! */
 	public void setShadow(ActionBar v, boolean on) {
 		if (android.os.Build.VERSION.SDK_INT >= 21) {
 			v.setElevation(on ? dp2px(8) : 0);

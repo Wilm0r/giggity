@@ -23,7 +23,7 @@
         android:text="Linux on the desktop, y u no happen"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:paddingTop="0dp"
-        android:textColor="@color/white_text"/>
+        android:textColor="@color/light_text"/>
 
     <TextView
         android:id="@+id/subtitle"
@@ -35,7 +35,7 @@
         android:maxLines="2"
         android:text="2050 will be the year, I swear!"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/white_text"/>
+        android:textColor="@color/light_text"/>
 
     <TextView
         android:id="@+id/room"
@@ -44,7 +44,7 @@
         android:layout_alignParentLeft="true"
         android:text="De grote zael"
         android:layout_below="@+id/subtitle"
-        android:textColor="@color/white_text"/>
+        android:textColor="@color/light_text"/>
 
     <TextView
         android:id="@+id/room_time_sep"
@@ -53,7 +53,7 @@
         android:layout_toRightOf="@+id/room"
         android:text=" · "
         android:layout_below="@+id/subtitle"
-        android:textColor="@color/white_text"
+        android:textColor="@color/light_text"
         android:textStyle="bold"/>
 
     <TextView
@@ -63,7 +63,7 @@
         android:layout_toRightOf="@+id/room_time_sep"
         android:text="Sat 20:00-22:00"
         android:layout_below="@+id/subtitle"
-        android:textColor="@color/white_text"/>
+        android:textColor="@color/light_text"/>
 </RelativeLayout>    
 
 <ScrollView
@@ -98,7 +98,7 @@
                 android:text="@string/track"
                 android:textStyle="bold"
                 android:paddingTop="0dp"
-                android:textColor="@color/white_text"/>
+                android:textColor="@color/light_text"/>
 
             <TextView
                 android:id="@+id/track"
@@ -109,7 +109,7 @@
                 android:layout_toRightOf="@+id/headTrack"
                 android:text="Blaaaaaaat"
                 android:paddingLeft="4dp"
-                android:textColor="@color/white_text"/>
+                android:textColor="@color/light_text"/>
 
             <TextView
                 android:id="@+id/headSpeaker"
@@ -122,7 +122,7 @@
                 android:text="@string/speaker"
                 android:textStyle="bold"
                 android:paddingBottom="3dp"
-                android:textColor="@color/white_text"/>
+                android:textColor="@color/light_text"/>
 
             <TextView
                 android:id="@+id/speaker"
@@ -138,7 +138,7 @@
                 android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
                 android:paddingLeft="4dp"
                 android:paddingBottom="0dp"
-                android:textColor="@color/white_text"
+                android:textColor="@color/light_text"
                 android:singleLine="true"/>
         </RelativeLayout>
 
@@ -185,6 +185,7 @@
                 android:textIsSelectable="true"
                 android:focusable="false"/>
 
+            <!-- oops, this one seems lost, does it still work? Or, should I keep the icon links at all? -->
             <LinearLayout
                 android:id="@+id/links"
                 android:layout_width="wrap_content"

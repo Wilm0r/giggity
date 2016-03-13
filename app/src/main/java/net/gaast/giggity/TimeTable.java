@@ -191,10 +191,10 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 
 			ret.setText(tents.get(position).getTitle().toUpperCase());
 			ret.setBackgroundResource(R.color.primary);
-			app.setPadding(ret, 10, 4, 10, 10);
-			ret.setTextColor(0xffffffff);
+			ret.setTextColor(getResources().getColor(android.R.color.white));
 			ret.setTextSize(14);
-			
+			app.setPadding(ret, 10, 4, 10, 10);
+
 			return ret;
 		}
 	}

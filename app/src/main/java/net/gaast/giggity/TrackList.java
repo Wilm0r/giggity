@@ -84,6 +84,7 @@ public class TrackList extends ListView implements ScheduleViewer {
 			title = new TextView(ctx);
 			title.setText(keys.get(position));
 			title.setTextSize(20);
+			title.setTextColor(getResources().getColor(R.color.dark_text));
 			title.setId(++n);
 			p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			p.addRule(RelativeLayout.ALIGN_PARENT_TOP);
