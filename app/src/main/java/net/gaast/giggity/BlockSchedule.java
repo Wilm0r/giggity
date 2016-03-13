@@ -130,7 +130,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		
 		base = Calendar.getInstance();
 		base.setTime(sched.getFirstTime());
-		base.set(Calendar.MINUTE, 0);
+		base.add(Calendar.MINUTE, -(base.get(Calendar.MINUTE) % 30));
 		
 		end = Calendar.getInstance();
 		end.setTime(sched.getLastTime());		
