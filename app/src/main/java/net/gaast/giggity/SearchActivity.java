@@ -30,11 +30,12 @@ import android.view.Menu;
 public class SearchActivity extends ScheduleViewActivity {
 	private ScheduleListView lv;
 	private AbstractList<Schedule.Item> items;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
+		wantDrawer = false;
 		super.onCreate(savedInstanceState);
-		
+
 		if (!getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
 			finish();
 			return;

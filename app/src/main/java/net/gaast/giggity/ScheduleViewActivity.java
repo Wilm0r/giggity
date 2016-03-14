@@ -79,6 +79,9 @@ public class ScheduleViewActivity extends Activity {
 	private boolean redraw;
 	private Handler timer;
 
+	// So subclasses can disable nav drawer functionality. (SearchActivity)
+	protected boolean wantDrawer = true;
+
 	private DrawerLayout drawerLayout;
 	private RelativeLayout drawer;
 	private ActionBarDrawerToggle drawerToggle;
@@ -130,24 +133,29 @@ public class ScheduleViewActivity extends Activity {
 			});
 		}
 
-		/* Hamburger menu! */
-		/* Should still consider v7-appcompat, depending on how much it, again, affects apk size.. */
-		this.getActionBar().setDisplayHomeAsUpEnabled(true);
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.navdrawer_on, R.string.navdrawer_off) {
-			@Override
-			public void onDrawerOpened(View drawerView) {
-				super.onDrawerOpened(drawerView);
-				invalidateOptionsMenu();
+		if (wantDrawer) {
+			Log.d("RUK", "RUK");
+			/* Hamburger menu! */
+			/* Should still consider v7-appcompat, depending on how much it, again, affects apk size.. */
+			this.getActionBar().setDisplayHomeAsUpEnabled(true);
+			drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.navdrawer_on, R.string.navdrawer_off) {
+				@Override
+				public void onDrawerOpened(View drawerView) {
+					super.onDrawerOpened(drawerView);
+					invalidateOptionsMenu();
 				/* Looks like this code doesn't actually run BTW. Need to figure that out later. */
-				updateNavDrawer();
-			}
+					updateNavDrawer();
+				}
 
-			@Override
-			public void onDrawerClosed(View drawerView) {
-				super.onDrawerClosed(drawerView);
-				invalidateOptionsMenu();
-			}
-		};
+				@Override
+				public void onDrawerClosed(View drawerView) {
+					super.onDrawerClosed(drawerView);
+					invalidateOptionsMenu();
+				}
+			};
+		} else {
+			drawerLayout.removeView(drawer);
+		}
 
 		bigScreen = (LinearLayout) dl.findViewById(R.id.bigScreen);
 		updateOrientation(getResources().getConfiguration().orientation);
@@ -208,7 +216,9 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		drawerToggle.syncState();
+		if (drawerToggle != null) {
+			drawerToggle.syncState();
+		}
 	}
 	
 	@Override
@@ -441,7 +451,6 @@ public class ScheduleViewActivity extends Activity {
 			
 			if (d != null) {
 				eventDialogView = d.genDialog(true);
-				eventDialogView.setBackgroundResource(R.color.light_back);
 				bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
 			}
 		} else if (d != null) {
@@ -516,7 +525,7 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		/* ActionBar arrow/burger goes here as well. */
-		if (drawerToggle.onOptionsItemSelected(item)) {
+		if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 
