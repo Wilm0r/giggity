@@ -433,6 +433,7 @@ public class ScheduleViewActivity extends Activity {
 	
 	public void setEventDialog(EventDialog d, Schedule.Item item) {
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+		Log.d("screen", getResources().getConfiguration() + " " + screen + " " + Configuration.SCREENLAYOUT_SIZE_LARGE);
 		if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
 			bigScreen.removeView(eventDialogView);
 			if (eventDialog != null)
@@ -440,7 +441,7 @@ public class ScheduleViewActivity extends Activity {
 			
 			if (d != null) {
 				eventDialogView = d.genDialog(true);
-				eventDialogView.setBackgroundResource(android.R.drawable.dialog_frame);
+				eventDialogView.setBackgroundResource(R.color.light_back);
 				bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
 			}
 		} else if (d != null) {

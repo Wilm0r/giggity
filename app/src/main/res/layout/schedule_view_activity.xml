@@ -14,8 +14,8 @@
 		<RelativeLayout
 			android:id="@+id/viewerContainer"
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
-			<!-- weight: 3 -->
+			android:layout_height="fill_parent"
+            android:layout_weight="3">
 			<!-- Actual schedule viewer goes in here (which one depends on setting). And day change buttons. -->
 		</RelativeLayout>
 	</LinearLayout>
