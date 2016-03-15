@@ -30,7 +30,7 @@ public class Widget extends AppWidgetProvider {
 	
 	public static void updateWidget(Context ctx, AppWidgetManager appWidgetManager) {
 		Giggity app = (Giggity) ctx.getApplicationContext();
-		String top = "", title = "", bottom = "", url = "";
+		String title = "", time = "", room = "", url = "";
 		
 		Log.d("WIDGET", "onUpdate");
 		
@@ -45,11 +45,9 @@ public class Widget extends AppWidgetProvider {
 					/* If the event takes <6*24h, show just a weekday, no full date. */
 					df = new SimpleDateFormat(ctx.getResources().getString(R.string.widg_shortdate));
 				
-				top = df.format(item.getStartTime());
+				time = df.format(item.getStartTime());
 				title = item.getTitle();
-				if (item.getSpeakers() != null && item.getSpeakers().size() > 0)
-					bottom = item.getSpeakers().get(0) + " " + ctx.getResources().getString(R.string.widg_in_room) + " ";
-				bottom += item.getLine().getTitle();
+				room = item.getLine().getTitle();
 				url = item.getUrl();
 				break;
 			}
@@ -61,9 +59,9 @@ public class Widget extends AppWidgetProvider {
 			
 			for (Db.DbSchedule sched : scheds) {
 				if (sched.getStart().after(new Date())) {
-					top = ctx.getResources().getString(R.string.widg_soon);
+					time = ctx.getResources().getString(R.string.widg_soon);
 					title = sched.getTitle();
-					bottom = Giggity.dateRange(sched.getStart(), sched.getEnd());
+					room = Giggity.dateRange(sched.getStart(), sched.getEnd());
 					url = sched.getUrl();
 					break;
 				}
@@ -84,9 +82,8 @@ public class Widget extends AppWidgetProvider {
 			PendingIntent pi = PendingIntent.getActivity(app, 0, evi, 0);
 			v.setOnClickPendingIntent(R.id.title, pi);
 
-			v.setTextViewText(R.id.top, top);
 			v.setTextViewText(R.id.title, title);
-			v.setTextViewText(R.id.bottom, bottom);
+			v.setTextViewText(R.id.bottom, time + " · " + room);
 			appWidgetManager.updateAppWidget(widgetId, v);
 		}
 	}
