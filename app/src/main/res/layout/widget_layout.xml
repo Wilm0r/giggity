@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerVertical="true"
     android:orientation="vertical">
 
     <TextView
@@ -10,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="2"
+        android:paddingLeft="4dp"
         android:text="Giggity"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:background="@drawable/widget_head" />
@@ -30,6 +32,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:singleLine="true"
+        android:paddingLeft="4dp"
+        android:paddingBottom="2dp"
         android:text="Nothing interesting coming up .. yet?"
         android:textAppearance="?android:attr/textAppearanceSmallInverse"
         android:background="@drawable/widget_bottom" />
