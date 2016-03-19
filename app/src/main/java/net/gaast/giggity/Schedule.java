@@ -19,6 +19,20 @@
 
 package net.gaast.giggity;
 
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.util.Log;
+import android.util.Xml;
+import android.widget.CheckBox;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xml.sax.Attributes;
+import org.xml.sax.ContentHandler;
+import org.xml.sax.Locator;
+import org.xml.sax.SAXException;
+
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -50,20 +64,6 @@ import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.xml.sax.Attributes;
-import org.xml.sax.ContentHandler;
-import org.xml.sax.Locator;
-import org.xml.sax.SAXException;
-
-import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.util.Log;
-import android.util.Xml;
-import android.widget.CheckBox;
 
 public class Schedule {
 	private final int detectHeaderSize = 1024;
@@ -280,8 +280,6 @@ public class Schedule {
 				loadXcal(in);
 			} else if (head.contains("<schedule") && head.contains("<conference")) {
 				loadPentabarf(in);
-			} else if (head.contains("<response") && head.contains("<grouped-summary")) {
-				loadVerdi(in);
 			} else if (head.contains("<schedule") && head.contains("<line")) {
 				loadDeox(in);
 			} else if (head.contains("begin:vcalendar")) {
@@ -327,10 +325,6 @@ public class Schedule {
 	
 	private void loadPentabarf(BufferedReader in) {
 		loadXml(in, new PentabarfParser());
-	}
-	
-	private void loadVerdi(BufferedReader in) {
-		loadXml(in, new VerdiParser());
 	}
 	
 	private void loadXml(BufferedReader in, ContentHandler parser) {
@@ -942,217 +936,7 @@ public class Schedule {
 		public void skippedEntity(String arg0) throws SAXException {
 		}
 	}
-	
-	/* TODO: Find name. */
-	private class VerdiParser implements ContentHandler {
-		private LinkedList<RawItem> rawItems;
-		private HashMap<Integer,LinkedList<String>> candidates;
-		private TreeMap<Integer,String> trackMap;
-		private TreeMap<Integer,Schedule.Line> tentMap;
-		private TreeMap<Integer,Schedule.Line> tentMapSorted;
-		
-		private String curString;
-		
-		private LinkedList<HashMap<String,String>> propMapStack;
 
-		SimpleDateFormat df;
-		int minimum_interval;
-
-		public VerdiParser() {
-			rawItems = new LinkedList<RawItem>();
-			candidates = new HashMap<Integer,LinkedList<String>>();
-			trackMap = new TreeMap<Integer,String>();
-			tentMap = new TreeMap<Integer,Schedule.Line>();
-			tentMapSorted = new TreeMap<Integer,Schedule.Line>();
-			propMapStack = new LinkedList<HashMap<String,String>>();
-			df = new SimpleDateFormat("yyyy-MM-dd");
-			minimum_interval = 30;
-		}
-		
-		@Override
-		public void startElement(String uri, String localName, String qName,
-				Attributes atts) throws SAXException {
-			HashMap<String,String> propMap = null;
-			
-			curString = "";
-			if (localName.equals("event")) {
-				propMap = new HashMap<String,String>();
-				// Don't use the ID, it's far from unique.
-				//propMap.put("id", atts.getValue("id"));
-			} else if (localName.equals("hours")) {
-				String interval = atts.getValue("minimum_interval");
-				if (interval != null) {
-					minimum_interval = Integer.parseInt(interval);
-				}
-			} else if (localName.equals("room")) {
-				propMap = new HashMap<String,String>();
-				propMap.put("id", atts.getValue("id"));
-			} else if (localName.equals("area")) {
-				propMap = new HashMap<String,String>();
-				propMap.put("id", atts.getValue("id"));
-			} else if (localName.equals("slot")) {
-				String id = atts.getValue("id");
-				String title = atts.getValue("title");
-				
-				Calendar startTime;
-				startTime = new GregorianCalendar();
-				try {
-					startTime.setTime(df.parse(atts.getValue("date")));
-				} catch (ParseException e) {
-					// FAIL D:
-				}
-				startTime.add(Calendar.HOUR, Integer.parseInt(atts.getValue("hour")));
-				startTime.add(Calendar.MINUTE, Integer.parseInt(atts.getValue("minute")));
-
-				Calendar endTime;
-				endTime = new GregorianCalendar();
-				endTime.setTime(startTime.getTime());
-				endTime.add(Calendar.MINUTE, minimum_interval * Integer.parseInt(atts.getValue("colspan")));
-
-				Item item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
-				item.setDescription(rewrap(atts.getValue("abstract")));
-				rawItems.add(new RawItem(item, atts));
-			} else if (localName.equals("person")) {
-				LinkedList<String> speakers;
-				int id = Integer.parseInt(atts.getValue("candidate"));
-				if ((speakers = candidates.get(id)) == null)
-					candidates.put(id, (speakers = new LinkedList<String>()));
-				
-				/* Just use main to put the main person at the head of the list. */
-				if (Integer.parseInt(atts.getValue("main")) > 0)
-					speakers.addFirst(atts.getValue("name"));
-				else
-					speakers.addLast(atts.getValue("name"));
-			}
-			propMapStack.addFirst(propMap);
-		}
-	
-		@Override
-		public void characters(char[] ch, int start, int length) throws SAXException {
-			curString += String.copyValueOf(ch, start, length); 
-		}
-	
-		@Override
-		public void endElement(String uri, String localName, String qName)
-				throws SAXException {
-			HashMap<String,String> propMap;
-			
-			if ((propMap = propMapStack.removeFirst()) != null) {
-				/* If for the current tag we had a propMap, use it and destroy it. */
-				if (localName.equals("event")) {
-					if (propMap.containsKey("name"))
-						title = propMap.get("name");
-				} else if (localName.equals("room")) {
-					Schedule.Line tent = new Schedule.Line(propMap.get("id"), propMap.get("name"));
-					tentMap.put(Integer.parseInt(tent.getId()), tent);
-					if (propMap.containsKey("position"))
-						tentMapSorted.put(Integer.parseInt(propMap.get("position")), tent);
-				} else if (localName.equals("area")) {
-					trackMap.put(Integer.parseInt(propMap.get("id")), propMap.get("name"));
-				}
-			} else if (propMapStack.size() > 0 &&
-					   (propMap = propMapStack.getFirst()) != null) {
-				/* Alternatively, we may be busy filling in a propMap. */
-				propMap.put(localName, curString);
-			}
-		}
-		
-		@Override
-		public void startDocument() throws SAXException {
-		}
-	
-		@Override
-		public void endDocument() throws SAXException {
-			merge();
-		}
-		
-		@Override
-		public void startPrefixMapping(String arg0, String arg1)
-				throws SAXException {
-			
-		}
-	
-		@Override
-		public void endPrefixMapping(String arg0) throws SAXException {
-		}
-	
-		@Override
-		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
-				throws SAXException {
-		}
-	
-		@Override
-		public void processingInstruction(String arg0, String arg1)
-				throws SAXException {
-		}
-	
-		@Override
-		public void setDocumentLocator(Locator arg0) {
-		}
-	
-		@Override
-		public void skippedEntity(String arg0) throws SAXException {
-		}
-		
-		private void merge() {
-			/* Since data can be in the file in any order, put all the pieces together at the end. */
-
-			/* Only use the "position" field list if all tents had it. */
-			if (tentMapSorted.size() != tentMap.size())
-				tentMapSorted = tentMap;
-			for (Line tent : tentMapSorted.values()) {
-				tents.add(tent);
-			}
-			
-			for (RawItem item : rawItems) {
-				LinkedList<String> speakers;
-				if ((speakers = candidates.get(item.candidate)) != null) {
-					for (String name : speakers)
-						item.item.addSpeaker(name);
-				}
-				
-				String area;
-				if ((area = trackMap.get(item.area)) != null) {
-					item.item.setTrack(area);
-				}
-				
-				Line tent = tentMap.get(item.room);
-				tent.addItem(item.item);
-			}
-		}
-		
-		private class RawItem {
-			public Item item;
-			public int room;
-			public int area;
-			public int candidate;
-			
-			public RawItem(Item item_, Attributes atts) {
-				item = item_;
-				
-				String s;
-				try {
-					if ((s = atts.getValue("room")) != null)
-						room = Integer.parseInt(s);
-				} catch (NumberFormatException e) {
-					room = -1;
-				}
-				try {
-					if ((s = atts.getValue("area")) != null)
-						area = Integer.parseInt(s);
-				} catch (NumberFormatException e) {
-					area = -1;
-				}
-				try {
-					if ((s = atts.getValue("candidate")) != null)
-						candidate = Integer.parseInt(s);
-				} catch (NumberFormatException e) {
-					candidate = -1;
-				}
-			}
-		}
-	}
-	
 	public class Line {
 		private String id;
 		private String title;
