@@ -89,6 +89,9 @@ public class Schedule {
 	private String icon;
 	private LinkedList<Link> links;
 
+	/* For fetching the icon file in the background. Not yet used/done. */
+	// private Thread iconFetcher;
+
 	private boolean fullyLoaded;
 	private Handler progressHandler;
 
@@ -528,6 +531,37 @@ public class Schedule {
 	public LinkedList<Link> getLinks() {
 		return links;
 	}
+
+	/*
+	public Drawable getIconDrawable() {
+		try {
+			Fetcher f = new Fetcher(app, getIcon(), Fetcher.Source.CACHE);
+			return getIconDrawableInt(f);
+		} catch (IOException e) {
+			// This probably means it's not in cache. :-( So we'll fetch it in the background and
+			// will hopefully succeed on the next call.
+		}
+		iconFetcher = new Thread() {
+			@Override
+			public void run() {
+				Fetcher f;
+				try {
+					f = new Fetcher(app, getIcon(), Fetcher.Source.ONLINE);
+				} catch (IOException e) {
+					Log.e("getIconDrawable", "Fetch error: " + e);
+					return;
+				}
+				getIconDrawableInt(f);
+			}
+		};
+		return null;
+	}
+
+	public Drawable getIconDrawableInt(Fetcher f) {
+		Drawable.createFromStream(new ReaderInputStream(f.getReader()), getIcon());
+		f.getReader().
+	}
+	*/
 
 	/* Some "proprietary" file format I started with. Actually the most suitable when I
 	 * generate my own schedules so I'll definitely *not* deprecate it. */
