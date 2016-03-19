@@ -51,6 +51,9 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -80,6 +83,11 @@ public class Schedule {
 	private Date curDay, curDayEnd;
 	private Date dayChange;
 	LinkedList<Date> dayList;
+
+	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
+	 * nice if some file formats could start supplying this info themselves. */
+	private String icon;
+	private LinkedList<Link> links;
 
 	private boolean fullyLoaded;
 	private Handler progressHandler;
@@ -236,6 +244,9 @@ public class Schedule {
 		
 		fullyLoaded = false;
 
+		icon = null;
+		links = null;
+
 		String head;
 		Fetcher f = null;
 		BufferedReader in;
@@ -297,7 +308,11 @@ public class Schedule {
 		
 		db = app.getDb();
 		db.setSchedule(this, url, f.getSource() == Fetcher.Source.ONLINE);
-		
+		String md_json = db.getMetadata();
+		if (md_json != null) {
+			addMetadata(md_json);
+		}
+
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;
 	}
@@ -379,6 +394,29 @@ public class Schedule {
 		} catch (SAXException e) {
 			e.printStackTrace();
 			throw new RuntimeException("Parse error: " + e);
+		}
+	}
+
+	private void addMetadata(String md_json) {
+		if (md_json == null)
+			return;
+		try {
+			JSONObject md;
+			md = new JSONObject(md_json);
+			if (md.has("icon")) {
+				icon = md.getString("icon");
+			}
+			if (md.has("links")) {
+				links = new LinkedList<>();
+				JSONArray linklist = md.getJSONArray("links");
+				for (int i = 0; i < linklist.length(); ++i) {
+					JSONObject link = linklist.getJSONObject(i);
+					links.addLast(new Link(link.getString("url"), link.getString("title")));
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return;
 		}
 	}
 
@@ -487,7 +525,15 @@ public class Schedule {
 		
 		return (AbstractList<Item>) ret;
 	}
-	
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public LinkedList<Link> getLinks() {
+		return links;
+	}
+
 	/* Some "proprietary" file format I started with. Actually the most suitable when I
 	 * generate my own schedules so I'll definitely *not* deprecate it. */
 	private class DeoxParser implements ContentHandler {
@@ -1385,6 +1431,8 @@ public class Schedule {
 		}
 	}
 
+	/* Only used by native deoxide schedules, and not even that much there. Lets you add links that show up
+	   at the bottom with just icons, to for example automatically include last.fm/wikipedia links for each artist/topic. */
 	public class LinkType {
 		private String id;
 		private Drawable iconDrawable;
@@ -1428,6 +1476,23 @@ public class Schedule {
 		
 		public Drawable getIcon() {
 			return iconDrawable;
+		}
+	}
+
+	public class Link {
+		private String url, title;
+
+		public Link(String link_, String title_) {
+			url = link_;
+			title = title_;
+		}
+
+		public String getUrl() {
+			return url;
+		}
+
+		public String getTitle() {
+			return title;
 		}
 	}
 	

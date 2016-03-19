@@ -81,18 +81,12 @@
                 <View
                     style="@style/BurgerMenuSeparator" />
 
-                <TextView
-                    android:id="@+id/custom"
-                    style="@style/BurgerMenuItem"
-                    android:text="Website"/>
-
-                <TextView
-                    android:id="@+id/custom"
-                    style="@style/BurgerMenuItem"
-                    android:text="Map"/>
+                <!-- links specific to currently viewed event. Optional, filled in by code. -->
 
                 <View
-                    style="@style/BurgerMenuSeparator" />
+                    android:id="@+id/custom_sep"
+                    style="@style/BurgerMenuSeparator"
+                    android:visibility="gone" />
 
                 <!-- misc -->
                 <TextView

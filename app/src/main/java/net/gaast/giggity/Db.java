@@ -48,7 +48,7 @@ import android.util.Log;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 12;
+	private static final int dbVersion = 13;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -86,7 +86,8 @@ public class Db {
 			                                  "sch_rtime Integer, " +
 			                                  "sch_start Integer, " +
 			                                  "sch_end Integer, " +
-			                                  "sch_id_s VarChar(128)," +
+			                                  "sch_id_s VarChar(128), " +
+			                                  "sch_metadata VarChar(10240), " +
 			                                  "sch_day Integer)");
 			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
 			                                       "sci_sch_id Integer Not Null, " +
@@ -129,6 +130,14 @@ public class Db {
 						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
 						e.printStackTrace();
 					}
+				} else if (v == 13) {
+					/* Version 13 adds big metadata field. */
+					try {
+						db.execSQL("Alter Table schedule Add Column sch_metadata VarChar(10240)");
+					} catch (SQLiteException e) {
+						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+						e.printStackTrace();
+					}
 				}
 			}
 			
@@ -154,7 +163,7 @@ public class Db {
 			}
 		}
 
-		int version = pref.getInt("last_menu_seed_version", oldDbVer), newver = version;
+		int version = pref.getInt("last_menu_seed_version", 0), newver = version;
 		
 		if (seed.version <= version && oldDbVer == dbVersion) {
 			/* No updates required, both data and structure are up to date. */
@@ -186,14 +195,25 @@ public class Db {
 				row.put("sch_atime", ts--);
 				row.put("sch_start", sched.start.getTime() / 1000);
 				row.put("sch_end", sched.end.getTime() / 1000);
+				row.put("sch_metadata", sched.metadata);
 				db.insert("schedule", null, row);
-			} else if(oldDbVer < 8 && q.getCount() == 1) {
-				/* We're upgrading from < 8 so we have to backfill the start/end columns. */
-				ContentValues row = new ContentValues();
-				q.moveToNext();
-				row.put("sch_start", sched.start.getTime() / 1000);
-				row.put("sch_end", sched.end.getTime() / 1000);
-				db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+			} else if (q.getCount() == 1) {
+				if (oldDbVer < 8) {
+					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
+					ContentValues row = new ContentValues();
+					q.moveToNext();
+					row.put("sch_start", sched.start.getTime() / 1000);
+					row.put("sch_end", sched.end.getTime() / 1000);
+					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+				}
+
+				/* Always refresh the metadata, seedfile is authoritative. */
+				if (sched.metadata != "") {
+					ContentValues row = new ContentValues();
+					q.moveToNext();
+					row.put("sch_metadata", sched.metadata);
+					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+				}
 			}
 			q.close();
 		}
@@ -274,6 +294,9 @@ public class Db {
 			int version;
 			String id, url, title;
 			Date start, end;
+			// Raw JSON string, because we'll only start interpreting this data later on. Will contain
+			// info like extra links to for example room maps, and other stuff I may think of.
+			String metadata;
 			
 			public Schedule(JSONObject jso) throws JSONException {
 				version = jso.getInt("version");
@@ -281,6 +304,12 @@ public class Db {
 					id = jso.getString("id");
 				url = jso.getString("url");
 				title = jso.getString("title");
+
+				if (jso.has("metadata")) {
+					metadata = jso.getJSONObject("metadata").toString();
+				} else {
+					metadata = "";
+				}
 				
 				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				try {
@@ -302,6 +331,7 @@ public class Db {
 		private long schId;
 		
 		private int day;
+		private String metadata;
 		
 		public Connection() {
 			resume();
@@ -352,7 +382,7 @@ public class Db {
 				row.put("sch_rtime", new Date().getTime() / 1000);
 			
 			resume();
-			q = db.rawQuery("Select sch_id, sch_day From schedule Where sch_id_s = ?",
+			q = db.rawQuery("Select sch_id, sch_day, sch_metadata From schedule Where sch_id_s = ?",
 			                new String[]{sched.getId()});
 			
 			if (q.getCount() == 0) {
@@ -363,6 +393,8 @@ public class Db {
 				q.moveToNext();
 				schId = q.getLong(0);
 				day = (int) q.getLong(1);
+				Log.d("metadata", "" + q.getString(2));
+				metadata = q.getString(2);
 				
 				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 			} else {
@@ -378,8 +410,8 @@ public class Db {
 				Schedule.Item item = sched.getItem(q.getString(1));
 				if (item == null) {
 					/* ZOMGWTF D: */
-					Log.e("DeoxideDb", "Db has info about deleted schedule item " +
-					      q.getString(1) + " remind " + q.getInt(2) + " stars " + q.getInt(3));
+					Log.e("DeoxideDb", "Db has info about missing schedule item " +
+					      q.getString(1) + " remind " + q.getInt(2) + " stars " + q.getInt(4) + " hidden " + q.getInt(3));
 					continue;
 				}
 
@@ -387,8 +419,6 @@ public class Db {
 				item.setHidden(q.getInt(3) != 0);
 				item.setStars(q.getInt(4));
 				sciIdMap.put(q.getString(1), new Long(q.getInt(0)));
-				
-				Log.d("DeoxideDb", "Item from db " + item.getTitle() + " remind " + q.getInt(2) + " stars " + q.getInt(3));
 			}
 			q.close();
 			sleep();
@@ -404,7 +434,8 @@ public class Db {
 			row.put("sci_hidden", item.getHidden());
 			row.put("sci_stars", item.getStars());
 			
-			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") + " stars " + row.getAsString("sci_stars"));
+			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") +
+			                   " stars " + row.getAsString("sci_stars") + " hidden " + row.getAsString("sci_hidden"));
 			
 			resume();
 			if ((sciId = sciIdMap.get(item.getId())) != null) {
@@ -452,7 +483,11 @@ public class Db {
 			db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 			sleep();
 		}
-		
+
+		public String getMetadata() {
+			return metadata;
+		}
+
 		public void removeSchedule(String url) {
 			resume();
 			Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{url});
@@ -475,7 +510,7 @@ public class Db {
 		private int id_n;
 		private String url, id, title;
 		private Date start, end, atime, rtime;
-		
+
 		public DbSchedule(Cursor q) {
 			id_n = q.getInt(q.getColumnIndexOrThrow("sch_id")); 
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
@@ -517,7 +552,7 @@ public class Db {
 		public Date getRtime() {
 			return rtime;
 		}
-		
+
 		public void flushHidden() {
 			Connection db = getConnection();
 			db.flushHidden(id_n);

@@ -121,6 +121,8 @@ public class ScheduleViewActivity extends Activity {
 
 		ViewGroup menu = (LinearLayout) dl.findViewById(R.id.menu);
 		menu.getChildCount();
+		/* Set event handler for all static buttons, going to the option menu code. Dynamic buttons
+		 * (from the schedule) have their own handlers. */
 		for (int i = 0; i < menu.getChildCount(); ++i) {
 			View btn = menu.getChildAt(i);
 			btn.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +145,7 @@ public class ScheduleViewActivity extends Activity {
 				public void onDrawerOpened(View drawerView) {
 					super.onDrawerOpened(drawerView);
 					invalidateOptionsMenu();
-				/* Looks like this code doesn't actually run BTW. Need to figure that out later. */
+					/* Looks like this code doesn't actually run BTW. Need to figure that out later. */
 					updateNavDrawer();
 				}
 
@@ -356,9 +358,45 @@ public class ScheduleViewActivity extends Activity {
 			dia.show();
 		}
 		redrawSchedule();
+		finishNavDrawer();
 		updateNavDrawer();
 	}
 
+	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */
+	public void finishNavDrawer() {
+		if (sched == null) {
+			Log.e("finishNavDrawer", "Called before schedule was loaded?");
+			return;
+		}
+
+		LinkedList<Date> days = sched.getDays();
+		TextView dr = (TextView) drawerLayout.findViewById(R.id.date_range);
+		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
+
+		if (sched.getLinks() != null) {
+			ViewGroup menu = (LinearLayout) drawerLayout.findViewById(R.id.menu);
+			View sep = menu.findViewById(R.id.custom_sep);
+			sep.setVisibility(View.VISIBLE);
+			for (Schedule.Link link : sched.getLinks()) {
+				final String url = link.getUrl();
+				TextView item = (TextView) getLayoutInflater().inflate(R.layout.burger_menu_item, null);
+				item.setText(link.getTitle());
+				item.setOnClickListener(new View.OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						Uri uri = Uri.parse(url);
+						Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+						browser.addCategory(Intent.CATEGORY_BROWSABLE);
+						startActivity(browser);
+						drawerLayout.closeDrawers();
+					}
+				});
+				menu.addView(item, menu.indexOfChild(sep));
+			}
+		}
+	}
+
+	/* Other updates that depend on more state (like currently active view). */
 	public void updateNavDrawer() {
 		/* Show currently selected view */
 		for (int v : VIEWS) {
@@ -369,16 +407,15 @@ public class ScheduleViewActivity extends Activity {
 			}
 		}
 
-		if (sched != null) {
-			LinkedList<Date> days = sched.getDays();
-			TextView dr = (TextView) drawerLayout.findViewById(R.id.date_range);
-			dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
-
-			drawerLayout.findViewById(R.id.tracks).setVisibility(
-					sched.getTracks() != null ? View.VISIBLE : View.GONE);
-			drawerLayout.findViewById(R.id.change_day).setVisibility(
-					!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
+		if (sched == null) {
+			Log.e("updateNavDrawer", "Called before schedule was loaded?");
+			return;
 		}
+
+		drawerLayout.findViewById(R.id.tracks).setVisibility(
+				sched.getTracks() != null ? View.VISIBLE : View.GONE);
+		drawerLayout.findViewById(R.id.change_day).setVisibility(
+				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
 	}
 
 	public void redrawSchedule() {
@@ -399,7 +436,8 @@ public class ScheduleViewActivity extends Activity {
 			setScheduleView(new MyItemsView(this, sched));
 		} else if (curView == R.id.tracks) {
 			setScheduleView(new TrackList(this, sched));
-		} else /* if (curView == R.id.block_schedule) */ {
+		} else {
+			curView = R.id.block_schedule; /* Just in case. */
 			setScheduleView(new BlockSchedule(this, sched));
 		}
 		
@@ -534,6 +572,8 @@ public class ScheduleViewActivity extends Activity {
 		return super.onOptionsItemSelected(item);
 	}
 
+	/* Called by either onOptionsItemSelected() above or by the nav drawer onclicks. BUT the custom
+	 * buttons (if any) have their own event handlers. */
 	private void onOptionsItemSelectedInt(int id) {
 		switch (id) {
 			case R.id.settings:
@@ -556,12 +596,6 @@ public class ScheduleViewActivity extends Activity {
 			case R.id.now_next:
 			case R.id.my_events:
 				setView(id);
-				break;
-			case R.id.custom:
-				Uri uri = Uri.parse("https://fosdem.org/2016/schedule/buildings/");
-				Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-				browser.addCategory(Intent.CATEGORY_BROWSABLE);
-				startActivity(browser);
 				break;
 		}
 	}

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Since one can't clone views but only inflate them, AND since styles can't be applied in code ... well here we go, one silly view in XML. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+		android:id="@+id/custom"
+		style="@style/BurgerMenuItem"
+		android:text="Custom (based on event metadata)" />

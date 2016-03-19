@@ -1,5 +1,5 @@
 {
-	"version": 2016012700,
+	"version": 2016031902,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -44,18 +44,39 @@
 			"end": "2015-11-22"
 		},
 		{
-			"version": 2015122400,
+			"version": 2016031902,
 			"url": "https://events.ccc.de/congress/2015/Fahrplan/schedule.xml",
 			"title": "32. Chaos Communication Congress",
 			"start": "2015-12-27",
-			"end": "2015-12-31"
+			"end": "2015-12-31",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2015/wiki/Main_Page",
+						"title": "Wiki"
+					}
+				]
+			}
 		},
 		{
-			"version": 2016012700,
+			"version": 2016031900,
 			"url": "https://fosdem.org/2016/schedule/xml",
 			"title": "FOSDEM 2016",
 			"start": "2016-01-30",
-			"end": "2016-01-30"
+			"end": "2016-01-31",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://fosdem.org/2016/",
+						"title": "Website"
+					},
+					{
+						"url": "https://fosdem.org/2016/schedule/buildings/",
+						"title": "Map"
+					}
+				],
+				"icon": "https://fosdem.org/2016/icon-1a3618bf8816852a0bba761ea9367f1a8f95da41dd7f366e327aa4a543aec99a.png"
+			}
 		}
 	]
 }
