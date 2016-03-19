@@ -102,6 +102,7 @@ public class Schedule {
 	public static String hashify(String url) {
 		String ret = "";
 		try {
+			/* md5, sha1... small diff I guess? (No clue how this evolved!) */
 			MessageDigest md5 = MessageDigest.getInstance("SHA-1");
 			md5.update(url.getBytes());
 			byte raw[] = md5.digest();
@@ -1005,6 +1006,7 @@ public class Schedule {
 			title = title_;
 			startTime = startTime_;
 			endTime = endTime_;
+			description = "";
 			
 			remind = false;
 			setHidden(false);
