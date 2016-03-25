@@ -12,21 +12,26 @@ import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import java.util.HashMap;
+import java.util.Iterator;
 
 public class Reminder extends Service {
 	public static final String ACTION = "net.gaast.giggity.ALARM";
 	
 	Giggity app;
-	
-	int notid;
 
 	/* Vibrator pattern */
 	private long[] mario = { 0, 90, 60, 90, 60, 0, 150, 90, 60, 0, 150, 120, 30,
                                  90, 60, 0, 150, 150, 0, 0, 150, 0, 150, 0, 150, 1200 };
 	private long[] giggitygoo = { 0, 100, 40, 60, 40, 60, 60, 100, 40, 60, 40, 60, 80, 1200};
+
+	// notification id -> cancellation time
+	private HashMap<Integer, Long> cancelAt;
 
 	private BroadcastReceiver alarmReceiver = new BroadcastReceiver() {
 		@Override
@@ -52,8 +57,23 @@ public class Reminder extends Service {
 			else
 				Log.e("reminder", "Item that I was supposed to notify about disappeared");
 			app.getRemindItems().remove(item);
+
+			cleanup();
 		}
 	};
+
+	// Clean up notifications for passed events. Only run if we're sending another notification in
+	// the meantime. Which IMHO is the only time when cluttering is annoying.
+	private void cleanup() {
+		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		for (Iterator<Integer> it = cancelAt.keySet().iterator(); it.hasNext();) {
+			Integer id = it.next();
+			if (System.currentTimeMillis() >= cancelAt.get(id)) {
+				nm.cancel(id);
+				it.remove();
+			}
+		}
+	}
 
 	@Override
 	public void onCreate() {
@@ -72,6 +92,8 @@ public class Reminder extends Service {
 			e.printStackTrace();
 		}
 		registerReceiver(alarmReceiver, filter);
+
+		cancelAt = new HashMap<>();
 		
 		/*
 		registerReceiver(alarmReceiver, new IntentFilter(Intent.ACTION_TIME_CHANGED));
@@ -92,25 +114,38 @@ public class Reminder extends Service {
 	}
 	
 	private void sendReminder(Schedule.Item item) {
+		/* Prepare the intent that will show the EventDialog. */
+		Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
+				app, ScheduleViewActivity.class);
+		evi.putExtra("PREFER_CACHED", true);
+
 		/* Generate a notification. */
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification not;
-		not = new Notification(R.drawable.deoxide_icon, item.getTitle(), item.getStartTime().getTime());
-		Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
-								app, ScheduleViewActivity.class);
-		evi.putExtra("PREFER_CACHED", true);
-		not.setLatestEventInfo(app, item.getTitle(), "Soon in " + item.getLine().getTitle(),
-							   PendingIntent.getActivity(app, 0, evi, 0));
-		not.flags |= Notification.FLAG_AUTO_CANCEL;
-		not.defaults |= Notification.DEFAULT_SOUND;
-		if ((item.getStartTime().getDate() & 1) == 0)
-			not.vibrate = giggitygoo;
-		else
-			not.vibrate = mario;
+		Notification.Builder nb = new Notification.Builder(app)
+				.setContentTitle(item.getTitle())
+				.setContentText("Soon in " + item.getLine().getTitle())
+				.setWhen(item.getStartTime().getTime())
+				.setContentIntent(PendingIntent.getActivity(app, 0, evi, 0))
+				.setSmallIcon(R.drawable.ic_schedule_white_48dp)
+				.setAutoCancel(true)
+				.setDefaults(Notification.DEFAULT_SOUND)
+				.setVibrate(((item.getStartTime().getDate() & 1) == 0) ? giggitygoo : mario)
+				.setLights(getResources().getColor(R.color.primary), 500, 5000);
 
-		nm.notify(item.hashCode() | (int) (item.getStartTime().getTime() / 1000), not);
+		if (Build.VERSION.SDK_INT >= 21) {
+			nb = nb.setVisibility(Notification.VISIBILITY_PUBLIC);
+			nb = nb.setColor(getResources().getColor(R.color.primary));
+		}
+
+		// necessary? (find builder equiv)  not.defaults |= Notification.DEFAULT_SOUND;
+
+		int id = item.hashCode() | (int) (item.getStartTime().getTime() / 1000);
+		nm.notify(id, nb.build());
+
+		// Allow cancellation a little before the actual end (off-by-one)
+		cancelAt.put(new Integer(id), new Long(item.getEndTime().getTime() - 60000));
 		
-		Log.d("reminder", "Generated reminder for " + item.getTitle());
+		Log.d("reminder", "Generated notification for " + item.getTitle());
 	}
 	
 	@Override
@@ -148,9 +183,14 @@ public class Reminder extends Service {
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(Reminder.ACTION);
 		i.setDataAndType(Uri.parse(item.getUrl()), "text/x-giggity");
-		am.setExact(AlarmManager.RTC_WAKEUP, tm,
-		            PendingIntent.getBroadcast(app, 0, i, 0));
+		if (android.os.Build.VERSION.SDK_INT >= 19) {
+			// .set is inexact (though not clear how much) from API 19 for powersaving reasons.
+			// Giggity uses timers sporadically enough that I think .setExact() is justified.
+			am.setExact(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
+		} else {
+			am.set(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
+		}
 		Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
-		      (tm - System.currentTimeMillis()) / 1000 + " seconds");
+				(tm - System.currentTimeMillis()) / 1000 + " seconds");
 	}
 }
