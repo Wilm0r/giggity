@@ -4,6 +4,10 @@
 		<item name="android:actionBarStyle">@style/Theme.Giggity.ActionBar</item>
 	</style>
 
+	<style name="Theme.Giggity.NoShadow" parent="@style/Theme.Giggity">
+		<item name="android:windowContentOverlay">@null</item>
+	</style>
+
 	<style name="Theme.Giggity.ActionBar" parent="@android:style/Widget.Holo.ActionBar">
 		<item name="android:background">@color/primary</item>
 		<item name="android:titleTextStyle">@style/Theme.Giggity.ActionBar.Text</item>
