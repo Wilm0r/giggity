@@ -148,8 +148,8 @@ public class Reminder extends Service {
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(Reminder.ACTION);
 		i.setDataAndType(Uri.parse(item.getUrl()), "text/x-giggity");
-		am.set(AlarmManager.RTC_WAKEUP, tm,
-		       PendingIntent.getBroadcast(app, 0, i, 0));
+		am.setExact(AlarmManager.RTC_WAKEUP, tm,
+		            PendingIntent.getBroadcast(app, 0, i, 0));
 		Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
 		      (tm - System.currentTimeMillis()) / 1000 + " seconds");
 	}
