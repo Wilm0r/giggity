@@ -3,24 +3,23 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 21
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "net.gaast.giggity"
-        minSdkVersion 19
+        minSdkVersion 16
         targetSdkVersion 21
     }
-
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-nomini.txt'
         }
     }
-
     lintOptions {
         abortOnError false
     }
+    productFlavors {
+    }
 }
 dependencies {
-    compile "com.android.support:support-v4:21.0.+"
+    compile 'com.android.support:support-v4:21.0.+'
 }
