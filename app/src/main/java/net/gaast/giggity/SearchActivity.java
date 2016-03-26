@@ -81,7 +81,7 @@ public class SearchActivity extends ScheduleViewActivity {
 		ArrayList<Schedule.Item> newlist = new ArrayList<Schedule.Item>();
 		
 		for (Schedule.Item item : items) {
-			if (!item.getHidden())
+			if (!item.isHidden())
 				newlist.add(item);
 		}
 		

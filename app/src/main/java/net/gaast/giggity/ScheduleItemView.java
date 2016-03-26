@@ -76,5 +76,9 @@ public class ScheduleItemView extends RelativeLayout {
 			setBackgroundColor(0x11FFFFFF);
 		else
 			setBackgroundColor(0x00000000);
+
+		if (item.isHidden()) {
+			setAlpha(.5F);
+		}
 	}
 }

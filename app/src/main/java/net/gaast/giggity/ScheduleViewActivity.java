@@ -416,6 +416,8 @@ public class ScheduleViewActivity extends Activity {
 				sched.getTracks() != null ? View.VISIBLE : View.GONE);
 		drawerLayout.findViewById(R.id.change_day).setVisibility(
 				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
+		drawerLayout.findViewById(R.id.show_hidden).setBackgroundResource(
+				sched.getShowHidden() ? R.drawable.menu_gradient : R.color.light);
 	}
 
 	public void redrawSchedule() {
@@ -551,6 +553,13 @@ public class ScheduleViewActivity extends Activity {
 		alert.show();
 	}
 
+	private void toggleShowHidden() {
+		boolean showHidden = !sched.getShowHidden();
+		sched.setShowHidden(showHidden);
+		redrawSchedule();
+		updateNavDrawer();
+	}
+
 	private void setView(int view_) {
 		curView = view_;
 		setEventDialog(null, null);
@@ -584,8 +593,11 @@ public class ScheduleViewActivity extends Activity {
 			case R.id.change_day:
 				showDayDialog();
 				break;
+			case R.id.show_hidden:
+				toggleShowHidden();
+				break;
 			case R.id.search:
-				this.onSearchRequested();
+				onSearchRequested();
 				break;
 			case R.id.export_selections:
 				ScheduleUI.exportSelections(this, sched);

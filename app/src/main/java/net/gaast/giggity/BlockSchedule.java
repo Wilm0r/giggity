@@ -286,6 +286,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			} else {
 				super.setBackgroundColor(bgcolor);
 			}
+			if (item != null && item.isHidden()) {
+				super.setAlpha(.5F);
+			}
 		}
 	}
 	

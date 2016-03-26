@@ -430,7 +430,7 @@ public class Db {
 			row.put("sci_sch_id", schId);
 			row.put("sci_id_s", item.getId());
 			row.put("sci_remind", item.getRemind());
-			row.put("sci_hidden", item.getHidden());
+			row.put("sci_hidden", item.isHidden());
 			row.put("sci_stars", item.getStars());
 			
 			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") +

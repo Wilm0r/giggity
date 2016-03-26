@@ -45,6 +45,7 @@
 	<!-- Menu -->
 	<string name="settings">Settings</string>
 	<string name="change_day">Change day</string>
+	<string name="show_hidden">Show hidden items</string>
 	<string name="timetable">Timetable</string>
 	<string name="tracks">Tracks</string>
 	<string name="now_next">Now and next</string>

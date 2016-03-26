@@ -83,6 +83,7 @@ public class Schedule {
 	private Date curDay, curDayEnd;
 	private Date dayChange;
 	LinkedList<Date> dayList;
+	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
 	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
 	 * nice if some file formats could start supplying this info themselves. */
@@ -247,6 +248,7 @@ public class Schedule {
 		dayChange.setHours(6);
 		
 		fullyLoaded = false;
+		showHidden = false;
 
 		icon = null;
 		links = null;
@@ -468,7 +470,7 @@ public class Schedule {
 		ArrayList<String> ret = new ArrayList<String>();
 		for (String name : trackMap.keySet()) {
 			for (Item item : trackMap.get(name)) {
-				if (!item.getHidden()) {
+				if (!item.isHidden() || showHidden) {
 					ret.add(name);
 					break;
 				}
@@ -484,7 +486,7 @@ public class Schedule {
 		
 		ArrayList<Item> ret = new ArrayList<Item>();
 		for (Item item : trackMap.get(track)) {
-			if (!item.getHidden())
+			if (!item.isHidden() || showHidden)
 				ret.add(item);
 		}
 		
@@ -530,6 +532,14 @@ public class Schedule {
 
 	public LinkedList<Link> getLinks() {
 		return links;
+	}
+
+	public void setShowHidden(boolean showHidden) {
+		this.showHidden = showHidden;
+	}
+
+	public boolean getShowHidden() {
+		return showHidden;
 	}
 
 	/*
@@ -1011,7 +1021,7 @@ public class Schedule {
 				dayStart.setTime(curDay);
 			
 			for (Item item : items) {
-				if (!item.getHidden() &&
+				if ((!item.isHidden() || showHidden) &&
 				    (curDay == null || (!item.getStartTime().before(dayStart.getTime()) &&
 				                        !item.getEndTime().after(curDayEnd))))
 					ret.add(item);
@@ -1179,7 +1189,7 @@ public class Schedule {
 			}
 		}
 		
-		public boolean getHidden() {
+		public boolean isHidden() {
 			return hidden;
 		}
 
@@ -1333,7 +1343,7 @@ public class Schedule {
 			int t = 0;
 			if (item.getRemind())
 				t += 1;
-			if (item.getHidden())
+			if (item.isHidden())
 				t += 2;
 			if (t > 0)
 				empty = false;

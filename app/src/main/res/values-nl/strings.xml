@@ -41,10 +41,11 @@
 	<string name="export_selections">Selecties exporteren</string>
 	<string name="import_selections">Selecties importeren</string>
 	<string name="no_selections">Geen exporteerbare data</string>
-	<string name="qr_tip">Gebruik de QR scan knop in het hoofdmenu op een ander apparaat om dit te importeren</string>	
+	<string name="qr_tip">Gebruik de QR scan knop in het hoofdmenu op een ander apparaat om dit te importeren</string>
 	<!-- Menu -->
 	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>
+	<string name="show_hidden">Verborgen items tonen</string>
 	<string name="timetable">Tijdschema</string>
 	<string name="tracks">Thema\'s</string>
 	<string name="now_next">Nu en straks</string>
