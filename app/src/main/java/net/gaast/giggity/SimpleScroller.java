@@ -32,6 +32,8 @@ import android.widget.TextView;
 public class SimpleScroller extends FrameLayout {
 	private int flags;
 	SimpleScroller.Listener listener;
+
+	private int initialX, initialY;
 	
 	private int dragScrollX, dragScrollY;
 	private float dragStartX, dragStartY;
@@ -52,11 +54,12 @@ public class SimpleScroller extends FrameLayout {
 		flags = flags_;
 		scaleX = scaleY = 1;
 	}
-	
+
 	public void setScrollEventListener(SimpleScroller.Listener list_) {
 		listener = list_;
 	}
-	
+
+	@Override
 	protected void measureChildWithMargins(View child, int parentWidthMeasureSpec, int widthUsed,
 			int parentHeightMeasureSpec, int heightUsed) {
 		final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
@@ -80,7 +83,8 @@ public class SimpleScroller extends FrameLayout {
 		
 		child.measure(w, h);
 	}
-	
+
+	@Override
 	public boolean onInterceptTouchEvent(MotionEvent ev) {
 		if ((flags & DISABLE_DRAG_SCROLL) > 0) {
 			/* Pass the events to the "child". */
@@ -105,7 +109,8 @@ public class SimpleScroller extends FrameLayout {
 	/* Keep these in class vars for older API compatibility. */ 
 	private float scaleX, scaleY;
 	private float pivotX, pivotY;
-	
+
+	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
 		ViewGroup c = (ViewGroup) this.getChildAt(0);
 		if ((flags & DISABLE_DRAG_SCROLL) > 0) {
@@ -177,7 +182,8 @@ public class SimpleScroller extends FrameLayout {
 		}
 		return true;
 	}
-	
+
+	@Override
 	public void scrollTo(int x, int y) {
 		if (!isCallingBack) {
 			isCallingBack = true;
@@ -187,7 +193,8 @@ public class SimpleScroller extends FrameLayout {
 			isCallingBack = false;
 		}
 	}
-	
+
+	@Override
 	protected void onSizeChanged(int w, int h, int oldw, int oldh) {
 		int newx, newy, maxx, maxy;
 		
@@ -204,6 +211,21 @@ public class SimpleScroller extends FrameLayout {
 		newy = Math.max(0, Math.min(maxy, getScrollY())); 
 		
 		scrollTo(newx, newy);
+	}
+
+	@Override
+	public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		super.onLayout(changed, left, top, right, bottom);
+		Log.d("SimpleScroller", "onLayout");
+		if (initialX > 0 || initialY > 0) {
+			Log.d("ScrollTo", "" + initialX + "," + initialY);
+			scrollTo(initialX, initialY);
+		}
+	}
+
+	public void setInitialXY(int x, int y) {
+		initialX = x;
+		initialY = y;
 	}
 	
 	public interface Listener {

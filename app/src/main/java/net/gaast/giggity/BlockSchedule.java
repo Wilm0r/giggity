@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
@@ -29,14 +30,18 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.Display;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
@@ -136,7 +141,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		end.setTime(sched.getLastTime());		
 
 		topClock = new Clock(ctx, base, end);
-		topClock.setScrollEventListener(this);
 		addView(topClock);
 		
 		tentHeaders = new LinearLayout(ctx);
@@ -197,8 +201,15 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		
 		bottomClock = new Clock(ctx, base, end);
-		bottomClock.setScrollEventListener(this);
 		addView(bottomClock);
+
+		Date now = new Date();
+		if (sched.getFirstTime().before(now) && sched.getLastTime().after(now)) {
+			float hours = (float) (now.getTime() - sched.getFirstTime().getTime()) / 3600 / 1000;
+			int scrollX = (int) (hours - 1) * HourWidth;
+			Log.d("scrollTo", "" + hours + " " + scrollX);
+			schedContScr.setInitialXY(scrollX, 0);
+		}
 		
 		setBackgroundColor(c.background);
 	}
@@ -358,6 +369,12 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
 				cal.add(Calendar.MINUTE, 30);
 			}
+		}
+
+		/* Nah. The clocks are tiny and have a little more range than the schedule which looks ugly. So just block scrolling. */
+		@Override
+		public boolean onTouchEvent(MotionEvent ev) {
+			return false;
 		}
 	}
 	
