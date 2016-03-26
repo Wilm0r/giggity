@@ -198,10 +198,10 @@ public class Db {
 				row.put("sch_metadata", sched.metadata);
 				db.insert("schedule", null, row);
 			} else if (q.getCount() == 1) {
+				q.moveToNext();
 				if (oldDbVer < 8) {
 					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
 					ContentValues row = new ContentValues();
-					q.moveToNext();
 					row.put("sch_start", sched.start.getTime() / 1000);
 					row.put("sch_end", sched.end.getTime() / 1000);
 					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
@@ -210,7 +210,6 @@ public class Db {
 				/* Always refresh the metadata, seedfile is authoritative. */
 				if (sched.metadata != "") {
 					ContentValues row = new ContentValues();
-					q.moveToNext();
 					row.put("sch_metadata", sched.metadata);
 					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
 				}
