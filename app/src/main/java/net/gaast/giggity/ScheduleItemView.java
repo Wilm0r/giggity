@@ -79,6 +79,8 @@ public class ScheduleItemView extends RelativeLayout {
 
 		if (item.isHidden()) {
 			setAlpha(.5F);
+		} else {
+			setAlpha(1F);
 		}
 	}
 }

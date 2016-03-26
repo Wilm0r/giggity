@@ -237,7 +237,12 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			g.setVisibility(View.VISIBLE);
 		}
 		
-		ImageButton delButton = new DeleteButton(ctx);
+		ImageButton delButton;
+		if (!item.isHidden()) {
+			delButton = new HideButton(ctx);
+		} else {
+			delButton = new UnhideButton(ctx);
+		}
 		bottomBox.addView(delButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 
 		return c;
@@ -279,13 +284,16 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		}
 	}
 	
-	private class DeleteButton extends ImageButton implements ImageButton.OnClickListener {
-		public DeleteButton(Context context) {
+	private class HideButton extends ImageButton implements ImageButton.OnClickListener {
+		protected int title = R.string.hide_what;
+		protected boolean newValue = true;
+
+		public HideButton(Context context) {
 			super(context);
 			setImageResource(android.R.drawable.ic_menu_delete);
 			setPadding(0, 0, 0, 0);
 			setOnClickListener(this);
-			setBackgroundColor(0x00000000);
+			setBackgroundResource(android.R.color.transparent);
 		}
 
 		@Override
@@ -303,22 +311,22 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			delWhat[1] = ctx.getResources().getString(R.string.hide_room);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-			builder.setTitle(R.string.hide_what);
+			builder.setTitle(title);
 			builder.setItems(delWhat, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int what) {
 				switch (what) {
 				case 0:
-					item.setHidden(true);
+					item.setHidden(newValue);
 					break;
 				case 1:
 					for (Schedule.Item other : item.getLine().getItems())
-						other.setHidden(true);
+						other.setHidden(newValue);
 					break;
 				case 2:
 					for (Schedule.Line line : item.getSchedule().getTents())
 						for (Schedule.Item other : line.getItems())
 							if (other.getTrack() != null && other.getTrack().equals(item.getTrack()))
-								other.setHidden(true);
+								other.setHidden(newValue);
 					break;
 				}
 				try {
@@ -331,6 +339,15 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			});
 			AlertDialog alert = builder.create();
 			alert.show();
+		}
+	}
+
+	private class UnhideButton extends HideButton {
+		public UnhideButton(Context context) {
+			super(context);
+			setImageResource(android.R.drawable.ic_menu_revert);
+			title = R.string.unhide_what;
+			newValue = false;
 		}
 	}
 	
