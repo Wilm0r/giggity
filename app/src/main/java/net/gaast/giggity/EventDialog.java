@@ -216,22 +216,10 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			bottomBox.addView(sv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 		}
 		
-		/* Web buttons on the right, if we have types. */
-		if (item.getSchedule().hasLinkTypes()) {
-			LinkedList<Schedule.Item.Link> links = item.getLinks();
-			if (links != null) {
-				LinearLayout webButtons = new LinearLayout(ctx);
-				for (Schedule.Item.Link link : links) {
-					LinkButton btn = new LinkButton(ctx, link);
-					webButtons.addView(btn);
-				}
-				bottomBox.addView(webButtons, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
-			}
-		} else if (item.getLinks() != null) {
+		if (item.getLinks() != null) {
 			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);
-			for (Schedule.Item.Link link : item.getLinks()) {
+			for (Schedule.Link link : item.getLinks()) {
 				LinkButton btn = new LinkButton(ctx, link);
-				btn.showUrl(true);
 				g.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
 			}
 			g.setVisibility(View.VISIBLE);
@@ -247,34 +235,25 @@ public class EventDialog extends Dialog implements OnDismissListener {
 
 		return c;
 	}
-	
+
+	/* The old Giggity-native format supported image buttons. Not doing that anymore, or if I do
+	* I'll refactor it. For now it's links with at most a title using the same Schedule.Link class
+	* used by conference metadata. */
 	private class LinkButton extends FrameLayout implements ImageButton.OnClickListener {
-		Schedule.Item.Link link;
+		Schedule.Link link;
 		
-		public LinkButton(Context ctx, Schedule.Item.Link link_) {
+		public LinkButton(Context ctx, Schedule.Link link_) {
 			super(ctx);
 			link = link_;
-			showUrl(false);
+			TextView url = new TextView(ctx);
+			url.setText("• " + link.getTitle());
+			url.setEllipsize(TextUtils.TruncateAt.END);
+			url.setOnClickListener(this);
+			url.setSingleLine();
+			url.setPadding(0, 3, 0, 3);
+			addView(url);
 		}
-		
-		public void showUrl(boolean show) {
-			this.removeAllViews();
-			if (show) {
-				TextView url = new TextView(ctx);
-				url.setText("• " + link.getUrl());
-				url.setEllipsize(TextUtils.TruncateAt.END);
-				url.setOnClickListener(this);
-				url.setSingleLine();
-				url.setPadding(0, 3, 0, 3);
-				addView(url);
-			} else {
-				ImageButton btn = new ImageButton(ctx);
-				btn.setImageDrawable(link.getType().getIcon());
-				btn.setOnClickListener(this);
-				addView(btn);
-			}
-		}
-		
+
 		@Override
 		public void onClick(View v) {
 			Uri uri = Uri.parse(link.getUrl());

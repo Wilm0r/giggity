@@ -75,7 +75,6 @@ public class Schedule {
 	private String title;
 
 	private LinkedList<Schedule.Line> tents;
-	private HashMap<String,Schedule.LinkType> linkTypes;
 	private TreeMap<String,Schedule.Item> allItems;
 	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
 
@@ -96,11 +95,8 @@ public class Schedule {
 	private boolean fullyLoaded;
 	private Handler progressHandler;
 
-	private final Schedule.LinkType defaultLinkType;
-
 	public Schedule(Giggity ctx) {
 		app = ctx;
-		defaultLinkType = new Schedule.LinkType("link");
 	}
 
 	public static String hashify(String url) {
@@ -220,7 +216,8 @@ public class Schedule {
 	 * If false, we have no types and should show full URLs.
 	 */
 	public boolean hasLinkTypes() {
-		return linkTypes.size() > 1;
+		// Deprecated feature.
+		return false;
 	}
 	
 	public void setProgressHandler(Handler handler) {
@@ -234,7 +231,6 @@ public class Schedule {
 		title = null;
 		
 		allItems = new TreeMap<String,Schedule.Item>();
-		linkTypes = new HashMap<String,Schedule.LinkType>();
 		tents = new LinkedList<Schedule.Line>();
 		trackMap = null; /* Only assign if we have track info. */
 		
@@ -455,10 +451,6 @@ public class Schedule {
 		return ret;
 	}
 	
-	public Schedule.LinkType getLinkType(String id) {
-		return linkTypes.get(id);
-	}
-	
 	public Item getItem(String id) {
 		return allItems.get(id);
 	}
@@ -589,14 +581,6 @@ public class Schedule {
 				id = atts.getValue("", "id");
 				title = atts.getValue("", "title");
 			} else if (localName == "linkType") {
-				String id = atts.getValue("", "id");
-				String icon = atts.getValue("", "icon");
-				
-				Schedule.LinkType lt = new Schedule.LinkType(id);
-				if (icon != null)
-					lt.setIconUrl(icon);
-				
-				linkTypes.put(id, lt);
 			} else if (localName == "line") {
 				curTent = new Schedule.Line(atts.getValue("", "id"),
 				                            atts.getValue("", "title"));
@@ -614,8 +598,7 @@ public class Schedule {
 					Log.w("Schedule.loadDeox", "Error while parsing date: " + e);
 				}
 			} else if (localName == "itemLink") {
-				Schedule.LinkType lt = linkTypes.get(atts.getValue("", "type"));
-				curItem.addLink(lt, atts.getValue("", "href"));
+				curItem.addLink(new Link(atts.getValue("", "href"), atts.getValue("", "type")));
 			}
 		}
 	
@@ -737,7 +720,7 @@ public class Schedule {
 				}
 				
 				if ((s = eventData.get("url")) != null) {
-					item.addLink(defaultLinkType, s);
+					item.addLink(new Link(s));
 				}
 
 				if ((line = tentMap.get(location)) == null) {
@@ -793,13 +776,19 @@ public class Schedule {
 		public void skippedEntity(String arg0) throws SAXException {
 		}
 	}
-	
+
+	/* Pentabarf, the old conference organisation tool has a pretty excellent native XML format
+	   and is now the preferred file format. http://pentabarf.org/Main_Page
+	   It's not really maintained anymore though, a recent fork called Frab is more maintained and
+	   Giggity can read its XML exports just as well https://github.com/frab/frab
+	 */
 	private class PentabarfParser implements ContentHandler {
 		private Schedule.Line curTent;
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> propMap;
 		private String curString;
-		private LinkedList<String> links, persons;
+		private LinkedList<String> persons;
+		private LinkedList<Link> links;
 		private Date curDay;
 		private HashSet<String> trackSet;
 
@@ -821,8 +810,8 @@ public class Schedule {
 				propMap = new HashMap<String,String>();
 				propMap.put("id", atts.getValue("id"));
 				
-				links = new LinkedList<String>();
-				persons = new LinkedList<String>();
+				links = new LinkedList<>();
+				persons = new LinkedList<>();
 			} else if (localName.equals("day")) {
 				try {
 					curDay = df.parse(atts.getValue("date"));
@@ -848,7 +837,7 @@ public class Schedule {
 			} else if (localName.equals("link") && links != null) {
 				String href = atts.getValue("href");
 				if (href != null)
-					links.add(href);
+					links.add(new Link(href));
 			}
 		}
 	
@@ -929,8 +918,8 @@ public class Schedule {
 					item.setTrack(s);
 					trackSet.add(s);
 				}
-				for (String i : links)
-					item.addLink(defaultLinkType, i);
+				for (Link i : links)
+					item.addLink(i);
 				for (String i : persons)
 					item.addSpeaker(i);
 
@@ -940,6 +929,11 @@ public class Schedule {
 				persons = null;
 			} else if (localName.equals("person")) {
 				persons.add(curString);
+			} else if (localName.equals("link")) {
+				String title = curString.trim();
+				if (!links.isEmpty() && !title.isEmpty()) {
+					links.getLast().setTitle(title);
+				}
 			} else if (propMap != null) {
 				propMap.put(localName, curString);
 			}
@@ -1037,7 +1031,7 @@ public class Schedule {
 		private String track;
 		private String description;
 		private Date startTime, endTime;
-		private LinkedList<Schedule.Item.Link> links;
+		private LinkedList<Schedule.Link> links;
 		private LinkedList<String> speakers;
 		
 		private boolean remind;
@@ -1080,13 +1074,15 @@ public class Schedule {
 		public void setDescription(String description_) {
 			description = description_.trim();
 			
-			/* Grab URLs and add them as (clickable) links. */
-			Pattern urlre = Pattern.compile("([a-z]+://|www\\.)[\\]\\[A-Za-z0-9-._~:/?#@!$&'()*+,;=]+");
-			Matcher urls = urlre.matcher(description);
-			while (urls.find()) {
-				String url = urls.group();
-				url = url.replaceAll("[\\])\"'.]*$", "");
-				addLink(defaultLinkType, url);
+			if (false) {
+				/* Shouldn't need this with HTML view: Grab URLs and add them as (clickable) links. */
+				Pattern urlre = Pattern.compile("([a-z]+://|www\\.)[\\]\\[A-Za-z0-9-._~:/?#@!$&'()*+,;=]+");
+				Matcher urls = urlre.matcher(description);
+				while (urls.find()) {
+					String url = urls.group();
+					url = url.replaceAll("[\\])\"'.]*$", "");
+					addLink(new Link(url));
+				}
 			}
 			
 			/* Strip HTML-like stuff. Might strip things I don't want to so only
@@ -1097,14 +1093,12 @@ public class Schedule {
 			}
 			*/
 		}
-		
-		public void addLink(Schedule.LinkType type, String url) {
-			Schedule.Item.Link link = new Schedule.Item.Link(type, url);
-			
+
+		public void addLink(Schedule.Link link) {
 			if (links == null) {
-				links = new LinkedList<Schedule.Item.Link>();
+				links = new LinkedList<Schedule.Link>();
 			}
-			for (Schedule.Item.Link l : links)
+			for (Schedule.Link l : links)
 				if (l.getUrl().equals(link.getUrl()))
 					return;
 			
@@ -1166,7 +1160,7 @@ public class Schedule {
 			return line;
 		}
 		
-		public LinkedList<Schedule.Item.Link> getLinks() {
+		public LinkedList<Schedule.Link> getLinks() {
 			return links;
 		}
 
@@ -1211,26 +1205,6 @@ public class Schedule {
 			}
 		}
 		
-		public class Link {
-			private Schedule.LinkType type;
-			private String url;
-			
-			public Link(Schedule.LinkType type_, String url_) {
-				type = type_;
-				url = url_;
-				if (!url.matches("^[a-z]+://.*$"))
-					url = "http://" + url;
-			}
-			
-			public Schedule.LinkType getType() {
-				return type;
-			}
-			
-			public String getUrl() {
-				return url;
-			}
-		}
-
 		@Override
 		public int compareTo(Item another) {
 			int ret;
@@ -1261,60 +1235,18 @@ public class Schedule {
 		}
 	}
 
-	/* Only used by native deoxide schedules, and not even that much there. Lets you add links that show up
-	   at the bottom with just icons, to for example automatically include last.fm/wikipedia links for each artist/topic. */
-	public class LinkType {
-		private String id;
-		private Drawable iconDrawable;
-		
-		public LinkType(String id_) {
-			id = id_;
-			iconDrawable = app.getResources().getDrawable(R.drawable.browser_small);
-		}
-		
-		public void setIconUrl(String url_) {
-			/* Permanent caching, if you change the icon, change the URL.. 
-			 * At least we only save a cached copy if the file was parsed successfully. */
-			File fn = new File(app.getCacheDir(), "icon." + hashify(url_)), fntmp = null;
-			
-			try {
-				if (fn.canRead()) {
-					iconDrawable = Drawable.createFromPath(fn.getPath());
-				} else {
-					/* %@#&)@*&@#%& Java has 3275327 different kinds of streams/readers or whatever.
-					 * TeeReader won't work here so just go for the fucking kludge.
-					 */
-					fntmp = new File(app.getCacheDir(), "tmp." + hashify(url_));
-					FileOutputStream copy = new FileOutputStream(fntmp);
-					byte[] b = new byte[1024];
-					int len;
-					URL dl = new URL(url_);
-					InputStream in = dl.openStream();
-					while ((len = in.read(b)) != -1) {
-						copy.write(b, 0, len);
-					}
-					
-					iconDrawable = Drawable.createFromPath(fntmp.getPath());
-					fn.delete();
-					fntmp.renameTo(fn);
-				}
-			} catch (Exception e) {
-				Log.e("setIconUrl", "Error while dowloading icon " + url_);
-				e.printStackTrace();
-			}
-		}
-		
-		public Drawable getIcon() {
-			return iconDrawable;
-		}
-	}
-
 	public class Link {
 		private String url, title;
 
-		public Link(String link_, String title_) {
-			url = link_;
+		public Link(String url_, String title_) {
+			if (!url_.matches("^[a-z]+://.*$"))
+				url_ = "http://" + url;
+			url = url_;
 			title = title_;
+		}
+
+		public Link(String url_) {
+			this(url_, url_);
 		}
 
 		public String getUrl() {
@@ -1323,6 +1255,10 @@ public class Schedule {
 
 		public String getTitle() {
 			return title;
+		}
+
+		public void setTitle(String title_) {
+			title = title_;
 		}
 	}
 	
