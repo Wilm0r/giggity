@@ -1,5 +1,15 @@
 package net.gaast.giggity;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.util.Log;
+
+import org.apache.commons.io.input.TeeInputStream;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
@@ -17,14 +28,6 @@ import java.net.URLConnection;
 import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
-
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.os.Handler;
-import android.preference.PreferenceManager;
-import android.util.Log;
 
 /** Caching HTTP fetcher. */
 public class Fetcher {
@@ -100,7 +103,7 @@ public class Fetcher {
 			}
 			if (status == 200) {
 				fntmp = new File(app.getCacheDir(), "tmp." + Schedule.hashify(url));
-				Writer copy = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(fntmp), "utf-8"));
+				OutputStream copy = new FileOutputStream(fntmp);
 				Reader rawin;
 				String enc = dlc.getContentEncoding();
 				
@@ -109,13 +112,12 @@ public class Fetcher {
 					flen = dlc.getContentLength();
 					is = new ProgressStream(is);
 				}
-				
-				Log.d("Fetcher", "HTTP encoding " + enc);
-				if (enc != null && enc.contains("gzip"))
-					rawin = new InputStreamReader(new GZIPInputStream(is), "utf-8");
-				else
-					rawin = new InputStreamReader(is, "utf-8");
-				in = new TeeReader(rawin, copy, 4096);
+				if (enc != null && enc.contains("gzip")) {
+					is = new GZIPInputStream(is);
+				}
+
+				is = new TeeInputStream(is, copy, true);
+				in = new BufferedReader(new InputStreamReader(is, "utf-8"));
 				source = Source.ONLINE;
 			} else if (status == 304) {
 				Log.i("Fetcher", "HTTP 304, using cached copy");
@@ -164,7 +166,7 @@ public class Fetcher {
 	public Source getSource() {
 		return source;
 	}
-	
+
 	/** If the file is usable, keep it cached. */
 	public void keep() {
 		try {
@@ -191,54 +193,7 @@ public class Fetcher {
 			/* Delete the cached copy we were using. */
 			fn.delete();
 	}
-	
-	/* I want to keep local cached copies of schedule files. This reader makes that easy. */
-	private class TeeReader extends BufferedReader {
-		private Writer writer;
-		private boolean waiting;
-		
-		public TeeReader(Reader in, Writer out, int buf) {
-			super(in, buf);
-			writer = out;
-		}
-		
-		@Override
-		public void mark(int limit) throws IOException {
-			super.mark(limit);
-			waiting = true;
-		}
-		
-		@Override
-		public void reset() throws IOException {
-			super.reset();
-			waiting = false;
-		}
 
-		@Override
-		public int read(char[] buf, int off, int len) throws IOException {
-			int st = super.read(buf, off, len);
-			if (writer != null && !waiting && st > 0) {
-				writer.write(buf, off, st);
-			}
-			return st;
-		}
-		
-		@Override
-		public String readLine() throws IOException {
-			String ret;
-			ret = super.readLine();
-			if (writer != null && !waiting && ret != null)
-				writer.write(ret + "\n");
-			return ret;
-		}
-		
-		@Override
-		public void close() throws IOException {
-			super.close();
-			writer.close();
-		}
-	}
-	
 	private class ProgressStream extends InputStream {
 		private InputStream in;
 		private boolean waiting;
