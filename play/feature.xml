@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schedule>
+  <conference>
+    <title>test.xml</title>
+    <subtitle/>
+    <start>2018-01-30</start>
+    <end>2018-01-30</end>
+    <days>1</days>
+    <day_change>09:00:00</day_change>
+    <timeslot_duration>00:05:00</timeslot_duration>
+  </conference>
+  <day index="1" date="2018-01-30">
+    <room name="1">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+    <room name="2">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+    <room name="3">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+    <room name="7">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+    <room name="8">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+      <event id="3527">
+        <start>11:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>12:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>13:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>14:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>15:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+    </room>
+    <room name="9">
+      <event id="3527">
+        <start>12:10</start>
+        <duration>00:45</duration>
+        <title>WTH</title>
+      </event>
+      <event id="3527">
+        <start>13:10</start>
+        <duration>00:45</duration>
+        <title>HAR</title>
+      </event>
+      <event id="3527">
+        <start>14:10</start>
+        <duration>00:45</duration>
+        <title>OHM</title>
+      </event>
+      <event id="3527">
+        <start>15:10</start>
+        <duration>00:45</duration>
+        <title>SHA</title>
+      </event>
+    </room>
+    <room name="Janson">
+      <event id="3527">
+        <start>12:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+      <event id="3527">
+        <start>13:30</start>
+        <duration>00:45</duration>
+        <title>FrOSCon</title>
+      </event>
+      <event id="3527">
+        <start>14:30</start>
+        <duration>00:45</duration>
+        <title>DebConf</title>
+      </event>
+      <event id="3527">
+        <start>15:30</start>
+        <duration>00:45</duration>
+        <title>TÜBIX</title>
+      </event>
+    </room>
+    <room name="4">
+      <event id="3527">
+        <start>10:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>11:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>12:50</start>
+        <duration>00:45</duration>
+        <title>33C3</title>
+      </event>
+      <event id="3527">
+        <start>13:50</start>
+        <duration>00:45</duration>
+        <title>CCC</title>
+      </event>
+      <event id="3527">
+        <start>14:50</start>
+        <duration>00:45</duration>
+        <title>EMF</title>
+      </event>
+      <event id="3527">
+        <start>15:50</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+    </room>
+    <room name="5">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>11:10</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>12:10</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>13:10</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>14:10</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>15:10</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+      <event id="3527">
+        <start>16:10</start>
+        <duration>00:45</duration>
+        <title></title>
+      </event>
+    </room>
+    <room name="6">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+    <room name="41">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+    <room name="51">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+    <room name="61">
+      <event id="3527">
+        <start>20:30</start>
+        <duration>00:45</duration>
+        <title>FOSDEM</title>
+      </event>
+    </room>
+  </day>
+</schedule>

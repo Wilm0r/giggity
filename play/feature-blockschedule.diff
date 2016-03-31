@@ -1,0 +1,28 @@
+Should maybe consider the vertical center as a new default.
+
+But need to know how truncation works then (both ends, or does it align
+to top then?)
+
+=== modified file 'app/src/main/java/net/gaast/giggity/BlockSchedule.java'
+--- app/src/main/java/net/gaast/giggity/BlockSchedule.java	2016-03-13 00:18:05 +0000
++++ app/src/main/java/net/gaast/giggity/BlockSchedule.java	2016-03-22 21:14:16 +0000
+@@ -110,7 +110,8 @@
+ 		 * somewhere between 8 and 14 as the user zooms. */
+ 		float d = (float) Math.sqrt(HourWidth / 36 * TentHeight / 24) / getResources().getDisplayMetrics().density;
+ 		fontSize = (float) Math.min(8 + 6 * Math.log(d) / Math.log(20), 14);
+-		
++		fontSize = (HourHeight) * (float)0.4;
++
+ 		schedCont = new AbsoluteLayout(ctx);
+ 		
+ 		Bitmap bmp = Bitmap.createBitmap(HourWidth, TentHeight, Bitmap.Config.ARGB_8888);
+@@ -256,7 +257,7 @@
+ 		
+ 		public Element(Activity ctx) {
+ 			super(ctx);
+-			setGravity(Gravity.CENTER_HORIZONTAL);
++			setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL);
+ 			setHeight(TentHeight);
+ 			setTextColor(0xFFFFFFFF);
+ 			setPadding(0, 3, 0, 0);
+
