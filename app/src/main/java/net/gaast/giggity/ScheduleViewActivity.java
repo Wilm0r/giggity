@@ -23,6 +23,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -51,12 +52,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
-import java.util.AbstractCollection;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.Set;
 
 public class ScheduleViewActivity extends Activity {
 	protected Schedule sched;
@@ -228,77 +229,94 @@ public class ScheduleViewActivity extends Activity {
 		this.unregisterReceiver(tzClose);
 		super.onDestroy();
 	}
-	
-	private void loadScheduleAsync(String url_, Fetcher.Source source_) { 
-		final String url = url_;
-		final Fetcher.Source source = source_;
-		final Thread loader;
-		final Handler resultHandler;
-		final ProgressDialog prog;
-		
-		final int DONE = 999999;
-		
-		prog = new ProgressDialog(this);
-		prog.setMessage(this.getResources().getString(R.string.loading_schedule));
-		prog.setIndeterminate(true);
-		prog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-		prog.setCanceledOnTouchOutside(false);
-		prog.setProgressNumberFormat(null);
-		prog.setMax(1);
-		/* 
-		timer.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				//prog.hide();
-				prog.setButton(DialogInterface.BUTTON_NEGATIVE, "Use cached copy", new OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// blaat
+
+	/* Progress dialog for schedule/data load. Could consider putting it into Fetcher. */
+	private class LoadProgress extends ProgressDialog {
+		public static final int DONE = 999999;
+		private Handler updater;
+		private boolean critical;  // If this load is critical for the activity, leave if it fails.
+		private LoadProgressDoneInterface done;
+
+		public LoadProgress(Context ctx, boolean critical) {
+			super(ctx);
+			this.critical = critical;
+
+			setMessage(getResources().getString(R.string.loading_schedule));
+			setIndeterminate(true);
+			setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+			setCanceledOnTouchOutside(false);
+			setProgressNumberFormat(null);
+			setMax(1);
+
+			updater = new Handler() {
+				@Override
+				public void handleMessage(Message msg) {
+					if (msg.what == DONE) {
+						if (done != null) {
+							done.done();
+						}
+						dismiss();
+					} else if (msg.what > 0 ) {
+						if (getMax() == 1) {
+							setIndeterminate(false);
+							setMax(100);
+						}
+						setProgress(msg.what);
+					} else {
+						dismiss();
+
+						Dialog d = new AlertDialog.Builder(ScheduleViewActivity.this)
+								.setTitle(R.string.loading_error)
+								.setMessage(msg.obj != null ? msg.obj.toString() : "(null)")
+								.show();
+
+						// If we ran into an error while loading the main schedule, leave this
+						// activity once the user acknowledges the error.
+						if (LoadProgress.this.critical) {
+							d.setOnDismissListener(new OnDismissListener() {
+								public void onDismiss(DialogInterface dialog) {
+									finish();
+								}
+							});
+						}
 					}
-				});
-				prog.show();
+				}
+			};
+		}
+
+		public Handler getHandler() {
+			return updater;
+		}
+
+		public void setDone(LoadProgressDoneInterface done) {
+			this.done = done;
+		}
+	}
+
+	// Interfaces can't be defined inside inner classes. :<
+	interface LoadProgressDoneInterface {
+		void done();
+	}
+
+	private void loadScheduleAsync(final String url, final Fetcher.Source source) {
+		final LoadProgress prog = new LoadProgress(this, true);
+		prog.setDone(new LoadProgressDoneInterface() {
+			@Override
+			public void done() {
+				onScheduleLoaded();
 			}
-		}, 5);
-		*/
+		});
 		prog.show();
 
-		resultHandler = new Handler() {
-			@Override
-			public void handleMessage(Message msg) {
-				if (msg.what == DONE) {
-					onScheduleLoaded();
-					prog.dismiss();
-				} else if (msg.what > 0 ) {
-					if (prog.getMax() == 1) {
-						prog.setIndeterminate(false);
-						prog.setMax(100);
-					}
-					prog.setProgress(msg.what);
-				} else {
-					prog.dismiss();
-					
-					new AlertDialog.Builder(ScheduleViewActivity.this)
-						.setTitle(R.string.loading_error)
-						.setMessage(msg.obj != null ? msg.obj.toString() : "(null)")
-						.show()
-						.setOnDismissListener(new OnDismissListener() {
-							public void onDismiss(DialogInterface dialog) {
-								finish();
-							}
-						});
-				}
-			}
-		};
-
-		loader = new Thread() {
+		Thread loader = new Thread() {
 			@Override
 			public void run() {
 				try {
-					sched = app.getSchedule(url, source, resultHandler);
-					resultHandler.sendEmptyMessage(DONE);
+					sched = app.getSchedule(url, source, prog.getHandler());
+					prog.getHandler().sendEmptyMessage(LoadProgress.DONE);
 				} catch (Throwable t) {
 					t.printStackTrace();
-					resultHandler.sendMessage(Message.obtain(resultHandler, 0, t));
+					prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, t));
 				}
 			}
 		};
@@ -365,7 +383,7 @@ public class ScheduleViewActivity extends Activity {
 	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */
 	public void finishNavDrawer() {
 		if (sched == null) {
-			Log.e("finishNavDrawer", "Called before schedule was loaded?");
+			Log.e("finishNavDrawer", "Called before critical was loaded?");
 			return;
 		}
 
@@ -377,17 +395,13 @@ public class ScheduleViewActivity extends Activity {
 			ViewGroup menu = (LinearLayout) drawerLayout.findViewById(R.id.menu);
 			View sep = menu.findViewById(R.id.custom_sep);
 			sep.setVisibility(View.VISIBLE);
-			for (Schedule.Link link : sched.getLinks()) {
-				final String url = link.getUrl();
+			for (final Schedule.Link link : sched.getLinks()) {
 				TextView item = (TextView) getLayoutInflater().inflate(R.layout.burger_menu_item, null);
 				item.setText(link.getTitle());
 				item.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						Uri uri = Uri.parse(url);
-						Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-						browser.addCategory(Intent.CATEGORY_BROWSABLE);
-						startActivity(browser);
+						openLink(link, true);
 						drawerLayout.closeDrawers();
 					}
 				});
@@ -408,7 +422,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (sched == null) {
-			Log.e("updateNavDrawer", "Called before schedule was loaded?");
+			Log.e("updateNavDrawer", "Called before critical was loaded?");
 			return;
 		}
 
@@ -418,6 +432,69 @@ public class ScheduleViewActivity extends Activity {
 				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
 		drawerLayout.findViewById(R.id.show_hidden).setBackgroundResource(
 				sched.getShowHidden() ? R.drawable.menu_gradient : R.color.light);
+	}
+
+	/** Open a link object, either just through the browser or by downloading locally and using a
+	 * dedicated viewer.
+	 * @param link Link object - if type is set we'll try to download and use a viewer, unless:
+	 * @param allowDownload is set. This also used to avoid infinite loops in case of bugs.
+	 */
+	private void openLink(final Schedule.Link link, boolean allowDownload) {
+		Uri uri = Uri.parse(link.getUrl());
+		if (link.getType() == null || !allowDownload) {
+			Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+			browser.addCategory(Intent.CATEGORY_BROWSABLE);
+			startActivity(browser);
+		} else {
+			File cached = Fetcher.cachedFile(app, link.getUrl());
+			if (cached != null) {
+				try {
+					Intent intent = new Intent();
+					intent.setAction(Intent.ACTION_VIEW);
+					intent.setDataAndType(Uri.parse(cached.toURI().toString()), link.getType());
+					startActivity(intent);
+				} catch (ActivityNotFoundException e) {
+					Dialog d = new AlertDialog.Builder(ScheduleViewActivity.this)
+							.setTitle(R.string.loading_error)
+							.setMessage(getString(R.string.no_viewer_error) + " " +
+									link.getType() + ": " + e.getMessage())
+							.show();
+				}
+			} else {
+				final LoadProgress prog = new LoadProgress(this, false);
+				prog.setDone(new LoadProgressDoneInterface() {
+					@Override
+					public void done() {
+						/* Try again, avoiding inifite-looping on this download just in case. */
+						openLink(link, false);
+					}
+				});
+				prog.show();
+
+				Thread loader = new Thread() {
+					@Override
+					public void run() {
+						try {
+							Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.ONLINE);
+							f.setProgressHandler(prog.getHandler());
+
+							/* Just slurp the entire file into a bogus buffer, what we need is the
+							   file in ExternalCacheDir */
+							byte[] buf = new byte[1024];
+							while (f.getStream().read(buf) != -1) {}
+							f.keep();
+
+							/* Will trigger the done() above back in the main thread. */
+							prog.getHandler().sendEmptyMessage(LoadProgress.DONE);
+						} catch (IOException e) {
+							e.printStackTrace();
+							prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, e));
+						}
+					}
+				};
+				loader.start();
+			}
+		}
 	}
 
 	public void redrawSchedule() {
@@ -455,7 +532,7 @@ public class ScheduleViewActivity extends Activity {
 				evd.show();
 			}
 		}
-		
+
 		this.invalidateOptionsMenu();
 	}
 	

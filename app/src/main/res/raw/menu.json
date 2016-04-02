@@ -1,5 +1,5 @@
 {
-	"version": 2016031902,
+	"version": 2016040101,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -59,7 +59,7 @@
 			}
 		},
 		{
-			"version": 2016031900,
+			"version": 2016040101,
 			"url": "https://fosdem.org/2016/schedule/xml",
 			"title": "FOSDEM 2016",
 			"start": "2016-01-30",
@@ -69,6 +69,11 @@
 					{
 						"url": "https://fosdem.org/2016/",
 						"title": "Website"
+					},
+					{
+						"url": "https://fosdem.org/2016/assets/booklet-327941bc89717b26611707b50b6109f66104f1de0edefc349af425091197543e.pdf",
+						"title": "Info booklet",
+						"type": "application/pdf"
 					},
 					{
 						"url": "https://fosdem.org/2016/schedule/buildings/",

@@ -39,6 +39,7 @@
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Loading schedule data...</string>
 	<string name="loading_error">Load error</string>
+	<string name="no_viewer_error">No viewer installed for filetype</string>
 	<string name="export_selections">Export selections</string>
 	<string name="import_selections">Import selections</string>
 	<string name="no_selections">No selections to be exported</string>

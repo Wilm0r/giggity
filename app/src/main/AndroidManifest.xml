@@ -3,10 +3,18 @@
           package="net.gaast.giggity" 
           android:versionCode="61"
           android:versionName="1.1.1">
+
   <uses-permission android:name="android.permission.INTERNET"/>
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
+
+  <!-- Now using external cache dir so we can open images/etc in external viewer. Nicely from KitKat
+       using a semi-private files/cache dir does not require additional permissions. -->
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
+
+  <!-- API level 16 == Jellybean. This should give me support for 80-90% of devices at time of writing. -->
   <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="21"/>
+
   <application android:label="@string/app_name" android:name="Giggity" android:icon="@drawable/deoxide_icon" android:allowBackup="true" android:theme="@style/Theme.Giggity.NoShadow">
     <activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="ScheduleViewActivity">
       <meta-data android:name="android.app.default_searchable" android:value=".SearchActivity" />

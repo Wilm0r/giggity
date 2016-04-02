@@ -407,7 +407,9 @@ public class Schedule {
 				JSONArray linklist = md.getJSONArray("links");
 				for (int i = 0; i < linklist.length(); ++i) {
 					JSONObject link = linklist.getJSONObject(i);
-					links.addLast(new Link(link.getString("url"), link.getString("title")));
+					Schedule.Link slink = new Link(link.getString("url"), link.getString("title"));
+					slink.setType(link.optString("type", null));
+					links.addLast(slink);
 				}
 			}
 		} catch (JSONException e) {
@@ -1237,6 +1239,10 @@ public class Schedule {
 
 	public class Link {
 		private String url, title;
+		/* If type is set, at least ScheduleViewActivity will try to download and then view locally.
+		   This works better for PDFs for example, also with caching it's beneficial on poor conference
+		   WiFi (or worse, roaming!). */
+		private String type;
 
 		public Link(String url_, String title_) {
 			if (!url_.matches("^[a-z]+://.*$"))
@@ -1259,6 +1265,14 @@ public class Schedule {
 
 		public void setTitle(String title_) {
 			title = title_;
+		}
+
+		public String getType() {
+			return type;
+		}
+
+		public void setType(String type) {
+			this.type = type;
 		}
 	}
 	

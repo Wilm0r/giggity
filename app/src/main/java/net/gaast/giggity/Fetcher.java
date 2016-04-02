@@ -52,7 +52,7 @@ public class Fetcher {
 
 		Log.d("Fetcher", "Creating fetcher for " + url + " prefSource=" + prefSource);
 		
-		fn = new File(app.getCacheDir(), "sched." + Schedule.hashify(url));
+		fn = new File(app.getExternalCacheDir(), "sched." + Schedule.hashify(url));
 		fntmp = null;
 
 		NetworkInfo network = ((ConnectivityManager)
@@ -113,7 +113,7 @@ public class Fetcher {
 					inStream = new GZIPInputStream(inStream);
 				}
 
-				fntmp = new File(app.getCacheDir(), "tmp." + Schedule.hashify(url));
+				fntmp = new File(app.getExternalCacheDir(), "tmp." + Schedule.hashify(url));
 				OutputStream copy = new FileOutputStream(fntmp);
 				inStream = new TeeInputStream(inStream, copy, true);  // true == close copy on close
 
@@ -137,6 +137,13 @@ public class Fetcher {
 		} else if (inStream == null) {
 			throw new IOException("No network connection or cached copy available.");
 		}
+	}
+
+	public static File cachedFile(Giggity app, String url) {
+		File fn = new File(app.getExternalCacheDir(), "sched." + Schedule.hashify(url));
+		if (fn.canRead())
+			return fn;
+		return null;
 	}
 	
 	public void setProgressHandler(Handler handler) {
