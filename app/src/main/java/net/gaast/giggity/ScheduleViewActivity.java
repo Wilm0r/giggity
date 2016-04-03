@@ -440,12 +440,7 @@ public class ScheduleViewActivity extends Activity {
 	 * @param allowDownload is set. This also used to avoid infinite loops in case of bugs.
 	 */
 	private void openLink(final Schedule.Link link, boolean allowDownload) {
-		Uri uri = Uri.parse(link.getUrl());
-		if (link.getType() == null || !allowDownload) {
-			Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-			browser.addCategory(Intent.CATEGORY_BROWSABLE);
-			startActivity(browser);
-		} else {
+		if (link.getType() != null) {
 			File cached = Fetcher.cachedFile(app, link.getUrl());
 			if (cached != null) {
 				try {
@@ -460,7 +455,8 @@ public class ScheduleViewActivity extends Activity {
 									link.getType() + ": " + e.getMessage())
 							.show();
 				}
-			} else {
+				return;
+			} else if (allowDownload) {
 				final LoadProgress prog = new LoadProgress(this, false);
 				prog.setDone(new LoadProgressDoneInterface() {
 					@Override
@@ -481,7 +477,8 @@ public class ScheduleViewActivity extends Activity {
 							/* Just slurp the entire file into a bogus buffer, what we need is the
 							   file in ExternalCacheDir */
 							byte[] buf = new byte[1024];
-							while (f.getStream().read(buf) != -1) {}
+							while (f.getStream().read(buf) != -1) {
+							}
 							f.keep();
 
 							/* Will trigger the done() above back in the main thread. */
@@ -493,8 +490,16 @@ public class ScheduleViewActivity extends Activity {
 					}
 				};
 				loader.start();
+				return;
 			}
 		}
+
+		/* If type was not set, or if neither of the two inner ifs were true (do we have the file,
+		   or, are we allowed to download it?), fall back to browser. */
+		Uri uri = Uri.parse(link.getUrl());
+		Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+		browser.addCategory(Intent.CATEGORY_BROWSABLE);
+		startActivity(browser);
 	}
 
 	public void redrawSchedule() {
