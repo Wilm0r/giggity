@@ -19,7 +19,6 @@
 
 package net.gaast.giggity;
 
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Xml;
@@ -36,13 +35,9 @@ import org.xml.sax.SAXException;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Format;
@@ -1245,8 +1240,8 @@ public class Schedule {
 		private String type;
 
 		public Link(String url_, String title_) {
-			if (!url_.matches("^[a-z]+://.*$"))
-				url_ = "http://" + url;
+			if (!url_.matches("^[a-z]+:.*$"))
+				url_ = "http://" + url_;
 			url = url_;
 			title = title_;
 		}
