@@ -1,5 +1,5 @@
 {
-	"version": 2016040101,
+	"version": 2016040302,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -59,7 +59,7 @@
 			}
 		},
 		{
-			"version": 2016040101,
+			"version": 2016040302,
 			"url": "https://fosdem.org/2016/schedule/xml",
 			"title": "FOSDEM 2016",
 			"start": "2016-01-30",
@@ -80,7 +80,17 @@
 						"title": "Map"
 					}
 				],
-				"icon": "https://fosdem.org/2016/icon-1a3618bf8816852a0bba761ea9367f1a8f95da41dd7f366e327aa4a543aec99a.png"
+				"icon": "https://fosdem.org/2016/icon-1a3618bf8816852a0bba761ea9367f1a8f95da41dd7f366e327aa4a543aec99a.png",
+				"rooms": [
+					{
+						"name": "Janson",
+						"latlon": [50.813231,4.3791498]
+					},
+					{
+						"name": "K\.1\.105.*",
+						"latlon": [50.814531,4.3812588]
+					}
+				]
 			}
 		}
 	]

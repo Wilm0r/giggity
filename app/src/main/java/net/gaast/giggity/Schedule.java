@@ -38,6 +38,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Format;
@@ -388,6 +389,8 @@ public class Schedule {
 		}
 	}
 
+	/** OOB metadata related to schedule but separately supplied by BitlBee (it's non-standard) gets merged here.
+	  I should see whether I could get support for this kind of data into the Pentabarf format. */
 	private void addMetadata(String md_json) {
 		if (md_json == null)
 			return;
@@ -405,6 +408,29 @@ public class Schedule {
 					Schedule.Link slink = new Link(link.getString("url"), link.getString("title"));
 					slink.setType(link.optString("type", null));
 					links.addLast(slink);
+				}
+			}
+			if (md.has("rooms")) {
+				JSONArray roomlist = md.getJSONArray("rooms");
+				for (int i = 0; i < roomlist.length(); ++i) {
+					JSONObject jroom = roomlist.getJSONObject(i);
+					for (Line room : getTents()) {
+						// Using regex matching here to be a little more fuzzy. Also, possibly rooms
+						// that are close to each other (and may have similar names) can just share
+						// one entry.
+						if (!room.getTitle().matches(jroom.getString("name"))) {
+							continue;
+						}
+						JSONArray latlon = jroom.getJSONArray("latlon");
+						try {
+							room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
+							                 latlon.optDouble(0, 0) + "(" +
+							                 URLEncoder.encode(room.getTitle(), "utf-8") + ")");
+						} catch (UnsupportedEncodingException e) {
+							// I'm a useless language! (Have I mentioned yet how if a machine
+							// doesn't do utf-8 then it should maybe not be on the Internet?)
+						}
+					}
 				}
 			}
 		} catch (JSONException e) {
@@ -977,6 +1003,7 @@ public class Schedule {
 		private String id;
 		private String title;
 		private TreeSet<Schedule.Item> items;
+		private String location;  // geo: URL (set by metadata loader)
 		Schedule schedule;
 		
 		public Line(String id_, String title_) {
@@ -1018,6 +1045,10 @@ public class Schedule {
 					ret.add(item);
 			}
 			return ret;
+		}
+
+		public String getLocation() {
+			return location;
 		}
 	}
 	

@@ -98,6 +98,17 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		
 		t = (TextView) c.findViewById(R.id.room);
 		t.setText(item.getLine().getTitle());
+
+		if (item.getLine().getLocation() != null) {
+			c.findViewById(R.id.room).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Uri uri = Uri.parse(item.getLine().getLocation());
+					Intent geoi = new Intent(Intent.ACTION_VIEW, uri);
+					ctx.startActivity(geoi);
+				}
+			});
+		}
 		
 		t = (TextView) c.findViewById(R.id.time);
 		t.setText(item.getSchedule().getDayFormat().format(item.getStartTime()) + " " +
