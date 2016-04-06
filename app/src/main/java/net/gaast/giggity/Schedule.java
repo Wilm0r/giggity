@@ -424,7 +424,7 @@ public class Schedule {
 						JSONArray latlon = jroom.getJSONArray("latlon");
 						try {
 							room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
-							                 latlon.optDouble(0, 0) + "(" +
+							                 latlon.optDouble(1, 0) + "(" +
 							                 URLEncoder.encode(room.getTitle(), "utf-8") + ")");
 						} catch (UnsupportedEncodingException e) {
 							// I'm a useless language! (Have I mentioned yet how if a machine
