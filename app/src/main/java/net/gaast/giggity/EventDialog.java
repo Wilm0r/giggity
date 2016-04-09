@@ -255,11 +255,11 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			super(ctx);
 			link = link_;
 			TextView url = new TextView(ctx);
-			url.setText("• " + link.getTitle());
-			url.setEllipsize(TextUtils.TruncateAt.END);
+			url.setText(link.getTitle());
 			url.setOnClickListener(this);
-			url.setSingleLine();
-			url.setPadding(0, 3, 0, 3);
+			url.setPaintFlags(url.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+			url.setTextColor(getResources().getColor(R.color.accent));
+			app.setPadding(url, 0, 3, 0, 3);
 			addView(url);
 		}
 
@@ -279,7 +279,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		public HideButton(Context context) {
 			super(context);
 			setImageResource(android.R.drawable.ic_menu_delete);
-			setPadding(0, 0, 0, 0);
+			app.setPadding(this, 0, 0, 0, 0);
 			setOnClickListener(this);
 			setBackgroundResource(android.R.color.transparent);
 		}

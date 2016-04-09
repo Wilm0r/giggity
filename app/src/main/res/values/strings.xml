@@ -35,7 +35,8 @@
 	<string name="hide_item">...this item</string>
 	<string name="hide_room">...entire room</string>
 	<string name="hide_track">...entire track</string>
-				
+	<string name="links_header">Links:</string>
+
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Loading schedule data...</string>
 	<string name="loading_error">Load error</string>

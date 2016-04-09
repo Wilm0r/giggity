@@ -183,7 +183,8 @@
 
         This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)"
                 android:textIsSelectable="true"
-                android:focusable="false"/>
+                android:focusable="false"
+                android:autoLink="email|web"/>
 
             <!-- oops, this one seems lost, does it still work? Or, should I keep the icon links at all? -->
             <LinearLayout
@@ -196,6 +197,11 @@
                 android:paddingTop="8dp"
                 android:visibility="gone" >
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/links_header"
+                    android:id="@+id/textView"/>
             </LinearLayout>
 
         </RelativeLayout>
