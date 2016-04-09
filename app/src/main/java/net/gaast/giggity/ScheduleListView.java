@@ -25,12 +25,18 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class ScheduleListView extends ListView implements ScheduleViewer {
@@ -38,12 +44,14 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	EventAdapter adje;
 	Context ctx;
 	int itemViewFlags = ScheduleItemView.SHOW_NOW | ScheduleItemView.SHOW_REMIND;
+	Giggity app;
 	
 	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
 		super(ctx_);
 		ctx = ctx_;
-		
+		app = (Giggity) ctx.getApplicationContext();
+
 		this.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
@@ -130,12 +138,63 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (items.get(position).getClass() == Schedule.Item.class) {
 				return new ScheduleItemView(ctx, (Schedule.Item) items.get(position), itemViewFlags);
+			} else if (items.get(position).getClass() == Schedule.Line.class) {
+				return new ScheduleLineView(ctx, (Schedule.Line) items.get(position));
 			} else {
 				TextView tv = new TextView(ctx);
 				tv.setText((String) items.get(position));
 				tv.setTextSize(18);
 				tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
 				return tv;
+			}
+		}
+	}
+
+	private class ScheduleLineView extends RelativeLayout {
+		Context ctx;
+		Schedule.Line line;
+
+		public ScheduleLineView(Context context, Schedule.Line line_) {
+			super(context);
+			ctx = context;
+			line = line_;
+
+			String track = null;
+			for (Schedule.Item item : line.getItems()) {
+				if (item.getTrack() == null) {
+					track = null;
+					break;
+				} else if (track == null) {
+					/* If the name of the track is in the room name already, don't repeat it. */
+					if (line.getTitle().toLowerCase().contains(item.getTrack().toLowerCase()))
+						break;
+					track = item.getTrack();
+				} else if (!track.equals(item.getTrack())) {
+					track = null;
+					break;
+				}
+			}
+
+			TextView tv = new TextView(ctx);
+			tv.setText("\n\n" + line.getTitle() + (track == null ? "" : " (" + track + ")"));
+			tv.setTextSize(18);
+			tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+
+			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			tv.setId(1);
+			addView(tv, lp);
+
+			if (line.getLocation() != null) {
+				tv.setPaintFlags(tv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+				setOnClickListener(ScheduleUI.locationClickListener(getContext(), line));
+
+				ImageView iv = new ImageView(ctx);
+				iv.setImageResource(R.drawable.ic_place_black_24dp);
+				iv.setId(2);
+				lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				lp.addRule(RelativeLayout.RIGHT_OF, 1);
+				lp.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
+				addView(iv, lp);
 			}
 		}
 	}

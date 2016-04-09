@@ -60,22 +60,7 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		ArrayList fullList = new ArrayList();
 		
 		for (Schedule.Line tent : tents) {
-			String track = null;
-			for (Schedule.Item item : tent.getItems()) {
-				if (item.getTrack() == null) {
-					track = null;
-					break;
-				} else if (track == null) {
-					/* If the name of the track is in the room name already, don't repeat it. */
-					if (tent.getTitle().toLowerCase().contains(item.getTrack().toLowerCase()))
-						break;
-					track = item.getTrack();
-				} else if (!track.equals(item.getTrack())) {
-					track = null;
-					break;
-				}
-			}
-			fullList.add((fullList.size() > 1 ? "\n\n" : "\n\n") + tent.getTitle() + (track == null ? "" : " (" + track + ")"));
+			fullList.add(tent);
 			for (Schedule.Item item : tent.getItems()) {
 				fullList.add(item);
 			}
@@ -134,7 +119,7 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 				if (!scrolling)
 					return;
 				/* Find the first real item currently on-screen. */
-				while (scroller.getList().get(first).getClass() == String.class && first < total)
+				while (scroller.getList().get(first).getClass() != Schedule.Item.class && first < total)
 					first++;
 				if (first == total)
 					return; /* Hmm. Just titles, no events? */

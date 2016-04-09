@@ -7,6 +7,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -93,5 +94,17 @@ public class ScheduleUI {
 			act.redrawSchedule();
 			dismiss();
 		}
+	}
+
+	/** Click-listener to open geo: URL belonging to a room. */
+	public static View.OnClickListener locationClickListener(final Context ctx, final Schedule.Line line) {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Uri uri = Uri.parse(line.getLocation());
+				Intent geoi = new Intent(Intent.ACTION_VIEW, uri);
+				ctx.startActivity(geoi);
+			}
+		};
 	}
 }

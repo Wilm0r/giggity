@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -100,14 +102,9 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		t.setText(item.getLine().getTitle());
 
 		if (item.getLine().getLocation() != null) {
-			c.findViewById(R.id.room).setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Uri uri = Uri.parse(item.getLine().getLocation());
-					Intent geoi = new Intent(Intent.ACTION_VIEW, uri);
-					ctx.startActivity(geoi);
-				}
-			});
+			t = (TextView) c.findViewById(R.id.room);
+			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item.getLine()));
 		}
 		
 		t = (TextView) c.findViewById(R.id.time);
@@ -187,6 +184,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			};
 			Spanned formatted = Html.fromHtml(text, null, th);
 			t.setText(formatted);
+			t.setMovementMethod(LinkMovementMethod.getInstance());
 		} else {
 			t.setText(text);
 		}
