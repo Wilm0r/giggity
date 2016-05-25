@@ -1,5 +1,5 @@
 {
-	"version": 2016040302,
+	"version": 2016052500,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -89,6 +89,40 @@
 					{
 						"name": "K\.1\.105.*",
 						"latlon": [50.814531,4.3812588]
+					}
+				]
+			}
+		},
+		{
+			"version": 2016052400,
+			"url": "http://www.tuebix.org/2016/giggity.xml",
+			"title": "TUEBIX 2016",
+			"start": "2016-06-11",
+			"end": "2016-06-11",
+			"metadata": {
+				"links": [
+					{
+						"url": "http://www.tuebix.org/",
+						"title": "Website"
+					},
+					{
+						"url": "http://www.tuebix.org/anfahrt/",
+						"title": "Anfahrt"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016052500,
+			"url": "http://piandmore.de/schedule/pam9/schedule.xml",
+			"title": "Pi and More 9",
+			"start": "2016-06-11",
+			"end": "2016-06-11",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://piandmore.de/en",
+						"title": "Website"
 					}
 				]
 			}
