@@ -1,5 +1,5 @@
 {
-	"version": 2016052500,
+	"version": 2016052600,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -113,7 +113,7 @@
 			}
 		},
 		{
-			"version": 2016052500,
+			"version": 2016052600,
 			"url": "http://piandmore.de/schedule/pam9/schedule.xml",
 			"title": "Pi and More 9",
 			"start": "2016-06-11",
@@ -123,6 +123,15 @@
 					{
 						"url": "https://piandmore.de/en",
 						"title": "Website"
+					},
+					{
+						"url": "http://piandmore.de/files/pam9/raumplan.png",
+						"title": "Raumplan",
+						"type": "image/png"
+					},
+					{
+						"url": "http://piandmore.de/de/next/ort",
+						"title": "Anfahrt"
 					}
 				]
 			}
