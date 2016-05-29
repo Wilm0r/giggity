@@ -117,28 +117,37 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		fontSize = (float) Math.min(8 + 6 * Math.log(d) / Math.log(20), 14);
 		
 		schedCont = new AbsoluteLayout(ctx);
-		
+
+		base = Calendar.getInstance();
+		base.setTime(sched.getFirstTime());
+		base.add(Calendar.MINUTE, -(base.get(Calendar.MINUTE) % 30));
+
+		end = Calendar.getInstance();
+		end.setTime(sched.getLastTime());
+
+		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
 		Bitmap bmp = Bitmap.createBitmap(HourWidth, TentHeight, Bitmap.Config.ARGB_8888);
 		for (x = 0; x < HourWidth; x++) {
-			for (y = 0; y < TentHeight; y ++) {
-				if (x == HourWidth / 4 && (y & 12) > 0)
-					bmp.setPixel(x, y, c.lines);
-				else if (x == HourWidth / 4 * 3 && (y & 8) > 0)
-					bmp.setPixel(x, y, c.lines);
-				else if (y == TentHeight - 1)
-					bmp.setPixel(x, y, c.lines);
-			}
+			/* Horizontal line at bottom */
+			bmp.setPixel(x, TentHeight - 1, c.lines);
+		}
+		int hourX = 1;
+		if (base.get(Calendar.MINUTE) == 0) {
+			hourX = HourWidth / 4;
+		} else {
+			hourX = HourWidth / 4 * 3;
+		}
+		for (y = 0; y < TentHeight; y++) {
+			/* Long-dotted line on hour boundaries */
+			if ((y & 12) > 0)
+				bmp.setPixel(hourX, y, c.lines);
+			/* Short-dotted line on :30 hourly boundaries */
+			if ((y & 8) > 0)
+				bmp.setPixel(HourWidth - hourX, y, c.lines);
 		}
 		BitmapDrawable bg = new BitmapDrawable(bmp);
 		bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
 		schedCont.setBackgroundDrawable(bg);
-		
-		base = Calendar.getInstance();
-		base.setTime(sched.getFirstTime());
-		base.add(Calendar.MINUTE, -(base.get(Calendar.MINUTE) % 30));
-		
-		end = Calendar.getInstance();
-		end.setTime(sched.getLastTime());		
 
 		topClock = new Clock(ctx, base, end);
 		addView(topClock);
