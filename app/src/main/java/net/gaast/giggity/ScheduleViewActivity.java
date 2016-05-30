@@ -137,10 +137,9 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (wantDrawer) {
-			Log.d("RUK", "RUK");
 			/* Hamburger menu! */
 			/* Should still consider v7-appcompat, depending on how much it, again, affects apk size.. */
-			this.getActionBar().setDisplayHomeAsUpEnabled(true);
+			getActionBar().setDisplayHomeAsUpEnabled(true);
 			drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_menu_white_24dp, R.string.navdrawer_on, R.string.navdrawer_off) {
 				@Override
 				public void onDrawerOpened(View drawerView) {
