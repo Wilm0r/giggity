@@ -20,7 +20,6 @@
 package net.gaast.giggity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -28,21 +27,19 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -51,69 +48,55 @@ import org.xml.sax.XMLReader;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 
-public class EventDialog extends Dialog implements OnDismissListener {
-	private Context ctx;
-	private Schedule.Item item;
-	private OnDismissListener dismissPassThru;
+public class EventDialog extends FrameLayout {
+	private Context ctx_;
+	private Giggity app_;
 
-	private CheckBox cb;
-	private StarsView sv;
+	private Schedule.Item item_;
 
-	private Giggity app;
+	private CheckBox cb_;
 
-	public EventDialog(Context ctx_, Schedule.Item item_) {
-		super(ctx_);
+	public EventDialog(Context ctx, Schedule.Item item) {
+		super(ctx);
 
-		ctx = ctx_;
-		item = item_;
-	}
-	
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		/* Rendering our own title (ScheduleItemView) */
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(genDialog(false));
-		
-		super.setOnDismissListener(this);
+		ctx_ = ctx;
+		item_ = item;
+		app_ = (Giggity) ctx_.getApplicationContext();
 
-		super.onCreate(savedInstanceState);
-	}
-	
-	public View genDialog(boolean big) {
-		app = (Giggity) ctx.getApplicationContext();
 		View v;
-		final View c = getLayoutInflater().inflate(R.layout.event_dialog, null);
+
+		LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		final View c = inflater.inflate(R.layout.event_dialog, null);
 		TextView t;
 		Format tf = new SimpleDateFormat("HH:mm");
 		
 		t = (TextView) c.findViewById(R.id.title);
-		t.setText(item.getTitle());
+		t.setText(item_.getTitle());
 
 		t = (TextView) c.findViewById(R.id.subtitle);
-		if (item.getSubtitle() != null) {
-			t.setText(item.getSubtitle());
+		if (item_.getSubtitle() != null) {
+			t.setText(item_.getSubtitle());
 		} else {
 			t.setVisibility(View.GONE);
 		}
 		
 		t = (TextView) c.findViewById(R.id.room);
-		t.setText(item.getLine().getTitle());
+		t.setText(item_.getLine().getTitle());
 
-		if (item.getLine().getLocation() != null) {
+		if (item_.getLine().getLocation() != null) {
 			t = (TextView) c.findViewById(R.id.room);
 			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item.getLine()));
+			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
 		
 		t = (TextView) c.findViewById(R.id.time);
-		t.setText(item.getSchedule().getDayFormat().format(item.getStartTime()) + " " +
-		          tf.format(item.getStartTime()) + "-" + tf.format(item.getEndTime()));
+		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTime()) + " " +
+		          tf.format(item_.getStartTime()) + "-" + tf.format(item_.getEndTime()));
 		
 		t = (TextView) c.findViewById(R.id.track);
-		if (item.getTrack() != null) {
-			t.setText(item.getTrack());
+		if (item_.getTrack() != null) {
+			t.setText(item_.getTrack());
 		} else {
 			t.setVisibility(View.GONE);
 			v = c.findViewById(R.id.headTrack);
@@ -121,16 +104,16 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		}
 		
 		t = (TextView) c.findViewById(R.id.speaker);
-		if (item.getSpeakers() != null) {
+		if (item_.getSpeakers() != null) {
 			String list = "";
 			
-			for (String i : item.getSpeakers())
+			for (String i : item_.getSpeakers())
 				list += i + ", ";
 			list = list.replaceAll(", $", "");
 			
 			t.setText(list);
 			
-			if (item.getSpeakers().size() > 1) {
+			if (item_.getSpeakers().size() > 1) {
 				t = (TextView) c.findViewById(R.id.headSpeaker);
 				t.setText(R.string.speakers);
 			}
@@ -142,13 +125,13 @@ public class EventDialog extends Dialog implements OnDismissListener {
 
 		String overlaps = null;
 		
-		for (Schedule.Item other : app.getRemindItems()) {
-			if (item != other && other.overlaps(item)) {
+		for (Schedule.Item other : app_.getRemindItems()) {
+			if (item_ != other && other.overlaps(item_)) {
 				if (overlaps == null)
-					overlaps = ctx.getResources().getString(R.string.overlap) + " "; 
+					overlaps = ctx_.getResources().getString(R.string.overlap) + " ";
 				overlaps += other.getTitle() +
 				         " (" + tf.format(other.getStartTime()) + "-" + tf.format(other.getEndTime()) + "), ";
-			} else if (other.getStartTime().after(item.getEndTime())){
+			} else if (other.getStartTime().after(item_.getEndTime())){
 				break;
 			}
 		}
@@ -163,7 +146,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		}
 		
 		t = (TextView) c.findViewById(R.id.description);
-		String text = item.getDescription();
+		String text = item_.getDescription();
 		if (text.contains("<p>")) {
 			/* This parser is VERY limited, results aren't great, but let's give it a shot.
 			   I'd really like to avoid using a full-blown WebView.. */
@@ -189,6 +172,15 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			t.setText(text);
 		}
 
+		if (item_.getLinks() != null) {
+			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);
+			for (Schedule.Link link : item_.getLinks()) {
+				LinkButton btn = new LinkButton(ctx_, link);
+				g.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+			}
+			g.setVisibility(View.VISIBLE);
+		}
+
 		if (android.os.Build.VERSION.SDK_INT >= 21) {
 			/* Lollipop+. I think owners of older devs will survive without drop shadows, right? :> */
 			/* TODO: Remove check above if I find a way to do drop shadows pre-L. */
@@ -201,48 +193,35 @@ public class EventDialog extends Dialog implements OnDismissListener {
 					View subHeader = c.findViewById(R.id.subHeader);
 					View header = c.findViewById(R.id.header);
 
-					app.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
+					app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
 				}
 			});
 	}
 
-		/* Bottom box is some stuff next to each other: Remind checkbox/stars, web buttons. */
+		/* Bottom box used to be a bunch of things but now just the remind checkbox + delete icon. */
 		LinearLayout bottomBox = (LinearLayout) c.findViewById(R.id.bottomBox);
 
-		if (item.getStartTime().after(new Date())) {
-			/* Show "Remind me" only if the event is in the future. */
-			cb = new CheckBox(ctx);
-			cb.setText(R.string.remind_me);
-			cb.setChecked(item.getRemind());
-			bottomBox.addView(cb, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
-		} else {
-			/* Otherwise, stars to rate the event. Using my own StarsView because the stock one's too huge. */
-			sv = new StarsView(ctx);
-			sv.setNumStars(5);
-			sv.setScore(item.getStars());
-			/* Bigger surface for easier touching. */
-			sv.setMinimumHeight(48);
-			bottomBox.addView(sv, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
-		}
-		
-		if (item.getLinks() != null) {
-			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);
-			for (Schedule.Link link : item.getLinks()) {
-				LinkButton btn = new LinkButton(ctx, link);
-				g.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+		cb_ = new CheckBox(ctx_);
+		cb_.setText(R.string.remind_me);
+		cb_.setChecked(item_.getRemind());
+		bottomBox.addView(cb_, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+
+		cb_.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				item_.setRemind(isChecked);
 			}
-			g.setVisibility(View.VISIBLE);
-		}
-		
+		});
+
 		ImageButton delButton;
-		if (!item.isHidden()) {
-			delButton = new HideButton(ctx);
+		if (!item_.isHidden()) {
+			delButton = new HideButton(ctx_);
 		} else {
-			delButton = new UnhideButton(ctx);
+			delButton = new UnhideButton(ctx_);
 		}
 		bottomBox.addView(delButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 
-		return c;
+		addView(c);
 	}
 
 	/* The old Giggity-native format supported image buttons. Not doing that anymore, or if I do
@@ -259,7 +238,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			url.setOnClickListener(this);
 			url.setPaintFlags(url.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			url.setTextColor(getResources().getColor(R.color.accent));
-			app.setPadding(url, 0, 3, 0, 3);
+			app_.setPadding(url, 0, 3, 0, 3);
 			addView(url);
 		}
 
@@ -268,7 +247,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			Uri uri = Uri.parse(link.getUrl());
 			Intent intent = new Intent(Intent.ACTION_VIEW, uri);
 			intent.addCategory(Intent.CATEGORY_BROWSABLE);
-			ctx.startActivity(intent);
+			ctx_.startActivity(intent);
 		}
 	}
 	
@@ -279,7 +258,7 @@ public class EventDialog extends Dialog implements OnDismissListener {
 		public HideButton(Context context) {
 			super(context);
 			setImageResource(android.R.drawable.ic_menu_delete);
-			app.setPadding(this, 0, 0, 0, 0);
+			app_.setPadding(this, 0, 0, 0, 0);
 			setOnClickListener(this);
 			setBackgroundResource(android.R.color.transparent);
 		}
@@ -289,40 +268,39 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			CharSequence[] delWhat;
 			
 			/* BOO to setItems() for not supporting something more flexible than a static array. */
-			if (item.getTrack() != null) {
+			if (item_.getTrack() != null) {
 				delWhat = new CharSequence[3];
-				delWhat[2] = ctx.getResources().getString(R.string.hide_track);
+				delWhat[2] = ctx_.getResources().getString(R.string.hide_track);
 			} else {
 				delWhat = new CharSequence[2];
 			}
-			delWhat[0] = ctx.getResources().getString(R.string.hide_item);
-			delWhat[1] = ctx.getResources().getString(R.string.hide_room);
+			delWhat[0] = ctx_.getResources().getString(R.string.hide_item);
+			delWhat[1] = ctx_.getResources().getString(R.string.hide_room);
 
-			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+			AlertDialog.Builder builder = new AlertDialog.Builder(ctx_);
 			builder.setTitle(title);
 			builder.setItems(delWhat, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int what) {
 				switch (what) {
 				case 0:
-					item.setHidden(newValue);
+					item_.setHidden(newValue);
 					break;
 				case 1:
-					for (Schedule.Item other : item.getLine().getItems())
+					for (Schedule.Item other : item_.getLine().getItems())
 						other.setHidden(newValue);
 					break;
 				case 2:
-					for (Schedule.Line line : item.getSchedule().getTents())
+					for (Schedule.Line line : item_.getSchedule().getTents())
 						for (Schedule.Item other : line.getItems())
-							if (other.getTrack() != null && other.getTrack().equals(item.getTrack()))
+							if (other.getTrack() != null && other.getTrack().equals(item_.getTrack()))
 								other.setHidden(newValue);
 					break;
 				}
 				try {
-					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
+					ScheduleViewActivity sva = (ScheduleViewActivity) ctx_;
 					sva.onItemHidden();
 				} catch (ClassCastException e) {
 				}
-				EventDialog.this.dismiss();
 				}
 			});
 			AlertDialog alert = builder.create();
@@ -337,28 +315,5 @@ public class EventDialog extends Dialog implements OnDismissListener {
 			title = R.string.unhide_what;
 			newValue = false;
 		}
-	}
-	
-	@Override
-	public void setOnDismissListener(OnDismissListener l) {
-		/* Multiple listeners are not supported, but this hack solves
-		 * that problem for me. */
-		dismissPassThru = l;
-	}
-
-	public void onDismiss(DialogInterface dialog) {
-		if (cb != null) {
-			item.setRemind(cb.isChecked());
-		}
-		if (sv != null)
-			item.setStars(sv.getScore());
-		if (dismissPassThru != null)
-			dismissPassThru.onDismiss(dialog);
-	}
-
-	@Override
-	public void show() {
-		ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-		sva.setEventDialog(this, item);
 	}
 }

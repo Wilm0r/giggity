@@ -40,6 +40,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -288,15 +289,17 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					EventDialog evd = new EventDialog(ctx, item);
+					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
+					sva.showItem(item, new ArrayList<Schedule.Item>(item.getLine().getItems()));
+				}
+			});
+			/*
 					evd.setOnDismissListener(new OnDismissListener() {
 						public void onDismiss(DialogInterface dialog) {
 							setBackgroundColor(bgcolor);
 						}
 					});
-					evd.show();
-				}
-			});
+					*/
 		}
 		
 		public void setBackgroundColor(int color) {

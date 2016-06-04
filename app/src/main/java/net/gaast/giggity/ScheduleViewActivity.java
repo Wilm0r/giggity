@@ -56,8 +56,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 public class ScheduleViewActivity extends Activity {
 	protected Schedule sched;
@@ -91,7 +93,6 @@ public class ScheduleViewActivity extends Activity {
 	private ScheduleViewer viewer;
 	private RelativeLayout viewerContainer;
 	private View eventDialogView;
-	private EventDialog eventDialog;
 	private DayButtons days;
 
 	private SharedPreferences pref;
@@ -195,7 +196,9 @@ public class ScheduleViewActivity extends Activity {
 			fs = Fetcher.Source.CACHE_ONLINE;
 		else
 			fs = Fetcher.Source.ONLINE_CACHE;
-		
+
+		/* I think reminders come in via this activity (instead of straight to itemview)
+		   because we may have to reload schedule data? */
 		if (url.contains("#")) {
 			String parts[] = url.split("#", 2);
 			url = parts[0];
@@ -350,8 +353,8 @@ public class ScheduleViewActivity extends Activity {
 	
 	@Override
 	protected void onPause() {
-		//setEventDialog(null, null);
-		
+		// TODO: EventDialog in tablet layout
+
 		if (sched != null) {
 			sched.commit();
 		}
@@ -523,18 +526,12 @@ public class ScheduleViewActivity extends Activity {
 			curView = R.id.block_schedule; /* Just in case. */
 			setScheduleView(new BlockSchedule(this, sched));
 		}
-		
+
+		/* User tapped on a reminder? */
 		if (showEventId != null) {
 			Schedule.Item item = sched.getItem(showEventId);
-			if (item != null) {
-				EventDialog evd = new EventDialog(this, item);
-				evd.setOnDismissListener(new OnDismissListener() {
-					public void onDismiss(DialogInterface dialog) {
-						showEventId = null;
-					}
-				});
-				evd.show();
-			}
+			showItem(item, null);
+			showEventId = null;
 		}
 
 		this.invalidateOptionsMenu();
@@ -561,31 +558,36 @@ public class ScheduleViewActivity extends Activity {
 		
 		days.show();
 	}
-	
-	public void setEventDialog(EventDialog d, Schedule.Item item) {
+
+	public void showItem(Schedule.Item item, AbstractList<Schedule.Item> others) {
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-		Log.d("screen", getResources().getConfiguration() + " " + screen + " " + Configuration.SCREENLAYOUT_SIZE_LARGE);
-		if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) {
+		/* if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) { ... } else ...
+		   TODO: Restore tablet layout
 			bigScreen.removeView(eventDialogView);
 			if (eventDialog != null)
 				eventDialog.onDismiss(null);
-			
-			if (d != null) {
-				eventDialogView = d.genDialog(true);
+
+				eventDialogView = d.genDialog();
 				bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
-			}
-		} else if (d != null) {
+		*/
+		{
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
-			                           this, ScheduleItemActivity.class);
+					this, ScheduleItemActivity.class);
+			if (others != null) {
+				String[] ids = new String[others.size()];
+				int i = 0;
+				for (Schedule.Item o : others) {
+					ids[i++] = o.getId();
+				}
+				intent.putExtra("others", ids);
+			}
 			startActivityForResult(intent, 0);
 		}
-		eventDialog = d;
 	}
 
 	@Override
 	protected void onActivityResult(int reqCode, int resCode, Intent data) {
-		if (eventDialog != null)
-			eventDialog.onDismiss(null);
+		/* TODO: Was used to call dismiss handler on evd, no longer needed. delete and use different intent caller. */
 	}
 
 	@Override
@@ -643,7 +645,7 @@ public class ScheduleViewActivity extends Activity {
 
 	private void setView(int view_) {
 		curView = view_;
-		setEventDialog(null, null);
+		// TODO: Deal with tablet layout (eventdialog)?
 		redrawSchedule();
 		updateNavDrawer();
 		// TODO: Do this on initial render as well.

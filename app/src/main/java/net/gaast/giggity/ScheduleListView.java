@@ -19,8 +19,10 @@
 
 package net.gaast.giggity;
 
+import java.lang.reflect.Array;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -55,14 +57,28 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		this.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+				// Find all other Item entries before and after the current one. Ugly. :-(
+				ArrayList<Schedule.Item> others = new ArrayList<Schedule.Item>();
+				for (int i = position; i >= 0 && list.get(i).getClass() == Schedule.Item.class; --i) {
+					others.add(0, (Schedule.Item) list.get(i));
+				}
+				for (int i = position + 1; i < list.size() && list.get(i).getClass() == Schedule.Item.class; ++i) {
+					others.add((Schedule.Item) list.get(i));
+				}
+
 				Schedule.Item item = (Schedule.Item) list.get(position);
-				EventDialog evd = new EventDialog(ctx, item);
+				ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
+				sva.showItem(item, others);
+
+				/* The following may not be necessary, or maybe only w/ tablet view? */
+				/*
+
 				evd.setOnDismissListener(new OnDismissListener() {
 					public void onDismiss(DialogInterface dialog) {
 						adje.notifyDataSetChanged();
 					}
 				});
-				evd.show();
+				*/
 			}
 		});
 		
