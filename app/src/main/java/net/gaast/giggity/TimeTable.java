@@ -36,6 +36,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+/* Wrapper around ScheduleListView that adds the improvised tabs with room names below action bar. */
 public class TimeTable extends LinearLayout implements ScheduleViewer {
 	private Giggity app;
 	private Schedule sched;
@@ -192,7 +193,12 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 	public void refreshContents() {
 		scroller.refreshContents();
 	}
-	
+
+	@Override
+	public void refreshItems() {
+		scroller.refreshItems();
+	}
+
 	@Override
 	public boolean multiDay() {
 		return false;

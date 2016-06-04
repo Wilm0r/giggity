@@ -12,14 +12,14 @@ import java.util.ArrayList;
 public class EventDialogPager extends ViewPager {
 	private Schedule.Item item_;
 	private AbstractList<Schedule.Item> items_;
-	private int item_index_;
+	private int item_index_ = -1;
 
 	public EventDialogPager(Context ctx, Schedule.Item item, AbstractList<Schedule.Item> items) {
 		super(ctx);
 
 		item_ = item;
 		items_ = items;
-		if (items_ != null && items_.size() > 1) {
+		if (items_ != null && items_.size() > 0) {
 			int i = 0;
 			for (Schedule.Item listed : items) {
 				if (listed == item) {
@@ -28,9 +28,14 @@ public class EventDialogPager extends ViewPager {
 				}
 				++i;
 			}
-		} else {
-			items_ = new ArrayList<>();
-			items_.add(item);
+		}
+
+		if (item_index_ == -1 ) {
+			if (items_ == null) {
+				items_ = new ArrayList<>();
+			}
+			items_.add(0, item);
+			item_index_ = 0;
 		}
 
 		setAdapter(new Adapter());

@@ -20,8 +20,11 @@
 package net.gaast.giggity;
 
 public interface ScheduleViewer {
-	/* Called every minute. */
+	/* These two maybe should've just been the same. */
+	/* Called every minute to update clock/marking of currently happening events. */
 	public void refreshContents();
+	/* Called after possible event state changes (ScheduleItemActivity or more tricky on tablets) */
+	public void refreshItems();
 
 	/* Allow date switching. Does not apply to now&next for example. */
 	public boolean multiDay();

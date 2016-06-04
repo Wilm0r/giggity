@@ -54,7 +54,10 @@ public class ScheduleItemActivity extends Activity {
 			others = new ArrayList<Schedule.Item>();
 			String[] ids = getIntent().getStringArrayExtra("others");
 			for (String oid : ids) {
-				others.add(sched.getItem(oid));
+				Schedule.Item other_item = sched.getItem(oid);
+				if (other_item != null) {
+					others.add(other_item);
+				}
 			}
 		}
 

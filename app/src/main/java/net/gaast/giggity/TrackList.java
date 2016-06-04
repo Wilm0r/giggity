@@ -48,7 +48,12 @@ public class TrackList extends ListView implements ScheduleViewer {
 	public void refreshContents() {
 		/* No periodic refresh required. */
 	}
-	
+
+	@Override
+	public void refreshItems() {
+		/* Not showing any actual schedule items so again nothing to do. */
+	}
+
 	private class TrackAdapter extends BaseAdapter {
 		private final Schedule sched;
 		private final ArrayList<String> keys;

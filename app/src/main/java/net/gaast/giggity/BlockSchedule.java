@@ -175,7 +175,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			x = 0;
 			h = TentHeight;
 			
-			for ( Schedule.Item gig : tent.getItems()) {
+			for (Schedule.Item gig : tent.getItems()) {
 				posx = (int) ((gig.getStartTime().getTime() -
 				               cal.getTime().getTime()) *
 				              HourWidth / 3600000);
@@ -266,9 +266,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	}
 
 	protected class Element extends TextView {
-		int bgcolor;
-		Schedule.Item item;
-		Giggity app;
+		private int bgcolor;
+		private Schedule.Item item;
+		private Giggity app;
 		
 		public Element(Activity ctx) {
 			super(ctx);
@@ -288,13 +288,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 					sva.showItem(item, new ArrayList<Schedule.Item>(item.getLine().getItems()));
 				}
 			});
-			/*
-					evd.setOnDismissListener(new OnDismissListener() {
-						public void onDismiss(DialogInterface dialog) {
-							setBackgroundColor(bgcolor);
-						}
-					});
-					*/
 		}
 		
 		public void setBackgroundColor(int color) {
@@ -309,6 +302,10 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			} else {
 				setAlpha(1F);
 			}
+		}
+
+		public void setBackgroundColor() {
+			setBackgroundColor(bgcolor);
 		}
 	}
 	
@@ -426,7 +423,15 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		topClock.update();
 		bottomClock.update();
 	}
-	
+
+	@Override
+	public void refreshItems() {
+		for (int i = 0; i < schedCont.getChildCount(); ++i) {
+			Element e = (Element) schedCont.getChildAt(i);
+			e.setBackgroundColor();
+		}
+	}
+
 	@Override
 	public boolean multiDay() {
 		return false;

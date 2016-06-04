@@ -72,6 +72,7 @@ public class ScheduleViewActivity extends Activity {
 	};
 
 	private int curView;
+	private boolean tabletView;  // EventDialog integrated instead of invoking a separate activity
 	
 	private Format dateFormat = new SimpleDateFormat("EE d MMMM");
 	
@@ -106,6 +107,10 @@ public class ScheduleViewActivity extends Activity {
 		
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		curView = getResources().getIdentifier(pref.getString("default_view", "net.gaast.giggity:id/block_schedule"), null, null);
+
+		/* Consider making this a setting, some may find their tablet too small. */
+		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+		tabletView = (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE);
 
 		drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.schedule_view_activity, null);
 		View dl = drawerLayout;  /* Shorthand */
@@ -163,7 +168,7 @@ public class ScheduleViewActivity extends Activity {
 
 		viewerContainer = (RelativeLayout) dl.findViewById(R.id.viewerContainer);
 
-		/* TODO: See if I can do this in XML as well? (It's a custom private view. */
+		/* TODO: See if I can do this in XML as well? (It's a custom private view.) */
 		RelativeLayout.LayoutParams lp;
 		lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -351,8 +356,6 @@ public class ScheduleViewActivity extends Activity {
 	
 	@Override
 	protected void onPause() {
-		// TODO: EventDialog in tablet layout
-
 		if (sched != null) {
 			sched.commit();
 		}
@@ -362,10 +365,6 @@ public class ScheduleViewActivity extends Activity {
 	
 	@Override
 	protected void onStop() {
-		/* TODO: Remove the event dialog *here*. It's a bit annoying that it disappears even 
-		 * when you just open a browser link, but I'm too worried about introducing bugs if
-		 * I reshuffle this stuff more (the database code is very fragile). And hardly anyone
-		 * seems to be using Giggity on a tablet anyway.. */
 		super.onStop();
 	}
 	
@@ -432,6 +431,9 @@ public class ScheduleViewActivity extends Activity {
 				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
 		drawerLayout.findViewById(R.id.show_hidden).setBackgroundResource(
 				sched.getShowHidden() ? R.drawable.menu_gradient : R.color.light);
+
+		/* TimeTable extends the action bar with "tabs" and will have its own shadow. */
+		app.setShadow(getActionBar(), !viewer.extendsActionBar());
 	}
 
 	/** Open a link object, either just through the browser or by downloading locally and using a
@@ -503,7 +505,7 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void redrawSchedule() {
-		/* TODO: User viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
+		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
 		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.tracks && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
 			setTitle(sched.getDayFormat().format(sched.getDay()) + ", " + sched.getTitle());
@@ -521,7 +523,7 @@ public class ScheduleViewActivity extends Activity {
 		} else if (curView == R.id.tracks) {
 			setScheduleView(new TrackList(this, sched));
 		} else {
-			curView = R.id.block_schedule; /* Just in case. */
+			curView = R.id.block_schedule; /* Just in case curView is set to something weird. */
 			setScheduleView(new BlockSchedule(this, sched));
 		}
 
@@ -558,17 +560,20 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void showItem(Schedule.Item item, AbstractList<Schedule.Item> others) {
-		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
-		/* if (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE) { ... } else ...
-		   TODO: Restore tablet layout
+		/* No cleanup required for non-tablet view. */
+		if (tabletView) {
 			bigScreen.removeView(eventDialogView);
-			if (eventDialog != null)
-				eventDialog.onDismiss(null);
+		}
+		/* And nothing else to do if we're cleaning up only. */
+		if (item == null) {
+			return;
+		}
 
-				eventDialogView = d.genDialog();
-				bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
-		*/
-		{
+		if (tabletView) {
+			EventDialogPager evp = new EventDialogPager(this, item, others);
+			eventDialogView = evp;
+			bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
+		} else {
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
 					this, ScheduleItemActivity.class);
 			if (others != null) {
@@ -585,7 +590,16 @@ public class ScheduleViewActivity extends Activity {
 
 	@Override
 	protected void onActivityResult(int reqCode, int resCode, Intent data) {
-		/* TODO: Was used to call dismiss handler on evd, no longer needed. delete and use different intent caller. */
+		/* On return from ScheduleItemActivity, remind state may have changed. Tell our viewer.
+		 * (not looking at resCode, just always do this, doesn't really matter and it's always
+		 * "cancelled" anyway. */
+		refreshItems();
+	}
+
+	public void refreshItems() {
+		if (viewer != null) {
+			viewer.refreshItems();
+		}
 	}
 
 	@Override
@@ -643,11 +657,9 @@ public class ScheduleViewActivity extends Activity {
 
 	private void setView(int view_) {
 		curView = view_;
-		// TODO: Deal with tablet layout (eventdialog)?
+		showItem(null, null);
 		redrawSchedule();
 		updateNavDrawer();
-		// TODO: Do this on initial render as well.
-		app.setShadow(getActionBar(), !viewer.extendsActionBar());
 	}
 
 	@Override

@@ -115,7 +115,12 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	public void refreshContents() {
 		adje.notifyDataSetChanged();
 	}
-	
+
+	@Override
+	public void refreshItems() {
+		adje.notifyDataSetChanged();
+	}
+
 	private class EventAdapter extends BaseAdapter {
 		AbstractList<?> items;
 		

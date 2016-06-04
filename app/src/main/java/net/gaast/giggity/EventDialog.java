@@ -211,6 +211,13 @@ public class EventDialog extends FrameLayout {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 				item_.setRemind(isChecked);
+				try {
+					ScheduleViewActivity sva = (ScheduleViewActivity) getContext();
+					sva.refreshItems();
+				} catch (ClassCastException e) {
+					/* We're our own activity, we can safely skip this operation (will be done after
+					   finish instead). */
+				}
 			}
 		});
 
