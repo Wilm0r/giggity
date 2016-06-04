@@ -45,10 +45,15 @@ import android.widget.TextView;
 
 import org.xml.sax.XMLReader;
 
+import java.lang.reflect.Array;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 
+/* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
+   densely populated view used in two different ways (depending on whether we're on a tablet. */
 public class EventDialog extends FrameLayout {
 	private Context ctx_;
 	private Giggity app_;
@@ -265,21 +270,16 @@ public class EventDialog extends FrameLayout {
 
 		@Override
 		public void onClick(View moi) {
-			CharSequence[] delWhat;
-			
-			/* BOO to setItems() for not supporting something more flexible than a static array. */
+			ArrayList<CharSequence> delWhat = new ArrayList<>();
+			delWhat.add(ctx_.getResources().getString(R.string.hide_item));
+			delWhat.add(ctx_.getResources().getString(R.string.hide_room));
 			if (item_.getTrack() != null) {
-				delWhat = new CharSequence[3];
-				delWhat[2] = ctx_.getResources().getString(R.string.hide_track);
-			} else {
-				delWhat = new CharSequence[2];
+				delWhat.add(ctx_.getResources().getString(R.string.hide_track));
 			}
-			delWhat[0] = ctx_.getResources().getString(R.string.hide_item);
-			delWhat[1] = ctx_.getResources().getString(R.string.hide_room);
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ctx_);
 			builder.setTitle(title);
-			builder.setItems(delWhat, new DialogInterface.OnClickListener() {
+			builder.setItems(delWhat.toArray(new CharSequence[delWhat.size()]), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int what) {
 				switch (what) {
 				case 0:

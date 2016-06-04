@@ -11,9 +11,6 @@ import java.util.List;
 
 public class ScheduleItemActivity extends Activity {
 	private Giggity app_;
-	private Schedule sched_;
-	private Schedule.Item item_;
-	private AbstractList<Schedule.Item> others_;
 
 	private EventDialogPager pager_;
 	
@@ -25,7 +22,7 @@ public class ScheduleItemActivity extends Activity {
 
 		String id, url = getIntent().getDataString();
 		app_ = (Giggity) getApplication();
-		
+
 		if (url.contains("#")) {
 			String parts[] = url.split("#", 2);
 			url = parts[0];
@@ -35,10 +32,11 @@ public class ScheduleItemActivity extends Activity {
 			finish();
 			return;
 		}
-		
+
+		Schedule sched;
 		if (app_.hasSchedule(url)) {
 			try {
-				sched_ = app_.getSchedule(url, Fetcher.Source.CACHE);
+				sched = app_.getSchedule(url, Fetcher.Source.CACHE);
 			} catch (Exception e) {
 				e.printStackTrace();
 				setResult(RESULT_CANCELED, getIntent());
@@ -46,26 +44,23 @@ public class ScheduleItemActivity extends Activity {
 				return;
 			}
 		} else {
+			setResult(RESULT_CANCELED, getIntent());
 			finish();
 			return;
 		}
 
-		item_ = sched_.getItem(id);
+		Schedule.Item item = sched.getItem(id);
 
+		AbstractList<Schedule.Item> others = null;
 		if (getIntent().hasExtra("others")) {
-			others_ = new ArrayList<Schedule.Item>();
-			String[] others = getIntent().getStringArrayExtra("others");
-			for (String oid : others) {
-				others_.add(sched_.getItem(oid));
+			others = new ArrayList<Schedule.Item>();
+			String[] ids = getIntent().getStringArrayExtra("others");
+			for (String oid : ids) {
+				others.add(sched.getItem(oid));
 			}
 		}
 
-		pager_ = new EventDialogPager(this, item_, others_);
+		pager_ = new EventDialogPager(this, item, others);
 		setContentView(pager_);
-	}
-	
-	@Override
-	protected void onPause() {
-		super.onPause();
 	}
 }
