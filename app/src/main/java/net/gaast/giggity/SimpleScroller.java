@@ -21,11 +21,9 @@ package net.gaast.giggity;
 
 import android.app.Activity;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsoluteLayout;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 

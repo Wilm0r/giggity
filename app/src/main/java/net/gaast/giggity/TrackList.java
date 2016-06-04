@@ -1,9 +1,5 @@
 package net.gaast.giggity;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
@@ -13,6 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class TrackList extends ListView implements ScheduleViewer {
 	private Schedule sched;

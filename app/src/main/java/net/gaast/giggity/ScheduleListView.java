@@ -19,27 +19,20 @@
 
 package net.gaast.giggity;
 
-import java.lang.reflect.Array;
-import java.util.AbstractList;
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
-import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
 
 public class ScheduleListView extends ListView implements ScheduleViewer {
 	ArrayList<?> list;

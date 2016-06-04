@@ -1,10 +1,10 @@
 package net.gaast.giggity;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.TreeSet;
-
-import android.content.Context;
 
 public class MyItemsView extends ScheduleListView implements ScheduleViewer {
 	private Schedule sched;

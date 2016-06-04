@@ -22,7 +22,6 @@ package net.gaast.giggity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -45,12 +44,9 @@ import android.widget.TextView;
 
 import org.xml.sax.XMLReader;
 
-import java.lang.reflect.Array;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */

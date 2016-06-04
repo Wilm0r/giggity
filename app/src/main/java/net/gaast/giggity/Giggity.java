@@ -19,15 +19,6 @@
 
 package net.gaast.giggity;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.AbstractSet;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeSet;
-
 import android.app.ActionBar;
 import android.app.Application;
 import android.content.BroadcastReceiver;
@@ -37,6 +28,15 @@ import android.content.IntentFilter;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.View;
+
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.AbstractSet;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.TreeSet;
 
 public class Giggity extends Application {
 	private Db db;

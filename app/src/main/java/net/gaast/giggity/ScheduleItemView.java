@@ -1,13 +1,13 @@
 package net.gaast.giggity;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class ScheduleItemView extends RelativeLayout {
 	public static final int COMPACT = 1;

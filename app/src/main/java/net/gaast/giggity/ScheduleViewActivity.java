@@ -27,7 +27,6 @@ import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -59,7 +58,6 @@ import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.Date;
 import java.util.LinkedList;
-import java.util.List;
 
 public class ScheduleViewActivity extends Activity {
 	protected Schedule sched;

@@ -19,13 +19,13 @@
 
 package net.gaast.giggity;
 
-import java.util.AbstractList;
-import java.util.ArrayList;
-
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+
+import java.util.AbstractList;
+import java.util.ArrayList;
 
 public class SearchActivity extends ScheduleViewActivity {
 	private ScheduleListView lv;

@@ -20,9 +20,6 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Shader;
@@ -30,11 +27,9 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;

@@ -19,12 +19,8 @@
 
 package net.gaast.giggity;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-
 import android.app.Activity;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -36,6 +32,9 @@ import android.widget.Gallery;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class TimeTable extends LinearLayout implements ScheduleViewer {
 	private Giggity app;

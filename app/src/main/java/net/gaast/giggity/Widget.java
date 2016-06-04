@@ -1,10 +1,5 @@
 package net.gaast.giggity;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.AbstractList;
-import java.util.Date;
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -14,6 +9,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.AbstractList;
+import java.util.Date;
 
 /* http://www.vogella.de/articles/AndroidWidgets/article.html helped me a lot here. */
 

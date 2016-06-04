@@ -2,12 +2,10 @@ package net.gaast.giggity;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ScheduleItemActivity extends Activity {
 	private Giggity app_;
