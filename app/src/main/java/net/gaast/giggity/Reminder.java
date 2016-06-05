@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -123,7 +124,7 @@ public class Reminder extends Service {
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification.Builder nb = new Notification.Builder(app)
 				.setContentTitle(item.getTitle())
-				.setContentText("Soon in " + item.getLine().getTitle())
+				.setContentText(getResources().getString(R.string.soon_in) + " " + item.getLine().getTitle())
 				.setWhen(item.getStartTime().getTime())
 				.setContentIntent(PendingIntent.getActivity(app, 0, evi, 0))
 				.setSmallIcon(R.drawable.ic_schedule_white_48dp)
@@ -133,9 +134,14 @@ public class Reminder extends Service {
 				.setLights(getResources().getColor(R.color.primary), 500, 5000);
 
 		if (Build.VERSION.SDK_INT >= 21) {
-			nb = nb.setVisibility(Notification.VISIBILITY_PUBLIC);
-			nb = nb.setColor(getResources().getColor(R.color.primary));
+			nb.setVisibility(Notification.VISIBILITY_PUBLIC)
+			  .setColor(getResources().getColor(R.color.primary));
 		}
+
+		Notification.BigTextStyle extra = new Notification.BigTextStyle();
+		extra.setSummaryText(getResources().getString(R.string.soon_in) + " " + item.getLine().getTitle());
+		extra.bigText(item.getDescriptionStripped());
+		nb.setStyle(extra);
 
 		// necessary? (find builder equiv)  not.defaults |= Notification.DEFAULT_SOUND;
 

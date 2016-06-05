@@ -148,7 +148,7 @@ public class EventDialog extends FrameLayout {
 		
 		t = (TextView) c.findViewById(R.id.description);
 		String text = item_.getDescription();
-		if (text.contains("<p>")) {
+		if (text.startsWith("<") || text.contains("<p>")) {
 			/* This parser is VERY limited, results aren't great, but let's give it a shot.
 			   I'd really like to avoid using a full-blown WebView.. */
 			Html.TagHandler th = new Html.TagHandler() {

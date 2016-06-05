@@ -79,7 +79,10 @@
 	<string name="add_dialog">Add...</string>
 	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Enter schedule URL</string>
-	
+
+	<!-- Reminder -->
+	<string name="soon_in">Soon in</string>
+
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'at\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'at\' HH:mm</string>

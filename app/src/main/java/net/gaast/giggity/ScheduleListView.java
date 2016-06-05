@@ -62,16 +62,6 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				Schedule.Item item = (Schedule.Item) list.get(position);
 				ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
 				sva.showItem(item, others);
-
-				/* The following may not be necessary, or maybe only w/ tablet view? */
-				/*
-
-				evd.setOnDismissListener(new OnDismissListener() {
-					public void onDismiss(DialogInterface dialog) {
-						adje.notifyDataSetChanged();
-					}
-				});
-				*/
 			}
 		});
 		

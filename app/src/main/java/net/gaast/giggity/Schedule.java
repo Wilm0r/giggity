@@ -1106,25 +1106,6 @@ public class Schedule {
 		
 		public void setDescription(String description_) {
 			description = description_.trim();
-			
-			if (false) {
-				/* Shouldn't need this with HTML view: Grab URLs and add them as (clickable) links. */
-				Pattern urlre = Pattern.compile("([a-z]+://|www\\.)[\\]\\[A-Za-z0-9-._~:/?#@!$&'()*+,;=]+");
-				Matcher urls = urlre.matcher(description);
-				while (urls.find()) {
-					String url = urls.group();
-					url = url.replaceAll("[\\])\"'.]*$", "");
-					addLink(new Link(url));
-				}
-			}
-			
-			/* Strip HTML-like stuff. Might strip things I don't want to so only
-			 * do it if the description *starts* with a HTML tag. */
-			/* Trying a new approach now, using Html.fromHtml in EventDialog.
-			if (description.startsWith("<")) {
-				description = description.replaceAll("<[^>]*>", "");
-			}
-			*/
 		}
 
 		public void addLink(Schedule.Link link) {
@@ -1180,7 +1161,16 @@ public class Schedule {
 		public String getDescription() {
 			return description;
 		}
-		
+
+		public String getDescriptionStripped() {
+			String ret = description;
+			/* Very clunky HTML stripper */
+			if (ret.startsWith("<") || ret.contains("<p>")) {
+				ret = ret.replaceAll("<[^>]*>", "");
+			}
+			return ret;
+		}
+
 		public AbstractList<String> getSpeakers() {
 			return speakers;
 		}
