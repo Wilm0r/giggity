@@ -1,8 +1,0 @@
-This is an Android Studio project. Good luck getting your local install
-to import it properly! It's a process that can either be enjoyable or
-make me miss Makefiles.
-
-Sadly Eclipse and Android Studio have done a great job at fscking up the
-indentation (meant to be tabs but got mixed here and there). Maybe I'll
-decrustify some day..
-
