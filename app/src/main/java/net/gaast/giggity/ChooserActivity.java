@@ -128,7 +128,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		LinearLayout cont = new LinearLayout(this);
 		cont.setOrientation(LinearLayout.VERTICAL);
-		cont.addView(refresher, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
+		cont.addView(refresher, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1));
 
 		setContentView(cont);
 	}
@@ -370,9 +370,9 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		public ScheduleAdapter(AbstractList<DbSchedule> scheds) {
 			ArrayList<Element> now, later, past;
-			now = new ArrayList<Element>();
-			later = new ArrayList<Element>();
-			past = new ArrayList<Element>();
+			now = new ArrayList<>();
+			later = new ArrayList<>();
+			past = new ArrayList<>();
 			for (DbSchedule sched : scheds) {
 				if (sched.getStart().after(new Date()))
 					later.add(new Element(sched));
@@ -382,7 +382,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					now.add(new Element(sched));
 			}
 
-			list = new ArrayList<Element>();
+			list = new ArrayList<>();
 			if (now.size() > 0) {
 				list.add(new Element(R.string.chooser_now));
 				list.addAll(now);

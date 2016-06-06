@@ -19,6 +19,7 @@
 
 package net.gaast.giggity;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Application;
 import android.content.BroadcastReceiver;
@@ -38,6 +39,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeSet;
 
+/* OK so I'm not using ISO8601 ... but at least it's not middle-endian. And there's no portable date
+   range format which is my real problem. So just silence that lint. */
+@SuppressLint({"SimpleDateFormat"})
 public class Giggity extends Application {
 	private Db db;
 	
@@ -51,8 +55,8 @@ public class Giggity extends Application {
 		super.onCreate();
 		db = new Db(this);
 		
-		scheduleCache = new HashMap<String,Schedule>();
-		remindItems = new TreeSet<Schedule.Item>();
+		scheduleCache = new HashMap<>();
+		remindItems = new TreeSet<>();
 		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		
@@ -63,7 +67,7 @@ public class Giggity extends Application {
 		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context arg0, Intent arg1) {
-				HashSet<String> urls = new HashSet<String>();
+				HashSet<String> urls = new HashSet<>();
 				for (Schedule sched : scheduleCache.values()) {
 					urls.add(sched.getUrl());
 					sched.commit();

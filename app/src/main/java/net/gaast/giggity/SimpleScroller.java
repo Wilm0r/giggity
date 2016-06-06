@@ -25,7 +25,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 /* I ended up writing this one long ago because Android did not yet have any horizontal scroller.
    It does now and maybe nesting HSV and SV would do the trick except this thing implements some
@@ -207,7 +206,7 @@ public class SimpleScroller extends FrameLayout {
 	}
 	
 	public interface Listener {
-		public void onScrollEvent(SimpleScroller src);
-		public void onResizeEvent(SimpleScroller src, float scaleX, float scaleY, int scrollX, int scrollY);
+		void onScrollEvent(SimpleScroller src);
+		void onResizeEvent(SimpleScroller src, float scaleX, float scaleY, int scrollX, int scrollY);
 	}
 }

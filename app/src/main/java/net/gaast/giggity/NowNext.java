@@ -41,7 +41,7 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 	@Override
 	public void refreshContents() {
 		Date now = new Date();
-		LinkedList<Schedule.Item> nextList = new LinkedList<Schedule.Item>();
+		LinkedList<Schedule.Item> nextList = new LinkedList<>();
 		ArrayList fullList = new ArrayList();
 
 		/* Set the schedule's day to today so we don't show tomorrow's 

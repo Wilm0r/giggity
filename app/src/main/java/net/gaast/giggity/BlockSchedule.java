@@ -19,12 +19,12 @@
 
 package net.gaast.giggity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -41,6 +41,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
+@SuppressLint("SimpleDateFormat")
 public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ScheduleViewer {
 	Giggity app;
 	Schedule sched;
@@ -74,8 +75,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	private int TentWidth = 36;
 	private float fontSize = 9;
 	
-	private Handler timer;
-	
 	@SuppressWarnings("deprecation")
 	BlockSchedule(Activity ctx_, Schedule sched_) {
 		super(ctx_);
@@ -83,7 +82,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		app = (Giggity) ctx.getApplication();
 		sched = sched_;
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
-		timer = new Handler();
 		c = new Light();
 		
 		setOrientation(LinearLayout.VERTICAL);
@@ -202,8 +200,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 
 		mainTable = new LinearLayout(app);
 		mainTable.addView(tentHeadersScr);
-		mainTable.addView(schedContScr, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 1));
-		addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT, 1));
+		mainTable.addView(schedContScr, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1));
+		addView(mainTable, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 1));
 		
 		bottomClock = new Clock(ctx, base, end);
 		addView(bottomClock);
@@ -268,8 +266,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	protected class Element extends TextView {
 		private int bgcolor;
 		private Schedule.Item item;
-		private Giggity app;
-		
+
 		public Element(Activity ctx) {
 			super(ctx);
 			setGravity(Gravity.CENTER_HORIZONTAL);
@@ -285,7 +282,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				@Override
 				public void onClick(View v) {
 					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-					sva.showItem(item, new ArrayList<Schedule.Item>(item.getLine().getItems()));
+					sva.showItem(item, new ArrayList<>(item.getLine().getItems()));
 				}
 			});
 		}

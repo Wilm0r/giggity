@@ -15,7 +15,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.HashMap;
@@ -101,17 +100,19 @@ public class Reminder extends Service {
 		registerReceiver(alarmReceiver, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
 		*/
 	}
+
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		/* We're just there to keep the schedule in memory if there are reminders set, and receive
+		   alarms when notifications should be shown. */
+		return START_STICKY;
+	}
 	
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		unregisterReceiver(alarmReceiver);
 		Log.d("reminder", "onDestroy");
-	}
-	
-	@Override
-	public void onStart(Intent intent, int startId) {
-		/* Don't do anything, just wait for signals. */
 	}
 	
 	private void sendReminder(Schedule.Item item) {
@@ -149,17 +150,16 @@ public class Reminder extends Service {
 		nm.notify(id, nb.build());
 
 		// Allow cancellation a little before the actual end (off-by-one)
-		cancelAt.put(new Integer(id), new Long(item.getEndTime().getTime() - 60000));
+		cancelAt.put(id, item.getEndTime().getTime() - 60000);
 		
 		Log.d("reminder", "Generated notification for " + item.getTitle());
 	}
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	static public void poke(Giggity app, Schedule.Item item) {
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
 		if (pref.getBoolean("reminder_enabled", true)) {

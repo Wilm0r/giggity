@@ -554,7 +554,7 @@ public class ScheduleViewActivity extends Activity {
 		if (viewer != null)
 			viewerContainer.removeView((View) viewer);
 		viewer = (ScheduleViewer) viewer_;
-		viewerContainer.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 3));
+		viewerContainer.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3));
 		
 		days.show();
 	}
@@ -572,7 +572,7 @@ public class ScheduleViewActivity extends Activity {
 		if (tabletView) {
 			EventDialogPager evp = new EventDialogPager(this, item, others);
 			eventDialogView = evp;
-			bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT, 4));
+			bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4));
 		} else {
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
 					this, ScheduleItemActivity.class);

@@ -19,6 +19,7 @@
 
 package net.gaast.giggity;
 
+import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.util.Log;
@@ -52,16 +53,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+@SuppressLint("SimpleDateFormat")
 public class Schedule {
 	private final int detectHeaderSize = 1024;
 	
@@ -167,7 +166,7 @@ public class Schedule {
 		dayEnd.add(Calendar.DAY_OF_MONTH, 1);
 		curDayEnd = dayEnd.getTime();
 	}
-	
+
 	public Format getDayFormat() {
 		if (eventLength() > (86400 * 5))
 			return new SimpleDateFormat("EE d MMMM");
@@ -539,7 +538,7 @@ public class Schedule {
 			}
 		}
 		
-		return (AbstractList<Item>) ret;
+		return ret;
 	}
 
 	public String getIcon() {
@@ -605,14 +604,14 @@ public class Schedule {
 				Attributes atts) throws SAXException {
 			curString = "";
 			
-			if (localName == "schedule") {
+			if (localName.equals("schedule")) {
 				id = atts.getValue("", "id");
 				title = atts.getValue("", "title");
-			} else if (localName == "linkType") {
-			} else if (localName == "line") {
+			} else if (localName.equals("linkType")) {
+			} else if (localName.equals("line")) {
 				curTent = new Schedule.Line(atts.getValue("", "id"),
 				                            atts.getValue("", "title"));
-			} else if (localName == "item") {
+			} else if (localName.equals("item")) {
 				Date startTime, endTime;
 	
 				try {
@@ -625,7 +624,7 @@ public class Schedule {
 				} catch (NumberFormatException e) {
 					Log.w("Schedule.loadDeox", "Error while parsing date: " + e);
 				}
-			} else if (localName == "itemLink") {
+			} else if (localName.equals("itemLink")) {
 				curItem.addLink(new Link(atts.getValue("", "href"), atts.getValue("", "type")));
 			}
 		}
@@ -638,13 +637,13 @@ public class Schedule {
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
-			if (localName == "item") {
+			if (localName.equals("item")) {
 				curTent.addItem(curItem);
 				curItem = null;
-			} else if (localName == "line") {
+			} else if (localName.equals("line")) {
 				tents.add(curTent);
 				curTent = null;
-			} else if (localName == "itemDescription") {
+			} else if (localName.equals("itemDescription")) {
 				if (curItem != null)
 					curItem.setDescription(curString);
 			}
@@ -706,7 +705,7 @@ public class Schedule {
 				Attributes atts) throws SAXException {
 			curString = "";
 			if (localName.equals("vevent")) {
-				eventData = new HashMap<String,String>();
+				eventData = new HashMap<>();
 			}
 		}
 	
@@ -810,6 +809,7 @@ public class Schedule {
 	   It's not really maintained anymore though, a recent fork called Frab is more maintained and
 	   Giggity can read its XML exports just as well https://github.com/frab/frab
 	 */
+	@SuppressWarnings("deprecation")
 	private class PentabarfParser implements ContentHandler {
 		private Schedule.Line curTent;
 		private HashMap<String,Schedule.Line> tentMap;
@@ -818,14 +818,12 @@ public class Schedule {
 		private LinkedList<String> persons;
 		private LinkedList<Link> links;
 		private Date curDay;
-		private HashSet<String> trackSet;
 
 		SimpleDateFormat df, tf;
 
 		public PentabarfParser() {
-			tentMap = new HashMap<String,Schedule.Line>();
-			trackSet = new HashSet<String>();
-			
+			tentMap = new HashMap<>();
+
 			df = new SimpleDateFormat("yyyy-MM-dd");
 			tf = new SimpleDateFormat("HH:mm");
 		}
@@ -926,7 +924,7 @@ public class Schedule {
 				item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
 				
 				if ((s = propMap.get("subtitle")) != null) {
-					if (s != "")
+					if (!s.isEmpty())
 						item.setSubtitle(s);
 				}
 				
@@ -934,7 +932,7 @@ public class Schedule {
 				// TODO: IMHO the separation between these two is not used in a meaningful way my most,
 				// or worse, description is just a copy of abstract. Some heuristics would be helpful.
 				if ((s = propMap.get("abstract")) != null) {
-					s.replaceAll("\n*$", "");
+					s = s.replaceAll("\n*$", "");
 					desc += s + "\n\n";
 				}
 				if ((s = propMap.get("description")) != null) {
@@ -944,7 +942,6 @@ public class Schedule {
 				
 				if ((s = propMap.get("track")) != null && !s.equals("")) {
 					item.setTrack(s);
-					trackSet.add(s);
 				}
 				for (Link i : links)
 					item.addLink(i);

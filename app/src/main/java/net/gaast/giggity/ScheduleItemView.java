@@ -1,5 +1,6 @@
 package net.gaast.giggity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.RelativeLayout;
@@ -9,6 +10,7 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@SuppressLint({"SimpleDateFormat", "SetTextI18n"})
 public class ScheduleItemView extends RelativeLayout {
 	public static final int COMPACT = 1;
 	public static final int SHOW_REMIND = 2;

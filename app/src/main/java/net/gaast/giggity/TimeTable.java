@@ -78,13 +78,13 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		tentSel.setSpacing(0);
 		tentSel.setBackgroundResource(R.color.primary);
 		app.setShadow(tentSel, true);
-		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(tentSel, lp);
 
 		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
 		scroller.setList(fullList);
-		lp = new RelativeLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(scroller, lp);
 
 		/* Set up some navigation listeners. */
@@ -182,11 +182,6 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 
 			return ret;
 		}
-	}
-	
-	/* Can only define interfaces in top-level classes. :-/ */ 
-	public interface OnSwitchListener {
-		public void onSwitchEvent(int direction);
 	}
 
 	@Override

@@ -19,6 +19,7 @@
 
 package net.gaast.giggity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -50,6 +51,7 @@ import java.util.ArrayList;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
+@SuppressLint({"SimpleDateFormat", "SetTextI18n"})
 public class EventDialog extends FrameLayout {
 	private Context ctx_;
 	private Giggity app_;
