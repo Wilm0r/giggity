@@ -1,5 +1,5 @@
 {
-	"version": 2016052600,
+	"version": 2016060800,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -132,6 +132,21 @@
 					{
 						"url": "http://piandmore.de/de/next/ort",
 						"title": "Anfahrt"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016060800,
+			"url": "https://debconf16.debconf.org/schedule/pentabarf.xml",
+			"title": "DebConf16",
+			"start": "2016-07-04",
+			"end": "2016-07-09",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://debconf16.debconf.org/",
+						"title": "Website"
 					}
 				]
 			}
