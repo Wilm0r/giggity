@@ -229,7 +229,7 @@ public class Db {
 		CACHED,			/* Cached copy, or refetch if missing. */
 		ONLINE,			/* Poll for an update. */
 	}
-	private final String SEED_URL = "http://wilmer.gaa.st/deoxide/menu.json";
+	private final String SEED_URL = "https://wilmer.gaa.st/deoxide/menu.json";
 	public static final long SEED_FETCH_INTERVAL = 86400 * 1000; /* Once a day. */
 	
 	private Seed loadSeed(SeedSource source) {
