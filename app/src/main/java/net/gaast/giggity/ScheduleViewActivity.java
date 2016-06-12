@@ -112,9 +112,8 @@ public class ScheduleViewActivity extends Activity {
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 		tabletView = (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE);
 
-		drawerLayout = (DrawerLayout) getLayoutInflater().inflate(R.layout.schedule_view_activity, null);
-		View dl = drawerLayout;  /* Shorthand */
-		setContentView(dl);
+		setContentView(R.layout.schedule_view_activity);
+		View dl = drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 		drawer = (RelativeLayout) dl.findViewById(R.id.drawer);
 
 		drawer.setOnClickListener(new View.OnClickListener() {
@@ -451,7 +450,7 @@ public class ScheduleViewActivity extends Activity {
 					intent.setDataAndType(Uri.parse(cached.toURI().toString()), link.getType());
 					startActivity(intent);
 				} catch (ActivityNotFoundException e) {
-					Dialog d = new AlertDialog.Builder(ScheduleViewActivity.this)
+					new AlertDialog.Builder(ScheduleViewActivity.this)
 							.setTitle(R.string.loading_error)
 							.setMessage(getString(R.string.no_viewer_error) + " " +
 									link.getType() + ": " + e.getMessage())
@@ -479,8 +478,8 @@ public class ScheduleViewActivity extends Activity {
 							/* Just slurp the entire file into a bogus buffer, what we need is the
 							   file in ExternalCacheDir */
 							byte[] buf = new byte[1024];
-							while (f.getStream().read(buf) != -1) {
-							}
+							//noinspection StatementWithEmptyBody
+							while (f.getStream().read(buf) != -1) {}
 							f.keep();
 
 							/* Will trigger the done() above back in the main thread. */
@@ -570,8 +569,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (tabletView) {
-			EventDialogPager evp = new EventDialogPager(this, item, others);
-			eventDialogView = evp;
+			eventDialogView = new EventDialogPager(this, item, others);
 			bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4));
 		} else {
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
