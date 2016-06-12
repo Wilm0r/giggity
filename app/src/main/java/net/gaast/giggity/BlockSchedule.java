@@ -26,7 +26,6 @@ import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -129,7 +128,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		if (base.get(Calendar.MINUTE) == 0) {
 			hourX = HourWidth / 4;
 		} else {
-			hourX = HourWidth / 4 * 3;
+			hourX = HourWidth * 3 / 4;
 		}
 		for (y = 0; y < TentHeight; y++) {
 			/* Long-dotted line on hour boundaries */
@@ -151,7 +150,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL | 0);
 		tentHeadersScr.addView(tentHeaders);
 		tentHeadersScr.setScrollEventListener(this);
-		//schedCont.setMinimumHeight(1000); /* To make the lines run to the bottom. */
+
+		//schedCont.setMinimumHeight(1000); /* To make the lines run to the bottom. No, this caused other UI weirdness I think.. */
 		
 		y = 0;
 		tents = sched.getTents();
@@ -179,7 +179,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				              HourWidth / 3600000);
 				w    = (int) ((gig.getEndTime().getTime() -
 				               cal.getTime().getTime()) *
-				              HourWidth / 3600000) - posx;
+				              HourWidth / 3600000) - posx + 1;
 				
 				cell = new Element(ctx);
 				cell.setItem(gig);
@@ -210,7 +210,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		if (sched.getFirstTime().before(now) && sched.getLastTime().after(now)) {
 			float hours = (float) (now.getTime() - sched.getFirstTime().getTime()) / 3600 / 1000;
 			int scrollX = (int) (hours - 1) * HourWidth;
-			Log.d("scrollTo", "" + hours + " " + scrollX);
 			schedContScr.setInitialXY(scrollX, 0);
 		}
 		
@@ -224,12 +223,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			topClock.scrollTo(src.getScrollX(), 0);
 			bottomClock.scrollTo(src.getScrollX(), 0);
 			tentHeadersScr.scrollTo(0, src.getScrollY());
-		} else if (src == topClock || src == bottomClock) {
-			schedContScr.scrollTo(src.getScrollX(), schedContScr.getScrollY());
-			if (src != topClock)
-				topClock.scrollTo(src.getScrollX(), 0);
-			if (src != bottomClock)
-				bottomClock.scrollTo(src.getScrollX(), 0);
 		} else if (src == tentHeadersScr) {
 			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
 		}

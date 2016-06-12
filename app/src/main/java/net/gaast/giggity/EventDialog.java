@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -286,26 +287,39 @@ public class EventDialog extends FrameLayout {
 			builder.setTitle(title);
 			builder.setItems(delWhat.toArray(new CharSequence[delWhat.size()]), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int what) {
-				switch (what) {
-				case 0:
-					item_.setHidden(newValue);
-					break;
-				case 1:
-					for (Schedule.Item other : item_.getLine().getItems())
-						other.setHidden(newValue);
-					break;
-				case 2:
-					for (Schedule.Line line : item_.getSchedule().getTents())
-						for (Schedule.Item other : line.getItems())
-							if (other.getTrack() != null && other.getTrack().equals(item_.getTrack()))
-								other.setHidden(newValue);
-					break;
-				}
-				try {
-					ScheduleViewActivity sva = (ScheduleViewActivity) ctx_;
-					sva.onItemHidden();
-				} catch (ClassCastException e) {
-				}
+					Schedule sched = item_.getSchedule();
+					boolean showh = sched.getShowHidden();
+					sched.setShowHidden(true);  // Needed for option 1 and 2 below to work.
+					switch (what) {
+					case 0:
+						item_.setHidden(newValue);
+						break;
+					case 1:
+						for (Schedule.Item other : item_.getLine().getItems())
+							other.setHidden(newValue);
+						break;
+					case 2:
+						for (Schedule.Item other : sched.getTrackItems(item_.getTrack()))
+							other.setHidden(newValue);
+						break;
+					}
+					sched.setShowHidden(showh);
+
+					/* Following is a bit odd. If we're on a tablet, current activity is SVA in
+					   which case UI needs to be updated. If not, in case of deletion the user will
+					   probably want to return to the schedule viewer instead of the thing they
+					   just opted to delete. */
+					if (ctx_.getClass() == ScheduleViewActivity.class) {
+						ScheduleViewActivity sva = (ScheduleViewActivity) ctx_;
+						sva.onItemHidden();
+						/* TODO: With tablets and at least BlockSchedule this scrolls back to the
+						   top. That's annoying. */
+					} else if (ctx_.getClass() == ScheduleItemActivity.class) {
+						if (newValue) {
+							Activity sia = (Activity) ctx_;
+							sia.finish();
+						}
+					}
 				}
 			});
 			AlertDialog alert = builder.create();
