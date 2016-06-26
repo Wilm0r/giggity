@@ -91,6 +91,17 @@ public class Schedule {
 	private boolean fullyLoaded;
 	private Handler progressHandler;
 
+	public class LoadException extends RuntimeException {
+		public LoadException(String description) {
+			super(description);
+		}
+
+		// Slightly cleaner without the "FooException:" prefix for ones that are custom anyway.
+		public String toString() {
+			return getMessage();
+		}
+	}
+
 	public Schedule(Giggity ctx) {
 		app = ctx;
 	}
@@ -267,7 +278,7 @@ public class Schedule {
 			
 			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
-			throw new RuntimeException("Network I/O problem: " + e);
+			throw new LoadException("Network I/O problem: " + e);
 		}
 
 		/* Yeah, I know this is ugly, and actually reasonably fragile. For now it
@@ -284,9 +295,9 @@ public class Schedule {
 				loadIcal(in);
 			} else {
 				Log.d("head", head);
-				throw new RuntimeException("File format not recognized");
+				throw new LoadException(app.getString(R.string.format_unknown));
 			}
-		} catch (RuntimeException e) {
+		} catch (LoadException e) {
 			f.cancel();
 			throw e;
 		}
@@ -301,7 +312,11 @@ public class Schedule {
 
 		if (id == null)
 			id = hashify(url);
-		
+
+		if (allItems.size() == 0) {
+			throw new LoadException(app.getString(R.string.schedule_empty));
+		}
+
 		db = app.getDb();
 		db.setSchedule(this, url, f.getSource() == Fetcher.Source.ONLINE);
 		String md_json = db.getMetadata();
@@ -332,7 +347,7 @@ public class Schedule {
 		} catch (Exception e) {
 			Log.e("Schedule.loadXml", "XML parse exception: " + e);
 			e.printStackTrace();
-			throw new RuntimeException("XML parsing problem: " + e);
+			throw new LoadException("XML parsing problem: " + e);
 		}
 	}
 	
@@ -382,10 +397,10 @@ public class Schedule {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new RuntimeException("Read error: " + e);
+			throw new LoadException("Read error: " + e);
 		} catch (SAXException e) {
 			e.printStackTrace();
-			throw new RuntimeException("Parse error: " + e);
+			throw new LoadException("Parse error: " + e);
 		}
 	}
 

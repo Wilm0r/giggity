@@ -44,6 +44,8 @@
 	<string name="import_selections">Selecties importeren</string>
 	<string name="no_selections">Geen exporteerbare data</string>
 	<string name="qr_tip">Gebruik de QR scan knop in het hoofdmenu op een ander apparaat om dit te importeren</string>
+	<string name="schedule_empty">Programma lijkt (nog) leeg</string>
+	<string name="format_unknown">Onbekend bestandsformaat</string>
 	<!-- Menu -->
 	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>

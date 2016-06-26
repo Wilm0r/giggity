@@ -44,7 +44,9 @@
 	<string name="export_selections">Export selections</string>
 	<string name="import_selections">Import selections</string>
 	<string name="no_selections">No selections to be exported</string>
-	<string name="qr_tip">Please use the QR scan button in the main menu on your other device to import this</string>	
+	<string name="qr_tip">Please use the QR scan button in the main menu on your other device to import this</string>
+	<string name="schedule_empty">Schedule appears to be empty</string>
+	<string name="format_unknown">File format not recognised</string>
 	<!-- Menu -->
 	<string name="settings">Settings</string>
 	<string name="change_day">Change day</string>
