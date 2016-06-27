@@ -1,7 +1,7 @@
 # Giggity
 
 Giggity is an Android app that loads
-xcal/[Pentabarf](http://www.pentabarf.org/)/[frab](https://github.com/frab/frab)
+xcal/[Pentabarf](http://www.pentabarf.org/)/[frab](https://github.com/frab/frab)/[wafer](https://github.com/CTPUG/wafer)
 XML files (that contain schedules of conferences/festivals/other events)
 and lets you browse them in various convenient formats.
 
