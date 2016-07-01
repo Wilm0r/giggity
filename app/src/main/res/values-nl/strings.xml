@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Giggity</string>
-    <string name="search_hint">Programma doorzoeken</string>
+	<string name="app_name">Giggity</string>
+	<string name="search_hint">Programma doorzoeken</string>
 
-    <string name="ok">OK</string>
-    <string name="cancel">Annuleren</string>
-    
-    <!--  Settings -->
-    <string name="default_view">Standaard weergave</string>
-    <string name="always_refresh">Programma\'s altijd verversen</string>
-    <string name="always_refresh_sub_off">Éénmaal per dag nieuwe versie downloaden</string>
-    <string name="strict_ssl">Strikte SSL</string>
-    <string name="strict_ssl_sub">SSL certificaten van HTTPS servers controleren</string>
+	<string name="ok">OK</string>
+	<string name="cancel">Annuleren</string>
+
+	<!--  Settings -->
+	<string name="default_view">Standaard weergave</string>
+	<string name="font_size">Letterype blokkenschema</string>
+	<string name="always_refresh">Programma\'s altijd verversen</string>
+	<string name="always_refresh_sub_off">Éénmaal per dag nieuwe versie downloaden</string>
+	<string name="strict_ssl">Strikte SSL</string>
+	<string name="strict_ssl_sub">SSL certificaten van HTTPS servers controleren</string>
     
 	<string name="block_schedule_style">Stijl</string>
 	<string name="block_schedule">Blokkenschema</string>

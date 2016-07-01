@@ -8,6 +8,11 @@
 		<item>Now and next</item>
 		<item>My marked events</item>
 	</string-array>
+	<string-array name="font_size">
+		<item>Small</item>
+		<item>3 lines</item>
+		<item>2 lines</item>
+	</string-array>
 	<!-- Eww, ordering a bit odd since tracks was added later. -->
 	<string-array name="default_view_values">
 		<item>net.gaast.giggity:id/block_schedule</item>
@@ -15,6 +20,11 @@
 		<item>net.gaast.giggity:id/tracks</item>
 		<item>net.gaast.giggity:id/now_next</item>
 		<item>net.gaast.giggity:id/my_events</item>
+	</string-array>
+	<string-array name="font_size_values">
+		<item>small</item>
+		<item>medium</item>
+		<item>large</item>
 	</string-array>
 	<string-array name="reminder_periods">
 		<item>1</item>

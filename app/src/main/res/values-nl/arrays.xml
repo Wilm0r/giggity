@@ -7,4 +7,9 @@
 		<item>Nu en straks</item>
 		<item>Mijn items</item>
 	</string-array>
+	<string-array name="font_size">
+		<item>Klein</item>
+		<item>3 regels</item>
+		<item>2 regels</item>
+	</string-array>
 </resources>

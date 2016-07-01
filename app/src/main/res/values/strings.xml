@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Giggity</string>
-    <string name="search_hint">Search events</string>
+	<string name="app_name">Giggity</string>
+	<string name="search_hint">Search events</string>
 
-    <string name="ok">OK</string>
-    <string name="cancel">Cancel</string>
-    
-    <!--  Settings -->
-    <string name="default_view">Default view</string>
-    <string name="always_refresh">Always reload schedules</string>
-    <string name="always_refresh_sub_off">Check for new version once a day</string>
-    <string name="strict_ssl">Strict SSL</string>
-    <string name="strict_ssl_sub">Proper HTTPS certificate validation</string>
+	<string name="ok">OK</string>
+	<string name="cancel">Cancel</string>
+
+	<!--  Settings -->
+	<string name="default_view">Default view</string>
+	<string name="font_size">Block schedule font size</string>
+	<string name="always_refresh">Always reload schedules</string>
+	<string name="always_refresh_sub_off">Check for new version once a day</string>
+	<string name="strict_ssl">Strict SSL</string>
+	<string name="strict_ssl_sub">Proper HTTPS certificate validation</string>
     
 	<string name="block_schedule_style">Style</string>
 	<string name="block_schedule">Block schedule</string>

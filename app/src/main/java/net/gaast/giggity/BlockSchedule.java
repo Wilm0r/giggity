@@ -26,9 +26,11 @@ import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AbsoluteLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -67,12 +69,14 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	SimpleScroller schedContScr;
 
 	SharedPreferences pref;
-	
+
+	// All in "scaled pixels". The first four just need to get multiplied by the constructor.
 	private int HourWidth = 96;
 	private int HourHeight = 15;
 	private int TentHeight = 48;
 	private int TentWidth = 36;
-	private float fontSize = 9;
+	private final float fontSizeSmall = 12;
+	private float fontSize = 12; // scaled/configurable
 	
 	@SuppressWarnings("deprecation")
 	BlockSchedule(Activity ctx_, Schedule sched_) {
@@ -102,13 +106,16 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		int x, y;
 		Calendar base, cal, end;
 		LinkedList<Schedule.Line> tents;
-		Element cell;
-		
-		/* The following is based on blind experimentation, trying to get a reasonable font size
-		 * somewhere between 8 and 14 as the user zooms. */
-		float d = (float) Math.sqrt(HourWidth / 36 * TentHeight / 24) / getResources().getDisplayMetrics().density;
-		fontSize = (float) Math.min(8 + 6 * Math.log(d) / Math.log(20), 14);
-		
+
+		String fontSetting = pref.getString("font_size", "medium");
+		if (fontSetting.equals("small")) {
+			fontSize = fontSizeSmall;
+		} else if (fontSetting.equals("medium")) {
+			fontSize = (int) (TentHeight / 3.6 / getResources().getDisplayMetrics().density);
+		} else {
+			fontSize = (int) (TentHeight / 2.6 / getResources().getDisplayMetrics().density);
+		}
+
 		schedCont = new AbsoluteLayout(ctx);
 
 		base = Calendar.getInstance();
@@ -157,14 +164,17 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		tents = sched.getTents();
 		for (Schedule.Line tent : tents) {
 			int posx, h, w;
-			
+
 			/* Tent name on the first column. */
-			cell = new Element(ctx);
-			cell.setWidth(TentWidth);
-			cell.setText(tent.getTitle());
-			cell.setBackgroundColor(c.tentbg[y&1]);
-			cell.setTextColor(c.tentfg[y&1]);
-			tentHeaders.addView(cell);
+			TextView head = new TextView(ctx);
+			head.setHeight(TentHeight);
+			head.setWidth(TentWidth);
+			head.setGravity(Gravity.CENTER_HORIZONTAL);
+			head.setText(tent.getTitle());
+			head.setTextSize(fontSizeSmall);
+			head.setBackgroundColor(c.tentbg[y&1]);
+			head.setTextColor(c.tentfg[y&1]);
+			tentHeaders.addView(head);
 
 			cal = Calendar.getInstance();
 			cal.setTime(base.getTime());
@@ -181,7 +191,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 				               cal.getTime().getTime()) *
 				              HourWidth / 3600000) - posx + 1;
 				
-				cell = new Element(ctx);
+				Element cell = new Element(ctx);
 				cell.setItem(gig);
 				cell.setWidth(w);
 				cell.setBackgroundColor(c.itembg[((y+x)&1)]);
@@ -265,7 +275,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			setGravity(Gravity.CENTER_HORIZONTAL);
 			setHeight(TentHeight);
 			setTextColor(0xFFFFFFFF);
-			setPadding(0, 3, 0, 0);
+			setPadding(0, 0, 0, 0);
 			setTextSize(fontSize);
 		}
 		
@@ -300,37 +310,44 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	}
 	
 	protected class Clock extends SimpleScroller {
-		private Element cell;
-		private LinearLayout child;
-		private Calendar base;
+		private LinearLayout child_;
+		private Calendar base_;
 		
-		public Clock(Activity ctx, Calendar base_, Calendar end) {
+		public Clock(Activity ctx, Calendar base, Calendar end) {
 			super(ctx, SimpleScroller.HORIZONTAL);
 
-			base = new GregorianCalendar();
-			base.setTime(base_.getTime());
+			TextView cell;
+
+			base_ = new GregorianCalendar();
+			base_.setTime(base.getTime());
 			
 			SimpleDateFormat df = new SimpleDateFormat("HH:mm");
 			Calendar cal;
 			
 			cal = Calendar.getInstance();
-			cal.setTime(base.getTime());
+			cal.setTime(base_.getTime());
+
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
+
+			child_ = new LinearLayout(ctx);
 			
-			child = new LinearLayout(ctx);
-			
-			cell = new Element(ctx);
+			cell = new TextView(ctx);
+			cell.setGravity(Gravity.CENTER_HORIZONTAL);
 			cell.setHeight(HourHeight);
 			cell.setWidth(TentWidth);
 			cell.setBackgroundColor(c.clockbg[1]);
-			child.addView(cell);
+			child_.addView(cell, lp);
 
 			while(true) {
-				cell = new Element(ctx);
+				cell = new TextView(ctx);
 				
 				cell.setText(df.format(cal.getTime()));
+				cell.setGravity(Gravity.CENTER_HORIZONTAL);
 				cell.setHeight(HourHeight);
 				cell.setWidth(HourWidth / 2);
-				child.addView(cell);
+				cell.setTextSize(fontSizeSmall);
+				child_.addView(cell, lp);
 
 				if (cal.after(end))
 					break;
@@ -339,16 +356,16 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			}
 			
 			update();
-			addView(child);
+			addView(child_);
 		}
 		
 		/* Mark the current 30m period in the clock green. */
 		public void update() {
 			int i;
 			Calendar cal = new GregorianCalendar();
-			cal.setTime(base.getTime());
-			for (i = 1; i < child.getChildCount(); i ++) {
-				Element cell = (Element) child.getChildAt(i);
+			cal.setTime(base_.getTime());
+			for (i = 1; i < child_.getChildCount(); i ++) {
+				TextView cell = (TextView) child_.getChildAt(i);
 				long diff = System.currentTimeMillis() - cal.getTimeInMillis(); 
 				if (diff >= 0 && diff < 1800000) {
 					cell.setBackgroundColor(c.clockbg[2]);
