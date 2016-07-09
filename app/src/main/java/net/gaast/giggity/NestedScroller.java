@@ -232,7 +232,12 @@ public class NestedScroller extends HorizontalScrollView {
 
 	@Override
 	public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+		// Workaround: We're disabling scrollTo() here because super.onLayout() will call it with
+		// what it believes to be our current coordinates, which are correct on x but not y axis.
+		boolean icb = isCallingBack;
+		isCallingBack = true;
 		super.onLayout(changed, left, top, right, bottom);
+		isCallingBack = icb;
 		if (initialX > 0 || initialY > 0) {
 			Log.d("NestedScroller", "initial: " + initialX + "," + initialY);
 			scrollTo(initialX, initialY);
