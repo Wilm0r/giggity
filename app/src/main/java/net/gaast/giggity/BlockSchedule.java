@@ -26,13 +26,16 @@ import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AbsoluteLayout;
+import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -43,7 +46,7 @@ import java.util.GregorianCalendar;
 import java.util.LinkedList;
 
 @SuppressLint("SimpleDateFormat")
-public class BlockSchedule extends LinearLayout implements SimpleScroller.Listener, ScheduleViewer {
+public class BlockSchedule extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
 	Giggity app;
 	Schedule sched;
 	Activity ctx;
@@ -61,12 +64,12 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	LinearLayout mainTable;
 	/* Separate this to keep them on screen when scrolling */
 	LinearLayout tentHeaders;
-	SimpleScroller tentHeadersScr;
+	ScrollView tentHeadersScr;
 
 	/* schedCont will contain all the actual data rows,
 	 * we'll get scrolling by stuffing it inside schedContScr. */
 	AbsoluteLayout schedCont;
-	SimpleScroller schedContScr;
+	NestedScroller schedContScr;
 
 	SharedPreferences pref;
 
@@ -78,7 +81,6 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	private final float fontSizeSmall = 12;
 	private float fontSize = 12; // scaled/configurable
 	
-	@SuppressWarnings("deprecation")
 	BlockSchedule(Activity ctx_, Schedule sched_) {
 		super(ctx_);
 		ctx = ctx_;
@@ -100,8 +102,9 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		draw();
 	}
 
+	@SuppressWarnings("deprecation")
 	private void draw() {
-		this.removeAllViews();
+		removeAllViews();
 		
 		int x, y;
 		Calendar base, cal, end;
@@ -154,12 +157,18 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		
 		tentHeaders = new LinearLayout(ctx);
 		tentHeaders.setOrientation(LinearLayout.VERTICAL);
-		tentHeadersScr = new SimpleScroller(ctx, SimpleScroller.VERTICAL | 0);
+		tentHeadersScr = new ScrollView(ctx);
 		tentHeadersScr.addView(tentHeaders);
-		tentHeadersScr.setScrollEventListener(this);
+		tentHeadersScr.setVerticalScrollBarEnabled(false);
+		tentHeadersScr.setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// Return true to pretend that we "handled" the event already and we don't need the
+				// ScrollView code to handle it harder. :-)
+				return true;
+			}
+		});
 
-		//schedCont.setMinimumHeight(1000); /* To make the lines run to the bottom. No, this caused other UI weirdness I think.. */
-		
 		y = 0;
 		tents = sched.getTents();
 		for (Schedule.Line tent : tents) {
@@ -204,7 +213,8 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 			y ++;
 		}
 
-		schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL | SimpleScroller.PINCH_TO_ZOOM);
+		//schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL | SimpleScroller.PINCH_TO_ZOOM);
+		schedContScr = new NestedScroller(ctx, NestedScroller.PINCH_TO_ZOOM);
 		schedContScr.addView(schedCont);
 		schedContScr.setScrollEventListener(this);
 
@@ -228,22 +238,19 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 	
 	/* If the user scrolls one view, keep the others in sync. */
 	@Override
-	public void onScrollEvent(SimpleScroller src) {
+	public void onScrollEvent(NestedScroller src, int x, int y) {
 		if (src == schedContScr) {
-			topClock.scrollTo(src.getScrollX(), 0);
-			bottomClock.scrollTo(src.getScrollX(), 0);
-			tentHeadersScr.scrollTo(0, src.getScrollY());
-		} else if (src == tentHeadersScr) {
+			topClock.scrollTo(x, 0);
+			bottomClock.scrollTo(x, 0);
+			tentHeadersScr.scrollTo(0, y);
+		} /*else if (src == tentHeadersScr) {
 			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
-		}
+		}*/
 		ScheduleViewActivity.onScroll(ctx);
 	}
 	
 	@Override
-	public void onResizeEvent(SimpleScroller src, float scaleX, float scaleY, int scrollX_, int scrollY_) {
-		final float scrollX = scrollX_;
-		final float scrollY = scrollY_;
-
+	public void onResizeEvent(NestedScroller src, float scaleX, float scaleY, int scrollX, int scrollY) {
 		HourWidth *= scaleX;
 		TentHeight *= scaleY;
 		HourWidth = Math.max(60, Math.min(HourWidth, 1000));
@@ -256,14 +263,7 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		ed.putInt("block_schedule_tent_height", TentHeight);
 		ed.apply();
 
-		/* Need to do this in a timer or it doesn't work, I guess
-		 * because we need the layout code to do a cycle first. */
-		this.post(new Runnable() {
-			@Override
-			public void run() {
-				schedContScr.scrollTo((int) scrollX, (int) scrollY);	
-			}
-		});
+		schedContScr.setInitialXY(scrollX, scrollY);
 	}
 
 	protected class Element extends TextView {
@@ -309,12 +309,14 @@ public class BlockSchedule extends LinearLayout implements SimpleScroller.Listen
 		}
 	}
 	
-	protected class Clock extends SimpleScroller {
+	protected class Clock extends HorizontalScrollView {
 		private LinearLayout child_;
 		private Calendar base_;
 		
 		public Clock(Activity ctx, Calendar base, Calendar end) {
-			super(ctx, SimpleScroller.HORIZONTAL);
+			super(ctx);
+
+			setHorizontalScrollBarEnabled(false);
 
 			TextView cell;
 
