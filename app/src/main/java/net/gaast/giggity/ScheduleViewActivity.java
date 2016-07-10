@@ -373,6 +373,9 @@ public class ScheduleViewActivity extends Activity {
 			Dialog dia = new ScheduleUI.ImportSelections(this, sched, sel);
 			dia.show();
 		}
+		if (curView == R.id.tracks && sched.getTracks() == null) {
+			curView = R.id.timetable;
+		}
 		redrawSchedule();
 		finishNavDrawer();
 		updateNavDrawer();
