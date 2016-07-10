@@ -57,7 +57,6 @@ public class NestedScroller extends HorizontalScrollView {
 	
 	private float distStartX, distStartY;
 	private boolean isCallingBack;
-	private boolean isIntercepting;
 
 	public static final int PINCH_TO_ZOOM = 8;
 
@@ -105,12 +104,6 @@ public class NestedScroller extends HorizontalScrollView {
 		}
 
 		public boolean onTouchEventInt(MotionEvent event) {
-			if (!isIntercepting) {
-				// We may get events even though the parent class didn't ask for them - discard
-				// (but pretend that we used them so Android will go away).
-				return true;
-			}
-
 			/*
 			Log.d("nsmove1", "x0 " + event.getX(0) + " sx " + NestedScroller.this.getScrollX());
 			Log.d("nsmove1", "y0 " + event.getY(0) + " sy " + getScrollY());
@@ -199,7 +192,6 @@ public class NestedScroller extends HorizontalScrollView {
 	public boolean onInterceptTouchEvent(MotionEvent event)
 	{
 		if (super.onInterceptTouchEvent(event) || vscroll.onInterceptTouchEventInt(event) || event.getPointerCount() >= 2) {
-			isIntercepting = true;
 			onTouchEvent(event);
 			return true;
 		}
@@ -218,9 +210,6 @@ public class NestedScroller extends HorizontalScrollView {
 		   we're completely ignoring those and let the (H)ScrollView do the transformation for us).
 		 */
 		vscroll.onTouchEventInt(event);
-		if (event.getAction() == MotionEvent.ACTION_UP || event.getAction() == MotionEvent.ACTION_CANCEL) {
-			isIntercepting = false;
-		}
 		return true;
 	}
 
