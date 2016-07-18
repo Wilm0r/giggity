@@ -180,6 +180,12 @@ public class NestedScroller extends HorizontalScrollView {
 
 	@Override
 	public void scrollTo(int x, int y) {
+		/*
+		if (x == 0 || y == 0) {
+			Log.d("scrollTo", "scroll to " + x + "," + y + " callback " + isCallingBack);
+			Log.d("scrollTo", Log.getStackTraceString(new Exception()));
+		}
+		*/
 		if (!isCallingBack) {
 			isCallingBack = true;
 			super.scrollTo(x, 0);
@@ -230,6 +236,7 @@ public class NestedScroller extends HorizontalScrollView {
 		if (initialX > 0 || initialY > 0) {
 			Log.d("NestedScroller", "initial: " + initialX + "," + initialY);
 			scrollTo(initialX, initialY);
+			initialX = initialY = 0;
 		}
 	}
 

@@ -213,7 +213,6 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			y ++;
 		}
 
-		//schedContScr = new SimpleScroller(ctx, SimpleScroller.HORIZONTAL | SimpleScroller.VERTICAL | SimpleScroller.PINCH_TO_ZOOM);
 		schedContScr = new NestedScroller(ctx, NestedScroller.PINCH_TO_ZOOM);
 		schedContScr.addView(schedCont);
 		schedContScr.setScrollEventListener(this);
@@ -243,9 +242,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			topClock.scrollTo(x, 0);
 			bottomClock.scrollTo(x, 0);
 			tentHeadersScr.scrollTo(0, y);
-		} /*else if (src == tentHeadersScr) {
-			schedContScr.scrollTo(schedContScr.getScrollX(), src.getScrollY());
-		}*/
+		}
 		ScheduleViewActivity.onScroll(ctx);
 	}
 	
@@ -387,7 +384,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		/* Nah. The clocks are tiny and have a little more range than the schedule which looks ugly. So just block scrolling. */
 		@Override
 		public boolean onTouchEvent(MotionEvent ev) {
-			return false;
+			return true;
 		}
 	}
 	
