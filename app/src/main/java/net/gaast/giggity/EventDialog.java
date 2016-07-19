@@ -198,6 +198,7 @@ public class EventDialog extends FrameLayout {
 					View header = c.findViewById(R.id.header);
 
 					app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
+					app_.setShadow(subHeader, subHeader.getLocalVisibleRect(scrollBounds));
 				}
 			});
 		}
