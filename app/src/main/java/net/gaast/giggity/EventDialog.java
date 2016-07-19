@@ -200,7 +200,7 @@ public class EventDialog extends FrameLayout {
 					app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
 				}
 			});
-	}
+		}
 
 		/* Bottom box used to be a bunch of things but now just the remind checkbox + delete icon. */
 		LinearLayout bottomBox = (LinearLayout) c.findViewById(R.id.bottomBox);
@@ -233,6 +233,12 @@ public class EventDialog extends FrameLayout {
 		bottomBox.addView(delButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 
 		addView(c);
+	}
+
+	public void setTitleClick(OnClickListener title_click) {
+		View v;
+		getChildAt(0).findViewById(R.id.title).setOnClickListener(title_click);
+		getChildAt(0).findViewById(R.id.subtitle).setOnClickListener(title_click);
 	}
 
 	/* The old Giggity-native format supported image buttons. Not doing that anymore, or if I do

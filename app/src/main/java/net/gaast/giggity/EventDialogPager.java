@@ -13,6 +13,7 @@ public class EventDialogPager extends ViewPager {
 	private Schedule.Item item_;
 	private AbstractList<Schedule.Item> items_;
 	private int item_index_ = -1;
+	private OnClickListener title_click_;
 
 	public EventDialogPager(Context ctx, Schedule.Item item, AbstractList<Schedule.Item> items) {
 		super(ctx);
@@ -42,6 +43,13 @@ public class EventDialogPager extends ViewPager {
 		setCurrentItem(item_index_);
 	}
 
+	public void setTitleClick(OnClickListener title_click) {
+		title_click_ = title_click;
+	}
+
+	public Schedule.Item getShownItem() {
+		return items_.get(getCurrentItem());
+	}
 
 	private class Adapter extends PagerAdapter {
 		@Override
@@ -52,6 +60,9 @@ public class EventDialogPager extends ViewPager {
 		@Override
 		public Object instantiateItem(ViewGroup parent, int position) {
 			EventDialog d = new EventDialog(getContext(), items_.get(position));
+			if (title_click_ != null) {
+				d.setTitleClick(title_click_);
+			}
 			parent.addView(d);
 			return d;
 		}

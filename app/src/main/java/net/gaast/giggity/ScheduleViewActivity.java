@@ -91,7 +91,7 @@ public class ScheduleViewActivity extends Activity {
 	private LinearLayout bigScreen;
 	private ScheduleViewer viewer;
 	private RelativeLayout viewerContainer;
-	private View eventDialogView;
+	private EventDialogPager eventDialogView;
 	private DayButtons days;
 
 	private SharedPreferences pref;
@@ -462,6 +462,7 @@ public class ScheduleViewActivity extends Activity {
 				return;
 			} else if (allowDownload) {
 				final LoadProgress prog = new LoadProgress(this, false);
+				prog.setMessage(getResources().getString(R.string.loading_image));
 				prog.setDone(new LoadProgressDoneInterface() {
 					@Override
 					public void done() {
@@ -562,17 +563,28 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void showItem(Schedule.Item item, AbstractList<Schedule.Item> others) {
+		showItem(item, others, false);
+	}
+
+	public void showItem(Schedule.Item item, final AbstractList<Schedule.Item> others, boolean new_activity) {
 		/* No cleanup required for non-tablet view. */
 		if (tabletView) {
 			bigScreen.removeView(eventDialogView);
+			eventDialogView = null;
 		}
 		/* And nothing else to do if we're cleaning up only. */
 		if (item == null) {
 			return;
 		}
 
-		if (tabletView) {
+		if (tabletView && !new_activity) {
 			eventDialogView = new EventDialogPager(this, item, others);
+			eventDialogView.setTitleClick(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					showItem(eventDialogView.getShownItem(), others, true);
+				}
+			});
 			bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4));
 		} else {
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
