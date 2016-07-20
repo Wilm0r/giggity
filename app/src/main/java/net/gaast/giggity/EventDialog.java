@@ -31,7 +31,9 @@ import android.net.Uri;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,13 +111,7 @@ public class EventDialog extends FrameLayout {
 		
 		t = (TextView) c.findViewById(R.id.speaker);
 		if (item_.getSpeakers() != null) {
-			String list = "";
-			
-			for (String i : item_.getSpeakers())
-				list += i + ", ";
-			list = list.replaceAll(", $", "");
-			
-			t.setText(list);
+			t.setText(TextUtils.join(", ", item_.getSpeakers()));
 			
 			if (item_.getSpeakers().size() > 1) {
 				t = (TextView) c.findViewById(R.id.headSpeaker);
@@ -150,31 +146,8 @@ public class EventDialog extends FrameLayout {
 		}
 		
 		t = (TextView) c.findViewById(R.id.description);
-		String text = item_.getDescription();
-		if (text.startsWith("<") || text.contains("<p>")) {
-			/* This parser is VERY limited, results aren't great, but let's give it a shot.
-			   I'd really like to avoid using a full-blown WebView.. */
-			Html.TagHandler th = new Html.TagHandler() {
-				@Override
-				public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-					if (tag.equals("li")) {
-						if (opening) {
-							output.append(" • ");
-						} else {
-							output.append("\n");
-						}
-					} else if (tag.equals("ul") || tag.equals("ol")) {
-						/* For both opening and closing */
-						output.append("\n");
-					}
-				}
-			};
-			Spanned formatted = Html.fromHtml(text, null, th);
-			t.setText(formatted);
-			t.setMovementMethod(LinkMovementMethod.getInstance());
-		} else {
-			t.setText(text);
-		}
+		t.setText(item.getDescriptionSpannable());
+		t.setMovementMethod(LinkMovementMethod.getInstance());
 
 		if (item_.getLinks() != null) {
 			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);

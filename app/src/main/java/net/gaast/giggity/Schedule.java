@@ -22,6 +22,10 @@ package net.gaast.giggity;
 import android.annotation.SuppressLint;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.Html;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.CheckBox;
@@ -33,6 +37,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -953,7 +958,7 @@ public class Schedule {
 				if ((s = propMap.get("description")) != null) {
 					desc += s;
 				}
-				item.setDescription(rewrap(desc));
+				item.setDescription(desc);
 				
 				if ((s = propMap.get("track")) != null && !s.equals("")) {
 					item.setTrack(s);
@@ -1183,6 +1188,47 @@ public class Schedule {
 			return ret;
 		}
 
+		private String descriptionMarkdownHack(String md) {
+			String ret = md;
+			ret = ret.replaceAll("(?m)^#### (.*)$", "<h4>$1</h4>");
+			ret = ret.replaceAll("(?m)^### (.*)$", "<h3>$1</h3>");
+			ret = ret.replaceAll("(?m)^## (.*)$", "<h2>$1</h2>");
+			ret = ret.replaceAll("(?m)^# (.*)$", "<h1>$1</h1>");
+			ret = ret.replaceAll("(?m)^ {0,2}[-+*] ", "<li>");
+			ret = ret.replaceAll("(?m)^ {0,2}([0-9]+\\. )", "<br>$1");
+			ret = ret.replaceAll("\n\n(?=[^<])", "<p>");
+			ret = ret.replaceAll("\\[([^\\]]+)\\]\\((http[^\\)]+)\\)", "<a href=\"$2\">$1</a>");
+			return ret;
+		}
+
+		public Spanned getDescriptionSpannable() {
+			String html;
+			if (description.startsWith("<") || description.contains("<p>")) {
+				html = description;
+			} else {
+				html = descriptionMarkdownHack(description);
+			}
+			/* This parser is VERY limited, results aren't great, but let's give it a shot.
+			   I'd really like to avoid using a full-blown WebView.. */
+			Html.TagHandler th = new Html.TagHandler() {
+				@Override
+				public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
+					if (tag.equals("li")) {
+						if (opening) {
+							output.append(" • ");
+						} else {
+							output.append("\n");
+						}
+					} else if (tag.equals("ul") || tag.equals("ol")) {
+						/* For both opening and closing */
+						output.append("\n");
+					}
+				}
+			};
+			Spanned formatted = Html.fromHtml(html, null, th);
+			return formatted;
+		}
+
 		public AbstractList<String> getSpeakers() {
 			return speakers;
 		}
@@ -1308,7 +1354,8 @@ public class Schedule {
 			this.type = type;
 		}
 	}
-	
+
+	@Deprecated
 	static String rewrap(String desc) {
 		/* Replace newlines with spaces unless there are two of them,
 		 * or if the following line starts with a character. */
