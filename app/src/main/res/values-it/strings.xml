@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Giggity</string>
+	<string name="search_hint">Cerca eventi</string>
+
+	<string name="ok">OK</string>
+	<string name="cancel">Annulla</string>
+
+	<!--  Settings -->
+	<string name="default_view">Vista predefinita</string>
+	<string name="font_size">Dimensione font programma a blocchi</string>
+	<string name="always_refresh">Ricarica sempre nuovi programmi</string>
+	<string name="always_refresh_sub_off">Controlla nuove versioni una volta al giorno</string>
+	<string name="strict_ssl">Controllo rigoroso SSL</string>
+	<string name="strict_ssl_sub">Validazione corretta certificati SSL</string>
+
+	<string name="block_schedule_style">Stile</string>
+	<string name="block_schedule">Programma a blocchi</string>
+	<string name="block_schedule_element_size_sub">Dimensione del blocco nel programma a blocchi</string>
+	<string name="block_schedule_element_size">Dimensione blocco</string>
+
+	<string name="reminder">Promemoria eventi</string>
+	<string name="reminder_enabled_sub_on">Ricordami gli eventi segnati</string>
+	<string name="reminder_enabled_sub_off">Non ricordarmi gli eventi segnati</string>
+	<string name="reminder_enabled">Abilita promemoria</string>
+	<string name="reminder_period">Minuti prima di un evento</string>
+	
+	<!-- EventDialog -->
+	<string name="speaker">Relatore:</string>
+	<string name="speakers">Relatori:</string>
+	<string name="track">Tema:</string>
+	<string name="remind_me">Ricordami</string>
+	<string name="overlap">Eventi sovrapposti</string>
+	<string name="hide_what">Nascondi...</string>
+	<string name="unhide_what">Mostra...</string>
+	<string name="hide_item">...questo elemento</string>
+	<string name="hide_room">...tutta la stanza</string>
+	<string name="hide_track">...tutto il tema</string>
+	<string name="links_header">Links:</string>
+
+	<!-- ScheduleViewActivity -->
+	<string name="loading_schedule">Caricamento del programma...</string>
+	<string name="loading_image">Caricamento immagine...</string>
+	<string name="loading_error">Errore di caricamento</string>
+	<string name="no_viewer_error">Nessun programma installato per visualizzare il file</string>
+	<string name="export_selections">Esporta selezioni</string>
+	<string name="import_selections">Importa selezioni</string>
+	<string name="no_selections">Nessuna selezione da esportare</string>
+	<string name="qr_tip">Usa il tasto per leggere il QR nel menu principale sull\'altro dispositivo per importare questo elemento</string>
+	<string name="schedule_empty">Il programma sembra essere vuoto</string>
+	<string name="format_unknown">Formato del file non riconosciuto</string>
+	<!-- Menu -->
+	<string name="settings">Impostazioni</string>
+	<string name="change_day">Cambia giorno</string>
+	<string name="show_hidden">Mostra elementi nascosti</string>
+	<string name="timetable">Orario</string>
+	<string name="tracks">Temi</string>
+	<string name="now_next">Adesso e dopo</string>
+	<string name="my_events">I miei eventi</string>
+	<string name="search">Cerca</string>
+	<!-- navdrawer (toggler) -->
+	<string name="navdrawer_on">Mostra cassetto</string>
+	<string name="navdrawer_off">Nascondi cassetto</string>
+
+	<!-- NowNext -->
+	<string name="no_events_today">Nessun evento oggi.</string>
+	<string name="now">Adesso:</string>
+	<string name="next">Prossimo:</string>
+	
+	<!-- MyItemsView -->
+	<string name="coming_up">Prossimi:</string>
+	<string name="seen_so_far">Visti finora:</string>
+	<string name="none_marked">Nessun elemento segnato.</string>
+	
+	<!-- ChooserActivity -->
+	<string name="refresh">Ricarica</string>
+	<string name="unhide">Recupera elementi nascosti</string>
+	<string name="remove">Rimuovi</string>
+	<string name="show_url">Mostra URL...</string>
+	<string name="chooser_now">Eventi in corso:</string>
+	<string name="chooser_later">Eventi in arrivo:</string>
+	<string name="chooser_past">Eventi precedenti:</string>
+	<string name="add_dialog">Aggiungi...</string>
+	<string name="qr_scan">Leggi QR</string>
+	<string name="enter_url">Inserisci URL del programma</string>
+
+	<!-- Reminder -->
+	<string name="soon_in">Prossimamente in</string>
+
+	<!--  Widget -->
+	<string name="widg_longdate">EEEE d MMMM \'alle\' HH:mm</string>
+	<string name="widg_shortdate">EEEE \'alle\' HH:mm</string>
+	<string name="widg_in_room">in</string>
+	<string name="widg_soon">Prossimamente</string>
+</resources>
