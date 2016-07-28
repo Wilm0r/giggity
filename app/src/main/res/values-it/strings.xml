@@ -59,8 +59,8 @@
 	<string name="my_events">I miei eventi</string>
 	<string name="search">Cerca</string>
 	<!-- navdrawer (toggler) -->
-	<string name="navdrawer_on">Show drawer</string>
-	<string name="navdrawer_off">Hide drawer</string>
+	<string name="navdrawer_on">Mostra cassetto</string>
+	<string name="navdrawer_off">Nascondi cassetto</string>
 
 	<!-- NowNext -->
 	<string name="no_events_today">Nessun evento oggi.</string>
