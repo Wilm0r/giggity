@@ -1,5 +1,5 @@
 {
-	"version": 2016062701,
+	"version": 2016072901,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -152,6 +152,40 @@
 						"url": "https://debconf16.debconf.org/static/img/giggity-map.png",
 						"title": "Map",
 						"type": "image/png"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016072901,
+			"url": "https://moca.olografix.org/moca2016.ics",
+			"title": "MOCA 2016",
+			"start": "2016-07-19",
+			"end": "2016-07-21",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://moca.olografix.org",
+						"title": "Website"
+					},
+					{
+						"url": "https://moca.olografix.org/it/speaker/",
+						"title": "Speakers"
+					},
+					{
+						"url": "https://moca.olografix.org/it/logistica/",
+						"title": "Logistics"
+					}
+				],
+				"icon": "https://moca.olografix.org/moca2016.png",
+				"rooms": [
+					{
+						"name": "Gandalf Arena",
+						"latlon": [42.453971,14.222504]
+					},
+					{
+						"name": "ELF Arena",
+						"latlon": [42.454316,14.222070]
 					}
 				]
 			}
