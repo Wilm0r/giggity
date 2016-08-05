@@ -20,6 +20,8 @@
 package net.gaast.giggity;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.Editable;
@@ -28,7 +30,9 @@ import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Xml;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.EditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -59,6 +63,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.zip.DataFormatException;
@@ -75,7 +80,7 @@ public class Schedule {
 	private String id, url;
 	private String title;
 
-	private LinkedList<Schedule.Line> tents;
+	private LinkedList<Schedule.Line> tents=new LinkedList<>();
 	private TreeMap<String,Schedule.Item> allItems;
 	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
 
@@ -263,7 +268,7 @@ public class Schedule {
 
 		String head;
 		Fetcher f = null;
-		BufferedReader in;
+		final BufferedReader in;
 		
 		try {
 			f = app.fetch(url, source);
@@ -298,7 +303,11 @@ public class Schedule {
 				loadDeox(in);
 			} else if (head.contains("begin:vcalendar")) {
 				loadIcal(in);
-			} else {
+			}
+			  else if(head.contains("{")&&head.contains("[")){
+				loadJson(in);
+			}
+			  else {
 				Log.d("head", head);
 				throw new LoadException(app.getString(R.string.format_unknown));
 			}
@@ -332,7 +341,8 @@ public class Schedule {
 		/* From now, changes should be marked to go back into the db. */
 		fullyLoaded = true;
 	}
-	
+
+
 	private void loadDeox(BufferedReader in) {
 		loadXml(in, new DeoxParser());
 	}
@@ -355,7 +365,71 @@ public class Schedule {
 			throw new LoadException("XML parsing problem: " + e);
 		}
 	}
-	
+	private void loadJson(BufferedReader in) {
+
+		StringBuffer buffer=new StringBuffer();
+		SimpleDateFormat df=new SimpleDateFormat();
+		 HashMap<String,Schedule.Line> tentMap=new HashMap<String,Schedule.Line>();
+		Scanner s=new Scanner(in);
+		while (s.hasNext()){
+			buffer.append(s.nextLine());
+
+		}
+		String output=buffer.toString();
+		Schedule.Line line=null;
+		try {
+			JSONArray events=new JSONArray(output);
+			for(int i=0;i<events.length();i++){
+				JSONObject event=events.getJSONObject(i);
+				String uid=event.getString("id");
+				String title=event.getString("title");
+				String startTimeS=event.getString("start_time");
+				String endTimeS=event.getString("end_time");
+				Date startTime,endTime;
+				startTime = new Date(getTimeInMillis(startTimeS));
+				endTime = new Date(getTimeInMillis(endTimeS));
+				Schedule.Item item=new Schedule.Item(uid,title,startTime,endTime);
+				item.setDescription(event.getString("long_abstract"));
+				if(event.getString("signup_url")!=null){
+					item.addLink(new Link(event.getString("signup_url")));
+				}
+				JSONObject microlocation=event.getJSONObject("microlocation");
+				String location=microlocation.getString("name");
+				if ((line = tentMap.get(location)) == null) {
+					line = new Schedule.Line(location, location);
+					tents.add(line);
+					tentMap.put(location, line);
+				}
+//				if(line==null){
+//					line=new Line(location,location);
+//				}
+				line.addItem(item);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private long getTimeInMillis(String timeString) {
+		GregorianCalendar calender=new GregorianCalendar();
+		String[] DateTime=new String[2];
+		String[]Date=new String[3];
+		String[]Time=new String[3];
+		DateTime=timeString.split("T");
+		Date=DateTime[0].split("-");
+		Time=DateTime[1].split(":");
+		int year=Integer.parseInt(Date[0]);
+		int month=Integer.parseInt(Date[1]);
+		int date=Integer.parseInt(Date[2]);
+		int hour=Integer.parseInt(Time[0]);
+		int min=Integer.parseInt(Time[1]);
+		int sec=Integer.parseInt(Time[2]);
+		calender.set(year,month,date,hour,min,sec);
+		return  calender.getTimeInMillis();
+	}
+
+
 	private void loadIcal(BufferedReader in) {
 		/* Luckily the structure of iCal maps pretty well to its xCal counterpart.
 		 * That's what this function does.
@@ -408,6 +482,7 @@ public class Schedule {
 			throw new LoadException("Parse error: " + e);
 		}
 	}
+
 
 	/** OOB metadata related to schedule but separately supplied by BitlBee (it's non-standard) gets merged here.
 	  I should see whether I could get support for this kind of data into the Pentabarf format. */
@@ -705,7 +780,7 @@ public class Schedule {
 		public void skippedEntity(String arg0) throws SAXException {
 		}
 	}
-	
+
 	private class XcalParser implements ContentHandler {
 		//private Schedule.Line curTent;
 		private HashMap<String,Schedule.Line> tentMap;
@@ -713,6 +788,7 @@ public class Schedule {
 		private String curString;
 
 		SimpleDateFormat df;
+
 
 		public XcalParser() {
 			tentMap = new HashMap<String,Schedule.Line>();
@@ -1550,4 +1626,6 @@ public class Schedule {
 			return ret;
 		}
 	}
+
+
 }
