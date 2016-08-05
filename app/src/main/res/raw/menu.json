@@ -1,5 +1,5 @@
 {
-	"version": 2016072901,
+	"version": 2016080500,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -187,6 +187,37 @@
 					{
 						"name": "ELF Arena",
 						"latlon": [42.454316,14.222070]
+					}
+				]
+			}
+		},
+		{
+			"version": 2016080500,
+			"url": "https://static.gnome.org/guadec-2016/schedule.xml",
+			"title": "GUADEC 2016",
+			"start": "2016-08-11",
+			"end": "2016-08-14",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2016.guadec.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2016.guadec.org/workshops/",
+						"title": "Workshops"
+					},
+					{
+						"url": "https://2016.guadec.org/keynotes/",
+						"title": "Keynotes"
+					},
+					{
+						"url": "https://2016.guadec.org/bofs/",
+						"title": "BoFs"
+					},
+					{
+						"url": "https://2016.guadec.org/venue/",
+						"title": "Venue"
 					}
 				]
 			}
