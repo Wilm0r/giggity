@@ -390,7 +390,7 @@ public class Schedule {
 				endTime = new Date(getTimeInMillis(endTimeS));
 				Schedule.Item item=new Schedule.Item(uid,title,startTime,endTime);
 				item.setDescription(event.getString("long_abstract"));
-				if(event.getString("signup_url")!=null){
+				if(event.getString("signup_url")!="null"&&event.getString("signup_url")!=null){
 					item.addLink(new Link(event.getString("signup_url")));
 				}
 				JSONObject microlocation=event.getJSONObject("microlocation");
@@ -400,9 +400,6 @@ public class Schedule {
 					tents.add(line);
 					tentMap.put(location, line);
 				}
-//				if(line==null){
-//					line=new Line(location,location);
-//				}
 				line.addItem(item);
 			}
 
