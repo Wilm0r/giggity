@@ -1,5 +1,5 @@
 {
-	"version": 2016080500,
+	"version": 2016081901,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -14,13 +14,6 @@
 			"title": "Pi and More 7",
 			"start": "2015-06-20",
 			"end": "2015-06-20"
-		},
-		{
-			"version": 2015073100,
-			"url": "http://programm.froscon.de/2015/schedule.xml",
-			"title": "FrOSCon 2015",
-			"start": "2015-08-22",
-			"end": "2015-08-23"
 		},
 		{
 			"version": 2015080600,
@@ -218,6 +211,33 @@
 					{
 						"url": "https://2016.guadec.org/venue/",
 						"title": "Venue"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016081901,
+			"url": "https://programm.froscon.de/2016/schedule.xml",
+			"title": "FrOSCon 2016",
+			"start": "2016-08-20",
+			"end": "2016-08-21",
+			"metadata": {
+				"links": [
+					{
+						"url": "http://www.froscon.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.froscon.de/en/news/",
+						"title": "News"
+					},
+					{
+						"url": "http://streaming.media.ccc.de/",
+						"title": "Streams"
+					},
+					{
+						"url": "http://froscon.tv/",
+						"title": "Recordings"
 					}
 				]
 			}
