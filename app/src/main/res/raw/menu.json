@@ -1,5 +1,5 @@
 {
-	"version": 2016081901,
+	"version": 2016081902,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -216,7 +216,7 @@
 			}
 		},
 		{
-			"version": 2016081901,
+			"version": 2016081902,
 			"url": "https://programm.froscon.de/2016/schedule.xml",
 			"title": "FrOSCon 2016",
 			"start": "2016-08-20",
@@ -226,6 +226,11 @@
 					{
 						"url": "http://www.froscon.org/",
 						"title": "Website"
+					},
+					{
+						"url": "https://www.froscon.de/fileadmin/user_upload/floorplan2016.pdf",
+						"title": "Map",
+						"type": "application/pdf"
 					},
 					{
 						"url": "https://www.froscon.de/en/news/",
