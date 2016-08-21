@@ -1,5 +1,5 @@
 {
-	"version": 2016081902,
+	"version": 2016082100,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -243,6 +243,21 @@
 					{
 						"url": "http://froscon.tv/",
 						"title": "Recordings"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016082100,
+			"url": "https://vcfb.de/2016/schedule.xml",
+			"title": "Vintage Computing Festival Berlin 2016",
+			"start": "2016-10-02",
+			"end": "2016-10-03",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://vcfb.de/2016/",
+						"title": "Website"
 					}
 				]
 			}
