@@ -30,6 +30,7 @@
 	<string name="speakers">Speakers:</string>
 	<string name="track">Track:</string>
 	<string name="remind_me">Remind me</string>
+	<string name="add_to_calendar">Add to calendar</string>
 	<string name="overlap">Overlaps with</string>
 	<string name="hide_what">Hide...</string>
 	<string name="unhide_what">Unhide...</string>

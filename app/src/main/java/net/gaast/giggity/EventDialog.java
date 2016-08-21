@@ -38,6 +38,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.FrameLayout;
@@ -49,6 +50,7 @@ import android.widget.TextView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
@@ -225,6 +227,45 @@ public class EventDialog extends FrameLayout {
 
 		ImageButton shareButton= new ShareButton(ctx_);
 		bottomBox.addView(shareButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
+
+		Button addToCalendar = new Button(ctx_);
+		addToCalendar.setText(R.string.add_to_calendar);
+		bottomBox.addView(addToCalendar, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
+		addToCalendar.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Intent intent = new Intent(Intent.ACTION_EDIT);
+				intent.setType("vnd.android.cursor.item/event");
+				intent.putExtra("beginTime", item_.getStartTime().getTime());
+				intent.putExtra("endTime", item_.getEndTime().getTime());
+				intent.putExtra("allDay", false);
+				intent.putExtra("title", item_.getTitle());
+				String location = item_.getLine().getTitle();
+				if (item_.getLine().getLocation() != null) {
+					location += item_.getLine().getLocation();
+				}
+				intent.putExtra("eventLocation", location);
+
+				StringBuilder description = new StringBuilder();
+				if (item_.getTrack() != null) {
+					description.append(ctx_.getResources().getString(R.string.track))
+							.append(' ')
+							.append(item_.getTrack())
+							.append('\n');
+				}
+				if (item_.getSpeakers() != null) {
+					for (String speaker : item_.getSpeakers()) {
+						description.append(ctx_.getResources().getString(R.string.speaker))
+								.append(' ')
+								.append(speaker)
+								.append('\n');
+					}
+				}
+				description.append(item_.getDescription());
+				intent.putExtra("description", description.toString());
+
+				ctx_.startActivity(intent);
+			}
+		});
 
 		ImageButton delButton;
 		if (!item_.isHidden()) {
