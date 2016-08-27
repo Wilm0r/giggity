@@ -1,5 +1,5 @@
 {
-	"version": 2016082100,
+	"version": 2016082600,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -248,7 +248,7 @@
 			}
 		},
 		{
-			"version": 2016082100,
+			"version": 2016082600,
 			"url": "https://vcfb.de/2016/schedule.xml",
 			"title": "Vintage Computing Festival Berlin 2016",
 			"start": "2016-10-02",
@@ -258,6 +258,11 @@
 					{
 						"url": "https://vcfb.de/2016/",
 						"title": "Website"
+					},
+					{
+						"url": "http://vcfb.de/2016/images/raumplan_bunt_2016.png",
+						"title": "Map",
+						"type": "image/png"
 					}
 				]
 			}
