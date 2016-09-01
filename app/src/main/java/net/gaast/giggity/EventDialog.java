@@ -28,12 +28,9 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +42,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import org.xml.sax.XMLReader;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -198,6 +193,9 @@ public class EventDialog extends FrameLayout {
 			}
 		});
 
+		ImageButton shareButton= new ShareButton(ctx_);
+		bottomBox.addView(shareButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
+
 		ImageButton delButton;
 		if (!item_.isHidden()) {
 			delButton = new HideButton(ctx_);
@@ -241,7 +239,44 @@ public class EventDialog extends FrameLayout {
 			ctx_.startActivity(intent);
 		}
 	}
-	
+
+	private class ShareButton extends ImageButton implements ImageButton.OnClickListener {
+		public ShareButton(Context context) {
+			super(context);
+			setImageResource(android.R.drawable.ic_menu_share);
+			app_.setPadding(this, 0, 0, 0, 0);
+			setOnClickListener(this);
+			setBackgroundResource(android.R.color.transparent);
+		}
+
+		@Override
+		public void onClick(View v) {
+			Intent t = new Intent(android.content.Intent.ACTION_SEND);
+			t.setType("text/plain");
+			t.putExtra(android.content.Intent.EXTRA_SUBJECT, item_.getTitle());
+			java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(ctx_);
+			String time = android.text.format.DateUtils.formatDateRange(
+				ctx_, item_.getStartTime().getTime(), item_.getEndTime().getTime(),
+				DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
+			t.putExtra(android.content.Intent.EXTRA_TEXT,
+				item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
+				item_.getLine().getTitle() + ", " + time + "\n" +
+				"\n" +
+				item_.getDescriptionStripped());
+
+			ctx_.startActivity(Intent.createChooser(t, "Share via"));
+
+
+			/* Hrmm, I thought I saw formatted stuff getting exported once, guess not?
+			t.setType("text/html");
+			t.putExtra(android.content.Intent.EXTRA_TEXT,
+				"<h2>" + escapeHtml(item_.getSchedule().getTitle() + ": " + escapeHtml(item_.getTitle())) + "</h2>" +
+				"<p>" + escapeHtml(item_.getLine().getTitle()) + ", " + time + "</p>" +
+				"<p>" + item_.getDescription() + "</p>");
+			*/
+		}
+	}
+
 	private class HideButton extends ImageButton implements ImageButton.OnClickListener {
 		protected int title = R.string.hide_what;
 		protected boolean newValue = true;
