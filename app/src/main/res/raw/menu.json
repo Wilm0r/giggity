@@ -1,5 +1,5 @@
 {
-	"version": 2016082600,
+	"version": 2016090100,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -263,6 +263,21 @@
 						"url": "http://vcfb.de/2016/images/raumplan_bunt_2016.png",
 						"title": "Map",
 						"type": "image/png"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016090100,
+			"url": "https://2016.mrmcd.net/fahrplan/schedule.xml",
+			"title": "MRMCD16",
+			"start": "2016-09-02",
+			"end": "2016-09-04",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2016.mrmcd.net/",
+						"title": "Website"
 					}
 				]
 			}
