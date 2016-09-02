@@ -64,7 +64,26 @@
         android:text="Sat 20:00-22:00"
         android:layout_below="@+id/subtitle"
         android:textColor="@color/light_text"/>
-</RelativeLayout>    
+
+    <TextView
+        android:id="@+id/lang_sep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/time"
+        android:text=" · "
+        android:layout_below="@+id/subtitle"
+        android:textColor="@color/light_text"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/language"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/lang_sep"
+        android:text="Angrish"
+        android:layout_below="@+id/subtitle"
+        android:textColor="@color/light_text"/>
+</RelativeLayout>
 
 <ScrollView
     android:id="@+id/scrollDescription"

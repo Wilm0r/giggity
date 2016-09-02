@@ -58,7 +58,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Locale;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -85,6 +87,8 @@ public class Schedule {
 	private Date dayChange;
 	LinkedList<Date> dayList;
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
+
+	private HashSet<String> languages;
 
 	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
 	 * nice if some file formats could start supplying this info themselves. */
@@ -246,6 +250,7 @@ public class Schedule {
 		allItems = new TreeMap<String,Schedule.Item>();
 		tents = new LinkedList<Schedule.Line>();
 		trackMap = null; /* Only assign if we have track info. */
+		languages = new HashSet<>();
 		
 		firstTime = null;
 		lastTime = null;
@@ -307,6 +312,8 @@ public class Schedule {
 			f.cancel();
 			throw e;
 		}
+
+		Log.d("load", "Schedule has " + languages.size() + " languages");
 		
 		f.keep();
 		
@@ -929,7 +936,7 @@ public class Schedule {
 					Log.w("Schedule.loadPentabarf", "Invalid event, some attributes are missing.");
 					return;
 				}
-				
+
 				try {
 					Date tmp;
 					
@@ -979,6 +986,12 @@ public class Schedule {
 					item.addLink(i);
 				for (String i : persons)
 					item.addSpeaker(i);
+
+				String lang = propMap.get("language");
+				if (lang != null && !lang.isEmpty()) {
+					Locale loc = new Locale(lang);
+					item.setLanguage(loc.getDisplayLanguage());
+				}
 
 				curTent.addItem(item);
 				propMap = null;
@@ -1063,6 +1076,10 @@ public class Schedule {
 				firstTime = item.getStartTime();
 			if (lastTime == null || item.getEndTime().after(lastTime))
 				lastTime = item.getEndTime();
+
+			if (item.getLanguage() != null) {
+				languages.add(item.getLanguage());
+			}
 		}
 		
 		public AbstractSet<Schedule.Item> getItems() {
@@ -1095,6 +1112,7 @@ public class Schedule {
 		private Date startTime, endTime;
 		private LinkedList<Schedule.Link> links;
 		private LinkedList<String> speakers;
+		private String language;
 		
 		private boolean remind;
 		private boolean hidden;
@@ -1154,6 +1172,14 @@ public class Schedule {
 			}
 			speakers.add(name);
 		}
+
+		public void setLanguage(String lang) {
+			if (lang != null && !lang.isEmpty()) {
+				language = lang;
+			} else {
+				language = null;
+			}
+		}
 		
 		public String getId() {
 			return id;
@@ -1198,6 +1224,10 @@ public class Schedule {
 				ret = ret.replaceAll("<[^>]*>", "");
 			}
 			return ret;
+		}
+
+		public String getLanguage() {
+			return language;
 		}
 
 		private String descriptionMarkdownHack(String md) {

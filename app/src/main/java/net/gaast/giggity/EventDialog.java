@@ -90,7 +90,15 @@ public class EventDialog extends FrameLayout {
 			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
-		
+
+		if (item_.getLanguage() != null) {
+			t = (TextView) c.findViewById(R.id.language);
+			t.setText(item_.getLanguage());
+		} else {
+			c.findViewById(R.id.lang_sep).setVisibility(View.GONE);
+			c.findViewById(R.id.language).setVisibility(View.GONE);
+		}
+
 		t = (TextView) c.findViewById(R.id.time);
 		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTime()) + " " +
 		          tf.format(item_.getStartTime()) + "-" + tf.format(item_.getEndTime()));
