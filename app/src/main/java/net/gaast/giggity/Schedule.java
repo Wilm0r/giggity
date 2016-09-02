@@ -25,7 +25,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.CheckBox;
@@ -50,6 +49,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Format;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.AbstractSet;
@@ -59,6 +59,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.zip.DataFormatException;
@@ -712,12 +713,23 @@ public class Schedule {
 		private HashMap<String,String> eventData;
 		private String curString;
 
-		SimpleDateFormat df;
+		SimpleDateFormat dfUtc, dfLocal;
 
 		public XcalParser() {
 			tentMap = new HashMap<String,Schedule.Line>();
-			df = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
+			dfUtc = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+			dfUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+			dfLocal = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+		}
+
+		private Date parseTime(String s) throws ParseException {
+			Date ret;
+			if ((ret = dfUtc.parse(s, new ParsePosition(0))) != null) {
+				return ret;
+			} else if ((ret = dfLocal.parse(s, new ParsePosition(0))) != null) {
+				return ret;
+			}
+			throw new ParseException("Unparseable date: " + s, 0);
 		}
 		
 		@Override
@@ -753,8 +765,8 @@ public class Schedule {
 				}
 				
 				try {
-					startTime = df.parse(startTimeS);
-					endTime = df.parse(endTimeS);
+					startTime = parseTime(startTimeS);
+					endTime = parseTime(endTimeS);
 				} catch (ParseException e) {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
 					return;
