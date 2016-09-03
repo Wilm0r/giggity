@@ -24,7 +24,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.Spanned;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.CheckBox;
@@ -1243,7 +1245,7 @@ public class Schedule {
 			return ret;
 		}
 
-		public Spanned getDescriptionSpannable() {
+		public Spannable getDescriptionSpannable() {
 			String html;
 			if (description.startsWith("<") || description.contains("<p>")) {
 				html = description;
@@ -1267,7 +1269,9 @@ public class Schedule {
 					}
 				}
 			};
-			Spanned formatted = Html.fromHtml(html, null, th);
+			Spannable formatted = (Spannable) Html.fromHtml(html, null, th);
+			// TODO: This, too, ruins existing links. WTF guys.. :<
+			// Linkify.addLinks(formatted, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
 			return formatted;
 		}
 

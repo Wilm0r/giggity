@@ -28,8 +28,10 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.text.Spannable;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -151,6 +153,17 @@ public class EventDialog extends FrameLayout {
 		t = (TextView) c.findViewById(R.id.description);
 		t.setText(item.getDescriptionSpannable());
 		t.setMovementMethod(LinkMovementMethod.getInstance());
+
+		t.setLongClickable(true);
+		t.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				v.setFocusable(true);
+				((TextView) v).setTextIsSelectable(true);
+				((TextView) v).setMovementMethod(ArrowKeyMovementMethod.getInstance());
+				return false;
+			}
+		});
 
 		if (item_.getLinks() != null) {
 			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);
