@@ -1,5 +1,5 @@
 {
-	"version": 2016090100,
+	"version": 2016090300,
 	"schedules": [
 		{
 			"version": 2015052500,
@@ -278,6 +278,25 @@
 					{
 						"url": "https://2016.mrmcd.net/",
 						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016090300,
+			"url": "https://2k16.balccon.org/schedule.xml",
+			"title": "BalCCon2k16",
+			"start": "2016-09-09",
+			"end": "2016-09-11",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2k16.balccon.org/index.php?title=Main_Page",
+						"title": "Website"
+					},
+					{
+						"url": "https://2k16.balccon.org/index.php?title=FAQ",
+						"title": "FAQ"
 					}
 				]
 			}
