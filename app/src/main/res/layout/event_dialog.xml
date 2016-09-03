@@ -126,6 +126,7 @@
                 android:layout_alignBaseline="@+id/headTrack"
                 android:layout_alignParentRight="true"
                 android:layout_toRightOf="@+id/headTrack"
+                android:textIsSelectable="true"
                 android:text="Blaaaaaaat"
                 android:paddingLeft="4dp"
                 android:textColor="@color/light_text"/>
@@ -152,6 +153,7 @@
                 android:layout_alignTop="@+id/headSpeaker"
                 android:layout_alignBottom="@+id/headSpeaker"
                 android:layout_toRightOf="@+id/headSpeaker"
+                android:textIsSelectable="true"
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
@@ -187,6 +189,7 @@
                     android:layout_alignBaseline="@+id/headAlert"
                     android:layout_marginLeft="12dp"
                     android:layout_toRightOf="@+id/headAlert"
+                    android:textIsSelectable="true"
                     android:text="Conflicts bla" />
             </LinearLayout>
 
@@ -202,7 +205,6 @@
 
         This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)"
                 android:textIsSelectable="true"
-                android:focusable="false"
                 android:autoLink="email|web"/>
 
             <!-- oops, this one seems lost, does it still work? Or, should I keep the icon links at all? -->
