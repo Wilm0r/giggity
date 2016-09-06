@@ -318,6 +318,9 @@ public class EventDialog extends FrameLayout {
 			if (item_.getTrack() != null) {
 				delWhat.add(ctx_.getResources().getString(R.string.hide_track));
 			}
+			if (item_.getLanguage() != null && item_.getSchedule().getLanguages().size() > 1) {
+				delWhat.add(String.format(ctx_.getResources().getString(R.string.hide_lang), item_.getLanguage()));
+			}
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ctx_);
 			builder.setTitle(title);
@@ -326,18 +329,18 @@ public class EventDialog extends FrameLayout {
 					Schedule sched = item_.getSchedule();
 					boolean showh = sched.getShowHidden();
 					sched.setShowHidden(true);  // Needed for option 1 and 2 below to work.
-					switch (what) {
-					case 0:
+					if (what == 0) {
 						item_.setHidden(newValue);
-						break;
-					case 1:
+					} else if (what == 1) {
 						for (Schedule.Item other : item_.getLine().getItems())
 							other.setHidden(newValue);
-						break;
-					case 2:
+					} else if (what == 2 && item_.getTrack() != null) {
 						for (Schedule.Item other : sched.getTrackItems(item_.getTrack()))
 							other.setHidden(newValue);
-						break;
+					} else {
+						for (Schedule.Item other : sched.getByLanguage(item_.getLanguage())) {
+							other.setHidden(newValue);
+						}
 					}
 					sched.setShowHidden(showh);
 

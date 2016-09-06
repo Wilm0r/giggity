@@ -57,6 +57,7 @@ import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -537,6 +538,16 @@ public class Schedule {
 		
 		return ret;
 	}
+
+	public ArrayList<Item> getByLanguage(String language) {
+		ArrayList<Item> ret = new ArrayList<>();
+		for (Item item : allItems.values()) {
+			if (item.getLanguage() != null && item.getLanguage().equals(language)) {
+				ret.add(item);
+			}
+		}
+		return ret;
+	}
 	
 	public AbstractList<Item> searchItems(String q_) {
 		/* No, sorry, this is no full text search. It's ugly and amateuristic,
@@ -578,6 +589,8 @@ public class Schedule {
 	public LinkedList<Link> getLinks() {
 		return links;
 	}
+
+	public Collection<String> getLanguages() { return languages; }
 
 	public void setShowHidden(boolean showHidden) {
 		this.showHidden = showHidden;
@@ -717,7 +730,6 @@ public class Schedule {
 	}
 	
 	private class XcalParser implements ContentHandler {
-		//private Schedule.Line curTent;
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
 		private String curString;

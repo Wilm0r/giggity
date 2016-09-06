@@ -36,7 +36,8 @@
 	<string name="hide_item">...dit item</string>
 	<string name="hide_room">...gehele zaal</string>
 	<string name="hide_track">...gehele track</string>
-			
+	<string name="hide_lang">...alles in het %s</string>
+
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Programma wordt geladen...</string>
 	<string name="loading_image">Bestand wordt geladen...</string>
