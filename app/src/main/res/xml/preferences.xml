@@ -12,6 +12,10 @@
 					android:summary="%s"
 					android:defaultValue="net.gaast.giggity:id/block_schedule" />
 
+	<CheckBoxPreference android:key="show_hidden"
+						android:title="@string/show_hidden"
+						android:defaultValue="false" />
+
 	<ListPreference android:key="font_size"
 					android:title="@string/font_size"
 					android:dialogTitle="@string/font_size"
