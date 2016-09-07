@@ -154,6 +154,13 @@ public class EventDialog extends FrameLayout {
 		t.setText(item.getDescriptionSpannable());
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
+		/* This is frustrating: a TextView cannot support text selection and clickable links at the
+		 * same time except if you do horrible things like reimplementing your own MovementMethod.
+		 * If you try to do it anyway things will behave strangely and eventually crash with a stack
+		 * trace entirely within the Android framework.
+		 *
+		 * I'm working around this by switching off ability to click on links as soon as the user
+		 * long-presses anywhere. I think this is a reasonable compromise.. */
 		t.setLongClickable(true);
 		t.setOnLongClickListener(new OnLongClickListener() {
 			@Override
