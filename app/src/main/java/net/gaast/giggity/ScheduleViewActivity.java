@@ -73,6 +73,7 @@ public class ScheduleViewActivity extends Activity {
 
 	private int curView;
 	private boolean tabletView;  // EventDialog integrated instead of invoking a separate activity
+	private boolean showHidden;
 	
 	private Format dateFormat = new SimpleDateFormat("EE d MMMM");
 	
@@ -107,6 +108,7 @@ public class ScheduleViewActivity extends Activity {
 		
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		curView = getResources().getIdentifier(pref.getString("default_view", "net.gaast.giggity:id/block_schedule"), null, null);
+		showHidden = pref.getBoolean("show_hidden", false);
 
 		/* Consider making this a setting, some may find their tablet too small. */
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -368,6 +370,7 @@ public class ScheduleViewActivity extends Activity {
 	}
 	
 	private void onScheduleLoaded() {
+		sched.setShowHidden(showHidden);
 		if (getIntent().hasExtra("SELECTIONS")) {
 			Schedule.Selections sel = (Schedule.Selections) getIntent().getSerializableExtra("SELECTIONS");
 			Dialog dia = new ScheduleUI.ImportSelections(this, sched, sel);
@@ -432,7 +435,7 @@ public class ScheduleViewActivity extends Activity {
 		drawerLayout.findViewById(R.id.change_day).setVisibility(
 				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
 		drawerLayout.findViewById(R.id.show_hidden).setBackgroundResource(
-				sched.getShowHidden() ? R.drawable.menu_gradient : R.color.light);
+				showHidden ? R.drawable.menu_gradient : R.color.light);
 
 		/* TimeTable extends the action bar with "tabs" and will have its own shadow. */
 		app.setShadow(getActionBar(), !viewer.extendsActionBar());
@@ -662,7 +665,7 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	private void toggleShowHidden() {
-		boolean showHidden = !sched.getShowHidden();
+		showHidden = !showHidden;
 		sched.setShowHidden(showHidden);
 		redrawSchedule();
 		updateNavDrawer();

@@ -24,8 +24,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
+import android.text.Spannable;
 import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.CheckBox;
@@ -50,15 +51,20 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Format;
 import java.text.ParseException;
+import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.zip.DataFormatException;
@@ -84,6 +90,8 @@ public class Schedule {
 	private Date dayChange;
 	LinkedList<Date> dayList;
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
+
+	private HashSet<String> languages;
 
 	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
 	 * nice if some file formats could start supplying this info themselves. */
@@ -245,6 +253,7 @@ public class Schedule {
 		allItems = new TreeMap<String,Schedule.Item>();
 		tents = new LinkedList<Schedule.Line>();
 		trackMap = null; /* Only assign if we have track info. */
+		languages = new HashSet<>();
 		
 		firstTime = null;
 		lastTime = null;
@@ -306,6 +315,8 @@ public class Schedule {
 			f.cancel();
 			throw e;
 		}
+
+		Log.d("load", "Schedule has " + languages.size() + " languages");
 		
 		f.keep();
 		
@@ -527,6 +538,16 @@ public class Schedule {
 		
 		return ret;
 	}
+
+	public ArrayList<Item> getByLanguage(String language) {
+		ArrayList<Item> ret = new ArrayList<>();
+		for (Item item : allItems.values()) {
+			if (item.getLanguage() != null && item.getLanguage().equals(language)) {
+				ret.add(item);
+			}
+		}
+		return ret;
+	}
 	
 	public AbstractList<Item> searchItems(String q_) {
 		/* No, sorry, this is no full text search. It's ugly and amateuristic,
@@ -568,6 +589,8 @@ public class Schedule {
 	public LinkedList<Link> getLinks() {
 		return links;
 	}
+
+	public Collection<String> getLanguages() { return languages; }
 
 	public void setShowHidden(boolean showHidden) {
 		this.showHidden = showHidden;
@@ -707,17 +730,27 @@ public class Schedule {
 	}
 	
 	private class XcalParser implements ContentHandler {
-		//private Schedule.Line curTent;
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
 		private String curString;
 
-		SimpleDateFormat df;
+		SimpleDateFormat dfUtc, dfLocal;
 
 		public XcalParser() {
 			tentMap = new HashMap<String,Schedule.Line>();
-			df = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
-			//df.setTimeZone(TimeZone.getTimeZone("UTC"));
+			dfUtc = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
+			dfUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+			dfLocal = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+		}
+
+		private Date parseTime(String s) throws ParseException {
+			Date ret;
+			if ((ret = dfUtc.parse(s, new ParsePosition(0))) != null) {
+				return ret;
+			} else if ((ret = dfLocal.parse(s, new ParsePosition(0))) != null) {
+				return ret;
+			}
+			throw new ParseException("Unparseable date: " + s, 0);
 		}
 		
 		@Override
@@ -753,8 +786,8 @@ public class Schedule {
 				}
 				
 				try {
-					startTime = df.parse(startTimeS);
-					endTime = df.parse(endTimeS);
+					startTime = parseTime(startTimeS);
+					endTime = parseTime(endTimeS);
 				} catch (ParseException e) {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
 					return;
@@ -917,7 +950,7 @@ public class Schedule {
 					Log.w("Schedule.loadPentabarf", "Invalid event, some attributes are missing.");
 					return;
 				}
-				
+
 				try {
 					Date tmp;
 					
@@ -967,6 +1000,12 @@ public class Schedule {
 					item.addLink(i);
 				for (String i : persons)
 					item.addSpeaker(i);
+
+				String lang = propMap.get("language");
+				if (lang != null && !lang.isEmpty()) {
+					Locale loc = new Locale(lang);
+					item.setLanguage(loc.getDisplayLanguage());
+				}
 
 				curTent.addItem(item);
 				propMap = null;
@@ -1051,6 +1090,10 @@ public class Schedule {
 				firstTime = item.getStartTime();
 			if (lastTime == null || item.getEndTime().after(lastTime))
 				lastTime = item.getEndTime();
+
+			if (item.getLanguage() != null) {
+				languages.add(item.getLanguage());
+			}
 		}
 		
 		public AbstractSet<Schedule.Item> getItems() {
@@ -1083,6 +1126,7 @@ public class Schedule {
 		private Date startTime, endTime;
 		private LinkedList<Schedule.Link> links;
 		private LinkedList<String> speakers;
+		private String language;
 		
 		private boolean remind;
 		private boolean hidden;
@@ -1142,6 +1186,14 @@ public class Schedule {
 			}
 			speakers.add(name);
 		}
+
+		public void setLanguage(String lang) {
+			if (lang != null && !lang.isEmpty()) {
+				language = lang;
+			} else {
+				language = null;
+			}
+		}
 		
 		public String getId() {
 			return id;
@@ -1188,6 +1240,10 @@ public class Schedule {
 			return ret;
 		}
 
+		public String getLanguage() {
+			return language;
+		}
+
 		private String descriptionMarkdownHack(String md) {
 			String ret = md;
 			ret = ret.replaceAll("(?m)^#### (.*)$", "<h4>$1</h4>");
@@ -1201,7 +1257,7 @@ public class Schedule {
 			return ret;
 		}
 
-		public Spanned getDescriptionSpannable() {
+		public Spannable getDescriptionSpannable() {
 			String html;
 			if (description.startsWith("<") || description.contains("<p>")) {
 				html = description;
@@ -1225,7 +1281,9 @@ public class Schedule {
 					}
 				}
 			};
-			Spanned formatted = Html.fromHtml(html, null, th);
+			Spannable formatted = (Spannable) Html.fromHtml(html, null, th);
+			// TODO: This, too, ruins existing links. WTF guys.. :<
+			// Linkify.addLinks(formatted, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
 			return formatted;
 		}
 

@@ -268,6 +268,40 @@
 			}
 		},
 		{
+			"version": 2016090100,
+			"url": "https://2016.mrmcd.net/fahrplan/schedule.xml",
+			"title": "MRMCD16",
+			"start": "2016-09-02",
+			"end": "2016-09-04",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2016.mrmcd.net/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016090300,
+			"url": "https://2k16.balccon.org/schedule.xml",
+			"title": "BalCCon2k16",
+			"start": "2016-09-09",
+			"end": "2016-09-11",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2k16.balccon.org/index.php?title=Main_Page",
+						"title": "Website"
+					},
+					{
+						"url": "https://2k16.balccon.org/index.php?title=FAQ",
+						"title": "FAQ"
+					}
+				]
+			}
+		},
+		{
 			"version": 2016091300,
 			"url": "http://2016.es.pycon.org/schedule/pentabarf.xml",
 			"title": "PyConES 2016",

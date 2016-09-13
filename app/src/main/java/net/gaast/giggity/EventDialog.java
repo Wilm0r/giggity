@@ -28,12 +28,11 @@ import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spanned;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
+import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +44,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
-import org.xml.sax.XMLReader;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -95,7 +92,15 @@ public class EventDialog extends FrameLayout {
 			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
-		
+
+		if (item_.getLanguage() != null) {
+			t = (TextView) c.findViewById(R.id.language);
+			t.setText(item_.getLanguage());
+		} else {
+			c.findViewById(R.id.lang_sep).setVisibility(View.GONE);
+			c.findViewById(R.id.language).setVisibility(View.GONE);
+		}
+
 		t = (TextView) c.findViewById(R.id.time);
 		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTime()) + " " +
 		          tf.format(item_.getStartTime()) + "-" + tf.format(item_.getEndTime()));
@@ -149,6 +154,24 @@ public class EventDialog extends FrameLayout {
 		t.setText(item.getDescriptionSpannable());
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
+		/* This is frustrating: a TextView cannot support text selection and clickable links at the
+		 * same time except if you do horrible things like reimplementing your own MovementMethod.
+		 * If you try to do it anyway things will behave strangely and eventually crash with a stack
+		 * trace entirely within the Android framework.
+		 *
+		 * I'm working around this by switching off ability to click on links as soon as the user
+		 * long-presses anywhere. I think this is a reasonable compromise.. */
+		t.setLongClickable(true);
+		t.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				v.setFocusable(true);
+				((TextView) v).setTextIsSelectable(true);
+				((TextView) v).setMovementMethod(ArrowKeyMovementMethod.getInstance());
+				return false;
+			}
+		});
+
 		if (item_.getLinks() != null) {
 			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);
 			for (Schedule.Link link : item_.getLinks()) {
@@ -198,6 +221,9 @@ public class EventDialog extends FrameLayout {
 			}
 		});
 
+		ImageButton shareButton= new ShareButton(ctx_);
+		bottomBox.addView(shareButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
+
 		ImageButton delButton;
 		if (!item_.isHidden()) {
 			delButton = new HideButton(ctx_);
@@ -241,7 +267,44 @@ public class EventDialog extends FrameLayout {
 			ctx_.startActivity(intent);
 		}
 	}
-	
+
+	private class ShareButton extends ImageButton implements ImageButton.OnClickListener {
+		public ShareButton(Context context) {
+			super(context);
+			setImageResource(android.R.drawable.ic_menu_share);
+			app_.setPadding(this, 0, 0, 0, 0);
+			setOnClickListener(this);
+			setBackgroundResource(android.R.color.transparent);
+		}
+
+		@Override
+		public void onClick(View v) {
+			Intent t = new Intent(android.content.Intent.ACTION_SEND);
+			t.setType("text/plain");
+			t.putExtra(android.content.Intent.EXTRA_SUBJECT, item_.getTitle());
+			java.text.DateFormat dateFormat = android.text.format.DateFormat.getDateFormat(ctx_);
+			String time = android.text.format.DateUtils.formatDateRange(
+				ctx_, item_.getStartTime().getTime(), item_.getEndTime().getTime(),
+				DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
+			t.putExtra(android.content.Intent.EXTRA_TEXT,
+				item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
+				item_.getLine().getTitle() + ", " + time + "\n" +
+				"\n" +
+				item_.getDescriptionStripped());
+
+			ctx_.startActivity(Intent.createChooser(t, "Share via"));
+
+
+			/* Hrmm, I thought I saw formatted stuff getting exported once, guess not?
+			t.setType("text/html");
+			t.putExtra(android.content.Intent.EXTRA_TEXT,
+				"<h2>" + escapeHtml(item_.getSchedule().getTitle() + ": " + escapeHtml(item_.getTitle())) + "</h2>" +
+				"<p>" + escapeHtml(item_.getLine().getTitle()) + ", " + time + "</p>" +
+				"<p>" + item_.getDescription() + "</p>");
+			*/
+		}
+	}
+
 	private class HideButton extends ImageButton implements ImageButton.OnClickListener {
 		protected int title = R.string.hide_what;
 		protected boolean newValue = true;
@@ -262,6 +325,9 @@ public class EventDialog extends FrameLayout {
 			if (item_.getTrack() != null) {
 				delWhat.add(ctx_.getResources().getString(R.string.hide_track));
 			}
+			if (item_.getLanguage() != null && item_.getSchedule().getLanguages().size() > 1) {
+				delWhat.add(String.format(ctx_.getResources().getString(R.string.hide_lang), item_.getLanguage()));
+			}
 
 			AlertDialog.Builder builder = new AlertDialog.Builder(ctx_);
 			builder.setTitle(title);
@@ -270,18 +336,18 @@ public class EventDialog extends FrameLayout {
 					Schedule sched = item_.getSchedule();
 					boolean showh = sched.getShowHidden();
 					sched.setShowHidden(true);  // Needed for option 1 and 2 below to work.
-					switch (what) {
-					case 0:
+					if (what == 0) {
 						item_.setHidden(newValue);
-						break;
-					case 1:
+					} else if (what == 1) {
 						for (Schedule.Item other : item_.getLine().getItems())
 							other.setHidden(newValue);
-						break;
-					case 2:
+					} else if (what == 2 && item_.getTrack() != null) {
 						for (Schedule.Item other : sched.getTrackItems(item_.getTrack()))
 							other.setHidden(newValue);
-						break;
+					} else {
+						for (Schedule.Item other : sched.getByLanguage(item_.getLanguage())) {
+							other.setHidden(newValue);
+						}
 					}
 					sched.setShowHidden(showh);
 
