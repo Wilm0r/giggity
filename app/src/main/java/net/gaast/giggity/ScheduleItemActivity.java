@@ -1,7 +1,9 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Window;
 
 import java.util.AbstractList;

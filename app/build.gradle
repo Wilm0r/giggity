@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 24
     buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "net.gaast.giggity"
         minSdkVersion 16
-        targetSdkVersion 21
+        targetSdkVersion 24
     }
     buildTypes {
         release {
@@ -21,6 +21,6 @@ android {
     }
 }
 dependencies {
-    compile 'com.android.support:support-v4:21.0.+'
+    compile 'com.android.support:support-v4:24.2.1'
     compile group: 'commons-io', name: 'commons-io', version: '2.0.1'
 }
