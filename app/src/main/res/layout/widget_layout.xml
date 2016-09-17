@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"
-        android:singleLine="true"
+        android:maxLines="2"
         android:paddingLeft="4dp"
         android:paddingBottom="2dp"
         android:text="Nothing interesting coming up .. yet?"
