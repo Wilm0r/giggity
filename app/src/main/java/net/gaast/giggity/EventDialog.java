@@ -33,6 +33,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ import java.util.ArrayList;
 public class EventDialog extends FrameLayout {
 	private Context ctx_;
 	private Giggity app_;
+	private View root;
 
 	private Schedule.Item item_;
 
@@ -70,61 +72,61 @@ public class EventDialog extends FrameLayout {
 		View v;
 
 		LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		final View c = inflater.inflate(R.layout.event_dialog, null);
+		root = inflater.inflate(R.layout.event_dialog, null);
 		TextView t;
 		Format tf = new SimpleDateFormat("HH:mm");
 		
-		t = (TextView) c.findViewById(R.id.title);
+		t = (TextView) root.findViewById(R.id.title);
 		t.setText(item_.getTitle());
 
-		t = (TextView) c.findViewById(R.id.subtitle);
+		t = (TextView) root.findViewById(R.id.subtitle);
 		if (item_.getSubtitle() != null) {
 			t.setText(item_.getSubtitle());
 		} else {
 			t.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) c.findViewById(R.id.room);
+		t = (TextView) root.findViewById(R.id.room);
 		t.setText(item_.getLine().getTitle());
 
 		if (item_.getLine().getLocation() != null) {
-			t = (TextView) c.findViewById(R.id.room);
+			t = (TextView) root.findViewById(R.id.room);
 			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
 
 		if (item_.getLanguage() != null) {
-			t = (TextView) c.findViewById(R.id.language);
+			t = (TextView) root.findViewById(R.id.language);
 			t.setText(item_.getLanguage());
 		} else {
-			c.findViewById(R.id.lang_sep).setVisibility(View.GONE);
-			c.findViewById(R.id.language).setVisibility(View.GONE);
+			root.findViewById(R.id.lang_sep).setVisibility(View.GONE);
+			root.findViewById(R.id.language).setVisibility(View.GONE);
 		}
 
-		t = (TextView) c.findViewById(R.id.time);
+		t = (TextView) root.findViewById(R.id.time);
 		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTime()) + " " +
 		          tf.format(item_.getStartTime()) + "-" + tf.format(item_.getEndTime()));
 		
-		t = (TextView) c.findViewById(R.id.track);
+		t = (TextView) root.findViewById(R.id.track);
 		if (item_.getTrack() != null) {
 			t.setText(item_.getTrack());
 		} else {
 			t.setVisibility(View.GONE);
-			v = c.findViewById(R.id.headTrack);
+			v = root.findViewById(R.id.headTrack);
 			v.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) c.findViewById(R.id.speaker);
+		t = (TextView) root.findViewById(R.id.speaker);
 		if (item_.getSpeakers() != null) {
 			t.setText(TextUtils.join(", ", item_.getSpeakers()));
 			
 			if (item_.getSpeakers().size() > 1) {
-				t = (TextView) c.findViewById(R.id.headSpeaker);
+				t = (TextView) root.findViewById(R.id.headSpeaker);
 				t.setText(R.string.speakers);
 			}
 		} else {
 			t.setVisibility(View.GONE);
-			v = c.findViewById(R.id.headSpeaker);
+			v = root.findViewById(R.id.headSpeaker);
 			v.setVisibility(View.GONE);
 		}
 
@@ -141,16 +143,16 @@ public class EventDialog extends FrameLayout {
 			}
 		}
 		
-		t = (TextView) c.findViewById(R.id.alert);
+		t = (TextView) root.findViewById(R.id.alert);
 		if (overlaps != null) {
 			t.setText(overlaps.replaceAll(", $", ""));
 		} else {
 			t.setVisibility(View.GONE);
-			v = c.findViewById(R.id.headAlert);
+			v = root.findViewById(R.id.headAlert);
 			v.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) c.findViewById(R.id.description);
+		t = (TextView) root.findViewById(R.id.description);
 		t.setText(item.getDescriptionSpannable());
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -173,7 +175,7 @@ public class EventDialog extends FrameLayout {
 		});
 
 		if (item_.getLinks() != null) {
-			ViewGroup g = (ViewGroup) c.findViewById(R.id.links);
+			ViewGroup g = (ViewGroup) root.findViewById(R.id.links);
 			for (Schedule.Link link : item_.getLinks()) {
 				LinkButton btn = new LinkButton(ctx_, link);
 				g.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
@@ -184,14 +186,14 @@ public class EventDialog extends FrameLayout {
 		if (android.os.Build.VERSION.SDK_INT >= 21) {
 			/* Lollipop+. I think owners of older devs will survive without drop shadows, right? :> */
 			/* TODO: Remove check above if I find a way to do drop shadows pre-L. */
-			final ScrollView scr = (ScrollView) c.findViewById(R.id.scrollDescription);
+			final ScrollView scr = (ScrollView) root.findViewById(R.id.scrollDescription);
 			scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 				@Override
 				public void onScrollChanged() {
 					Rect scrollBounds = new Rect();
 					scr.getHitRect(scrollBounds);
-					View subHeader = c.findViewById(R.id.subHeader);
-					View header = c.findViewById(R.id.header);
+					View subHeader = root.findViewById(R.id.subHeader);
+					View header = root.findViewById(R.id.header);
 
 					app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
 					app_.setShadow(subHeader, subHeader.getLocalVisibleRect(scrollBounds));
@@ -200,7 +202,7 @@ public class EventDialog extends FrameLayout {
 		}
 
 		/* Bottom box used to be a bunch of things but now just the remind checkbox + delete icon. */
-		LinearLayout bottomBox = (LinearLayout) c.findViewById(R.id.bottomBox);
+		LinearLayout bottomBox = (LinearLayout) root.findViewById(R.id.bottomBox);
 
 		cb_ = new CheckBox(ctx_);
 		cb_.setText(R.string.remind_me);
@@ -232,13 +234,33 @@ public class EventDialog extends FrameLayout {
 		}
 		bottomBox.addView(delButton, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 0));
 
-		addView(c);
+		addView(root);
 	}
 
+	/* Used in tablet view at least to switch from split to fullscreen. */
 	public void setTitleClick(OnClickListener title_click) {
 		View v;
 		getChildAt(0).findViewById(R.id.title).setOnClickListener(title_click);
 		getChildAt(0).findViewById(R.id.subtitle).setOnClickListener(title_click);
+	}
+
+	public void saveScroll() {
+		final ScrollView sv = (ScrollView) root.findViewById(R.id.scrollDescription);
+		final View inner = sv.getChildAt(0);
+		if (sv.getScrollY() == 0 || inner.getHeight() <= sv.getHeight()) {
+			return;
+		}
+		final double ratio = Math.max(0, Math.min(1, (double) sv.getScrollY() / (inner.getHeight() - sv.getHeight())));
+
+		/* Grmbl. There's no great way to do this. I tried throwing this into an onLayout listener
+		   but that's not the right time either. So just set a timer to the moment the animation
+		   finishes (doing it earlier won't work).. */
+		sv.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				sv.scrollTo(0, (int) (ratio * (inner.getHeight() - sv.getHeight())));
+			}
+		}, 500);
 	}
 
 	/* The old Giggity-native format supported image buttons. Not doing that anymore, or if I do

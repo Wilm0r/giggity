@@ -66,4 +66,11 @@ public class ScheduleItemActivity extends Activity {
 		pager_ = new EventDialogPager(this, item, others);
 		setContentView(pager_);
 	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.i("ScheduleItemActivity", "Configuration changed");
+		pager_.saveScroll();
+	}
 }

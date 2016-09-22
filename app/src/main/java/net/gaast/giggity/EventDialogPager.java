@@ -3,6 +3,7 @@ package net.gaast.giggity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -76,5 +77,10 @@ public class EventDialogPager extends ViewPager {
 		public boolean isViewFromObject(View view, Object object) {
 			return view == object;
 		}
+	}
+
+	public void saveScroll() {
+		EventDialog ed = (EventDialog) this.getChildAt(0);
+		ed.saveScroll();
 	}
 }
