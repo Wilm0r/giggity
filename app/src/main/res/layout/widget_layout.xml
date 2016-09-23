@@ -15,6 +15,7 @@
         android:paddingLeft="4dp"
         android:text="Giggity"
         android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/light_text"
         android:background="@drawable/widget_head" />
 
     <!--
@@ -36,6 +37,7 @@
         android:paddingBottom="2dp"
         android:text="Nothing interesting coming up .. yet?"
         android:textAppearance="?android:attr/textAppearanceSmallInverse"
+        android:textColor="@color/dark_text"
         android:background="@drawable/widget_bottom" />
 
 </LinearLayout>
