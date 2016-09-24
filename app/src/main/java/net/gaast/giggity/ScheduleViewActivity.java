@@ -56,6 +56,7 @@ import java.io.IOException;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
@@ -536,7 +537,20 @@ public class ScheduleViewActivity extends Activity {
 		/* User tapped on a reminder? */
 		if (showEventId != null) {
 			Schedule.Item item = sched.getItem(showEventId);
-			showItem(item, null);
+			/* This is a little annoying - normally we get here through Widgets which call into us
+			   instead of straight into SItemViewAct because the schedule may need to be re-loaded.
+			   Need to convert the others list back and forth.. */
+			ArrayList<Schedule.Item> items = new ArrayList<>();
+			if (getIntent().hasExtra("others")) {
+				Log.d("ScheduleViewActivity", "Copying others object :-/");
+				for (String id : getIntent().getStringArrayExtra("others")) {
+					Schedule.Item other_item = sched.getItem(id);
+					if (other_item != null) {
+						items.add(other_item);
+					}
+				}
+			}
+			showItem(item, items);
 			showEventId = null;
 		}
 
