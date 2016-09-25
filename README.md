@@ -23,8 +23,75 @@ coincidental. ;-)
 ## Using Giggity for your event
 
 You can add any suitably formatted schedule to Giggity yourself (use QR
-codes to make this easier), or it can be added to Giggity's main menu
-(just e-mail me).
+codes to make this easier), or it can be added to Giggity's main menu.
+
+To do this, e-mail me a JSON file formatted like this:
+
+```json
+	{
+		"version": 2016080500,
+		"url": "URL_OF_YOUR_PENTABARF_FILE",
+		"title": "TITLE (preferably have it match the title in your Pentabarf",
+		"start": "2016-08-10",
+		"end": "2016-08-12",
+		"metadata": {
+			"links": [
+				{
+					"url": "https://www.conference.org/",
+					"title": "Website"
+				},
+				{
+					"url": "https://www.conference.org/info.pdf",
+					"title": "Info",
+					"type": "application/pdf"
+				},
+				{
+					"url": "https://www.conference.org/floorplan.png",
+					"title": "Map",
+					"type": "image/png"
+				}
+			],
+			"rooms": [
+				{
+					"name": "ROOM 1",
+					"latlon": [51.482598, -0.144742]
+				},
+				{
+					"name": "ROOM 2",
+					"latlon": [51.481024, -0.145571]
+				}
+			]
+		}
+	}
+```
+
+The `metadata` section (and/or its two subsections) is optional but
+recommended as it lets you define links to show automatically in
+Giggity's nav drawer when viewing your event. Adding a MIME-type to a
+link will make Giggity download that file and show it off-line instead
+of in the browser, great for slow conference WiFi. Feel free to add other
+kinds of links as you see fit.
+
+Less commonly used: Adding room locations will make room names in event
+description clickable, sending the user to the given latlon in their
+preferred maps application (especially great if your venue has indoor
+maps with for example Google).  Note that the room name is actually a
+regular expression (which could be used to combine entries for adjacent
+rooms for example).
+
+To test your entry, QR-encode it using for example this command:
+
+```sh
+gzip -9 < YOURFILE.json | python2-qr --optimize=0
+```
+
+(`sudo apt-get install python-qrcode` if it doesn't work, or at your own
+risk use a different encoder. The `--optimize=0` bit is to disable some
+optimisation code that corrupts binary data. Or if your entry is small
+and your phone camera good, just leave out the gzip.)
+
+Then scan the code from the Giggity main menu (+ on the top-right, then
+"SCAN QR").
 
 ## Repository setup
 
