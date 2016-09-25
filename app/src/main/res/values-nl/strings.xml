@@ -73,7 +73,7 @@
 	<string name="none_marked">Nog niks gemarkeerd.</string>
 
 	<!-- SearchActivity -->
-	<string name="search_results">Resultaten voor \"%s\" in %s</string>
+	<string name="search_results">Resultaten voor \"%1$s\" in %2$s</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Verversen</string>

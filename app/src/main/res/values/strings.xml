@@ -77,7 +77,7 @@
 	<string name="none_marked">No items marked yet.</string>
 
 	<!-- SearchActivity -->
-	<string name="search_results">Results for \"%s\" in %s</string>
+	<string name="search_results">Results for \"%1$s\" in %2$s</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>
