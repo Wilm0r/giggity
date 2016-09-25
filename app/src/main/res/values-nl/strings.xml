@@ -49,6 +49,9 @@
 	<string name="qr_tip">Gebruik de QR scan knop in het hoofdmenu op een ander apparaat om dit te importeren</string>
 	<string name="schedule_empty">Programma lijkt (nog) leeg</string>
 	<string name="format_unknown">Onbekend bestandsformaat</string>
+	<string name="no_network">Geen netwerkverbinding beschikbaar</string>
+	<string name="no_network_or_cached">Geen netwerkverbinding of cache kopie beschikbaar</string>
+
 	<!-- Menu -->
 	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>
@@ -68,7 +71,10 @@
 	<string name="coming_up">Nog te gaan:</string>
 	<string name="seen_so_far">Voorbij:</string>
 	<string name="none_marked">Nog niks gemarkeerd.</string>
-	
+
+	<!-- SearchActivity -->
+	<string name="search_results">Resultaten voor \"%s\" in %s</string>
+
 	<!-- ChooserActivity -->
 	<string name="refresh">Verversen</string>
 	<string name="unhide">Verborgen items herstellen</string>
@@ -89,4 +95,5 @@
 	<string name="widg_shortdate">EEEE \'om\' HH:mm</string>
 	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Binnenkort</string>
+	<string name="widg_no_upcoming">Niks op komst :-(</string>
 </resources>

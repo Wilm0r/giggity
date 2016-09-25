@@ -61,7 +61,7 @@ public class Fetcher {
 
 		if ((prefSource == Source.ONLINE || prefSource == Source.ONLINE_NOCACHE) &&
 		    (network == null || !network.isConnected())) {
-			throw new IOException("No network connection available.");
+			throw new IOException(app.getString(R.string.no_network));
 		}
 		
 		URL dl = new URL(url);
@@ -135,7 +135,7 @@ public class Fetcher {
 			if (source != Source.ONLINE)
 				source = Source.CACHE;
 		} else if (inStream == null) {
-			throw new IOException("No network connection or cached copy available.");
+			throw new IOException(app.getString(R.string.no_network_or_cached));
 		}
 	}
 

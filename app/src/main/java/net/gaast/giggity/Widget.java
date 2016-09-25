@@ -77,7 +77,7 @@ public class Widget extends AppWidgetProvider {
 		}
 		
 		if (title.equals("")) {
-			title = "No upcoming events :-(";
+			title = ctx.getString(R.string.widg_no_upcoming);
 		}
 		
 		ComponentName thisWidget = new ComponentName(ctx, Widget.class);

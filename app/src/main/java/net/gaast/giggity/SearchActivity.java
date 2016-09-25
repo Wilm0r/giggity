@@ -61,7 +61,7 @@ public class SearchActivity extends ScheduleViewActivity {
 
 		if ((query = getIntent().getStringExtra(SearchManager.QUERY)) != null) {
 			items = sched.searchItems(query);
-			setTitle("Results for \"" + query + "\" in " + sched.getTitle());
+			setTitle(String.format(getString(R.string.search_results), query, sched.getTitle()));
 		} else if ((query = getIntent().getStringExtra("track")) != null) {
 			items = sched.getTrackItems(query);
 			setTitle(sched.getTitle() + ": " + query);

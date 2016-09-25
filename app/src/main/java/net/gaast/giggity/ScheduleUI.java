@@ -38,7 +38,7 @@ public class ScheduleUI {
 		} catch (android.content.ActivityNotFoundException e) {
 			new AlertDialog.Builder(ctx)
 			  .setTitle("Not available")
-			  .setMessage("This functionality needs the ZXing Barcode Scanner application")
+			  .setMessage("This functionality needs a Barcode Scanner application")
 			  .show();
 		}
 
