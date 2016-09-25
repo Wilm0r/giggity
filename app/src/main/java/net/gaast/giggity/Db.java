@@ -31,19 +31,27 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.zip.GZIPInputStream;
 
 public class Db {
 	private Giggity app;
@@ -173,48 +181,7 @@ public class Db {
 		long ts = new Date().getTime() / 1000;
 		for (Seed.Schedule sched : seed.schedules) {
 			newver = Math.max(newver, sched.version);
-			if (sched.start.equals(sched.end)) {
-				/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
-				sched.start.setHours(6);
-				sched.end.setHours(18);
-			} else {
-				/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
-				 * once we load the schedule for the first time. */
-				sched.start.setHours(12);
-				sched.end.setHours(12);
-			}
-			Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
-			if (sched.version > version && q.getCount() == 0) {
-				ContentValues row = new ContentValues();
-				if (sched.id != null)
-					row.put("sch_id_s", sched.id);
-				else
-					row.put("sch_id_s", Schedule.hashify(sched.url));
-				row.put("sch_url", sched.url);
-				row.put("sch_title", sched.title);
-				row.put("sch_atime", ts--);
-				row.put("sch_start", sched.start.getTime() / 1000);
-				row.put("sch_end", sched.end.getTime() / 1000);
-				row.put("sch_metadata", sched.metadata);
-				db.insert("schedule", null, row);
-			} else if (q.getCount() == 1) {
-				q.moveToNext();
-				if (oldDbVer < 8) {
-					/* We're upgrading from < 8 so we have to backfill the start/end columns. */
-					ContentValues row = new ContentValues();
-					row.put("sch_start", sched.start.getTime() / 1000);
-					row.put("sch_end", sched.end.getTime() / 1000);
-					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-				}
-
-				/* Always refresh the metadata, seedfile is authoritative. */
-				if (sched.metadata != "") {
-					ContentValues row = new ContentValues();
-					row.put("sch_metadata", sched.metadata);
-					db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-				}
-			}
-			q.close();
+			updateSchedule(db, sched, version);
 		}
 		
 		if (newver != version) {
@@ -222,6 +189,52 @@ public class Db {
 			p.putInt("last_menu_seed_version", newver);
 			p.commit();
 		}
+	}
+
+	private void updateSchedule(SQLiteDatabase db, Seed.Schedule sched, int last_version) {
+		if (sched.start.equals(sched.end)) {
+			/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
+			sched.start.setHours(6);
+			sched.end.setHours(18);
+		} else {
+			/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
+			 * once we load the schedule for the first time. */
+			sched.start.setHours(12);
+			sched.end.setHours(12);
+		}
+		Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
+		Log.d("cursor", "" + q.getCount());
+		if (sched.version > last_version && q.getCount() == 0) {
+			ContentValues row = new ContentValues();
+			if (sched.id != null)
+				row.put("sch_id_s", sched.id);
+			else
+				row.put("sch_id_s", Schedule.hashify(sched.url));
+			row.put("sch_url", sched.url);
+			row.put("sch_title", sched.title);
+			row.put("sch_atime", sched.start.getTime() / 1000);
+			row.put("sch_start", sched.start.getTime() / 1000);
+			row.put("sch_end", sched.end.getTime() / 1000);
+			row.put("sch_metadata", sched.metadata);
+			db.insert("schedule", null, row);
+		} else if (q.getCount() == 1) {
+			q.moveToNext();
+			if (oldDbVer < 8) {
+				/* We're upgrading from < 8 so we have to backfill the start/end columns. */
+				ContentValues row = new ContentValues();
+				row.put("sch_start", sched.start.getTime() / 1000);
+				row.put("sch_end", sched.end.getTime() / 1000);
+				db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+			}
+
+			/* Always refresh the metadata, seedfile is authoritative. */
+			if (sched.metadata != "") {
+				ContentValues row = new ContentValues();
+				row.put("sch_metadata", sched.metadata);
+				db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+			}
+		}
+		q.close();
 	}
 
 	private enum SeedSource {
@@ -238,11 +251,10 @@ public class Db {
 		Fetcher f = null;
 		try {
 			if (source == SeedSource.BUILT_IN) {
-				InputStream inp = app.getResources().openRawResource(R.raw.menu);
-				byte[] buf = new byte[1024];
-				int n;
-				while ((n = inp.read(buf, 0, buf.length)) > 0)
-					json += new String(buf, 0, n, "utf-8");
+				InputStreamReader inr = new InputStreamReader(app.getResources().openRawResource(R.raw.menu), "UTF-8");
+				StringWriter sw = new StringWriter();
+				IOUtils.copy(inr, sw);
+				json = sw.toString();
 			} else {
 				f = app.fetch(SEED_URL, source == SeedSource.ONLINE ?
 				                        Fetcher.Source.ONLINE : Fetcher.Source.CACHE_ONLINE);
@@ -294,7 +306,8 @@ public class Db {
 			String id, url, title;
 			Date start, end;
 			// Raw JSON string, because we'll only start interpreting this data later on. Will contain
-			// info like extra links to for example room maps, and other stuff I may think of.
+			// info like extra links to for example room maps, and other stuff I may think of. Would
+			// be even nicer if (some of) this could become part of the Pentabarf spec..
 			String metadata;
 			
 			public Schedule(JSONObject jso) throws JSONException {
@@ -318,6 +331,10 @@ public class Db {
 					Log.e("DeoxideDb.Seed.Schedule", "Corrupted start/end date.");
 					start = end = new Date();
 				}
+			}
+
+			public String toString() {
+				return "SCHEDULE(url=" + url + ", version=" + version + ")";
 			}
 		}
 	}
@@ -417,7 +434,7 @@ public class Db {
 				item.setRemind(q.getInt(2) != 0);
 				item.setHidden(q.getInt(3) != 0);
 				item.setStars(q.getInt(4));
-				sciIdMap.put(q.getString(1), new Long(q.getInt(0)));
+				sciIdMap.put(q.getString(1), (long) q.getInt(0));
 			}
 			q.close();
 			sleep();
@@ -441,8 +458,7 @@ public class Db {
 				db.update("schedule_item", row,
 						  "sci_id = ?", new String[]{"" + sciId.longValue()});
 			} else {
-				sciIdMap.put(item.getId(),
-				             Long.valueOf(db.insert("schedule_item", null, row)));
+				sciIdMap.put(item.getId(), db.insert("schedule_item", null, row));
 			}
 			sleep();
 		}
@@ -466,6 +482,49 @@ public class Db {
 			resume();
 			updateData(db, true);
 			sleep();
+		}
+
+		public boolean refreshSingleSchedule(byte[] blob) {
+			String jsons;
+			try {
+				jsons = new String(blob, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				Log.d("Db.refreshSingle", "Not Unicode? " + e.toString());
+				jsons = null;
+			}
+			if (jsons == null || !jsons.matches("(?s)^\\s*\\{.*")) {
+				ByteArrayInputStream stream = new ByteArrayInputStream(blob);
+				try {
+					Log.d("Db.refreshSingle", "Trying gunzip " + blob.length + " bytes");
+					GZIPInputStream gz = new GZIPInputStream(stream);
+					ByteArrayOutputStream plain = new ByteArrayOutputStream();
+					IOUtils.copy(gz, plain);
+					return refreshSingleSchedule(plain.toByteArray());
+				} catch (IOException e) {
+					Log.d("gunzip", e.toString());
+					return false;
+				}
+			}
+			Log.d("Db.refreshSingle", "Found something that looks like json");
+			Seed.Schedule parsed;
+			try {
+				JSONObject obj = new JSONObject(jsons);
+				Log.d("Db.refreshSingle", "Found something that parsed like json");
+				parsed = new Seed.Schedule(obj);
+				if (parsed.url == null) {
+					Log.d("Db.refreshSingle", "Object didn't even contain a URL?");
+					return false;
+				}
+			} catch (JSONException e) {
+				return false;
+			}
+			Log.d("Db.refreshSingle", "Found something that parsed like my json: " + parsed);
+			removeSchedule(parsed.url);
+			app.flushSchedule(parsed.url);
+			resume();
+			updateSchedule(db, parsed, 0);
+			sleep();
+			return true;
 		}
 		
 		public int getDay() {

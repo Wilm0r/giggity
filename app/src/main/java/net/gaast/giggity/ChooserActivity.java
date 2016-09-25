@@ -53,6 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.gaast.giggity.Db.DbSchedule;
 
@@ -259,12 +260,31 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		openSchedule(event.getUrl(), prefOnline, null);
 	}
 
+	/* Process barcode scan results. This can be a few things:
+
+	   * Plain URL, in which case just handle it
+	   * zlib-compressed binary blob containing selection data exported by another Giggity
+	   * (gzip-compressed) JSON blob containing a menu.json entry
+
+	   We'll just have to figure out which one of the 3/4..
+	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
 				String url = intent.getStringExtra("SCAN_RESULT");
 				byte[] bin = intent.getByteArrayExtra("SCAN_RESULT_BYTE_SEGMENTS_0");
+				if (intent.hasExtra("SCAN_RESULT_BYTE_SEGMENTS_1")) {
+					Toast.makeText(this, "Your QR generator seems to have used multiple segments, " +
+					                     "this corrupts binary data!", Toast.LENGTH_LONG).show();
+				}
+
+				/* Start with #3, (gzipped) json blob */
+				if (db.refreshSingleSchedule(bin)) {
+					return;
+				}
+
+				/* Or 2? */
 				Schedule.Selections sel;
 				try {
 					sel = new Schedule.Selections(bin);
@@ -273,6 +293,9 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					bin = null;
 					sel = null;
 				}
+
+				/* Nope, just a plain URL then hopefully.. Or something corrupted that will generate
+				   a spectacular error message. \o/ */
 				openSchedule(url, false, sel);
 			}
 		}
