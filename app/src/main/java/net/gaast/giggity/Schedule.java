@@ -445,18 +445,32 @@ public class Schedule {
 				JSONArray roomlist = md.getJSONArray("rooms");
 				for (int i = 0; i < roomlist.length(); ++i) {
 					JSONObject jroom = roomlist.getJSONObject(i);
+					Log.d("jroom", jroom.toString());
 					for (Line room : getTents()) {
+						if (room.location != null) {
+							// Guess I could allow overlapping regexes starting with more specific
+							// ones. So if we've already assigned a location w/ a previous regex,
+							// skip this room.
+							continue;
+						}
 						// Using regex matching here to be a little more fuzzy. Also, possibly rooms
 						// that are close to each other (and may have similar names) can just share
 						// one entry.
 						if (!room.getTitle().matches(jroom.getString("name"))) {
 							continue;
 						}
+						String name;
+						if (jroom.has("show_name")) {
+							name = jroom.getString("show_name") + " (" + room.getTitle() + ")";
+						} else {
+							name = room.getTitle();
+						}
 						JSONArray latlon = jroom.getJSONArray("latlon");
 						try {
 							room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
 							                 latlon.optDouble(1, 0) + "(" +
-							                 URLEncoder.encode(room.getTitle(), "utf-8") + ")");
+							                 URLEncoder.encode(name, "utf-8") + ")");
+							Log.d("room:", room.getTitle() + " " + room.location);
 						} catch (UnsupportedEncodingException e) {
 							// I'm a useless language! (Have I mentioned yet how if a machine
 							// doesn't do utf-8 then it should maybe not be on the Internet?)
