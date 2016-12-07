@@ -1,41 +1,6 @@
 {
-	"version": 2016091300,
+	"version": 2016120701,
 	"schedules": [
-		{
-			"version": 2015052500,
-			"url": "http://www.tuebix.org/2015/giggity.xml",
-			"title": "TUEBIX 2015",
-			"start": "2015-06-13",
-			"end": "2015-06-13"
-		},
-		{
-			"version": 2015061200,
-			"url": "http://piandmore.de/schedule/pam7/schedule.xml",
-			"title": "Pi and More 7",
-			"start": "2015-06-20",
-			"end": "2015-06-20"
-		},
-		{
-			"version": 2015080600,
-			"url": "https://events.ccc.de/camp/2015/Fahrplan/schedule.xml",
-			"title": "Chaos Communication Camp 2015",
-			"start": "2015-08-13",
-			"end": "2015-08-15"
-		},
-		{
-			"version": 2015081400,
-			"url": "https://summit.debconf.org/debconf15.xml",
-			"title": "DebConf15",
-			"start": "2015-08-15",
-			"end": "2015-08-22"
-		},
-		{
-			"version": 2015111700,
-			"url": "http://2015.es.pycon.org/schedule/pentabarf.xml",
-			"title": "PyConES 2015",
-			"start": "2015-11-20",
-			"end": "2015-11-22"
-		},
 		{
 			"version": 2016031902,
 			"url": "https://events.ccc.de/congress/2015/Fahrplan/schedule.xml",
@@ -47,67 +12,6 @@
 					{
 						"url": "https://events.ccc.de/congress/2015/wiki/Main_Page",
 						"title": "Wiki"
-					}
-				]
-			}
-		},
-		{
-			"version": 2016040302,
-			"url": "https://fosdem.org/2016/schedule/xml",
-			"title": "FOSDEM 2016",
-			"start": "2016-01-30",
-			"end": "2016-01-31",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://fosdem.org/2016/",
-						"title": "Website"
-					},
-					{
-						"url": "https://fosdem.org/2016/assets/booklet-327941bc89717b26611707b50b6109f66104f1de0edefc349af425091197543e.pdf",
-						"title": "Info booklet",
-						"type": "application/pdf"
-					},
-					{
-						"url": "https://fosdem.org/2016/schedule/buildings/",
-						"title": "Map"
-					}
-				],
-				"icon": "https://fosdem.org/2016/icon-1a3618bf8816852a0bba761ea9367f1a8f95da41dd7f366e327aa4a543aec99a.png",
-				"rooms": [
-					{
-						"name": "Janson",
-						"latlon": [50.813231,4.3791498]
-					},
-					{
-						"name": "K\\..*",
-						"show_name": "K building",
-						"latlon": [50.8146969,4.3817676]
-					},
-					{
-						"name": "H\\..*",
-						"show_name": "H.*",
-						"latlon": [50.8127773,4.3799053]
-					},
-					{
-						"name": "AW.*",
-						"show_name": "AW building",
-						"latlon": [50.812139, 4.380602]
-					},
-					{
-						"name": "UA.*",
-						"show_name": "UA wing",
-						"latlon": [50.811683,4.3826425]
-					},
-					{
-						"name": "UB.*",
-						"show_name": "UB wing",
-						"latlon": [50.8120565,4.382176]
-					},
-					{
-						"name": "UD.*",
-						"show_name": "UD wing",
-						"latlon": [50.812691,4.3818835]
 					}
 				]
 			}
@@ -343,6 +247,58 @@
 						"url": "http://2016.es.pycon.org/static/pdf/pycon_brochure_es.pdf",
 						"title": "Info",
 						"type": "application/pdf"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016120700,
+			"url": "https://fosdem.org/2017/schedule/xml",
+			"title": "FOSDEM 2017",
+			"start": "2017-02-04",
+			"end": "2017-02-05",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://fosdem.org/2017/",
+						"title": "Website"
+					}
+				],
+				"icon": "https://fosdem.org/2016/icon-1a3618bf8816852a0bba761ea9367f1a8f95da41dd7f366e327aa4a543aec99a.png",
+				"rooms": [
+					{
+						"name": "Janson",
+						"latlon": [50.813231,4.3791498]
+					},
+					{
+						"name": "K\\..*",
+						"show_name": "K building",
+						"latlon": [50.8146969,4.3817676]
+					},
+					{
+						"name": "H\\..*",
+						"show_name": "H.*",
+						"latlon": [50.8127773,4.3799053]
+					},
+					{
+						"name": "AW.*",
+						"show_name": "AW building",
+						"latlon": [50.812139, 4.380602]
+					},
+					{
+						"name": "UA.*",
+						"show_name": "UA wing",
+						"latlon": [50.811683,4.3826425]
+					},
+					{
+						"name": "UB.*",
+						"show_name": "UB wing",
+						"latlon": [50.8120565,4.382176]
+					},
+					{
+						"name": "UD.*",
+						"show_name": "UD wing",
+						"latlon": [50.812691,4.3818835]
 					}
 				]
 			}
