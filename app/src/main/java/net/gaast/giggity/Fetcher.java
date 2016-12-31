@@ -114,6 +114,9 @@ public class Fetcher {
 				}
 
 				fntmp = new File(app.getExternalCacheDir(), "tmp." + Schedule.hashify(url));
+				if (!fntmp.canWrite()) {
+					fntmp = new File(app.getCacheDir(),  "tmp." + Schedule.hashify(url));
+				}
 				OutputStream copy = new FileOutputStream(fntmp);
 				inStream = new TeeInputStream(inStream, copy, true);  // true == close copy on close
 
