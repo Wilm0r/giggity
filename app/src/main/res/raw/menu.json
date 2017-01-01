@@ -1,5 +1,5 @@
 {
-	"version": 2016121900,
+	"version": 2016123100,
 	"schedules": [
 		{
 			"version": 2016052400,
@@ -15,30 +15,6 @@
 					},
 					{
 						"url": "http://www.tuebix.org/anfahrt/",
-						"title": "Anfahrt"
-					}
-				]
-			}
-		},
-		{
-			"version": 2016052600,
-			"url": "http://piandmore.de/schedule/pam9/schedule.xml",
-			"title": "Pi and More 9",
-			"start": "2016-06-11",
-			"end": "2016-06-11",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://piandmore.de/en",
-						"title": "Website"
-					},
-					{
-						"url": "http://piandmore.de/files/pam9/raumplan.png",
-						"title": "Raumplan",
-						"type": "image/png"
-					},
-					{
-						"url": "http://piandmore.de/de/next/ort",
 						"title": "Anfahrt"
 					}
 				]
@@ -303,6 +279,30 @@
 					{
 						"url": "https://events.ccc.de/",
 						"title": "Weblog"
+					}
+				]
+			}
+		},
+		{
+			"version": 2016123100,
+			"url": "http://piandmore.de/schedule/pam9-5/schedule.xml",
+			"title": "Pi and More 9½",
+			"start": "2017-01-14",
+			"end": "2017-01-14",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://piandmore.de/en",
+						"title": "Website"
+					},
+					{
+						"url": "http://piandmore.de/files/pam9/raumplan.png",
+						"title": "Raumplan",
+						"type": "image/png"
+					},
+					{
+						"url": "http://piandmore.de/de/next/ort",
+						"title": "Anfahrt"
 					}
 				]
 			}
