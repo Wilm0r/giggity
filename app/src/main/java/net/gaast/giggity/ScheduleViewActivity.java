@@ -449,12 +449,19 @@ public class ScheduleViewActivity extends Activity {
 	 */
 	private void openLink(final Schedule.Link link, boolean allowDownload) {
 		if (link.getType() != null) {
-			File cached = Fetcher.cachedFile(app, link.getUrl());
-			if (cached != null) {
+			Fetcher f = null;
+			try {
+				f = new Fetcher(app, link.getUrl(), Fetcher.Source.CACHE);
+			} catch (IOException e) {
+				// Failure is ~expected so don't make a fuss about it at this stage. :-)
+			}
+			if (f != null) {
+				Uri cached = f.cacheUri();
 				try {
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
-					intent.setDataAndType(Uri.parse(cached.toURI().toString()), link.getType());
+					intent.setDataAndType(cached, link.getType());
+					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 					startActivity(intent);
 				} catch (ActivityNotFoundException e) {
 					new AlertDialog.Builder(ScheduleViewActivity.this)

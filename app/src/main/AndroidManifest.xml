@@ -8,10 +8,6 @@
   <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
   <uses-permission android:name="android.permission.VIBRATE"/>
 
-  <!-- Now using external cache dir so we can open images/etc in external viewer. Nicely from KitKat
-       using a semi-private files/cache dir does not require additional permissions. -->
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="18" />
-
   <!-- API level 16 == Jellybean. This should give me support for 80-90% of devices at time of writing. -->
   <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="24"/>
 
@@ -40,5 +36,14 @@
         </intent-filter>
         <meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info"/>
     </receiver>
+    <provider
+        android:name="android.support.v4.content.FileProvider"
+        android:authorities="net.gaast.giggity.paths"
+        android:grantUriPermissions="true"
+        android:exported="false">
+      <meta-data
+          android:name="android.support.FILE_PROVIDER_PATHS"
+          android:resource="@xml/paths" />
+    </provider>
   </application>
 </manifest>

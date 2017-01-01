@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.content.FileProvider;
 import android.util.Log;
 
 import org.apache.commons.io.input.TeeInputStream;
@@ -51,8 +53,8 @@ public class Fetcher {
 		source = null;
 
 		Log.d("Fetcher", "Creating fetcher for " + url + " prefSource=" + prefSource);
-		
-		fn = new File(app.getExternalCacheDir(), "sched." + Schedule.hashify(url));
+
+		fn = cacheFile(url, false);
 		fntmp = null;
 
 		NetworkInfo network = ((ConnectivityManager)
@@ -71,11 +73,6 @@ public class Fetcher {
 			/* Do HTTP stuff first, then HTTPS! Once we get a CastClassException, we stop. */
 			HttpURLConnection.setFollowRedirects(true);
 			
-			/* Disabled for now since I can't get the default User-Agent until after sending it.
-			String ua = ((HttpURLConnection)dlc).getRequestProperty("User-Agent");
-			((HttpURLConnection)dlc).setRequestProperty("User-Agent", "Giggity, " + ua);
-			*/
-			
 			((HttpURLConnection)dlc).addRequestProperty("Accept-Encoding", "gzip");
 			
 			if (prefSource != Source.ONLINE_NOCACHE && fn.canRead() && fn.lastModified() > 0) {
@@ -87,7 +84,7 @@ public class Fetcher {
 			if (!pref.getBoolean("strict_ssl", false))
 				((HttpsURLConnection)dlc).setSSLSocketFactory(SSLRage.getSocketFactory());
 		} catch (ClassCastException e) {
-			/* It failed. Maybe we're HTTP only? Maybe even FTP? */
+			/* It failed. Maybe we're HTTP only? Maybe even FTP? Heh well good luck! */
 		}
 
 		if (prefSource != Source.CACHE && !(fn.canRead() && prefSource == Source.CACHE_ONLINE) &&
@@ -113,7 +110,7 @@ public class Fetcher {
 					inStream = new GZIPInputStream(inStream);
 				}
 
-				fntmp = new File(app.getExternalCacheDir(), "tmp." + Schedule.hashify(url));
+				fntmp = cacheFile(url, true);
 				OutputStream copy = new FileOutputStream(fntmp);
 				inStream = new TeeInputStream(inStream, copy, true);  // true == close copy on close
 
@@ -139,13 +136,23 @@ public class Fetcher {
 		}
 	}
 
-	public static File cachedFile(Giggity app, String url) {
-		File fn = new File(app.getExternalCacheDir(), "sched." + Schedule.hashify(url));
-		if (fn.canRead())
-			return fn;
+	// Generate an (exportable) content:// URL to cached copy of this URL, if possible. Otherwise, null.
+	public Uri cacheUri() {
+		if (source == Source.CACHE)
+			return FileProvider.getUriForFile(app, "net.gaast.giggity.paths", fn);
 		return null;
 	}
-	
+
+	private File cacheFile(String url, boolean tmp) {
+		String fn = Schedule.hashify(url);
+		if (tmp) {
+			fn = "." + fn + ".tmp";
+		}
+		File downloads = new File(app.getCacheDir(), "downloads");
+		downloads.mkdirs();
+		return new File(downloads, fn);
+	}
+
 	public void setProgressHandler(Handler handler) {
 		progressHandler = handler;
 	}
