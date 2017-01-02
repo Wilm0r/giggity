@@ -451,7 +451,7 @@ public class ScheduleViewActivity extends Activity {
 		if (link.getType() != null) {
 			Fetcher f = null;
 			try {
-				f = new Fetcher(app, link.getUrl(), Fetcher.Source.CACHE);
+				f = new Fetcher(app, link.getUrl(), Fetcher.Source.CACHE, link.getType());
 			} catch (IOException e) {
 				// Failure is ~expected so don't make a fuss about it at this stage. :-)
 			}
@@ -462,6 +462,7 @@ public class ScheduleViewActivity extends Activity {
 					intent.setAction(Intent.ACTION_VIEW);
 					intent.setDataAndType(cached, link.getType());
 					intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+					Log.d("ScheduleViewActivity", "Viewing content externally: " + intent);
 					startActivity(intent);
 				} catch (ActivityNotFoundException e) {
 					new AlertDialog.Builder(ScheduleViewActivity.this)
@@ -487,7 +488,7 @@ public class ScheduleViewActivity extends Activity {
 					@Override
 					public void run() {
 						try {
-							Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.ONLINE);
+							Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.ONLINE, link.getType());
 							f.setProgressHandler(prog.getHandler());
 
 							/* Just slurp the entire file into a bogus buffer, what we need is the

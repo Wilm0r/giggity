@@ -24,6 +24,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -36,6 +38,7 @@ public class Fetcher {
 	private Source source;
 	private Handler progressHandler;
 	private long flen;
+	private String type;
 
 	private InputStream inStream;
 	private BufferedReader inReader;
@@ -49,8 +52,13 @@ public class Fetcher {
 	}
 	
 	public Fetcher(Giggity app_, String url, Source prefSource) throws IOException {
+		this(app_, url, prefSource, null);
+	}
+
+	public Fetcher(Giggity app_, String url, Source prefSource, String type_) throws IOException {
 		app = app_;
 		source = null;
+		type = type_;
 
 		Log.d("Fetcher", "Creating fetcher for " + url + " prefSource=" + prefSource);
 
@@ -145,6 +153,15 @@ public class Fetcher {
 
 	private File cacheFile(String url, boolean tmp) {
 		String fn = Schedule.hashify(url);
+		/* Filenames start to matter a bit: Using external viewers for navdrawer links for example.
+		   Samsung's gallery is picky about filename extensions even when we're already passing a
+		   MIME-type. So if we have a type, use it to add a filename extension (letters only). */
+		if (type != null) {
+			Matcher m = Pattern.compile("[a-z]+$").matcher(type);
+			if (m.find() && !m.group().isEmpty()) {
+				fn += "." + m.group();
+			}
+		}
 		if (tmp) {
 			fn = "." + fn + ".tmp";
 		}

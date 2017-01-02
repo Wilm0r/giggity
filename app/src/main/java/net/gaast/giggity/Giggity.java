@@ -152,11 +152,16 @@ public class Giggity extends Application {
 	public void setPadding(View view, int left, int top, int right, int bottom) {
 		view.setPadding(dp2px(left), dp2px(top), dp2px(right), dp2px(bottom));
 	}
-	
+
+	/* TODO: Are these wrappers really that useful? */
 	public Fetcher fetch(String url, Fetcher.Source source) throws IOException {
 		return new Fetcher(this, url, source);
 	}
-	
+
+	public Fetcher fetch(String url, Fetcher.Source source, String type) throws IOException {
+		return new Fetcher(this, url, source, type);
+	}
+
 	public static String dateRange(Date start, Date end) {
 		String ret = "";
 		if (start.getDate() == end.getDate() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
