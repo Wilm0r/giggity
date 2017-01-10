@@ -1,5 +1,5 @@
 {
-	"version": 2016123100,
+	"version": 2017011000,
 	"schedules": [
 		{
 			"version": 2016052400,
@@ -303,6 +303,25 @@
 					{
 						"url": "http://piandmore.de/de/next/ort",
 						"title": "Anfahrt"
+					}
+				]
+			}
+		},
+		{
+			"start" : "2017-01-16",
+			"end" : "2017-01-20",
+			"version" : 2017011000,
+			"url" : "https://linux.conf.au/schedule/conference.ics",
+			"title" : "linux.conf.au 2017",
+			"metadata" : {
+				"links" : [
+					{
+						"url" : "https://linux.conf.au/",
+						"title" : "Website"
+					},
+					{
+						"url" : "https://linux.conf.au/wiki",
+						"title" : "Wiki"
 					}
 				]
 			}
