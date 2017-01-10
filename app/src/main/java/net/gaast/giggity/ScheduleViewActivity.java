@@ -828,7 +828,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 		
 		public void hide() {
-			/* During the animation, visibility will be overriden to visible.
+			/* During the animation, visibility will be overridden to visible.
 			 * Which means I can already set it to hidden now and the right
 			 * thing will happen after the animation. */
 			setVisibility(View.INVISIBLE);
