@@ -7,7 +7,7 @@
 
 use Net::HTTP;
 
-# Super agressive HTTP caching to save my time and their server. :-P
+# Super aggressive HTTP caching to save my time and their server. :-P
 dbmopen( %wwwcache, 'wwwcache', 0644 );
 dbmopen( %descs, 'descriptions', 0644 );
 
