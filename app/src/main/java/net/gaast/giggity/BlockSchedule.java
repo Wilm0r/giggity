@@ -77,7 +77,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 	private int HourWidth = 96;
 	private int HourHeight = 15;
 	private int TentHeight = 48;
-	private int TentWidth = 36;
+	private int TentWidth = 64;
 	private final float fontSizeSmall = 12;
 	private float fontSize = 12; // scaled/configurable
 	
