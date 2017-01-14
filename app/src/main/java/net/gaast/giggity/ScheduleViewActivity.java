@@ -289,6 +289,18 @@ public class ScheduleViewActivity extends Activity {
 					}
 				}
 			};
+
+			setOnCancelListener(new OnCancelListener() {
+				@Override
+				public void onCancel(DialogInterface dialog) {
+					/* If the user gave up, sign out from any progress updates coming from the
+					   downloader thread. Bit ugly to do it this way but stopping a thread isn't
+					   really possible anyway..
+					 */
+					updater = null;
+					ScheduleViewActivity.this.finish();
+				}
+			});
 		}
 
 		public Handler getHandler() {
@@ -320,9 +332,17 @@ public class ScheduleViewActivity extends Activity {
 			public void run() {
 				try {
 					sched = app.getSchedule(url, source, prog.getHandler());
+					if (prog.getHandler() == null) {
+						Log.d("ScheduleViewActivity", "Looks like we're late, activity gone?");
+						return;
+					}
 					prog.getHandler().sendEmptyMessage(LoadProgress.DONE);
 				} catch (Throwable t) {
 					t.printStackTrace();
+					if (prog.getHandler() == null) {
+						Log.d("ScheduleViewActivity", "Looks like we're late, activity gone?");
+						return;
+					}
 					prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, t));
 				}
 			}
