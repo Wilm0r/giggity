@@ -148,8 +148,10 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			if ((y & 8) > 0)
 				bmp.setPixel(HourWidth - hourX, y, c.lines);
 		}
+		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
 		BitmapDrawable bg = new BitmapDrawable(bmp);
 		bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
+		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
 		schedCont.setBackgroundDrawable(bg);
 
 		topClock = new Clock(ctx, base, end);
