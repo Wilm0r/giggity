@@ -1,5 +1,5 @@
 {
-	"version": 2017011000,
+	"version": 2017016000,
 	"schedules": [
 		{
 			"version": 2016052400,
@@ -310,7 +310,7 @@
 		{
 			"start" : "2017-01-16",
 			"end" : "2017-01-20",
-			"version" : 2017011000,
+			"version" : 2017016000,
 			"url" : "https://linux.conf.au/schedule/conference.ics",
 			"title" : "linux.conf.au 2017",
 			"metadata" : {
@@ -322,6 +322,11 @@
 					{
 						"url" : "https://linux.conf.au/wiki",
 						"title" : "Wiki"
+					},
+					{
+						"url": "https://linux.conf.au/site_media/media/images/wp_map.width-500.png",
+						"title": "Map",
+						"type": "image/png"
 					}
 				]
 			}
