@@ -25,8 +25,6 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
-import android.text.Spanned;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.CheckBox;
