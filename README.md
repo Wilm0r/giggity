@@ -20,6 +20,13 @@ It's named Giggity, after the word "Gig". The fact that it is also a
 well-known catch phrase of a certain cartoon character may or may not be
 coincidental. ;-)
 
+<a href="https://f-droid.org/app/net.gaast.giggity">
+<img src="https://f-droid.org/badge/get-it-on.png" height="64" alt="F-Droid">
+</a>
+<a href="https://play.google.com/store/apps/details?id=net.gaast.giggity">
+<img src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="64" alt="Play Store">
+</a>
+
 ## Using Giggity for your event
 
 You can add any suitably formatted schedule to Giggity yourself (use QR
