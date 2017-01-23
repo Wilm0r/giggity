@@ -752,6 +752,9 @@ public class ScheduleViewActivity extends Activity {
 			case R.id.export_selections:
 				ScheduleUI.exportSelections(this, sched);
 				break;
+			case R.id.home_shortcut:
+				addHomeShortcut();
+				break;
 			case R.id.timetable:
 			case R.id.tracks:
 			case R.id.block_schedule:
@@ -760,6 +763,18 @@ public class ScheduleViewActivity extends Activity {
 				setView(id);
 				break;
 		}
+	}
+
+	public void addHomeShortcut() {
+		Intent shortcut = new Intent(Intent.ACTION_VIEW, Uri.parse(sched.getUrl()), this, ScheduleViewActivity.class);
+		shortcut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+		Intent intent = new Intent();
+		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
+		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, sched.getTitle());
+		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(this, R.drawable.deoxide_icon));
+		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+		sendBroadcast(intent);
 	}
 
 	public void onScroll() {
