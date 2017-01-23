@@ -20,6 +20,8 @@
 package net.gaast.giggity;
 
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.Editable;
@@ -42,6 +44,7 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -96,7 +99,7 @@ public class Schedule {
 	private String icon;
 	private LinkedList<Link> links;
 
-	/* For fetching the icon file in the background. Not yet used/done. */
+	/* For fetching the icon file in the background. */
 	private Thread iconFetcher;
 
 	private boolean fullyLoaded;
@@ -594,10 +597,6 @@ public class Schedule {
 		return ret;
 	}
 
-	public String getIcon() {
-		return icon;
-	}
-
 	public LinkedList<Link> getLinks() {
 		return links;
 	}
@@ -612,14 +611,18 @@ public class Schedule {
 		return showHidden;
 	}
 
-	public Drawable getIconDrawable() {
-		if (getIcon() == null || getIcon().isEmpty()) {
+	public String getIconUrl() {
+		return icon;
+	}
+
+	private InputStream getIconStream() {
+		if (getIconUrl() == null || getIconUrl().isEmpty()) {
 			return null;
 		}
 
 		try {
-			Fetcher f = new Fetcher(app, getIcon(), Fetcher.Source.CACHE);
-			return getIconDrawable(f);
+			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE);
+			return f.getStream();
 		} catch (IOException e) {
 			// This probably means it's not in cache. :-( So we'll fetch it in the background and
 			// will hopefully succeed on the next call.
@@ -629,12 +632,13 @@ public class Schedule {
 			public void run() {
 				Fetcher f;
 				try {
-					f = new Fetcher(app, getIcon(), Fetcher.Source.ONLINE);
+					f = new Fetcher(app, getIconUrl(), Fetcher.Source.ONLINE);
 				} catch (IOException e) {
 					Log.e("getIconDrawable", "Fetch error: " + e);
 					return;
 				}
-				if (getIconDrawable(f) != null) {
+				if (Drawable.createFromStream(f.getStream(), "") != null) {
+					/* Throw-away decode seems to have worked so instruct Fetcher to keep cached. */
 					f.keep();
 				}
 			}
@@ -643,8 +647,22 @@ public class Schedule {
 		return null;
 	}
 
-	private Drawable getIconDrawable(Fetcher f) {
-		return Drawable.createFromStream(f.getStream(), getIcon());
+	public Drawable getIconDrawable() {
+		InputStream stream = getIconStream();
+		if (stream != null) {
+			return Drawable.createFromStream(stream, getIconUrl());
+		} else {
+			return null;
+		}
+	}
+
+	public Bitmap getIconBitmap() {
+		InputStream stream = getIconStream();
+		if (stream != null) {
+			return BitmapFactory.decodeStream(stream);
+		} else {
+			return null;
+		}
 	}
 
 	/* Some "proprietary" file format I started with. Actually the most suitable when I

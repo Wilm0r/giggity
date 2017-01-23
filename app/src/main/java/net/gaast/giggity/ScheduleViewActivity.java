@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -31,7 +32,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -402,6 +408,19 @@ public class ScheduleViewActivity extends Activity {
 		redrawSchedule();
 		finishNavDrawer();
 		updateNavDrawer();
+
+		/* Change our title + icon in the recent tasks view. Only supported from Lollipop+. */
+		if (android.os.Build.VERSION.SDK_INT >= 21) {
+			/* On first load, getIconBitmap() will kick off a background fetch so we'll miss out on
+			   the custom icon then. So be it... */
+			Bitmap icon = sched.getIconBitmap();
+			ActivityManager.TaskDescription d;
+			if (icon == null) {
+				icon = ((BitmapDrawable)getResources().getDrawable(R.drawable.deoxide_icon)).getBitmap();
+			}
+			d = new ActivityManager.TaskDescription(sched.getTitle(), icon, getResources().getColor(R.color.primary));
+			this.setTaskDescription(d);
+		}
 	}
 
 	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */
@@ -767,12 +786,19 @@ public class ScheduleViewActivity extends Activity {
 
 	public void addHomeShortcut() {
 		Intent shortcut = new Intent(Intent.ACTION_VIEW, Uri.parse(sched.getUrl()), this, ScheduleViewActivity.class);
+		/* Make sure no other activities/events are in the activity stack anymore if the user uses
+		   this shortcut as they're probably not interested in unrelated events at that point. */
 		shortcut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
 		Intent intent = new Intent();
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
 		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, sched.getTitle());
-		intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(this, R.drawable.deoxide_icon));
+		Bitmap bmp = sched.getIconBitmap();
+		if (bmp != null) {
+			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bmp);
+		} else {
+			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(this, R.drawable.deoxide_icon));
+		}
 		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
 		sendBroadcast(intent);
 	}
