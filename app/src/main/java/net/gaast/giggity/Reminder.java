@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
@@ -137,6 +138,11 @@ public class Reminder extends Service {
 		if (Build.VERSION.SDK_INT >= 21) {
 			nb.setVisibility(Notification.VISIBILITY_PUBLIC)
 			  .setColor(getResources().getColor(R.color.primary));
+		}
+
+		Bitmap icon = item.getSchedule().getIconBitmap();
+		if (icon != null) {
+			nb.setLargeIcon(icon);
 		}
 
 		Notification.BigTextStyle extra = new Notification.BigTextStyle();
