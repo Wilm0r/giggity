@@ -173,6 +173,7 @@ public class Db {
 		
 		if (seed.version <= version && oldDbVer == dbVersion) {
 			/* No updates required, both data and structure are up to date. */
+			Log.d("DeoxideDb.updateData", "Already up to date: " + version + " " + oldDbVer);
 			return;
 		}
 		
