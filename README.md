@@ -42,6 +42,9 @@ To do this, e-mail me a JSON file formatted like this:
 		"start": "2016-08-10",
 		"end": "2016-08-12",
 		"metadata": {
+			// Must have an alpha layer, be square and not too large.
+			// Will be used for notifications and home shortcut.
+			"icon": "https://www.conference.org/logo.png",
 			"links": [
 				{
 					"url": "https://www.conference.org/",
