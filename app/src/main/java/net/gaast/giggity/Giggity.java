@@ -185,4 +185,10 @@ public class Giggity extends Application {
 			v.setElevation(on ? dp2px(8) : 0);
 		}
 	}
+
+	static boolean fuzzyStarsWith(String prefix, String full) {
+		prefix = prefix.replaceAll("<[^>]*>", "").replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+		full = full.replaceAll("<[^>]*>", "").replaceAll("[^A-Za-z0-9]", "").toLowerCase();
+		return full.startsWith(prefix);
+	}
 }
