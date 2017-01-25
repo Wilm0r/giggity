@@ -8,8 +8,23 @@ and lets you browse them in various convenient formats.
 Nowadays many events release dedicated apps (sometimes with limited
 features) which I don't like. :-( With Giggity I try to just offer a
 generic app that can be used for any event that publishes their schedule
-in an open format, and with maybe not a very pretty UI, but hopefully a
-functional one.
+in an open format, and offer more features to help with organising your
+visit, like:
+
+ * Various different views besides a plain timetable.
+ * Search function so you can search for the exact topics you care
+   about.
+ * Set reminders.
+ * Get a warning when talks overlap with other talks you're going to.
+ * Delete/hide talks/entire topics you're not interested in.
+ * Export your selections via a QR code to sync with other devices or
+   with your friends.
+ * Events can include direct links to related web content (main website,
+   Wiki), or include off-line viewable venue maps, etc.
+ * Include coordinates of all the venue's rooms so you can see where
+   they are in your preferred maps application.
+ * Add direct shortcuts or a widget (always showing the next talk) to
+   your homescreen.
 
 It's free software, and available on [Google
 Play](https://play.google.com/store/apps/details?id=net.gaast.giggity&hl=en),
