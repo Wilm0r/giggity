@@ -1,6 +1,6 @@
 {
 	// Yeah I screwed up the serial# for the rest of January. Shouldn't do that again! :-((
-	"version": 2017016100,
+	"version": 2017020300,
 	"schedules": [
 		{
 			"version": 2016052400,
@@ -214,7 +214,7 @@
 			}
 		},
 		{
-			"version": 2017016100,
+			"version": 2017020300,
 			"url": "https://fosdem.org/2017/schedule/xml",
 			"title": "FOSDEM 2017",
 			"start": "2017-02-04",
@@ -224,6 +224,11 @@
 					{
 						"url": "https://fosdem.org/2017/",
 						"title": "Website"
+					},
+					{
+						"url": "https://fosdem.org/2017/assets/booklet_general-c917a889209102546d5a7b52b21b109db24bc5eb6075f3e548c5706989bae74c.pdf",
+						"title": "Info booklet",
+						"type": "application/pdf"
 					},
 					{
 						"url": "https://fosdem.org/2017/assets/campusmap-5f4dd1f191a8e9ac948735dbd168705d99376da74d320bc2bbe2549173af3e51.png",
