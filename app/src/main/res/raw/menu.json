@@ -1,5 +1,5 @@
 {
-	"version": 2017020300,
+	"version": 2017031902,
 	"schedules": [
 		{
 			"version": 2016052400,
@@ -337,6 +337,21 @@
 						"url": "https://linux.conf.au/site_media/media/images/wp_map.width-500.png",
 						"title": "Map",
 						"type": "image/png"
+					}
+				]
+			}
+		},
+		{
+			"start" : "2017-03-25",
+			"end" : "2017-03-26",
+			"version" : 2017031902,
+			"url" : "https://libreplanet.org/2017/lp2017-schedule.ics",
+			"title" : "LibrePlanet 2017",
+			"metadata" : {
+				"links" : [
+					{
+						"url" : "https://libreplanet.org/2017/",
+						"title" : "Website"
 					}
 				]
 			}
