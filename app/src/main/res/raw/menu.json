@@ -1,5 +1,5 @@
 {
-	"version": 2017031902,
+	"version": 2017033100,
 	"schedules": [
 		{
 			"version": 2016052400,
@@ -337,6 +337,22 @@
 						"url": "https://linux.conf.au/site_media/media/images/wp_map.width-500.png",
 						"title": "Map",
 						"type": "image/png"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017033100,
+			"url": "https://frab.nixos.community/de/lit2017/public/schedule.xml",
+			"title": "Augsburger Linux-Infotag 2017",
+			"start": "2017-04-22",
+			"end": "2017-04-22",
+			"metadata": {
+				"icon": "https://luga-ev.github.io/frab-extras/Tux2.png",
+				"links": [
+					{
+						"url": "https://www.luga.de/Aktionen/LIT-2017/",
+						"title": "Website"
 					}
 				]
 			}
