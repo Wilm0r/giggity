@@ -1,5 +1,5 @@
 {
-	"version": 2017040400,
+	"version": 2017041700,
 	"schedules": [
 		{
 			"version": 2016052400,
@@ -342,8 +342,8 @@
 			}
 		},
 		{
-			"version": 2017033100,
-			"url": "https://frab.nixos.community/de/lit2017/public/schedule.xml",
+			"version": 2017041700,
+			"url": "https://luga-ev.github.io/frab-extras/2017/de/lit2017/public/schedule.xml",
 			"title": "Augsburger Linux-Infotag 2017",
 			"start": "2017-04-22",
 			"end": "2017-04-22",
