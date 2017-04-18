@@ -37,6 +37,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.UrlQuerySanitizer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,6 +59,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
@@ -80,9 +85,9 @@ public class ScheduleViewActivity extends Activity {
 	private int curView;
 	private boolean tabletView;  // EventDialog integrated instead of invoking a separate activity
 	private boolean showHidden;
-	
+
 	private Format dateFormat = new SimpleDateFormat("EE d MMMM");
-	
+
 	/* Set this if when returning to this activity we need a *full* redraw.
 	 * (I.e. when returning from the settings menu.) */
 	private boolean redraw;
@@ -102,16 +107,16 @@ public class ScheduleViewActivity extends Activity {
 	private DayButtons days;
 
 	private SharedPreferences pref;
-	
+
 	private String showEventId;
-	
+
 	private BroadcastReceiver tzClose;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		app = (Giggity) getApplication();
-		
+
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		curView = getResources().getIdentifier(pref.getString("default_view", "net.gaast.giggity:id/block_schedule"), null, null);
 		showHidden = pref.getBoolean("show_hidden", false);
@@ -183,7 +188,7 @@ public class ScheduleViewActivity extends Activity {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 		days = new DayButtons(this);
 		viewerContainer.addView(days, lp);
-		
+
 		redraw = false;
 		timer = new Handler();
 
@@ -196,16 +201,33 @@ public class ScheduleViewActivity extends Activity {
 			}
 		};
 		registerReceiver(tzClose, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
-		
+
 		if (!getIntent().getAction().equals(Intent.ACTION_VIEW))
 			return;
-		
+
 		String url = getIntent().getDataString();
 		Fetcher.Source fs;
 		if (getIntent().getBooleanExtra("PREFER_CACHED", false))
 			fs = Fetcher.Source.CACHE_ONLINE;
 		else
 			fs = Fetcher.Source.ONLINE_CACHE;
+
+		try {
+			Uri parsed = Uri.parse(url);
+			if (parsed.getHost().equals("ggt.gaa.st") && parsed.getEncodedFragment() != null) {
+				// Boo. Is there really no library to do this? Uri (instead of URL) supports CGI-
+				// style arguments but not when that syntax is used after the #. (Using # instead of
+				// ? to avoid the data hitting the server, should the query fall through.)
+				for (String param : parsed.getEncodedFragment().split("&")) {
+					if (param.startsWith("url=")) {
+						url = URLDecoder.decode(param.substring(4), "utf-8");
+						break;
+					}
+				}
+			}
+		} catch (UnsupportedEncodingException e) {
+			// IT'S UTF-8 DO YOU NOT SPEAK IT? WHAT YEAR IS IT?
+		}
 
 		/* I think reminders come in via this activity (instead of straight to itemview)
 		   because we may have to reload schedule data? */
@@ -214,7 +236,7 @@ public class ScheduleViewActivity extends Activity {
 			url = parts[0];
 			showEventId = parts[1];
 		}
-		
+
 		if (app.hasSchedule(url)) {
 			try {
 				sched = app.getSchedule(url, fs);
@@ -235,7 +257,7 @@ public class ScheduleViewActivity extends Activity {
 			drawerToggle.syncState();
 		}
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		this.unregisterReceiver(tzClose);
@@ -355,7 +377,7 @@ public class ScheduleViewActivity extends Activity {
 
 		loader.start();
 	}
-	
+
 	private Runnable refresher = new Runnable() {
 		@Override
 		public void run() {
@@ -366,13 +388,13 @@ public class ScheduleViewActivity extends Activity {
 			timer.postDelayed(refresher, 60000 - (System.currentTimeMillis() % 60000));
 		}
 	};
-	
+
 	@Override
 	protected void onResume() {
 		/* Bugfix: Search sets day to -1, have to revert that. */
 		if (sched != null && sched.getDays().size() > 1 && !viewer.multiDay())
 			sched.setDay(sched.getDb().getDay());
-		
+
 		if (redraw) {
 			redrawSchedule();
 			redraw = false;
@@ -380,7 +402,7 @@ public class ScheduleViewActivity extends Activity {
 		refresher.run();
 		super.onResume();
 	}
-	
+
 	@Override
 	protected void onPause() {
 		if (sched != null) {
@@ -389,12 +411,12 @@ public class ScheduleViewActivity extends Activity {
 		super.onPause();
 		timer.removeCallbacks(refresher);
 	}
-	
+
 	@Override
 	protected void onStop() {
 		super.onStop();
 	}
-	
+
 	private void onScheduleLoaded() {
 		sched.setShowHidden(showHidden);
 		if (getIntent().hasExtra("SELECTIONS")) {
@@ -566,7 +588,7 @@ public class ScheduleViewActivity extends Activity {
 			sched.setDay(-1);
 			setTitle(sched.getTitle());
 		}
-		
+
 		if (curView == R.id.timetable) {
 			setScheduleView(new TimeTable(this, sched));
 		} else if (curView == R.id.now_next) {
@@ -602,26 +624,26 @@ public class ScheduleViewActivity extends Activity {
 
 		this.invalidateOptionsMenu();
 	}
-	
-	/** Called by EventDialog when an item is deleted. Not passing an argument 
+
+	/** Called by EventDialog when an item is deleted. Not passing an argument
 	 * since more than one item can be deleted at once. */
 	protected void onItemHidden() {
 		redrawSchedule();
 	}
-	
+
 	private void updateOrientation(int orientation) {
 		if (orientation == Configuration.ORIENTATION_PORTRAIT)
 			bigScreen.setOrientation(LinearLayout.VERTICAL);
 		else
 			bigScreen.setOrientation(LinearLayout.HORIZONTAL);
 	}
-	
+
 	public void setScheduleView(View viewer_) {
 		if (viewer != null)
 			viewerContainer.removeView((View) viewer);
 		viewer = (ScheduleViewer) viewer_;
 		viewerContainer.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3));
-		
+
 		days.show();
 	}
 
@@ -702,7 +724,7 @@ public class ScheduleViewActivity extends Activity {
 				cur = i;
 			dayList[i] = dateFormat.format(days.get(i));
 		}
-		
+
 		if (days.size() == 2) {
 			/* If there are only two days, don't bother showing the dialog, even
 			 * though we did promise to show it. :-P */
@@ -710,7 +732,7 @@ public class ScheduleViewActivity extends Activity {
 			redrawSchedule();
 			return;
 		}
-		
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.change_day);
 		builder.setSingleChoiceItems(dayList, cur, new DialogInterface.OnClickListener() {
@@ -807,7 +829,7 @@ public class ScheduleViewActivity extends Activity {
 		if (sched.getDays().size() > 1)
 			days.show();
 	}
-	
+
 	/* Ugly convenience function to be used by schedule viewers to indicate
 	 * that the user scrolled so we should show day switch buttons. */
 	public static void onScroll(Context ctx) {
@@ -820,17 +842,17 @@ public class ScheduleViewActivity extends Activity {
 		}
 		me.onScroll();
 	}
-	
+
 	private class DayButtons extends RelativeLayout {
 		private Button dayPrev, dayNext;
 		private Handler h;
 		private Runnable hideEv;
-		
+
 		public DayButtons(Context ctx) {
 			super(ctx);
 
 			RelativeLayout.LayoutParams lp;
-			
+
 			dayPrev = new Button(ScheduleViewActivity.this);
 			dayPrev.setText("<");
 			lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -844,7 +866,7 @@ public class ScheduleViewActivity extends Activity {
 			lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
 			addView(dayNext, lp);
-			
+
 			dayPrev.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -857,9 +879,9 @@ public class ScheduleViewActivity extends Activity {
 					daySwitch(+1);
 				}
 			});
-			
+
 			setVisibility(View.INVISIBLE);
-			
+
 			h = new Handler();
 			hideEv = new Runnable() {
 				@Override
@@ -868,7 +890,7 @@ public class ScheduleViewActivity extends Activity {
 				}
 			};
 		}
-		
+
 		public void show() {
 			if (sched == null || viewer == null || sched.getDays().size() <= 1 || viewer.multiDay())
 				return;
@@ -886,7 +908,7 @@ public class ScheduleViewActivity extends Activity {
 			h.removeCallbacks(hideEv);
 			h.postDelayed(hideEv, 2000);
 		}
-		
+
 		public void hide() {
 			/* During the animation, visibility will be overridden to visible.
 			 * Which means I can already set it to hidden now and the right
@@ -894,14 +916,14 @@ public class ScheduleViewActivity extends Activity {
 			setVisibility(View.INVISIBLE);
 			days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_out));
 		}
-		
+
 		private void daySwitch(int d) {
 			LinkedList<Date> days = sched.getDays();
 			int i, cur = -1;
 			for (i = 0; i < days.size(); i ++)
 				if (sched.getDay().equals(days.get(i)))
 					cur = i;
-			
+
 			sched.getDb().setDay((cur + d + days.size()) % days.size());
 			redrawSchedule();
 		}
