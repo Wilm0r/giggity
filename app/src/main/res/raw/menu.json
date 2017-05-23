@@ -387,6 +387,94 @@
 				],
 				"icon": "https://www.opensouthcode.org/logo.png"
 			}
+		},
+		{
+			"version": 2017230500,
+			"url": "http://open-event-dev.herokuapp.com/e/906f86d6/schedule/calendar.ics",
+			"title": "Schedule for sessions at FOSSASIA 2016",
+			"start": "2016-08-10",
+			"end": "2016-08-12",
+			"metadata": {
+				"icon": "https://raw.githubusercontent.com/fossasia/open-event-android/development/android/app/src/main/res/drawable/splash_logo.png",
+				"links": [
+					{
+						"url": "http://fossasia.org",
+						"title": "Website"
+					}
+				],
+				"rooms": [
+
+					{
+						"name": "Dalton Hall",
+						"latlon": [1.333169, 103.735516]
+
+					},
+					{
+						"name": "Lewis Lab",
+						"latlon": [1.332835, 103.735677]
+					},
+					{
+						"name": "Digital Design Studio",
+						"latlon": [1.332668, 103.735725]
+					},
+					{
+						"name": "Digital Design Studio",
+						"latlon": [1.332835, 103.735677]
+					},
+					{
+						"name": "Observatory Room",
+						"latlon": [1.332913, 103.735716]
+					},
+					{
+						"name": "Eco Garden Lab",
+						"latlon": [null, null]
+					},
+					{
+						"name": "Planck Lab",
+						"latlon": [1.332782, 103.736022]
+					},
+					{
+						"name": "Faraday Lab",
+						"latlon": [1.332587, 103.735938]
+					},
+					{
+						"name": "Pauling Lab",
+						"latlon": [1.332636, 103.735806]
+					},
+					{
+						"name": "Fermi Lab",
+						"latitude": [1.332768, 103.736008]
+					},
+					{
+						"name": "Herschel Lab",
+						"latlon": [1.332591, 103.735792]
+					},
+					{
+						"name": "Einstein Room",
+						"latlon": [1.332768, 103.736008]
+					},
+					{
+						"name": "Einstein Hall",
+						"latlon": [1.333081, 103.735698]
+					},
+					{
+						"name": "Tinkering Studio",
+						"latlon": [1.333266, 103.735214]
+					},
+					{
+						"name": "Observatory Room",
+						"latlon": [1.332689, 103.735733]
+					},
+					{
+						"name": "Eco Garden Lab",
+						"latlon": [1.33276, 103.736165]
+					},
+					{
+						"name": "Ground Floor, Scientist For a day, Hall A",
+						"latlon": [1.333192, 103.735154]
+					}
+				]
+			}
 		}
 	]
 }
