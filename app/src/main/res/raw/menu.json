@@ -401,13 +401,11 @@
 						"title": "Website"
 					}
 				],
-              "icon": "https://raw.githubusercontent.com/fossasia/open-event-android/development/android/app/src/main/res/drawable/splash_logo.png",
-              "rooms": [
-
+				"icon": "http://i1305.photobucket.com/albums/s557/vantablack/48bb3c62-1c06-49c9-ad22-dc87c14a39dd_zpssimyiee5.png",
+				"rooms": [
 					{
 						"name": "Dalton Hall",
 						"latlon": [1.333169, 103.735516]
-
 					},
 					{
 						"name": "Lewis Lab",
@@ -424,10 +422,6 @@
 					{
 						"name": "Observatory Room",
 						"latlon": [1.332913, 103.735716]
-					},
-					{
-						"name": "Eco Garden Lab",
-						"latlon": [null, null]
 					},
 					{
 						"name": "Planck Lab",
