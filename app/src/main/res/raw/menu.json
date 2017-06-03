@@ -387,6 +387,90 @@
 				],
 				"icon": "https://www.opensouthcode.org/logo.png"
 			}
+		},
+		{
+			"version": 2017230500,
+			"url": "https://raw.githubusercontent.com/heysadboy/Giggity-Parser/master/Parser/sample.xml",
+			"title": "FOSSASIA 2016",
+			"start": "2016-08-10",
+			"end": "2016-08-12",
+			"metadata": {
+				"links": [
+					{
+						"url": "http://fossasia.org",
+						"title": "Website"
+					}
+				],
+				"icon": "http://i1305.photobucket.com/albums/s557/vantablack/48bb3c62-1c06-49c9-ad22-dc87c14a39dd_zpssimyiee5.png",
+				"rooms": [
+					
+					{
+						"name": "Dalton Hall", 
+						"latlon": [1.333169, 103.735516] 
+						
+					}, 
+					{
+						"name": "Lewis Lab",  
+						"latlon": [1.332835, 103.735677] 
+					}, 
+					{ 
+						"name": "Digital Design Studio", 
+						"latlon": [1.332668, 103.735725] 
+					}, 
+					{
+						"name": "Digital Design Studio",  
+						"latlon": [1.332835, 103.735677] 
+					}, 
+					{
+						"name": "Observatory Room",  
+						"latlon": [1.332913, 103.735716] 
+					}, 
+					{
+						"name": "Planck Lab",  
+						"latlon": [1.332782, 103.736022]
+					}, 
+					{
+						"name": "Faraday Lab",  
+						"latlon": [1.332587, 103.735938] 
+					}, 
+					{
+						"name": "Pauling Lab",  
+						"latlon": [1.332636, 103.735806] 
+					}, 
+					{
+						"name": "Fermi Lab",  
+						"latitude": [1.332768, 103.736008] 
+					}, 
+					{
+						"name": "Herschel Lab",  
+						"latlon": [1.332591, 103.735792] 
+					}, 
+					{
+						"name": "Einstein Room",  
+						"latlon": [1.332768, 103.736008]
+					}, 
+					{
+						"name": "Einstein Hall",  
+						"latlon": [1.333081, 103.735698] 
+					}, 
+					{
+						"name": "Tinkering Studio",  
+						"latlon": [1.333266, 103.735214] 
+					}, 
+					{
+						"name": "Observatory Room",  
+						"latlon": [1.332689, 103.735733]
+					}, 
+					{
+						"name": "Eco Garden Lab",  
+						"latlon": [1.33276, 103.736165] 
+					}, 
+					{
+						"name": "Ground Floor, Scientist For a day, Hall A",  
+						"latlon": [1.333192, 103.735154] 
+					}
+				]
+			}
 		}
 	]
 }
