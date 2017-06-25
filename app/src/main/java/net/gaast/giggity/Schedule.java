@@ -559,8 +559,8 @@ public class Schedule {
 			}
 
 		} catch (JSONException e) {
-			Log.w("JSON parsing", " Unable to parse ", e);
 			e.printStackTrace();
+			throw new LoadException("Parse error: " + e);
 		}
 	}
 
