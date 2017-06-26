@@ -534,7 +534,7 @@ public class Schedule {
 
 				//Getting value (latitude and longitude) from the map by key (name)
 
-				if (hasMicrolocs) {
+				if (hasMicrolocs && line.getTitle()!=null && !line.getTitle().equals("")) {
 					String locString = locs.get(line.getTitle());
 					String latitude = locString.substring(0, locString.indexOf(','));
 					String longitude = locString.substring(locString.indexOf(',') + 1);
