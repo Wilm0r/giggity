@@ -428,8 +428,8 @@ public class Schedule {
 	private void loadJson(BufferedReader in) {
 
 		StringBuffer buffer = new StringBuffer();
-		SimpleDateFormat df = new SimpleDateFormat();
-		HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
 		Boolean hasMicrolocs = false;
 		Scanner s = new Scanner(in);
 		HashMap<String, String> locs = new HashMap<>();
@@ -512,15 +512,28 @@ public class Schedule {
 				String startTimeS = event.getString("start_time");
 				String endTimeS = event.getString("end_time");
 				Date startTime, endTime;
-				startTime = new Date(getTimeInMillis(startTimeS));
-				endTime = new Date(getTimeInMillis(endTimeS));
-				Schedule.Item item = new Schedule.Item(uid, title, startTime, endTime);
+
+                startTimeS = startTimeS.replace('T', ' ');
+                if (startTimeS.contains("+")) {
+                    startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('+'));
+                }
+                startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('-'));
+
+                endTimeS = endTimeS.replace('T', ' ');
+                if (endTimeS.contains("+")) {
+                    endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('+'));
+                }
+                endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('-'));
+
+                startTime = df.parse(startTimeS);
+                endTime = df.parse(endTimeS);
+
+                Schedule.Item item = new Schedule.Item(uid, title, startTime, endTime);
 				item.setDescription(event.getString("long_abstract"));
 
 				if (event.getString("signup_url") != "null") {
 					item.addLink(new Link(event.getString("signup_url")));
 				}
-
 
 				JSONObject microlocation = event.getJSONObject("microlocation");
 				String location = microlocation.getString("name");
@@ -530,7 +543,6 @@ public class Schedule {
 					tents.add(line);
 					tentMap.put(location, line);
 				}
-
 
 				//Getting value (latitude and longitude) from the map by key (name)
 
@@ -561,32 +573,10 @@ public class Schedule {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			throw new LoadException("Parse error: " + e);
-		}
-	}
-
-	private long getTimeInMillis(String timeString) {
-		GregorianCalendar calender = new GregorianCalendar();
-		String[] DateTime = new String[2];
-		String[] Date = new String[3];
-		String[] Time = new String[3];
-		DateTime = timeString.split("T");
-		Date = DateTime[0].split("-");
-		Time = DateTime[1].split(":");
-
-		//To avoid error in open event JSON format
-		if (Time[2].contains("+")) {
-			Time[2] = Time[2].substring(0, Time[2].indexOf('+'));
-		}
-
-		int year = Integer.parseInt(Date[0]);
-		int month = Integer.parseInt(Date[1]);
-		int date = Integer.parseInt(Date[2]);
-		int hour = Integer.parseInt(Time[0]);
-		int min = Integer.parseInt(Time[1]);
-		int sec = Integer.parseInt(Time[2]);
-		calender.set(year, month, date, hour, min, sec);
-		return calender.getTimeInMillis();
-	}
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 	/** OOB metadata related to schedule but separately supplied by BitlBee (it's non-standard) gets merged here.
 	  I should see whether I could get support for this kind of data into the Pentabarf format. */
