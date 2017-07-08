@@ -428,7 +428,7 @@ public class Schedule {
 	private void loadJson(BufferedReader in) {
 
 		StringBuffer buffer = new StringBuffer();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
 		Boolean hasMicrolocs = false;
 		Scanner s = new Scanner(in);
@@ -513,13 +513,11 @@ public class Schedule {
 				String endTimeS = event.getString("end_time");
 				Date startTime, endTime;
 
-                startTimeS = startTimeS.replace('T', ' ');
                 if (startTimeS.contains("+")) {
                     startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('+'));
                 }
                 startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('-'));
 
-                endTimeS = endTimeS.replace('T', ' ');
                 if (endTimeS.contains("+")) {
                     endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('+'));
                 }
