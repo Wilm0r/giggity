@@ -1170,7 +1170,8 @@ public class Schedule {
 				// TODO: IMHO the separation between these two is not used in a meaningful way my most,
 				// or worse, description is just a copy of abstract. Some heuristics would be helpful.
 				if ((s = propMap.get("abstract")) != null &&
-				    !Giggity.fuzzyStarsWith(propMap.get("abstract"), propMap.get("description"))) {
+				    (!propMap.containsKey("description") ||
+				     !Giggity.fuzzyStartsWith(propMap.get("abstract"), propMap.get("description")))) {
 					s = s.replaceAll("\n*$", "");
 					desc += s + "\n\n";
 				}
