@@ -310,8 +310,8 @@ public class Schedule {
 			} else if (head.contains("begin:vcalendar")) {
 				loadIcal(in);
 			} else if (head.contains("{")) {
-                loadJson(in);
-            } else {
+				loadJson(in);
+			} else {
 				Log.d("head", head);
 				throw new LoadException(app.getString(R.string.format_unknown));
 			}
@@ -428,8 +428,8 @@ public class Schedule {
 	private void loadJson(BufferedReader in) {
 
 		StringBuffer buffer = new StringBuffer();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
 		Boolean hasMicrolocs = false;
 		Scanner s = new Scanner(in);
 		HashMap<String, String> locs = new HashMap<>();
@@ -482,7 +482,7 @@ public class Schedule {
 
 			if (conference.has("microlocations")) {
 
-                /*Changing the flag after checking the organizer is using with microlocations
+				/*Changing the flag after checking the organizer is using with microlocations
 				options enabled*/
 
 				hasMicrolocs = true;
@@ -507,26 +507,26 @@ public class Schedule {
 				String uid = event.getString("id");
 				String title = event.getString("title");
 
-                /*Our date format is different and I changed getTimeInMillis() a bit to ignore "+08"
+				/*Our date format is different and I changed getTimeInMillis() a bit to ignore "+08"
 				in second part to avoid error in integer parsing*/
 				String startTimeS = event.getString("start_time");
 				String endTimeS = event.getString("end_time");
 				Date startTime, endTime;
 
-                if (startTimeS.contains("+")) {
-                    startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('+'));
-                }
-                startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('-'));
+				if (startTimeS.contains("+")) {
+					startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('+'));
+				}
+				startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('-'));
 
-                if (endTimeS.contains("+")) {
-                    endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('+'));
-                }
-                endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('-'));
+				if (endTimeS.contains("+")) {
+					endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('+'));
+				}
+				endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('-'));
 
-                startTime = df.parse(startTimeS);
-                endTime = df.parse(endTimeS);
+				startTime = df.parse(startTimeS);
+				endTime = df.parse(endTimeS);
 
-                Schedule.Item item = new Schedule.Item(uid, title, startTime, endTime);
+				Schedule.Item item = new Schedule.Item(uid, title, startTime, endTime);
 				item.setDescription(event.getString("long_abstract"));
 
 				if (event.getString("signup_url") != "null") {
@@ -571,10 +571,10 @@ public class Schedule {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			throw new LoadException("Parse error: " + e);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-    }
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/** OOB metadata related to schedule but separately supplied by BitlBee (it's non-standard) gets merged here.
 	  I should see whether I could get support for this kind of data into the Pentabarf format. */
@@ -1302,9 +1302,9 @@ public class Schedule {
 			return location;
 		}
 
-        public void setLocation(String location) {
-            this.location = location;
-        }
+		public void setLocation(String location) {
+			this.location = location;
+		}
 	}
 	
 	public class Item implements Comparable<Item> {
