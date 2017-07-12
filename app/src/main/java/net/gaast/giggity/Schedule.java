@@ -65,6 +65,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -308,7 +309,9 @@ public class Schedule {
 				loadDeox(in);
 			} else if (head.contains("begin:vcalendar")) {
 				loadIcal(in);
-			} else {
+			} else if (head.contains("{")) {
+                loadJson(in);
+            } else {
 				Log.d("head", head);
 				throw new LoadException(app.getString(R.string.format_unknown));
 			}
@@ -420,6 +423,158 @@ public class Schedule {
 			throw new LoadException("Parse error: " + e);
 		}
 	}
+
+	/*Reading the JSON open event format data fetched from the API end point*/
+	private void loadJson(BufferedReader in) {
+
+		StringBuffer buffer = new StringBuffer();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
+		Boolean hasMicrolocs = false;
+		Scanner s = new Scanner(in);
+		HashMap<String, String> locs = new HashMap<>();
+
+		while (s.hasNext()) {
+			buffer.append(s.nextLine());
+
+		}
+
+		String output = buffer.toString();
+		Schedule.Line line = null;
+
+		try {
+
+			JSONObject conference = new JSONObject(output);
+			int i;
+
+			//Using this title name so the user doesn't see URL when she clicks back
+			title = conference.getString("name");
+
+			if (conference.has("logo")) {
+				icon = conference.getString("logo");
+			}
+
+			links = new LinkedList<>();
+
+			//Adding website separately because it is not in social_links
+			if (conference.has("event_url")) {
+				Schedule.Link slink = new Link(conference.getString("event_url"), "Website");
+				links.addLast(slink);
+			}
+
+			//Adding ticket url separately because it is not in social_links
+			if (conference.has("ticket_url")) {
+				Schedule.Link slink = new Link(conference.getString("ticket_url"), "Ticket URL");
+				links.addLast(slink);
+			}
+
+			//Using social links of the event like facebook, google+, etc.
+			if (conference.has("social_links")) {
+				JSONArray linklist = conference.getJSONArray("social_links");
+				for (i = 0; i < linklist.length(); ++i) {
+					JSONObject link = linklist.getJSONObject(i);
+					Schedule.Link slink = new Link(link.getString("link"), link.getString("name"));
+					slink.setType(link.optString("type", null));
+					links.addLast(slink);
+				}
+			}
+
+
+			if (conference.has("microlocations")) {
+
+                /*Changing the flag after checking the organizer is using with microlocations
+				options enabled*/
+
+				hasMicrolocs = true;
+
+				//Getting microlocations to add latitude and longitude
+				JSONArray microlocations = conference.getJSONArray("microlocations");
+
+				for (i = 0; i < microlocations.length(); i++) {
+
+					JSONObject room = microlocations.getJSONObject(i);
+					locs.put(room.getString("name"), room.getString("longitude") + "," + room.getString("latitude"));
+				}
+			}
+
+
+			//The sessions are contained in the array present in an object
+			JSONArray events = conference.getJSONArray("sessions");
+
+			for (i = 0; i < events.length(); i++) {
+
+				JSONObject event = events.getJSONObject(i);
+				String uid = event.getString("id");
+				String title = event.getString("title");
+
+                /*Our date format is different and I changed getTimeInMillis() a bit to ignore "+08"
+				in second part to avoid error in integer parsing*/
+				String startTimeS = event.getString("start_time");
+				String endTimeS = event.getString("end_time");
+				Date startTime, endTime;
+
+                if (startTimeS.contains("+")) {
+                    startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('+'));
+                }
+                startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('-'));
+
+                if (endTimeS.contains("+")) {
+                    endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('+'));
+                }
+                endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('-'));
+
+                startTime = df.parse(startTimeS);
+                endTime = df.parse(endTimeS);
+
+                Schedule.Item item = new Schedule.Item(uid, title, startTime, endTime);
+				item.setDescription(event.getString("long_abstract"));
+
+				if (event.getString("signup_url") != "null") {
+					item.addLink(new Link(event.getString("signup_url")));
+				}
+
+				JSONObject microlocation = event.getJSONObject("microlocation");
+				String location = microlocation.getString("name");
+
+				if ((line = tentMap.get(location)) == null) {
+					line = new Schedule.Line(location, location);
+					tents.add(line);
+					tentMap.put(location, line);
+				}
+
+				//Getting value (latitude and longitude) from the map by key (name)
+
+				if (hasMicrolocs && line.getTitle()!=null && !line.getTitle().equals("")) {
+					String locString = locs.get(line.getTitle());
+					String latitude = locString.substring(0, locString.indexOf(','));
+					String longitude = locString.substring(locString.indexOf(',') + 1);
+
+					//Adding location details here
+					String latlon = null;
+					try {
+						latlon = ("geo:0,0?q=" + longitude + "," +
+								latitude + "(" +
+								URLEncoder.encode(line.getTitle(), "utf-8") + ")");
+					} catch (UnsupportedEncodingException e) {
+						e.printStackTrace();
+					}
+
+
+					if (latlon != null) {
+						line.setLocation(latlon);
+					}
+				}
+
+				line.addItem(item);
+			}
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+			throw new LoadException("Parse error: " + e);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
 
 	/** OOB metadata related to schedule but separately supplied by BitlBee (it's non-standard) gets merged here.
 	  I should see whether I could get support for this kind of data into the Pentabarf format. */
@@ -1146,6 +1301,10 @@ public class Schedule {
 		public String getLocation() {
 			return location;
 		}
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
 	}
 	
 	public class Item implements Comparable<Item> {
