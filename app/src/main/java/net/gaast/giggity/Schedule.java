@@ -789,10 +789,10 @@ public class Schedule {
 				try {
 					f = new Fetcher(app, getIconUrl(), Fetcher.Source.ONLINE);
 				} catch (IOException e) {
-					Log.e("getIconDrawable", "Fetch error: " + e);
+					Log.e("getIconStream", "Fetch error: " + e);
 					return;
 				}
-				if (Drawable.createFromStream(f.getStream(), "") != null) {
+				if (BitmapFactory.decodeStream(f.getStream()) != null) {
 					/* Throw-away decode seems to have worked so instruct Fetcher to keep cached. */
 					f.keep();
 				}
