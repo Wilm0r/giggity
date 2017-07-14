@@ -802,22 +802,25 @@ public class Schedule {
 		return null;
 	}
 
-	public Drawable getIconDrawable() {
-		InputStream stream = getIconStream();
-		if (stream != null) {
-			return Drawable.createFromStream(stream, getIconUrl());
-		} else {
-			return null;
-		}
-	}
-
 	public Bitmap getIconBitmap() {
 		InputStream stream = getIconStream();
+		Bitmap ret = null;
 		if (stream != null) {
-			return BitmapFactory.decodeStream(stream);
-		} else {
-			return null;
+			ret = BitmapFactory.decodeStream(stream);
+			if (ret == null) {
+				Log.w("getIconBitmap", "Discarding unparseable file");
+				return null;
+			}
+			if (ret.getHeight() > 512 || ret.getHeight() != ret.getWidth()) {
+				Log.w("getIconBitmap", "Discarding, icon not square or >512 pixels");
+				return null;
+			}
+			if (!ret.hasAlpha()) {
+				Log.w("getIconBitmap", "Discarding, no alpha layer");
+				return null;
+			}
 		}
+		return ret;
 	}
 
 	/* Some "proprietary" file format I started with. Actually the most suitable when I

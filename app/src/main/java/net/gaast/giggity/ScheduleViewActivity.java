@@ -42,6 +42,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.TransactionTooLargeException;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -807,6 +808,10 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void addHomeShortcut() {
+		addHomeShortcut(true);
+	}
+
+	private void addHomeShortcut(boolean with_icon) {
 		Intent shortcut = new Intent(Intent.ACTION_VIEW, Uri.parse(sched.getUrl()), this, ScheduleViewActivity.class);
 		/* Make sure no other activities/events are in the activity stack anymore if the user uses
 		   this shortcut as they're probably not interested in unrelated events at that point. */
@@ -815,14 +820,26 @@ public class ScheduleViewActivity extends Activity {
 		Intent intent = new Intent();
 		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
 		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, sched.getTitle());
-		Bitmap bmp = sched.getIconBitmap();
-		if (bmp != null) {
-			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bmp);
-		} else {
+		Bitmap bmp = null;
+		if (with_icon) {
+			bmp = sched.getIconBitmap();
+			if (bmp != null) {
+				intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bmp);
+			}
+		}
+		if (bmp == null) {
 			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(this, R.drawable.deoxide_icon));
 		}
 		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-		sendBroadcast(intent);
+		try {
+			sendBroadcast(intent);
+		} catch (java.lang.RuntimeException e) {
+			if (e.getCause() instanceof android.os.TransactionTooLargeException) {
+				addHomeShortcut(false);
+			} else {
+				throw e;
+			}
+		}
 	}
 
 	public void onScroll() {
