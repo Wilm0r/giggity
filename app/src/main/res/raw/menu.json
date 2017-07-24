@@ -42,6 +42,11 @@
 						"url": "https://wiki.debconf.org/upload/8/88/DebConf17_venue_layout.png",
 						"title": "Map",
 						"type": "image/png"
+					},
+					{
+						"url": "https://debconf17.debconf.org/static/docs/welcome.pdf",
+						"title": "Welcome Guide",
+						"type": "application/pdf"
 					}
 				]
 			}
