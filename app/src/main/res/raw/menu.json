@@ -1,5 +1,5 @@
 {
-	"version": 2017071200,
+	"version": 2017072400,
 	"schedules": [
 		{
 			"version": 2016062701,
@@ -17,6 +17,36 @@
 						"url": "https://debconf16.debconf.org/static/img/giggity-map.png",
 						"title": "Map",
 						"type": "image/png"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017072400,
+			"url": "https://debconf17.debconf.org/schedule/pentabarf.xml",
+			"title": "DebConf17",
+			"start": "2017-08-05",
+			"end": "2017-08-12",
+			"metadata": {
+				"icon": "https://debconf17.debconf.org/static/img/favicon/favicon-180.ea5f30d24599.png",
+				"links": [
+					{
+						"url": "https://debconf17.debconf.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://wiki.debconf.org/wiki/DebConf17",
+						"title": "Wiki"
+					},
+					{
+						"url": "https://wiki.debconf.org/upload/8/88/DebConf17_venue_layout.png",
+						"title": "Map",
+						"type": "image/png"
+					},
+					{
+						"url": "https://debconf17.debconf.org/static/docs/welcome.pdf",
+						"title": "Welcome Guide",
+						"type": "application/pdf"
 					}
 				]
 			}
