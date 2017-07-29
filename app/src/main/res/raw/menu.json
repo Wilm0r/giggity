@@ -1,5 +1,5 @@
 {
-	"version": 2017072400,
+	"version": 2017072500,
 	"schedules": [
 		{
 			"version": 2016062701,
@@ -113,38 +113,6 @@
 					{
 						"url": "https://2016.guadec.org/venue/",
 						"title": "Venue"
-					}
-				]
-			}
-		},
-		{
-			"version": 2016081902,
-			"url": "https://programm.froscon.de/2016/schedule.xml",
-			"title": "FrOSCon 2016",
-			"start": "2016-08-20",
-			"end": "2016-08-21",
-			"metadata": {
-				"links": [
-					{
-						"url": "http://www.froscon.org/",
-						"title": "Website"
-					},
-					{
-						"url": "https://www.froscon.de/fileadmin/user_upload/floorplan2016.pdf",
-						"title": "Map",
-						"type": "application/pdf"
-					},
-					{
-						"url": "https://www.froscon.de/en/news/",
-						"title": "News"
-					},
-					{
-						"url": "http://streaming.media.ccc.de/",
-						"title": "Streams"
-					},
-					{
-						"url": "http://froscon.tv/",
-						"title": "Recordings"
 					}
 				]
 			}
@@ -453,6 +421,29 @@
 			"start" : "2017-07-28",
 			"end" : "2017-07-30",
 			"version" : 2017071200
+		},
+		{
+			"version": 2017072500,
+			"url": "https://programm.froscon.de/2017/schedule.xml",
+			"title": "FrOSCon 2017",
+			"start": "2017-08-19",
+			"end": "2017-08-20",
+			"metadata": {
+				"links": [
+					{
+						"url": "http://www.froscon.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.froscon.de/en/news/",
+						"title": "News"
+					},
+					{
+						"url": "http://froscon.tv/",
+						"title": "Recordings"
+					}
+				]
+			}
 		}
 	]
 }
