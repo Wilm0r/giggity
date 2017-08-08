@@ -154,6 +154,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 						setProgressBarIndeterminateVisibility(false);
 						setProgressBarVisibility(false);
+						refresher.setRefreshing(false);
 					}
 				}
 			};
@@ -178,9 +179,14 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 	@Override
 	public void onRefresh() {
+		/* I guess it's reasonable to have a main menu refresh include a refresh of any to be opened
+		   schedule files.
+		 */
+		Giggity app = (Giggity) getApplication();
+		app.flushSchedules();
+
 		refresher.setRefreshing(true);
 		refreshSeed(true);
-		refresher.setRefreshing(false);
 	}
 
 	@Override
