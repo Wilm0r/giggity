@@ -16,14 +16,14 @@
     
 	<string name="block_schedule_style">Style</string>
 	<string name="block_schedule">Grille</string>
-	<string name="block_schedule_element_size_sub">Taille d'un bloc de la grille</string>
+	<string name="block_schedule_element_size_sub">Taille d\'un bloc de la grille</string>
 	<string name="block_schedule_element_size">Taille de bloc</string>
 
-	<string name="reminder">Rappel d'évènements</string>
+	<string name="reminder">Rappel d\'évènements</string>
 	<string name="reminder_enabled_sub_on">Me rappeler les évènements sélectionnés</string>
 	<string name="reminder_enabled_sub_off">Ne pas me rappeler les évènements sélectionnés</string>
 	<string name="reminder_enabled">Activer les rappels</string>
-	<string name="reminder_period">Minutes avant l'évènement</string>
+	<string name="reminder_period">Minutes avant l\'évènement</string>
 	
 	<!-- EventDialog -->
 	<string name="speaker">Conférencier :</string>
@@ -45,7 +45,7 @@
 	<string name="loading_error">Erreur lors du chargement</string>
 	<string name="no_viewer_error">Aucune application ne prend en charge ce type de fichier</string>
 	<string name="export_selections">Exporter les sélections</string>
-	<string name="home_shortcut">Raccourci sur l'accueil</string>
+	<string name="home_shortcut">Raccourci sur l\'accueil</string>
 	<string name="import_selections">Importer les selections</string>
 	<string name="no_selections">Aucune selection à exporter</string>
 	<string name="qr_tip">Veuillez utiliser le bouton scan QR scan du menu principal sur votre autre appareil pour importer ceci</string>
@@ -84,13 +84,13 @@
 	<string name="refresh">Mettre à jour</string>
 	<string name="unhide">Montrer les items cachés</string>
 	<string name="remove">Supprimer</string>
-	<string name="show_url">Montrer l'URL...</string>
+	<string name="show_url">Montrer l\'URL...</string>
 	<string name="chooser_now">Évènement courant :</string>
 	<string name="chooser_later">Évènements à venir :</string>
 	<string name="chooser_past">Évènements précédents :</string>
 	<string name="add_dialog">Ajout...</string>
 	<string name="qr_scan">Scan QR</string>
-	<string name="enter_url">Entrez l'URL du programme</string>
+	<string name="enter_url">Entrez l\'URL du programme</string>
 
 	<!-- Reminder -->
 	<string name="soon_in">Bientôt dans</string>
