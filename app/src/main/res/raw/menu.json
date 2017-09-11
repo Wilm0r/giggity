@@ -472,5 +472,43 @@
 				]
 			}
 		}
+		{
+			"version": 2017090500,
+			"url": "https://cfp.pycon.fr/schedule/xml/",
+			"title": "PyConFR 2017",
+			"start": "2017-09-21",
+			"end": "2017-09-24",
+			"metadata": {
+				"icon": "https://www.pycon.fr/2017/theme/images/icon2017.png",
+				"links": [
+					{
+						"url": "https://www.pycon.fr/2017/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://www.eventbrite.fr/e/billets-pycon-fr-2017-a-toulouse-37380880219",
+						"title": "Inscription"
+					},
+					{
+						"url": "https://www.pycon.fr/2017/pages/venir.html",
+						"title": "Venir"
+					}
+				],
+				"rooms": [
+					{
+						"name": "A.*",
+						"latlon": [43.60248, 1.45464]
+					},
+					{
+						"name": "B.*",
+						"latlon": [43.60247, 1.45566]
+					},
+					{
+						"name": "C.*",
+						"latlon": [43.60214, 1.45462]
+					}
+				]
+			}
+		}
 	]
 }
