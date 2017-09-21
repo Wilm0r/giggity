@@ -389,8 +389,9 @@ public class Schedule {
 					continue;
 				} else if (line.contains(":")) {
 					String split[] = line.split(":", 2);
+					String props[] = split[0].split(";");
 					String key, value;
-					key = split[0].toLowerCase();
+					key = props[0].toLowerCase();
 					value = split[1];
 					if (key.equals("begin")) {
 						/* Some blocks (including vevent, the only one we need)
@@ -399,13 +400,19 @@ public class Schedule {
 					} else if (key.equals("end")) {
 						p.endElement("", value.toLowerCase(), "");
 					} else {
-						/* Chop off attributes. Could pass them but not reading them anyway. */
-						if (key.contains(";"))
-							key = key.substring(0, key.indexOf(";"));
+						AttributesImpl attrs = new AttributesImpl();
+						int i;
+						for (i = 1; i < props.length; ++i) {
+							String prop[] = props[i].split("=");
+							prop[0] = prop[0].toLowerCase();
+							if (prop[1].startsWith("\""))
+								prop[1] = prop[1].substring(1, prop[1].length() - 1);
+							attrs.addAttribute("", "", prop[0], "", prop[1]);
+						}
 						value = value.replace("\\n", "\n").replace("\\,", ",")
 						             .replace("\\;", ";").replace("\\\\", "\\");
 						/* Fake <key>value</key> */
-						p.startElement("", key, "", null);
+						p.startElement("", key, "", attrs);
 						p.characters(value.toCharArray(), 0, value.length());
 						p.endElement("", key, "");
 					}
