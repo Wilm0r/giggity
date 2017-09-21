@@ -955,6 +955,11 @@ public class Schedule {
 			if (localName.equals("vevent")) {
 				eventData = new HashMap<>();
 			}
+			if (localName.equals("attendee")) {
+				if (atts.getValue("role") == "REQ-PARTICIPANT")
+					eventData.put("speaker", new String(atts.getValue("cn")));
+					// TODO: handle more than one?
+			}
 		}
 	
 		@Override
@@ -996,6 +1001,10 @@ public class Schedule {
 				
 				if ((s = eventData.get("url")) != null) {
 					item.addLink(new Link(s));
+				}
+
+				if ((s = eventData.get("speaker")) != null) {
+					item.addSpeaker(s);
 				}
 
 				if ((line = tentMap.get(location)) == null) {
