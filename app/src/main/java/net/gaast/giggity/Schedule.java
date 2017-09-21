@@ -39,6 +39,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -69,6 +70,8 @@ import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -99,6 +102,8 @@ public class Schedule {
 	 * nice if some file formats could start supplying this info themselves. */
 	private String icon;
 	private LinkedList<Link> links;
+	/* regex to match speaker & title in ICS summary */
+	private String speakerMatch;
 
 	/* For fetching the icon file in the background. */
 	private Thread iconFetcher;
@@ -271,6 +276,7 @@ public class Schedule {
 
 		icon = null;
 		links = null;
+		speakerMatch = null;
 
 		String head;
 		Fetcher f = null;
@@ -593,6 +599,9 @@ public class Schedule {
 			md = new JSONObject(md_json);
 			if (md.has("icon")) {
 				icon = md.getString("icon");
+			}
+			if (md.has("speakermatch")) {
+				speakerMatch = md.getString("speakermatch");
 			}
 			if (md.has("links")) {
 				links = new LinkedList<>();
@@ -928,6 +937,7 @@ public class Schedule {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
 		private String curString;
+		private Pattern speakerPattern;
 
 		SimpleDateFormat dfUtc, dfLocal;
 
@@ -936,6 +946,10 @@ public class Schedule {
 			dfUtc = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
 			dfUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
 			dfLocal = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+			speakerPattern = null;
+			if (speakerMatch != null) {
+				speakerPattern = Pattern.compile(speakerMatch);
+			}
 		}
 
 		private Date parseTime(String s) throws ParseException {
@@ -991,6 +1005,15 @@ public class Schedule {
 				} catch (ParseException e) {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
 					return;
+				}
+
+				/* some conferences fit speaker names in the summary... */
+				if (speakerPattern != null) {
+					Matcher m = speakerPattern.matcher(name);
+					if (m.groupCount() > 0) {
+						eventData.put("speaker", m.group(1));
+						name = name.replace(m.group(0), "");
+					}
 				}
 
 				item = new Schedule.Item(uid, name, startTime, endTime);
