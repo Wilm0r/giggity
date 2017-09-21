@@ -471,6 +471,27 @@
 					}
 				]
 			}
+		},
+		{
+			"version": 2017100400,
+			"url": "http://revolf.free.fr/conferences-parisweb-2017.fixed.ics",
+			"title": "Paris Web 2017",
+			"id": "Conf\u00E9rences Paris Web 2017",
+			"speakermatch": " \u2014 (.*)",
+			"start": "2017-10-05",
+			"end": "2017-10-06",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.paris-web.fr/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://inscriptions.paris-web.fr/",
+						"title": "Tarifs et inscription"
+					}
+				]
+			}
 		}
 	]
 }
