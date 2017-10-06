@@ -1,5 +1,5 @@
 {
-	"version": 2017093000,
+	"version": 2017100700,
 	"schedules": [
 		{
 			"id": "MOCA 2016",
@@ -63,26 +63,6 @@
 					{
 						"url": "https://2016.guadec.org/venue/",
 						"title": "Venue"
-					}
-				]
-			}
-		},
-		{
-			"version": 2016082600,
-			"url": "https://vcfb.de/2016/schedule.xml",
-			"title": "Vintage Computing Festival Berlin 2016",
-			"start": "2016-10-02",
-			"end": "2016-10-03",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://vcfb.de/2016/",
-						"title": "Website"
-					},
-					{
-						"url": "http://vcfb.de/2016/images/raumplan_bunt_2016.png",
-						"title": "Map",
-						"type": "image/png"
 					}
 				]
 			}
@@ -507,6 +487,26 @@
 					{
 						"latlon": [50.105047, 14.390432],
 						"name": "111"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017100700,
+			"url": "https://vcfb.de/2017/schedule.xml",
+			"title": "Vintage Computing Festival Berlin 2017",
+			"start": "2017-10-07",
+			"end": "2017-10-08",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://vcfb.de/2017/index.html.en",
+						"title": "Website"
+					},
+					{
+						"url": "http://vcfb.de/2017/images/raumplan_bunt_2017_rotiert_en.png",
+						"title": "Map",
+						"type": "image/png"
 					}
 				]
 			}
