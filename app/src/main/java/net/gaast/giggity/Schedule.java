@@ -22,7 +22,6 @@ package net.gaast.giggity;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
@@ -69,6 +68,8 @@ import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
@@ -940,7 +941,33 @@ public class Schedule {
 			}
 			throw new ParseException("Unparseable date: " + s, 0);
 		}
-		
+
+		/* Yay I'll just write my own parser... Spec is at https://www.kanzaki.com/docs/ical/duration-t.html
+		   Don't feel like importing a non-GPL library for just this. Also, returning an int (seconds) instead
+		   of some kind of timedelta since the Java/Android version I'm targeting (<8?) doesn't have one yet.
+		 */
+		private int parseDuration(String durSpec) {
+			int ret = 0;
+			Matcher m = Pattern.compile("(\\d+)([WDHMS])").matcher(durSpec);
+			while (m.find()) {
+				int bit = Integer.parseInt(m.group(1));
+				/* break missing intentionally everywhere below. You'll see why. */
+				switch (m.group(2)) {
+					case "W":
+						bit *= 7;
+					case "D":
+						bit *= 24;
+					case "H":
+						bit *= 60;
+					case "M":
+						bit *= 60;
+				}
+				ret += bit;
+			}
+			Log.d("parseDuration", durSpec + ": " + ret + " seconds");
+			return ret;
+		}
+
 		@Override
 		public void startElement(String uri, String localName, String qName,
 				Attributes atts) throws SAXException {
@@ -959,7 +986,7 @@ public class Schedule {
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
 			if (localName.equals("vevent")) {
-				String uid, name, location, startTimeS, endTimeS, s;
+				String uid, name, location, startTimeS, endTimeS, durationS = null, s;
 				Date startTime, endTime;
 				Schedule.Item item;
 				Schedule.Line line;
@@ -968,14 +995,19 @@ public class Schedule {
 				    (name = eventData.get("summary")) == null ||
 				    (location = eventData.get("location")) == null ||
 				    (startTimeS = eventData.get("dtstart")) == null ||
-				    (endTimeS = eventData.get("dtend")) == null) {
+				    ((endTimeS = eventData.get("dtend")) == null &&
+				     (durationS = eventData.get("duration")) == null)) {
 					Log.w("Schedule.loadXcal", "Invalid event, some attributes are missing.");
 					return;
 				}
 				
 				try {
 					startTime = parseTime(startTimeS);
-					endTime = parseTime(endTimeS);
+					if (endTimeS != null) {
+						endTime = parseTime(endTimeS);
+					} else {
+						endTime = new Date(startTime.getTime() + parseDuration(durationS) * 1000);
+					}
 				} catch (ParseException e) {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
 					return;
