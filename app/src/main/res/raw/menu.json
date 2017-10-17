@@ -526,6 +526,29 @@
 					}
 				]
 			}
+		},
+		{
+			"version": 2017101700,
+			"url": "https://frab.fscons.org/en/fscons17/public/schedule.xml",
+			"title": "FSCONS 2017",
+			"start": "2017-11-04",
+			"end": "2017-11-05",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://fscons.org/2017/",
+						"title": "Website"
+					},
+					{
+						"url": "https://fscons.org/2017/news.html",
+						"title": "News"
+					},
+					{
+						"url": "https://www.youtube.com/user/FSCONSTalks",
+						"title": "Recordings"
+					}
+				]
+			}
 		}
 	]
 }
