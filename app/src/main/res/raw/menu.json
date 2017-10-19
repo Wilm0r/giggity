@@ -1,5 +1,5 @@
 {
-	"version": 2017100800,
+	"version": 2017101900,
 	"schedules": [
 		{
 			"id": "MOCA 2016",
@@ -523,6 +523,82 @@
 					{
 						"url": "https://privacyweek.at/",
 						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017101700,
+			"url": "https://frab.fscons.org/en/fscons17/public/schedule.xml",
+			"title": "FSCONS 2017",
+			"start": "2017-11-04",
+			"end": "2017-11-05",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://fscons.org/2017/",
+						"title": "Website"
+					},
+					{
+						"url": "https://fscons.org/2017/news.html",
+						"title": "News"
+					},
+					{
+						"url": "https://www.youtube.com/user/FSCONSTalks",
+						"title": "Recordings"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017101800,
+			"url": "https://participez-2017.capitoledulibre.org/schedule/xml/",
+			"title": "Capitole du Libre 2017",
+			"start": "2017-11-18",
+			"end": "2017-11-19",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2017.capitoledulibre.org/",
+						"title": "Site web"
+					}
+				],
+				"rooms": [
+					{
+						"name": "A.*",
+						"latlon": [43.60248, 1.45464]
+					},
+					{
+						"name": "B.*",
+						"latlon": [43.60247, 1.45566]
+					},
+					{
+						"name": "C.*",
+						"latlon": [43.60214, 1.45462]
+					},
+					{
+						"name": "Foyer.*",
+						"latlon": [43.60207, 1.45591]
+					}
+				]
+			}
+		},
+		{
+			"version": 2017100900,
+			"url": "https://afup.org/event/forumphp2017/planning.ics",
+			"title": "Forum PHP 2017",
+			"id": "Forum PHP 2017",
+			"start": "2017-10-26",
+			"end": "2017-10-27",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://event.afup.org/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/forumphp2017/tickets",
+						"title": "Tarifs et inscription"
 					}
 				]
 			}
