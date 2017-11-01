@@ -602,6 +602,38 @@
 					}
 				]
 			}
-		}
+		},
+		{
+			"version": 2017110100,
+			"url": "https://www.linuxday.at/vortraege/2017/calendar.ics",
+			"title": "LinuxDay.at 2017",
+			"id": "linuxday_at_2017",
+			"start": "2017-12-02",
+			"end": "2017-12-02",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxday.at/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://www.linuxday.at/standplan-2017",
+						"title": "Standplan"
+					},
+					{
+						"url": "https://www.linuxday.at/aussteller/2017",
+						"title": "Aussteller"
+					},
+					{
+						"url": "https://www.linuxday.at/workshops/2017",
+						"title": "Workshops"
+					}
+
+
+
+				]
+			}
+		}		
+
 	]
 }
