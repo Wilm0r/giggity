@@ -1,5 +1,5 @@
 {
-	"version": 2017101900,
+	"version": 2017110100,
 	"schedules": [
 		{
 			"id": "MOCA 2016",
@@ -599,6 +599,54 @@
 					{
 						"url": "https://afup.org/event/forumphp2017/tickets",
 						"title": "Tarifs et inscription"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017102000,
+			"url": "https://conf-ng.jres.org/2017/rest/planning.ics",
+			"id": "JRES 2017",
+			"title": "JRES 2017",
+			"start": "2017-11-14",
+			"end": "2017-11-17",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.jres.org/fr",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://www.jres.org/fr/inscription-aux-jres-2017",
+						"title": "Inscription"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017110100,
+			"url": "https://www.linuxday.at/vortraege/2017/calendar.ics",
+			"title": "LinuxDay.at 2017",
+			"id": "linuxday_at_2017",
+			"start": "2017-12-02",
+			"end": "2017-12-02",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxday.at/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://www.linuxday.at/standplan-2017",
+						"title": "Standplan"
+					},
+					{
+						"url": "https://www.linuxday.at/aussteller/2017",
+						"title": "Aussteller"
+					},
+					{
+						"url": "https://www.linuxday.at/workshops/2017",
+						"title": "Workshops"
 					}
 				]
 			}
