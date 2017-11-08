@@ -650,6 +650,30 @@
 					}
 				]
 			}
+		},
+		{
+			"version": 2017110700,
+			"url": "http://www.triplea.fr/alchimie/documents/alchimie12.ics",
+			"id": "Alchimie 12",
+			"title": "Alchimie 12",
+			"start": "2017-11-10",
+			"end": "2017-11-12",
+			"metadata": {
+				"links": [
+					{
+						"url": "http://triplea.fr/alchimie/",
+						"title": "Site Web"
+					},
+					{
+						"url": "http://triplea.fr/alchimie/pages/reglement_general.php",
+						"title": "Règlement"
+					},
+					{
+						"url": "http://alchimie.party/",
+						"title": "Serveur de vote"
+					}
+				]
+			}
 		}
 	]
 }
