@@ -1,5 +1,5 @@
 {
-	"version": 2017111000,
+	"version": 2017111300,
 	"schedules": [
 		{
 			"id": "MOCA 2016",
@@ -624,10 +624,10 @@
 			}
 		},
 		{
-			"version": 2017110100,
+			"version": 2017111300,
 			"url": "https://www.linuxday.at/vortraege/2017/calendar.ics",
 			"title": "LinuxDay.at 2017",
-			"id": "linuxday_at_2017",
+			"id": "LinuxDay.at Vortraege",
 			"start": "2017-12-02",
 			"end": "2017-12-02",
 			"metadata": {
@@ -667,6 +667,26 @@
 					{
 						"url": "https://www.nluug.nl/events/nj17/programma.html",
 						"title": "Conference Program (website)"
+					}
+				]
+			}
+		},
+		{
+			"version": 2017111300,
+			"url": "https://botconf2017.sched.com/all.ics",
+			"id": "botconf2017",
+			"title": "Botconf 2017",
+			"start": "2017-12-06",
+			"end": "2017-12-08",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.botconf.eu/botconf-2017/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.botconf.eu/botconf-2017/register-for-botconf-2017/",
+						"title": "Registration"
 					}
 				]
 			}
