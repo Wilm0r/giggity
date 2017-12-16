@@ -690,6 +690,27 @@
 					}
 				]
 			}
-		}
-	]
+		},
+
+    {
+          "version": 20171217,
+          "url": "https://fahrplan.events.ccc.de/congress/2017/Fahrplan/schedule.xml",
+          "title": "34. Chaos Communication Congress",
+          "start": "2017-12-26",
+          "end": "2017-12-30",
+          "metadata": {
+            "links": [
+              {
+                "url": "https://events.ccc.de/congress/2017/wiki/index.php/Main_Page",
+                "title": "Wiki"
+               },
+               {
+                "url": "https://events.ccc.de/",
+                "title": "Weblog"
+               }
+            ]
+          }
+                                                                                                                                                            
+	  }
+  ]
 }
