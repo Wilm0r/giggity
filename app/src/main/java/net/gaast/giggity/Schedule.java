@@ -1159,7 +1159,7 @@ public class Schedule {
 					}
 				}
 			} else if (localName.equals("event")) {
-				String id, title, startTimeS, durationS, s, desc;
+				String id, title, startTimeS, durationS, s, desc, wl;
 				Calendar startTime, endTime;
 				Schedule.Item item;
 				
@@ -1199,6 +1199,11 @@ public class Schedule {
 				if ((s = propMap.get("subtitle")) != null) {
 					if (!s.isEmpty())
 						item.setSubtitle(s);
+				}
+				
+				if ((wl = propMap.get("url")) != null) {
+					if (!wl.isEmpty())
+						item.setWebLink(wl);
 				}
 				
 				desc = "";
@@ -1353,6 +1358,7 @@ public class Schedule {
 		private LinkedList<Schedule.Link> links;
 		private LinkedList<String> speakers;
 		private String language;
+		private String webLink;
 		
 		private boolean remind;
 		private boolean hidden;
@@ -1427,6 +1433,14 @@ public class Schedule {
 		
 		public String getUrl() {
 			return (getSchedule().getUrl() + "#" + getId()); 
+		}
+
+		public String getWebLink() {
+			return webLink;
+		}
+
+		public void setWebLink(String webLink) {
+			this.webLink = webLink;
 		}
 		
 		public String getTitle() {
