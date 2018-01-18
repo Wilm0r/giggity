@@ -1,5 +1,5 @@
 {
-	"version": 2018011001,
+	"version": 2018011900,
 	"schedules": [
 		{
 			"id": "MOCA 2016",
@@ -160,30 +160,6 @@
 					{
 						"url": "http://piandmore.de/de/next/ort",
 						"title": "Anfahrt"
-					}
-				]
-			}
-		},
-		{
-			"start" : "2017-01-16",
-			"end" : "2017-01-20",
-			"version" : 2017016000,
-			"url" : "https://linux.conf.au/schedule/conference.ics",
-			"title" : "linux.conf.au 2017",
-			"metadata" : {
-				"links" : [
-					{
-						"url" : "https://linux.conf.au/",
-						"title" : "Website"
-					},
-					{
-						"url" : "https://linux.conf.au/wiki/",
-						"title" : "Wiki"
-					},
-					{
-						"url": "https://linux.conf.au/site_media/media/images/wp_map.width-500.png",
-						"title": "Map",
-						"type": "image/png"
 					}
 				]
 			}
@@ -710,6 +686,25 @@
 						"name": "UD.*",
 						"show_name": "UD wing",
 						"latlon": [50.812691, 4.3818835]
+					}
+				]
+			}
+		},
+		{
+			"start" : "2018-01-22",
+			"end" : "2018-01-26",
+			"version" : 2018011900,
+			"url" : "https://linux.conf.au/schedule/conference.ics",
+			"title" : "linux.conf.au 2018",
+			"metadata" : {
+				"links" : [
+					{
+						"url" : "https://linux.conf.au/",
+						"title" : "Website"
+					},
+					{
+						"url" : "https://wiki.linux.conf.au/wiki/Main_Page",
+						"title" : "Wiki"
 					}
 				]
 			}
