@@ -357,7 +357,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			update();
 			addView(child_);
 		}
-		
+
 		/* Mark the current 30m period in the clock green. */
 		public void update() {
 			int i;
@@ -365,8 +365,12 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			cal.setTime(base_.getTime());
 			for (i = 1; i < child_.getChildCount(); i ++) {
 				TextView cell = (TextView) child_.getChildAt(i);
-				long diff = System.currentTimeMillis() - cal.getTimeInMillis(); 
-				if (diff >= 0 && diff < 1800000) {
+				long diff = System.currentTimeMillis() - cal.getTimeInMillis();
+				/* 2018-01-22: Switching this to nearest-time instead of most-recent-time and
+				   I now wonder why I did not do it that way initially...
+				   So, now after 16:15, 16:30 will be rendered as the current half-hour, instead of
+				   still 16:00, which matches how stuff below is rendered (~aligned to the ":") */
+				if (diff >= -900000 && diff < 900000) {
 					cell.setBackgroundColor(c.clockbg[2]);
 					cell.setTextColor(c.clockfg[1]);
 				} else if (cal.get(Calendar.MINUTE) == 0) {
