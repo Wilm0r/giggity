@@ -85,7 +85,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		app = (Giggity) ctx.getApplication();
 		sched = sched_;
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
-		c = new Light();
+		c = new LightNew();
 		
 		setOrientation(LinearLayout.VERTICAL);
 		
@@ -225,8 +225,8 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		bottomClock = new Clock(ctx, base, end);
 		addView(bottomClock);
 
-		Date now = new Date();
-		if (sched.getFirstTime().before(now) && sched.getLastTime().after(now)) {
+		if (sched.isToday()) {
+			Date now = new Date();
 			float hours = (float) (now.getTime() - sched.getFirstTime().getTime()) / 3600 / 1000;
 			int scrollX = (int) (hours - 1) * HourWidth;
 			schedContScr.setInitialXY(scrollX, 0);
@@ -295,6 +295,8 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 				super.setBackgroundColor(bgcolor);
 			}
 			if (item != null && item.isHidden()) {
+				setAlpha(.25F);
+			} else if (item != null && sched.isToday() && item.getEndTime().before(new Date())) {
 				setAlpha(.5F);
 			} else {
 				setAlpha(1F);
@@ -373,12 +375,17 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 				if (diff >= -900000 && diff < 900000) {
 					cell.setBackgroundColor(c.clockbg[2]);
 					cell.setTextColor(c.clockfg[1]);
-				} else if (cal.get(Calendar.MINUTE) == 0) {
-					cell.setBackgroundColor(c.clockbg[0]);
-					cell.setTextColor(c.clockfg[0]);
 				} else {
-					cell.setBackgroundColor(c.clockbg[1]);
-					cell.setTextColor(c.clockfg[1]);
+					if (diff > 0) {
+						cell.setAlpha(.5F);
+					}
+					if (cal.get(Calendar.MINUTE) == 0) {
+						cell.setBackgroundColor(c.clockbg[0]);
+						cell.setTextColor(c.clockfg[0]);
+					} else {
+						cell.setBackgroundColor(c.clockbg[1]);
+						cell.setTextColor(c.clockfg[1]);
+					}
 				}
 
 				cal.add(Calendar.MINUTE, 30);
@@ -423,8 +430,32 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			tentbg[0] = 0xFFFAFCB8;
 			tentbg[1] = 0xFFF8FC9C;
 			clockfg[0] = clockfg[1] = clockfg[2] = itemfg[0] = itemfg[1] =
-				tentfg[0] = tentfg[1] = 0xFF000000;
+					tentfg[0] = tentfg[1] = 0xFF000000;
 			itemfg[0] = itemfg[1] = itemfg[2] = itemfg[3] = 0xFF000000;
+		}
+	}
+
+	/* Improved colour scheme, closer to the "material design" colour combinations I picked up last
+	   year. */
+	static private class LightNew extends Colours {
+		public LightNew() {
+			super();
+			background = 0xFFf0f3f4;
+			lines = 0xFFb5c3c9;
+			itembg[0] = 0xFF039be5;
+			itembg[1] = 0xFF0288d1;
+			itembg[2] = 0xFFff5722;
+			itembg[3] = 0xFFff5722;
+			itemfg[0] = itemfg[1] = itemfg[2] = itemfg[3] = 0xEEFFFFFF;
+
+			clockbg[0] = 0xFF039be5;
+			clockbg[1] = 0xFF0288d1;
+			clockbg[2] = 0xFF00CF00;
+			clockfg[0] = clockfg[1] = clockfg[2] = 0xEEFFFFFF;
+
+			tentbg[0] = 0xFFd3dbdf;
+			tentbg[1] = 0xFFe1e7ea;
+			tentfg[0] = tentfg[1] = 0xFF000000;
 		}
 	}
 
@@ -432,6 +463,9 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 	public void refreshContents() {
 		topClock.update();
 		bottomClock.update();
+		if (sched.isToday()) {
+			refreshItems();
+		}
 	}
 
 	@Override

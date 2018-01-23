@@ -539,7 +539,7 @@ public class ScheduleViewActivity extends Activity {
 				prog.setDone(new LoadProgressDoneInterface() {
 					@Override
 					public void done() {
-						/* Try again, avoiding inifite-looping on this download just in case. */
+						/* Try again, avoiding infinite-looping on this download just in case. */
 						openLink(link, false);
 					}
 				});
