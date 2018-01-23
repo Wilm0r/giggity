@@ -89,6 +89,7 @@ public class Schedule {
 	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
 
 	private Date firstTime, lastTime;
+	private Date dayFirstTime, dayLastTime;
 	private Date curDay, curDayEnd;
 	private Date dayChange;
 	LinkedList<Date> dayList;
@@ -181,17 +182,29 @@ public class Schedule {
 	public void setDay(int day) {
 		if (day == -1) {
 			curDay = curDayEnd = null;
-			return;
+			dayFirstTime = firstTime;
+			dayLastTime = lastTime;
+		} else {
+			if (day >= getDays().size())
+				day = 0;
+			curDay = getDays().get(day);
+
+			Calendar dayEnd = new GregorianCalendar();
+			dayEnd.setTime(curDay);
+			dayEnd.add(Calendar.DAY_OF_MONTH, 1);
+			curDayEnd = dayEnd.getTime();
+
+			dayFirstTime = dayLastTime = null;
+			for (Schedule.Item item : allItems.values()) {
+				if (item.getStartTime().compareTo(curDay) >= 0 &&
+						item.getEndTime().compareTo(curDayEnd) <= 0) {
+					if (dayFirstTime == null || item.getStartTime().before(dayFirstTime))
+						dayFirstTime = item.getStartTime();
+					if (dayLastTime == null || item.getEndTime().after(dayLastTime))
+						dayLastTime = item.getEndTime();
+				}
+			}
 		}
-		
-		if (day >= getDays().size())
-			day = 0;
-		curDay = getDays().get(day);
-		
-		Calendar dayEnd = new GregorianCalendar();
-		dayEnd.setTime(curDay);
-		dayEnd.add(Calendar.DAY_OF_MONTH, 1);
-		curDayEnd = dayEnd.getTime();
 	}
 
 	public Format getDayFormat() {
@@ -203,36 +216,25 @@ public class Schedule {
 	
 	/** Get earliest item.startTime */
 	public Date getFirstTime() {
-		if (curDay == null)
+		if (curDay == null) {
 			return firstTime;
-		
-		Date ret = null;
-		for (Schedule.Item item : allItems.values()) {
-			if (item.getStartTime().compareTo(curDay) >= 0 &&
-				item.getEndTime().compareTo(curDayEnd) <= 0) {
-				if (ret == null || item.getStartTime().before(ret))
-					ret = item.getStartTime();
-			}
+		} else {
+			return dayFirstTime;
 		}
-		
-		return ret;
 	}
 	
 	/** Get highest item.endTime */
 	public Date getLastTime() {
-		if (curDay == null)
+		if (curDay == null) {
 			return lastTime;
-		
-		Date ret = null;
-		for (Schedule.Item item : allItems.values()) {
-			if (item.getStartTime().compareTo(curDay) >= 0 &&
-				item.getEndTime().compareTo(curDayEnd) <= 0) {
-				if (ret == null || item.getEndTime().after(ret))
-					ret = item.getEndTime();
-			}
+		} else {
+			return dayLastTime;
 		}
-		
-		return ret;
+	}
+
+	public boolean isToday() {
+		Date now = new Date();
+		return (getFirstTime().before(now) && getLastTime().after(now));
 	}
 	
 	/* If true, this schedule defines link types so icons should suffice.
