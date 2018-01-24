@@ -45,6 +45,9 @@ import android.os.Message;
 import android.os.TransactionTooLargeException;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.content.pm.ShortcutInfoCompat;
+import android.support.v4.content.pm.ShortcutManagerCompat;
+import android.support.v4.graphics.drawable.IconCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
@@ -817,29 +820,27 @@ public class ScheduleViewActivity extends Activity {
 		   this shortcut as they're probably not interested in unrelated events at that point. */
 		shortcut.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-		Intent intent = new Intent();
-		intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcut);
-		intent.putExtra(Intent.EXTRA_SHORTCUT_NAME, sched.getTitle());
+		ShortcutInfoCompat.Builder sb = new ShortcutInfoCompat.Builder(this, sched.getUrl());
+		sb.setIntent(shortcut);
+		sb.setShortLabel(sched.getTitle());
+
 		Bitmap bmp = null;
 		if (with_icon) {
 			bmp = sched.getIconBitmap();
 			if (bmp != null) {
-				intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, bmp);
+				sb.setIcon(IconCompat.createWithBitmap(bmp));
 			}
 		}
+
+		/* Fall back to the usual Giggity logo. */
 		if (bmp == null) {
-			intent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, Intent.ShortcutIconResource.fromContext(this, R.drawable.deoxide_icon));
+			sb.setIcon(IconCompat.createWithResource(this, R.drawable.deoxide_icon));
 		}
-		intent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-		try {
-			sendBroadcast(intent);
-		} catch (java.lang.RuntimeException e) {
-			if (e.getCause() instanceof android.os.TransactionTooLargeException) {
-				addHomeShortcut(false);
-			} else {
-				throw e;
-			}
-		}
+
+		/* Will show a dialog on O+ or so, and just sneakily create the icon through the old install
+		   intent on older systems. Old code had handling of exception thrown due to oversized
+		   icon, hopefully the support library will now do this?... */
+		ShortcutManagerCompat.requestPinShortcut(this, sb.build(), null);
 	}
 
 	public void onScroll() {

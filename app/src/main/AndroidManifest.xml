@@ -9,9 +9,6 @@
   <uses-permission android:name="android.permission.VIBRATE"/>
   <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
 
-  <!-- API level 16 == Jellybean. This should give me support for 80-90% of devices at time of writing. -->
-  <uses-sdk android:minSdkVersion="16" android:targetSdkVersion="24"/>
-
   <application android:label="@string/app_name" android:name="Giggity" android:icon="@drawable/deoxide_icon" android:allowBackup="true" android:theme="@style/Theme.Giggity.NoShadow">
     <activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="ScheduleViewActivity" android:exported="true">
       <meta-data android:name="android.app.default_searchable" android:value=".SearchActivity" />
