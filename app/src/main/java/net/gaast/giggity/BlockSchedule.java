@@ -376,7 +376,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 					cell.setBackgroundColor(c.clockbg[2]);
 					cell.setTextColor(c.clockfg[1]);
 				} else {
-					if (diff > 0) {
+					if (sched.isToday() && diff > 0) {
 						cell.setAlpha(.5F);
 					}
 					if (cal.get(Calendar.MINUTE) == 0) {
