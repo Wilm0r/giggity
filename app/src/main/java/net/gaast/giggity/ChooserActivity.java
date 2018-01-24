@@ -279,25 +279,29 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
 				String url = intent.getStringExtra("SCAN_RESULT");
-				byte[] bin = intent.getByteArrayExtra("SCAN_RESULT_BYTE_SEGMENTS_0");
-				if (intent.hasExtra("SCAN_RESULT_BYTE_SEGMENTS_1")) {
-					Toast.makeText(this, "Your QR generator seems to have used multiple segments, " +
-					                     "this corrupts binary data!", Toast.LENGTH_LONG).show();
-				}
+				Schedule.Selections sel = null;
+				if (intent.hasExtra("SCAN_RESULT_BYTE_SEGMENTS_0")) {
+					byte[] bin = intent.getByteArrayExtra("SCAN_RESULT_BYTE_SEGMENTS_0");
+					if (intent.hasExtra("SCAN_RESULT_BYTE_SEGMENTS_1") &&
+					    !url.startsWith("http")) {
+						/* Helpful warning if what we scanned may not be a simple URL but not encoded
+						   properly. */
+						Toast.makeText(this, "Your QR generator seems to have used multiple segments, " +
+						               "this corrupts binary data!", Toast.LENGTH_LONG).show();
+					}
 
-				/* Start with #3, (gzipped) json blob */
-				if (db.refreshSingleSchedule(bin)) {
-					return;
-				}
+					/* Start with #3, (gzipped) json blob */
+					if (db.refreshSingleSchedule(bin)) {
+						return;
+					}
 
-				/* Or 2? */
-				Schedule.Selections sel;
-				try {
-					sel = new Schedule.Selections(bin);
-					url = sel.url;
-				} catch (DataFormatException e) {
-					bin = null;
-					sel = null;
+					/* Or 2? */
+					try {
+						sel = new Schedule.Selections(bin);
+						url = sel.url;
+					} catch (DataFormatException e) {
+						sel = null;
+					}
 				}
 
 				/* Nope, just a plain URL then hopefully.. Or something corrupted that will generate
