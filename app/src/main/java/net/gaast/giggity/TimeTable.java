@@ -83,6 +83,7 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 
 		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
+		scroller.setHideEndtime(true);
 		scroller.setList(fullList);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(scroller, lp);

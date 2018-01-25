@@ -16,6 +16,7 @@ public class ScheduleItemView extends RelativeLayout {
 	public static final int SHOW_REMIND = 2;
 	public static final int SHOW_NOW = 4;
 	public static final int SHORT_TITLE = 8;
+	public static final int HIDE_ENDTIME = 16;
 	
 	public ScheduleItemView(Context ctx, Schedule.Item item, int flags) {
 		super(ctx);
@@ -28,7 +29,12 @@ public class ScheduleItemView extends RelativeLayout {
 		RelativeLayout.LayoutParams p;
 		
 		time = new TextView(ctx);
-		time.setText(tf.format(item.getStartTime()) + "-" + tf.format(item.getEndTime()) + "  ");
+		String timeText = tf.format(item.getStartTime());
+		if ((flags & HIDE_ENDTIME) == 0) {
+			timeText += "-" + tf.format(item.getEndTime());
+		}
+		time.setMinEms(5);
+		time.setText(timeText);
 		time.setTextSize(16);
 		time.setId(++n);
 		p = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);

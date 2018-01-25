@@ -39,8 +39,9 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	EventAdapter adje;
 	Context ctx;
 	int itemViewFlags = ScheduleItemView.SHOW_NOW | ScheduleItemView.SHOW_REMIND;
+	int itemListFlags = 0;
 	Giggity app;
-	
+
 	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
 		super(ctx_);
@@ -100,6 +101,13 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		else
 			itemViewFlags &= ~ScheduleItemView.SHOW_REMIND;
 	}
+
+	protected void setHideEndtime(boolean hideEndtime) {
+		if (hideEndtime)
+			itemListFlags |= ScheduleItemView.HIDE_ENDTIME;
+		else
+			itemListFlags &= ~ScheduleItemView.HIDE_ENDTIME;
+	}
 	
 	@Override
 	public void refreshContents() {
@@ -141,7 +149,17 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			if (items.get(position).getClass() == Schedule.Item.class) {
-				return new ScheduleItemView(ctx, (Schedule.Item) items.get(position), itemViewFlags);
+				Schedule.Item it1 = (Schedule.Item) items.get(position);
+				int flags = itemViewFlags;
+				if ((itemListFlags & ScheduleItemView.HIDE_ENDTIME) > 0) {
+					if (items.size() >= position && items.get(position + 1).getClass() == Schedule.Item.class) {
+						Schedule.Item it2 = (Schedule.Item) items.get(position + 1);
+						if (it1.getEndTime().equals(it2.getStartTime())) {
+							flags |= ScheduleItemView.HIDE_ENDTIME;
+						}
+					}
+				}
+				return new ScheduleItemView(ctx, it1, flags);
 			} else if (items.get(position).getClass() == Schedule.Line.class) {
 				return new ScheduleLineView(ctx, (Schedule.Line) items.get(position));
 			} else {
