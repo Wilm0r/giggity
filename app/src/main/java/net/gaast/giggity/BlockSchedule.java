@@ -26,6 +26,7 @@ import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -132,19 +133,28 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			/* Horizontal line at bottom */
 			bmp.setPixel(x, TentHeight - 1, c.lines);
 		}
-		int hourX = 1;
+		int hourX;
 		if (base.get(Calendar.MINUTE) == 0) {
 			hourX = HourWidth / 4;
 		} else {
 			hourX = HourWidth * 3 / 4;
 		}
+		int quarterX = -1;
+		Log.d("bs", "hw=" + HourWidth + " " + HourWidth / getResources().getDisplayMetrics().density);
+		if (HourWidth > 166 * getResources().getDisplayMetrics().density) {
+			quarterX = (hourX + HourWidth / 4) % HourWidth;
+		}
 		for (y = 0; y < TentHeight; y++) {
-			/* Long-dotted line on hour boundaries */
+			/* Continuous line on hour boundaries */
+			bmp.setPixel(hourX, y, c.lines);
+			/* Dotted line on :30 hourly boundaries */
 			if ((y & 12) > 0)
-				bmp.setPixel(hourX, y, c.lines);
-			/* Short-dotted line on :30 hourly boundaries */
-			if ((y & 8) > 0)
 				bmp.setPixel(HourWidth - hourX, y, c.lines);
+			/* If HourWidth is sufficient, also two dotted lines on quarter boundaries. */
+			if (quarterX > 0 && (y & 8) > 0) {
+				bmp.setPixel(quarterX, y, c.lines);
+				bmp.setPixel((quarterX + HourWidth / 2) % HourWidth, y, c.lines);
+			}
 		}
 		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
 		BitmapDrawable bg = new BitmapDrawable(bmp);
