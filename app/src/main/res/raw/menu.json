@@ -1,5 +1,5 @@
 {
-	"version": 2018012500,
+	"version": 2018013100,
 	"schedules": [
 		{
 			"id": "MOCA 2016",
@@ -625,7 +625,7 @@
 			"version" : 2017121700
 		},
 		{
-			"version": 2018012400,
+			"version": 2018013100,
 			"url": "https://fosdem.org/2018/schedule/xml",
 			"title": "FOSDEM 2018",
 			"start": "2018-02-03",
@@ -637,7 +637,7 @@
 						"title": "Website"
 					},
 					{
-						"url": "https://fosdem.org/2018/assets/booklet_general-c917a889209102546d5a7b52b21b109db24bc5eb6075f3e548c5706989bae74c.pdf",
+						"url": "https://fosdem.org/2018/assets/booklet_general-ca5afc2e63511de952229ade11cfd63117f2378208e1cc930c645fbd300c9b9f.pdf",
 						"title": "Info booklet",
 						"type": "application/pdf"
 					},
