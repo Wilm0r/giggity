@@ -38,6 +38,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -101,6 +102,8 @@ public class Schedule {
 	 * nice if some file formats could start supplying this info themselves. */
 	private String icon;
 	private LinkedList<Link> links;
+	/* regex to match speaker & title in ICS summary */
+	private String speakerMatch;
 
 	/* For fetching the icon file in the background. */
 	private Thread iconFetcher;
@@ -274,6 +277,7 @@ public class Schedule {
 
 		icon = null;
 		links = null;
+		speakerMatch = null;
 
 		String head;
 		Fetcher f = null;
@@ -392,8 +396,9 @@ public class Schedule {
 					continue;
 				} else if (line.contains(":")) {
 					String split[] = line.split(":", 2);
+					String props[] = split[0].split(";");
 					String key, value;
-					key = split[0].toLowerCase();
+					key = props[0].toLowerCase();
 					value = split[1];
 					if (key.equals("begin")) {
 						/* Some blocks (including vevent, the only one we need)
@@ -402,13 +407,19 @@ public class Schedule {
 					} else if (key.equals("end")) {
 						p.endElement("", value.toLowerCase(), "");
 					} else {
-						/* Chop off attributes. Could pass them but not reading them anyway. */
-						if (key.contains(";"))
-							key = key.substring(0, key.indexOf(";"));
+						AttributesImpl attrs = new AttributesImpl();
+						int i;
+						for (i = 1; i < props.length; ++i) {
+							String prop[] = props[i].split("=");
+							prop[0] = prop[0].toLowerCase();
+							if (prop[1].startsWith("\""))
+								prop[1] = prop[1].substring(1, prop[1].length() - 1);
+							attrs.addAttribute("", "", prop[0], "", prop[1]);
+						}
 						value = value.replace("\\n", "\n").replace("\\,", ",")
 						             .replace("\\;", ";").replace("\\\\", "\\");
 						/* Fake <key>value</key> */
-						p.startElement("", key, "", null);
+						p.startElement("", key, "", attrs);
 						p.characters(value.toCharArray(), 0, value.length());
 						p.endElement("", key, "");
 					}
@@ -589,6 +600,9 @@ public class Schedule {
 			md = new JSONObject(md_json);
 			if (md.has("icon")) {
 				icon = md.getString("icon");
+			}
+			if (md.has("speakermatch")) {
+				speakerMatch = md.getString("speakermatch");
 			}
 			if (md.has("links")) {
 				links = new LinkedList<>();
@@ -924,6 +938,7 @@ public class Schedule {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
 		private String curString;
+		private Pattern speakerPattern;
 
 		SimpleDateFormat dfUtc, dfLocal;
 
@@ -932,6 +947,10 @@ public class Schedule {
 			dfUtc = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
 			dfUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
 			dfLocal = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+			speakerPattern = null;
+			if (speakerMatch != null) {
+				speakerPattern = Pattern.compile(speakerMatch);
+			}
 		}
 
 		private Date parseTime(String s) throws ParseException {
@@ -977,6 +996,11 @@ public class Schedule {
 			if (localName.equals("vevent")) {
 				eventData = new HashMap<>();
 			}
+			if (localName.equals("attendee")) {
+				if (atts.getValue("role") == "REQ-PARTICIPANT")
+					eventData.put("speaker", new String(atts.getValue("cn")));
+					// TODO: handle more than one?
+			}
 		}
 	
 		@Override
@@ -1015,6 +1039,15 @@ public class Schedule {
 					return;
 				}
 
+				/* some conferences fit speaker names in the summary... */
+				if (speakerPattern != null) {
+					Matcher m = speakerPattern.matcher(name);
+					if (m.groupCount() > 0) {
+						eventData.put("speaker", m.group(1));
+						name = name.replace(m.group(0), "");
+					}
+				}
+
 				item = new Schedule.Item(uid, name, startTime, endTime);
 				
 				if ((s = eventData.get("description")) != null) {
@@ -1023,6 +1056,10 @@ public class Schedule {
 				
 				if ((s = eventData.get("url")) != null) {
 					item.addLink(new Link(s));
+				}
+
+				if ((s = eventData.get("speaker")) != null) {
+					item.addSpeaker(s);
 				}
 
 				if ((line = tentMap.get(location)) == null) {
