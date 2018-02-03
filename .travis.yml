@@ -1,0 +1,10 @@
+language: android
+
+script:
+ - ci/menu-ci.py
+
+addons:
+  apt:
+    packages:
+    - python3-jsonschema
+    - python3-pil
