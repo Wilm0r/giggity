@@ -34,7 +34,7 @@ except ValueError as e:
 	raise MenuError("JSON parse failure %r" % e)
 
 try:
-	g = subprocess.Popen(["git", "show", "master:%s" % MENU], stdout=subprocess.PIPE)
+	g = subprocess.Popen(["git", "show", "master:%s" % MENU], stdout=subprocess.PIPE, encoding="utf-8")
 	base = json.load(g.stdout)
 	g.communicate()
 except ValueError as e:
