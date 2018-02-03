@@ -1365,9 +1365,9 @@ public class Schedule {
 		
 		public String getTitle() {
 			if (roomStatus == RoomStatus.FULL)
-				return "⛔" + title;
+				return "⛔" + title;  // no access sign
 			else if (roomStatus == RoomStatus.EVACUATE)
-				return "⚠" + title;
+				return "\uD83D\uDCA5" + title;  // explosion
 			else
 				return title;
 		}
