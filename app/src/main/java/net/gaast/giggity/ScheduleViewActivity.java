@@ -32,17 +32,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.net.UrlQuerySanitizer;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.TransactionTooLargeException;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.content.pm.ShortcutInfoCompat;
@@ -64,8 +59,6 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.text.Format;
 import java.text.SimpleDateFormat;
@@ -358,7 +351,7 @@ public class ScheduleViewActivity extends Activity {
 		});
 		prog.show();
 
-		Thread loader = new Thread() {
+		new Thread() {
 			@Override
 			public void run() {
 				try {
@@ -377,19 +370,47 @@ public class ScheduleViewActivity extends Activity {
 					prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, t));
 				}
 			}
-		};
-
-		loader.start();
+		}.start();
 	}
 
-	private Runnable refresher = new Runnable() {
+	/* Refreshes every minute. No network stuff here as it's scheduled to be at :00 second
+	   (and automatically reschedules for that). */
+	private Runnable minuteRefresher = new Runnable() {
 		@Override
 		public void run() {
 			if (viewer != null)
 				viewer.refreshContents();
 
 			/* Run again at the next minute boundary. */
-			timer.postDelayed(refresher, 60000 - (System.currentTimeMillis() % 60000));
+			timer.removeCallbacks(minuteRefresher);
+			timer.postDelayed(minuteRefresher, 60000 - (System.currentTimeMillis() % 60000));
+		}
+	};
+
+	private Runnable miscRefresher = new Runnable() {
+		@Override
+		public void run() {
+			if (viewer != null)
+				viewer.refreshContents();
+		}
+	};
+
+	private Runnable updateRoomStatus = new Runnable() {
+		@Override
+		public void run() {
+			if (sched == null || !sched.hasRoomStatus())
+				return;
+
+			new Thread() {
+				@Override
+				public void run() {
+					if (sched.updateRoomStatus())
+						runOnUiThread(miscRefresher);
+
+					timer.removeCallbacks(updateRoomStatus);
+					timer.postDelayed(updateRoomStatus, 60000);
+				}
+			}.start();
 		}
 	};
 
@@ -403,7 +424,8 @@ public class ScheduleViewActivity extends Activity {
 			redrawSchedule();
 			redraw = false;
 		}
-		refresher.run();
+		minuteRefresher.run();
+		updateRoomStatus.run();
 		super.onResume();
 	}
 
@@ -413,7 +435,8 @@ public class ScheduleViewActivity extends Activity {
 			sched.commit();
 		}
 		super.onPause();
-		timer.removeCallbacks(refresher);
+		timer.removeCallbacks(minuteRefresher);
+		timer.removeCallbacks(updateRoomStatus);
 	}
 
 	@Override
@@ -434,6 +457,9 @@ public class ScheduleViewActivity extends Activity {
 		redrawSchedule();
 		finishNavDrawer();
 		updateNavDrawer();
+		/* I think onResume() can get called before schedule is loaded in which
+		   case no rescheduling happens, so give it an extra poke if we need to. */
+		updateRoomStatus.run();
 
 		/* Change our title + icon in the recent tasks view. Only supported from Lollipop+. */
 		if (android.os.Build.VERSION.SDK_INT >= 21) {

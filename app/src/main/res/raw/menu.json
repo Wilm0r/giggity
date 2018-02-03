@@ -1,5 +1,5 @@
 {
-	"version": 2018013100,
+	"version": 2018020200,
 	"schedules": [
 		{
 			"id": "MOCA 2016",
@@ -625,12 +625,13 @@
 			"version" : 2017121700
 		},
 		{
-			"version": 2018013100,
+			"version": 2018020200,
 			"url": "https://fosdem.org/2018/schedule/xml",
 			"title": "FOSDEM 2018",
 			"start": "2018-02-03",
 			"end": "2018-02-04",
 			"metadata": {
+				"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
 				"links": [
 					{
 						"url": "https://fosdem.org/2018/",

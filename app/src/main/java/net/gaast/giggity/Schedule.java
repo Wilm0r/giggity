@@ -101,6 +101,7 @@ public class Schedule {
 	 * nice if some file formats could start supplying this info themselves. */
 	private String icon;
 	private LinkedList<Link> links;
+	private String roomStatusUrl;
 
 	/* For fetching the icon file in the background. */
 	private Thread iconFetcher;
@@ -637,6 +638,9 @@ public class Schedule {
 					}
 				}
 			}
+			if (md.has("fosdemRoomStatus")) {
+				roomStatusUrl = md.getString("fosdemRoomStatus");
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return;
@@ -669,7 +673,7 @@ public class Schedule {
 	}
 	
 	public LinkedList<Schedule.Line> getTents() {
-		LinkedList<Line> ret = new LinkedList<Line>();
+		LinkedList<Line> ret = new LinkedList<>();
 		for (Line line : tents) {
 			if (line.getItems().size() > 0)
 				ret.add(line);
@@ -686,7 +690,7 @@ public class Schedule {
 		if (trackMap == null)
 			return null;
 		
-		ArrayList<String> ret = new ArrayList<String>();
+		ArrayList<String> ret = new ArrayList<>();
 		for (String name : trackMap.keySet()) {
 			for (Item item : trackMap.get(name)) {
 				if (!item.isHidden() || showHidden) {
@@ -822,6 +826,55 @@ public class Schedule {
 				Log.w("getIconBitmap", "Discarding, no alpha layer");
 				return null;
 			}
+		}
+		return ret;
+	}
+
+	public boolean hasRoomStatus() {
+		return roomStatusUrl != null;
+	}
+
+	/* Returns true if any of the statuses has changed. */
+	public boolean updateRoomStatus() {
+		boolean ret = false;
+		JSONArray parsed;
+		try {
+			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.ONLINE_NOCACHE);
+			parsed = new JSONArray(f.slurp());
+			/* Easier lookup */
+			HashMap<String, JSONObject> lu = new HashMap<>();
+			for (int i = 0; i < parsed.length(); ++i) {
+				JSONObject e = parsed.getJSONObject(i);
+				lu.put(e.getString("roomname"), e);
+			}
+			for (Line l : getTents()) {
+				if (!lu.containsKey(l.getTitle())) {
+					continue;
+				}
+				JSONObject e = lu.get(l.getTitle());
+				RoomStatus st = RoomStatus.UNKNOWN;
+				switch (e.optInt("state", -1)) {
+					case 0:
+						st = RoomStatus.OK;
+						break;
+					case 1:
+						st = RoomStatus.FULL;
+						break;
+					case 2:
+						st = RoomStatus.EVACUATE;
+						break;
+				}
+				Log.d("roomSt", l.getTitle() + " " + st.toString());
+				ret |= l.setRoomStatus(st);
+			}
+		} catch (IOException e) {
+			Log.d("updateRoomStatus", "Fetch setup failure");
+			e.printStackTrace();
+			return false;
+		} catch (JSONException e) {
+			Log.d("updateRoomStatus", "JSON parse failure");
+			e.printStackTrace();
+			return false;
 		}
 		return ret;
 	}
@@ -1284,17 +1337,26 @@ public class Schedule {
 		}
 	}
 
+	public enum RoomStatus {
+		UNKNOWN,
+		OK,
+		FULL,
+		EVACUATE,
+	};
+
 	public class Line {
 		private String id;
 		private String title;
 		private TreeSet<Schedule.Item> items;
 		private String location;  // geo: URL (set by metadata loader)
+		private RoomStatus roomStatus;
 		Schedule schedule;
-		
+
 		public Line(String id_, String title_) {
 			id = id_;
 			title = title_;
 			items = new TreeSet<Schedule.Item>();
+			roomStatus = RoomStatus.UNKNOWN;
 		}
 		
 		public String getId() {
@@ -1302,7 +1364,12 @@ public class Schedule {
 		}
 		
 		public String getTitle() {
-			return title;
+			if (roomStatus == RoomStatus.FULL)
+				return "⛔" + title;
+			else if (roomStatus == RoomStatus.EVACUATE)
+				return "⚠" + title;
+			else
+				return title;
 		}
 		
 		public void addItem(Schedule.Item item) {
@@ -1342,6 +1409,16 @@ public class Schedule {
 
 		public void setLocation(String location) {
 			this.location = location;
+		}
+
+		public boolean setRoomStatus(RoomStatus newSt) {
+			boolean ret = newSt != roomStatus;
+			roomStatus = newSt;
+			return ret;
+		}
+
+		public RoomStatus getRoomStatus() {
+			return roomStatus;
 		}
 	}
 	

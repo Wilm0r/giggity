@@ -32,6 +32,7 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,6 +92,18 @@ public class EventDialog extends FrameLayout {
 			t = (TextView) root.findViewById(R.id.room);
 			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
+		}
+
+		switch (item_.getLine().getRoomStatus()) {
+			case OK:
+				t.setTextColor(0xff00ff00);
+				break;
+			case FULL:
+				t.setTextColor(0xffffa500);
+				break;
+			case EVACUATE:
+				t.setTextColor(0xffff0000);
+				break;
 		}
 
 		if (item_.getLanguage() != null) {
