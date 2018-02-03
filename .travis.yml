@@ -1,10 +1,11 @@
 language: android
 
 script:
- - ci/menu-ci.py
+- ci/menu-ci.py
 
 addons:
   apt:
     packages:
     - python3-jsonschema
     - python3-pil
+    - python3-urllib3
