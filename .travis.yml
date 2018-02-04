@@ -1,9 +1,13 @@
-language: android
-python:
-- "3.6"
+matrix:
+  include:
+  - language: python
+    python:
+    - "3.6"
 
-script:
-- ci/menu-ci.py
+    script:
+    - ci/menu-ci.py
+
+  - language: android
 
 addons:
   apt:
