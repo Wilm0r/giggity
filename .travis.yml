@@ -1,4 +1,6 @@
 language: android
+python:
+- "3.6"
 
 script:
 - ci/menu-ci.py
