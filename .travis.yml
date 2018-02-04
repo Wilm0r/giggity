@@ -1,8 +1,7 @@
 matrix:
   include:
   - language: python
-    python:
-    - "3.6"
+    python: "3.6"
 
     script:
     - ci/menu-ci.py
