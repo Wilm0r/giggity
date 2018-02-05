@@ -42,7 +42,7 @@ try:
 		base_ref = env["TRAVIS_COMMIT_RANGE"].split(".")[0]
 	else:
 		base_ref = "master"
-	print "Base ref: %s" % base_ref
+	print("Base ref: %s" % base_ref)
 	g = subprocess.Popen(["git", "show", "%s:%s" % (base_ref, MENU)], stdout=subprocess.PIPE, encoding="utf-8")
 	base_raw, _ = g.communicate()
 	base = None
