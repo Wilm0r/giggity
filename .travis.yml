@@ -1,16 +1,17 @@
 matrix:
   include:
-  - language: python
-    python: "3.6"
+    - language: python
+      python: "3.6"
 
-    script:
-    - ci/menu-ci.py
+      script:
+        # Can't use the Debian packages since we're not using the Debian
+        # Python.
+        - pip install jsonschema pillow
+        # Annoying: Need python3.6. std python3 in Travis is 3.4. 3.6 is
+        # installed above which will set /usr/bin/python to point at it
+        # but not /usr/bin/python3. :<
+        - python3.6 ci/menu-ci.py
 
-  - language: android
-
-addons:
-  apt:
-    packages:
-    - python3-jsonschema
-    - python3-pil
-    - python3-urllib3
+    - language: android
+      before_install:
+        - yes | sdkmanager "platforms;android-27"
