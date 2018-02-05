@@ -34,9 +34,22 @@ except ValueError as e:
 	raise MenuError("JSON parse failure %r" % e)
 
 try:
-	g = subprocess.Popen(["git", "show", "master:%s" % MENU], stdout=subprocess.PIPE, encoding="utf-8")
-	base = json.load(g.stdout)
-	g.communicate()
+	env = os.environ
+	print("\n".join(sorted("%s=%s" % (k, v) for k, v in env.items() if k.startswith("TRAVIS_"))))
+	if env.get("TRAVIS_EVENT_TYPE") == "pull_request":
+		base_ref = env["TRAVIS_BRANCH"]
+	elif "TRAVIS_COMMIT_RANGE" in env:
+		base_ref = env["TRAVIS_COMMIT_RANGE"].split(".")[0]
+	else:
+		base_ref = "master"
+	print "Base ref: %s" % base_ref
+	g = subprocess.Popen(["git", "show", "%s:%s" % (base_ref, MENU)], stdout=subprocess.PIPE, encoding="utf-8")
+	base_raw, _ = g.communicate()
+	base = None
+	if g.returncode == 0:
+		base = json.loads(base_raw)
+	else:
+		print("Failed to read base version, going to skip diffing.")
 except ValueError as e:
 	raise MenuError("JSON parse failure (in baseline!) %r" % e)
 
