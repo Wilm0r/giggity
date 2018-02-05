@@ -1,0 +1,220 @@
+{
+  "$id": "https://ggt.gaa.st/schema",
+  "type": "object",
+  "definitions": {},
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "properties": {
+    "version": {
+      "$id": "/properties/version",
+      "type": "integer",
+      "title": "File version number",
+      "description": "Should be the highest version number mentioned below in the file (I want to deprecate this field)",
+      "default": 0,
+      "examples": [
+        2018020100
+      ],
+      "minimum": 2008010100,
+      "maximum": 2022123199
+    },
+    "schedules": {
+      "$id": "/properties/schedules",
+      "type": "array",
+      "items": {
+        "$id": "/properties/schedules/items",
+        "type": "object",
+        "properties": {
+          "id": {
+            "$id": "/properties/schedules/items/properties/id",
+            "type": "string",
+            "title": "Schedule ID",
+            "description": "Should match ID in schedule file, but only for xcal files as for others an md5sum of the URL is used (again, historical reasons..)",
+            "default": "",
+            "examples": [
+              "MOCA 2016"
+            ]
+          },
+          "version": {
+            "$id": "/properties/schedules/items/properties/version",
+            "type": "integer",
+            "title": "Version number of this entry",
+            "description": "Formatted like an old fashioned DNS SOA version number",
+            "default": 0,
+            "examples": [
+              2016072901
+            ],
+            "minimum": 2008010100,
+            "maximum": 2022123199
+          },
+          "url": {
+            "$id": "/properties/schedules/items/properties/url",
+            "type": "string",
+            "title": "Schedule URL",
+            "description": "Points at the Pentabarf/etc file containing the event's full schedule",
+            "pattern": "^https?://.*",
+            "examples": [
+              "https://moca.olografix.org/moca2016.ics"
+            ]
+          },
+          "title": {
+            "$id": "/properties/schedules/items/properties/title",
+            "type": "string",
+            "title": "Event title",
+            "description": "Must match title in the schedule file",
+            "default": "",
+            "examples": [
+              "MOCA 2016"
+            ]
+          },
+          "start": {
+            "$id": "/properties/schedules/items/properties/start",
+            "type": "string",
+            "title": "First day of event",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "examples": [
+              "2016-08-19"
+            ]
+          },
+          "end": {
+            "$id": "/properties/schedules/items/properties/end",
+            "type": "string",
+            "title": "Last day of event",
+            "minLength": 10,
+            "maxLength": 10,
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+            "description": "",
+            "default": "",
+            "examples": [
+              "2016-08-21"
+            ]
+          },
+          "metadata": {
+            "$id": "/properties/schedules/items/properties/metadata",
+            "type": "object",
+            "properties": {
+              "links": {
+                "$id": "/properties/schedules/items/properties/metadata/properties/links",
+                "type": "array",
+                "items": {
+                  "$id": "/properties/schedules/items/properties/metadata/properties/links/items",
+                  "type": "object",
+                  "properties": {
+                    "url": {
+                      "$id": "/properties/schedules/items/properties/metadata/properties/links/items/properties/url",
+                      "type": "string",
+                      "title": "URL to extra event info (website or file)",
+                      "pattern": "^https?://.*",
+                      "examples": [
+                        "https://moca.olografix.org"
+                      ]
+                    },
+                    "title": {
+                      "$id": "/properties/schedules/items/properties/metadata/properties/links/items/properties/title",
+                      "type": "string",
+                      "title": "The Title Schema",
+                      "description": "An explanation about the purpose of this instance.",
+                      "default": "",
+                      "examples": [
+                        "Website"
+                      ]
+                    },
+                    "type": {
+                      "$id": "/properties/schedules/items/properties/metadata/properties/links/items/properties/type",
+                      "type": "string",
+                      "title": "MIME-type",
+                      "description": "Type of URL. If specified, will be downloaded and opened using an offline viewer instead of browser",
+                      "default": "",
+                      "examples": [
+                        "application/pdf",
+                        "image/png"
+                      ]
+                    }
+                  }
+                }
+              },
+              "icon": {
+                "$id": "/properties/schedules/items/properties/metadata/properties/icon",
+                "type": "string",
+                "title": "Logo of the event",
+                "description": "Must be square and have an alpha layer. Will be used for the home shortcut among other things.",
+                "default": "",
+                "examples": [
+                  "https://moca.olografix.org/moca2016.png"
+                ]
+              },
+              "rooms": {
+                "$id": "/properties/schedules/items/properties/metadata/properties/rooms",
+                "type": "array",
+                "items": {
+                  "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items",
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/name",
+                      "type": "string",
+                      "title": "Regex matching a room name",
+                      "description": "Using regexes so multiple adjacent/same-building rooms can share an entry.",
+                      "default": "",
+                      "examples": [
+                        "K\\\\..*"
+                      ]
+                    },
+                    "show_name": {
+                      "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/show_name",
+                      "type": "string",
+                      "title": "Name of room block/buildings to show instead of regex",
+                      "default": "",
+                      "examples": [
+                        "K building"
+                      ]
+                    },
+                    "latlon": {
+                      "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/latlon",
+                      "type": "array",
+                      "maxItems": 2,
+                      "minItems": 2,
+                      "items": [
+                        {
+                          "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/latlon/items/0",
+                          "type": "number",
+                          "title": "Latitude",
+                          "examples": [
+                            42.45397186279297
+                          ]
+                        },
+                        {
+                          "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/latlon/items/1",
+                          "type": "number",
+                          "title": "Longitude",
+                          "examples": [
+                            14.222503662109375
+                          ]
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "name",
+                    "latlon"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "version",
+          "url",
+          "title",
+          "start",
+          "end"
+        ]
+      }
+    }
+  },
+  "required": [
+    "version",
+    "schedules"
+  ]
+}

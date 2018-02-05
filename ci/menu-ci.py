@@ -25,7 +25,7 @@ class MenuError(Exception):
 	pass
 
 MENU = "app/src/main/res/raw/menu.json"
-SCHEMA = "schema.json"
+SCHEMA = "ci/menu-schema.json"
 
 raw = open(MENU, "r").read()
 try:
