@@ -27,11 +27,11 @@
 				"rooms": [
 					{
 						"name": "Gandalf Arena",
-						"latlon": [42.453971,14.222504]
+						"latlon": [42.453971, 14.222504]
 					},
 					{
 						"name": "ELF Arena",
-						"latlon": [42.454316,14.222070]
+						"latlon": [42.454316, 14.22207]
 					}
 				]
 			}
@@ -181,16 +181,16 @@
 			}
 		},
 		{
-			"start" : "2017-03-25",
-			"end" : "2017-03-26",
-			"version" : 2017031902,
-			"url" : "https://libreplanet.org/2017/lp2017-schedule.ics",
-			"title" : "LibrePlanet 2017",
-			"metadata" : {
-				"links" : [
+			"start": "2017-03-25",
+			"end": "2017-03-26",
+			"version": 2017031902,
+			"url": "https://libreplanet.org/2017/lp2017-schedule.ics",
+			"title": "LibrePlanet 2017",
+			"metadata": {
+				"links": [
 					{
-						"url" : "https://libreplanet.org/2017/",
-						"title" : "Website"
+						"url": "https://libreplanet.org/2017/",
+						"title": "Website"
 					}
 				]
 			}
@@ -259,20 +259,20 @@
 			}
 		},
 		{
-			"title" : "GUADEC 2017",
-			"metadata" : {
-				"icon" : "https://static.gnome.org/guadec-2017/icon1.png",
-				"links" : [
+			"title": "GUADEC 2017",
+			"metadata": {
+				"icon": "https://static.gnome.org/guadec-2017/icon1.png",
+				"links": [
 					{
-						"url" : "https://www.guadec.org/",
-						"title" : "Website"
+						"url": "https://www.guadec.org/",
+						"title": "Website"
 					}
 				]
 			},
-			"url" : "https://static.gnome.org/guadec-2017/schedule.xml",
-			"start" : "2017-07-28",
-			"end" : "2017-07-30",
-			"version" : 2017071200
+			"url": "https://static.gnome.org/guadec-2017/schedule.xml",
+			"start": "2017-07-28",
+			"end": "2017-07-30",
+			"version": 2017071200
 		},
 		{
 			"version": 2017072400,
@@ -606,23 +606,23 @@
 			}
 		},
 		{
-			"title" : "34th Chaos Communication Congress",
-			"metadata" : {
-				"links" : [
+			"title": "34th Chaos Communication Congress",
+			"metadata": {
+				"links": [
 					{
-						"url" : "https://events.ccc.de/congress/2017/wiki/index.php/Main_Page",
-						"title" : "Wiki"
+						"url": "https://events.ccc.de/congress/2017/wiki/index.php/Main_Page",
+						"title": "Wiki"
 					},
 					{
-						"title" : "Weblog",
-						"url" : "https://events.ccc.de/"
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
 					}
 				]
 			},
-			"url" : "https://fahrplan.events.ccc.de/congress/2017/Fahrplan/schedule.xml",
-			"start" : "2017-12-26",
-			"end" : "2017-12-30",
-			"version" : 2017121700
+			"url": "https://fahrplan.events.ccc.de/congress/2017/Fahrplan/schedule.xml",
+			"start": "2017-12-26",
+			"end": "2017-12-30",
+			"version": 2017121700
 		},
 		{
 			"version": 2018020200,
@@ -692,20 +692,20 @@
 			}
 		},
 		{
-			"start" : "2018-01-22",
-			"end" : "2018-01-26",
-			"version" : 2018011900,
-			"url" : "https://linux.conf.au/schedule/conference.ics",
-			"title" : "linux.conf.au 2018",
-			"metadata" : {
-				"links" : [
+			"start": "2018-01-22",
+			"end": "2018-01-26",
+			"version": 2018011900,
+			"url": "https://linux.conf.au/schedule/conference.ics",
+			"title": "linux.conf.au 2018",
+			"metadata": {
+				"links": [
 					{
-						"url" : "https://linux.conf.au/",
-						"title" : "Website"
+						"url": "https://linux.conf.au/",
+						"title": "Website"
 					},
 					{
-						"url" : "https://wiki.linux.conf.au/wiki/Main_Page",
-						"title" : "Wiki"
+						"url": "https://wiki.linux.conf.au/wiki/Main_Page",
+						"title": "Wiki"
 					}
 				]
 			}
