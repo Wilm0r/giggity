@@ -47,7 +47,7 @@ coincidental. ;-)
 You can add any suitably formatted schedule to Giggity yourself (use QR
 codes to make this easier), or it can be added to Giggity's main menu.
 
-To do this, e-mail me a JSON file formatted like this:
+To do this, construct a JSON file formatted like this:
 
 ```json
 	{
@@ -117,6 +117,11 @@ and your phone camera good, just leave out the gzip.)
 
 Then scan the code from the Giggity main menu (+ on the top-right, then
 "SCAN QR").
+
+To get your entry added to Giggity, just modify
+[menu.json](app/src/main/res/raw/menu.json) here and send a pull request.
+To save time, run `ci/menu-ci.py` for sanity checking. (Same check is
+run automatically through Travis-CI.)
 
 ## Repository setup
 
