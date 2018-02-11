@@ -35,7 +35,9 @@ except ValueError as e:
 
 try:
 	env = os.environ
-	print("\n".join(sorted("%s=%s" % (k, v) for k, v in env.items() if k.startswith("TRAVIS_"))))
+	travis_vars = sorted("%s=%s" % (k, v) for k, v in env.items() if k.startswith("TRAVIS_"))
+	if travis_vars:
+		print("\n".join(travis_vars))
 	if env.get("TRAVIS_EVENT_TYPE") == "pull_request":
 		base_ref = env["TRAVIS_BRANCH"]
 	elif "TRAVIS_COMMIT_RANGE" in env:
@@ -142,7 +144,7 @@ for e in new["schedules"]:
 		else:
 			print("Changed: %s" % e["title"])
 			if e["version"] <= base_entries[e["url"]]["version"]:
-				errors.append("Version number for \"%r\" must be updated" % e["title"])
+				errors.append("Version number for %r must be updated" % e["title"])
 			base_entries.pop(e["url"])
 	else:
 		print("New: %s" % e["title"])
