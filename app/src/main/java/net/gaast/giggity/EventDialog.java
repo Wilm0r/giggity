@@ -48,6 +48,7 @@ import android.widget.TextView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
@@ -319,9 +320,17 @@ public class EventDialog extends FrameLayout {
 			String time = android.text.format.DateUtils.formatDateRange(
 				ctx_, item_.getStartTime().getTime(), item_.getEndTime().getTime(),
 				DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
+
+			StringJoiner speakers = new StringJoiner(", ");
+			for (String speaker: item_.getSpeakers()) {
+				speakers.add(speaker);
+			}
+			
 			t.putExtra(android.content.Intent.EXTRA_TEXT,
 				item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
 				item_.getLine().getTitle() + ", " + time + "\n" +
+				speakers + "\n" +
+				item_.getWebLink() + "\n" +
 				"\n" +
 				item_.getDescriptionStripped());
 
