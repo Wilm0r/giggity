@@ -1,5 +1,5 @@
 {
-	"version": 2018051201,
+	"version": 2018051600,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -665,6 +665,32 @@
 					{
 						"url": "https://www.nluug.nl/events/vj18/programma.html",
 						"title": "Conference Program (website)"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018042900,
+			"url": "https://www.eclipsecon.org/france2018/conference/schedule/session/calendar.ics",
+			"title": "EclipseCon France2018",
+			"id": "EclipseCon France2018 - EclipseCon, presented by the Eclipse Foundation, creates opportunities for the Eclipse community to learn, explore, and share.  : Session Schedule",
+			"start": "2018-06-13",
+			"end": "2018-06-14",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.eclipsecon.org/france2018/",
+						"title": "Website"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Argos|Caravelle 2|Cassiopée|Diamant|Spot",
+						"latlon": [43.61134, 1.43432]
+					},
+					{
+						"name": "Pullman|Bali|Berlin|Barcelone|Bruxelles|Paris|Bangkok",
+						"latlon": [43.6085011, 1.4534003]
 					}
 				]
 			}
