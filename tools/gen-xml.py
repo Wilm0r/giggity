@@ -1,18 +1,26 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # coding=utf-8
 
 import codecs
 import datetime
 import hashlib
+import icalendar
 import os
 import re
 import subprocess
 import tempfile
 import time
-import urllib2
+import urllib3
 
-from HTMLParser import HTMLParser
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
+
+
+# Not needed I think?
+#class TextElement(SubElement):
+#	def __init__(self, parent, tag, text):
+#		super(SubElement, self).__init__(parent, tag)
+#		self.text = text
+
 
 class GiggityObject(object):
 	ids = set()
@@ -34,25 +42,63 @@ class GiggityObject(object):
 		self.ids.add(self._idn(id, n))
 		return self._idn(id, n)
 
+
 class Schedule(GiggityObject):
-	def __init__(self, id, title):
-		self.id = id
+	def __init__(self, title):
 		self.title = title
 		self.tents = []
-		self.linktypes = []
 
 	def xml(self):
 		top = Element("schedule")
-		top.attrib["id"] = self.id
 		top.attrib["title"] = self.title
 		top.attrib["xmlns"] = "http://gaa.st/giggity#sched"
 		
-		for type in self.linktypes:
-			top.append(type.xml())
 		for tent in self.tents:
 			top.append(tent.xml())
 		
 		return top
+
+	def frab(self):
+		top = Element("schedule")
+		conf = SubElement(top, "conference")
+		SubElement(conf, "title").text = self.title
+		SubElement(conf, "subtitle")
+		SubElement(conf, "venue")
+		SubElement(conf, "city")
+		
+		slot = self.timeslot_minutes()
+		SubElement(conf, "timeslot_duration").text = (
+			"00:%02d:00" % slot)
+
+		index = 0
+		for day in self.days():
+			eod = day + datetime.timedelta(days=1)
+			index += 1
+			do = SubElement(top, "day", index="%d" % index,
+			                date=day.strftime("%Y-%m-%d"))
+			for tent in self.tents:
+				to = tent.frab((day, eod))
+				if to:
+					do.append(to)
+
+		return top
+
+	def timeslot_minutes(self):
+		ret = 3600
+		for i in self.pile_items():
+			while ret > 60 and ((i.start % ret) or (i.end % ret)):
+				ret -= 60
+		return ret / 60
+
+	def days(self):
+		ret = set()
+		for i in self.pile_items():
+			day = datetime.datetime.fromtimestamp(i.start)
+			day = day.replace(hour=9, minute=0, second=0)
+			if day.timestamp() > i.start:
+				day -= datetime.timedelta(days=1)
+			ret.add(day)
+		return sorted(ret)
 	
 	def tentnames(self):
 		return [tent.name for tent in self.tents]
@@ -61,6 +107,15 @@ class Schedule(GiggityObject):
 		for tent in self.tents:
 			if tent.name == name:
 				return tent
+		tent = Tent(name)
+		self.tents.append(tent)
+		return tent
+
+	def pile_items(self):
+		for tent in self.tents:
+			for i in tent.items:
+				yield i
+		
 
 class Tent(GiggityObject):
 	def __init__(self, name):
@@ -77,6 +132,24 @@ class Tent(GiggityObject):
 			top.append(item.xml())
 		
 		return top
+
+	def frab(self, dayrange):
+		day, eod = dayrange
+		top = Element("room", name=self.name)
+		
+		for i in self.items:
+			if not day.timestamp() <= i.start < eod.timestamp():
+				continue
+			top.append(i.frab())
+		
+		if not list(top):
+			# Nothing for this date range
+			return None
+		return top
+	
+	def append(self, item):
+		self.items.append(item)
+
 
 class Item(GiggityObject):
 	def __init__(self, name):
@@ -103,27 +176,35 @@ class Item(GiggityObject):
 		
 		return top
 
+	def frab(self):
+		ev = Element("event", id=self.id)
+		SubElement(ev, "start").text = self.start_dt().strftime("%H:%M")
+		#SubElement(ev, "end").text = self.end_dt().strftime("%H:%M")
+		d = self.duration_td()
+		SubElement(ev, "duration").text = "%02d:%02d" % (
+			d.seconds // 3600, (d.seconds // 60) % 60)
+		SubElement(ev, "description").text = self.description
+		return ev
+
+	def start_dt(self):
+		return datetime.datetime.fromtimestamp(self.start)
+
+	def end_dt(self):
+		return datetime.datetime.fromtimestamp(self.end)
+
+	def duration_td(self):
+		return self.end_dt() - self.start_dt()
+
+
 class Link(GiggityObject):
-	def __init__(self, url, type="www"):
+	def __init__(self, url):
 		self.url = url
-		self.type = type
 	
 	def xml(self):
 		top = Element("itemLink")
-		top.attrib["type"] = self.type
 		top.attrib["href"] = self.url
 		return top
 
-class LinkType(GiggityObject):
-	def __init__(self, id, icon):
-		self.id = id
-		self.icon = icon
-
-	def xml(self):
-		top = Element("linkType")
-		top.attrib["id"] = self.id
-		top.attrib["icon"] = self.icon
-		return top
 
 def maketime(time, today=(2008, 10, 23)):
 	h, m = time.split(":")
@@ -131,6 +212,7 @@ def maketime(time, today=(2008, 10, 23)):
 	if int(h) < 8:
 		ret += datetime.timedelta(1)
 	return ret
+
 
 def fetch(url):
 	hash = hashlib.md5(url).hexdigest()
@@ -145,14 +227,13 @@ def fetch(url):
 			return None
 	
 	else:
-		print "Downloading %s" % url
 		f = file(fn, "w")
 		f.write("%s\n" % (url,))
 		opener = urllib2.build_opener()
 		opener.addheaders = [('User-agent', 'Giggity/0.9')]
 		try:
 			u = opener.open(url)
-		except urllib2.HTTPError, e:
+		except urllib2.HTTPError as e:
 			f.write("%d\n\n" % (e.code,))
 			return None
 		
@@ -161,150 +242,25 @@ def fetch(url):
 	
 	return body
 
-def dehtml(html):
-	fn = tempfile.mktemp(suffix=".html")
-	codecs.open(fn, "w", encoding="utf-8").write(html)
-	w3m = subprocess.Popen(["/usr/bin/w3m", "-cols", "100000", "-dump", fn], stdout=subprocess.PIPE)
-	text = unicode(w3m.stdout.read(), "utf-8")
-	w3m.communicate()
-	os.unlink(fn)
-	return text
 
-def googlelinks(item):
-	ret = []
-	httpname = urllib2.quote(item.name.encode("utf-8")).replace("%20", "+")
-	url = "http://www.google.com/search?num=20&q=%s" % httpname.encode("utf-8")
-	html = fetch(url)
-	
-	#for link in re.findall(r'<a href="([^"]*)" class=l\b', html):
-	for link in re.findall(r'href="/url\?q=(.*?)&amp;', html):
-		if link.startswith("http"):
-			ret.append(urllib2.unquote(HTMLParser.unescape.__func__(HTMLParser, link)))
-	
-	return ret
+sched = Schedule("LCA 2018")
 
-def findlinks(item):
-	ret = []
-	name = re.sub(r" *\([a-zA-Z]+\)$", "", item.name)
-	name = re.sub(" LIVE$", "", name)
-	
-	httpname = urllib2.quote(name.encode("utf-8")).replace("%20", "+")
-	url = "http://www.last.fm/music/" + httpname.encode("utf-8")
-	html = fetch(url)
-	if html:
-		ret.append(Link(url, "lastfm"))
-	
-	def wpmusictest(url, m):
-		url = "http://en.wikipedia.org/w/index.php?title=%s&action=edit" % m.group(1)
-		html = fetch(url)
-		return "{{infobox musical artist" in html.lower()
-	
-	misctypes = [("wikipedia", "^en\.wikipedia\.org/wiki/(.*)", wpmusictest),
-	             ("myspace", "^myspace\.com/", None),
-	             ("soundcloud", "^soundcloud\.com/", None),
-	             ("discogs", "^discogs\.com/", None),
-	             ]
-	
-	for type, regex, func in misctypes:
-		for link in googlelinks(item):
-			m = re.match("^https?://(www\.)?(.*)", link)
-			short = m.group(2)
-			m = re.match(regex, short)
-			if m and (not func or func(link, m)):
-				ret.append(Link(link, type))
-				break
-	
-	# And in case all the other links suck..
-	if len(ret) < 4:
-		ret.append(Link("http://www.google.com/search?q=%s" % httpname, "google"))
+ic = icalendar.Calendar.from_ical(open("/home/wilmer/Desktop/conference-new.ics", "r").read())
+for ev in ic.walk("VEVENT"):
+	t = sched.gettent(ev["LOCATION"])
+	e = Item(ev["SUMMARY"])
+	e.id = ev["UID"]
+	e.description = ev["DESCRIPTION"]
+	e.start = ev["DTSTART"].dt.timestamp()
+	e.end = ev["DTEND"].dt.timestamp()
+	t.append(e)
 
-	return ret
-
-def finddesc(item):
-	desc = None
-	url = None
-	tags = []
-	
-	for link in item.links:
-		if link.type == "lastfm":
-			url = link.url
-			break
-	
-	if url:
-		html = fetch(url)
-		m = re.search("<div[^>]*id=\"wikiAbstract\"[^>]*>(.*?)<div[^>]*class=\"wiki-options\"[^>]*>", html, re.S)
-		if m:
-			desch = unicode(m.group(1), "utf-8")
-			desc = dehtml(desch)
-		else:
-			print "No decent description for %s, removing last.fm link.." % item.name
-			item.links = [link for link in item.links if link.url != url]
-		
-		m = re.search("Popular tags:(.*?)</div>", html, re.S)
-		if m:
-			for tag in re.findall("<a.*?>(.*?)</a>", m.group(1)):
-				if '<' not in tag:
-					tags.append(tag)
-			
-		if desc and tags:
-			desc += "\nTags: %s" % ", ".join(tags)
-	
-	key = re.sub(r" *\([a-zA-Z]+\)", "", item.name)
-	key = re.sub(r"[^a-z0-9]", "", key.lower())
-	if key not in descs:
-		key += "live"
-	if key in descs:
-		desc = descs[key]['desc']
-		if "yt" in descs[key]:
-			item.links.append(Link(descs[key]['yt'], 'youtube'))
-	elif not desc:
-		print "No decent description for %s :-(" % item.name
-	return desc
+print(tostring(sched.frab(), encoding="unicode"))
 
 
-class FosdemEventParser(HTMLParser):
-	def __init__(self):
-		self.cur = []
-		self.e = {}
-		HTMLParser.__init__(self)
-	
-	def handle_starttag(self, tag, atts):
-		self.cur.append((tag, sorted(atts)))
-	
-	def handle_endtag(self, tag):
-		if self.cur[-1][0] != tag:
-			print "WTF? %r </%s>" % (self.cur, tag)
-		else:
-			self.cur.pop()
-	
-	def handle_data(self, data):
-		if not self.cur:
-			return
-		
-		if self.cur[-1] == ("li", [("class", "active")]):
-			self.e["title"] = self.e.get("title", "") + data
-		if (("ul", [("class", "side-box")]) in self.cur and
-		    self.cur[-1][0] == "a" and self.cur[-1][1][0][0] == "href"):
-			href = self.cur[-1][1][0][1]
-			if href.startswith("/2013/schedule/"):
-				bits = href.split("/")
-				self.e[bits[3]] = self.e.get(bits[3], "") + data
+os._exit(0)
 
 
-BASE_URL = "https://fosdem.org/2013/schedule/event/"
-html = fetch(BASE_URL)
-
-sched = Schedule("org.fosdem.2013", "FOSDEM 2013")
-#sched = Schedule("nl.dancevalley.2011", "Dance Valley 2011")
-#sched = Schedule("nl.lovelandfestival.2012", "Loveland Festival 2012")
-#sched = Schedule("nl.luminosity.2012", "Luminosity Beach Festival 2012")
-#sched = Schedule("uk.blocweekend.2012", "Bloc.2012")
-tent = None
-dates = {
-	"Saturday": (2013, 2, 2),
-	"Sunday": (2013, 2, 3),
-}
-today = (2013, 2, 2)
 for line in html.splitlines():
 
 	line = line.strip()
@@ -316,7 +272,6 @@ for line in html.splitlines():
 		ev = fetch(evurl)
 		p = FosdemEventParser()
 		p.feed(ev)
-		print p.e
 		continue
 		_, start, end, name = m.groups()
 		#_, start, name = m.groups()
@@ -349,13 +304,5 @@ for line in html.splitlines():
 			tent = Tent(line)
 			sched.tents.append(tent)
 		
-
-sched.linktypes.append(LinkType("google", "http://wilmer.gaa.st/deoxide/google.png"))
-sched.linktypes.append(LinkType("lastfm", "http://wilmer.gaa.st/deoxide/lastfm.png"))
-sched.linktypes.append(LinkType("wikipedia", "http://wilmer.gaa.st/deoxide/wikipedia.png"))
-sched.linktypes.append(LinkType("myspace", "http://wilmer.gaa.st/deoxide/myspace.png"))
-sched.linktypes.append(LinkType("soundcloud", "http://wilmer.gaa.st/deoxide/soundcloud.png"))
-sched.linktypes.append(LinkType("discogs", "http://wilmer.gaa.st/deoxide/discogs.png"))
-sched.linktypes.append(LinkType("youtube", "http://wilmer.gaa.st/deoxide/youtube.png"))
 
 file("loveland2012.xml", "w").write(tostring(sched.xml()))
