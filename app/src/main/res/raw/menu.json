@@ -1,5 +1,5 @@
 {
-	"version": 2018021700,
+	"version": 2018032100,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -543,6 +543,25 @@
 					{
 						"url": "https://wiki.linux.conf.au/wiki/Main_Page",
 						"title": "Wiki"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018031100,
+			"url": "http://ical.jdll.org/",
+			"title": "JDLL 2018",
+			"start": "2018-03-24",
+			"end": "2018-03-25",
+			"metadata": {
+				"links": [
+					{
+						"url": "http://www.jdll.org/",
+						"title": "Site web"
+					},
+					{
+						"url": "http://www.jdll.org/pratique/plan/",
+						"title": "Plan"
 					}
 				]
 			}
