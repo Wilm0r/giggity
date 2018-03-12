@@ -1,5 +1,5 @@
 {
-	"version": 2018021700,
+	"version": 2018031300,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -543,6 +543,35 @@
 					{
 						"url": "https://wiki.linux.conf.au/wiki/Main_Page",
 						"title": "Wiki"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018031300,
+			"url": "https://hackerspace.gent/newline/2018/xml/pentabarf.xml",
+			"title": "Newline 0x08",
+			"start": "2018-04-13",
+			"end": "2018-04-15",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://hackerspace.gent/landing/newline.php",
+						"title": "Newline 0x08"
+					},
+					{
+						"url": "https://www.facebook.com/events/143174433013216/",
+						"title": "Facebook event"
+					},
+					{
+						"url": "https://hackerspace.gent/landing/map.php",
+						"title": "Map"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Hackerspace.Gent",
+						"latlon": [51.060271, 3.732680]
 					}
 				]
 			}
