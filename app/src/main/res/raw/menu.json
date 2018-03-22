@@ -1,5 +1,5 @@
 {
-	"version": 2018021700,
+	"version": 2018032200,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -543,6 +543,22 @@
 					{
 						"url": "https://wiki.linux.conf.au/wiki/Main_Page",
 						"title": "Wiki"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018032200,
+			"url": "https://frab.luga.de/de/LIT2018/public/schedule.xml",
+			"title": "Augsburger Linux-Infotag 2018",
+			"start": "2018-04-21",
+			"end": "2018-04-21",
+			"metadata": {
+				"icon": "https://luga-ev.github.io/frab-extras/Tux2.png",
+				"links": [
+					{
+						"url": "https://www.luga.de/Aktionen/LIT-2018/",
+						"title": "Website"
 					}
 				]
 			}
