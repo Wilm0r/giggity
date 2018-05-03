@@ -1,5 +1,5 @@
 {
-	"version": 2018032101,
+	"version": 2018050501,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -625,6 +625,37 @@
 					{
 						"name": ".*34-.*",
 						"latlon": [42.36111, -71.09194]
+					}
+				]
+			}
+		},
+		{
+			"version": 20180503150000,
+			"url": "https://nluug.nl/events/vj18/schedule.xml",
+			"title": "NLUUG Spring 2018",
+			"start": "2018-05-15",
+			"end": "2018-05-15",
+			"metadata": {
+				"icon": "https://nluug.nl/events/vj18/nluug-icon-300.png",
+				"links": [
+					{
+						"url": "https://www.nluug.nl/index.html",
+						"title": "NLUUG Website"
+					},
+					{
+						"url": "https://www.nluug.nl/events/vj18/programma.html",
+						"title": "Conference Program (website)"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Room 1"
+					},
+					{
+						"name": "Room 2"
+					},
+					{
+						"name": "Room 3"
 					}
 				]
 			}
