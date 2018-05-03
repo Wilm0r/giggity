@@ -1,5 +1,5 @@
 {
-	"version": 2018032101,
+	"version": 2018050301,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -625,6 +625,26 @@
 					{
 						"name": ".*34-.*",
 						"latlon": [42.36111, -71.09194]
+					}
+				]
+			}
+		},
+		{
+			"version": 2018050300,
+			"url": "https://cfp.linuxwochen.at/de/LWW18/public/schedule.xml",
+			"title": "Linuxwochen Wien 2018",
+			"start": "2018-05-03",
+			"end": "2018-05-05",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://linuxwochen.at/",
+						"title": "Website"
+					},
+					{
+						"url": "https://cfp.linuxwochen.at/img/LWW_FH_Technikum.png",
+						"title": "Map",
+						"type": "image/png"
 					}
 				]
 			}
