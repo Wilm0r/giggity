@@ -1,5 +1,5 @@
 {
-	"version": 2018032101,
+	"version": 2018042900,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -625,6 +625,26 @@
 					{
 						"name": ".*34-.*",
 						"latlon": [42.36111, -71.09194]
+					}
+				]
+			}
+		},
+		{
+			"version": 2018031400,
+			"url": "https://afup.org/event/phptourmontpellier2018/planning.ics",
+			"title": "PHP Tour Montpellier 2018",
+			"id": "PHP Tour Montpellier 2018",
+			"start": "2018-05-17",
+			"end": "2018-05-18",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://event.afup.org/phptourmontpellier2018/programme/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/phptourmontpellier2018/tickets?_locale=fr",
+						"title": "Tarifs et inscription"
 					}
 				]
 			}
