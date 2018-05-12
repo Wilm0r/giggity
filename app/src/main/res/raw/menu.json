@@ -1,5 +1,5 @@
 {
-	"version": 2018050301,
+	"version": 2018051201,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -630,6 +630,26 @@
 			}
 		},
 		{
+			"version": 2018031400,
+			"url": "https://afup.org/event/phptourmontpellier2018/planning.ics",
+			"title": "PHP Tour Montpellier 2018",
+			"id": "PHP Tour Montpellier 2018",
+			"start": "2018-05-17",
+			"end": "2018-05-18",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://event.afup.org/phptourmontpellier2018/programme/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/phptourmontpellier2018/tickets?_locale=fr",
+						"title": "Tarifs et inscription"
+					}
+				]
+			}
+		},
+		{
 			"version": 2018050301,
 			"url": "https://nluug.nl/events/vj18/schedule.xml",
 			"title": "NLUUG Spring 2018",
@@ -645,20 +665,6 @@
 					{
 						"url": "https://www.nluug.nl/events/vj18/programma.html",
 						"title": "Conference Program (website)"
-					}
-				],
-				"rooms": [
-					{
-						"name": "Room 1",
-						"latlon": [52.060788, 5.108085]
-					},
-					{
-						"name": "Room 2",
-						"latlon": [52.060788, 5.108085]
-					},
-					{
-						"name": "Room 3",
-						"latlon": [52.060788, 5.108085]
 					}
 				]
 			}
