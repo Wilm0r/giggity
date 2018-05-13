@@ -1,5 +1,5 @@
 {
-	"version": 2018042900,
+	"version": 2018051201,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -645,6 +645,26 @@
 					{
 						"url": "https://afup.org/event/phptourmontpellier2018/tickets?_locale=fr",
 						"title": "Tarifs et inscription"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018050301,
+			"url": "https://nluug.nl/events/vj18/schedule.xml",
+			"title": "NLUUG Spring 2018",
+			"start": "2018-05-15",
+			"end": "2018-05-15",
+			"metadata": {
+				"icon": "https://nluug.nl/events/vj18/nluug-icon-300.png",
+				"links": [
+					{
+						"url": "https://www.nluug.nl/index.html",
+						"title": "NLUUG Website"
+					},
+					{
+						"url": "https://www.nluug.nl/events/vj18/programma.html",
+						"title": "Conference Program (website)"
 					}
 				]
 			}
