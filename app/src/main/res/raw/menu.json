@@ -1,5 +1,5 @@
 {
-	"version": 2018051201,
+	"version": 2018052200,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -667,6 +667,22 @@
 						"title": "Conference Program (website)"
 					}
 				]
+			}
+		},
+		{
+			"version": 2018052200,
+			"url": "https://www.opensouthcode.org/conferences/opensouthcode2018/schedule.xml",
+			"title": "Opensouthcode 2018",
+			"start": "2018-06-01",
+			"end": "2018-06-02",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.opensouthcode.org/",
+						"title": "Website"
+					}
+				],
+				"icon": "https://www.opensouthcode.org/logo1.png"
 			}
 		}
 	]
