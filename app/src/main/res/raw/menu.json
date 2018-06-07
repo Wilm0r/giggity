@@ -1,5 +1,5 @@
 {
-	"version": 2018051201,
+	"version": 2018060701,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -665,6 +665,26 @@
 					{
 						"url": "https://www.nluug.nl/events/vj18/programma.html",
 						"title": "Conference Program (website)"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018060500,
+			"url": "https://tuebix.org/2018/giggity.xml",
+			"title": "T&#xFC;bix 2018",
+			"start": "2018-06-09",
+			"end": "2018-06-09",
+			"metadata": {
+				"icon": "https://www.tuebix.org/images/tuex.png",
+				"links": [
+					{
+						"url": "https://www.tuebix.org/",
+						"title": "Website"
+					},
+					{
+						"url": "http://www.tuebix.org/anfahrt/",
+						"title": "Anfahrt"
 					}
 				]
 			}
