@@ -14,10 +14,10 @@
 						"url": "https://www.tuebix.org/",
 						"title": "Website"
 					},
-                                	{   
-                                        	"url": "http://www.tuebix.org/anfahrt/",
-                                        	"title": "Anfahrt"
-                                	}   
+					{
+						"url": "http://www.tuebix.org/anfahrt/",
+						"title": "Anfahrt"
+					}
 				]
 			}
 		},
