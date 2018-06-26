@@ -1,5 +1,5 @@
 {
-	"version": 2018062100,
+	"version": 2018062600,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -685,6 +685,30 @@
 					{
 						"url": "http://www.tuebix.org/anfahrt/",
 						"title": "Anfahrt"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018042900,
+			"url": "https://programme.passageenseine.fr/index.ics",
+			"title": "PSES 2018",
+			"start": "2018-06-28",
+			"end": "2018-07-01",
+			"metadata": {
+				"icon": "https://passageenseine.fr/logo.png",
+				"links": [
+					{
+						"url": "https://passageenseine.fr/",
+						"title": "Site web"
+					},
+					{
+						"url": "https://programme.passageenseine.fr/",
+						"title": "Programme web"
+					},
+					{
+						"url": "https://live.passageenseine.fr/",
+						"title": "Streaming"
 					}
 				]
 			}
