@@ -1,5 +1,5 @@
 {
-	"version": 2018062100,
+	"version": 2018070101,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -685,6 +685,56 @@
 					{
 						"url": "http://www.tuebix.org/anfahrt/",
 						"title": "Anfahrt"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018070101,
+			"url": "https://osem.aius.u-strasbg.fr/conferences/rmll2018/schedule.xml",
+			"title": "Rencontres Mondiales du Logiciel Libre 2018",
+			"start": "2018-07-07",
+			"end": "2018-07-11",
+			"metadata": {
+				"icon": "https://mamot.fr/system/accounts/avatars/000/070/390/original/e9f3cfd8460df6b1.png",
+				"links": [
+					{
+						"url": "https://2018.rmll.info/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2018.rmll.info/fr/program/village",
+						"title": "Village du Libre"
+					}
+				],
+				"rooms": [
+					{
+						"name": "A[tT][rR][iI][uU][mM].*",
+						"latlon": [48.57849801, 7.76360035]
+					},
+					{
+						"name": "ESCARPE.*",
+						"latlon": [48.5785311, 7.76177936]
+					},
+					{
+						"name": "PLATANE.*",
+						"latlon": [48.57794056, 7.76726033]
+					},
+					{
+						"name": "Jardins de l'université",
+						"latlon": [48.579136, 7.765647]
+					},
+					{
+						"name": "Médiathèque Malraux",
+						"latlon": [48.57433924, 7.76033036]
+					},
+					{
+						"name": "Presqu'île Malraux",
+						"latlon": [48.57433924, 7.76033036]
+					},
+					{
+						"name": "Shadok",
+						"latlon": [48.57407463, 7.7639029]
 					}
 				]
 			}
