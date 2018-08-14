@@ -763,5 +763,43 @@
 				]
 			}
 		}
+		{
+		"version": 2018081500,
+		"url": "https://programm.froscon.de/2018/schedule.xml",
+		"title": "FrOSCon 2018",
+		"start": "2018-08-25",
+		"end": "2018-08-26",
+		"metadata": {
+			"icon": "https://www.froscon.de/fileadmin/images/logos/frog_button.png",
+			"links": [
+				{
+					"url": "https://www.froscon.org/",
+					"title": "Website"
+				},
+				{
+					"url": "https://programm.froscon.de/maps/map1.png",
+					"title": "Map1",
+					"type": "image/png"
+				},
+				{
+					"url": "https://programm.froscon.de/maps/map2.png",
+					"title": "Map2",
+					"type": "image/png"
+				},
+	                        {
+                                        "url": "https://www.froscon.de/en/news/",
+                                        "title": "News"
+                               },
+                               {
+                                        "url": "http://streaming.media.ccc.de/",
+                                        "title": "Streams"
+                               },
+                               {
+                                        "url": "http://froscon.tv/",
+                                         "title": "Recordings"
+                               }
+
+			]
+		}			
 	]
 }
