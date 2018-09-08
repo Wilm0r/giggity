@@ -1,5 +1,5 @@
 {
-	"version": 2018080300,
+	"version": 2018090800,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -759,6 +759,26 @@
 					{
 						"url": "https://promcon.io/coc/",
 						"title": "Code of Conduct"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018090800,
+			"url": "https://afup.org/event/forumphp2018/planning.ics",
+			"title": "Forum PHP 2018",
+			"id": "Forum PHP 2018",
+			"start": "2018-10-25",
+			"end": "2018-10-26",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://event.afup.org/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/forumphp2018/tickets",
+						"title": "Tarifs et inscription"
 					}
 				]
 			}
