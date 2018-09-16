@@ -1,5 +1,5 @@
 {
-	"version": 2018080300,
+	"version": 2018091600,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -759,6 +759,57 @@
 					{
 						"url": "https://promcon.io/coc/",
 						"title": "Code of Conduct"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018091600,
+			"url": "https://www.linuxdays.cz/2018/program/schedule.xml",
+			"start": "2018-10-06",
+			"end": "2018-10-07",
+			"title": "LinuxDays 2018",
+			"metadata": {
+				"icon": "https://www.linuxdays.cz/2018/obrazky/icon.png",
+				"links": [
+					{
+						"title": "Website",
+						"url": "https://www.linuxdays.cz/2018/"
+					},
+					{
+						"title": "Map",
+						"type": "image/png",
+						"url": "https://www.linuxdays.cz/2018/obrazky/plan.png"
+					}
+				],
+				"rooms": [
+					{
+						"latlon": [
+							50.105249,
+							14.390095
+						],
+						"name": "105"
+					},
+					{
+						"latlon": [
+							50.105382,
+							14.389836
+						],
+						"name": "155"
+					},
+					{
+						"latlon": [
+							50.105138,
+							14.390298
+						],
+						"name": "107"
+					},
+					{
+						"latlon": [
+							50.105047,
+							14.390432
+						],
+						"name": "111"
 					}
 				]
 			}
