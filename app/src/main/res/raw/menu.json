@@ -762,6 +762,34 @@
 					}
 				]
 			}
+		},
+		{
+			"version": 20180927,
+			"url": "https://www.linuxday.at/vortraege/2018/calendar.ics",
+			"title": "LinuxDay.at 2018",
+			"id": "linuxday_at_2018",
+			"start": "2018-10-13",
+			"end": "2018-10-13",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxday.at/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://www.linuxday.at/standplan-2018",
+						"title": "Standplan"
+					},
+					{
+						"url": "https://www.linuxday.at/aussteller/2018",
+						"title": "Aussteller"
+					},
+					{
+						"url": "https://www.linuxday.at/workshops/2018",
+						"title": "Workshops"
+					}
+				]
+			}
 		}
 	]
 }
