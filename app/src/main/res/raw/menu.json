@@ -1,5 +1,5 @@
 {
-	"version": 2018080300,
+	"version": 2018101900,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -759,6 +759,22 @@
 					{
 						"url": "https://promcon.io/coc/",
 						"title": "Code of Conduct"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018101900,
+			"url": "https://fahrplan.privacyweek.at/pw18/schedule/export/schedule.xml",
+			"title": "PrivacyWeek 2018",
+			"start": "2018-10-22",
+			"end": "2018-10-28",
+			"metadata": {
+				"icon": "https://privacyweek.at/icon-256x256.png",
+				"links": [
+					{
+						"url": "https://privacyweek.at/",
+						"title": "Website"
 					}
 				]
 			}
