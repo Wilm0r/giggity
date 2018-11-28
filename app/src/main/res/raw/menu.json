@@ -1,5 +1,5 @@
 {
-	"version": 2018102402,
+	"version": 2018112801,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -866,6 +866,52 @@
 					{
 						"name": "Salle Marengo.*",
 						"latlon": [44.83314, -0.56883]
+					}
+				]
+			}
+		},
+		{
+			"version": 2018112801,
+			"url": "https://jm2l.linux-azur.org/2018/JM2L.ics",
+			"title": "JM2L 2018",
+			"start": "2018-12-15",
+			"end": "2018-12-15",
+			"metadata": {
+				"icon": "https://mamot.fr/system/accounts/avatars/000/070/390/original/e9f3cfd8460df6b1.png",
+				"links": [
+					{
+						"url": "https://jm2l.linux-azur.org/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://jm2l.linux-azur.org/nous-rejoindre",
+						"title": "Contact et Plan"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Templier 1",
+						"latlon": [43.61569, 7.07195]
+					},
+					{
+						"name": "Leaning Center",
+						"latlon": [43.61470, 7.07182]
+					},
+					{
+						"name": "Lutins",
+						"latlon": [43.61569, 7.07195]
+					},
+					{
+						"name": "Geek",
+						"latlon": [43.61569, 7.07195]
+					},
+					{
+						"name": "Amphi Ouest",
+						"latlon": [43.61569, 7.07195]
+					},
+					{
+						"name": "Amphi Est",
+						"latlon": [43.61569, 7.07195]
 					}
 				]
 			}
