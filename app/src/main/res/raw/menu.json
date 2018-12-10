@@ -1,6 +1,25 @@
 {
-	"version": 2018102402,
+	"version": 2018121800,
 	"schedules": [
+		{
+			"title": "35th Chaos Communication Congress",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml",
+			"start": "2018-12-27",
+			"end": "2018-12-30",
+			"version": 2018121800
+		},
 		{
 			"version": 2017041700,
 			"url": "https://luga-ev.github.io/frab-extras/2017/de/lit2017/public/schedule.xml",
