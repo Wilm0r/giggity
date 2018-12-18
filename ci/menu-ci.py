@@ -14,12 +14,21 @@ Sadly I'll need to duplicate some things from Giggity's Java code I guess...
 
 
 import json
-import jsonschema
 import os
-import PIL.Image
 import re
 import subprocess
+import sys
+
+# version check. This script requires at least python 3.6
+# Currently the only 3.6 feature that is used in this script is `encoding` in
+# Popen.
+if sys.version_info[:2] < (3, 6):
+    raise RuntimeError("at least python 3.6 is required")
+
+import jsonschema
+import PIL.Image
 import urllib3
+
 
 class MenuError(Exception):
 	pass
