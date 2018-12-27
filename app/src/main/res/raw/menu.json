@@ -1,25 +1,6 @@
 {
-	"version": 2018121800,
+	"version": 2018122701,
 	"schedules": [
-		{
-			"title": "35th Chaos Communication Congress",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
-						"title": "Wiki"
-					},
-					{
-						"title": "Weblog",
-						"url": "https://events.ccc.de/"
-					}
-				]
-			},
-			"url": "https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml",
-			"start": "2018-12-27",
-			"end": "2018-12-30",
-			"version": 2018121800
-		},
 		{
 			"version": 2017041700,
 			"url": "https://luga-ev.github.io/frab-extras/2017/de/lit2017/public/schedule.xml",
@@ -462,25 +443,6 @@
 			}
 		},
 		{
-			"title": "34th Chaos Communication Congress",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://events.ccc.de/congress/2017/wiki/index.php/Main_Page",
-						"title": "Wiki"
-					},
-					{
-						"title": "Weblog",
-						"url": "https://events.ccc.de/"
-					}
-				]
-			},
-			"url": "https://fahrplan.events.ccc.de/congress/2017/Fahrplan/schedule.xml",
-			"start": "2017-12-26",
-			"end": "2017-12-30",
-			"version": 2017121700
-		},
-		{
 			"version": 2018020200,
 			"url": "https://fosdem.org/2018/schedule/xml",
 			"title": "FOSDEM 2018",
@@ -888,6 +850,44 @@
 					}
 				]
 			}
+		},
+		{
+			"title": "35c3 - main rooms only",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml",
+			"start": "2018-12-27",
+			"end": "2018-12-30",
+			"version": 2018122701
+		},
+		{
+			"title": "35c3 - new and merged",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://streaming.media.ccc.de/configs/conferences/35c3/everything.schedule.xml",
+			"start": "2018-12-27",
+			"end": "2018-12-30",
+			"version": 2018122701
 		}
 	]
 }
