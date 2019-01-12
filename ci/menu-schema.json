@@ -143,6 +143,16 @@
                   "https://moca.olografix.org/moca2016.png"
                 ]
               },
+              "c3nav_base": {
+                "$id": "/properties/schedules/items/properties/metadata/properties/c3nav_base",
+                "type": "string",
+                "title": "c3nav base URL",
+                "description": "For events using c3nav, specify its base URL here (without terminating /). Required if using c3nav_slug in the rooms list below.",
+                "default": "",
+                "examples": [
+                  "https://nav.fosdem.org"
+                ]
+              },
               "rooms": {
                 "$id": "/properties/schedules/items/properties/metadata/properties/rooms",
                 "type": "array",
@@ -153,8 +163,8 @@
                     "name": {
                       "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/name",
                       "type": "string",
-                      "title": "Regex matching a room name",
-                      "description": "Using regexes so multiple adjacent/same-building rooms can share an entry.",
+                      "title": "Regex fully matching a room name",
+                      "description": "Using regexes (matching in full, no ^$ required) so multiple adjacent/same-building rooms can share an entry.",
                       "default": "",
                       "examples": [
                         "K\\\\..*"
@@ -163,7 +173,7 @@
                     "show_name": {
                       "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/show_name",
                       "type": "string",
-                      "title": "Name of room block/buildings to show instead of regex",
+                      "title": "Name of room block/buildings to show instead of regex (used with latlon, not c3nav)",
                       "default": "",
                       "examples": [
                         "K building"
@@ -192,11 +202,31 @@
                           ]
                         }
                       ]
+                    },
+                    "c3nav_slug": {
+                      "$id": "/properties/schedules/items/properties/metadata/properties/rooms/items/properties/c3nav_slug",
+                      "type": "string",
+                      "title": "c3nav slug/id for this location",
+                      "default": "",
+                      "examples": [
+                        "j-main"
+                      ]
                     }
                   },
                   "required": [
-                    "name",
-                    "latlon"
+                    "name"
+                  ],
+                  "anyOf": [
+                    {
+                      "required": [
+                        "latlon"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "c3nav_slug"
+                      ]
+                    }
                   ]
                 }
               }

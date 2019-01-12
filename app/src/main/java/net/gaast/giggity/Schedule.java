@@ -580,7 +580,7 @@ public class Schedule {
 		}
 	}
 
-	/** OOB metadata related to schedule but separately supplied by BitlBee (it's non-standard) gets merged here.
+	/** OOB metadata related to schedule but separately supplied by Giggity (it's non-standard) gets merged here.
 	  I should see whether I could get support for this kind of data into the Pentabarf format. */
 	private void addMetadata(String md_json) {
 		if (md_json == null)
@@ -619,22 +619,27 @@ public class Schedule {
 						if (!room.getTitle().matches(jroom.getString("name"))) {
 							continue;
 						}
-						String name;
-						if (jroom.has("show_name")) {
-							name = jroom.getString("show_name") + " (" + room.getTitle() + ")";
+						if (jroom.has("c3nav_slug")) {
+							room.location = md.getString("c3nav_base") + "/l/" +
+									jroom.getString("c3nav_slug");
 						} else {
-							name = room.getTitle();
+							String name;
+							if (jroom.has("show_name")) {
+								name = jroom.getString("show_name") + " (" + room.getTitle() + ")";
+							} else {
+								name = room.getTitle();
+							}
+							JSONArray latlon = jroom.getJSONArray("latlon");
+							try {
+								room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
+										latlon.optDouble(1, 0) + "(" +
+										URLEncoder.encode(name, "utf-8") + ")");
+							} catch (UnsupportedEncodingException e) {
+								// I'm a useless language! (Have I mentioned yet how if a machine
+								// doesn't do utf-8 then it should maybe not be on the Internet?)
+							}
 						}
-						JSONArray latlon = jroom.getJSONArray("latlon");
-						try {
-							room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
-							                 latlon.optDouble(1, 0) + "(" +
-							                 URLEncoder.encode(name, "utf-8") + ")");
-							Log.d("room:", room.getTitle() + " " + room.location);
-						} catch (UnsupportedEncodingException e) {
-							// I'm a useless language! (Have I mentioned yet how if a machine
-							// doesn't do utf-8 then it should maybe not be on the Internet?)
-						}
+						Log.d("room:", room.getTitle() + " " + room.location);
 					}
 				}
 			}

@@ -1,5 +1,5 @@
 {
-	"version": 2019010500,
+	"version": 2019011100,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -823,7 +823,7 @@
 			"version": 2018122701
 		},
 		{
-			"version": 2019010500,
+			"version": 2019011100,
 			"url": "https://fosdem.org/2019/schedule/xml",
 			"title": "FOSDEM 2019",
 			"start": "2019-02-02",
@@ -850,40 +850,263 @@
 					}
 				],
 				"icon": "https://fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png",
+				"c3nav_base": "https://nav.fosdem.org",
 				"rooms": [
 					{
-						"name": "Janson",
-						"latlon": [50.813231, 4.3791498]
-					},
-					{
-						"name": "K\\..*",
-						"show_name": "K building",
-						"latlon": [50.8146969, 4.3817676]
-					},
-					{
-						"name": "H\\..*",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053]
-					},
-					{
-						"name": "AW.*",
+						"name": "AW1\\.120",
 						"show_name": "AW building",
-						"latlon": [50.812139, 4.380602]
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "aw1-120"
 					},
 					{
-						"name": "UA.*",
+						"name": "AW1\\.121",
+						"show_name": "AW building",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "aw1121"
+					},
+					{
+						"name": "AW1\\.125",
+						"show_name": "AW building",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "aw1125"
+					},
+					{
+						"name": "AW1\\.126",
+						"show_name": "AW building",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "aw1-126"
+					},
+					{
+						"name": "H\\.1301\\ \\(Cornil\\)",
+						"show_name": "H.*",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "h1301"
+					},
+					{
+						"name": "H\\.1302\\ \\(Depage\\)",
+						"show_name": "H.*",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "h1302"
+					},
+					{
+						"name": "H\\.1308\\ \\(Rolin\\)",
+						"show_name": "H.*",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "h1308"
+					},
+					{
+						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
+						"show_name": "H.*",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "h1309"
+					},
+					{
+						"name": "H\\.2213",
+						"show_name": "H.*",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "h2213"
+					},
+					{
+						"name": "H\\.2214",
+						"show_name": "H.*",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "h2214"
+					},
+					{
+						"name": "H\\.2215\\ \\(Ferrer\\)",
+						"show_name": "H.*",
+						"latlon": [
+							50.8127773,
+							4.3799053
+						],
+						"c3nav_slug": "h2215"
+					},
+					{
+						"name": "Janson",
+						"latlon": [
+							50.813231,
+							4.3791498
+						],
+						"c3nav_slug": "j-main"
+					},
+					{
+						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
+						"show_name": "K building",
+						"latlon": [
+							50.8146969,
+							4.3817676
+						],
+						"c3nav_slug": "k1105"
+					},
+					{
+						"name": "K\\.3\\.201",
+						"show_name": "K building",
+						"latlon": [
+							50.8146969,
+							4.3817676
+						],
+						"c3nav_slug": "k3201"
+					},
+					{
+						"name": "K\\.3\\.401",
+						"show_name": "K building",
+						"latlon": [
+							50.8146969,
+							4.3817676
+						],
+						"c3nav_slug": "k3401"
+					},
+					{
+						"name": "K\\.4\\.201",
+						"show_name": "K building",
+						"latlon": [
+							50.8146969,
+							4.3817676
+						],
+						"c3nav_slug": "k4201"
+					},
+					{
+						"name": "K\\.4\\.401",
+						"show_name": "K building",
+						"latlon": [
+							50.8146969,
+							4.3817676
+						],
+						"c3nav_slug": "k4401"
+					},
+					{
+						"name": "K\\.4\\.601",
+						"show_name": "K building",
+						"latlon": [
+							50.8146969,
+							4.3817676
+						],
+						"c3nav_slug": "k4601"
+					},
+					{
+						"name": "UA2\\.114\\ \\(Baudoux\\)",
 						"show_name": "UA wing",
-						"latlon": [50.811683, 4.3826425]
+						"latlon": [
+							50.811683,
+							4.3826425
+						],
+						"c3nav_slug": "ua2114"
 					},
 					{
-						"name": "UB.*",
+						"name": "UA2\\.118\\ \\(Henriot\\)",
+						"show_name": "UA wing",
+						"latlon": [
+							50.811683,
+							4.3826425
+						],
+						"c3nav_slug": "ua2118"
+					},
+					{
+						"name": "UA2\\.220\\ \\(Guillissen\\)",
+						"show_name": "UA wing",
+						"latlon": [
+							50.811683,
+							4.3826425
+						],
+						"c3nav_slug": "ua2220"
+					},
+					{
+						"name": "UB2\\.147",
+						"show_name": "UB wing",
+						"latlon": [
+							50.8120565,
+							4.382176
+						],
+						"c3nav_slug": "ub2147"
+					},
+					{
+						"name": "UB2\\.252A\\ \\(Lameere\\)",
+						"show_name": "UB wing",
+						"latlon": [
+							50.8120565,
+							4.382176
+						],
+						"c3nav_slug": "ub2-252a"
+					},
+					{
+						"name": "UB4.*",
 						"show_name": "UB wing",
 						"latlon": [50.8120565, 4.382176]
 					},
 					{
-						"name": "UD.*",
+						"name": "UD2\\.119",
 						"show_name": "UD wing",
-						"latlon": [50.812691, 4.3818835]
+						"latlon": [
+							50.812691,
+							4.3818835
+						],
+						"c3nav_slug": "ud2119"
+					},
+					{
+						"name": "UD2\\.120\\ \\(Chavanne\\)",
+						"show_name": "UD wing",
+						"latlon": [
+							50.812691,
+							4.3818835
+						],
+						"c3nav_slug": "ud2120"
+					},
+					{
+						"name": "UD2\\.208\\ \\(Decroly\\)",
+						"show_name": "UD wing",
+						"latlon": [
+							50.812691,
+							4.3818835
+						],
+						"c3nav_slug": "ud2208"
+					},
+					{
+						"name": "UD2\\.218A",
+						"show_name": "UD wing",
+						"latlon": [
+							50.812691,
+							4.3818835
+						],
+						"c3nav_slug": "ud2218a"
+					},
+					{
+						"name": "UD2\\.Corridor",
+						"show_name": "UD wing",
+						"latlon": [
+							50.812691,
+							4.3818835
+						],
+						"c3nav_slug": "545fe4c1e56d7"
 					}
 				]
 			}
