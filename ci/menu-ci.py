@@ -96,18 +96,29 @@ def fetch(url, img=False):
 
 
 def validate_entry(e):
-	# For some reason presence of lists and objects can't be done by schema?
-	# Hmm, or does it work? Not in the online ve but the Python module seems to do it..
-	for room in e.get("metadata", {}).get("rooms", []):
-		if "latlon" not in room:
-			errors.append("Missing latlon entry in %s→%s" % (e["title"], room.get("show_name", room.get("name"))))
-
 	sf = fetch(e["url"])
 	if isinstance(sf, FetchError):
 		errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(sf)))
 
 	md = e.get("metadata")
 	if md:
+		if "c3nav_base" in md:
+			c3nav = fetch(md["c3nav_base"] + "/api/locations/?format=json")
+			if isinstance(c3nav, FetchError):
+				errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(c3nav)))
+				c3_by_slug = {}
+			else:
+				c3nav = json.loads(c3nav)
+				c3_by_slug = {v["slug"]: v for v in c3nav}
+
+		for room in md.get("rooms", []):
+			# Forgot why I wrote this check initially, it's now also in the schema already..
+			if not set(room) & {"latlon", "c3nav_slug"}:
+				errors.append("Missing latlon entry in %s→%s" % (e["title"], room.get("show_name", room.get("name"))))
+			
+			if "c3nav_slug" in room and room["c3nav_slug"] not in c3_by_slug:
+				errors.append("c3nav room %s not listed in /api/locations/" % room["c3nav_slug"])
+	
 		if "icon" in md:
 			img = fetch(md["icon"], img=True)
 			icon_errors = []
@@ -124,6 +135,7 @@ def validate_entry(e):
 					icon_errors.append("%d×%d image is too large" % (img.width, img.height))
 			if icon_errors:
 				errors.append("Icon for %s seems bad: %s" % (e["title"], ", ".join(icon_errors)))
+		
 		if "links" in md:
 			for link in md["links"]:
 				d = fetch(link["url"])
