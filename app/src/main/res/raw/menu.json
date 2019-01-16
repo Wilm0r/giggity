@@ -1,5 +1,5 @@
 {
-	"version": 2019011100,
+	"version": 2019011600,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -1109,6 +1109,20 @@
 						"c3nav_slug": "545fe4c1e56d7"
 					}
 				]
+			}
+		},
+		{
+			"version": 2019011600,
+			"url": "https://cfgmgmtcamp.eu/schedule/schedule.ics",
+			"title": "CfgMgmtCamp 2019 Ghent",
+			"start": "2019-02-04",
+			"end": "2019-02-05",
+			"metadata": {
+				"icon": "https://cfgmgmtcamp.eu/images/logo_top.png",
+				"links": [{
+					"url": "https://cfgmgmtcamp.eu/",
+					"title": "Website"
+					}]
 			}
 		}
 	]
