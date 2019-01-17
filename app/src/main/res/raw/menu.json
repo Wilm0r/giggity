@@ -1,5 +1,5 @@
 {
-	"version": 2019011600,
+	"version": 2019011700,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -1112,8 +1112,9 @@
 			}
 		},
 		{
-			"version": 2019011600,
+			"version": 2019011700,
 			"url": "https://cfgmgmtcamp.eu/schedule/schedule.ics",
+			"id": "CfgMgmtCamp 2019 Ghent",
 			"title": "CfgMgmtCamp 2019 Ghent",
 			"start": "2019-02-04",
 			"end": "2019-02-05",
