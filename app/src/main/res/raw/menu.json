@@ -446,16 +446,16 @@
 			"start": "2018-01-22",
 			"end": "2018-01-26",
 			"version": 2018011900,
-			"url": "https://linux.conf.au/schedule/conference.ics",
+			"url": "https://2018.linux.conf.au/schedule/conference.ics",
 			"title": "linux.conf.au 2018",
 			"metadata": {
 				"links": [
 					{
-						"url": "https://linux.conf.au/",
+						"url": "https://2018.linux.conf.au/",
 						"title": "Website"
 					},
 					{
-						"url": "https://wiki.linux.conf.au/wiki/Main_Page",
+						"url": "https://2018.linux.conf.au/wiki/",
 						"title": "Wiki"
 					}
 				]
