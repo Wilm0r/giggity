@@ -1,5 +1,5 @@
 {
-	"version": 2019011600,
+	"version": 2019011800,
 	"schedules": [
 		{
 			"version": 2017041700,
@@ -457,6 +457,48 @@
 					{
 						"url": "https://2018.linux.conf.au/wiki/",
 						"title": "Wiki"
+					}
+				]
+			}
+		},
+		{
+			"start": "2019-01-21",
+			"end": "2019-01-25",
+			"version": 2019011800,
+			"url": "https://2019.linux.conf.au/schedule/conference.ics",
+			"title": "linux.conf.au 2019",
+			"metadata": {
+				"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
+				"links": [
+					{
+						"url": "https://2019.linux.conf.au/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2019.linux.conf.au/schedule/",
+						"title": "Online schedule"
+					},
+					{
+						"url": "https://2019.linux.conf.au/wiki/Main_Page",
+						"title": "Wiki"
+					}
+				],
+				"rooms": [
+					{
+						"name": "C1",
+						"latlon": [-43.52307088323096, 172.58377421683943]
+					},
+					{
+						"name": "C2",
+						"latlon": [-43.523066173454346, 172.5836225959817]
+					},
+					{
+						"name": "C3",
+						"latlon": [-43.5232231993839, 172.58392661196348]
+					},
+					{
+						"name": "A\\d",
+						"latlon": [-43.524166195271505, 172.583842929392]
 					}
 				]
 			}
