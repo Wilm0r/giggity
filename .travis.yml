@@ -1,16 +1,17 @@
+dist: xenial
+addons:
+  apt:
+    packages:
+    - python3-dulwich
+    - python3-jsonschema
+    - python3-pil
+    - python3-urllib3
 matrix:
   include:
     - language: python
-      python: "3.7"
 
       script:
-        # Can't use the Debian packages since we're not using the default
-        # Python. (Even Xenial still has 3.5?)
-        - pip install dulwich jsonschema pillow urllib3
-        # Annoying: Need python3.6. std python3 in Travis is 3.4. 3.6 is
-        # installed above which will set /usr/bin/python to point at it
-        # but not /usr/bin/python3. :<
-        - python3.7 ci/menu-ci.py
+        - ci/menu-ci.py
 
     - language: android
       before_install:
