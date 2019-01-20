@@ -12,7 +12,6 @@ reviewing those updates manually.
 Sadly I'll need to duplicate some things from Giggity's Java code I guess...
 """
 
-
 import json
 import os
 import re
@@ -36,7 +35,9 @@ class MenuError(Exception):
 MENU = "app/src/main/res/raw/menu.json"
 SCHEMA = "ci/menu-schema.json"
 
-raw = open(MENU, "r").read()
+g = subprocess.Popen(["tools/merge.py"],
+                     stdout=subprocess.PIPE, encoding="utf-8")
+raw, _ = g.communicate()
 try:
 	new = json.loads(raw)
 except ValueError as e:
@@ -54,7 +55,8 @@ try:
 	else:
 		base_ref = "master"
 	print("Base ref: %s" % base_ref)
-	g = subprocess.Popen(["git", "show", "%s:%s" % (base_ref, MENU)], stdout=subprocess.PIPE, encoding="utf-8")
+	g = subprocess.Popen(["tools/merge.py", "-r", base_ref],
+	                     stdout=subprocess.PIPE, encoding="utf-8")
 	base_raw, _ = g.communicate()
 	base = None
 	if g.returncode == 0:
