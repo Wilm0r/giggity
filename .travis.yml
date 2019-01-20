@@ -6,7 +6,8 @@ matrix:
       script:
         # Can't use the Debian packages since we're not using the default
         # Python. (Even Xenial still has 3.5?)
-        - pip install dulwich jsonschema pillow urllib3
+        - pip install jsonschema pillow urllib3
+        - pip install dulwich --global-option="--pure"
         # Annoying: Need python3.6. std python3 in Travis is 3.4. 3.6 is
         # installed above which will set /usr/bin/python to point at it
         # but not /usr/bin/python3. :<
