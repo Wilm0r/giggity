@@ -1,0 +1,16 @@
+{
+	"version": 2017040400,
+	"url": "https://www.opensouthcode.org/conferences/opensouthcode2017/schedule.xml",
+	"title": "Opensouthcode 2017",
+	"start": "2017-05-05",
+	"end": "2017-05-06",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.opensouthcode.org/",
+				"title": "Website"
+			}
+		],
+		"icon": "https://www.opensouthcode.org/logo.png"
+	}
+}

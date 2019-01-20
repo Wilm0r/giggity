@@ -1,0 +1,20 @@
+{
+	"version": 2017100700,
+	"url": "https://vcfb.de/2017/schedule.xml",
+	"title": "Vintage Computing Festival Berlin 2017",
+	"start": "2017-10-07",
+	"end": "2017-10-08",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://vcfb.de/2017/index.html.en",
+				"title": "Website"
+			},
+			{
+				"url": "http://vcfb.de/2017/images/raumplan_bunt_2017_rotiert_en.png",
+				"title": "Map",
+				"type": "image/png"
+			}
+		]
+	}
+}

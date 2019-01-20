@@ -1,0 +1,20 @@
+{
+	"version": 2017111000,
+	"url": "https://nluug.nl/events/nj17/20171116-schedule.xml",
+	"title": "NLUUG Autumn 2017",
+	"start": "2017-11-16",
+	"end": "2017-11-16",
+	"metadata": {
+		"icon": "https://nluug.nl/events/nj17/nluug-icon-300.png",
+		"links": [
+			{
+				"url": "https://www.nluug.nl/index.html",
+				"title": "NLUUG Website"
+			},
+			{
+				"url": "https://www.nluug.nl/events/nj17/programma.html",
+				"title": "Conference Program (website)"
+			}
+		]
+	}
+}

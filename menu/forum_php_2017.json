@@ -1,0 +1,20 @@
+{
+	"version": 2017100900,
+	"url": "https://afup.org/event/forumphp2017/planning.ics",
+	"title": "Forum PHP 2017",
+	"id": "Forum PHP 2017",
+	"start": "2017-10-26",
+	"end": "2017-10-27",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://event.afup.org/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://afup.org/event/forumphp2017/tickets",
+				"title": "Tarifs et inscription"
+			}
+		]
+	}
+}

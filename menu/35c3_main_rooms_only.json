@@ -1,0 +1,19 @@
+{
+	"title": "35c3 - main rooms only",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
+				"title": "Wiki"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		]
+	},
+	"url": "https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml",
+	"start": "2018-12-27",
+	"end": "2018-12-30",
+	"version": 2018122701
+}

@@ -1,0 +1,24 @@
+{
+	"version": 2018080300,
+	"url": "https://promcon.io/2018-munich/schedule.xml",
+	"title": "PromCon 2018",
+	"start": "2018-08-09",
+	"end": "2018-08-10",
+	"metadata": {
+		"icon": "https://promcon.io/assets/favicons/apple-touch-icon.png",
+		"links": [
+			{
+				"url": "https://promcon.io/2018-munich/",
+				"title": "Website"
+			},
+			{
+				"url": "https://goo.gl/maps/BgtgjfCDyez",
+				"title": "Venue location"
+			},
+			{
+				"url": "https://promcon.io/coc/",
+				"title": "Code of Conduct"
+			}
+		]
+	}
+}

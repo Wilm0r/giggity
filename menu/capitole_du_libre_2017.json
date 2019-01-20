@@ -1,0 +1,33 @@
+{
+	"version": 2017101800,
+	"url": "https://participez-2017.capitoledulibre.org/schedule/xml/",
+	"title": "Capitole du Libre 2017",
+	"start": "2017-11-18",
+	"end": "2017-11-19",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2017.capitoledulibre.org/",
+				"title": "Site web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "A.*",
+				"latlon": [43.60248, 1.45464]
+			},
+			{
+				"name": "B.*",
+				"latlon": [43.60247, 1.45566]
+			},
+			{
+				"name": "C.*",
+				"latlon": [43.60214, 1.45462]
+			},
+			{
+				"name": "Foyer.*",
+				"latlon": [43.60207, 1.45591]
+			}
+		]
+	}
+}

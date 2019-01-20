@@ -1,0 +1,20 @@
+{
+	"version": 2017102000,
+	"url": "https://conf-ng.jres.org/2017/rest/planning.ics",
+	"id": "JRES 2017",
+	"title": "JRES 2017",
+	"start": "2017-11-14",
+	"end": "2017-11-17",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.jres.org/fr",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://www.jres.org/fr/inscription-aux-jres-2017",
+				"title": "Inscription"
+			}
+		]
+	}
+}

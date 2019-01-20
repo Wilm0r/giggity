@@ -1,0 +1,38 @@
+{
+	"version": 2018102401,
+	"url": "https://rml12.duniter.io/rml12.ics",
+	"id": "RML 12",
+	"title": "RML 12",
+	"start": "2018-11-17",
+	"end": "2018-11-25",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://rml12.duniter.io/",
+				"title": "Site Web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Bibliothèque Flora Tristan.*",
+				"latlon": [44.82132, -0.55073]
+			},
+			{
+				"name": "Halle des Douves.*",
+				"latlon": [44.83063, -0.5663]
+			},
+			{
+				"name": "Athénée Municipal.*",
+				"latlon": [44.839834, -0.577189]
+			},
+			{
+				"name": "Chez 1000i100.*",
+				"latlon": [44.81118, -0.55375]
+			},
+			{
+				"name": "Salle Marengo.*",
+				"latlon": [44.83314, -0.56883]
+			}
+		]
+	}
+}
