@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 # coding=utf-8
 
 """
@@ -22,7 +22,8 @@ import sys
 # Currently the only 3.6 feature that is used in this script is `encoding` in
 # Popen.
 if sys.version_info[:2] < (3, 6):
-    raise RuntimeError("at least python 3.6 is required")
+    raise RuntimeError("at least python 3.6 is required, you have %s" %
+                       sys.version)
 
 import jsonschema
 import PIL.Image
@@ -32,12 +33,13 @@ import urllib3
 class MenuError(Exception):
 	pass
 
-MENU = "app/src/main/res/raw/menu.json"
 SCHEMA = "ci/menu-schema.json"
 
 g = subprocess.Popen(["tools/merge.py"],
                      stdout=subprocess.PIPE, encoding="utf-8")
 raw, _ = g.communicate()
+if g.returncode != 0:
+	raise MenuError("Menu merger script failed")
 try:
 	new = json.loads(raw)
 except ValueError as e:
@@ -53,7 +55,7 @@ try:
 	elif "TRAVIS_COMMIT_RANGE" in env:
 		base_ref = env["TRAVIS_COMMIT_RANGE"].split(".")[0]
 	else:
-		base_ref = "master"
+		base_ref = "HEAD"
 	print("Base ref: %s" % base_ref)
 	g = subprocess.Popen(["tools/merge.py", "-r", base_ref],
 	                     stdout=subprocess.PIPE, encoding="utf-8")

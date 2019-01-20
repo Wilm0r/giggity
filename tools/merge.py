@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import argparse
 import datetime
@@ -29,7 +29,12 @@ if not args.revision:
 else:
 	# Thanks to Jelmer Vernooij for spelling this one out for me :-D
 	repo = Repo('.')
-	menu = porcelain.get_object_by_path(repo, "menu", args.revision)
+	rev = args.revision.encode("ascii")
+	for r in repo.get_walker():
+		if r.commit.id.startswith(rev):
+			rev = r.commit.id
+			break
+	menu = porcelain.get_object_by_path(repo, "menu", rev)
 	for name, mode, object_id in menu.iteritems():
 		all[name] = json.loads(repo[object_id].data)
 
