@@ -104,7 +104,7 @@ maps with for example Google). Note that the room name is actually a
 regular expression (which could be used to combine entries for adjacent
 rooms for example).
 
-For those conferences using c3nav, the
+For those conferences using [c3nav](https://github.com/c3nav/c3nav), the
 [FOSDEM fragment](menu/fosdem_2019.json) shows how to integrate that.
 In case of c3nav you'll likely just want to have an entry for every
 room instead of taking advantage of regex matching.
