@@ -100,9 +100,14 @@ kinds of links as you see fit.
 Less commonly used: Adding room locations will make room names in event
 description clickable, sending the user to the given latlon in their
 preferred maps application (especially great if your venue has indoor
-maps with for example Google).  Note that the room name is actually a
+maps with for example Google). Note that the room name is actually a
 regular expression (which could be used to combine entries for adjacent
 rooms for example).
+
+For those conferences using c3nav, the
+[FOSDEM fragment](menu/fosdem_2019.json) shows how to integrate that.
+In case of c3nav you'll likely just want to have an entry for every
+room instead of taking advantage of regex matching.
 
 To test your entry, QR-encode it using for example this command:
 
@@ -118,18 +123,6 @@ and your phone camera good, just leave out the gzip.)
 Then scan the code from the Giggity main menu (+ on the top-right, then
 "SCAN QR").
 
-To get your entry added to Giggity, just modify
-[menu.json](app/src/main/res/raw/menu.json) here and send a pull request.
-To save time, run `ci/menu-ci.py` for sanity checking. (Same check is
-run automatically through Travis-CI.)
-
-## Repository setup
-
-This is an Android Studio project. Good luck getting your local install
-to import it properly! It's a process that can either be enjoyable or
-make me miss Makefiles, though it appears much less fragile than it was
-with Eclipse?
-
-Sadly Eclipse and Android Studio have done a great job at fscking up the
-indentation (meant to be tabs but got mixed here and there). Maybe I'll
-decrustify some day.. Please do use tabs.
+To get your entry added to Giggity, just add it to [this directory](menu)
+and send a pull request. To save time, run `ci/menu-ci.py` for sanity
+checking. (Same check is run automatically through Travis-CI.)
