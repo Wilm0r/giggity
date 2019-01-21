@@ -82,7 +82,18 @@ class FetchError(Exception):
 def fetch(url, img=False):
 	"""Simple URL fetcher, will return text or a parsed image depending
 	on what you ask for. Or an exception (returned, not raised :-P)."""
-	o = urllib3.PoolManager()
+
+	certs = "/etc/ssl/certs/ca-certificates.crt"
+	# Kind of ugly. Should I even check, or just not support machines
+	# that don't have this file?
+	kwargs = {}
+	if os.path.exists(certs):
+		kwargs.update({
+			"cert_reqs": "CERT_REQUIRED",
+			"ca_certs": certs,
+		})
+
+	o = urllib3.PoolManager(**kwargs)
 	try:
 		print("Fetching %s" % url)
 		u = o.request("GET", url, preload_content=False)
