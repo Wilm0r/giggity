@@ -33,6 +33,8 @@ import android.view.View;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Date;
@@ -140,7 +142,7 @@ public class Giggity extends Application {
 	
 	public void updateRemind(Schedule.Item item) {
 		if (item.getRemind()) {
-			if (item.compareTo(new Date()) < 0)
+			if (item.compareTo(ZonedDateTime.now()) < 0)
 				remindItems.add(item);
 		} else
 			remindItems.remove(item);
@@ -178,6 +180,17 @@ public class Giggity extends Application {
 			ret = new SimpleDateFormat("d MMMM").format(end);
 		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
 			ret = "" + start.getDate() + "-" + new SimpleDateFormat("d MMMM").format(end);
+		else
+			ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
+		return ret + " " + (1900 + end.getYear());
+	}
+
+	public static String dateRange(ZonedDateTime start, ZonedDateTime end) {
+		String ret = "";
+		if (start.getDayOfMonth() == end.getDayOfMonth() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
+			ret = DateTimeFormatter.ofPattern("d MMMM").format(end);
+		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
+			ret = "" + start.getDayOfMonth() + "-" + DateTimeFormatter.ofPattern("d MMMM").format(end);
 		else
 			ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
 		return ret + " " + (1900 + end.getYear());

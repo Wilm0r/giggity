@@ -62,6 +62,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,8 +84,6 @@ public class ScheduleViewActivity extends Activity {
 	private int curView;
 	private boolean tabletView;  // EventDialog integrated instead of invoking a separate activity
 	private boolean showHidden;
-
-	private Format dateFormat = new SimpleDateFormat("EE d MMMM");
 
 	/* Set this if when returning to this activity we need a *full* redraw.
 	 * (I.e. when returning from the settings menu.) */
@@ -482,7 +482,7 @@ public class ScheduleViewActivity extends Activity {
 			return;
 		}
 
-		LinkedList<Date> days = sched.getDays();
+		LinkedList<ZonedDateTime> days = sched.getDays();
 		TextView dr = (TextView) drawerLayout.findViewById(R.id.date_range);
 		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
 
@@ -746,7 +746,8 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void showDayDialog() {
-		LinkedList<Date> days = sched.getDays();
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EE d MMMM");
+		LinkedList<ZonedDateTime> days = sched.getDays();
 		CharSequence dayList[] = new CharSequence[days.size()];
 		int i, cur = -1;
 		for (i = 0; i < days.size(); i ++) {
@@ -962,7 +963,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		private void daySwitch(int d) {
-			LinkedList<Date> days = sched.getDays();
+			LinkedList<ZonedDateTime> days = sched.getDays();
 			int i, cur = -1;
 			for (i = 0; i < days.size(); i ++)
 				if (sched.getDay().equals(days.get(i)))

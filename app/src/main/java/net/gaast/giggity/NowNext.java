@@ -21,6 +21,7 @@ package net.gaast.giggity;
 
 import android.content.Context;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -47,9 +48,9 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 		/* Set the schedule's day to today so we don't show tomorrow's 
 		 * stuff as "next". */
 		int i = 0;
-		for (Date day : sched.getDays()) {
-			long d = now.getTime() - day.getTime();
-			if (d > 0 && d < 86400000) {
+		for (ZonedDateTime day : sched.getDays()) {
+			ZonedDateTime dayEnd = day.plusDays(1);
+			if (dayEnd.isBefore(ZonedDateTime.now())) {
 				sched.setDay(i);
 				break;
 			}

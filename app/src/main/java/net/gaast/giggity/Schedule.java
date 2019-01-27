@@ -53,19 +53,24 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.TimeZone;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
@@ -88,11 +93,12 @@ public class Schedule {
 	private TreeMap<String,Schedule.Item> allItems;
 	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
 
-	private Date firstTime, lastTime;
-	private Date dayFirstTime, dayLastTime;
-	private Date curDay, curDayEnd;
-	private Date dayChange;
-	LinkedList<Date> dayList;
+	private ZonedDateTime firstTime, lastTime;
+	private ZonedDateTime dayFirstTime, dayLastTime;
+	private ZonedDateTime curDay, curDayEnd;
+	private ZoneId nativeTz = ZoneId.systemDefault();
+	private LocalTime dayChange;
+	LinkedList<ZonedDateTime> dayList;
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
 	private HashSet<String> languages;
@@ -139,33 +145,28 @@ public class Schedule {
 		return ret;
 	}
 	
-	public LinkedList<Date> getDays() {
+	public LinkedList<ZonedDateTime> getDays() {
 		if (dayList == null) {
-			Calendar day = new GregorianCalendar();
-			day.setTime(firstTime);
-			day.set(Calendar.HOUR_OF_DAY, dayChange.getHours());
-			day.set(Calendar.MINUTE, dayChange.getMinutes());
+			ZonedDateTime day = ZonedDateTime.of(firstTime.toLocalDate(), dayChange, nativeTz);
 			/* Add a day 0 (maybe there's an event before the first day officially
 			 * starts?). Saw this in the CCC Fahrplan for example. */
-			if (day.getTime().after(firstTime))
-				day.add(Calendar.DATE, -1);
+			if (day.isAfter(firstTime))
+				day = day.minusDays(1);
 
-			Calendar dayEnd = new GregorianCalendar();
-			dayEnd.setTime(day.getTime());
-			dayEnd.add(Calendar.DATE, 1);
-			
-			dayList = new LinkedList<Date>();
-			while (day.getTime().before(lastTime)) {
+			ZonedDateTime dayEnd = day.plusDays(1);
+
+			dayList = new LinkedList<>();
+			while (day.isBefore(lastTime)) {
 				/* Some schedules have empty days in between. :-/ Skip those. */
 				for (Schedule.Item item : allItems.values()) {
-					if (item.getStartTime().compareTo(day.getTime()) >= 0 &&
-						item.getEndTime().compareTo(dayEnd.getTime()) <= 0) {
-						dayList.add(day.getTime());
+					if (item.getStartTimeZoned().compareTo(day) >= 0 &&
+						item.getEndTimeZoned().compareTo(dayEnd) <= 0) {
+						dayList.add(day);
 						break;
 					}
 				}
-				day.add(Calendar.DATE, 1);
-				dayEnd.add(Calendar.DATE, 1);
+				day = dayEnd;
+				dayEnd = dayEnd.plusDays(1);
 			}
 		}
 		return dayList;
@@ -173,11 +174,15 @@ public class Schedule {
 	
 	/** Total duration of this event in seconds. */
 	public long eventLength() {
-		return (lastTime.getTime() - firstTime.getTime()) / 1000;
+		return lastTime.toEpochSecond() - firstTime.toEpochSecond();
 	}
 	
 	public Date getDay() {
-		return curDay;
+		if (curDay != null) {
+			return Date.from(curDay.toInstant());
+		} else {
+			return null;
+		}
 	}
 	
 	public void setDay(int day) {
@@ -188,21 +193,18 @@ public class Schedule {
 		} else {
 			if (day >= getDays().size())
 				day = 0;
-			curDay = getDays().get(day);
 
-			Calendar dayEnd = new GregorianCalendar();
-			dayEnd.setTime(curDay);
-			dayEnd.add(Calendar.DAY_OF_MONTH, 1);
-			curDayEnd = dayEnd.getTime();
+			curDay = getDays().get(day);
+			curDayEnd = curDay.plusDays(1);
 
 			dayFirstTime = dayLastTime = null;
 			for (Schedule.Item item : allItems.values()) {
-				if (item.getStartTime().compareTo(curDay) >= 0 &&
-						item.getEndTime().compareTo(curDayEnd) <= 0) {
-					if (dayFirstTime == null || item.getStartTime().before(dayFirstTime))
-						dayFirstTime = item.getStartTime();
-					if (dayLastTime == null || item.getEndTime().after(dayLastTime))
-						dayLastTime = item.getEndTime();
+				if (item.getStartTimeZoned().compareTo(curDay) >= 0 &&
+						item.getEndTimeZoned().compareTo(curDayEnd) <= 0) {
+					if (dayFirstTime == null || item.getStartTimeZoned().isBefore(dayFirstTime))
+						dayFirstTime = item.getStartTimeZoned();
+					if (dayLastTime == null || item.getEndTimeZoned().isAfter(dayLastTime))
+						dayLastTime = item.getEndTimeZoned();
 				}
 			}
 		}
@@ -216,7 +218,7 @@ public class Schedule {
 	}
 	
 	/** Get earliest item.startTime */
-	public Date getFirstTime() {
+	private ZonedDateTime getFirstTimeZoned() {
 		if (curDay == null) {
 			return firstTime;
 		} else {
@@ -225,7 +227,7 @@ public class Schedule {
 	}
 	
 	/** Get highest item.endTime */
-	public Date getLastTime() {
+	private ZonedDateTime getLastTimeZoned() {
 		if (curDay == null) {
 			return lastTime;
 		} else {
@@ -233,9 +235,17 @@ public class Schedule {
 		}
 	}
 
+	public Date getFirstTime() {
+		return Date.from(getFirstTimeZoned().toInstant());
+	}
+
+	public Date getLastTime() {
+		return Date.from(getLastTimeZoned().toInstant());
+	}
+
 	public boolean isToday() {
-		Date now = new Date();
-		return (getFirstTime().before(now) && getLastTime().after(now));
+		ZonedDateTime now = ZonedDateTime.now();
+		return (getFirstTimeZoned().isBefore(now) && getLastTimeZoned().isAfter(now));
 	}
 	
 	/* If true, this schedule defines link types so icons should suffice.
@@ -267,9 +277,8 @@ public class Schedule {
 		dayList = null;
 		curDay = null;
 		curDayEnd = null;
-		dayChange = new Date();
-		dayChange.setHours(6);
-		
+		dayChange = LocalTime.of(6, 0);
+
 		fullyLoaded = false;
 		showHidden = false;
 
@@ -432,7 +441,7 @@ public class Schedule {
 	private void loadJson(BufferedReader in) {
 
 		StringBuffer buffer = new StringBuffer();
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(nativeTz);
 		HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
 		Boolean hasMicrolocs = false;
 		Scanner s = new Scanner(in);
@@ -515,7 +524,7 @@ public class Schedule {
 				in second part to avoid error in integer parsing*/
 				String startTimeS = event.getString("start_time");
 				String endTimeS = event.getString("end_time");
-				Date startTime, endTime;
+				ZonedDateTime startTime, endTime;
 
 				if (startTimeS.contains("+")) {
 					startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('+'));
@@ -527,8 +536,8 @@ public class Schedule {
 				}
 				endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('-'));
 
-				startTime = df.parse(startTimeS);
-				endTime = df.parse(endTimeS);
+				startTime = ZonedDateTime.from(df.parse(startTimeS));
+				endTime = ZonedDateTime.from(df.parse(endTimeS));
 
 				Schedule.Item item = new Schedule.Item(uid, title, startTime, endTime);
 				item.setDescription(event.getString("long_abstract"));
@@ -575,8 +584,6 @@ public class Schedule {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			throw new LoadException("Parse error: " + e);
-		} catch (ParseException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -904,11 +911,11 @@ public class Schedule {
 				curTent = new Schedule.Line(atts.getValue("", "id"),
 				                            atts.getValue("", "title"));
 			} else if (localName.equals("item")) {
-				Date startTime, endTime;
+				ZonedDateTime startTime, endTime;
 	
 				try {
-					startTime = new Date(Long.parseLong(atts.getValue("", "startTime")) * 1000);
-					endTime = new Date(Long.parseLong(atts.getValue("", "endTime")) * 1000);
+					startTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(atts.getValue("", "startTime"))), nativeTz);
+					endTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(atts.getValue("", "endTime"))), nativeTz);
 					
 					curItem = new Schedule.Item(atts.getValue("", "id"),
 					                            atts.getValue("", "title"),
@@ -983,23 +990,23 @@ public class Schedule {
 		private HashMap<String,String> eventData;
 		private String curString;
 
-		SimpleDateFormat dfUtc, dfLocal;
+		DateTimeFormatter dfUtc, dfLocal;
 
 		public XcalParser() {
 			tentMap = new HashMap<String,Schedule.Line>();
-			dfUtc = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
-			dfUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
-			dfLocal = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
+
+			dfUtc = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'").withZone(ZoneId.of("UTC"));
+			dfLocal = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss").withZone(nativeTz);
 		}
 
-		private Date parseTime(String s) throws ParseException {
-			Date ret;
-			if ((ret = dfUtc.parse(s, new ParsePosition(0))) != null) {
-				return ret;
-			} else if ((ret = dfLocal.parse(s, new ParsePosition(0))) != null) {
-				return ret;
+		private ZonedDateTime parseTime(String s) throws ParseException {
+			TemporalAccessor ret;
+			try {
+				ret = dfUtc.parse(s, new ParsePosition(0));
+			} catch (DateTimeParseException e) {
+				ret = dfLocal.parse(s, new ParsePosition(0));
 			}
-			throw new ParseException("Unparseable date: " + s, 0);
+			return ZonedDateTime.from(ret);
 		}
 
 		/* Yay I'll just write my own parser... Spec is at https://www.kanzaki.com/docs/ical/duration-t.html
@@ -1047,7 +1054,7 @@ public class Schedule {
 				throws SAXException {
 			if (localName.equals("vevent")) {
 				String uid, name, location, startTimeS, endTimeS, durationS = null, s;
-				Date startTime, endTime;
+				ZonedDateTime startTime, endTime;
 				Schedule.Item item;
 				Schedule.Line line;
 				
@@ -1066,7 +1073,7 @@ public class Schedule {
 					if (endTimeS != null) {
 						endTime = parseTime(endTimeS);
 					} else {
-						endTime = new Date(startTime.getTime() + parseDuration(durationS) * 1000);
+						endTime = startTime.plusSeconds(parseDuration(durationS));
 					}
 				} catch (ParseException e) {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
@@ -1150,15 +1157,18 @@ public class Schedule {
 		private String curString;
 		private LinkedList<String> persons;
 		private LinkedList<Link> links;
-		private Date curDay;
+		private LocalDate curDay;
 
-		SimpleDateFormat df, tf;
+		private DateTimeFormatter df, tf;
 
 		public PentabarfParser() {
 			tentMap = new HashMap<>();
 
-			df = new SimpleDateFormat("yyyy-MM-dd");
-			tf = new SimpleDateFormat("HH:mm");
+			//nativeTz = ZoneId.of("Europe/Brussels");
+			//nativeTz = ZoneId.of("US/Pacific");
+			df = DateTimeFormatter.ISO_LOCAL_DATE;
+			//tf = DateTimeFormatter.ISO_LOCAL_TIME;
+			tf = DateTimeFormatter.ofPattern("H:mm[:ss]");
 		}
 		
 		@Override
@@ -1172,14 +1182,8 @@ public class Schedule {
 				links = new LinkedList<>();
 				persons = new LinkedList<>();
 			} else if (localName.equals("day")) {
-				try {
-					curDay = df.parse(atts.getValue("date"));
-					curDay.setHours(dayChange.getHours());
-					curDay.setMinutes(dayChange.getMinutes());
-				} catch (ParseException e) {
-					Log.w("Schedule.loadPentabarf", "Can't parse date: " + e);
-					return;
-				}
+				curDay = LocalDate.parse(atts.getValue("date"), df);
+				// TODO: PARSE ERROR?
 			} else if (localName.equals("room")) {
 				String name = atts.getValue("name");
 				Schedule.Line line;
@@ -1212,15 +1216,12 @@ public class Schedule {
 			if (localName.equals("conference")) {
 				title = propMap.get("title");
 				if (propMap.get("day_change") != null) {
-					try {
-						dayChange = tf.parse(propMap.get("day_change"));
-					} catch (ParseException e) {
-						Log.w("Schedule.loadPentabarf", "Couldn't parse day_change: " + propMap.get("day_change"));
-					}
+					dayChange = LocalTime.parse(propMap.get("day_change"), tf);
+					// TODO: PARSE ERROR?
 				}
 			} else if (localName.equals("event")) {
 				String id, title, startTimeS, durationS, s, desc, wl;
-				Calendar startTime, endTime;
+				ZonedDateTime startTime, endTime;
 				Schedule.Item item;
 				
 				if ((id = propMap.get("id")) == null ||
@@ -1231,30 +1232,19 @@ public class Schedule {
 					return;
 				}
 
-				try {
-					Date tmp;
-					
-					startTime = new GregorianCalendar();
-					startTime.setTime(curDay);
-					tmp = tf.parse(startTimeS);
-					startTime.set(Calendar.HOUR_OF_DAY, tmp.getHours());
-					startTime.set(Calendar.MINUTE, tmp.getMinutes());
-					
-					if (startTime.getTime().before(curDay)) {
-						startTime.add(Calendar.DAY_OF_MONTH, 1);
-					}
-					
-					endTime = new GregorianCalendar();
-					endTime.setTime(startTime.getTime());
-					tmp = tf.parse(durationS);
-					endTime.add(Calendar.HOUR_OF_DAY, tmp.getHours());
-					endTime.add(Calendar.MINUTE, tmp.getMinutes());
-				} catch (ParseException e) {
-					Log.w("Schedule.loadPentabarf", "Can't parse date: " + e);
-					return;
+				LocalTime rawTime = LocalTime.parse(startTimeS, tf);
+				startTime = ZonedDateTime.of(curDay, rawTime, nativeTz);
+
+				if (rawTime.isBefore(dayChange)) {
+					// In Frab files, if a time is before day_change it's technically the next
+					// day.
+					startTime = startTime.plusDays(1);
 				}
 
-				item = new Schedule.Item(id, title, startTime.getTime(), endTime.getTime());
+				rawTime = LocalTime.parse(durationS, tf);
+				endTime = startTime.plusHours(rawTime.getHour()).plusMinutes(rawTime.getMinute());
+
+				item = new Schedule.Item(id, title, startTime, endTime);
 				
 				if ((s = propMap.get("subtitle")) != null) {
 					if (!s.isEmpty())
@@ -1387,10 +1377,10 @@ public class Schedule {
 			items.add(item);
 			allItems.put(item.getId(), item);
 
-			if (firstTime == null || item.getStartTime().before(firstTime))
-				firstTime = item.getStartTime();
-			if (lastTime == null || item.getEndTime().after(lastTime))
-				lastTime = item.getEndTime();
+			if (firstTime == null || item.getStartTimeZoned().isBefore(firstTime))
+				firstTime = item.getStartTimeZoned();
+			if (lastTime == null || item.getEndTimeZoned().isAfter(lastTime))
+				lastTime = item.getEndTimeZoned();
 
 			if (item.getLanguage() != null) {
 				languages.add(item.getLanguage());
@@ -1399,15 +1389,13 @@ public class Schedule {
 		
 		public AbstractSet<Schedule.Item> getItems() {
 			TreeSet<Schedule.Item> ret = new TreeSet<Schedule.Item>();
-			Calendar dayStart = new GregorianCalendar();
-			
-			if (curDay != null)
-				dayStart.setTime(curDay);
-			
+
+			// TODO: Hmm what was the dayStart thingy here, how was it different from just using curDay?
+
 			for (Item item : items) {
 				if ((!item.isHidden() || showHidden) &&
-				    (curDay == null || (!item.getStartTime().before(dayStart.getTime()) &&
-				                        !item.getEndTime().after(curDayEnd))))
+				    (curDay == null || (!item.getStartTimeZoned().isBefore(curDay) &&
+				                        !item.getEndTimeZoned().isAfter(curDayEnd))))
 					ret.add(item);
 			}
 			return ret;
@@ -1438,7 +1426,7 @@ public class Schedule {
 		private String title, subtitle;
 		private String track;
 		private String description;
-		private Date startTime, endTime;
+		private ZonedDateTime startTime, endTime;
 		private LinkedList<Schedule.Link> links;
 		private LinkedList<String> speakers;
 		private String language;
@@ -1449,7 +1437,7 @@ public class Schedule {
 		private int stars;
 		private boolean newData;
 		
-		Item(String id_, String title_, Date startTime_, Date endTime_) {
+		Item(String id_, String title_, ZonedDateTime startTime_, ZonedDateTime endTime_) {
 			id = id_;
 			title = title_;
 			startTime = startTime_;
@@ -1539,14 +1527,22 @@ public class Schedule {
 			subtitle = s;
 		}
 
-		public Date getStartTime() {
+		public ZonedDateTime getStartTimeZoned() {
 			return startTime;
 		}
 		
-		public Date getEndTime() {
+		public ZonedDateTime getEndTimeZoned() {
 			return endTime;
 		}
-		
+
+		public Date getStartTime() {
+			return Date.from(getStartTimeZoned().toInstant());
+		}
+
+		public Date getEndTime() {
+			return Date.from(getEndTimeZoned().toInstant());
+		}
+
 		public String getTrack() {
 			return track;
 		}
@@ -1671,7 +1667,7 @@ public class Schedule {
 		@Override
 		public int compareTo(Item another) {
 			int ret;
-			if ((ret = getStartTime().compareTo(another.getStartTime())) != 0)
+			if ((ret = getStartTimeZoned().compareTo(another.getStartTimeZoned())) != 0)
 				return ret;
 			else if ((ret = getTitle().compareTo(another.getTitle())) != 0)
 				return ret;
@@ -1680,8 +1676,8 @@ public class Schedule {
 		}
 
 		public int compareTo(Date d) {
-			/* 0 if the event is "now" (d==now), 
-			 * -1 if it's in the future, 
+			/* 0 if the event is "now" (d==now),
+			 * -1 if it's in the future,
 			 * 1 if it's in the past. */
 			if (d.before(getStartTime()))
 				return -1;
@@ -1690,11 +1686,23 @@ public class Schedule {
 			else
 				return 1;
 		}
-		
+
+		public int compareTo(ZonedDateTime d) {
+			/* 0 if the event is "now" (d==now),
+			 * -1 if it's in the future,
+			 * 1 if it's in the past. */
+			if (d.isBefore(getStartTimeZoned()))
+				return -1;
+			else if (getEndTimeZoned().isAfter(d))
+				return 0;
+			else
+				return 1;
+		}
+
 		public boolean overlaps(Item other) {
-			return ((other.getStartTime().after(getStartTime()) && other.getStartTime().before(getEndTime())) ||
-			        (other.getEndTime().after(getStartTime()) && other.getEndTime().before(getEndTime())) ||
-			        (!other.getStartTime().after(getStartTime()) && !other.getEndTime().before(getEndTime())));
+			// True if other's start- or end-time is during our event, or if it starts before and ends after ours.
+			return (compareTo(other.getStartTimeZoned()) == 0 || compareTo(other.getEndTimeZoned()) == 0 ||
+			        (!other.getStartTimeZoned().isAfter(getStartTimeZoned()) && !other.getEndTimeZoned().isBefore(getEndTimeZoned())));
 		}
 	}
 
