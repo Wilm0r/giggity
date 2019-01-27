@@ -28,12 +28,12 @@
 	<!-- EventDialog -->
 	<string name="speaker">Conférencier :</string>
 	<string name="speakers">Conférenciers :</string>
-	<string name="track">Thème:</string>
+	<string name="track">Thème :</string>
 	<string name="remind_me">Rappel</string>
 	<string name="overlap">En conflit avec</string>
 	<string name="hide_what">Cacher...</string>
 	<string name="unhide_what">Montrer...</string>
-	<string name="hide_item">...cet item</string>
+	<string name="hide_item">...cet élément</string>
 	<string name="hide_room">...salle entière</string>
 	<string name="hide_track">...thème entier</string>
 	<string name="hide_lang">...tout dans %s</string>
@@ -42,13 +42,13 @@
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Chargement du programme...</string>
 	<string name="loading_image">Chargement des images...</string>
-	<string name="loading_error">Erreur lors du chargement</string>
+	<string name="loading_error">Erreur de chargement</string>
 	<string name="no_viewer_error">Aucune application ne prend en charge ce type de fichier</string>
 	<string name="export_selections">Exporter les sélections</string>
 	<string name="home_shortcut">Raccourci sur l\'accueil</string>
-	<string name="import_selections">Importer les selections</string>
-	<string name="no_selections">Aucune selection à exporter</string>
-	<string name="qr_tip">Veuillez utiliser le bouton scan QR scan du menu principal sur votre autre appareil pour importer ceci</string>
+	<string name="import_selections">Importer les sélections</string>
+	<string name="no_selections">Aucune sélection à exporter</string>
+	<string name="qr_tip">Utilisez le bouton scan QR du menu principal sur votre autre appareil pour importer ceci</string>
 	<string name="schedule_empty">Le programme semble vide</string>
 	<string name="format_unknown">Format de fichier non reconnu</string>
 	<string name="no_network">Aucune connexion réseau</string>
@@ -57,15 +57,15 @@
 	<!-- Menu -->
 	<string name="settings">Paramètres</string>
 	<string name="change_day">Changer de jour</string>
-	<string name="show_hidden">Monter items cachés</string>
+	<string name="show_hidden">Monter les éléments cachés</string>
 	<string name="timetable">Horaires</string>
 	<string name="tracks">Thèmes</string>
 	<string name="now_next">À venir</string>
 	<string name="my_events">Sélection</string>
 	<string name="search">Recherche</string>
 	<!-- navdrawer (toggler) -->
-	<string name="navdrawer_on">Montrer menu</string>
-	<string name="navdrawer_off">Cacher menu</string>
+	<string name="navdrawer_on">Montrer le menu</string>
+	<string name="navdrawer_off">Cacher le menu</string>
 
 	<!-- NowNext -->
 	<string name="no_events_today">Aucun évènement ce jour.</string>
@@ -75,22 +75,22 @@
 	<!-- MyItemsView -->
 	<string name="coming_up">À venir :</string>
 	<string name="seen_so_far">Déjà vu :</string>
-	<string name="none_marked">Aucun item sélectionné.</string>
+	<string name="none_marked">Aucun élément sélectionné.</string>
 
 	<!-- SearchActivity -->
-	<string name="search_results">Résultats pour \"%1$s\" dans %2$s</string>
+	<string name="search_results">Résultats pour « %1$s » dans %2$s</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Mettre à jour</string>
-	<string name="unhide">Montrer les items cachés</string>
+	<string name="unhide">Montrer les éléments cachés</string>
 	<string name="remove">Supprimer</string>
 	<string name="show_url">Montrer l\'URL...</string>
-	<string name="chooser_now">Évènement courant :</string>
+	<string name="chooser_now">Évènements actuels :</string>
 	<string name="chooser_later">Évènements à venir :</string>
 	<string name="chooser_past">Évènements précédents :</string>
 	<string name="add_dialog">Ajout...</string>
 	<string name="qr_scan">Scan QR</string>
-	<string name="enter_url">Entrez l\'URL du programme</string>
+	<string name="enter_url">Saisissez l\'URL du programme</string>
 
 	<!-- Reminder -->
 	<string name="soon_in">Bientôt dans</string>
