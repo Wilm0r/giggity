@@ -6,6 +6,7 @@ android {
         applicationId "net.gaast.giggity"
         minSdkVersion 16
         targetSdkVersion 27
+        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
         release {
