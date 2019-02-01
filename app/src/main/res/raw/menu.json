@@ -1,527 +1,6 @@
 {
-	"version": 2019012000,
+	"version": 2019028000,
 	"schedules": [
-		{
-			"version": 2017041700,
-			"url": "https://luga-ev.github.io/frab-extras/2017/de/lit2017/public/schedule.xml",
-			"title": "Augsburger Linux-Infotag 2017 (fixed)",
-			"start": "2017-04-22",
-			"end": "2017-04-22",
-			"metadata": {
-				"icon": "https://luga-ev.github.io/frab-extras/Tux2.png",
-				"links": [
-					{
-						"url": "https://www.luga.de/Aktionen/LIT-2017/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"start": "2017-03-25",
-			"end": "2017-03-26",
-			"version": 2017031902,
-			"url": "https://libreplanet.org/2017/lp2017-schedule.ics",
-			"title": "LibrePlanet 2017",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://libreplanet.org/2017/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017040400,
-			"url": "https://www.opensouthcode.org/conferences/opensouthcode2017/schedule.xml",
-			"title": "Opensouthcode 2017",
-			"start": "2017-05-05",
-			"end": "2017-05-06",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://www.opensouthcode.org/",
-						"title": "Website"
-					}
-				],
-				"icon": "https://www.opensouthcode.org/logo.png"
-			}
-		},
-		{
-			"version": 2017062300,
-			"url": "http://www.tuebix.org/2017/giggity.xml",
-			"title": "TUEBIX 2017",
-			"start": "2017-06-24",
-			"end": "2017-06-24",
-			"metadata": {
-				"icon": "http://www.tuebix.org/2017/giggity.icon.png",
-				"links": [
-					{
-						"url": "http://www.tuebix.org/",
-						"title": "Website"
-					},
-					{
-						"url": "http://www.tuebix.org/anfahrt/",
-						"title": "Anfahrt"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017080500,
-			"url": "https://program.sha2017.org/schedule.xml",
-			"title": "SHA2017",
-			"start": "2017-08-04",
-			"end": "2017-08-08",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://sha2017.org/",
-						"title": "Website"
-					},
-					{
-						"url": "https://map.sha2017.org/",
-						"title": "Map"
-					},
-					{
-						"url": "https://volunteer.sha2017.org/",
-						"title": "Angels"
-					},
-					{
-						"url": "https://wiki.sha2017.org/w/Main_Page",
-						"title": "Wiki"
-					}
-				]
-			}
-		},
-		{
-			"title": "GUADEC 2018",
-			"metadata": {
-				"icon": "https://static.gnome.org/guadec-2017/icon1.png",
-				"links": [
-					{
-						"url": "https://www.guadec.org/",
-						"title": "Website"
-					}
-				]
-			},
-			"url": "https://2018.guadec.org/documents/schedule.xml",
-			"start": "2018-07-06",
-			"end": "2018-07-08",
-			"version": 2018062100
-		},
-		{
-			"version": 2017072400,
-			"url": "https://debconf17.debconf.org/schedule/pentabarf.xml",
-			"title": "DebConf17",
-			"start": "2017-08-05",
-			"end": "2017-08-12",
-			"metadata": {
-				"icon": "https://debconf17.debconf.org/static/img/favicon/favicon-180.ea5f30d24599.png",
-				"links": [
-					{
-						"url": "https://debconf17.debconf.org/",
-						"title": "Website"
-					},
-					{
-						"url": "https://wiki.debconf.org/wiki/DebConf17",
-						"title": "Wiki"
-					},
-					{
-						"url": "https://wiki.debconf.org/upload/8/88/DebConf17_venue_layout.png",
-						"title": "Map",
-						"type": "image/png"
-					},
-					{
-						"url": "https://debconf17.debconf.org/static/docs/welcome.pdf",
-						"title": "Welcome Guide",
-						"type": "application/pdf"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017072900,
-			"url": "https://programm.froscon.de/2017/schedule.xml",
-			"title": "FrOSCon 2017",
-			"start": "2017-08-19",
-			"end": "2017-08-20",
-			"metadata": {
-				"icon": "https://ggt.gaa.st/froscon.png",
-				"links": [
-					{
-						"url": "http://www.froscon.org/",
-						"title": "Website"
-					},
-					{
-						"url": "https://www.froscon.de/en/news/",
-						"title": "News"
-					},
-					{
-						"url": "http://froscon.tv/",
-						"title": "Recordings"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017090500,
-			"url": "https://cfp.pycon.fr/schedule/xml/",
-			"title": "PyConFR 2017",
-			"start": "2017-09-21",
-			"end": "2017-09-24",
-			"metadata": {
-				"icon": "https://www.pycon.fr/2017/theme/images/icon2017.png",
-				"links": [
-					{
-						"url": "https://www.pycon.fr/2017/",
-						"title": "Site Web"
-					},
-					{
-						"url": "https://www.eventbrite.fr/e/billets-pycon-fr-2017-a-toulouse-37380880219",
-						"title": "Inscription"
-					},
-					{
-						"url": "https://www.pycon.fr/2017/pages/venir.html",
-						"title": "Venir"
-					}
-				],
-				"rooms": [
-					{
-						"name": "A.*",
-						"latlon": [43.60248, 1.45464]
-					},
-					{
-						"name": "B.*",
-						"latlon": [43.60247, 1.45566]
-					},
-					{
-						"name": "C.*",
-						"latlon": [43.60214, 1.45462]
-					}
-				]
-			}
-		},
-		{
-			"version": 2017093000,
-			"url": "https://www.linuxdays.cz/2017/program/schedule.xml",
-			"start": "2017-10-07",
-			"end": "2017-10-08",
-			"title": "LinuxDays 2017",
-			"metadata": {
-				"icon": "https://www.linuxdays.cz/2017/obrazky/stopa.png",
-				"links": [
-					{
-						"title": "Website",
-						"url": "https://www.linuxdays.cz/2017/"
-					},
-					{
-						"title": "Map",
-						"type": "image/png",
-						"url": "https://www.linuxdays.cz/2017/obrazky/plan.png"
-					}
-				],
-				"rooms": [
-					{
-						"latlon": [50.105249, 14.390095],
-						"name": "105"
-					},
-					{
-						"latlon": [50.105382, 14.389836],
-						"name": "155"
-					},
-					{
-						"latlon": [50.105138, 14.390298],
-						"name": "107"
-					},
-					{
-						"latlon": [50.105047, 14.390432],
-						"name": "111"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017100700,
-			"url": "https://vcfb.de/2017/schedule.xml",
-			"title": "Vintage Computing Festival Berlin 2017",
-			"start": "2017-10-07",
-			"end": "2017-10-08",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://vcfb.de/2017/index.html.en",
-						"title": "Website"
-					},
-					{
-						"url": "http://vcfb.de/2017/images/raumplan_bunt_2017_rotiert_en.png",
-						"title": "Map",
-						"type": "image/png"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017100800,
-			"url": "https://fahrplan.privacyweek.at/schedule.xml",
-			"title": "PrivacyWeek 2017",
-			"start": "2017-10-23",
-			"end": "2017-10-29",
-			"metadata": {
-				"icon": "https://privacyweek.at/icon-256x256.png",
-				"links": [
-					{
-						"url": "https://privacyweek.at/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017101700,
-			"url": "https://frab.fscons.org/en/fscons17/public/schedule.xml",
-			"title": "FSCONS 2017",
-			"start": "2017-11-04",
-			"end": "2017-11-05",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://fscons.org/2017/",
-						"title": "Website"
-					},
-					{
-						"url": "https://fscons.org/2017/news.html",
-						"title": "News"
-					},
-					{
-						"url": "https://www.youtube.com/user/FSCONSTalks",
-						"title": "Recordings"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017101800,
-			"url": "https://participez-2017.capitoledulibre.org/schedule/xml/",
-			"title": "Capitole du Libre 2017",
-			"start": "2017-11-18",
-			"end": "2017-11-19",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://2017.capitoledulibre.org/",
-						"title": "Site web"
-					}
-				],
-				"rooms": [
-					{
-						"name": "A.*",
-						"latlon": [43.60248, 1.45464]
-					},
-					{
-						"name": "B.*",
-						"latlon": [43.60247, 1.45566]
-					},
-					{
-						"name": "C.*",
-						"latlon": [43.60214, 1.45462]
-					},
-					{
-						"name": "Foyer.*",
-						"latlon": [43.60207, 1.45591]
-					}
-				]
-			}
-		},
-		{
-			"version": 2017100900,
-			"url": "https://afup.org/event/forumphp2017/planning.ics",
-			"title": "Forum PHP 2017",
-			"id": "Forum PHP 2017",
-			"start": "2017-10-26",
-			"end": "2017-10-27",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://event.afup.org/",
-						"title": "Site Web"
-					},
-					{
-						"url": "https://afup.org/event/forumphp2017/tickets",
-						"title": "Tarifs et inscription"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017102000,
-			"url": "https://conf-ng.jres.org/2017/rest/planning.ics",
-			"id": "JRES 2017",
-			"title": "JRES 2017",
-			"start": "2017-11-14",
-			"end": "2017-11-17",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://www.jres.org/fr",
-						"title": "Site Web"
-					},
-					{
-						"url": "https://www.jres.org/fr/inscription-aux-jres-2017",
-						"title": "Inscription"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017111300,
-			"url": "https://www.linuxday.at/vortraege/2017/calendar.ics",
-			"title": "LinuxDay.at 2017",
-			"id": "LinuxDay.at Vortraege",
-			"start": "2017-12-02",
-			"end": "2017-12-02",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://www.linuxday.at/",
-						"title": "Webseite"
-					},
-					{
-						"url": "https://www.linuxday.at/standplan-2017",
-						"title": "Standplan"
-					},
-					{
-						"url": "https://www.linuxday.at/aussteller/2017",
-						"title": "Aussteller"
-					},
-					{
-						"url": "https://www.linuxday.at/workshops/2017",
-						"title": "Workshops"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017111000,
-			"url": "https://nluug.nl/events/nj17/20171116-schedule.xml",
-			"title": "NLUUG Autumn 2017",
-			"start": "2017-11-16",
-			"end": "2017-11-16",
-			"metadata": {
-				"icon": "https://nluug.nl/events/nj17/nluug-icon-300.png",
-				"links": [
-					{
-						"url": "https://www.nluug.nl/index.html",
-						"title": "NLUUG Website"
-					},
-					{
-						"url": "https://www.nluug.nl/events/nj17/programma.html",
-						"title": "Conference Program (website)"
-					}
-				]
-			}
-		},
-		{
-			"version": 2017111300,
-			"url": "https://botconf2017.sched.com/all.ics",
-			"id": "botconf2017",
-			"title": "Botconf 2017",
-			"start": "2017-12-06",
-			"end": "2017-12-08",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://www.botconf.eu/botconf-2017/",
-						"title": "Website"
-					},
-					{
-						"url": "https://www.botconf.eu/botconf-2017/register-for-botconf-2017/",
-						"title": "Registration"
-					}
-				]
-			}
-		},
-		{
-			"start": "2018-01-22",
-			"end": "2018-01-26",
-			"version": 2018011900,
-			"url": "https://2018.linux.conf.au/schedule/conference.ics",
-			"title": "linux.conf.au 2018",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://2018.linux.conf.au/",
-						"title": "Website"
-					},
-					{
-						"url": "https://2018.linux.conf.au/wiki/",
-						"title": "Wiki"
-					}
-				]
-			}
-		},
-		{
-			"start": "2019-01-21",
-			"end": "2019-01-25",
-			"version": 2019011800,
-			"url": "https://2019.linux.conf.au/schedule/conference.ics",
-			"title": "linux.conf.au 2019",
-			"metadata": {
-				"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
-				"links": [
-					{
-						"url": "https://2019.linux.conf.au/",
-						"title": "Website"
-					},
-					{
-						"url": "https://2019.linux.conf.au/schedule/",
-						"title": "Online schedule"
-					},
-					{
-						"url": "https://2019.linux.conf.au/wiki/Main_Page",
-						"title": "Wiki"
-					}
-				],
-				"rooms": [
-					{
-						"name": "C1",
-						"latlon": [-43.52307088323096, 172.58377421683943]
-					},
-					{
-						"name": "C2",
-						"latlon": [-43.523066173454346, 172.5836225959817]
-					},
-					{
-						"name": "C3",
-						"latlon": [-43.5232231993839, 172.58392661196348]
-					},
-					{
-						"name": "A\\d",
-						"latlon": [-43.524166195271505, 172.583842929392]
-					}
-				]
-			}
-		},
-		{
-			"version": 2018031100,
-			"url": "http://ical.jdll.org/",
-			"title": "JDLL 2018",
-			"start": "2018-03-24",
-			"end": "2018-03-25",
-			"metadata": {
-				"links": [
-					{
-						"url": "http://www.jdll.org/",
-						"title": "Site web"
-					},
-					{
-						"url": "http://www.jdll.org/pratique/plan/",
-						"title": "Plan"
-					}
-				]
-			}
-		},
 		{
 			"start": "2018-03-22",
 			"end": "2018-03-25",
@@ -547,28 +26,47 @@
 			}
 		},
 		{
-			"start" : "2018-03-24",
-			"end" : "2018-03-25",
-			"version" : 2018032000,
-			"url" : "https://libreplanet.org/2018/schedule.ics",
-			"id" : "LibrePlanet 2018",
-			"title" : "LibrePlanet 2018",
-			"metadata" : {
-				"icon" : "https://libreplanet.org/2018/assets/img/site_logo_alternate-small.png",
-				"links" : [
+			"version": 2018031100,
+			"url": "http://ical.jdll.org/",
+			"title": "JDLL 2018",
+			"start": "2018-03-24",
+			"end": "2018-03-25",
+			"metadata": {
+				"links": [
 					{
-						"url" : "https://libreplanet.org/2018/",
-						"title" : "Website"
+						"url": "http://www.jdll.org/",
+						"title": "Site web"
 					},
 					{
-						"url" : "https://www.libreplanet.org/2018/live",
-						"title" : "Livestream"
+						"url": "http://www.jdll.org/pratique/plan/",
+						"title": "Plan"
+					}
+				]
+			}
+		},
+		{
+			"start": "2018-03-24",
+			"end": "2018-03-25",
+			"version": 2018032000,
+			"url": "https://libreplanet.org/2018/schedule.ics",
+			"id": "LibrePlanet 2018",
+			"title": "LibrePlanet 2018",
+			"metadata": {
+				"icon": "https://libreplanet.org/2018/assets/img/site_logo_alternate-small.png",
+				"links": [
+					{
+						"url": "https://libreplanet.org/2018/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.libreplanet.org/2018/live",
+						"title": "Livestream"
 					}
 				],
 				"rooms": [
 					{
 						"name": "Workshop.*|.*26-.*",
-						"latlon": [42.36100, -71.09054]
+						"latlon": [42.361, -71.09054]
 					},
 					{
 						"name": ".*31-.*",
@@ -581,26 +79,6 @@
 					{
 						"name": ".*34-.*",
 						"latlon": [42.36111, -71.09194]
-					}
-				]
-			}
-		},
-		{
-			"version": 2018031400,
-			"url": "https://afup.org/event/phptourmontpellier2018/planning.ics",
-			"title": "PHP Tour Montpellier 2018",
-			"id": "PHP Tour Montpellier 2018",
-			"start": "2018-05-17",
-			"end": "2018-05-18",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://event.afup.org/phptourmontpellier2018/programme/",
-						"title": "Site Web"
-					},
-					{
-						"url": "https://afup.org/event/phptourmontpellier2018/tickets?_locale=fr",
-						"title": "Tarifs et inscription"
 					}
 				]
 			}
@@ -626,6 +104,26 @@
 			}
 		},
 		{
+			"version": 2018031400,
+			"url": "https://afup.org/event/phptourmontpellier2018/planning.ics",
+			"title": "PHP Tour Montpellier 2018",
+			"id": "PHP Tour Montpellier 2018",
+			"start": "2018-05-17",
+			"end": "2018-05-18",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://event.afup.org/phptourmontpellier2018/programme/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/phptourmontpellier2018/tickets?_locale=fr",
+						"title": "Tarifs et inscription"
+					}
+				]
+			}
+		},
+		{
 			"version": 2018060500,
 			"url": "https://tuebix.org/2018/giggity.xml",
 			"title": "T&#xFC;bix 2018",
@@ -644,6 +142,22 @@
 					}
 				]
 			}
+		},
+		{
+			"title": "GUADEC 2018",
+			"metadata": {
+				"icon": "https://static.gnome.org/guadec-2017/icon1.png",
+				"links": [
+					{
+						"url": "https://www.guadec.org/",
+						"title": "Website"
+					}
+				]
+			},
+			"url": "https://2018.guadec.org/documents/schedule.xml",
+			"start": "2018-07-06",
+			"end": "2018-07-08",
+			"version": 2018062100
 		},
 		{
 			"version": 2018070101,
@@ -720,6 +234,22 @@
 			}
 		},
 		{
+			"version": 2018101900,
+			"url": "https://fahrplan.privacyweek.at/pw18/schedule/export/schedule.xml",
+			"title": "PrivacyWeek 2018",
+			"start": "2018-10-22",
+			"end": "2018-10-28",
+			"metadata": {
+				"icon": "https://privacyweek.at/icon-256x256.png",
+				"links": [
+					{
+						"url": "https://privacyweek.at/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
 			"version": 2018090800,
 			"url": "https://afup.org/event/forumphp2018/planning.ics",
 			"title": "Forum PHP 2018",
@@ -768,22 +298,6 @@
 					{
 						"name": "Foyer.*",
 						"latlon": [43.60207, 1.45591]
-					}
-				]
-			}
-		},
-		{
-			"version": 2018101900,
-			"url": "https://fahrplan.privacyweek.at/pw18/schedule/export/schedule.xml",
-			"title": "PrivacyWeek 2018",
-			"start": "2018-10-22",
-			"end": "2018-10-28",
-			"metadata": {
-				"icon": "https://privacyweek.at/icon-256x256.png",
-				"links": [
-					{
-						"url": "https://privacyweek.at/",
-						"title": "Website"
 					}
 				]
 			}
@@ -865,7 +379,49 @@
 			"version": 2018122701
 		},
 		{
-			"version": 2019011100,
+			"start": "2019-01-21",
+			"end": "2019-01-25",
+			"version": 2019011800,
+			"url": "https://2019.linux.conf.au/schedule/conference.ics",
+			"title": "linux.conf.au 2019",
+			"metadata": {
+				"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
+				"links": [
+					{
+						"url": "https://2019.linux.conf.au/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2019.linux.conf.au/schedule/",
+						"title": "Online schedule"
+					},
+					{
+						"url": "https://2019.linux.conf.au/wiki/Main_Page",
+						"title": "Wiki"
+					}
+				],
+				"rooms": [
+					{
+						"name": "C1",
+						"latlon": [-43.52307088323096, 172.58377421683943]
+					},
+					{
+						"name": "C2",
+						"latlon": [-43.523066173454346, 172.5836225959817]
+					},
+					{
+						"name": "C3",
+						"latlon": [-43.5232231993839, 172.58392661196348]
+					},
+					{
+						"name": "A\\d",
+						"latlon": [-43.524166195271505, 172.583842929392]
+					}
+				]
+			}
+		},
+		{
+			"version": 2019028000,
 			"url": "https://fosdem.org/2019/schedule/xml",
 			"title": "FOSDEM 2019",
 			"start": "2019-02-02",
@@ -876,6 +432,11 @@
 					{
 						"url": "https://fosdem.org/2019/",
 						"title": "Website"
+					},
+					{
+						"url": "https://fosdem.org/2019/assets/booklet_general-3a78d1f9f0a625a3ac784d403bb75fb8723a99a135a38fa53cb244031ea4bfcb.pdf",
+						"title": "Info booklet",
+						"type": "application/pdf"
 					},
 					{
 						"url": "https://fosdem.org/2019/assets/campusmap_parking-7dc419af1e33953bc863cbfcca0e2e596a670efc31a684ab1071a114021e62da.png",
@@ -897,207 +458,138 @@
 					{
 						"name": "AW1\\.120",
 						"show_name": "AW building",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "aw1-120"
 					},
 					{
 						"name": "AW1\\.121",
 						"show_name": "AW building",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "aw1121"
 					},
 					{
 						"name": "AW1\\.125",
 						"show_name": "AW building",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "aw1125"
 					},
 					{
 						"name": "AW1\\.126",
 						"show_name": "AW building",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "aw1-126"
 					},
 					{
 						"name": "H\\.1301\\ \\(Cornil\\)",
 						"show_name": "H.*",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "h1301"
 					},
 					{
 						"name": "H\\.1302\\ \\(Depage\\)",
 						"show_name": "H.*",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "h1302"
 					},
 					{
 						"name": "H\\.1308\\ \\(Rolin\\)",
 						"show_name": "H.*",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "h1308"
 					},
 					{
 						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
 						"show_name": "H.*",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "h1309"
 					},
 					{
 						"name": "H\\.2213",
 						"show_name": "H.*",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "h2213"
 					},
 					{
 						"name": "H\\.2214",
 						"show_name": "H.*",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "h2214"
 					},
 					{
 						"name": "H\\.2215\\ \\(Ferrer\\)",
 						"show_name": "H.*",
-						"latlon": [
-							50.8127773,
-							4.3799053
-						],
+						"latlon": [50.8127773, 4.3799053],
 						"c3nav_slug": "h2215"
 					},
 					{
 						"name": "Janson",
-						"latlon": [
-							50.813231,
-							4.3791498
-						],
+						"latlon": [50.813231, 4.3791498],
 						"c3nav_slug": "j-main"
 					},
 					{
 						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
 						"show_name": "K building",
-						"latlon": [
-							50.8146969,
-							4.3817676
-						],
+						"latlon": [50.8146969, 4.3817676],
 						"c3nav_slug": "k1105"
 					},
 					{
 						"name": "K\\.3\\.201",
 						"show_name": "K building",
-						"latlon": [
-							50.8146969,
-							4.3817676
-						],
+						"latlon": [50.8146969, 4.3817676],
 						"c3nav_slug": "k3201"
 					},
 					{
 						"name": "K\\.3\\.401",
 						"show_name": "K building",
-						"latlon": [
-							50.8146969,
-							4.3817676
-						],
+						"latlon": [50.8146969, 4.3817676],
 						"c3nav_slug": "k3401"
 					},
 					{
 						"name": "K\\.4\\.201",
 						"show_name": "K building",
-						"latlon": [
-							50.8146969,
-							4.3817676
-						],
+						"latlon": [50.8146969, 4.3817676],
 						"c3nav_slug": "k4201"
 					},
 					{
 						"name": "K\\.4\\.401",
 						"show_name": "K building",
-						"latlon": [
-							50.8146969,
-							4.3817676
-						],
+						"latlon": [50.8146969, 4.3817676],
 						"c3nav_slug": "k4401"
 					},
 					{
 						"name": "K\\.4\\.601",
 						"show_name": "K building",
-						"latlon": [
-							50.8146969,
-							4.3817676
-						],
+						"latlon": [50.8146969, 4.3817676],
 						"c3nav_slug": "k4601"
 					},
 					{
 						"name": "UA2\\.114\\ \\(Baudoux\\)",
 						"show_name": "UA wing",
-						"latlon": [
-							50.811683,
-							4.3826425
-						],
+						"latlon": [50.811683, 4.3826425],
 						"c3nav_slug": "ua2114"
 					},
 					{
 						"name": "UA2\\.118\\ \\(Henriot\\)",
 						"show_name": "UA wing",
-						"latlon": [
-							50.811683,
-							4.3826425
-						],
+						"latlon": [50.811683, 4.3826425],
 						"c3nav_slug": "ua2118"
 					},
 					{
 						"name": "UA2\\.220\\ \\(Guillissen\\)",
 						"show_name": "UA wing",
-						"latlon": [
-							50.811683,
-							4.3826425
-						],
+						"latlon": [50.811683, 4.3826425],
 						"c3nav_slug": "ua2220"
 					},
 					{
 						"name": "UB2\\.147",
 						"show_name": "UB wing",
-						"latlon": [
-							50.8120565,
-							4.382176
-						],
+						"latlon": [50.8120565, 4.382176],
 						"c3nav_slug": "ub2147"
 					},
 					{
 						"name": "UB2\\.252A\\ \\(Lameere\\)",
 						"show_name": "UB wing",
-						"latlon": [
-							50.8120565,
-							4.382176
-						],
+						"latlon": [50.8120565, 4.382176],
 						"c3nav_slug": "ub2-252a"
 					},
 					{
@@ -1108,46 +600,31 @@
 					{
 						"name": "UD2\\.119",
 						"show_name": "UD wing",
-						"latlon": [
-							50.812691,
-							4.3818835
-						],
+						"latlon": [50.812691, 4.3818835],
 						"c3nav_slug": "ud2119"
 					},
 					{
 						"name": "UD2\\.120\\ \\(Chavanne\\)",
 						"show_name": "UD wing",
-						"latlon": [
-							50.812691,
-							4.3818835
-						],
+						"latlon": [50.812691, 4.3818835],
 						"c3nav_slug": "ud2120"
 					},
 					{
 						"name": "UD2\\.208\\ \\(Decroly\\)",
 						"show_name": "UD wing",
-						"latlon": [
-							50.812691,
-							4.3818835
-						],
+						"latlon": [50.812691, 4.3818835],
 						"c3nav_slug": "ud2208"
 					},
 					{
 						"name": "UD2\\.218A",
 						"show_name": "UD wing",
-						"latlon": [
-							50.812691,
-							4.3818835
-						],
+						"latlon": [50.812691, 4.3818835],
 						"c3nav_slug": "ud2218a"
 					},
 					{
 						"name": "UD2\\.Corridor",
 						"show_name": "UD wing",
-						"latlon": [
-							50.812691,
-							4.3818835
-						],
+						"latlon": [50.812691, 4.3818835],
 						"c3nav_slug": "545fe4c1e56d7"
 					}
 				]
@@ -1162,10 +639,12 @@
 			"end": "2019-02-05",
 			"metadata": {
 				"icon": "https://cfgmgmtcamp.eu/images/logo_name_big.png",
-				"links": [{
-					"url": "https://cfgmgmtcamp.eu/",
-					"title": "Website"
-					}]
+				"links": [
+					{
+						"url": "https://cfgmgmtcamp.eu/",
+						"title": "Website"
+					}
+				]
 			}
 		}
 	]
