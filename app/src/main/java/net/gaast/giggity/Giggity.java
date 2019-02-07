@@ -48,8 +48,9 @@ import java.util.TreeSet;
 public class Giggity extends Application {
 	private Db db;
 	
-	HashMap<String,Schedule> scheduleCache;
-	Schedule lastSchedule;
+	HashMap<String,ScheduleUI> scheduleCache;  // url→ScheduleUI
+	@Deprecated
+	ScheduleUI lastSchedule;
 	
 	TreeSet<Schedule.Item> remindItems;
 	
@@ -63,24 +64,22 @@ public class Giggity extends Application {
 		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		
-		/* This makes me sad: Most schedule file formats use timezone-unaware times.
-		 * And Java's Date objects are timezone aware. The result is that if you load
-		 * a file and then change the timezone on your phone, Giggity will show the
-		 * wrong times. The easiest fix for now is to just reload everything.. */
+		/* This was necessary when using timezone-naive Date classes. I've mostly dropped those
+		 * but haven't finished picking up tz-awareness yet, also schedule files lack tz info
+		  * still most of the time. So ... keep flushing data for now I guess. :-( */
 		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context arg0, Intent arg1) {
-				HashSet<String> urls = new HashSet<>();
 				for (Schedule sched : scheduleCache.values()) {
-					urls.add(sched.getUrl());
 					sched.commit();
 				}
 				
 				scheduleCache.clear();
 				lastSchedule = null;
-				/* Disabled for now, database initialisation issue. (Crashes on db writes.)
-				 * This means alarms are still wrong but the user will most likely reload
-				 * before that becomes a problem.
+
+				/* Ideally, reload all the schedules that were previously resident. But this
+				 * was fragile when I wrote it, so ... just rely on the user reloading so that
+				 * all alarms will get set in the right timezone?
 				try {
 					for (String url : urls)
 						getSchedule(url, true);
@@ -121,21 +120,19 @@ public class Giggity extends Application {
 		scheduleCache.remove(url);
 	}
 	
-	public Schedule getSchedule(String url, Fetcher.Source source, Handler progress) throws Exception {
+	public ScheduleUI getSchedule(String url, Fetcher.Source source, Handler progress) throws Exception {
 		if (!hasSchedule(url)) {
-			Schedule sched = new Schedule(this);
-			sched.setProgressHandler(progress);
-			sched.loadSchedule(url, source);
-			scheduleCache.put(url, sched);
+			scheduleCache.put(url, ScheduleUI.loadSchedule(this, url, source, progress));
 		}
 		return (lastSchedule = scheduleCache.get(url));
 	}
 
-	public Schedule getSchedule(String url, Fetcher.Source source) throws Exception {
+	public ScheduleUI getSchedule(String url, Fetcher.Source source) throws Exception {
 		return getSchedule(url, source, null);
 	}
 
-	public Schedule getLastSchedule() {
+	@Deprecated
+	public ScheduleUI getLastSchedule() {
 		/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
 		return lastSchedule;
 	}
@@ -174,6 +171,8 @@ public class Giggity extends Application {
 		return new Fetcher(this, url, source, type);
 	}
 
+	// TODO: IIRC there's a localised version for this already? Though honestly I prefer mine since
+	// it avoids doing atrocious middle-endian dates which is factually a good thing.
 	public static String dateRange(Date start, Date end) {
 		String ret = "";
 		if (start.getDate() == end.getDate() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
@@ -192,7 +191,7 @@ public class Giggity extends Application {
 		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
 			ret = "" + start.getDayOfMonth() + "-" + DateTimeFormatter.ofPattern("d MMMM").format(end);
 		else
-			ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
+			ret = DateTimeFormatter.ofPattern("d MMMM").format(start) + "-" + DateTimeFormatter.ofPattern("d MMMM").format(end);
 		return ret + " " + (1900 + end.getYear());
 	}
 

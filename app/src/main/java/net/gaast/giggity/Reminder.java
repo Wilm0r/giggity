@@ -140,7 +140,7 @@ public class Reminder extends Service {
 			  .setColor(getResources().getColor(R.color.primary));
 		}
 
-		Bitmap icon = item.getSchedule().getIconBitmap();
+		Bitmap icon = ((ScheduleUI)item.getSchedule()).getIconBitmap();
 		if (icon != null) {
 			nb.setLargeIcon(icon);
 		}

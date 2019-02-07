@@ -4,7 +4,11 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,9 +16,147 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 
-public class ScheduleUI {
+public class ScheduleUI extends Schedule {
+	/* Schedule subclass which should carry, among other things, elements that depend on Android.
+	 * The Base class should be plain-ish Java so that I can use it externally as well. This is
+	 * in fact not just UI stuff but also for example database stuff (user reminders/deletions/etc
+	 * persistence) */
+
+	public Giggity app;
+	public Db.Connection db;
+
+	private Handler progressHandler;
+
+	private ScheduleUI(Giggity ctx) {
+		app = ctx;
+	}
+
+	public static ScheduleUI loadSchedule(Giggity ctx, String url, Fetcher.Source source, Handler progressHandler) throws LoadException {
+		ScheduleUI ret = new ScheduleUI(ctx);
+		ret.progressHandler = progressHandler;
+
+		Fetcher f = null;
+
+		try {
+			f = ctx.fetch(url, source);
+			f.setProgressHandler(ret.progressHandler);
+			ret.loadSchedule(f.getReader(), url);
+		} catch (LoadException | IOException e) {
+			if (f != null)
+				f.cancel();
+
+			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
+			e.printStackTrace();
+			throw new LoadException("Network I/O problem: " + e);
+		}
+		f.keep();
+
+		ret.db = ret.app.getDb();
+		ret.db.setSchedule(ret, url, f.getSource() == Fetcher.Source.ONLINE);
+		String md_json = ret.db.getMetadata();
+		if (md_json != null) {
+			ret.addMetadata(md_json);
+		}
+
+		return ret;
+	}
+
+	public String getString(int id) {
+		return app.getString(id);
+	}
+
+	public void setProgressHandler(Handler handler) {
+		progressHandler = handler;
+	}
+
+	/** Would like to kill this, but still used for remembering currently
+	 * viewed day for a schedule. */
+	public Db.Connection getDb() {
+		return db;
+	}
+
+	private InputStream getIconStream() {
+		if (getIconUrl() == null || getIconUrl().isEmpty()) {
+			return null;
+		}
+
+		try {
+			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE);
+			return f.getStream();
+		} catch (IOException e) {
+			// This probably means it's not in cache. :-( So we'll fetch it in the background and
+			// will hopefully succeed on the next call.
+		}
+		/* For fetching the icon file in the background. */
+		Thread iconFetcher = new Thread() {
+			@Override
+			public void run() {
+				Fetcher f;
+				try {
+					f = new Fetcher(app, getIconUrl(), Fetcher.Source.ONLINE);
+				} catch (IOException e) {
+					Log.e("getIconStream", "Fetch error: " + e);
+					return;
+				}
+				if (BitmapFactory.decodeStream(f.getStream()) != null) {
+					/* Throw-away decode seems to have worked so instruct Fetcher to keep cached. */
+					f.keep();
+				}
+			}
+		};
+		iconFetcher.start();
+		return null;
+	}
+
+	public Bitmap getIconBitmap() {
+		InputStream stream = getIconStream();
+		Bitmap ret = null;
+		if (stream != null) {
+			ret = BitmapFactory.decodeStream(stream);
+			if (ret == null) {
+				Log.w("getIconBitmap", "Discarding unparseable file");
+				return null;
+			}
+			if (ret.getHeight() > 512 || ret.getHeight() != ret.getWidth()) {
+				Log.w("getIconBitmap", "Discarding, icon not square or >512 pixels");
+				return null;
+			}
+			if (!ret.hasAlpha()) {
+				Log.w("getIconBitmap", "Discarding, no alpha layer");
+				return null;
+			}
+		}
+		return ret;
+	}
+
+	/* Returns true if any of the statuses has changed. */
+	public boolean updateRoomStatus() {
+		boolean ret = false;
+		JSONArray parsed;
+		try {
+			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.ONLINE_NOCACHE);
+			return updateRoomStatus(f.slurp());
+		} catch (IOException e) {
+			Log.d("updateRoomStatus", "Fetch setup failure");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	protected void applyItem(Item item) {
+		db.saveScheduleItem(item);
+		app.updateRemind(item);
+	}
+
+
+	// Bunch of static utility/UI functions/etc that I originally created this class for.
 	static public void exportSelections(Context ctx, Schedule sched) {
 		Schedule.Selections sel = sched.getSelections();
 		

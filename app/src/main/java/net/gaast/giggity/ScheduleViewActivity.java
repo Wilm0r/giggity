@@ -70,7 +70,7 @@ import java.util.Date;
 import java.util.LinkedList;
 
 public class ScheduleViewActivity extends Activity {
-	protected Schedule sched;
+	protected ScheduleUI sched;
 	protected Giggity app;
 
 	private final static int VIEWS[] = {

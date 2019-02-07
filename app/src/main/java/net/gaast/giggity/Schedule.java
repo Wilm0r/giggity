@@ -19,10 +19,6 @@
 
 package net.gaast.giggity;
 
-import android.annotation.SuppressLint;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.Handler;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
@@ -43,7 +39,6 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -79,43 +74,91 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-@SuppressLint("SimpleDateFormat")
 public class Schedule {
 	private final int detectHeaderSize = 1024;
-	
-	private Giggity app;
-	private Db.Connection db;
 	
 	private String id, url;
 	private String title;
 
-	private LinkedList<Schedule.Line> tents;
-	private TreeMap<String,Schedule.Item> allItems;
+	private LinkedList<Schedule.Line> tents = new LinkedList<>();
+	private TreeMap<String,Schedule.Item> allItems = new TreeMap<>();
 	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
 
 	private ZonedDateTime firstTime, lastTime;
 	private ZonedDateTime dayFirstTime, dayLastTime;
 	private ZonedDateTime curDay, curDayEnd;
 	private ZoneId nativeTz = ZoneId.systemDefault();
-	private LocalTime dayChange;
-	LinkedList<ZonedDateTime> dayList;
+	private LocalTime dayChange = LocalTime.of(6, 0);
+	private LinkedList<ZonedDateTime> dayList;
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
-	private HashSet<String> languages;
+	private HashSet<String> languages = new HashSet<>();
 
 	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
 	 * nice if some file formats could start supplying this info themselves. */
 	private String icon;
 	private LinkedList<Link> links;
-	private String roomStatusUrl;
-
-	/* For fetching the icon file in the background. */
-	private Thread iconFetcher;
+	protected String roomStatusUrl;
 
 	private boolean fullyLoaded;
-	private Handler progressHandler;
 
-	public class LoadException extends RuntimeException {
+	protected void loadSchedule(BufferedReader in, String url_) throws IOException, LoadException {
+		url = url_;
+		char[] headc = new char[detectHeaderSize];
+
+		/* Read the first KByte (but keep it buffered) to try to detect the format. */
+		in.mark(detectHeaderSize);
+		in.read(headc, 0, detectHeaderSize);
+		in.reset();
+
+		String head = new String(headc).toLowerCase();
+
+		/* Yeah, I know this is ugly, and actually reasonably fragile. For now it
+		 * just seems somewhat more efficient than doing something smarter, and
+		 * I want to avoid doing XML-specific stuff here already. */
+		if (head.contains("<icalendar") && head.contains("<vcalendar")) {
+			loadXcal(in);
+		} else if (head.contains("<schedule") && head.contains("<conference")) {
+			loadPentabarf(in);
+		} else if (head.contains("begin:vcalendar")) {
+			loadIcal(in);
+		} else if (head.contains("{")) {
+			loadJson(in);
+		} else {
+			Log.d("head", head);
+			throw new LoadException(getString(R.string.format_unknown));
+		}
+
+		Log.d("load", "Schedule has " + languages.size() + " languages");
+
+		if (title == null)
+			if (id != null)
+				title = id;
+			else
+				title = url;
+
+		if (id == null)
+			id = hashify(url);
+
+		if (allItems.size() == 0) {
+			throw new LoadException(getString(R.string.schedule_empty));
+		}
+
+		/* From now, changes should be marked to go back into the db. */
+		fullyLoaded = true;
+	}
+
+	public String getString(int id) {
+		// To be overridden by ScheduleUI, or ignored otherwise?
+		return "String id=" + id;
+	}
+
+	// Think I'll use this one for stand-alone when the R class doesn't exist?
+	public String getString(String id) {
+		return id;
+	}
+
+	static public class LoadException extends RuntimeException {
 		public LoadException(String description) {
 			super(description);
 		}
@@ -124,10 +167,6 @@ public class Schedule {
 		public String toString() {
 			return getMessage();
 		}
-	}
-
-	public Schedule(Giggity ctx) {
-		app = ctx;
 	}
 
 	public static String hashify(String url) {
@@ -140,7 +179,7 @@ public class Schedule {
 			for (int i = 0; i < raw.length; i ++)
 				ret += String.format("%02x", raw[i]);
 		} catch (NoSuchAlgorithmException e) {
-			// WTF
+			// WTF mate
 		}
 		return ret;
 	}
@@ -211,6 +250,7 @@ public class Schedule {
 	}
 
 	public Format getDayFormat() {
+		// FIXME: DateTimeFormatter?
 		if (eventLength() > (86400 * 5))
 			return new SimpleDateFormat("EE d MMMM");
 		else
@@ -255,116 +295,7 @@ public class Schedule {
 		// Deprecated feature.
 		return false;
 	}
-	
-	public void setProgressHandler(Handler handler) {
-		progressHandler = handler;
-	}
 
-	public void loadSchedule(String url_, Fetcher.Source source) throws IOException {
-		url = url_;
-		
-		id = null;
-		title = null;
-		
-		allItems = new TreeMap<String,Schedule.Item>();
-		tents = new LinkedList<Schedule.Line>();
-		trackMap = null; /* Only assign if we have track info. */
-		languages = new HashSet<>();
-		
-		firstTime = null;
-		lastTime = null;
-		
-		dayList = null;
-		curDay = null;
-		curDayEnd = null;
-		dayChange = LocalTime.of(6, 0);
-
-		fullyLoaded = false;
-		showHidden = false;
-
-		icon = null;
-		links = null;
-
-		String head;
-		Fetcher f = null;
-		BufferedReader in;
-		
-		try {
-			f = app.fetch(url, source);
-			f.setProgressHandler(progressHandler);
-			in = f.getReader();
-			char[] headc = new char[detectHeaderSize];
-			
-			/* Read the first KByte (but keep it buffered) to try to detect the format. */
-			in.mark(detectHeaderSize);
-			in.read(headc, 0, detectHeaderSize);
-			in.reset();
-
-			head = new String(headc).toLowerCase();
-		} catch (Exception e) {
-			if (f != null)
-				f.cancel();
-			
-			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
-			e.printStackTrace();
-			throw new LoadException("Network I/O problem: " + e);
-		}
-
-		/* Yeah, I know this is ugly, and actually reasonably fragile. For now it
-		 * just seems somewhat more efficient than doing something smarter, and
-		 * I want to avoid doing XML-specific stuff here already. */
-		try {
-			if (head.contains("<icalendar") && head.contains("<vcalendar")) {
-				loadXcal(in);
-			} else if (head.contains("<schedule") && head.contains("<conference")) {
-				loadPentabarf(in);
-			} else if (head.contains("<schedule") && head.contains("<line")) {
-				loadDeox(in);
-			} else if (head.contains("begin:vcalendar")) {
-				loadIcal(in);
-			} else if (head.contains("{")) {
-				loadJson(in);
-			} else {
-				Log.d("head", head);
-				throw new LoadException(app.getString(R.string.format_unknown));
-			}
-		} catch (LoadException e) {
-			f.cancel();
-			throw e;
-		}
-
-		Log.d("load", "Schedule has " + languages.size() + " languages");
-		
-		f.keep();
-		
-		if (title == null)
-			if (id != null)
-				title = id;
-			else
-				title = url;
-
-		if (id == null)
-			id = hashify(url);
-
-		if (allItems.size() == 0) {
-			throw new LoadException(app.getString(R.string.schedule_empty));
-		}
-
-		db = app.getDb();
-		db.setSchedule(this, url, f.getSource() == Fetcher.Source.ONLINE);
-		String md_json = db.getMetadata();
-		if (md_json != null) {
-			addMetadata(md_json);
-		}
-
-		/* From now, changes should be marked to go back into the db. */
-		fullyLoaded = true;
-	}
-	
-	private void loadDeox(BufferedReader in) {
-		loadXml(in, new DeoxParser());
-	}
-	
 	private void loadXcal(BufferedReader in) {
 		loadXml(in, new XcalParser());
 	}
@@ -589,7 +520,7 @@ public class Schedule {
 
 	/** OOB metadata related to schedule but separately supplied by Giggity (it's non-standard) gets merged here.
 	  I should see whether I could get support for this kind of data into the Pentabarf format. */
-	private void addMetadata(String md_json) {
+	protected void addMetadata(String md_json) {
 		if (md_json == null)
 			return;
 		try {
@@ -665,13 +596,7 @@ public class Schedule {
 			item.commit();
 		}
 	}
-	
-	/** Would like to kill this, but still used for remembering currently 
-	 * viewed day for a schedule. */
-	public Db.Connection getDb() {
-		return db;
-	}
-	
+
 	public String getId() {
 		return id;
 	}
@@ -789,70 +714,16 @@ public class Schedule {
 		return icon;
 	}
 
-	private InputStream getIconStream() {
-		if (getIconUrl() == null || getIconUrl().isEmpty()) {
-			return null;
-		}
-
-		try {
-			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE);
-			return f.getStream();
-		} catch (IOException e) {
-			// This probably means it's not in cache. :-( So we'll fetch it in the background and
-			// will hopefully succeed on the next call.
-		}
-		iconFetcher = new Thread() {
-			@Override
-			public void run() {
-				Fetcher f;
-				try {
-					f = new Fetcher(app, getIconUrl(), Fetcher.Source.ONLINE);
-				} catch (IOException e) {
-					Log.e("getIconStream", "Fetch error: " + e);
-					return;
-				}
-				if (BitmapFactory.decodeStream(f.getStream()) != null) {
-					/* Throw-away decode seems to have worked so instruct Fetcher to keep cached. */
-					f.keep();
-				}
-			}
-		};
-		iconFetcher.start();
-		return null;
-	}
-
-	public Bitmap getIconBitmap() {
-		InputStream stream = getIconStream();
-		Bitmap ret = null;
-		if (stream != null) {
-			ret = BitmapFactory.decodeStream(stream);
-			if (ret == null) {
-				Log.w("getIconBitmap", "Discarding unparseable file");
-				return null;
-			}
-			if (ret.getHeight() > 512 || ret.getHeight() != ret.getWidth()) {
-				Log.w("getIconBitmap", "Discarding, icon not square or >512 pixels");
-				return null;
-			}
-			if (!ret.hasAlpha()) {
-				Log.w("getIconBitmap", "Discarding, no alpha layer");
-				return null;
-			}
-		}
-		return ret;
-	}
-
 	public boolean hasRoomStatus() {
 		return roomStatusUrl != null;
 	}
 
 	/* Returns true if any of the statuses has changed. */
-	public boolean updateRoomStatus() {
+	public boolean updateRoomStatus(String json) {
 		boolean ret = false;
 		JSONArray parsed;
 		try {
-			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.ONLINE_NOCACHE);
-			parsed = new JSONArray(f.slurp());
+			parsed = new JSONArray(json);
 			/* Easier lookup */
 			HashMap<String, JSONObject> lu = new HashMap<>();
 			for (int i = 0; i < parsed.length(); ++i) {
@@ -879,10 +750,6 @@ public class Schedule {
 				Log.d("roomSt", l.getTitle() + " " + st.toString());
 				ret |= l.setRoomStatus(st);
 			}
-		} catch (IOException e) {
-			Log.d("updateRoomStatus", "Fetch setup failure");
-			e.printStackTrace();
-			return false;
 		} catch (JSONException e) {
 			Log.d("updateRoomStatus", "JSON parse failure");
 			e.printStackTrace();
@@ -891,100 +758,11 @@ public class Schedule {
 		return ret;
 	}
 
-	/* Some "proprietary" file format I started with. Actually the most suitable when I
-	 * generate my own schedules so I'll definitely *not* deprecate it. */
-	private class DeoxParser implements ContentHandler {
-		private Schedule.Line curTent;
-		private Schedule.Item curItem;
-		private String curString;
-		
-		@Override
-		public void startElement(String uri, String localName, String qName,
-				Attributes atts) throws SAXException {
-			curString = "";
-			
-			if (localName.equals("schedule")) {
-				id = atts.getValue("", "id");
-				title = atts.getValue("", "title");
-			} else if (localName.equals("linkType")) {
-			} else if (localName.equals("line")) {
-				curTent = new Schedule.Line(atts.getValue("", "id"),
-				                            atts.getValue("", "title"));
-			} else if (localName.equals("item")) {
-				ZonedDateTime startTime, endTime;
-	
-				try {
-					startTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(atts.getValue("", "startTime"))), nativeTz);
-					endTime = ZonedDateTime.ofInstant(Instant.ofEpochSecond(Long.parseLong(atts.getValue("", "endTime"))), nativeTz);
-					
-					curItem = new Schedule.Item(atts.getValue("", "id"),
-					                            atts.getValue("", "title"),
-					                            startTime, endTime);
-				} catch (NumberFormatException e) {
-					Log.w("Schedule.loadDeox", "Error while parsing date: " + e);
-				}
-			} else if (localName.equals("itemLink")) {
-				curItem.addLink(new Link(atts.getValue("", "href"), atts.getValue("", "type")));
-			}
-		}
-	
-		@Override
-		public void characters(char[] ch, int start, int length) throws SAXException {
-			curString += String.copyValueOf(ch, start, length); 
-		}
-	
-		@Override
-		public void endElement(String uri, String localName, String qName)
-				throws SAXException {
-			if (localName.equals("item")) {
-				curTent.addItem(curItem);
-				curItem = null;
-			} else if (localName.equals("line")) {
-				tents.add(curTent);
-				curTent = null;
-			} else if (localName.equals("itemDescription")) {
-				if (curItem != null)
-					curItem.setDescription(curString);
-			}
-		}
-		
-		@Override
-		public void startDocument() throws SAXException {
-		}
-	
-		@Override
-		public void endDocument() throws SAXException {
-		}
-		
-		@Override
-		public void startPrefixMapping(String arg0, String arg1)
-				throws SAXException {
-			
-		}
-	
-		@Override
-		public void endPrefixMapping(String arg0) throws SAXException {
-		}
-	
-		@Override
-		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
-				throws SAXException {
-		}
-	
-		@Override
-		public void processingInstruction(String arg0, String arg1)
-				throws SAXException {
-		}
-	
-		@Override
-		public void setDocumentLocator(Locator arg0) {
-		}
-	
-		@Override
-		public void skippedEntity(String arg0) throws SAXException {
-		}
+	protected void applyItem(Item item) {
+		// To be implemented by ScheduleUI only, for updating internal/peristent app state on for
+		// example reminders, etc.
 	}
-	
+
 	private class XcalParser implements ContentHandler {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
@@ -1106,42 +884,30 @@ public class Schedule {
 				eventData.put(localName, curString);
 			}
 		}
-		
+
 		@Override
-		public void startDocument() throws SAXException {
-		}
-	
+		public void setDocumentLocator(Locator locator) {}
+
 		@Override
-		public void endDocument() throws SAXException {
-		}
-		
+		public void startDocument() throws SAXException {}
+
 		@Override
-		public void startPrefixMapping(String arg0, String arg1)
-				throws SAXException {
-			
-		}
-	
+		public void endDocument() throws SAXException {}
+
 		@Override
-		public void endPrefixMapping(String arg0) throws SAXException {
-		}
-	
+		public void startPrefixMapping(String s, String s1) {}
+
 		@Override
-		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
-				throws SAXException {
-		}
-	
+		public void endPrefixMapping(String s) {}
+
 		@Override
-		public void processingInstruction(String arg0, String arg1)
-				throws SAXException {
-		}
-	
+		public void ignorableWhitespace(char[] chars, int i, int i1) {}
+
 		@Override
-		public void setDocumentLocator(Locator arg0) {
-		}
-	
+		public void processingInstruction(String s, String s1) {}
+
 		@Override
-		public void skippedEntity(String arg0) throws SAXException {
-		}
+		public void skippedEntity(String s) {}
 	}
 
 	/* Pentabarf, the old conference organisation tool has a pretty excellent native XML format
@@ -1299,42 +1065,30 @@ public class Schedule {
 				propMap.put(localName, curString);
 			}
 		}
-		
+
 		@Override
-		public void startDocument() throws SAXException {
-		}
-	
+		public void setDocumentLocator(Locator locator) {}
+
 		@Override
-		public void endDocument() throws SAXException {
-		}
-		
+		public void startDocument() throws SAXException {}
+
 		@Override
-		public void startPrefixMapping(String arg0, String arg1)
-				throws SAXException {
-			
-		}
-	
+		public void endDocument() throws SAXException {}
+
 		@Override
-		public void endPrefixMapping(String arg0) throws SAXException {
-		}
-	
+		public void startPrefixMapping(String s, String s1) {}
+
 		@Override
-		public void ignorableWhitespace(char[] arg0, int arg1, int arg2)
-				throws SAXException {
-		}
-	
+		public void endPrefixMapping(String s) {}
+
 		@Override
-		public void processingInstruction(String arg0, String arg1)
-				throws SAXException {
-		}
-	
+		public void ignorableWhitespace(char[] chars, int i, int i1) {}
+
 		@Override
-		public void setDocumentLocator(Locator arg0) {
-		}
-	
+		public void processingInstruction(String s, String s1) {}
+
 		@Override
-		public void skippedEntity(String arg0) throws SAXException {
-		}
+		public void skippedEntity(String s) {}
 	}
 
 	public enum RoomStatus {
@@ -1434,26 +1188,22 @@ public class Schedule {
 		
 		private boolean remind;
 		private boolean hidden;
-		private int stars;
 		private boolean newData;
-		
+
+		@Deprecated
+		private int stars = -1;
+
 		Item(String id_, String title_, ZonedDateTime startTime_, ZonedDateTime endTime_) {
 			id = id_;
 			title = title_;
 			startTime = startTime_;
 			endTime = endTime_;
-			description = "";
-			
-			remind = false;
-			setHidden(false);
-			stars = -1;
-			newData = false;
 		}
 		
 		public Schedule getSchedule() {
 			return Schedule.this;
 		}
-		
+
 		public void setTrack(String track_) {
 			track = track_;
 			
@@ -1627,7 +1377,7 @@ public class Schedule {
 			if (remind != remind_) {
 				remind = remind_;
 				newData |= fullyLoaded;
-				app.updateRemind(this);
+				applyItem(this);
 			}
 		}
 		
@@ -1659,7 +1409,7 @@ public class Schedule {
 		
 		public void commit() {
 			if (newData) {
-				db.saveScheduleItem(this);
+				applyItem(this);
 				newData = false;
 			}
 		}
@@ -1675,6 +1425,7 @@ public class Schedule {
 				return another.hashCode() - hashCode();
 		}
 
+		// FIXME: Grr I think these two do the opposite of what a compareTo is meant to do?
 		public int compareTo(Date d) {
 			/* 0 if the event is "now" (d==now),
 			 * -1 if it's in the future,
@@ -1745,16 +1496,6 @@ public class Schedule {
 		}
 	}
 
-	@Deprecated
-	static String rewrap(String desc) {
-		/* Replace newlines with spaces unless there are two of them,
-		 * or if the following line starts with a character. */
-		if (desc != null)
-			return desc.replace("\r", "").replaceAll("([^\n]) *\n *([a-zA-Z0-9])", "$1 $2");
-		else
-			return null;
-	}
-	
 	public Selections getSelections() {
 		boolean empty = true;
 		Selections ret = new Selections(this);
@@ -1810,11 +1551,10 @@ public class Schedule {
 	
 	static public class Selections implements Serializable {
 		public String url;
-		public HashMap<String,Integer> selections;
+		public HashMap<String,Integer> selections = new HashMap<>();
 		
 		public Selections(Schedule sched) {
 			url = sched.getUrl();
-			selections = new HashMap<String,Integer>();
 		}
 		
 		public Selections(byte[] in) throws DataFormatException {
@@ -1837,7 +1577,6 @@ public class Schedule {
 				Log.d("Selections.url", url);
 			} catch (UnsupportedEncodingException e) {}
 			
-			selections = new HashMap<String,Integer>();
 			while (rd.available() > 4) {
 				int type = rd.read();
 				
@@ -1928,16 +1667,6 @@ public class Schedule {
 				ret2[i+1] = ret1[i];
 			
 			return ret2;
-		}
-		
-		public int countBit(int bit) {
-			int ret = 0;
-			
-			for (Integer t : selections.values()) {
-				if ((t & bit) > 0)
-					ret ++;
-			}
-			return ret;
 		}
 	}
 }
