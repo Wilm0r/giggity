@@ -462,17 +462,15 @@ public class ScheduleViewActivity extends Activity {
 		updateRoomStatus.run();
 
 		/* Change our title + icon in the recent tasks view. Only supported from Lollipop+. */
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			/* On first load, getIconBitmap() will kick off a background fetch so we'll miss out on
-			   the custom icon then. So be it... */
-			Bitmap icon = sched.getIconBitmap();
-			ActivityManager.TaskDescription d;
-			if (icon == null) {
-				icon = ((BitmapDrawable)getResources().getDrawable(R.drawable.deoxide_icon)).getBitmap();
-			}
-			d = new ActivityManager.TaskDescription(sched.getTitle(), icon, getResources().getColor(R.color.primary));
-			this.setTaskDescription(d);
+		/* On first load, getIconBitmap() will kick off a background fetch so we'll miss out on
+		   the custom icon then. So be it... */
+		Bitmap icon = sched.getIconBitmap();
+		ActivityManager.TaskDescription d;
+		if (icon == null) {
+			icon = ((BitmapDrawable)getResources().getDrawable(R.drawable.deoxide_icon)).getBitmap();
 		}
+		d = new ActivityManager.TaskDescription(sched.getTitle(), icon, getResources().getColor(R.color.primary));
+		this.setTaskDescription(d);
 	}
 
 	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */

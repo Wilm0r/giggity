@@ -133,12 +133,9 @@ public class Reminder extends Service {
 				.setAutoCancel(true)
 				.setDefaults(Notification.DEFAULT_SOUND)
 				.setVibrate(((item.getStartTime().getDate() & 1) == 0) ? giggitygoo : mario)
-				.setLights(getResources().getColor(R.color.primary), 500, 5000);
-
-		if (Build.VERSION.SDK_INT >= 21) {
-			nb.setVisibility(Notification.VISIBILITY_PUBLIC)
-			  .setColor(getResources().getColor(R.color.primary));
-		}
+				.setLights(getResources().getColor(R.color.primary), 500, 5000)
+				.setVisibility(Notification.VISIBILITY_PUBLIC)
+				.setColor(getResources().getColor(R.color.primary));
 
 		Bitmap icon = ((ScheduleUI)item.getSchedule()).getIconBitmap();
 		if (icon != null) {
@@ -195,13 +192,9 @@ public class Reminder extends Service {
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(Reminder.ACTION);
 		i.setDataAndType(Uri.parse(item.getUrl()), "text/x-giggity");
-		if (android.os.Build.VERSION.SDK_INT >= 19) {
-			// .set is inexact (though not clear how much) from API 19 for powersaving reasons.
-			// Giggity uses timers sporadically enough that I think .setExact() is justified.
-			am.setExact(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
-		} else {
-			am.set(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
-		}
+		// .set is inexact (though not clear how much) from API 19 for powersaving reasons.
+		// Giggity uses timers sporadically enough that I think .setExact() is justified.
+		am.setExact(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
 		Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
 				(tm - System.currentTimeMillis()) / 1000 + " seconds");
 	}

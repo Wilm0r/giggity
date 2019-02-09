@@ -196,16 +196,12 @@ public class Giggity extends Application {
 	}
 
 	public void setShadow(View v, boolean on) {
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			v.setElevation(on ? dp2px(8) : 0);
-		}
+		v.setElevation(on ? dp2px(8) : 0);
 	}
 
 	/* ActionBar is not a view, just looks a lot like one! */
 	public void setShadow(ActionBar v, boolean on) {
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			v.setElevation(on ? dp2px(8) : 0);
-		}
+		v.setElevation(on ? dp2px(8) : 0);
 	}
 
 	static boolean fuzzyStartsWith(String prefix, String full) {

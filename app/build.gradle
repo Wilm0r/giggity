@@ -4,7 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "net.gaast.giggity"
-        minSdkVersion 26
+        minSdkVersion 23
         targetSdkVersion 28
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }

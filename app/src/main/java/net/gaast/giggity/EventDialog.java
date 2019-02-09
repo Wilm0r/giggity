@@ -195,23 +195,19 @@ public class EventDialog extends FrameLayout {
 			g.setVisibility(View.VISIBLE);
 		}
 
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			/* Lollipop+. I think owners of older devs will survive without drop shadows, right? :> */
-			/* TODO: Remove check above if I find a way to do drop shadows pre-L. */
-			final ScrollView scr = (ScrollView) root.findViewById(R.id.scrollDescription);
-			scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-				@Override
-				public void onScrollChanged() {
-					Rect scrollBounds = new Rect();
-					scr.getHitRect(scrollBounds);
-					View subHeader = root.findViewById(R.id.subHeader);
-					View header = root.findViewById(R.id.header);
+		final ScrollView scr = (ScrollView) root.findViewById(R.id.scrollDescription);
+		scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+			@Override
+			public void onScrollChanged() {
+				Rect scrollBounds = new Rect();
+				scr.getHitRect(scrollBounds);
+				View subHeader = root.findViewById(R.id.subHeader);
+				View header = root.findViewById(R.id.header);
 
-					app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
-					app_.setShadow(subHeader, subHeader.getLocalVisibleRect(scrollBounds));
-				}
-			});
-		}
+				app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
+				app_.setShadow(subHeader, subHeader.getLocalVisibleRect(scrollBounds));
+			}
+		});
 
 		/* Bottom box used to be a bunch of things but now just the remind checkbox + delete icon. */
 		LinearLayout bottomBox = (LinearLayout) root.findViewById(R.id.bottomBox);
@@ -321,15 +317,10 @@ public class EventDialog extends FrameLayout {
 				ctx_, item_.getStartTime().getTime(), item_.getEndTime().getTime(),
 				DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
 
-			StringJoiner speakers = new StringJoiner(", ");
-			for (String speaker: item_.getSpeakers()) {
-				speakers.add(speaker);
-			}
-			
 			t.putExtra(android.content.Intent.EXTRA_TEXT,
 				item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
 				item_.getLine().getTitle() + ", " + time + "\n" +
-				speakers + "\n" +
+				TextUtils.join(", ", item_.getSpeakers()) +
 				item_.getWebLink() + "\n" +
 				"\n" +
 				item_.getDescriptionStripped());
