@@ -29,6 +29,14 @@ import android.widget.CheckBox;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.LocalDate;
+import org.threeten.bp.LocalTime;
+import org.threeten.bp.ZoneId;
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+import org.threeten.bp.format.DateTimeParseException;
+import org.threeten.bp.temporal.TemporalAccessor;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
@@ -48,14 +56,6 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
-import java.time.temporal.TemporalAccessor;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -218,7 +218,8 @@ public class Schedule {
 	
 	public Date getDay() {
 		if (curDay != null) {
-			return Date.from(curDay.toInstant());
+			return DateTimeUtils.toDate(curDay.toInstant());
+			// return Date.from(curDay.toInstant());
 		} else {
 			return null;
 		}
@@ -276,11 +277,13 @@ public class Schedule {
 	}
 
 	public Date getFirstTime() {
-		return Date.from(getFirstTimeZoned().toInstant());
+		return DateTimeUtils.toDate(getFirstTimeZoned().toInstant());
+		// return Date.from(getFirstTimeZoned().toInstant());
 	}
 
 	public Date getLastTime() {
-		return Date.from(getLastTimeZoned().toInstant());
+		return DateTimeUtils.toDate(getFirstTimeZoned().toInstant());
+		// return Date.from(getLastTimeZoned().toInstant());
 	}
 
 	public boolean isToday() {
@@ -1286,11 +1289,13 @@ public class Schedule {
 		}
 
 		public Date getStartTime() {
-			return Date.from(getStartTimeZoned().toInstant());
+			return DateTimeUtils.toDate(getStartTimeZoned().toInstant());
+			// return Date.from(getStartTimeZoned().toInstant());
 		}
 
 		public Date getEndTime() {
-			return Date.from(getEndTimeZoned().toInstant());
+			return DateTimeUtils.toDate(getEndTimeZoned().toInstant());
+			// return Date.from(getEndTimeZoned().toInstant());
 		}
 
 		public String getTrack() {

@@ -31,15 +31,17 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.TreeSet;
 
 /* OK so I'm not using ISO8601 ... but at least it's not middle-endian. And there's no portable date
@@ -90,6 +92,9 @@ public class Giggity extends Application {
 				*/
 			}
 		}, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+
+		// java.time backport for Android <26
+		AndroidThreeTen.init(this);
 	}
 	
 	public Db.Connection getDb() {
