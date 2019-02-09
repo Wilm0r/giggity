@@ -27,6 +27,7 @@ import android.view.Menu;
 import java.util.AbstractList;
 import java.util.ArrayList;
 
+// TODO: Remove the Search related bits, this is only used from TrackList now.
 public class SearchActivity extends ScheduleViewActivity {
 	private ScheduleListView lv;
 	private AbstractList<Schedule.Item> items;

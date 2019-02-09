@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- See if refs to strings are possible here? -->
-	<string-array name="default_view">
-		<item>Programma a blocchi</item>
-		<item>Orario</item>
-		<item>Temi</item>
-		<item>Adesso e dopo</item>
-		<item>I miei eventi</item>
-		<item>@string/search</item>
-	</string-array>
 	<string-array name="font_size">
 		<item>Piccolo</item>
 		<item>3 righe</item>
