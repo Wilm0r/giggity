@@ -1,5 +1,5 @@
 {
-	"version": 2019012002,
+	"version": 2019028001,
 	"url": "https://fosdem.org/2019/schedule/xml",
 	"title": "FOSDEM 2019",
 	"start": "2019-02-02",
@@ -12,7 +12,12 @@
 				"title": "Website"
 			},
 			{
-				"url": "https://fosdem.org/2019/assets/campusmap_parking-7dc419af1e33953bc863cbfcca0e2e596a670efc31a684ab1071a114021e62da.png",
+				"url": "https://fosdem.org/2019/assets/booklet_general-3a78d1f9f0a625a3ac784d403bb75fb8723a99a135a38fa53cb244031ea4bfcb.pdf",
+				"title": "Info booklet",
+				"type": "application/pdf"
+			},
+			{
+				"url": "https://fosdem.org/2019/assets/campusmap-bde646158c3e7b5d10f071e6b432b2857e574efd3b8d2ee490a855f179950a46.png",
 				"title": "Map",
 				"type": "image/png"
 			},
