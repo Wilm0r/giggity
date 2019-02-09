@@ -12,5 +12,6 @@
 		<item>Tracks</item>
 		<item>Jetzt und gleich</item>
 		<item>Meine Veranstaltungen</item>
+		<item>@string/search</item>
 	</string-array>
 </resources>

@@ -7,6 +7,7 @@
 		<item>Tracks</item>
 		<item>Now and next</item>
 		<item>My marked events</item>
+		<item>@string/search</item>
 	</string-array>
 	<string-array name="font_size">
 		<item>Small</item>
@@ -20,6 +21,7 @@
 		<item>net.gaast.giggity:id/tracks</item>
 		<item>net.gaast.giggity:id/now_next</item>
 		<item>net.gaast.giggity:id/my_events</item>
+		<item>net.gaast.giggity:id/search</item>
 	</string-array>
 	<string-array name="font_size_values">
 		<item>small</item>

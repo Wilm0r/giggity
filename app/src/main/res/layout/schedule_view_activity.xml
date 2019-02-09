@@ -69,6 +69,11 @@
                     android:text="@string/timetable"/>
 
                 <TextView
+                    android:id="@+id/search"
+                    style="@style/BurgerMenuItem"
+                    android:text="@string/search"/>
+
+            	<TextView
                     android:id="@+id/tracks"
                     style="@style/BurgerMenuItem"
                     android:text="@string/tracks"/>

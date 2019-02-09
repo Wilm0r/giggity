@@ -152,7 +152,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				Schedule.Item it1 = (Schedule.Item) items.get(position);
 				int flags = itemViewFlags;
 				if ((itemListFlags & ScheduleItemView.HIDE_ENDTIME) > 0) {
-					if (items.size() >= position && items.get(position + 1).getClass() == Schedule.Item.class) {
+					if (position < (items.size() - 1) && items.get(position + 1).getClass() == Schedule.Item.class) {
 						Schedule.Item it2 = (Schedule.Item) items.get(position + 1);
 						if (it1.getEndTime().equals(it2.getStartTime())) {
 							flags |= ScheduleItemView.HIDE_ENDTIME;

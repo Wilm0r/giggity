@@ -7,6 +7,7 @@
 		<item>Thèmes</item>
 		<item>À venir</item>
 		<item>Sélection</item>
+		<item>@string/search</item>
 	</string-array>
 	<string-array name="font_size">
 		<item>Petite</item>

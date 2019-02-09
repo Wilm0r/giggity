@@ -71,11 +71,16 @@ public class ScheduleViewActivity extends Activity {
 	protected ScheduleUI sched;
 	protected Giggity app;
 
+	// This list is JUST used to highlight the current view in the navdrawer. Order is irrelevant.
+	// There are two orders: One in arrays which is in order of invention for cfg compatibility.
+	// The order in the nav drawer UI XML is the one that matters to the user.
+	// TODO: Figure out whether I can stop needing this one :<
 	private final static int VIEWS[] = {
 		R.id.block_schedule,
-		R.id.timetable,
-		R.id.now_next,
 		R.id.my_events,
+		R.id.now_next,
+		R.id.search,
+		R.id.timetable,
 		R.id.tracks,
 	};
 
@@ -607,7 +612,8 @@ public class ScheduleViewActivity extends Activity {
 
 	public void redrawSchedule() {
 		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
-		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.tracks && sched.getDays().size() > 1) {
+		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.tracks &&
+		    curView != R.id.search && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
 			setTitle(sched.getDayFormat().format(sched.getDay()) + ", " + sched.getTitle());
 		} else {
@@ -623,6 +629,8 @@ public class ScheduleViewActivity extends Activity {
 			setScheduleView(new MyItemsView(this, sched));
 		} else if (curView == R.id.tracks) {
 			setScheduleView(new TrackList(this, sched));
+		} else if (curView == R.id.search) {
+			setScheduleView(new ItemSearch(this, sched));
 		} else {
 			curView = R.id.block_schedule; /* Just in case curView is set to something weird. */
 			setScheduleView(new BlockSchedule(this, sched));
@@ -735,6 +743,11 @@ public class ScheduleViewActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO: Should I keep the Search button at all, now that it's just another view mode?
+		if (curView == R.id.search) {
+			// Well at least already don't show it if we're in search anyway.
+			return false;
+		}
 		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.scheduleviewactivity, menu);
@@ -814,15 +827,13 @@ public class ScheduleViewActivity extends Activity {
 			case R.id.show_hidden:
 				toggleShowHidden();
 				break;
-			case R.id.search:
-				onSearchRequested();
-				break;
 			case R.id.export_selections:
 				ScheduleUI.exportSelections(this, sched);
 				break;
 			case R.id.home_shortcut:
 				addHomeShortcut();
 				break;
+			case R.id.search:
 			case R.id.timetable:
 			case R.id.tracks:
 			case R.id.block_schedule:
