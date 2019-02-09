@@ -282,7 +282,7 @@ public class Schedule {
 	}
 
 	public Date getLastTime() {
-		return DateTimeUtils.toDate(getFirstTimeZoned().toInstant());
+		return DateTimeUtils.toDate(getLastTimeZoned().toInstant());
 		// return Date.from(getLastTimeZoned().toInstant());
 	}
 
