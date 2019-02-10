@@ -22,6 +22,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.AbstractList;
+import java.util.LinkedList;
 
 public class ScheduleUI extends Schedule {
 	/* Schedule subclass which should carry, among other things, elements that depend on Android.
@@ -153,6 +155,21 @@ public class ScheduleUI extends Schedule {
 	protected void applyItem(Item item) {
 		db.saveScheduleItem(item);
 		app.updateRemind(item);
+	}
+
+	public void initSearch() {
+		db.resetIndex(allItems.values());
+	}
+
+	public AbstractList<Item> searchItems(String q_) {
+		AbstractList<String> ids = db.searchItems(q_);
+		LinkedList<Item> ret = new LinkedList<Item>();
+		Log.d("searchItems", "" + ids.size() + " items");
+		for (String id : ids) {
+			Log.d("searchItems", "id=" + id + " " + allItems.containsKey(id));
+			ret.add(allItems.get(id));
+		}
+		return ret;
 	}
 
 

@@ -81,7 +81,7 @@ public class Schedule {
 	private String title;
 
 	private LinkedList<Schedule.Line> tents = new LinkedList<>();
-	private TreeMap<String,Schedule.Item> allItems = new TreeMap<>();
+	protected TreeMap<String,Schedule.Item> allItems = new TreeMap<>();
 	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
 
 	private ZonedDateTime firstTime, lastTime;

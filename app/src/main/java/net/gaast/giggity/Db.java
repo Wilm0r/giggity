@@ -30,6 +30,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
@@ -45,7 +46,9 @@ import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -54,7 +57,7 @@ import java.util.zip.GZIPInputStream;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 13;
+	private static final int dbVersion = 14;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -101,7 +104,9 @@ public class Db {
 			                                       "sci_remind Boolean, " +
 			                                       "sci_hidden Boolean, " +
 			                                       "sci_stars Integer(2) Null)");
-			
+			db.execSQL("Create Virtual Table item_search Using FTS4" +
+			           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+
 			oldDbVer = 0;
 		}
 	
@@ -146,8 +151,23 @@ public class Db {
 					}
 				}
 			}
-			
+
+			/* Full-text search! FTS4 doesn't exactly do Alter Table anyway so don't try. */
+			try {
+				db.execSQL("Drop Table If Exists item_search");
+				db.execSQL("Create Virtual Table item_search Using FTS4" +
+				           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe FTS support is missing?");
+				e.printStackTrace();
+			}
+
 			oldDbVer = Math.min(oldDbVer, oldVersion);
+		}
+
+		@Override
+		public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+			// Bogus implementation which I only intend to use during testing.
 		}
 	}
 	
@@ -555,7 +575,45 @@ public class Db {
 			q.close();
 			sleep();
 		}
-		
+
+		public void resetIndex(Collection<Schedule.Item> items) {
+			resume();
+			// schId needs to be passed as an int. Even though docs sound like everything's a string
+			// in FTS tables, this one's most definitely not and if you try to select for it as one
+			// you'll delete nothing and end up with lots of duplicate results.
+			db.delete("item_search", "sch_id = " + schId, null);
+			ContentValues row = new ContentValues();
+			for (Schedule.Item item : items) {
+				row.clear();
+				row.put("sch_id", schId);
+				row.put("sci_id_s", item.getId());
+				row.put("title", item.getTitle());
+				row.put("subtitle", item.getSubtitle());
+				row.put("description", item.getDescriptionStripped());
+				if (item.getSpeakers() != null) {
+					row.put("speakers", TextUtils.join(" ", item.getSpeakers()));
+				}
+				row.put("track", item.getTrack());
+				db.insert("item_search", null, row);
+			}
+			sleep();
+		}
+
+		public AbstractList<String> searchItems(String query) {
+			LinkedList<String> res = new LinkedList<>();
+			resume();
+			Cursor q = db.rawQuery("Select sch_id, sci_id_s From item_search Where item_search Match ?", new String[]{query});
+			while (q.moveToNext()) {
+				// TODO: Can I limit the full-text search to just sch_id==schId?
+				if (q.getInt(0) == schId) {
+					res.add(q.getString(1));
+				}
+			}
+			q.close();
+			sleep();
+			return res;
+		}
+
 		private void flushHidden(int id) {
 			resume();
 			db.execSQL("Update schedule_item Set sci_hidden = 0 Where sci_sch_id = ?", new String[] {"" + id});
