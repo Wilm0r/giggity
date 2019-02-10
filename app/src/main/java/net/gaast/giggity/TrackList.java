@@ -54,6 +54,9 @@ public class TrackList extends ListView implements ScheduleViewer {
 		/* Not showing any actual schedule items so again nothing to do. */
 	}
 
+	@Override
+	public void onShow() {}
+
 	private class TrackAdapter extends BaseAdapter {
 		private final Schedule sched;
 		private final ArrayList<String> keys;

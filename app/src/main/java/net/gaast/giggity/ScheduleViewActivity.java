@@ -241,7 +241,7 @@ public class ScheduleViewActivity extends Activity {
 			try {
 				sched = app.getSchedule(url, fs);
 			} catch (Exception e) {
-				// Java makes me tired.
+				// Java makes me tired. We've already called hasSchedule so we're fine.
 				e.printStackTrace();
 			}
 			onScheduleLoaded();
@@ -677,6 +677,7 @@ public class ScheduleViewActivity extends Activity {
 			viewerContainer.removeView((View) viewer);
 		viewer = (ScheduleViewer) viewer_;
 		viewerContainer.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3));
+		viewer.onShow();
 
 		days.show();
 	}

@@ -138,7 +138,7 @@ public class Giggity extends Application {
 
 	@Deprecated
 	public ScheduleUI getLastSchedule() {
-		/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
+		/* Ugly, but I need it for SearchActivity, which starts with no state.. :-/ */
 		return lastSchedule;
 	}
 	

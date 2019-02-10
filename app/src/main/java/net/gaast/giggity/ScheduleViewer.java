@@ -25,6 +25,8 @@ public interface ScheduleViewer {
 	public void refreshContents();
 	/* Called after possible event state changes (ScheduleItemActivity or more tricky on tablets) */
 	public void refreshItems();
+	/* For UI stuff where the constructor would be too early to do it (showing keyboard for example) */
+	public void onShow();
 
 	/* Allow date switching. Does not apply to now&next for example. */
 	public boolean multiDay();

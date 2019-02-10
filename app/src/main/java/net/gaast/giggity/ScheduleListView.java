@@ -119,6 +119,9 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		adje.notifyDataSetChanged();
 	}
 
+	@Override
+	public void onShow() {}
+
 	private class EventAdapter extends BaseAdapter {
 		AbstractList<?> items;
 		

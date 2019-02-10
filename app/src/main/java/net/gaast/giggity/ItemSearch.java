@@ -55,14 +55,12 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 		query.requestFocus();
 		new UpdateIndexTask().execute(true);
-		/* TODO: Make this work, my guess is it can't work in this constructor yet. :<
-		InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(query, InputMethodManager.SHOW_IMPLICIT);
-		*/
 	}
 
 	// TODO: Use SearchView here probably?
 	private class SearchQuery extends EditText {
+		private String lastQuery = "";
+
 		public SearchQuery() {
 			super(ctx);
 			setHint("Type your query");  // TODO: I18N
@@ -79,23 +77,31 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 			}
 
 			int cursor = start + lengthAfter;
-			String partQuery = text.subSequence(0, cursor) + "*" + text.subSequence(cursor, text.length());
-			Log.d("onTextChanged", partQuery);
+			lastQuery = text.subSequence(0, cursor) + "*" + text.subSequence(cursor, text.length());
+			Log.d("onTextChanged", lastQuery);
 
-			updateResults(partQuery);
+			updateResults();
 		}
 
 		@Override
 		public void onEditorAction(int actionCode) {
 			if (actionCode == EditorInfo.IME_ACTION_SEARCH) {
-				// TODO: Should probably hide the keyboard here. ACTION_DONE is supposed to do that but does not.
-				// Also it may be annoying how this, with the * removed, suddenly may modify the results again.
-				updateResults(getText().toString());
+				// The * will disappear now which could modify the results ... can be annoying. :-(
+				lastQuery = getText().toString();
+				updateResults();
+
+				// Keyboard obscures search results so go away!
+				View view = ctx.findViewById(android.R.id.content);
+				Log.d("hide kb", ""+ view);
+				if (view != null) {
+					InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+				}
 			}
 		}
 
-		private void updateResults(String query) {
-			AbstractList<Schedule.Item> res = sched.searchItems(query);
+		private void updateResults() {
+			AbstractList<Schedule.Item> res = sched.searchItems(lastQuery);
 			scroller.setList(res);
 			scroller.refreshContents();
 		}
@@ -118,18 +124,22 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		protected void onPostExecute(Boolean b) {
 			Log.d("UpdateIndex", "Done! Updating search results");
 			removeView(progress);
-			query.onTextChanged(query.getText(), query.getSelectionStart(), 0, 0);
+			query.updateResults();
 		}
 	}
 
 	@Override
-	public void refreshContents() {
+	public void onShow() {
+		InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+		imm.showSoftInput(query, InputMethodManager.SHOW_IMPLICIT);
+	}
 
+	@Override
+	public void refreshContents() {
 	}
 
 	@Override
 	public void refreshItems() {
-
 	}
 
 	@Override
