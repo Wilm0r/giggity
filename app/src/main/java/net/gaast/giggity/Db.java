@@ -557,12 +557,10 @@ public class Db {
 		public AbstractList<String> searchItems(String query) {
 			LinkedList<String> res = new LinkedList<>();
 			SQLiteDatabase db = dbh.getReadableDatabase();
-			Cursor q = db.rawQuery("Select sch_id, sci_id_s From item_search Where item_search Match ?", new String[]{query});
+			Cursor q = db.rawQuery("Select sch_id, sci_id_s From item_search Where sch_id = " +
+			                       schId + " And item_search Match ?", new String[]{query});
 			while (q.moveToNext()) {
-				// TODO: Can I limit the full-text search to just sch_id==schId?
-				if (q.getInt(0) == schId) {
-					res.add(q.getString(1));
-				}
+				res.add(q.getString(1));
 			}
 			q.close();
 			return res;
