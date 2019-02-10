@@ -78,10 +78,7 @@ public class Db {
 			super(context, name, factory, version);
 			
 			if (oldDbVer < dbVersion) {
-				SQLiteDatabase db = getWritableDatabase();
-				db.acquireReference();
-				updateData(db, false);
-				db.releaseReference();
+				updateData(getWritableDatabase(), false);
 			}
 		}
 	
@@ -359,7 +356,6 @@ public class Db {
 	}
 	
 	public class Connection {
-		private SQLiteDatabase db;
 		private Schedule sched;
 
 		private HashMap<String,Long> sciIdMap;
@@ -367,37 +363,6 @@ public class Db {
 		
 		private int day;
 		private String metadata;
-		
-		public Connection() {
-			resume();
-		}
-		
-		protected void finalize() {
-			sleep();
-		}
-		
-		private void sleep() {
-			/*
-			Log.d("db", "sleep" + db);
-			Log.d("myapp", Log.getStackTraceString(new Exception()));
-			*/
-			if (db != null)
-				db.releaseReference();
-			db = null;
-		}
-		
-		private void resume() {
-			if (db == null || !db.isOpen() || db.isReadOnly()) {
-				db = dbh.getWritableDatabase();
-				db.acquireReference();
-			}
-			/*
-			Log.d("db0", "resume " + db);
-			if (db != null)
-				Log.d("db0", "" + db.isOpen() + " " + db.isReadOnly());
-			Log.d("myapp", Log.getStackTraceString(new Exception()));
-			*/
-		}
 		
 		public void setSchedule(Schedule sched_, String url, boolean fresh) {
 			ContentValues row;
@@ -415,8 +380,8 @@ public class Db {
 			row.put("sch_end", sched.getLastTime().getTime() / 1000);
 			if (fresh)
 				row.put("sch_rtime", new Date().getTime() / 1000);
-			
-			resume();
+
+			SQLiteDatabase db = dbh.getWritableDatabase();
 			q = db.rawQuery("Select sch_id, sch_day, sch_metadata From schedule Where sch_id_s = ?",
 			                new String[]{sched.getId()});
 			
@@ -456,7 +421,6 @@ public class Db {
 				sciIdMap.put(q.getString(1), (long) q.getInt(0));
 			}
 			q.close();
-			sleep();
 		}
 		
 		public void saveScheduleItem(Schedule.Item item) {
@@ -471,36 +435,32 @@ public class Db {
 			
 			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") +
 			                   " stars " + row.getAsString("sci_stars") + " hidden " + row.getAsString("sci_hidden"));
-			
-			resume();
+
+			SQLiteDatabase db = dbh.getWritableDatabase();
 			if ((sciId = sciIdMap.get(item.getId())) != null) {
 				db.update("schedule_item", row,
 						  "sci_id = ?", new String[]{"" + sciId.longValue()});
 			} else {
 				sciIdMap.put(item.getId(), db.insert("schedule_item", null, row));
 			}
-			sleep();
 		}
 		
 		public ArrayList<DbSchedule> getScheduleList() {
 			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
 			Cursor q;
 
-			resume();
+			SQLiteDatabase db = dbh.getReadableDatabase();
 			q = db.rawQuery("Select * From schedule Order By sch_atime Desc", null);
 			while (q.moveToNext()) {
 				ret.add(new DbSchedule(q));
 			}
 			q.close();
-			sleep();
-			
+
 			return ret;
 		}
 		
 		public void refreshScheduleList() {
-			resume();
-			updateData(db, true);
-			sleep();
+			updateData(dbh.getWritableDatabase(), true);
 		}
 
 		public boolean refreshSingleSchedule(byte[] blob) {
@@ -540,9 +500,7 @@ public class Db {
 			Log.d("Db.refreshSingle", "Found something that parsed like my json: " + parsed);
 			removeSchedule(parsed.url);
 			app.flushSchedule(parsed.url);
-			resume();
-			updateSchedule(db, parsed, 0);
-			sleep();
+			updateSchedule(dbh.getWritableDatabase(), parsed, 0);
 			return true;
 		}
 		
@@ -553,12 +511,11 @@ public class Db {
 		public void setDay(int day_) {
 			day = day_;
 			ContentValues row;
-			
-			resume();
+
+			SQLiteDatabase db = dbh.getWritableDatabase();
 			row = new ContentValues();
 			row.put("sch_day", day);
 			db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
-			sleep();
 		}
 
 		public String getMetadata() {
@@ -566,18 +523,17 @@ public class Db {
 		}
 
 		public void removeSchedule(String url) {
-			resume();
+			SQLiteDatabase db = dbh.getWritableDatabase();
 			Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{url});
 			while (q.moveToNext()) {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + q.getInt(0)});
 				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
 			}
 			q.close();
-			sleep();
 		}
 
 		public void resetIndex(Collection<Schedule.Item> items) {
-			resume();
+			SQLiteDatabase db = dbh.getWritableDatabase();
 			// schId needs to be passed as an int. Even though docs sound like everything's a string
 			// in FTS tables, this one's most definitely not and if you try to select for it as one
 			// you'll delete nothing and end up with lots of duplicate results.
@@ -596,12 +552,11 @@ public class Db {
 				row.put("track", item.getTrack());
 				db.insert("item_search", null, row);
 			}
-			sleep();
 		}
 
 		public AbstractList<String> searchItems(String query) {
 			LinkedList<String> res = new LinkedList<>();
-			resume();
+			SQLiteDatabase db = dbh.getReadableDatabase();
 			Cursor q = db.rawQuery("Select sch_id, sci_id_s From item_search Where item_search Match ?", new String[]{query});
 			while (q.moveToNext()) {
 				// TODO: Can I limit the full-text search to just sch_id==schId?
@@ -610,14 +565,12 @@ public class Db {
 				}
 			}
 			q.close();
-			sleep();
 			return res;
 		}
 
 		private void flushHidden(int id) {
-			resume();
+			SQLiteDatabase db = dbh.getWritableDatabase();
 			db.execSQL("Update schedule_item Set sci_hidden = 0 Where sci_sch_id = ?", new String[] {"" + id});
-			sleep();
 		}
 	}
 	
@@ -671,7 +624,6 @@ public class Db {
 		public void flushHidden() {
 			Connection db = getConnection();
 			db.flushHidden(id_n);
-			db.sleep();
 		}
 	}
 }
