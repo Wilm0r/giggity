@@ -102,8 +102,12 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 		private void updateResults() {
 			AbstractList<Schedule.Item> res = sched.searchItems(lastQuery);
-			scroller.setList(res);
-			scroller.refreshContents();
+			if (res != null) {
+				scroller.setList(res);
+				scroller.refreshContents();
+			} else {
+				Toast.makeText(ctx, "Database query syntax error", Toast.LENGTH_SHORT).show();  // I18N
+			}
 		}
 	}
 
@@ -117,7 +121,9 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		@Override
 		protected void onPreExecute() {
 			Log.d("UpdateIndex", "Start");
-			Toast.makeText(ctx, "Rebuilding search index", Toast.LENGTH_SHORT).show();  // I18N
+			// Don't show this for now as hopefully most of the time it's already done, and making
+			// the toast conditional is more hassle than it's worth to me now. There's the indicator.
+			// Toast.makeText(ctx, "Rebuilding search index", Toast.LENGTH_SHORT).show();  // I18N
 		}
 
 		@Override

@@ -163,6 +163,9 @@ public class ScheduleUI extends Schedule {
 
 	public AbstractList<Item> searchItems(String q_) {
 		AbstractList<String> ids = db.searchItems(q_);
+		if (ids == null) {
+			return null;
+		}
 		LinkedList<Item> ret = new LinkedList<Item>();
 		Log.d("searchItems", "" + ids.size() + " items");
 		for (String id : ids) {

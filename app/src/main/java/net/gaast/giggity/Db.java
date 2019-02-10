@@ -57,7 +57,7 @@ import java.util.zip.GZIPInputStream;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 14;
+	private static final int dbVersion = 15;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -90,6 +90,7 @@ public class Db {
 			                                  "sch_url VarChar(256), " +
 			                                  "sch_atime Integer, " +
 			                                  "sch_rtime Integer, " +
+			                                  "sch_itime Integer, " +
 			                                  "sch_start Integer, " +
 			                                  "sch_end Integer, " +
 			                                  "sch_id_s VarChar(128), " +
@@ -142,6 +143,14 @@ public class Db {
 					/* Version 13 adds big metadata field. */
 					try {
 						db.execSQL("Alter Table schedule Add Column sch_metadata VarChar(10240)");
+					} catch (SQLiteException e) {
+						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+						e.printStackTrace();
+					}
+				} else if (v == 15) {
+					/* Version 14 added FTS, 15 adds the itime field to avoid needless reindexing. */
+					try {
+						db.execSQL("Alter Table schedule Add Column sch_itime Integer");
 					} catch (SQLiteException e) {
 						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
 						e.printStackTrace();
@@ -533,7 +542,17 @@ public class Db {
 		}
 
 		public void resetIndex(Collection<Schedule.Item> items) {
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = dbh.getReadableDatabase();
+			Cursor q = db.rawQuery("Select sch_id from schedule Where sch_id = " + schId +
+			                       " And (sch_itime <= sch_rtime Or sch_itime Is Null)",
+			null, null);
+			if (q.getCount() == 0) {
+				q.close();
+				return;
+			}
+			q.close();
+
+			db = dbh.getWritableDatabase();
 			// schId needs to be passed as an int. Even though docs sound like everything's a string
 			// in FTS tables, this one's most definitely not and if you try to select for it as one
 			// you'll delete nothing and end up with lots of duplicate results.
@@ -552,17 +571,25 @@ public class Db {
 				row.put("track", item.getTrack());
 				db.insert("item_search", null, row);
 			}
+
+			row.clear();
+			row.put("sch_itime", new Date().getTime() / 1000);
+			db.update("schedule", row, "sch_id = " + schId, null);
 		}
 
 		public AbstractList<String> searchItems(String query) {
 			LinkedList<String> res = new LinkedList<>();
 			SQLiteDatabase db = dbh.getReadableDatabase();
-			Cursor q = db.rawQuery("Select sch_id, sci_id_s From item_search Where sch_id = " +
-			                       schId + " And item_search Match ?", new String[]{query});
-			while (q.moveToNext()) {
-				res.add(q.getString(1));
+			try {
+				Cursor q = db.rawQuery("Select sch_id, sci_id_s From item_search Where sch_id = " +
+				                       schId + " And item_search Match ?", new String[]{query});
+				while (q.moveToNext()) {
+					res.add(q.getString(1));
+				}
+				q.close();
+			} catch (SQLiteException e) {
+				return null;
 			}
-			q.close();
 			return res;
 		}
 
@@ -575,7 +602,10 @@ public class Db {
 	public class DbSchedule {
 		private int id_n;
 		private String url, id, title;
-		private Date start, end, atime, rtime;
+		private Date start, end;
+		private Date atime;  // Access time, set by setSchedule above, used as sorting key in Chooser.
+		private Date rtime;  // Refresh time, last time Fetcher claimed the server sent new data.
+		private Date itime;  // Index time, last time it was added to the FTS index.
 
 		public DbSchedule(Cursor q) {
 			id_n = q.getInt(q.getColumnIndexOrThrow("sch_id")); 
@@ -586,6 +616,7 @@ public class Db {
 			end = new Date(q.getLong(q.getColumnIndexOrThrow("sch_end")) * 1000);
 			atime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_atime")) * 1000);
 			rtime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_rtime")) * 1000);
+			itime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_itime")) * 1000);
 		}
 		
 		public String getUrl() {
@@ -614,9 +645,13 @@ public class Db {
 		public Date getAtime() {
 			return atime;
 		}
-		
+
 		public Date getRtime() {
 			return rtime;
+		}
+
+		public Date getItime() {
+			return itime;
 		}
 
 		public void flushHidden() {
