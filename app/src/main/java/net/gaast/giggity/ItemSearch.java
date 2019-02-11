@@ -142,10 +142,12 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 	@Override
 	public void refreshContents() {
+		scroller.refreshContents();
 	}
 
 	@Override
 	public void refreshItems() {
+		scroller.refreshItems();
 	}
 
 	@Override
