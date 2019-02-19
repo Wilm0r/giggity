@@ -66,7 +66,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.Scanner;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -74,15 +73,15 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-public class Schedule {
+public class Schedule implements Serializable {
 	private final int detectHeaderSize = 1024;
 	
 	private String id, url;
 	private String title;
 
 	private LinkedList<Schedule.Line> tents = new LinkedList<>();
-	protected TreeMap<String,Schedule.Item> allItems = new TreeMap<>();
-	private HashMap<String,TreeSet<Schedule.Item>> trackMap;
+	protected HashMap<String,Schedule.Item> allItems = new HashMap<>();
+	private HashMap<String,TreeSet<Schedule.Item>> trackMap = new HashMap<>();
 
 	private ZonedDateTime firstTime, lastTime;
 	private ZonedDateTime dayFirstTime, dayLastTime;
@@ -145,6 +144,7 @@ public class Schedule {
 		}
 
 		/* From now, changes should be marked to go back into the db. */
+		// TODO: Think this is set prematurely now after the refactor?
 		fullyLoaded = true;
 	}
 
@@ -291,14 +291,6 @@ public class Schedule {
 		return (getFirstTimeZoned().isBefore(now) && getLastTimeZoned().isAfter(now));
 	}
 	
-	/* If true, this schedule defines link types so icons should suffice.
-	 * If false, we have no types and should show full URLs.
-	 */
-	public boolean hasLinkTypes() {
-		// Deprecated feature.
-		return false;
-	}
-
 	private void loadXcal(BufferedReader in) {
 		loadXml(in, new XcalParser());
 	}
@@ -1101,7 +1093,7 @@ public class Schedule {
 		EVACUATE,
 	};
 
-	public class Line {
+	public class Line implements Serializable {
 		private String id;
 		private String title;
 		private TreeSet<Schedule.Item> items;
@@ -1177,7 +1169,7 @@ public class Schedule {
 		}
 	}
 	
-	public class Item implements Comparable<Item> {
+	public class Item implements Comparable<Item>, Serializable {
 		private String id;
 		private Line line;
 		private String title, subtitle;
@@ -1209,17 +1201,11 @@ public class Schedule {
 
 		public void setTrack(String track_) {
 			track = track_;
-			
-			if (trackMap == null)
-				trackMap = new HashMap<String,TreeSet<Schedule.Item>>();
-			
-			TreeSet<Schedule.Item> items;
-			if ((items = trackMap.get(track)) == null) {
-				items = new TreeSet<Schedule.Item>();
-				trackMap.put(track, items);
+
+			if (!trackMap.containsKey(track)) {
+				trackMap.put(track, new TreeSet<Schedule.Item>());
 			}
-			
-			items.add(this);
+			trackMap.get(track).add(this);
 		}
 		
 		public void setDescription(String description_) {
@@ -1418,10 +1404,18 @@ public class Schedule {
 				newData = false;
 			}
 		}
-		
+
 		@Override
 		public int compareTo(Item another) {
 			int ret;
+			if (this == null || getStartTimeZoned() == null || getTitle() == null ||
+			    another == null || another.getStartTimeZoned() == null || another.getTitle() == null) {
+				// Shouldn't happen in normal operation anyway, but it does happen during
+				// de-serialisation for some reason :-( (Possibly because a "hollow" duplicate of an
+				// object is restored before the filled in original?)
+				// Log.d("Schedule.Item.compareTo", "null-ish object passed");
+				return -123;
+			}
 			if ((ret = getStartTimeZoned().compareTo(another.getStartTimeZoned())) != 0)
 				return ret;
 			else if ((ret = getTitle().compareTo(another.getTitle())) != 0)
@@ -1462,7 +1456,7 @@ public class Schedule {
 		}
 	}
 
-	public class Link {
+	public class Link implements Serializable {
 		private String url, title;
 		/* If type is set, at least ScheduleViewActivity will try to download and then view locally.
 		   This works better for PDFs for example, also with caching it's beneficial on poor conference
