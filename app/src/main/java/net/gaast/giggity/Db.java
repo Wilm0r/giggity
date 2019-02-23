@@ -32,6 +32,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
+
+import com.github.movies.OkapiBM25;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
@@ -44,14 +47,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.nio.IntBuffer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
 
 public class Db {
@@ -577,14 +586,34 @@ public class Db {
 			db.update("schedule", row, "sch_id = " + schId, null);
 		}
 
-		public AbstractList<String> searchItems(String query) {
-			LinkedList<String> res = new LinkedList<>();
+		public Collection<String> searchItems(String query) {
+			final HashMap<String, Double> rank = new HashMap<>();
+			TreeSet<String> res = new TreeSet<>(new Comparator<String>() {
+				@Override
+				public int compare(String s, String t1) {
+					return -Double.compare(rank.get(s), rank.get(t1));
+				}
+			});
 			SQLiteDatabase db = dbh.getReadableDatabase();
 			try {
-				Cursor q = db.rawQuery("Select sch_id, sci_id_s From item_search Where sch_id = " +
-				                       schId + " And item_search Match ?", new String[]{query});
+				Cursor q = db.rawQuery("Select item_search.sci_id_s, matchinfo(item_search, \"pcnalx\"), sci_remind " +
+				                       " From item_search Left Join schedule_item On (sci_sch_id = sch_id" +
+				                       " And item_search.sci_id_s = schedule_item.sci_id_s) Where sch_id = " + schId +
+				                       " And item_search Match ?", new String[]{query});
 				while (q.moveToNext()) {
-					res.add(q.getString(1));
+					// columns: 2=title, subtitle, description, speakers, track
+					Integer[] mi = toIntArray(q.getBlob(1));
+					double score = 8 * OkapiBM25.Companion.score(mi, 2) +
+					               4 * OkapiBM25.Companion.score(mi, 3) +
+					               1 * OkapiBM25.Companion.score(mi, 3) +
+					               4 * OkapiBM25.Companion.score(mi, 5) +
+					               2 * OkapiBM25.Companion.score(mi, 6);
+					if (q.getInt(2) > 0) {
+						score += 1000;
+					}
+					Log.d("search", q.getString(0) + " score: " + score + " remind " + q.getInt(2));
+					rank.put(q.getString(0), score);
+					res.add(q.getString(0));
 				}
 				q.close();
 			} catch (SQLiteException e) {
@@ -598,7 +627,17 @@ public class Db {
 			db.execSQL("Update schedule_item Set sci_hidden = 0 Where sci_sch_id = ?", new String[] {"" + id});
 		}
 	}
-	
+
+	static private Integer[] toIntArray(byte[] blob) {
+		IntBuffer buf = ByteBuffer.wrap(blob).order(ByteOrder.nativeOrder()).asIntBuffer();
+		Integer[] ret = new Integer[buf.capacity()];
+		int i = 0;
+		while (buf.hasRemaining()) {
+			ret[i++] = buf.get();
+		}
+		return ret;
+	}
+
 	public class DbSchedule {
 		private int id_n;
 		private String url, id, title;

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.AbstractList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 public class ScheduleUI extends Schedule {
@@ -162,7 +163,7 @@ public class ScheduleUI extends Schedule {
 	}
 
 	public AbstractList<Item> searchItems(String q_) {
-		AbstractList<String> ids = db.searchItems(q_);
+		Collection<String> ids = db.searchItems(q_);
 		if (ids == null) {
 			return null;
 		}
