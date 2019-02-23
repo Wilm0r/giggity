@@ -99,7 +99,7 @@ public class Schedule implements Serializable {
 	private LinkedList<Link> links;
 	protected String roomStatusUrl;
 
-	private boolean fullyLoaded;
+	protected boolean fullyLoaded;
 
 	protected void loadSchedule(BufferedReader in, String url_) throws IOException, LoadException {
 		url = url_;
@@ -142,10 +142,6 @@ public class Schedule implements Serializable {
 		if (allItems.size() == 0) {
 			throw new LoadException(getString(R.string.schedule_empty));
 		}
-
-		/* From now, changes should be marked to go back into the db. */
-		// TODO: Think this is set prematurely now after the refactor?
-		fullyLoaded = true;
 	}
 
 	public String getString(int id) {

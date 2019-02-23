@@ -68,6 +68,9 @@ public class ScheduleUI extends Schedule {
 			ret.addMetadata(md_json);
 		}
 
+		/* From now, changes should be marked to go back into the db. */
+		ret.fullyLoaded = true;
+
 		return ret;
 	}
 
