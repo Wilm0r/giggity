@@ -157,7 +157,9 @@ public class ScheduleUI extends Schedule {
 	}
 
 	protected void applyItem(Item item) {
-		db.saveScheduleItem(item);
+		if (fullyLoaded) {
+			db.saveScheduleItem(item);
+		}
 		app.updateRemind(item);
 	}
 

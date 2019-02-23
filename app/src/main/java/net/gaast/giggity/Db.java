@@ -77,7 +77,6 @@ public class Db {
 	}
 	
 	public Connection getConnection() {
-		Log.i("DeoxideDb", "Created database connection");
 		return new Connection();
 	}
 	
@@ -376,7 +375,7 @@ public class Db {
 	public class Connection {
 		private Schedule sched;
 
-		private HashMap<String,Long> sciIdMap;
+		private IdMap sciIdMap = new IdMap();
 		private long schId;
 		
 		private int day;
@@ -387,7 +386,6 @@ public class Db {
 			Cursor q;
 			
 			sched = sched_;
-			sciIdMap = new HashMap<String,Long>();
 
 			row = new ContentValues();
 			row.put("sch_id_s", sched.getId());
@@ -443,10 +441,6 @@ public class Db {
 		
 		public void saveScheduleItem(Schedule.Item item) {
 			ContentValues row = new ContentValues();
-			Long sciId;
-			
-			row.put("sci_sch_id", schId);
-			row.put("sci_id_s", item.getId());
 			row.put("sci_remind", item.getRemind());
 			row.put("sci_hidden", item.isHidden());
 			row.put("sci_stars", item.getStars());
@@ -455,12 +449,8 @@ public class Db {
 			                   " stars " + row.getAsString("sci_stars") + " hidden " + row.getAsString("sci_hidden"));
 
 			SQLiteDatabase db = dbh.getWritableDatabase();
-			if ((sciId = sciIdMap.get(item.getId())) != null) {
-				db.update("schedule_item", row,
-						  "sci_id = ?", new String[]{"" + sciId.longValue()});
-			} else {
-				sciIdMap.put(item.getId(), db.insert("schedule_item", null, row));
-			}
+			Long sciId = sciIdMap.get(item.getId());
+			db.update("schedule_item", row, "sci_id = " + sciId, null);
 		}
 		
 		public ArrayList<DbSchedule> getScheduleList() {
@@ -630,6 +620,35 @@ public class Db {
 		private void flushHidden(int id) {
 			SQLiteDatabase db = dbh.getWritableDatabase();
 			db.execSQL("Update schedule_item Set sci_hidden = 0 Where sci_sch_id = ?", new String[] {"" + id});
+		}
+
+		private class IdMap extends HashMap<String,Long> {
+			@Override
+			public Long get(Object key_) {
+				String key = (String) key_;  // @Override wasn't accepted with type String directly
+				Long sciId;
+				if ((sciId = super.get(key)) != null) {
+					return sciId;
+				} else {
+					SQLiteDatabase db = dbh.getWritableDatabase();
+					Cursor q = db.rawQuery("Select sci_id From schedule_item" +
+					                       " Where sci_sch_id = " + schId + " And sci_id_s = ?",
+					                       new String[]{key});
+					if (q.moveToNext()) {
+						// This was a bug and maybe still is. Guess I'll log it at least. Normally
+						// id's should either have been here when we loaded the schedule, or been
+						// added to in-mem map in the else below.
+						Log.w("Db.IdMap", "Shouldn't have happened: id " + key + " appeared in table behind my back?");
+						sciId = q.getLong(0);
+					} else {
+						ContentValues row = new ContentValues();
+						row.put("sci_sch_id", schId);
+						row.put("sci_id_s", key);
+						super.put(key, sciId = db.insert("schedule_item", null, row));
+					}
+					return sciId;
+				}
+			}
 		}
 	}
 
