@@ -116,7 +116,7 @@ public class EventDialog extends FrameLayout {
 		}
 
 		t = (TextView) root.findViewById(R.id.time);
-		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTime()) + " " +
+		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTimeZoned()) + " " +
 		          tf.format(item_.getStartTime()) + "-" + tf.format(item_.getEndTime()));
 		
 		t = (TextView) root.findViewById(R.id.track);

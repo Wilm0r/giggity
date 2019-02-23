@@ -197,7 +197,7 @@ public class Giggity extends Application {
 			ret = "" + start.getDayOfMonth() + "-" + DateTimeFormatter.ofPattern("d MMMM").format(end);
 		else
 			ret = DateTimeFormatter.ofPattern("d MMMM").format(start) + "-" + DateTimeFormatter.ofPattern("d MMMM").format(end);
-		return ret + " " + (1900 + end.getYear());
+		return ret + " " + end.getYear();
 	}
 
 	public void setShadow(View v, boolean on) {

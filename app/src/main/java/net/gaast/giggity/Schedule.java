@@ -212,10 +212,9 @@ public class Schedule implements Serializable {
 		return lastTime.toEpochSecond() - firstTime.toEpochSecond();
 	}
 	
-	public Date getDay() {
+	public ZonedDateTime getDay() {
 		if (curDay != null) {
-			return DateTimeUtils.toDate(curDay.toInstant());
-			// return Date.from(curDay.toInstant());
+			return curDay;
 		} else {
 			return null;
 		}
@@ -246,12 +245,11 @@ public class Schedule implements Serializable {
 		}
 	}
 
-	public Format getDayFormat() {
-		// FIXME: DateTimeFormatter?
+	public DateTimeFormatter getDayFormat() {
 		if (eventLength() > (86400 * 5))
-			return new SimpleDateFormat("EE d MMMM");
+			return DateTimeFormatter.ofPattern("EE d MMMM");
 		else
-			return new SimpleDateFormat("EE");
+			return DateTimeFormatter.ofPattern("EE");
 	}
 	
 	/** Get earliest item.startTime */
