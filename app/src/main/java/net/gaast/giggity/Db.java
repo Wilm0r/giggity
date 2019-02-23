@@ -591,7 +591,12 @@ public class Db {
 			TreeSet<String> res = new TreeSet<>(new Comparator<String>() {
 				@Override
 				public int compare(String s, String t1) {
-					return -Double.compare(rank.get(s), rank.get(t1));
+					int byRank = -rank.get(s).compareTo(rank.get(t1));
+					if (byRank != 0) {
+						return byRank;
+					} else {
+						return s.compareTo(t1);
+					}
 				}
 			});
 			SQLiteDatabase db = dbh.getReadableDatabase();
