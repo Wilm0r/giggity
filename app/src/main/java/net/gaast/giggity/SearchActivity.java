@@ -22,6 +22,7 @@ package net.gaast.giggity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import java.util.AbstractList;
@@ -35,25 +36,14 @@ public class SearchActivity extends ScheduleViewActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		wantDrawer = false;
+		Log.d("SearchActivity", "" + getIntent() + " " + getIntent().getDataString());
 		super.onCreate(savedInstanceState);
 
-		if (!getIntent().getAction().equals(Intent.ACTION_SEARCH)) {
-			finish();
-			return;
-		}
-		
 		/* Doesn't seem to work..
 		TextView tv = new TextView(this);
 		tv.setText("No results.");
 		this.getListView().setEmptyView(tv);
 		*/
-		
-		app = (Giggity) getApplication();
-		sched = app.getLastSchedule();
-		if (sched == null) {
-			finish(); /* WTF */
-			return;
-		}
 		
 		sched.setDay(-1);
 		String query;

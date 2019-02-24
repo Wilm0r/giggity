@@ -2,6 +2,7 @@ package net.gaast.giggity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,10 +37,10 @@ public class TrackList extends ListView implements ScheduleViewer {
 			public void onItemClick(AdapterView<?> a, View v, int pos, long id) {
 				/* Using SearchActivity here may not be that obvious, but it does mostly do what 
 				 * I need and gives good back button behaviour. */
-				Intent i = new Intent(ctx, SearchActivity.class);
-				i.setAction(Intent.ACTION_SEARCH);
-				i.putExtra("track", (String) tracks.getItem(pos));
-				ctx.startActivity(i);
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sched.getUrl()),
+				                           ctx, SearchActivity.class);
+				intent.putExtra("track", (String) tracks.getItem(pos));
+				ctx.startActivity(intent);
 			}
 		});
 	}

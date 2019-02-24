@@ -51,9 +51,7 @@ public class Giggity extends Application {
 	private Db db;
 	
 	HashMap<String,ScheduleUI> scheduleCache;  // url→ScheduleUI
-	@Deprecated
-	ScheduleUI lastSchedule;
-	
+
 	TreeSet<Schedule.Item> remindItems;
 	
 	@Override
@@ -77,7 +75,6 @@ public class Giggity extends Application {
 				}
 				
 				scheduleCache.clear();
-				lastSchedule = null;
 
 				/* Ideally, reload all the schedules that were previously resident. But this
 				 * was fragile when I wrote it, so ... just rely on the user reloading so that
@@ -125,23 +122,17 @@ public class Giggity extends Application {
 		scheduleCache.remove(url);
 	}
 	
-	public ScheduleUI getSchedule(String url, Fetcher.Source source, Handler progress) throws Exception {
+	public ScheduleUI getSchedule(String url, Fetcher.Source source, Handler progress) throws Schedule.LoadException {
 		if (!hasSchedule(url)) {
 			scheduleCache.put(url, ScheduleUI.loadSchedule(this, url, source, progress));
 		}
-		return (lastSchedule = scheduleCache.get(url));
+		return (scheduleCache.get(url));
 	}
 
-	public ScheduleUI getSchedule(String url, Fetcher.Source source) throws Exception {
+	public ScheduleUI getSchedule(String url, Fetcher.Source source) throws Schedule.LoadException {
 		return getSchedule(url, source, null);
 	}
 
-	@Deprecated
-	public ScheduleUI getLastSchedule() {
-		/* Ugly, but I need it for SearchActivity, which starts with no state.. :-/ */
-		return lastSchedule;
-	}
-	
 	public void updateRemind(Schedule.Item item) {
 		if (item.getRemind()) {
 			if (item.compareTo(ZonedDateTime.now()) < 0)

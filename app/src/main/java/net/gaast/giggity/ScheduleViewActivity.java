@@ -478,6 +478,9 @@ public class ScheduleViewActivity extends Activity {
 
 	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */
 	public void finishNavDrawer() {
+		if (!wantDrawer) {
+			return;
+		}
 		if (sched == null) {
 			Log.e("finishNavDrawer", "Called before critical was loaded?");
 			return;
@@ -508,6 +511,9 @@ public class ScheduleViewActivity extends Activity {
 
 	/* Other updates that depend on more state (like currently active view). */
 	public void updateNavDrawer() {
+		if (!wantDrawer) {
+			return;
+		}
 		/* Show currently selected view */
 		for (int v : VIEWS) {
 			if (curView == v) {
