@@ -1,0 +1,25 @@
+{
+	"version": 2019022400,
+	"url": "https://2019.pass-the-salt.org/files/schedule.xml",
+	"title": "Pass the SALT 2019",
+	"start": "2019-07-01",
+	"end": "2019-07-03",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2019.pass-the-salt.org/",
+				"title": "Site web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Amphi.*",
+				"latlon": [50.60776, 3.13637]
+			},
+			{
+				"name": "B0.*",
+				"latlon": [50.60776, 3.13637]
+			}
+		]
+	}
+}
