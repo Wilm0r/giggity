@@ -1,0 +1,25 @@
+{
+	"version": 2019022400,
+	"url": "https://www.flosscon.org/conferences/FLOSSCon2020/schedule.xml",
+	"title": "FLOSSCon 2020",
+	"start": "2020-01-27",
+	"end": "2020-01-19",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.flosscon.org/conferences/FLOSSCon2020",
+				"title": "Site web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "A.*",
+				"latlon": [43.60248, 1.45464]
+			},
+			{
+				"name": "B.*",
+				"latlon": [43.60247, 1.45566]
+			}
+		]
+	}
+}
