@@ -1,11 +1,11 @@
 {
-	"version": 2019022701,
+	"version": 2019028002,
 	"url": "https://installfest.cz/if19/schedule.xml",
 	"title": "Installfest 2019",
 	"start": "2019-03-02",
 	"end": "2019-03-03",
-    "metadata": {
-            "icon": "https://installfest.cz/if19/images/logo-tux.png",
+	"metadata": {
+			"icon": "https://installfest.cz/if19/images/logo-tux.png",
 			"links": [
 				{
 					"url": "https://installfest.cz",
