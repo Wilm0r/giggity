@@ -22,6 +22,7 @@ package net.gaast.giggity;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.Spanned;
 import android.util.Log;
 import android.util.Xml;
 import android.widget.CheckBox;
@@ -52,10 +53,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.text.Format;
 import java.text.ParseException;
 import java.text.ParsePosition;
-import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
@@ -1312,31 +1311,36 @@ public class Schedule implements Serializable {
 			return ret;
 		}
 
-		public Spannable getDescriptionSpannable() {
+		public Spanned getDescriptionSpanned() {
 			String html;
 			if (description.startsWith("<") || description.contains("<p>")) {
 				html = description;
 			} else {
 				html = descriptionMarkdownHack(description);
 			}
+			Spanned formatted;
+			if (android.os.Build.VERSION.SDK_INT < 24) {
 			/* This parser is VERY limited, results aren't great, but let's give it a shot.
 			   I'd really like to avoid using a full-blown WebView.. */
-			Html.TagHandler th = new Html.TagHandler() {
-				@Override
-				public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-					if (tag.equals("li")) {
-						if (opening) {
-							output.append(" • ");
-						} else {
+				Html.TagHandler th = new Html.TagHandler() {
+					@Override
+					public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
+						if (tag.equals("li")) {
+							if (opening) {
+								output.append(" • ");
+							} else {
+								output.append("\n");
+							}
+						} else if (tag.equals("ul") || tag.equals("ol")) {
+							/* For both opening and closing */
 							output.append("\n");
 						}
-					} else if (tag.equals("ul") || tag.equals("ol")) {
-						/* For both opening and closing */
-						output.append("\n");
 					}
-				}
-			};
-			Spannable formatted = (Spannable) Html.fromHtml(html, null, th);
+				};
+				formatted = (Spannable) Html.fromHtml(html, null, th);
+			} else {
+				formatted = Html.fromHtml(html, Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM, null, null);
+			}
 			// TODO: This, too, ruins existing links. WTF guys.. :<
 			// Linkify.addLinks(formatted, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
 			return formatted;

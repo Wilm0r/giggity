@@ -32,7 +32,6 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,6 @@ import android.widget.TextView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.StringJoiner;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
@@ -165,7 +163,7 @@ public class EventDialog extends FrameLayout {
 		}
 		
 		t = (TextView) root.findViewById(R.id.description);
-		t.setText(item.getDescriptionSpannable());
+		t.setText(item.getDescriptionSpanned());
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
 		/* This is frustrating: a TextView cannot support text selection and clickable links at the
