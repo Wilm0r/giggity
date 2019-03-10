@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -34,6 +35,7 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.InputType;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -83,7 +85,11 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		requestWindowFeature(Window.FEATURE_PROGRESS);
-		
+		// Fancy shared-element animations when opening event dialogs.
+		requestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+		//getWindow().setExitTransition(new ChangeImageTransform());
+		getWindow().setExitTransition(new Explode());
+
 		/*//test stuff
 		Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 		long[] pattern = {  };
@@ -102,7 +108,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 			DbSchedule item = (DbSchedule) lista.getItem(position);
 			if (item != null) {
-				openSchedule(item, false);
+				openSchedule(item, false, view);
 			}
 			}
 		});
@@ -198,13 +204,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		} else if (item.getItemId() == 0) {
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched, true);
+			openSchedule(sched, true, null);
 		} else if (item.getItemId() == 3) {
 			/* Unhide. */
 			sched.flushHidden();
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched, false);
+			openSchedule(sched, false, null);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
 			db.removeSchedule(sched.getUrl());
@@ -246,7 +252,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		seedRefreshMenu = null;
 	}
 
-	private void openSchedule(String url, boolean prefOnline, Schedule.Selections sel) {
+	private void openSchedule(String url, boolean prefOnline, View animationOrigin, Schedule.Selections sel) {
 		if (!url.contains("://"))
 			url = "http://" + url;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
@@ -254,16 +260,22 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		intent.putExtra("PREFER_CACHED", !prefOnline);
 		if (sel != null)
 			intent.putExtra("SELECTIONS", sel);
-		startActivity(intent);
+
+		ActivityOptions options = null;
+		if (animationOrigin != null) {
+			options = ActivityOptions.makeSceneTransitionAnimation(
+		               this, animationOrigin, "title");
+		}
+		startActivity(intent, options.toBundle());
 	}
 
-	private void openSchedule(DbSchedule event, boolean prefOnline) {
+	private void openSchedule(DbSchedule event, boolean prefOnline, View animationOrigin) {
 		if (!prefOnline) {
 			if (pref.getBoolean("always_refresh", false) ||
 					new Date().getTime() - event.getRtime().getTime() > 86400000)
 				prefOnline = true;
 		}
-		openSchedule(event.getUrl(), prefOnline, null);
+		openSchedule(event.getUrl(), prefOnline, animationOrigin, null);
 	}
 
 	/* Process barcode scan results. This can be a few things:
@@ -306,7 +318,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 				/* Nope, just a plain URL then hopefully.. Or something corrupted that will generate
 				   a spectacular error message. \o/ */
-				openSchedule(url, false, sel);
+				openSchedule(url, false, null, sel);
 			}
 		}
 	}
@@ -354,7 +366,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		d.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				openSchedule(urlBox.getText().toString(), false, null);
+				openSchedule(urlBox.getText().toString(), false, null,null);
 			}
 		});
 		/* Apparently the "Go"/"Done" button still just simulates an ENTER keypress. Neat!...
@@ -364,7 +376,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN &&
 						keyCode == KeyEvent.KEYCODE_ENTER) {
-					openSchedule(urlBox.getText().toString(), false, null);
+					openSchedule(urlBox.getText().toString(), false, null, null);
 					return true;
 				} else {
 					return false;

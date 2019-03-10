@@ -3,6 +3,8 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.transition.ChangeImageTransform;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.Window;
 
@@ -19,6 +21,12 @@ public class ScheduleItemActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+		// Fancy shared-element animations when opening event dialogs.
+		getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+		//getWindow().setEnterTransition(new ChangeImageTransform());
+		getWindow().setEnterTransition(new Explode());
+		//getWindow().setAllowEnterTransitionOverlap(false);
 
 		String id, url = getIntent().getDataString();
 		app_ = (Giggity) getApplication();
@@ -64,6 +72,7 @@ public class ScheduleItemActivity extends Activity {
 		}
 
 		pager_ = new EventDialogPager(this, item, others);
+		//pager_.getHeader().setTransitionName("title");
 		setContentView(pager_);
 	}
 

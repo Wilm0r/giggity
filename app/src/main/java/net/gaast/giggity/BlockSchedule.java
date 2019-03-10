@@ -292,7 +292,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 				@Override
 				public void onClick(View v) {
 					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-					sva.showItem(item, new ArrayList<>(item.getLine().getItems()));
+					sva.showItem(item, new ArrayList<>(item.getLine().getItems()), false, Element.this);
 				}
 			});
 		}

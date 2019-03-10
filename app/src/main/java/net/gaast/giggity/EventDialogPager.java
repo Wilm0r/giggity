@@ -51,6 +51,11 @@ public class EventDialogPager extends ViewPager {
 		return items_.get(getCurrentItem());
 	}
 
+	public View getHeader() {
+		ViewGroup v = (ViewGroup) getAdapter().instantiateItem(this, item_index_);
+		return v.findViewById(R.id.header);
+	}
+
 	private class Adapter extends PagerAdapter {
 		@Override
 		public int getCount() {

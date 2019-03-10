@@ -21,6 +21,7 @@ package net.gaast.giggity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -44,6 +45,8 @@ import android.support.v4.content.pm.ShortcutInfoCompat;
 import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.support.v4.graphics.drawable.IconCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.transition.ChangeImageTransform;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,6 +54,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -124,6 +128,12 @@ public class ScheduleViewActivity extends Activity {
 		/* Consider making this a setting, some may find their tablet too small. */
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 		tabletView = (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE);
+
+		// Fancy shared-element animations when opening event dialogs.
+		getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+		//getWindow().setExitTransition(new ChangeImageTransform());
+		getWindow().setExitTransition(new Explode());
+		//getWindow().setAllowEnterTransitionOverlap(false);
 
 		setContentView(R.layout.schedule_view_activity);
 		View dl = drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -658,7 +668,7 @@ public class ScheduleViewActivity extends Activity {
 					}
 				}
 			}
-			showItem(item, items);
+			showItem(item, items, false, null);
 			showEventId = null;
 		}
 
@@ -688,11 +698,7 @@ public class ScheduleViewActivity extends Activity {
 		days.show();
 	}
 
-	public void showItem(Schedule.Item item, AbstractList<Schedule.Item> others) {
-		showItem(item, others, false);
-	}
-
-	public void showItem(Schedule.Item item, final AbstractList<Schedule.Item> others, boolean new_activity) {
+	public void showItem(Schedule.Item item, final AbstractList<Schedule.Item> others, boolean new_activity, View animationOrigin) {
 		/* No cleanup required for non-tablet view. */
 		if (tabletView) {
 			bigScreen.removeView(eventDialogView);
@@ -708,7 +714,7 @@ public class ScheduleViewActivity extends Activity {
 			eventDialogView.setTitleClick(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					showItem(eventDialogView.getShownItem(), others, true);
+					showItem(eventDialogView.getShownItem(), others, true, null);
 				}
 			});
 			bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4));
@@ -723,7 +729,14 @@ public class ScheduleViewActivity extends Activity {
 				}
 				intent.putExtra("others", ids);
 			}
-			startActivityForResult(intent, 0);
+			ActivityOptions options = null;
+			if (animationOrigin != null) {
+				options = ActivityOptions.makeSceneTransitionAnimation(
+					this, animationOrigin, "title");
+			}
+			// TODO: Hmm if I don't care about the result why am I not just calling refreshItems()
+			// in a on-resume handler or something?
+			startActivityForResult(intent, 0, options.toBundle());
 		}
 	}
 
@@ -802,7 +815,7 @@ public class ScheduleViewActivity extends Activity {
 
 	private void setView(int view_) {
 		curView = view_;
-		showItem(null, null);
+		showItem(null, null, false, null);
 		redrawSchedule();
 		updateNavDrawer();
 	}

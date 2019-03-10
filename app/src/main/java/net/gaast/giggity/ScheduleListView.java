@@ -62,7 +62,8 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 
 				Schedule.Item item = (Schedule.Item) list.get(position);
 				ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-				sva.showItem(item, others);
+
+				sva.showItem(item, others, false, v);
 			}
 		});
 		
