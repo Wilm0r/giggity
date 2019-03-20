@@ -1,0 +1,39 @@
+{
+	"start": "2019-03-23",
+	"end": "2019-03-24",
+	"version": 2019031900,
+	"url": "https://libreplanet.org/2019/lp2019-schedule.ics",
+	"id": "LibrePlanet 2019",
+	"title": "LibrePlanet 2019",
+	"metadata": {
+		"icon": "https://libreplanet.org/2019/assets/img/lp-logo-2019.svg",
+		"links": [
+			{
+				"url": "https://libreplanet.org/2019/",
+				"title": "Website"
+			},
+			{
+				"url": "https://www.libreplanet.org/2019/live",
+				"title": "Livestream"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Workshop.*|.*26-.*",
+				"latlon": [42.361, -71.09054]
+			},
+			{
+				"name": ".*31-.*",
+				"latlon": [42.36043, -71.09275]
+			},
+			{
+				"name": ".*32-.*",
+				"latlon": [42.36159, -71.09045]
+			},
+			{
+				"name": ".*34-.*",
+				"latlon": [42.36111, -71.09194]
+			}
+		]
+	}
+}
