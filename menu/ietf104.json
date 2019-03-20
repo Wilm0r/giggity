@@ -1,0 +1,19 @@
+{
+	"version": 2016080500,
+	"title": "IETF 104 Prague",
+	"url": "https://datatracker.ietf.org/meeting/104/agenda.ics",
+	"start": "2019-03-23",
+	"end": "2019-03-29",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.ietf.org/how/meetings/104/",
+				"title": "Website"
+			},
+			{
+				"url": "https://datatracker.ietf.org/meeting/104/floor-plan",
+				"title": "Floor plans"
+			}
+		]
+	}
+}
