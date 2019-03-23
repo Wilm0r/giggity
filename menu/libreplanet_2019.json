@@ -1,12 +1,11 @@
 {
 	"start": "2019-03-23",
 	"end": "2019-03-24",
-	"version": 2019031900,
+	"version": 2019032300,
 	"url": "https://libreplanet.org/2019/lp2019-schedule.ics",
 	"id": "LibrePlanet 2019",
 	"title": "LibrePlanet 2019",
 	"metadata": {
-		"icon": "https://libreplanet.org/2019/assets/img/lp-logo-2019.svg",
 		"links": [
 			{
 				"url": "https://libreplanet.org/2019/",
