@@ -1,0 +1,16 @@
+{
+	"version": 2019022500,
+	"url": "https://frab.luga.de/de/LIT2019/public/schedule.xml",
+	"title": "Augsburger Linux-Infotag 2019",
+	"start": "2019-04-06",
+	"end": "2019-04-06",
+	"metadata": {
+		"icon": "https://luga-ev.github.io/frab-extras/Tux2.png",
+		"links": [
+			{
+				"url": "https://www.luga.de/Aktionen/LIT-2019/",
+				"title": "Website"
+			}
+		]
+	}
+}
