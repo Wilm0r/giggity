@@ -1,0 +1,16 @@
+{
+	"version": 1,
+	"url": "https://conference.c3w.at/eh19/schedule.xml",
+	"title": "easterhegg 2019",
+	"start": "2019-04-19",
+	"end": "2018-04-22",
+	"metadata": {
+		"icon": "https://eh19.easterhegg.eu/_media/wiki/logo.png",
+		"links": [
+			{
+				"url": "https://eh19.easterhegg.eu",
+				"title": "Website"
+			}
+		]
+	}
+}
