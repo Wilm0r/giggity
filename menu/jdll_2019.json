@@ -1,11 +1,10 @@
 {
-	"version": 2019032300,
+	"version": 2019040409,
 	"url": "https://pretalx.jdll.org/jdll2019/schedule.xml",
 	"title": "Journées du Logiciel Libre 2019",
 	"start": "2019-04-06",
 	"end": "2019-04-07",
 	"metadata": {
-		"icon": "https://framapiaf.org/system/accounts/avatars/000/043/283/original/edd29098b360e70a.jpg",
 		"links": [
 			{
 				"url": "http://www.jdll.org/",
