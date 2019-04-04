@@ -168,8 +168,9 @@ if re.search(r"^\t* ", raw, flags=re.M):
 
 maxver = max(e["version"] for e in new["schedules"])
 if new["version"] < maxver:
-	errors.append("File version number must be ≥ %d" % maxver)
+	errors.append("File version number must be ≥ %d (highest version in file)" % maxver)
 
+changed = []
 base_entries = {e["url"]: e for e in base["schedules"]}
 for e in new["schedules"]:
 	if e["url"] in base_entries:
@@ -182,9 +183,20 @@ for e in new["schedules"]:
 			if e["version"] <= base_entries[e["url"]]["version"]:
 				errors.append("Version number for %r must be updated" % e["title"])
 			base_entries.pop(e["url"])
+			changed.append(e)
 	else:
 		print("New: %s" % e["title"])
+		changed.append(e)
 	validate_entry(e)
+
+if changed and base:
+	if new["version"] <= base["version"]:
+		errors.append("File version number must be > %d (previous version)" % base["version"])
+	for e in changed:
+		# Not in validate_entry() because that function shouldn't itself
+		# assume changes were made relative to the base version.
+		if e["version"] <= base["version"]:
+			errors.append("Schedule %s version number must be > %d (previous version)" % (e["title"], base["version"]))
 
 for e in base_entries.values():
 	print("Removed: %s" % e["title"])
