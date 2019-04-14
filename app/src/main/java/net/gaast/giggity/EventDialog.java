@@ -109,7 +109,6 @@ public class EventDialog extends FrameLayout {
 			t = (TextView) root.findViewById(R.id.language);
 			t.setText(" (" + item_.getLanguage() + ")");
 		} else {
-			//root.findViewById(R.id.lang_sep).setVisibility(View.GONE);
 			root.findViewById(R.id.language).setVisibility(View.GONE);
 		}
 

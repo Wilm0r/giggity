@@ -49,18 +49,13 @@ import java.util.TreeSet;
 @SuppressLint({"SimpleDateFormat"})
 public class Giggity extends Application {
 	private Db db;
-	
-	HashMap<String,ScheduleUI> scheduleCache;  // url→ScheduleUI
-
-	TreeSet<Schedule.Item> remindItems;
+	HashMap<String,ScheduleUI> scheduleCache = new HashMap<>();  // url→ScheduleUI
+	TreeSet<Schedule.Item> remindItems = new TreeSet<>();
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		db = new Db(this);
-		
-		scheduleCache = new HashMap<>();
-		remindItems = new TreeSet<>();
 		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		

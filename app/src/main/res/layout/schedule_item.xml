@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:minEms="5"
             android:text="11:00–12:15"
-            android:textAlignment="center"
             android:textSize="16sp"/>
 
         <TextView
@@ -31,9 +30,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/titlecolumn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
         android:orientation="vertical"
         android:padding="4dp">
 

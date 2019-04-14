@@ -3,6 +3,7 @@ package net.gaast.giggity;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -51,6 +52,7 @@ public class ScheduleItemView extends LinearLayout {
 		room = findViewById(R.id.room);
 
 		if ((flags & COMPACT) == 0) {
+			time.setTextColor(getResources().getColor(R.color.dark_text));
 			date.setText(df.format(item.getStartTime()) + "  ");
 			room.setText(item.getLine().getTitle());
 		} else {
@@ -58,12 +60,17 @@ public class ScheduleItemView extends LinearLayout {
 			room.setVisibility(GONE);
 		}
 
-		if ((flags & SHOW_REMIND) != 0 && item.getRemind())
-			setBackgroundColor(0x3300FF00);
-		else if ((flags & SHOW_NOW) != 0 && item.compareTo(new Date()) == 0)
+		if ((flags & SHOW_REMIND) != 0 && item.getRemind()) {
+			//setBackgroundColor(0x3300FF00);
+			View v = findViewById(R.id.titlecolumn);
+			v.setBackgroundResource(R.drawable.schedule_item_remind_background);
+			title.setTextColor(getResources().getColor(R.color.light_text));
+			room.setTextColor(getResources().getColor(R.color.light_text));
+		} else if ((flags & SHOW_NOW) != 0 && item.compareTo(new Date()) == 0) {
 			setBackgroundColor(0x11FFFFFF);
-		else
+		} else {
 			setBackgroundColor(0x00000000);
+		}
 
 		if (item.isHidden()) {
 			setAlpha(.5F);

@@ -73,14 +73,14 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			}
 		});
 
-		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
+		// Grey background for the time(+date) column on the left, but continuous so drawn here.
 		Bitmap bmp = Bitmap.createBitmap(app.dp2px(102), 1, Bitmap.Config.ARGB_8888);
-		int x;
-		for (x = 0; x < bmp.getWidth() - 1; x++) {
-			/* Horizontal line at bottom */
+		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
+		for (int x = 0; x < bmp.getWidth() - 1; x++) {
 			bmp.setPixel(x, 0, getResources().getColor(R.color.time_back));
 		}
-		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
+		// Leave the last pixel transparent since that one gets repeated all the way to the right?
+
 		BitmapDrawable bg = new BitmapDrawable(bmp);
 		bg.setTileModeY(Shader.TileMode.REPEAT);
 		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);

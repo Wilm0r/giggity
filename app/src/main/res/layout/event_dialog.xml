@@ -65,15 +65,6 @@
                 android:textColor="@color/light_text"/>
 
             <TextView
-                android:id="@+id/lang_sep"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" · "
-                android:textColor="@color/light_text"
-                android:textStyle="bold"
-                android:visibility="gone"/>
-
-            <TextView
                 android:id="@+id/language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
