@@ -174,9 +174,9 @@ public class Giggity extends Application {
 		if (start.getDate() == end.getDate() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
 			ret = new SimpleDateFormat("d MMMM").format(end);
 		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
-			ret = "" + start.getDate() + "-" + new SimpleDateFormat("d MMMM").format(end);
+			ret = "" + start.getDate() + "–" + new SimpleDateFormat("d MMMM").format(end);
 		else
-			ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
+			ret = new SimpleDateFormat("d MMMM").format(start) + "–" + new SimpleDateFormat("d MMMM").format(end);
 		return ret + " " + (1900 + end.getYear());
 	}
 
@@ -185,9 +185,9 @@ public class Giggity extends Application {
 		if (start.getDayOfMonth() == end.getDayOfMonth() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
 			ret = DateTimeFormatter.ofPattern("d MMMM").format(end);
 		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
-			ret = "" + start.getDayOfMonth() + "-" + DateTimeFormatter.ofPattern("d MMMM").format(end);
+			ret = "" + start.getDayOfMonth() + "–" + DateTimeFormatter.ofPattern("d MMMM").format(end);
 		else
-			ret = DateTimeFormatter.ofPattern("d MMMM").format(start) + "-" + DateTimeFormatter.ofPattern("d MMMM").format(end);
+			ret = DateTimeFormatter.ofPattern("d MMMM").format(start) + "–" + DateTimeFormatter.ofPattern("d MMMM").format(end);
 		return ret + " " + end.getYear();
 	}
 

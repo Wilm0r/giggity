@@ -20,8 +20,13 @@
 package net.gaast.giggity;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -33,6 +38,7 @@ import android.widget.TextView;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ScheduleListView extends ListView implements ScheduleViewer {
 	ArrayList<?> list;
@@ -66,7 +72,24 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				sva.showItem(item, others, false, v);
 			}
 		});
-		
+
+		setDivider(new ColorDrawable(getResources().getColor(R.color.time_back)));
+		setDividerHeight(app.dp2px(1));
+
+		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
+		Bitmap bmp = Bitmap.createBitmap(app.dp2px(103), 1, Bitmap.Config.ARGB_8888);
+		int x;
+		for (x = 0; x < bmp.getWidth() - 2; x++) {
+			/* Horizontal line at bottom */
+			bmp.setPixel(x, 0, getResources().getColor(R.color.time_back));
+		}
+		bmp.setPixel(bmp.getWidth() - 2, 0, getResources().getColor(R.color.dark_text));
+		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
+		BitmapDrawable bg = new BitmapDrawable(bmp);
+		bg.setTileModeY(Shader.TileMode.REPEAT);
+		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
+		setBackgroundDrawable(bg);
+
 		list = new ArrayList();
 		setAdapter(adje = new EventAdapter(list));
 	}
@@ -171,6 +194,8 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				tv.setText((String) items.get(position));
 				tv.setTextSize(18);
 				tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+				tv.setTextColor(getResources().getColor(R.color.dark_text));
+				app.setPadding(tv, 4, 0, 0, 0);
 				return tv;
 			}
 		}
@@ -205,6 +230,8 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			tv.setText("\n\n" + line.getTitle() + (track == null ? "" : " (" + track + ")"));
 			tv.setTextSize(18);
 			tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+			tv.setTextColor(getResources().getColor(R.color.dark_text));
+			app.setPadding(tv, 4, 0, 0, 0);
 
 			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			tv.setId(1);

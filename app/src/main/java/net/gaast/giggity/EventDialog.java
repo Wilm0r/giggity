@@ -107,15 +107,15 @@ public class EventDialog extends FrameLayout {
 
 		if (item_.getLanguage() != null) {
 			t = (TextView) root.findViewById(R.id.language);
-			t.setText(item_.getLanguage());
+			t.setText(" (" + item_.getLanguage() + ")");
 		} else {
-			root.findViewById(R.id.lang_sep).setVisibility(View.GONE);
+			//root.findViewById(R.id.lang_sep).setVisibility(View.GONE);
 			root.findViewById(R.id.language).setVisibility(View.GONE);
 		}
 
 		t = (TextView) root.findViewById(R.id.time);
 		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTimeZoned()) + " " +
-		          tf.format(item_.getStartTime()) + "-" + tf.format(item_.getEndTime()));
+		          tf.format(item_.getStartTime()) + "–" + tf.format(item_.getEndTime()));
 		
 		t = (TextView) root.findViewById(R.id.track);
 		if (item_.getTrack() != null) {
@@ -147,7 +147,7 @@ public class EventDialog extends FrameLayout {
 				if (overlaps == null)
 					overlaps = ctx_.getResources().getString(R.string.overlap) + " ";
 				overlaps += other.getTitle() +
-				         " (" + tf.format(other.getStartTime()) + "-" + tf.format(other.getEndTime()) + "), ";
+				         " (" + tf.format(other.getStartTime()) + "–" + tf.format(other.getEndTime()) + "), ";
 			} else if (other.getStartTime().after(item_.getEndTime())){
 				break;
 			}
