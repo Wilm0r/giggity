@@ -73,22 +73,21 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			}
 		});
 
-		setDivider(new ColorDrawable(getResources().getColor(R.color.time_back)));
-		setDividerHeight(app.dp2px(1));
-
 		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
-		Bitmap bmp = Bitmap.createBitmap(app.dp2px(103), 1, Bitmap.Config.ARGB_8888);
+		Bitmap bmp = Bitmap.createBitmap(app.dp2px(102), 1, Bitmap.Config.ARGB_8888);
 		int x;
-		for (x = 0; x < bmp.getWidth() - 2; x++) {
+		for (x = 0; x < bmp.getWidth() - 1; x++) {
 			/* Horizontal line at bottom */
 			bmp.setPixel(x, 0, getResources().getColor(R.color.time_back));
 		}
-		bmp.setPixel(bmp.getWidth() - 2, 0, getResources().getColor(R.color.dark_text));
 		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
 		BitmapDrawable bg = new BitmapDrawable(bmp);
 		bg.setTileModeY(Shader.TileMode.REPEAT);
 		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
 		setBackgroundDrawable(bg);
+
+		setDivider(new ColorDrawable(getResources().getColor(R.color.time_back)));
+		setDividerHeight(app.dp2px(1));
 
 		list = new ArrayList();
 		setAdapter(adje = new EventAdapter(list));

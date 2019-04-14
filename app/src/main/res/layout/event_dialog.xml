@@ -5,113 +5,89 @@
               android:background="@android:color/background_light"
               android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/primary"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:paddingTop="4dp">
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="6dp"
+        android:paddingTop="6dp">
         <!-- only when subheader is invisible: android:elevation="8dp"> -->
 
         <TextView
             android:id="@+id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="0dp"
             android:text="Linux on the desktop, y u no happen"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/light_text"/>
 
         <TextView
             android:id="@+id/subtitle"
-            android:layout_width="wrap_content"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/title"
             android:ellipsize="end"
             android:maxLines="2"
+            android:paddingBottom="6dp"
             android:text="2050 will be the year, I swear!"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/light_text"/>
 
-        <TextView
-            android:id="@+id/room"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/subtitle"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:paddingBottom="4dp"
-            android:paddingTop="6dp"
-            android:text="De grote zael"
-            android:textColor="@color/light_text"
-            android:textStyle="bold"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingBottom="4dp">
 
-        <TextView
-            android:id="@+id/room_time_sep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/subtitle"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/room"
-            android:paddingBottom="4dp"
-            android:paddingTop="6dp"
-            android:text=": "
-            android:textColor="@color/light_text"
-            android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="De grote zael"
+                android:textColor="@color/light_text"
+                android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/subtitle"
-            android:layout_marginBottom="4dp"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/room_time_sep"
-            android:paddingBottom="4dp"
-            android:paddingTop="6dp"
-            android:text="Sat 20:00–22:00"
-            android:textColor="@color/light_text"/>
+            <TextView
+                android:id="@+id/room_time_sep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=": "
+                android:textColor="@color/light_text"
+                android:textStyle="bold"/>
 
-        <TextView
-            android:id="@+id/lang_sep"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/subtitle"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/time"
-            android:paddingBottom="4dp"
-            android:paddingTop="6dp"
-            android:text=" · "
-            android:textColor="@color/light_text"
-            android:textStyle="bold"
-            android:visibility="gone"/>
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sat 20:00–22:00"
+                android:textColor="@color/light_text"/>
 
-        <TextView
-            android:id="@+id/language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/subtitle"
-            android:layout_marginLeft="0dp"
-            android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/lang_sep"
-            android:paddingBottom="4dp"
-            android:paddingTop="6dp"
-            android:text=" (Angrish)"
-            android:textColor="@color/light_text"/>
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/lang_sep"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" · "
+                android:textColor="@color/light_text"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" (Angrish)"
+                android:textColor="@color/light_text"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:padding="0dp"
         >
 
         <LinearLayout
@@ -120,80 +96,81 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <LinearLayout
                 android:id="@+id/subHeader"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
                 android:background="@color/primary"
                 android:elevation="8dp"
-                android:paddingBottom="6dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:orientation="vertical"
+                android:paddingBottom="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="6dp">
 
-                <TextView
-                    android:id="@+id/headTrack"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentTop="true"
-                    android:paddingBottom="2dp"
-                    android:text="@string/track"
-                    android:textColor="@color/light_text"
-                    android:textStyle="bold"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
 
-                <TextView
-                    android:id="@+id/track"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/headTrack"
-                    android:layout_alignParentRight="true"
-                    android:layout_toRightOf="@+id/headTrack"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="4dp"
-                    android:text="Blaaaaaaat"
-                    android:textColor="@color/light_text"
-                    android:textIsSelectable="true"/>
+                    <TextView
+                        android:id="@+id/headTrack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="3dp"
+                        android:text="@string/track"
+                        android:textColor="@color/light_text"
+                        android:textStyle="bold"/>
 
-                <TextView
-                    android:id="@+id/headSpeaker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_below="@+id/headTrack"
-                    android:maxLines="1"
-                    android:paddingBottom="2dp"
-                    android:paddingTop="2dp"
-                    android:selectAllOnFocus="false"
-                    android:text="@string/speaker"
-                    android:textColor="@color/light_text"
-                    android:textStyle="bold"/>
+                    <TextView
+                        android:id="@+id/track"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/headTrack"
+                        android:text="Blaaaaaaat"
+                        android:textColor="@color/light_text"
+                        android:textIsSelectable="true"/>
+                </LinearLayout>
 
-                <TextView
-                    android:id="@+id/speaker"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/headSpeaker"
-                    android:layout_alignBottom="@+id/headSpeaker"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignTop="@+id/headSpeaker"
-                    android:layout_toRightOf="@+id/headSpeaker"
-                    android:ellipsize="end"
-                    android:maxLines="2"
-                    android:paddingBottom="2dp"
-                    android:paddingLeft="4dp"
-                    android:paddingTop="2dp"
-                    android:singleLine="true"
-                    android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
-                    android:textColor="@color/light_text"
-                    android:textIsSelectable="true"/>
-            </RelativeLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp">
+
+                    <TextView
+                        android:id="@+id/headSpeaker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:paddingRight="3dp"
+                        android:selectAllOnFocus="false"
+                        android:text="@string/speaker"
+                        android:textColor="@color/light_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/speaker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/headSpeaker"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:singleLine="true"
+                        android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
+                        android:textColor="@color/light_text"
+                        android:textIsSelectable="true"/>
+                </LinearLayout>
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/descriptionBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp">
+                android:paddingLeft="10dp"
+                android:paddingRight="6dp">
 
                 <LinearLayout
                     android:id="@+id/alertBox"
@@ -211,9 +188,6 @@
                         android:id="@+id/alert"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/headAlert"
-                        android:layout_marginLeft="12dp"
-                        android:layout_toRightOf="@+id/headAlert"
                         android:text="Conflicts bla"
                         android:textIsSelectable="true"/>
                 </LinearLayout>
@@ -223,7 +197,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alertBox"
-                    android:layout_marginTop="4dp"
                     android:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would've thought that this one would take even longer than going from 0.7 to 1.0 (which only took three years)?
 
         There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the Duke Nukem Forever in the BitlBee community. Looks like we won!
@@ -239,7 +212,6 @@
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/description"
                     android:orientation="vertical"
-                    android:paddingTop="8dp"
                     android:visibility="gone">
 
                     <TextView

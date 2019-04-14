@@ -4,11 +4,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <!-- Has the time_back colour in the back but done by ScheduleListView so the whole list
+         including headers and any nearby empty space gets it instead of just these views. -->
     <LinearLayout
         android:id="@+id/timedate"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@color/time_back"
         android:orientation="vertical"
         android:padding="4dp">
 
