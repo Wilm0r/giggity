@@ -77,8 +77,11 @@
 	<string name="seen_so_far">Seen so far:</string>
 	<string name="none_marked">No items marked yet.</string>
 
-	<!-- SearchActivity -->
+	<!-- SearchActivity (deprecated) -->
 	<string name="search_results">Results for \"%1$s\" in %2$s</string>
+
+	<!-- IteamSearchActivity -->
+	<string name="type_query_prompt">Type your query</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>

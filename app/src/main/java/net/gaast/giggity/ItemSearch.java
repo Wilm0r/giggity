@@ -63,7 +63,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 		public SearchQuery() {
 			super(ctx);
-			setHint("Type your query");  // TODO: I18N
+			setHint(getContext().getString(R.string.type_query_prompt));
 			setLines(1);
 			setSingleLine();
 			setImeOptions(EditorInfo.IME_ACTION_SEARCH);

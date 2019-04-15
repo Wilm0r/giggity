@@ -96,4 +96,6 @@
 	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Binnenkort</string>
 	<string name="widg_no_upcoming">Niks op komst :-(</string>
+	<string name="home_shortcut">Aan thuisscherm toevoegen</string>
+	<string name="type_query_prompt">Vul zoekopdracht in</string>
 </resources>
