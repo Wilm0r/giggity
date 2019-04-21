@@ -505,7 +505,13 @@ public class ScheduleViewActivity extends Activity {
 			View sep = menu.findViewById(R.id.custom_sep);
 			sep.setVisibility(View.VISIBLE);
 			for (final Schedule.Link link : sched.getLinks()) {
-				TextView item = (TextView) getLayoutInflater().inflate(R.layout.burger_menu_item, null);
+				TextView item = (TextView) TextView.inflate(this, R.layout.burger_menu_item, null);
+				app.setPadding(item, 8, 8, 8, 8);
+				// Better would be if the retard would take the margin + padding layout options but
+				// when I follow instructions from https://stackoverflow.com/questions/7714323/it-inflate-the-view-without-the-margin/7714382
+				// the inflater will return a LinearLayout (menu) not TextView and shit explodes.
+				// Since these items will never be active I got better things to do than convincing
+				// the Android API to not be shite.
 				item.setText(link.getTitle());
 				item.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -526,11 +532,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 		/* Show currently selected view */
 		for (int v : VIEWS) {
-			if (curView == v) {
-				drawerLayout.findViewById(v).setBackgroundResource(R.drawable.menu_gradient);
-			} else {
-				drawerLayout.findViewById(v).setBackgroundResource(R.color.light);
-			}
+			navDrawerItemState((TextView) drawerLayout.findViewById(v), curView == v);
 		}
 
 		if (sched == null) {
@@ -542,11 +544,20 @@ public class ScheduleViewActivity extends Activity {
 				sched.getTracks() != null ? View.VISIBLE : View.GONE);
 		drawerLayout.findViewById(R.id.change_day).setVisibility(
 				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
-		drawerLayout.findViewById(R.id.show_hidden).setBackgroundResource(
-				showHidden ? R.drawable.menu_gradient : R.color.light);
+		navDrawerItemState((TextView) drawerLayout.findViewById(R.id.show_hidden), showHidden);
 
 		/* TimeTable extends the action bar with "tabs" and will have its own shadow. */
 		app.setShadow(getActionBar(), !viewer.extendsActionBar());
+	}
+
+	private void navDrawerItemState(TextView v, boolean enabled) {
+		if (enabled) {
+			v.setBackgroundResource(R.drawable.burger_menu_active_background);
+			v.setTextColor(getResources().getColor(R.color.light_text));
+		} else {
+			v.setBackgroundResource(R.color.light);
+			v.setTextColor(((TextView)drawerLayout.findViewById(R.id.settings)).getTextColors());
+		}
 	}
 
 	/** Open a link object, either just through the browser or by downloading locally and using a
@@ -736,7 +747,7 @@ public class ScheduleViewActivity extends Activity {
 			}
 			// TODO: Hmm if I don't care about the result why am I not just calling refreshItems()
 			// in a on-resume handler or something?
-			startActivityForResult(intent, 0, options.toBundle());
+			startActivityForResult(intent, 0, (options != null) ? options.toBundle() : null);
 		}
 	}
 
