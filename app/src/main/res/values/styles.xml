@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<style name="Theme.Giggity" parent="@android:style/Theme.DeviceDefault.Light.DarkActionBar">
-		<item name="android:actionBarStyle">@style/Theme.Giggity.ActionBar</item>
+	<style name="Theme.Giggity" parent="@android:style/Theme.Material.Light.DarkActionBar">
+		<item name="android:colorPrimary">@color/primary</item>
+		<item name="android:colorPrimaryDark">@color/primary_dark</item>
+		<item name="android:colorAccent">@color/accent</item>
 	</style>
-
 	<style name="Theme.Giggity.NoShadow" parent="@style/Theme.Giggity">
 		<item name="android:windowContentOverlay">@null</item>
 	</style>

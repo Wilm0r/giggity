@@ -135,6 +135,8 @@ public class ScheduleViewActivity extends Activity {
 		getWindow().setExitTransition(new Explode());
 		//getWindow().setAllowEnterTransitionOverlap(false);
 
+		app.setNavBar(getWindow(), R.color.background_material_light);
+
 		setContentView(R.layout.schedule_view_activity);
 		View dl = drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 		drawer = (RelativeLayout) dl.findViewById(R.id.drawer);

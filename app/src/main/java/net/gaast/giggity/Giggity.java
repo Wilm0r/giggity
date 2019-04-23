@@ -26,10 +26,13 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
@@ -188,6 +191,18 @@ public class Giggity extends Application {
 
 	public void setShadow(View v, boolean on) {
 		v.setElevation(on ? dp2px(8) : 0);
+	}
+
+	public void setNavBar(Window w, int colour) {
+		w.setNavigationBarColor(getResources().getColor(colour));
+		if (colour == R.color.background_material_light) {
+			if (Build.VERSION.SDK_INT >= 28) {
+				// TODO: Improper reuse of colour.
+				w.setNavigationBarDividerColor(getColor(R.color.time_back));
+			}
+			w.requestFeature(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			w.findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
+		}
 	}
 
 	/* ActionBar is not a view, just looks a lot like one! */
