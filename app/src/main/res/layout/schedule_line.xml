@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="5dp"
+              android:layout_marginLeft="107dp"
+              android:layout_marginRight="5dp"
+              android:layout_marginTop="25dp"
+              android:background="@color/primary"
+              android:orientation="vertical"
+              android:paddingBottom="10dp"
+              android:paddingLeft="20dp"
+              android:paddingRight="20dp"
+              android:paddingTop="10dp">
+
+    <TextView
+        android:id="@+id/lineTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="Janson"
+        android:textColor="@color/light_text"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+</LinearLayout>

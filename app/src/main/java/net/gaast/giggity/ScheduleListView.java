@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -200,7 +201,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		}
 	}
 
-	private class ScheduleLineView extends RelativeLayout {
+	private class ScheduleLineView extends LinearLayout {
 		Context ctx;
 		Schedule.Line line;
 
@@ -225,28 +226,19 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				}
 			}
 
-			TextView tv = new TextView(ctx);
-			tv.setText("\n\n" + line.getTitle() + (track == null ? "" : " (" + track + ")"));
-			tv.setTextSize(18);
-			tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-			tv.setTextColor(getResources().getColor(R.color.dark_text));
-			app.setPadding(tv, 4, 0, 0, 0);
+			inflate(ctx, R.layout.schedule_line, this);
 
-			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			tv.setId(1);
-			addView(tv, lp);
+			TextView tv = findViewById(R.id.lineTitle);
+			tv.setText(line.getTitle() + (track == null ? "" : " (" + track + ")"));
 
 			if (line.getLocation() != null) {
-				tv.setPaintFlags(tv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+				// TODO: Restore icon or so to indicate location info is available for room?
+				// Also, maybe a nicer way to show (FOSDEM-specific, for now) room status
 				setOnClickListener(ScheduleUI.locationClickListener(getContext(), line));
 
 				ImageView iv = new ImageView(ctx);
 				iv.setImageResource(R.drawable.ic_place_black_24dp);
 				iv.setId(2);
-				lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				lp.addRule(RelativeLayout.RIGHT_OF, 1);
-				lp.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
-				addView(iv, lp);
 			}
 		}
 	}
