@@ -108,7 +108,7 @@ public class ScheduleViewActivity extends Activity {
 	private ScheduleViewer viewer;
 	private RelativeLayout viewerContainer;
 	private EventDialogPager eventDialogView;
-	private DayButtons days;
+	private DayButtonsHider days;
 
 	private SharedPreferences pref;
 
@@ -198,8 +198,7 @@ public class ScheduleViewActivity extends Activity {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		days = new DayButtons(this);
-		viewerContainer.addView(days, lp);
+		days = new DayButtonsHider();
 
 		redraw = false;
 		timer = new Handler();
@@ -928,44 +927,37 @@ public class ScheduleViewActivity extends Activity {
 		me.onScroll();
 	}
 
-	private class DayButtons extends RelativeLayout {
+	// Used to contain the buttons, now just a handler to automatically show and hide the buttons,
+	// rest is just part of the XML layout.
+	private class DayButtonsHider {
+		private ViewGroup dayButtons;
 		private Button dayPrev, dayNext;
 		private Handler h;
 		private Runnable hideEv;
 
-		public DayButtons(Context ctx) {
-			super(ctx);
+		public DayButtonsHider() {
+			int id = 0;
 
-			RelativeLayout.LayoutParams lp;
+			dayButtons = viewerContainer.findViewById(R.id.dayButtons);
+			dayNext = viewerContainer.findViewById(R.id.dayNext);
+			dayNext.setText("→");
+			dayPrev = viewerContainer.findViewById(R.id.dayPrev);
+			dayPrev.setText("←");
 
-			dayPrev = new Button(ScheduleViewActivity.this);
-			dayPrev.setText("<");
-			lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			addView(dayPrev, lp);
-
-			dayNext = new Button(ScheduleViewActivity.this);
-			dayNext.setText(">");
-			lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			addView(dayNext, lp);
-
-			dayPrev.setOnClickListener(new OnClickListener() {
+			dayPrev.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					daySwitch(-1);
 				}
 			});
-			dayNext.setOnClickListener(new OnClickListener() {
+			dayNext.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					daySwitch(+1);
 				}
 			});
 
-			setVisibility(View.INVISIBLE);
+			dayButtons.setVisibility(View.INVISIBLE);
 
 			h = new Handler();
 			hideEv = new Runnable() {
@@ -982,10 +974,10 @@ public class ScheduleViewActivity extends Activity {
 			
 			/* Z ordering in RelativeLayouts seems to be most-recently-added,
 			 * so we have to keep bringing the buttons to front. :-/ */
-			this.bringToFront();
-			if (this.getVisibility() != View.VISIBLE) {
-				setVisibility(View.VISIBLE);
-				days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_in));
+			dayButtons.bringToFront();
+			if (dayButtons.getVisibility() != View.VISIBLE) {
+				dayButtons.setVisibility(View.VISIBLE);
+				dayButtons.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_in));
 			}
 			
 			/* Set a timer if we're now fading in the buttons, or reset it if
@@ -998,8 +990,8 @@ public class ScheduleViewActivity extends Activity {
 			/* During the animation, visibility will be overridden to visible.
 			 * Which means I can already set it to hidden now and the right
 			 * thing will happen after the animation. */
-			setVisibility(View.INVISIBLE);
-			days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_out));
+			dayButtons.setVisibility(View.INVISIBLE);
+			dayButtons.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_out));
 		}
 
 		private void daySwitch(int d) {

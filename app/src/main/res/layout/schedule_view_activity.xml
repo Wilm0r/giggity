@@ -17,6 +17,23 @@
 			android:layout_height="fill_parent"
             android:layout_weight="3">
 			<!-- Actual schedule viewer goes in here (which one depends on setting). And day change buttons. -->
+			<LinearLayout
+				android:id="@+id/dayButtons"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_alignParentBottom="true"
+				android:layout_alignParentRight="true"
+				android:orientation="vertical"
+				android:padding="16dp">
+
+				<include
+					android:id="@+id/dayNext"
+					layout="@layout/round_button"/>
+
+				<include
+					android:id="@+id/dayPrev"
+					layout="@layout/round_button"/>
+			</LinearLayout>
 		</RelativeLayout>
 	</LinearLayout>
 

@@ -16,4 +16,5 @@
     <color name="dark_text">#FF000000</color> <!-- darker than default, for titles, etc -->
 
     <color name="light_back">#FFEEEEEE</color>
+    <color name="background_material_light">#fffafafa</color>
 </resources>
