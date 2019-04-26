@@ -1,0 +1,23 @@
+{
+	"version": 2019042600,
+	"url": "http://rml13.creationmonetaire.info/rml.ics",
+	"id": "RML13",
+	"title": "RML 13",
+	"start": "2019-05-23",
+	"end": "2019-05-26",
+	"metadata": {
+		"icon": "https://git.duniter.org/nodes/typescript/duniter/raw/dev/images/450%C3%97450.png",
+		"links": [
+			{
+				"url": "http://rml13.creationmonetaire.info/",
+				"title": "Site Web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Cyberbodega.*",
+				"latlon": [42.695884249268495, 2.8846125304698944]
+			}
+		]
+	}
+}
