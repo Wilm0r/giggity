@@ -15,8 +15,32 @@
 		],
 		"rooms": [
 			{
-				"name": "Cyberbodega.*",
+				"name": "Cyber[Bb]odega.*",
 				"latlon": [42.695884249268495, 2.8846125304698944]
+			},
+			{
+				"name": "Canet.*",
+				"latlon": [42.69136, 3.0398]
+			},
+			{
+				"name": "Corbère.*",
+				"latlon": [42.65216, 2.66023]
+			},
+			{
+				"name": "Elne.*",
+				"latlon": [42.59713, 2.97677]
+			},
+			{
+				"name": "Ille-sur-Tet.*",
+				"latlon": [42.68599, 2.62044]
+			},
+			{
+				"name": "Millas.*",
+				"latlon": [42.69249, 2.69819]
+			},
+			{
+				"name": "Train jaune.*",
+				"latlon": [42.59195, 2.37024]
 			}
 		]
 	}
