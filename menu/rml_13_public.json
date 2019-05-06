@@ -1,0 +1,43 @@
+{
+	"version": 2019050600,
+	"url": "https://rml13.monnaie-libre.fr/events/liste/?ical=1",
+	"id": "RML13 Plus loin + fort ensemble !",
+	"title": "RML 13 (Grand public)",
+	"start": "2019-05-23",
+	"end": "2019-05-27",
+	"metadata": {
+		"icon": "https://git.duniter.org/nodes/typescript/duniter/raw/dev/images/450%C3%97450.png",
+		"links": [
+			{
+				"url": "https://rml13.monnaie-libre.fr/",
+				"title": "Site Web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "La Cyber[Bb]odega.*",
+				"latlon": [42.695884249268495, 2.8846125304698944]
+			},
+			{
+				"name": "Maison des sports.*",
+				"latlon": [42.7127508, 2.8902386]
+			},
+			{
+				"name": "[Bb]ibliothèque de [Mm]illas.*",
+				"latlon": [42.6924706,2.6981771]
+			},
+			{
+				"name": "Epicerie solidaire les Acacias.*",
+				"latlon": [42.5969809,2.9767554]
+			},
+			{
+				"name": "Ille-sur-Tet.*",
+				"latlon": [42.68599, 2.62044]
+			},
+			{
+				"name": "Train jaune.*",
+				"latlon": [42.59195, 2.37024]
+			}
+		]
+	}
+}
