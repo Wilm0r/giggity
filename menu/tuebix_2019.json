@@ -1,0 +1,20 @@
+{
+	"version": 2019053100,
+	"url": "https://www.tuebix.org/2019/giggity.xml",
+	"title": "Tübix 2019",
+	"start": "2019-07-06",
+	"end": "2019-07-06",
+	"metadata": {
+		"icon": "https://www.tuebix.org/2017/giggity.icon.png",
+		"links": [
+			{
+				"url": "https://www.tuebix.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://www.tuebix.org/anfahrt/",
+				"title": "Anfahrt"
+			}
+		]
+	}
+}
