@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Giggity</string>
-    <string name="search_hint">Veranstaltungen suchen</string>
+	<string name="app_name">Giggity</string>
+	<string name="search_hint">Veranstaltungen suchen</string>
 
-    <string name="ok">OK</string>
-    <string name="cancel">Abbrechen</string>
-    
-    <!--  Settings -->
-    <string name="default_view">Standardansicht</string>
-    <string name="always_refresh">Programm immer aktualisieren</string>
-    <string name="always_refresh_sub_off">Täglich nach neuer Version suchen</string>
-    <string name="strict_ssl">Striktes SSL</string>
-    <string name="strict_ssl_sub">Überprüfung des HTTPS Zertifikats</string>
+	<string name="ok">OK</string>
+	<string name="cancel">Abbrechen</string>
+
+	<!--  Settings -->
+	<string name="default_view">Standardansicht</string>
+	<string name="font_size">Schriftgröße bei der Programmübersicht</string>
+	<string name="always_refresh">Programm immer aktualisieren</string>
+	<string name="always_refresh_sub_off">Täglich nach neuer Version suchen</string>
+	<string name="strict_ssl">Striktes SSL</string>
+	<string name="strict_ssl_sub">Überprüfung des HTTPS Zertifikats</string>
     
 	<string name="block_schedule_style">Stil</string>
 	<string name="block_schedule">Programmübersicht</string>
@@ -27,19 +28,44 @@
 	<!-- EventDialog -->
 	<string name="speaker">Sprecher:</string>
 	<string name="speakers">Sprecher:</string>
+	<string name="track">Track:</string>
 	<string name="remind_me">An Veranstaltung erinnern</string>
+	<string name="overlap">Überschneidung mit</string>
+	<string name="hide_what">Verstecken...</string>
+	<string name="unhide_what">Einblenden...</string>
+	<string name="hide_item">...diesen Eintrag</string>
+	<string name="hide_room">...gesamter Raum</string>
+	<string name="hide_track">...gesamter Track</string>
+	<string name="hide_lang">...alle in %s</string>
+	<string name="links_header">Links:</string>
 
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Lade Programm...</string>
+	<string name="loading_image">Lade Bild...</string>
 	<string name="loading_error">Fehler beim Laden</string>
+	<string name="no_viewer_error">Kein Anzeigeprogramm für den Dateityp installiert</string>
+	<string name="export_selections">Ausgewählte exportieren</string>
+	<string name="home_shortcut">Verknüpfung auf dem Startbildschirm</string>
+	<string name="import_selections">Ausgewählte importieren</string>
+	<string name="no_selections">Nichts ausgewählt zum Exportieren</string>
+	<string name="qr_tip">Bitte verwenden Sie die QR-Scan-Taste im Hauptmenü Ihres anderen Geräts, um diesen zu importieren</string>
+	<string name="schedule_empty">Das Programm scheint leer zu sein</string>
+	<string name="format_unknown">Dateiformat nicht erkannt</string>
+	<string name="no_network">Keine Netzwerkverbindung verfügbar</string>
+<string name="no_network_or_cached">Keine Netzwerkverbindung oder gespeicherte Kopie verfügbar</string>
+
 	<!-- Menu -->
 	<string name="settings">Einstellungen</string>
 	<string name="change_day">Tag ändern</string>
+	<string name="show_hidden">Versteckte Einträge einblenden</string>
 	<string name="timetable">Zeitplan</string>
 	<string name="tracks">Tracks</string>
 	<string name="now_next">Jetzt und gleich</string>
 	<string name="my_events">Meine Veranstaltungen</string>
 	<string name="search">Suche</string>
+	<!-- navdrawer (toggler) -->
+	<string name="navdrawer_on">Show drawer</string>
+<string name="navdrawer_off">Hide drawer</string>
 
 	<!-- NowNext -->
 	<string name="no_events_today">Heute keine Veranstaltungen.</string>
@@ -50,14 +76,21 @@
 	<string name="coming_up">Kommende Veranstaltungen:</string>
 	<string name="seen_so_far">Schon besuchte Veranstaltungen:</string>
 	<string name="none_marked">Noch keine Veranstaltung markiert.</string>
+	
+	<!-- SearchActivity -->
+	<string name="search_results">Resultate für \"%1$s\" in %2$s</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Aktualisieren</string>
+	<string name="unhide">Wiederherstellen von versteckten Einträgen</string>
 	<string name="remove">Entfernen</string>
 	<string name="show_url">URL anzeigen...</string>
 	<string name="chooser_now">Aktuelle Veranstaltungen:</string>
 	<string name="chooser_later">Kommende Veranstaltungen:</string>
 	<string name="chooser_past">Bisherige Veranstaltungen:</string>
+	<string name="add_dialog">Hinzufügen...</string>
+	<string name="qr_scan">Scan QR-Code</string>
+	<string name="enter_url">URL eingeben</string>
 
 	<!-- Reminder -->
 	<string name="soon_in">Demnächst in</string>
