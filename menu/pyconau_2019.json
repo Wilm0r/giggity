@@ -1,0 +1,16 @@
+{
+	"version": 2019080200,
+	"url": "https://2019.pycon-au.org/schedule/conference.ics",
+	"title": "PyCon AU 2019",
+	"start": "2019-08-02",
+	"end": "2019-08-04",
+	"metadata": {
+		"icon": "https://2019.pycon-au.org/static/img/favicon.png",
+		"links": [
+			{
+				"url": "https://2019.pycon-au.org/",
+				"title": "Website"
+			}
+		]
+	}
+}
