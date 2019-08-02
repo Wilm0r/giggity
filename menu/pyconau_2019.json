@@ -10,6 +10,11 @@
 			{
 				"url": "https://2019.pycon-au.org/",
 				"title": "Website"
+			},
+			{
+				"url": "https://2019.pycon-au.org/static/img/venuemap.png",
+				"title": "Map",
+				"type": "image/png"
 			}
 		]
 	}
