@@ -1,6 +1,26 @@
 {
-	"version": 2019028000,
+	"version": 2019080800,
 	"schedules": [
+		{
+			"version": 2019080800,
+			"url": "https://afup.org/event/forumphp2019/planning.ics",
+			"title": "Forum PHP 2019",
+			"id": "Forum PHP 2019",
+			"start": "2019-10-24",
+			"end": "2019-10-25",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://event.afup.org/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/forumphp2019/tickets",
+						"title": "Tarifs et inscription"
+					}
+				]
+			}
+		},
 		{
 			"start": "2018-03-22",
 			"end": "2018-03-25",
