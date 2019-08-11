@@ -22,8 +22,8 @@ import sys
 # Currently the only 3.6 feature that is used in this script is `encoding` in
 # Popen.
 if sys.version_info[:2] < (3, 6):
-    raise RuntimeError("at least python 3.6 is required, you have %s" %
-                       sys.version)
+	raise RuntimeError("at least python 3.6 is required, you have %s" %
+	                   sys.version)
 
 import jsonschema
 import PIL.Image
@@ -114,6 +114,11 @@ def validate_entry(e):
 	sf = fetch(e["url"])
 	if isinstance(sf, FetchError):
 		errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(sf)))
+
+	if "id" not in e and e["url"].endswith(".ics"):
+		errors.append(
+		    ".ics entries need an \"id\" field for now "
+		    "(containing the ics' X-WR-CALNAME value).")
 
 	md = e.get("metadata")
 	if md:
