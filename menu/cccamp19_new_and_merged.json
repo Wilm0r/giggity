@@ -1,0 +1,23 @@
+{
+	"title": "Chaos Communication Camp 2019 - new and merged",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events.ccc.de/camp/2019/wiki/Main_Page",
+				"title": "Wiki"
+			},
+			{
+				"title": "Map",
+				"url": "https://map.c3noc.net/"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		]
+	},
+	"url": "https://data.c3voc.de/camp2019/everything.schedule.xml",
+	"start": "2019-08-21",
+	"end": "2019-08-25",
+	"version": 2019082101
+}
