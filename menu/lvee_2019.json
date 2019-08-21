@@ -1,0 +1,16 @@
+{
+  "version": 2019082201,
+  "url": "https://lvee-wafer.shadura.me/schedule/pentabarf.xml",
+  "title": "LVEE 2019",
+  "start": "2019-08-22",
+  "end": "2019-08-25",
+  "metadata": {
+    "icon": "https://lvee.org/uploads/image_upload/file/495/lvee_logo_180.png",
+    "links": [
+      {
+        "url": "https://lvee.org/",
+        "title": "Website"
+      }
+    ]
+  }
+}
