@@ -112,10 +112,10 @@ room instead of taking advantage of regex matching.
 To test your entry, QR-encode it using for example this command:
 
 ```sh
-gzip -9 < YOURFILE.json | python2-qr --optimize=0
+gzip -9 < YOURFILE.json | python3-qr --optimize=0
 ```
 
-(`sudo apt-get install python-qrcode` if it doesn't work, or at your own
+(`sudo apt-get install python3-qrcode` if it doesn't work, or at your own
 risk use a different encoder. The `--optimize=0` bit is to disable some
 optimisation code that corrupts binary data. Or if your entry is small
 and your phone camera good, just leave out the gzip.)
