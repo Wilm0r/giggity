@@ -1,0 +1,58 @@
+{
+  "version": 2019092101,
+  "url": "https://manage.ubucon.org/eu2019/schedule/export/schedule.xml",
+  "title": "Ubucon Europe 2019 - Sintra",
+  "start": "2019-10-10",
+  "end": "2019-10-13",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://sintra2019.ubucon.org",
+        "title": "Website"
+      },
+      {
+        "url": "https://manage.ubucon.org/eu2019/schedule",
+        "title": "Schedule"
+      },
+      {
+        "url": "https://sintra2019.ubucon.org/infos",
+        "title": "Venue Information"
+      }
+    ],
+    "icon": "https://sintra2019.ubucon.org/ubucon-eu-2019-sintra-icon-tiny.png",
+    "rooms": [
+      {
+        "name": "A1.*",
+        "show_name": "A1 - Ubuntu Auditorium",
+        "latlon": [
+          38.80322,
+          -9.38238
+        ]
+      },
+      {
+        "name": "S1.*",
+        "show_name": "S1 - Disco Room",
+        "latlon": [
+          38.80322,
+          -9.38238
+        ]
+      },
+      {
+        "name": "S2.*",
+        "show_name": "S2 - Bionic Room",
+        "latlon": [
+          38.80322,
+          -9.38238
+        ]
+      },
+      {
+        "name": "S3.*",
+        "show_name": "S3 - Xenial Room",
+        "latlon": [
+          38.80322,
+          -9.38238
+        ]
+      }
+    ]
+  }
+}
