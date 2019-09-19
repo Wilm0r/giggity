@@ -1,0 +1,16 @@
+{
+	"version": 2019092000,
+	"url": "https://datenspuren.de/2019/fahrplan/schedule.xml",
+	"title": "Datenspuren 2019",
+	"start": "2019-09-20",
+	"end": "2019-09-22",
+	"metadata": {
+		"icon": "https://c3d2.de/images/datenspuren2019.png",
+		"links": [
+			{
+				"url": "https://datenspuren.de/2019/",
+				"title": "Website"
+			}
+		]
+	}
+}
