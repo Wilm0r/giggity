@@ -1,0 +1,78 @@
+	{
+		"version": 2019092001,
+		"url": "https://open-access.net/fileadmin/oat/oat19/cal/oat19.xml",
+		"title": "Open-Access-Tage 2019",
+		"start": "2019-09-30",
+		"end": "2019-10-02",
+		"metadata": {
+			"links": [
+				{
+					"url": "https://open-access.net/community/open-access-tage/open-access-tage-2019/",
+					"title": "Website"
+				},
+				{
+					"url": "https://info.cafm.uni-hannover.de/building/1101",
+					"title": "Veranstaltungsort"
+				},
+				{
+					"url": "https://open-access.net/fileadmin/oat/oat19/cal/Lageplan-LUH.jpg",
+					"title": "Räume",
+					"type": "image/jpg"
+				}
+			],
+			"rooms": [
+				{
+					"name": "Lichthof",
+					"latlon": [52.38256, 9.71784]
+				},
+				{
+					"name": "B305",
+					"latlon": [52.38244, 9.71747]
+				},
+				{
+					"name": "A310",
+					"latlon": [52.38227, 9.71813]
+				},
+				{
+					"name": "A320",
+					"latlon": [52.38231, 9.7175]
+				},
+				{
+					"name": "C311",
+					"latlon": [52.38229, 9.71815]
+				},
+				{
+					"name": "E242",
+					"latlon": [52.38285, 9.71829]
+				},
+				{
+					"name": "Galerie",
+					"latlon": [52.38234, 9.71779]
+				},
+				{
+					"name": "Konferenzbüro",
+					"latlon": [52.38237, 9.71775]
+				},				
+				{01
+					"name": "TIB",
+					"latlon": [52.38164, 9.72002]
+				},
+				{
+					"name": "Vortragsraum der TIB",
+					"latlon": [52.38157, 9.72]
+				},
+				{
+					"name": "Landesmuseum",
+					"latlon": [52.36532, 9.73910]
+				},
+				{
+					"name": "Herrenhäuser Gärten",
+					"latlon": [52.39117, 9.6984]
+				},
+				{
+					"name": "Schlossküche Herrenhausen",
+					"latlon": [52.39136,9.69683]
+				}
+			]
+		}
+	}
