@@ -115,10 +115,15 @@ def validate_entry(e):
 	if isinstance(sf, FetchError):
 		errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(sf)))
 
+	IDBUG = " https://github.com/Wilm0r/giggity/issues/134"
 	if "id" not in e and e["url"].endswith(".ics"):
 		errors.append(
 		    ".ics entries need an \"id\" field for now "
-		    "(containing the ics' X-WR-CALNAME value).")
+		    "(containing the ics' X-WR-CALNAME value)." + IDBUG)
+
+	if "id" in e and e["url"].endswith(".xml"):
+		errors.append(
+		    ".xml entries should not have an \"id\" field." + IDBUG)
 
 	md = e.get("metadata")
 	if md:
