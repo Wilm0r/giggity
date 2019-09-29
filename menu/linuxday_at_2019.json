@@ -1,0 +1,32 @@
+{
+  "version": 2019092901,
+  "url": "https://www.linuxday.at/vortraege/2019/calendar.ics",
+  "title": "LinuxDay.at Vortraege",
+  "id": "linuxday_at_2019",
+  "start": "2019-10-19",
+  "end": "2019-10-19",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://www.linuxday.at/",
+        "title": "Webseite"
+      },
+      {
+         "url": "https://www.linuxday.at/standplan-2019",
+         "title": "Standplan"
+      },
+      {
+         "url": "https://www.linuxday.at/aussteller/2019",
+         "title": "Aussteller"
+      },
+      {
+         "url": "https://www.linuxday.at/vortraege/2019",
+         "title": "Vorträge"
+      },
+      {
+         "url": "https://www.linuxday.at/ort.html",
+         "title": "Wie komme ich zur HTL-Dornbirn"
+      }    
+    ]
+  }
+}
