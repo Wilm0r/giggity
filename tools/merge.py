@@ -24,7 +24,7 @@ args = parser.parse_args()
 def check_indents(lines, fn):
 	indent = None
 	for num, line in enumerate(lines.splitlines()):
-		if not line[0] or not line[0].isspace():
+		if not line or not line[0].isspace():
 			continue
 		if not indent:
 			indent = line[0]
