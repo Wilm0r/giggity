@@ -1,0 +1,16 @@
+{
+	"version": 2019100400,
+	"url": "https://fahrplan.privacyweek.at/schedule.xml",
+	"title": "PrivacyWeek 2019",
+	"start": "2019-10-21",
+	"end": "2019-10-27",
+	"metadata": {
+		"icon": "https://privacyweek.at/icon-256x256.png",
+		"links": [
+			{
+				"url": "https://privacyweek.at/",
+				"title": "Website"
+			}
+		]
+	}
+}
