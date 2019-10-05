@@ -942,10 +942,10 @@ public class ScheduleViewActivity extends Activity {
 
 			dayButtons = viewerContainer.findViewById(R.id.dayButtons);
 			dayNext = viewerContainer.findViewById(R.id.dayNext);
-			dayNext.setImageResource(R.drawable.ic_arrow_forward_black_32dp);
+			dayNext.setImageResource(R.drawable.ic_arrow_forward_white_32dp);
 
 			dayPrev = viewerContainer.findViewById(R.id.dayPrev);
-			dayPrev.setImageResource(R.drawable.ic_arrow_back_black_32dp);
+			dayPrev.setImageResource(R.drawable.ic_arrow_back_white_32dp);
 
 			dayPrev.setOnClickListener(new Button.OnClickListener() {
 				@Override
