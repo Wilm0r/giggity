@@ -1,0 +1,20 @@
+{
+	"version": 2019100301,
+	"url": "https://conf-ng.jres.org/2019/rest/planning.ics",
+	"title": "JRES 2019",
+	"id": "JRES 2019",
+	"start": "2019-12-03",
+	"end": "2019-12-05",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.jres.org/fr/accueil/",
+				"title": "Site Web"
+			},
+			{
+				"title": "Inscription",
+				"url": "https://www.jres.org/fr/inscriptions/"
+			}
+		]
+	}
+}
