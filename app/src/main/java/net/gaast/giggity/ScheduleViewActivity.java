@@ -35,6 +35,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -57,6 +58,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -931,7 +933,7 @@ public class ScheduleViewActivity extends Activity {
 	// rest is just part of the XML layout.
 	private class DayButtonsHider {
 		private ViewGroup dayButtons;
-		private Button dayPrev, dayNext;
+		private ImageButton dayPrev, dayNext;
 		private Handler h;
 		private Runnable hideEv;
 
@@ -940,9 +942,10 @@ public class ScheduleViewActivity extends Activity {
 
 			dayButtons = viewerContainer.findViewById(R.id.dayButtons);
 			dayNext = viewerContainer.findViewById(R.id.dayNext);
-			dayNext.setText("→");
+			dayNext.setImageResource(R.drawable.ic_arrow_forward_black_32dp);
+
 			dayPrev = viewerContainer.findViewById(R.id.dayPrev);
-			dayPrev.setText("←");
+			dayPrev.setImageResource(R.drawable.ic_arrow_back_black_32dp);
 
 			dayPrev.setOnClickListener(new Button.OnClickListener() {
 				@Override
@@ -971,7 +974,9 @@ public class ScheduleViewActivity extends Activity {
 		public void show() {
 			if (sched == null || viewer == null || sched.getDays().size() <= 1 || viewer.multiDay())
 				return;
-			
+			if (sched.getDays().size() == 2)
+				dayPrev.setVisibility(View.GONE);
+
 			/* Z ordering in RelativeLayouts seems to be most-recently-added,
 			 * so we have to keep bringing the buttons to front. :-/ */
 			dayButtons.bringToFront();
