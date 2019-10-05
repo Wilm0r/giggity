@@ -544,7 +544,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		drawerLayout.findViewById(R.id.tracks).setVisibility(
-				sched.getTracks() != null ? View.VISIBLE : View.GONE);
+			(sched.getTracks() != null && sched.getTracks().size() > 0) ? View.VISIBLE : View.GONE);
 		drawerLayout.findViewById(R.id.change_day).setVisibility(
 				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
 		navDrawerItemState((TextView) drawerLayout.findViewById(R.id.show_hidden), showHidden);
