@@ -127,11 +127,11 @@ def validate_entry(e):
 
 	md = e.get("metadata")
 	if md:
+		c3_by_slug = {}
 		if "c3nav_base" in md:
 			c3nav = fetch(md["c3nav_base"] + "/api/locations/?format=json")
 			if isinstance(c3nav, FetchError):
 				errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(c3nav)))
-				c3_by_slug = {}
 			else:
 				c3nav = json.loads(c3nav)
 				c3_by_slug = {v["slug"]: v for v in c3nav}
