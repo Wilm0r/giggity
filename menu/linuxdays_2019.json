@@ -1,0 +1,51 @@
+{
+    "version": 2019091100,
+    "url": "https://pretalx.linuxdays.cz/2019/schedule/export/schedule.xml",
+    "start": "2019-10-05",
+    "end": "2019-10-06",
+    "title": "LinuxDays 2019",
+    "metadata": {
+        "icon": "https://www.linuxdays.cz/2019/obrazky/icon.png",
+        "links": [
+            {
+                "title": "Website",
+                "url": "https://www.linuxdays.cz/2019/"
+            },
+            {
+                "title": "Map",
+                "type": "image/png",
+                "url": "https://www.linuxdays.cz/2019/obrazky/plan.png"
+            }
+        ],
+        "rooms": [
+            {
+                "latlon": [
+                    50.105249,
+                    14.390095
+                ],
+                "name": "105"
+            },
+            {
+                "latlon": [
+                    50.105382,
+                    14.389836
+                ],
+                "name": "155"
+            },
+            {
+                "latlon": [
+                    50.105138,
+                    14.390298
+                ],
+                "name": "107"
+            },
+            {
+                "latlon": [
+                    50.105047,
+                    14.390432
+                ],
+                "name": "111"
+            }
+        ]
+    }
+}

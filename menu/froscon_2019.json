@@ -1,0 +1,38 @@
+{
+    "version": 2019071700,
+    "url": "https://programm.froscon.de/2019/schedule.xml",
+    "title": "FrOSCon 2019",
+    "start": "2019-08-10",
+    "end": "2019-08-11",
+    "metadata": {
+        "icon": "https://www.froscon.de/fileadmin/images/logos/frog_button.png",
+        "links": [
+            {
+                "url": "https://www.froscon.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://programm.froscon.de/maps/map1.png",
+                "title": "Map1",
+                "type": "image/png"
+            },
+            {
+                "url": "https://programm.froscon.de/maps/map2.png",
+                "title": "Map2",
+                "type": "image/png"
+            },
+            {
+                "url": "https://www.froscon.de/en/news/",
+                "title": "News"
+            },
+            {
+                "url": "http://streaming.media.ccc.de/",
+                "title": "Streams"
+            },
+            {
+                "url": "http://froscon.tv/",
+                "title": "Recordings"
+            }
+        ]
+    }
+}

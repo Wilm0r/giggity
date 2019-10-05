@@ -21,11 +21,27 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+def check_indents(lines, fn):
+	indent = None
+	for num, line in enumerate(lines.splitlines()):
+		if not line or not line[0].isspace():
+			continue
+		if not indent:
+			indent = line[0]
+		elif indent != line[0]:
+			raise SyntaxError(
+				"Inconsistent indentation: %r on %s line %d" % (line[0], fn, num + 1))
+		if not re.search(r"^\t* *\S", line):
+			raise SyntaxError(
+				"Bad mix of whitespace on %s line %d" % (fn, num + 1))
+
 all = {}
 if not args.revision:
 	for p, _, flist in os.walk("menu"):
 		for fn in flist:
-			all[fn] = json.load(open(os.path.join(p, fn), "r"))
+			text = open(os.path.join(p, fn), "r", encoding="utf-8").read()
+			check_indents(text, fn)
+			all[fn] = json.loads(text)
 else:
 	# Thanks to Jelmer Vernooij for spelling this one out for me :-D
 	repo = Repo('.')
@@ -36,7 +52,9 @@ else:
 			break
 	menu = porcelain.get_object_by_path(repo, "menu", rev)
 	for name, mode, object_id in menu.iteritems():
-		all[name] = json.loads(repo[object_id].data)
+		text = str(repo[object_id].data, "utf-8")
+		check_indents(text, name)
+		all[name] = json.loads(text)
 
 if args.weeks:
 	dates = [datetime.datetime.strptime(e["start"], "%Y-%m-%d") for e in all.values()]

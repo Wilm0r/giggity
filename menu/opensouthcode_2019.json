@@ -1,0 +1,16 @@
+{
+	"version": 2019042600,
+	"url": "https://www.opensouthcode.org/conferences/opensouthcode2019/schedule.xml",
+	"title": "Opensouthcode 2019",
+	"start": "2019-05-24",
+	"end": "2019-05-25",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.opensouthcode.org/",
+				"title": "Website"
+			}
+		],
+		"icon": "https://www.opensouthcode.org/logo1.png"
+	}
+}

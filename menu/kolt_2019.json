@@ -1,0 +1,46 @@
+{
+	"title": "17. Kieler Open Source und Linux Tage",
+	"url": "https://kielux.de/content/calendars/kolt_2019.ics",
+	"id": "17. Kieler Open Source und Linux Tage",
+	"start": "2019-09-20",
+	"end": "2019-09-21",
+	"version": 2019081100,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"title": "Aktionen",
+				"url": "https://kielux.de/aktionen"
+			},
+			{
+				"title": "Aussteller",
+				"url": "https://kielux.de/aussteller"
+			},
+			{
+				"title": "Anfahrt",
+				"url": "https://kielux.de/anfahrt"
+			}
+		],
+		"rooms": [
+			{
+				"name": "R012",
+				"latlon": [54.33497, 10.11928]
+			},
+			{
+				"name": "R007",
+				"latlon": [54.33547, 10.11951]
+			},
+			{
+				"name": "R114",
+				"latlon": [54.33510, 10.11944]
+			},
+			{
+				"name": "draußen",
+				"latlon": [54.33510, 10.11944]
+			}
+		]
+	}
+}

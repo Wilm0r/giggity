@@ -1,0 +1,19 @@
+{
+	"version": 2019040409,
+	"url": "https://pretalx.jdll.org/jdll2019/schedule.xml",
+	"title": "Journées du Logiciel Libre 2019",
+	"start": "2019-04-06",
+	"end": "2019-04-07",
+	"metadata": {
+		"links": [
+			{
+				"url": "http://www.jdll.org/",
+				"title": "Site web"
+			},
+			{
+				"url": "http://www.jdll.org/pratique/plan/",
+				"title": "Plan"
+			}
+		]
+	}
+}

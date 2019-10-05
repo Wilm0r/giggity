@@ -1,0 +1,22 @@
+{
+	"version": 2019100200,
+	"url": "https://www.paris-web.fr/2019/conferences-parisweb-2019.ics",
+	"title": "Paris Web 2019",
+	"id": "Conf\u00E9rences Paris Web 2019",
+	"speakermatch": " \u2014 (.*)",
+	"start": "2019-10-10",
+	"end": "2019-10-12",
+	"metadata": {
+		"icon": "https://www.paris-web.fr/android-chrome-512x512.png",
+		"links": [
+			{
+				"url": "https://www.paris-web.fr/2019/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://inscriptions.paris-web.fr/",
+				"title": "Tarifs et inscription"
+			}
+		]
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"title": "Chaos Communication Camp 2019 - main rooms only",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events.ccc.de/camp/2019/wiki/Main_Page",
+				"title": "Wiki"
+			},
+			{
+				"title": "Map",
+				"url": "https://map.c3noc.net/"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		]
+	},
+	"url": "https://fahrplan.events.ccc.de/camp/2019/Fahrplan/schedule.xml",
+	"start": "2019-08-21",
+	"end": "2019-08-25",
+	"version": 2019080501
+}
