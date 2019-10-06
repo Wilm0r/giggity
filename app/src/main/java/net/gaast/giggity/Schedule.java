@@ -1287,6 +1287,9 @@ public class Schedule implements Serializable {
 
 		public String getDescriptionStripped() {
 			String ret = description;
+			if (description == null) {
+				return null;
+			}
 			/* Very clunky HTML stripper */
 			if (ret.startsWith("<") || ret.contains("<p>")) {
 				ret = ret.replaceAll("<[^>]*>", "");
