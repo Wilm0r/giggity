@@ -80,7 +80,7 @@
 	<string name="search_results">Results for \"%1$s\" in %2$s</string>
 
 	<!-- IteamSearchActivity -->
-	<string name="type_query_prompt">Type your query</string>
+	<string name="type_query_prompt">Type your search query</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>

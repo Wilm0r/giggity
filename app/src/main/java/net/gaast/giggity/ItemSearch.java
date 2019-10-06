@@ -3,20 +3,26 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.provider.ContactsContract;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
-import android.widget.Gallery;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.AbstractList;
+import java.util.ArrayList;
 
 public class ItemSearch extends LinearLayout implements ScheduleViewer {
 	private Giggity app;
@@ -25,7 +31,8 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 	private SearchQuery query;
 	private ProgressBar progress;
-	private ScheduleListView scroller;
+	private ScheduleListView resultList;
+	private QueryHistory queryList;
 
 	public ItemSearch(Activity ctx, Schedule sched) {
 		super(ctx);
@@ -36,28 +43,40 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 		RelativeLayout.LayoutParams lp;
 
-		query = new SearchQuery();
-		query.setBackgroundResource(R.color.primary);
-		query.setTextColor(getResources().getColor(R.color.light_text));
-		query.setHintTextColor(getResources().getColor(R.color.light_text));
-		app.setShadow(query, true);
+		LinearLayout queryOuter = new LinearLayout(ctx);
+		queryOuter.setBackgroundResource(R.color.primary);
+		app.setShadow(queryOuter, true);
+		app.setPadding(queryOuter, 16, 0, 16, 16);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		addView(query, lp);
+		addView(queryOuter, lp);
+		queryOuter.setClipToPadding(false);
+
+		query = new SearchQuery();
+		query.setTextColor(getResources().getColor(R.color.dark_text));
+		query.setHintTextColor(getResources().getColor(R.color.light_text_on_white));
+		query.setBackgroundResource(R.color.light_back);
+		query.setElevation(app.dp2px(4));
+		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		queryOuter.addView(query, lp);
 
 		progress = new ProgressBar(ctx);
 		progress.setIndeterminate(true);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(progress, lp);
 
-		scroller = new ScheduleListView(ctx);
+		queryList = new QueryHistory();
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		addView(scroller, lp);
+		addView(queryList, lp);
+
+		resultList = new ScheduleListView(ctx);
+		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		addView(resultList, lp);
 
 		query.requestFocus();
 		new UpdateIndexTask().execute(true);
 	}
 
-	// TODO: Use SearchView here probably?
+	// TODO: Use SearchView here maybe?
 	private class SearchQuery extends EditText {
 		private String lastQuery = "";
 
@@ -71,14 +90,18 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 		@Override
 		protected void onTextChanged(CharSequence text, int start, int lengthBefore, int lengthAfter) {
-			if (scroller == null || text.length() == 0) {
+			if (resultList == null || queryList == null) {
 				// Method gets called during construction, nope out.
 				return;
 			}
-
-			int cursor = start + lengthAfter;
-			lastQuery = text.subSequence(0, cursor) + "*" + text.subSequence(cursor, text.length());
-			Log.d("onTextChanged", lastQuery);
+			if (text.length() == 0) {
+				// Flush query so we'll display query history list (again)
+				lastQuery = "";
+			} else {
+				int cursor = start + lengthAfter;
+				lastQuery = text.subSequence(0, cursor) + "*" + text.subSequence(cursor, text.length());
+				Log.d("onTextChanged", lastQuery);
+			}
 
 			updateResults();
 		}
@@ -101,12 +124,77 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		}
 
 		private void updateResults() {
-			AbstractList<Schedule.Item> res = sched.searchItems(lastQuery);
-			if (res != null) {
-				scroller.setList(res);
-				scroller.refreshContents();
+			if (lastQuery.isEmpty()) {
+				queryList.setVisibility(VISIBLE);
+				resultList.setVisibility(GONE);
 			} else {
-				Toast.makeText(ctx, "Database query syntax error", Toast.LENGTH_SHORT).show();  // I18N
+				queryList.setVisibility(GONE);
+				resultList.setVisibility(VISIBLE);
+				AbstractList<Schedule.Item> res = sched.searchItems(lastQuery);
+				if (res != null) {
+					resultList.setList(res);
+					resultList.refreshContents();
+				} else {
+					Toast.makeText(ctx, "Database query syntax error", Toast.LENGTH_SHORT).show();  // I18N
+				}
+			}
+		}
+	}
+
+	private class QueryHistory extends ListView {
+		ArrayList<String> list = new ArrayList<>();
+
+		public QueryHistory() {
+			super(ctx);
+			list.add("dns");
+			list.add("linux");
+			list.add("google");
+			setDividerHeight(0);
+			setAdapter(new Adapter());
+			setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+					String q = list.get(i);
+					query.setText(q);
+					query.setSelection(q.length());
+					query.onEditorAction(EditorInfo.IME_ACTION_SEARCH);
+				}
+			});
+		}
+
+		private class Adapter extends BaseAdapter {
+			@Override
+			public int getCount() {
+				return list.size();
+			}
+
+			@Override
+			public Object getItem(int i) {
+				return list.get(i);
+			}
+
+			@Override
+			public long getItemId(int i) {
+				return i;
+			}
+
+			@Override
+			public View getView(int i, View view, ViewGroup viewGroup) {
+				LinearLayout ret = new LinearLayout(ctx);
+
+				ImageView icon = new ImageView(ctx);
+				icon.setImageResource(R.drawable.ic_history_black_24dp);
+				app.setPadding(icon, 4, 4, 12, 4);
+				ret.addView(icon, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+				TextView text = new TextView(ctx);
+				text.setText(list.get(i));
+				text.setGravity(Gravity.CENTER_VERTICAL);
+				ret.addView(text, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+
+				app.setPadding(ret, 8, 8,8 ,8);
+
+				return ret;
 			}
 		}
 	}
@@ -141,12 +229,12 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 	@Override
 	public void refreshContents() {
-		scroller.refreshContents();
+		resultList.refreshContents();
 	}
 
 	@Override
 	public void refreshItems() {
-		scroller.refreshItems();
+		resultList.refreshItems();
 	}
 
 	@Override

@@ -13,6 +13,7 @@
     <color name="time_back">#FFE9ECF3</color>
 
     <color name="light_text">#EEFFFFFF</color> <!-- on material/blue backgrounds -->
+    <color name="light_text_on_white">#EECCCCCC</color> <!-- on material/blue backgrounds -->
     <color name="dark_text">#FF000000</color> <!-- darker than default, for titles, etc -->
 
     <color name="light_back">#FFEEEEEE</color>
