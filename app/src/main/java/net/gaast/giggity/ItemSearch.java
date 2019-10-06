@@ -136,8 +136,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 	@Override
 	public void onShow() {
-		InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
-		imm.showSoftInput(query, InputMethodManager.SHOW_IMPLICIT);
+		app.showKeyboard(getContext(), query);
 	}
 
 	@Override

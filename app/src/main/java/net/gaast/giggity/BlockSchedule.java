@@ -487,7 +487,9 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 	}
 
 	@Override
-	public void onShow() {}
+	public void onShow() {
+		app.showKeyboard(getContext(), null);
+	}
 
 	@Override
 	public boolean multiDay() {

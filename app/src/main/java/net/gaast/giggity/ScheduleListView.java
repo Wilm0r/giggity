@@ -144,7 +144,9 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	}
 
 	@Override
-	public void onShow() {}
+	public void onShow() {
+		app.showKeyboard(getContext(), null);
+	}
 
 	private class EventAdapter extends BaseAdapter {
 		AbstractList<?> items;

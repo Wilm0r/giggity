@@ -21,6 +21,7 @@ package net.gaast.giggity;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,6 +34,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
 
@@ -218,5 +220,17 @@ public class Giggity extends Application {
 		prefix = prefix.replaceAll("<[^>]*>", "").replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 		full = full.replaceAll("<[^>]*>", "").replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 		return full.startsWith(prefix);
+	}
+
+	public void showKeyboard(Context ctx, View rx) {
+		InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (rx != null) {
+			imm.showSoftInput(rx, InputMethodManager.SHOW_IMPLICIT);
+		} else {
+			Activity a = (Activity) ctx;
+			// TODO: Fecker isn't hiding anything. Some examples use getCurrentFocus().getWindowToken()
+			// but at this stage no element has focus yet so that means null.getWindowToken() → kaboom
+			imm.hideSoftInputFromWindow(new View(a).getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+		}
 	}
 }

@@ -56,7 +56,9 @@ public class TrackList extends ListView implements ScheduleViewer {
 	}
 
 	@Override
-	public void onShow() {}
+	public void onShow() {
+		((Giggity)getContext().getApplicationContext()).showKeyboard(getContext(), null);
+	}
 
 	private class TrackAdapter extends BaseAdapter {
 		private final Schedule sched;

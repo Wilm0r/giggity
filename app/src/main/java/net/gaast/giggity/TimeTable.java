@@ -196,7 +196,9 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 	}
 
 	@Override
-	public void onShow() {}
+	public void onShow() {
+		app.showKeyboard(getContext(), null);
+	}
 
 	@Override
 	public boolean multiDay() {
