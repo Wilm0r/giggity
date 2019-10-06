@@ -231,13 +231,19 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			inflate(ctx, R.layout.schedule_line, this);
 
 			TextView tv = findViewById(R.id.lineTitle);
-			tv.setText(line.getTitle() + (track == null ? "" : " (" + track + ")"));
+			tv.setText(line.getTitle());
+			if (track != null) {
+				tv = findViewById(R.id.lineTrack);
+				tv.setText(track);
+				tv.setVisibility(View.VISIBLE);
+			}
 
 			if (line.getLocation() != null) {
 				// TODO: Restore icon or so to indicate location info is available for room?
 				// Also, maybe a nicer way to show (FOSDEM-specific, for now) room status
 				setOnClickListener(ScheduleUI.locationClickListener(getContext(), line));
 
+				// No clue when I stopped adding this view but I guess it can indeed stay away?
 				ImageView iv = new ImageView(ctx);
 				iv.setImageResource(R.drawable.ic_place_black_24dp);
 				iv.setId(2);
