@@ -424,12 +424,17 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			later = new ArrayList<>();
 			past = new ArrayList<>();
 			for (DbSchedule sched : scheds) {
-				if (sched.getStart().after(new Date()))
+				if (sched.getStart().after(new Date())) {
 					later.add(new Element(sched));
-				else if (sched.getEnd().before(new Date()))
-					past.add(new Element(sched));
-				else
+				} else if (sched.getEnd().before(new Date())) {
+					Element e = new Element(sched);
+					if (sched.getAtime().equals(sched.getStart())) {
+						e.setUnused();
+					}
+					past.add(e);
+				} else {
 					now.add(new Element(sched));
+				}
 			}
 
 			list = new ArrayList<>();
@@ -480,6 +485,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 			final static int FIRST = 1;
 			final static int LAST = 2;
+			final static int UNUSED = 4;
 
 			public Element(DbSchedule item_) {
 				item = item_;
@@ -495,6 +501,10 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 			public void setLast() {
 				flags |= LAST;
+			}
+
+			public void setUnused() {
+				flags |= UNUSED;
 			}
 
 			public View getView() {
@@ -530,6 +540,14 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 					app.setPadding(outer, 20, 0, 16, (flags & LAST) > 0 ? 16 : 0);
 					outer.addView(inner, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					inner.setElevation(app.dp2px(4));
+					outer.setClipToPadding(false);
+					inner.setClipToPadding(false);
+
+					if ((flags & UNUSED) != 0) {
+						title.setAlpha(0.6F);
+						when.setAlpha(0.6F);
+					}
 				} else {
 					TextView ret = new TextView(ChooserActivity.this);
 					ret.setText(header);
@@ -540,7 +558,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					app.setPadding(ret, 6, 3, 6, 3);
 
 					inner.addView(ret);
-					app.setPadding(inner, 4, 4, 0, 0);
+					app.setPadding(inner, 8, 8, 0, 0);
 
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 					lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -552,6 +570,11 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					outer.addView(blob, lp);
 
 					outer.addView(inner, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					ret.setElevation(app.dp2px(8));
+					blob.setElevation(app.dp2px(4));
+					inner.setElevation(app.dp2px(4));
+					outer.setClipToPadding(false);
+					inner.setClipToPadding(false);
 				}
 
 				return outer;

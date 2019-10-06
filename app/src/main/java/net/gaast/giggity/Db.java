@@ -458,7 +458,7 @@ public class Db {
 			Cursor q;
 
 			SQLiteDatabase db = dbh.getReadableDatabase();
-			q = db.rawQuery("Select * From schedule Order By sch_atime Desc", null);
+			q = db.rawQuery("Select * From schedule Order By sch_atime == sch_start, sch_atime Desc", null);
 			while (q.moveToNext()) {
 				ret.add(new DbSchedule(q));
 			}
