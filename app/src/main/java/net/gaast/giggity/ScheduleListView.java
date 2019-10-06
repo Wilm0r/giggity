@@ -21,12 +21,10 @@ package net.gaast.giggity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.Paint;
 import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -39,7 +37,6 @@ import android.widget.TextView;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Calendar;
 
 public class ScheduleListView extends ListView implements ScheduleViewer {
 	ArrayList<?> list;
@@ -192,13 +189,24 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			} else if (items.get(position).getClass() == Schedule.Line.class) {
 				return new ScheduleLineView(ctx, (Schedule.Line) items.get(position));
 			} else {
-				TextView tv = new TextView(ctx);
-				tv.setText((String) items.get(position));
-				tv.setTextSize(18);
-				tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-				tv.setTextColor(getResources().getColor(R.color.dark_text));
-				app.setPadding(tv, 4, 0, 0, 0);
-				return tv;
+				String text = (String) items.get(position);
+				if (text.trim().isEmpty()) {
+					/* Still abusing whitespace-only strings for spacing. */
+					TextView tv = new TextView(ctx);
+					tv.setText(text);
+					tv.setTextSize(18);
+					tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+					tv.setTextColor(getResources().getColor(R.color.dark_text));
+					app.setPadding(tv, 4, 0, 0, 0);
+					return tv;
+				} else {
+					/* There's actual text. Box it. */
+					RelativeLayout ret = new RelativeLayout(ctx);
+					inflate(ctx, R.layout.schedule_line, ret);
+					TextView tv = ret.findViewById(R.id.lineTitle);
+					tv.setText(text.trim());
+					return ret;
+				}
 			}
 		}
 	}
@@ -233,7 +241,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			TextView tv = findViewById(R.id.lineTitle);
 			tv.setText(line.getTitle());
 			if (track != null) {
-				tv = findViewById(R.id.lineTrack);
+				tv = findViewById(R.id.lineSubTitle);
 				tv.setText(track);
 				tv.setVisibility(View.VISIBLE);
 			}
