@@ -11,7 +11,7 @@
 	<string name="font_size">Schriftgröße bei der Programmübersicht</string>
 	<string name="always_refresh">Programm immer aktualisieren</string>
 	<string name="always_refresh_sub_off">Täglich nach neuer Version suchen</string>
-	<string name="strict_ssl">Striktes SSL</string>
+	<string name="strict_ssl">Striktes TLS</string>
 	<string name="strict_ssl_sub">Überprüfung des HTTPS Zertifikats</string>
     
 	<string name="block_schedule_style">Stil</string>

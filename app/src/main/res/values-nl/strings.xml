@@ -11,7 +11,7 @@
 	<string name="font_size">Letterype blokkenschema</string>
 	<string name="always_refresh">Programma\'s altijd verversen</string>
 	<string name="always_refresh_sub_off">Éénmaal per dag nieuwe versie downloaden</string>
-	<string name="strict_ssl">Strikte SSL</string>
+	<string name="strict_ssl">Strikte TLS</string>
 	<string name="strict_ssl_sub">SSL certificaten van HTTPS servers controleren</string>
     
 	<string name="block_schedule_style">Stijl</string>
