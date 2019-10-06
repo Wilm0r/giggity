@@ -271,7 +271,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			options = ActivityOptions.makeSceneTransitionAnimation(
 		               this, animationOrigin, "title");
 		}
-		startActivity(intent, options.toBundle());
+		startActivity(intent, options != null ? options.toBundle() : null);
 	}
 
 	private void openSchedule(DbSchedule event, boolean prefOnline, View animationOrigin) {
