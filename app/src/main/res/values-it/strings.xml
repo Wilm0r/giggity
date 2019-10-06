@@ -12,7 +12,7 @@
 	<string name="always_refresh">Ricarica sempre nuovi programmi</string>
 	<string name="always_refresh_sub_off">Controlla nuove versioni una volta al giorno</string>
 	<string name="strict_ssl">Controllo rigoroso TLS</string>
-	<string name="strict_ssl_sub">Validazione corretta certificati SSL</string>
+	<string name="strict_ssl_sub">Validazione corretta certificati TLS</string>
 
 	<string name="block_schedule_style">Stile</string>
 	<string name="block_schedule">Programma a blocchi</string>

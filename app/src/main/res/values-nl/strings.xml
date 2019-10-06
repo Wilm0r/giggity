@@ -12,7 +12,7 @@
 	<string name="always_refresh">Programma\'s altijd verversen</string>
 	<string name="always_refresh_sub_off">Éénmaal per dag nieuwe versie downloaden</string>
 	<string name="strict_ssl">Strikte TLS</string>
-	<string name="strict_ssl_sub">SSL certificaten van HTTPS servers controleren</string>
+	<string name="strict_ssl_sub">TLS certificaten van HTTPS servers controleren</string>
     
 	<string name="block_schedule_style">Stijl</string>
 	<string name="block_schedule">Blokkenschema</string>
