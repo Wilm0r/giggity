@@ -51,13 +51,23 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		addView(queryOuter, lp);
 		queryOuter.setClipToPadding(false);
 
+		LinearLayout queryInner = new LinearLayout(ctx);
+		ImageView icon = new ImageView(ctx);
+		icon.setImageResource(R.drawable.ic_search_black_24dp);
+		app.setPadding(icon, 8, 4, 8, 4);
+		icon.setForegroundGravity(Gravity.CENTER);
+		queryInner.addView(icon, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+
 		query = new SearchQuery();
 		query.setTextColor(getResources().getColor(R.color.dark_text));
 		query.setHintTextColor(getResources().getColor(R.color.light_text_on_white));
-		query.setBackgroundResource(R.color.light_back);
-		query.setElevation(app.dp2px(4));
+		queryInner.setBackgroundResource(R.color.light_back);
+		queryInner.setElevation(app.dp2px(4));
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		queryOuter.addView(query, lp);
+		queryInner.addView(query, lp);
+
+		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+		queryOuter.addView(queryInner, lp);
 
 		progress = new ProgressBar(ctx);
 		progress.setIndeterminate(true);
