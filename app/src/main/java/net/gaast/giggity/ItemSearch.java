@@ -121,6 +121,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 			if (actionCode == EditorInfo.IME_ACTION_SEARCH) {
 				// The * will disappear now which could modify the results ... can be annoying. :-(
 				lastQuery = getText().toString();
+				app.getDb().addSearchQuery(lastQuery);
 				updateResults();
 
 				// Keyboard obscures search results so go away!
@@ -136,6 +137,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		private void updateResults() {
 			if (lastQuery.isEmpty()) {
 				queryList.setVisibility(VISIBLE);
+				queryList.reload();
 				resultList.setVisibility(GONE);
 			} else {
 				queryList.setVisibility(GONE);
@@ -152,24 +154,40 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 	}
 
 	private class QueryHistory extends ListView {
-		ArrayList<String> list = new ArrayList<>();
+		AbstractList<String> list = new ArrayList<>();
 
 		public QueryHistory() {
 			super(ctx);
-			list.add("dns");
-			list.add("linux");
-			list.add("google");
 			setDividerHeight(0);
 			setAdapter(new Adapter());
 			setOnItemClickListener(new OnItemClickListener() {
 				@Override
 				public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-					String q = list.get(i);
-					query.setText(q);
-					query.setSelection(q.length());
-					query.onEditorAction(EditorInfo.IME_ACTION_SEARCH);
+					query(list.get(i));
 				}
 			});
+			setOnItemLongClickListener(new OnItemLongClickListener() {
+				@Override
+				public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+					query(list.get(i));
+					app.getDb().forgetSearchQuery(list.get(i));
+					return true;
+				}
+			});
+			reload();
+		}
+
+		private void query(String q) {
+			query.setText(q);
+			query.setSelection(q.length());
+			query.onEditorAction(EditorInfo.IME_ACTION_SEARCH);
+		}
+
+		public void reload() {
+			list = app.getDb().getSearchHistory();
+			Adapter a = (Adapter) getAdapter();
+			a.notifyDataSetChanged();
+			ItemSearch.this.refreshDrawableState();
 		}
 
 		private class Adapter extends BaseAdapter {

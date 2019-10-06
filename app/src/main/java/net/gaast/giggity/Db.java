@@ -66,7 +66,7 @@ import java.util.zip.GZIPInputStream;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 15;
+	private static final int dbVersion = 16;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -112,6 +112,9 @@ public class Db {
 			                                       "sci_stars Integer(2) Null)");
 			db.execSQL("Create Virtual Table item_search Using FTS4" +
 			           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+			db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
+			           "hst_query VarChar(128), " +
+					   "hst_atime Integer)");
 
 			oldDbVer = 0;
 		}
@@ -163,6 +166,16 @@ public class Db {
 						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
 						e.printStackTrace();
 					}
+				} else if (v == 16) {
+					/* ItemSearch history stored in database. */
+					try {
+						db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
+						           "hst_query VarChar(128), " +
+						           "hst_atime Integer)");
+					} catch (SQLiteException e) {
+						Log.e("DeoxideDb", "SQLite error, maybe table already exists?");
+						e.printStackTrace();
+					}
 				}
 			}
 
@@ -171,6 +184,12 @@ public class Db {
 				db.execSQL("Drop Table If Exists item_search");
 				db.execSQL("Create Virtual Table item_search Using FTS4" +
 				           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+
+				// We've just recreated the search index table, so flush all indexing timestamps
+				// that have now become lies.
+				ContentValues row = new ContentValues();
+				row.put("sch_itime", 0);
+				db.update("schedule", row, "", null);
 			} catch (SQLiteException e) {
 				Log.e("DeoxideDb", "SQLite error, maybe FTS support is missing?");
 				e.printStackTrace();
@@ -649,6 +668,34 @@ public class Db {
 					return sciId;
 				}
 			}
+		}
+
+		public void addSearchQuery(String query) {
+			SQLiteDatabase db = dbh.getWritableDatabase();
+			ContentValues row = new ContentValues();
+			row.put("hst_query", query);
+			row.put("hst_atime", new Date().getTime() / 1000);
+			if (db.update("search_history", row, "hst_query = ?", new String[]{query}) == 0) {
+				db.insert("search_history", null, row);
+				Log.d("addSearchQuery", query + " added");
+			} else {
+				Log.d("addSearchQuery", query + " updated");
+			}
+		}
+
+		public AbstractList<String> getSearchHistory() {
+			ArrayList<String> ret = new ArrayList<>();
+			SQLiteDatabase db = dbh.getReadableDatabase();
+			Cursor q = db.rawQuery("Select hst_query From search_history Order By hst_atime Desc", null);
+			while (q.moveToNext()) {
+				ret.add(q.getString(0));
+			}
+			return ret;
+		}
+
+		public void forgetSearchQuery(String query) {
+			SQLiteDatabase db = dbh.getWritableDatabase();
+			Log.d("forgetSearchQuery", query + " " + db.delete("search_history", "hst_query = ?", new String[]{query}));
 		}
 	}
 
