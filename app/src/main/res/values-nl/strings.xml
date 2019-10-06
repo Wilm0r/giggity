@@ -80,9 +80,9 @@
 	<string name="unhide">Verborgen items herstellen</string>
 	<string name="remove">Verwijderen</string>
 	<string name="show_url">URL weergeven...</string>
-	<string name="chooser_now">Huidige evenementen:</string>
-	<string name="chooser_later">Toekomstige evenementen:</string>
-	<string name="chooser_past">Afgelopen evenementen:</string>
+	<string name="chooser_now">Nu:</string>
+	<string name="chooser_later">Later:</string>
+	<string name="chooser_past">Afgelopen:</string>
 	<string name="add_dialog">Toevoegen...</string>
 	<string name="qr_scan">QR scannen</string>
 	<string name="enter_url">Voer programma URL in</string>

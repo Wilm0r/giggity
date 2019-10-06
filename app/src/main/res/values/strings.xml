@@ -88,9 +88,9 @@
 	<string name="unhide">Recover hidden items</string>
 	<string name="remove">Remove</string>
 	<string name="show_url">Show URL...</string>
-	<string name="chooser_now">Current events:</string>
-	<string name="chooser_later">Upcoming events:</string>
-	<string name="chooser_past">Previous events:</string>
+	<string name="chooser_now">Now:</string>
+	<string name="chooser_later">Later:</string>
+	<string name="chooser_past">Over:</string>
 	<string name="add_dialog">Add...</string>
 	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Enter schedule URL</string>

@@ -54,6 +54,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -129,6 +130,8 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			}
 			}
 		});
+		list.setBackgroundResource(R.color.light);
+		list.setDividerHeight(0);
 		
 		/* Filling in the list in onResume(). */
 		refresher = new SwipeRefreshLayout(this);
@@ -430,18 +433,19 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			}
 
 			list = new ArrayList<>();
-			if (now.size() > 0) {
-				list.add(new Element(R.string.chooser_now));
-				list.addAll(now);
+			addAll(now, R.string.chooser_now);
+			addAll(later, R.string.chooser_later);
+			addAll(past, R.string.chooser_past);
+		}
+
+		private void addAll(ArrayList<Element> bunch, int title) {
+			if (bunch.size() == 0) {
+				return;
 			}
-			if (later.size() > 0) {
-				list.add(new Element(R.string.chooser_later));
-				list.addAll(later);
-			}
-			if (past.size() > 0) {
-				list.add(new Element(R.string.chooser_past));
-				list.addAll(past);
-			}
+			bunch.get(0).setFirst();
+			bunch.get(bunch.size() - 1).setLast();
+			list.add(new Element(title));
+			list.addAll(bunch);
 		}
 
 		@Override
@@ -472,46 +476,85 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		private class Element {
 			String header;
 			DbSchedule item;
+			int flags;
 
-			public Element(int res) {
-				header = ChooserActivity.this.getResources().getString(res);
-			}
+			final static int FIRST = 1;
+			final static int LAST = 2;
 
 			public Element(DbSchedule item_) {
 				item = item_;
 			}
 
+			public Element(int res) {
+				header = ChooserActivity.this.getResources().getString(res);
+			}
+
+			public void setFirst() {
+				flags |= FIRST;
+			}
+
+			public void setLast() {
+				flags |= LAST;
+			}
+
 			public View getView() {
 				Giggity app = (Giggity) getApplication();
+				LinearLayout inner = new LinearLayout(ChooserActivity.this);
+				RelativeLayout outer = new RelativeLayout(ChooserActivity.this);
+
 				if (item != null) {
-					LinearLayout ret = new LinearLayout(ChooserActivity.this);
 					TextView title, when;
 
 					title = new TextView(ChooserActivity.this);
 					title.setText(item.getTitle());
 					title.setTextSize(22);
 					title.setTextColor(getResources().getColor(R.color.dark_text));
-					ret.addView(title);
+					inner.addView(title);
 
 					when = new TextView(ChooserActivity.this);
 					when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
 					when.setTextSize(12);
-					ret.addView(when);
+					inner.addView(when);
 
-					ret.setOrientation(LinearLayout.VERTICAL);
-					app.setPadding(ret, 0, 3, 0, 4);
+					inner.setOrientation(LinearLayout.VERTICAL);
+					app.setPadding(inner, 10, (flags & FIRST) > 0 ? 0 : 3, 6, (flags & LAST) > 0 ? 10 : 0);
+					inner.setBackgroundResource(R.color.light_back);
 
-					return ret;
+					if ((flags & LAST) == 0) {
+						View div = new View(ChooserActivity.this);
+						div.setMinimumHeight(app.dp2px(1));
+						div.setBackgroundResource(R.color.light);
+						app.setPadding(when, 0, 0, 0, 4);
+						inner.addView(div, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					}
+
+					app.setPadding(outer, 20, 0, 16, (flags & LAST) > 0 ? 16 : 0);
+					outer.addView(inner, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 				} else {
 					TextView ret = new TextView(ChooserActivity.this);
 					ret.setText(header);
 					ret.setTextSize(18);
 					ret.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-					ret.setTextColor(getResources().getColor(R.color.dark_text));
-					app.setPadding(ret, 0, 24, 0, 3);
+					ret.setBackgroundResource(R.color.primary);
+					ret.setTextColor(getResources().getColor(R.color.light_text));
+					app.setPadding(ret, 6, 3, 6, 3);
 
-					return ret;
+					inner.addView(ret);
+					app.setPadding(inner, 4, 4, 0, 0);
+
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+					lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+					lp.setMargins(app.dp2px(20), 0, app.dp2px(16), 0);
+					View blob = new View(ChooserActivity.this);
+					blob.setMinimumHeight(app.dp2px(10));
+					blob.setBackgroundResource(R.color.light_back);
+					app.setPadding(blob, 20, 20, 20, 20);
+					outer.addView(blob, lp);
+
+					outer.addView(inner, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 				}
+
+				return outer;
 			}
 		}
 	}
