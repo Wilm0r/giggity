@@ -24,7 +24,6 @@ import android.content.Context;
 import org.threeten.bp.ZonedDateTime;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 
 public class NowNext extends ScheduleListView implements ScheduleViewer {
@@ -42,7 +41,7 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void refreshContents() {
-		Date now = new Date();
+		ZonedDateTime now = ZonedDateTime.now();
 		LinkedList<Schedule.Item> nextList = new LinkedList<>();
 		ArrayList fullList = new ArrayList();
 
@@ -51,7 +50,7 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 		int i = 0;
 		for (ZonedDateTime day : sched.getDays()) {
 			ZonedDateTime dayEnd = day.plusDays(1);
-			if (dayEnd.isBefore(ZonedDateTime.now())) {
+			if (day.isBefore(now) && dayEnd.isAfter(now)) {
 				sched.setDay(i);
 				break;
 			}
@@ -62,12 +61,12 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 			fullList.add(this.getResources().getString(R.string.no_events_today));
 		} else {
 			fullList.add(this.getResources().getString(R.string.now));
-			
+
 			for (Schedule.Line tent : sched.getTents()) {
 				for (Schedule.Item item : tent.getItems()) {
-					if (item.getStartTime().before(now) && item.getEndTime().after(now)) {
+					if (item.getStartTimeZoned().isBefore(now) && item.getEndTimeZoned().isAfter(now)) {
 						fullList.add(item);
-					} else if (item.getStartTime().after(now)) {
+					} else if (item.getStartTimeZoned().isAfter(now)) {
 						nextList.add(item);
 						break;
 					}

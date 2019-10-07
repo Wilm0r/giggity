@@ -66,7 +66,7 @@ public class Giggity extends Application {
 		
 		/* This was necessary when using timezone-naive Date classes. I've mostly dropped those
 		 * but haven't finished picking up tz-awareness yet, also schedule files lack tz info
-		  * still most of the time. So ... keep flushing data for now I guess. :-( */
+		 * still most of the time. So ... keep flushing data for now I guess. :-( */
 		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context arg0, Intent arg1) {
