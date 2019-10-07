@@ -81,6 +81,7 @@
 
 	<!-- IteamSearchActivity -->
 	<string name="type_query_prompt">Type your search query</string>
+	<string name="search_results_empty">Your search query did not match any events.</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>

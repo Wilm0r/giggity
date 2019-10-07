@@ -98,4 +98,5 @@
 	<string name="widg_no_upcoming">Niks op komst :-(</string>
 	<string name="home_shortcut">Aan thuisscherm toevoegen</string>
 	<string name="type_query_prompt">Vul zoekopdracht in</string>
+	<string name="search_results_empty">Deze zoekopdracht geeft geen resultaten.</string>
 </resources>

@@ -142,8 +142,11 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 			} else {
 				queryList.setVisibility(GONE);
 				resultList.setVisibility(VISIBLE);
-				AbstractList<Schedule.Item> res = sched.searchItems(lastQuery);
+				AbstractList res = sched.searchItems(lastQuery);
 				if (res != null) {
+					if (res.size() == 0) {
+						res.add(ctx.getString(R.string.search_results_empty));
+					}
 					resultList.setList(res);
 					resultList.refreshContents();
 				} else {
@@ -245,7 +248,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		@Override
 		protected void onPostExecute(Boolean b) {
 			Log.d("UpdateIndex", "Done! Updating search results");
-			removeView(progress);
+			progress.setVisibility(GONE);
 			query.updateResults();
 		}
 	}
