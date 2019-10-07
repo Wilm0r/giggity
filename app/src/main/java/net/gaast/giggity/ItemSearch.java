@@ -79,7 +79,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		addView(queryList, lp);
 
 		resultList = new ScheduleListView(ctx);
-		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		addView(resultList, lp);
 
 		query.requestFocus();
