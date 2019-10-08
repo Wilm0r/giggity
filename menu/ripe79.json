@@ -1,0 +1,20 @@
+{
+	"version": 2018100801,
+	"url": "https://ripe79.ripe.net/wp-admin/admin-post.php?action=mps_get_agenda_ics",
+	"title": "RIPE 79",
+	"start": "2019-10-14",
+	"end": "2019-10-18",
+	"metadata": {
+		"icon": "https://ripe79.ripe.net/wp-content/themes/fluida-ripe-child/images/Meeting_logo.png",
+		"links": [
+			{
+				"url": "https://ripe79.ripe.net/",
+				"title": "Ripe 79 Website"
+			},
+			{
+				"url": "https://ripe79.ripe.net/programme/meeting-plan/",
+				"title": "Conference Program (website)"
+			}
+		]
+	}
+}
