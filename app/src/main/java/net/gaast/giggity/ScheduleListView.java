@@ -101,14 +101,21 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	protected AbstractList<?> getList() {
 		return list;
 	}
-	
+
 	protected void setCompact(boolean compact) {
 		if (compact)
 			itemViewFlags |= ScheduleItemView.COMPACT;
 		else
 			itemViewFlags &= ~ScheduleItemView.COMPACT;
 	}
-	
+
+	protected void setHideDate(boolean hideDate) {
+		if (hideDate)
+			itemViewFlags |= ScheduleItemView.HIDE_DATE;
+		else
+			itemViewFlags &= ~ScheduleItemView.HIDE_DATE;
+	}
+
 	protected void setShowNow(boolean showNow) {
 		if (showNow)
 			itemViewFlags |= ScheduleItemView.SHOW_NOW;

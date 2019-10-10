@@ -1417,9 +1417,11 @@ public class Schedule implements Serializable {
 				// Log.d("Schedule.Item.compareTo", "null-ish object passed");
 				return -123;
 			}
-			if ((ret = getStartTimeZoned().compareTo(another.getStartTimeZoned())) != 0)
+			if ((ret = getStartTimeZoned().compareTo(another.getStartTimeZoned())) != 0) {
+				if (Schedule.this.curDay != null)
+					Log.d("time compared", "" + getStartTimeZoned() + another.getStartTimeZoned() + getTitle() + " " + another.getTitle() + " " +  + ret);
 				return ret;
-			else if ((ret = getTitle().compareTo(another.getTitle())) != 0)
+			} else if ((ret = getTitle().compareTo(another.getTitle())) != 0)
 				return ret;
 			else
 				return another.hashCode() - hashCode();

@@ -20,7 +20,8 @@ public class ScheduleItemView extends LinearLayout {
 	public static final int SHOW_NOW = 4;
 	public static final int SHORT_TITLE = 8;
 	public static final int HIDE_ENDTIME = 16;
-	
+	public static final int HIDE_DATE = 32;
+
 	public ScheduleItemView(Context ctx, Schedule.Item item, int flags) {
 		super(ctx);
 
@@ -58,6 +59,10 @@ public class ScheduleItemView extends LinearLayout {
 		} else {
 			date.setVisibility(GONE);
 			room.setVisibility(GONE);
+		}
+
+		if ((flags & HIDE_DATE) != 0) {
+			date.setVisibility(GONE);
 		}
 
 		if ((flags & SHOW_REMIND) != 0 && item.getRemind()) {

@@ -23,8 +23,9 @@ import android.content.Context;
 
 import org.threeten.bp.ZonedDateTime;
 
+import java.util.AbstractCollection;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.TreeSet;
 
 public class NowNext extends ScheduleListView implements ScheduleViewer {
 	private Schedule sched;
@@ -34,7 +35,8 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 		super(ctx_);
 		ctx = ctx_;
 		sched = sched_;
-		
+
+		setHideDate(true);
 		refreshContents();
 	}
 
@@ -42,8 +44,10 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 	@Override
 	public void refreshContents() {
 		ZonedDateTime now = ZonedDateTime.now();
-		LinkedList<Schedule.Item> nextList = new LinkedList<>();
+		AbstractCollection<Schedule.Item> nextList;
 		ArrayList fullList = new ArrayList();
+
+		boolean byTime = true;
 
 		/* Set the schedule's day to today so we don't show tomorrow's 
 		 * stuff as "next". */
@@ -56,19 +60,34 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 			}
 			i ++;
 		}
-		
+
+		if (byTime) {
+			nextList = new TreeSet<>();
+		} else {
+			nextList = new ArrayList<>();
+		}
+
 		if (sched.getDay() == null) {
 			fullList.add(this.getResources().getString(R.string.no_events_today));
 		} else {
 			fullList.add(this.getResources().getString(R.string.now));
 
+			ZonedDateTime nextHour = now.plusHours(1);
+
 			for (Schedule.Line tent : sched.getTents()) {
+				boolean haveNext = false;  // Found at least one next item?
 				for (Schedule.Item item : tent.getItems()) {
 					if (item.getStartTimeZoned().isBefore(now) && item.getEndTimeZoned().isAfter(now)) {
 						fullList.add(item);
 					} else if (item.getStartTimeZoned().isAfter(now)) {
+						if (byTime && haveNext && item.getStartTimeZoned().isAfter(nextHour)) {
+							break;
+						}
 						nextList.add(item);
-						break;
+						haveNext = true;
+						if (!byTime) {
+							break;
+						}
 					}
 				}
 			}
