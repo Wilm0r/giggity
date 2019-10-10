@@ -974,8 +974,10 @@ public class ScheduleViewActivity extends Activity {
 		public void show() {
 			if (sched == null || viewer == null || sched.getDays().size() <= 1 || viewer.multiDay())
 				return;
-			if (sched.getDays().size() == 2)
+			if (sched.getDays().size() == 2) {
 				dayPrev.setVisibility(View.GONE);
+				dayNext.setImageResource(R.drawable.ic_calendar_24px);
+			}
 
 			/* Z ordering in RelativeLayouts seems to be most-recently-added,
 			 * so we have to keep bringing the buttons to front. :-/ */
