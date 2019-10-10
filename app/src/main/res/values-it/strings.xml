@@ -65,11 +65,11 @@
 	<!-- NowNext -->
 	<string name="no_events_today">Nessun evento oggi.</string>
 	<string name="now">Adesso:</string>
-	<string name="next">Prossimo:</string>
+	<string name="next">Prossimo</string>
 	
 	<!-- MyItemsView -->
-	<string name="coming_up">Prossimi:</string>
-	<string name="seen_so_far">Visti finora:</string>
+	<string name="coming_up">Prossimi</string>
+	<string name="seen_so_far">Visti finora</string>
 	<string name="none_marked">Nessun elemento segnato.</string>
 	
 	<!-- ChooserActivity -->
@@ -77,9 +77,9 @@
 	<string name="unhide">Recupera elementi nascosti</string>
 	<string name="remove">Rimuovi</string>
 	<string name="show_url">Mostra URL...</string>
-	<string name="chooser_now">Eventi in corso:</string>
-	<string name="chooser_later">Eventi in arrivo:</string>
-	<string name="chooser_past">Eventi precedenti:</string>
+	<string name="chooser_now">Eventi in corso</string>
+	<string name="chooser_later">Eventi in arrivo</string>
+	<string name="chooser_past">Eventi precedenti</string>
 	<string name="add_dialog">Aggiungi...</string>
 	<string name="qr_scan">Leggi QR</string>
 	<string name="enter_url">Inserisci URL del programma</string>

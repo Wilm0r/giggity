@@ -64,12 +64,12 @@
 	
 	<!-- NowNext -->
 	<string name="no_events_today">Niks op het programma vandaag.</string>
-	<string name="now">Nu:</string>
-	<string name="next">Straks:</string>
+	<string name="now">Nu</string>
+	<string name="next">Straks</string>
 	
 	<!-- MyItemsView -->
-	<string name="coming_up">Nog te gaan:</string>
-	<string name="seen_so_far">Voorbij:</string>
+	<string name="coming_up">Nog te gaan</string>
+	<string name="seen_so_far">Voorbij</string>
 	<string name="none_marked">Nog niks gemarkeerd.</string>
 
 	<!-- SearchActivity -->
@@ -80,9 +80,9 @@
 	<string name="unhide">Verborgen items herstellen</string>
 	<string name="remove">Verwijderen</string>
 	<string name="show_url">URL weergeven...</string>
-	<string name="chooser_now">Nu:</string>
-	<string name="chooser_later">Later:</string>
-	<string name="chooser_past">Afgelopen:</string>
+	<string name="chooser_now">Nu</string>
+	<string name="chooser_later">Later</string>
+	<string name="chooser_past">Afgelopen</string>
 	<string name="add_dialog">Toevoegen...</string>
 	<string name="qr_scan">QR scannen</string>
 	<string name="enter_url">Voer programma URL in</string>
@@ -97,6 +97,6 @@
 	<string name="widg_soon">Binnenkort</string>
 	<string name="widg_no_upcoming">Niks op komst :-(</string>
 	<string name="home_shortcut">Aan thuisscherm toevoegen</string>
-	<string name="type_query_prompt">Vul zoekopdracht in</string>
+	<string name="type_query_prompt">Voer zoekopdracht in</string>
 	<string name="search_results_empty">Deze zoekopdracht geeft geen resultaten.</string>
 </resources>

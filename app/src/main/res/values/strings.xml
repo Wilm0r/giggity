@@ -68,12 +68,12 @@
 
 	<!-- NowNext -->
 	<string name="no_events_today">No events today.</string>
-	<string name="now">Now:</string>
-	<string name="next">Next:</string>
+	<string name="now">Now</string>
+	<string name="next">Next</string>
 	
 	<!-- MyItemsView -->
-	<string name="coming_up">Coming up:</string>
-	<string name="seen_so_far">Seen so far:</string>
+	<string name="coming_up">Coming up</string>
+	<string name="seen_so_far">Seen so far</string>
 	<string name="none_marked">No items marked yet.</string>
 
 	<!-- SearchActivity (deprecated) -->
@@ -88,9 +88,9 @@
 	<string name="unhide">Recover hidden items</string>
 	<string name="remove">Remove</string>
 	<string name="show_url">Show URL...</string>
-	<string name="chooser_now">Now:</string>
-	<string name="chooser_later">Later:</string>
-	<string name="chooser_past">Over:</string>
+	<string name="chooser_now">Now</string>
+	<string name="chooser_later">Later</string>
+	<string name="chooser_past">Over</string>
 	<string name="add_dialog">Add...</string>
 	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Enter schedule URL</string>

@@ -69,12 +69,12 @@
 
 	<!-- NowNext -->
 	<string name="no_events_today">Heute keine Veranstaltungen.</string>
-	<string name="now">Jetzt:</string>
-	<string name="next">Gleich:</string>
+	<string name="now">Jetzt</string>
+	<string name="next">Gleich</string>
 
 	<!-- MyItemsView -->
-	<string name="coming_up">Kommende Veranstaltungen:</string>
-	<string name="seen_so_far">Schon besuchte Veranstaltungen:</string>
+	<string name="coming_up">Kommende Veranstaltungen</string>
+	<string name="seen_so_far">Schon besuchte Veranstaltungen</string>
 	<string name="none_marked">Noch keine Veranstaltung markiert.</string>
 	
 	<!-- SearchActivity -->
@@ -85,9 +85,9 @@
 	<string name="unhide">Wiederherstellen von versteckten Einträgen</string>
 	<string name="remove">Entfernen</string>
 	<string name="show_url">URL anzeigen...</string>
-	<string name="chooser_now">Aktuelle Veranstaltungen:</string>
-	<string name="chooser_later">Kommende Veranstaltungen:</string>
-	<string name="chooser_past">Bisherige Veranstaltungen:</string>
+	<string name="chooser_now">Aktuelle Veranstaltungen</string>
+	<string name="chooser_later">Kommende Veranstaltungen</string>
+	<string name="chooser_past">Bisherige Veranstaltungen</string>
 	<string name="add_dialog">Hinzufügen...</string>
 	<string name="qr_scan">Scan QR-Code</string>
 	<string name="enter_url">URL eingeben</string>
