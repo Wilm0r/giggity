@@ -1,6 +1,7 @@
 {
 	"version": 2019100802,
 	"url": "https://ripe79.ripe.net/wp-admin/admin-post.php?action=mps_get_agenda_ics",
+	"id": "RIPE 79 Agenda",
 	"title": "RIPE 79",
 	"start": "2019-10-14",
 	"end": "2019-10-18",
