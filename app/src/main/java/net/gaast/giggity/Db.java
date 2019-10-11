@@ -59,6 +59,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
@@ -66,7 +67,7 @@ import java.util.zip.GZIPInputStream;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 16;
+	private static final int dbVersion = 17;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -176,6 +177,9 @@ public class Db {
 						Log.e("DeoxideDb", "SQLite error, maybe table already exists?");
 						e.printStackTrace();
 					}
+				} else if (v == 17) {
+					/* This is a little more work so "shell out". */
+					mergeDuplicateUrls(db);
 				}
 			}
 
@@ -196,6 +200,33 @@ public class Db {
 			}
 
 			oldDbVer = Math.min(oldDbVer, oldVersion);
+		}
+
+		private void mergeDuplicateUrls(SQLiteDatabase db) {
+			// https://github.com/Wilm0r/giggity/issues/134
+			// That string ID should never have been and may have resulted in duplicate entries
+			// in some folks' databases. Clean that up now and try to do so nicely
+			// (preserving selections).
+			Cursor q = db.rawQuery("Select sch_id, sch_url From schedule", null);
+			HashMap<String, Integer> urlId = new HashMap<>();  // URL → db ID
+			HashMap<Integer, Integer> idId = new HashMap<>();  // dupe id → preserve ID
+			while (q.moveToNext()) {
+				if (urlId.containsKey(q.getString(1))) {
+					idId.put(q.getInt(0), urlId.get(q.getString(1)));
+				} else {
+					urlId.put(q.getString(1), q.getInt(0));
+				}
+			}
+			// Update sci_sch_id refs
+			for (Map.Entry e : idId.entrySet()) {
+				ContentValues row = new ContentValues();
+				row.put("sci_sch_id", (Integer) e.getValue());
+				db.update("schedule_item", row, "sci_sch_id = ?", new String[]{""+(Integer)e.getKey()});
+			}
+			// Remove the extra schedule table row
+			for (Map.Entry e : idId.entrySet()) {
+				db.delete("schedule", "sch_id = ?", new String[]{"" + e.getKey()});
+			}
 		}
 
 		@Override
@@ -258,10 +289,6 @@ public class Db {
 		Log.d("cursor", "" + q.getCount());
 		if (sched.version > last_version && q.getCount() == 0) {
 			ContentValues row = new ContentValues();
-			if (sched.id != null)
-				row.put("sch_id_s", sched.id);
-			else
-				row.put("sch_id_s", Schedule.hashify(sched.url));
 			row.put("sch_url", sched.url);
 			row.put("sch_title", sched.title);
 			row.put("sch_atime", sched.start.getTime() / 1000);
@@ -407,7 +434,6 @@ public class Db {
 			sched = sched_;
 
 			row = new ContentValues();
-			row.put("sch_id_s", sched.getId());
 			row.put("sch_title", sched.getTitle());
 			row.put("sch_url", url);
 			row.put("sch_atime", new Date().getTime() / 1000);
@@ -417,8 +443,8 @@ public class Db {
 				row.put("sch_rtime", new Date().getTime() / 1000);
 
 			SQLiteDatabase db = dbh.getWritableDatabase();
-			q = db.rawQuery("Select sch_id, sch_day, sch_metadata From schedule Where sch_id_s = ?",
-			                new String[]{sched.getId()});
+			q = db.rawQuery("Select sch_id, sch_day, sch_metadata From schedule Where sch_url = ?",
+			                new String[]{sched.getUrl()});
 			
 			if (q.getCount() == 0) {
 				row.put("sch_day", 0);
@@ -720,7 +746,6 @@ public class Db {
 		public DbSchedule(Cursor q) {
 			id_n = q.getInt(q.getColumnIndexOrThrow("sch_id")); 
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
-			id = q.getString(q.getColumnIndexOrThrow("sch_id_s"));
 			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
 			start = new Date(q.getLong(q.getColumnIndexOrThrow("sch_start")) * 1000);
 			end = new Date(q.getLong(q.getColumnIndexOrThrow("sch_end")) * 1000);

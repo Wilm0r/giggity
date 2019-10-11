@@ -75,7 +75,7 @@ import java.util.zip.Inflater;
 public class Schedule implements Serializable {
 	private final int detectHeaderSize = 1024;
 	
-	private String id, url;
+	private String url;
 	private String title;
 
 	private LinkedList<Schedule.Line> tents = new LinkedList<>();
@@ -130,13 +130,7 @@ public class Schedule implements Serializable {
 		Log.d("load", "Schedule has " + languages.size() + " languages");
 
 		if (title == null)
-			if (id != null)
-				title = id;
-			else
-				title = url;
-
-		if (id == null)
-			id = hashify(url);
+			title = url;
 
 		if (allItems.size() == 0) {
 			throw new LoadException(getString(R.string.schedule_empty));
@@ -585,10 +579,6 @@ public class Schedule implements Serializable {
 		}
 	}
 
-	public String getId() {
-		return id;
-	}
-	
 	public String getUrl() {
 		return url;
 	}
@@ -865,9 +855,12 @@ public class Schedule implements Serializable {
 				
 				eventData = null;
 			} else if (localName.equals("x-wr-calname")) {
-				id = curString;
-			} else if (localName.equals("x-wr-caldesc")) {
 				title = curString;
+			} else if (localName.equals("x-wr-caldesc")) {
+				// Fall back to this field if necessary, calname is likely more suitable (brief)
+				if (title == null) {
+					title = curString;
+				}
 			} else if (eventData != null) {
 				eventData.put(localName, curString);
 			}
