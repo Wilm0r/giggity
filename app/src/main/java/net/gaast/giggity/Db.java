@@ -422,8 +422,6 @@ public class Db {
 			sched = sched_;
 
 			row = new ContentValues();
-			row.put("sch_title", sched.getTitle());
-			row.put("sch_url", url);
 			row.put("sch_atime", new Date().getTime() / 1000);
 			row.put("sch_start", sched.getFirstTime().getTime() / 1000);
 			row.put("sch_end", sched.getLastTime().getTime() / 1000);
@@ -433,21 +431,21 @@ public class Db {
 			SQLiteDatabase db = dbh.getWritableDatabase();
 			q = db.rawQuery("Select sch_id, sch_day, sch_metadata From schedule Where sch_url = ?",
 			                new String[]{sched.getUrl()});
-			
-			if (q.getCount() == 0) {
-				row.put("sch_day", 0);
-				schId = db.insert("schedule", null, row);
-				Log.i("DeoxideDb", "Adding schedule to database");
-			} else if (q.getCount() == 1) {
-				q.moveToNext();
+
+			if (q.moveToNext()) {
+				/* Pick up additional data from the database. TODO: Pick up title (can't feed it back yet.) */
 				schId = q.getLong(0);
 				day = (int) q.getLong(1);
-				Log.d("metadata", "" + q.getString(2));
 				metadata = q.getString(2);
-				
+
 				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
-			} else {
-				Log.e("DeoxideDb", "Database corrupted");
+			} else if (q.getCount() == 0) {
+				// Set defaults, and only use schedule fule's title since we didn't already have one.
+				row.put("sch_day", 0);
+				row.put("sch_title", sched.getTitle());
+				row.put("sch_url", url);
+				schId = db.insert("schedule", null, row);
+				Log.i("DeoxideDb", "Added schedule to database");
 			}
 			Log.i("DeoxideDb", "schedId: " + schId);
 			q.close();
