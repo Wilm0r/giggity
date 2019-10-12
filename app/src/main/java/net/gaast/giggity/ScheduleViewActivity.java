@@ -217,11 +217,6 @@ public class ScheduleViewActivity extends Activity {
 			return;
 
 		String url = getIntent().getDataString();
-		Fetcher.Source fs;
-		if (getIntent().getBooleanExtra("PREFER_CACHED", false))
-			fs = Fetcher.Source.CACHE_ONLINE;
-		else
-			fs = Fetcher.Source.ONLINE_CACHE;
 
 		try {
 			Uri parsed = Uri.parse(url);
@@ -250,14 +245,14 @@ public class ScheduleViewActivity extends Activity {
 
 		if (app.hasSchedule(url)) {
 			try {
-				sched = app.getSchedule(url, fs);
+				sched = app.getSchedule(url, Fetcher.Source.CACHE_ONLINE);
 			} catch (Exception e) {
 				// Java makes me tired. We've already called hasSchedule so we're fine.
 				e.printStackTrace();
 			}
 			onScheduleLoaded();
 		} else {
-			loadScheduleAsync(url, fs);
+			loadScheduleAsync(url, Fetcher.Source.CACHE_ONLINE);
 		}
 	}
 

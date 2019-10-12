@@ -119,7 +119,6 @@ public class Reminder extends Service {
 		/* Prepare the intent that will show the EventDialog. */
 		Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
 				app, ScheduleViewActivity.class);
-		evi.putExtra("PREFER_CACHED", true);
 
 		/* Generate a notification. */
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

@@ -9,8 +9,6 @@
 	<!--  Settings -->
 	<string name="default_view">Default view</string>
 	<string name="font_size">Block schedule font size</string>
-	<string name="always_refresh">Always reload schedules</string>
-	<string name="always_refresh_sub_off">Check for new version once a day</string>
 	<string name="strict_ssl">Strict TLS</string>
 	<string name="strict_ssl_sub">Proper HTTPS certificate validation</string>
     

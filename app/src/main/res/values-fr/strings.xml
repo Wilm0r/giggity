@@ -9,8 +9,6 @@
 	<!--  Settings -->
 	<string name="default_view">Vue par défaut</string>
 	<string name="font_size">Taille de police pour la grille</string>
-	<string name="always_refresh">Toujours mettre à jour le programme</string>
-	<string name="always_refresh_sub_off">Vérifier une fois par jour</string>
 	<string name="strict_ssl">TLS strict</string>
 	<string name="strict_ssl_sub">Valider les certificats HTTPS correctement</string>
     
