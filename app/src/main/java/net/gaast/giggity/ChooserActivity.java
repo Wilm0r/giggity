@@ -228,9 +228,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				intent.putExtra("ENCODE_DATA", sched.getUrl());
 				startActivity(intent);
 			} catch (ActivityNotFoundException e) {
+				TextView selectableUrl = new TextView(this);
+				selectableUrl.setText(sched.getUrl());
+				selectableUrl.setTextIsSelectable(true);
+				app.setPadding(selectableUrl, 16, 8, 8, 16);
 				new AlertDialog.Builder(ChooserActivity.this)
 						.setTitle(sched.getTitle())
-						.setMessage(sched.getUrl())
+						.setView(selectableUrl)
 						.show();
 			}
 		}
