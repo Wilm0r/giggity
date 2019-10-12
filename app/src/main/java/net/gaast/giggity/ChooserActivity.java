@@ -125,7 +125,9 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				menu.setHeaderTitle(sched.getTitle());
 				menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
 				menu.add(ContextMenu.NONE, 3, 0, R.string.unhide);
-				menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
+				// Don't support this for now. With tedious versioning of menu.json removed, I can't
+				// be bothered to try to preserve these deletions. (Who does this anyway?)
+				// menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
 				menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
 			}
 			}

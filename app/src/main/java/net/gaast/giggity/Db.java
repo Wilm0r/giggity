@@ -32,7 +32,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.util.Pair;
 
 import com.github.movies.OkapiBM25;
 
@@ -60,7 +59,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
 
@@ -253,7 +251,8 @@ public class Db {
 			}
 		}
 
-		int version = pref.getInt("last_menu_seed_version", 0), newver = version;
+		int version = pref.getInt("last_menu_seed_version", 0);
+		int newver = seed.version;
 		
 		if (seed.version <= version && oldDbVer == dbVersion) {
 			/* No updates required, both data and structure are up to date. */
@@ -263,8 +262,7 @@ public class Db {
 		
 		long ts = new Date().getTime() / 1000;
 		for (Seed.Schedule sched : seed.schedules) {
-			newver = Math.max(newver, sched.version);
-			updateSchedule(db, sched, version);
+			updateSchedule(db, sched);
 		}
 		
 		if (newver != version) {
@@ -274,7 +272,7 @@ public class Db {
 		}
 	}
 
-	private void updateSchedule(SQLiteDatabase db, Seed.Schedule sched, int last_version) {
+	private void updateSchedule(SQLiteDatabase db, Seed.Schedule sched) {
 		if (sched.start.equals(sched.end)) {
 			/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
 			sched.start.setHours(6);
@@ -285,33 +283,27 @@ public class Db {
 			sched.start.setHours(12);
 			sched.end.setHours(12);
 		}
+
 		Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
-		Log.d("cursor", "" + q.getCount());
-		if (sched.version > last_version && q.getCount() == 0) {
-			ContentValues row = new ContentValues();
+
+		ContentValues row = new ContentValues();
+		if (q.getCount() == 0) {
+			/* Only needed when creating a brand new entry (don't overwrite atime otherwise!) */
 			row.put("sch_url", sched.url);
-			row.put("sch_title", sched.title);
 			row.put("sch_atime", sched.start.getTime() / 1000);
+		}
+		if (q.getCount() == 0 || oldDbVer < 8) {
+			/* This bit also needed if the database version was ridiculously ancient (unlikely) */
 			row.put("sch_start", sched.start.getTime() / 1000);
 			row.put("sch_end", sched.end.getTime() / 1000);
-			row.put("sch_metadata", sched.metadata);
-			db.insert("schedule", null, row);
-		} else if (q.getCount() == 1) {
-			q.moveToNext();
-			if (oldDbVer < 8) {
-				/* We're upgrading from < 8 so we have to backfill the start/end columns. */
-				ContentValues row = new ContentValues();
-				row.put("sch_start", sched.start.getTime() / 1000);
-				row.put("sch_end", sched.end.getTime() / 1000);
-				db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-			}
+		}
+		row.put("sch_title", sched.title);
+		row.put("sch_metadata", sched.metadata);
 
-			/* Always refresh the metadata, seedfile is authoritative. */
-			if (sched.metadata != "") {
-				ContentValues row = new ContentValues();
-				row.put("sch_metadata", sched.metadata);
-				db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-			}
+		if (q.moveToNext()) {
+			db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
+		} else {
+			db.insert("schedule", null, row);
 		}
 		q.close();
 	}
@@ -381,8 +373,7 @@ public class Db {
 		}
 		
 		private static class Schedule {
-			int version;
-			String id, url, title;
+			String url, title;
 			Date start, end;
 			// Raw JSON string, because we'll only start interpreting this data later on. Will contain
 			// info like extra links to for example room maps, and other stuff I may think of. Would
@@ -390,9 +381,6 @@ public class Db {
 			String metadata;
 			
 			public Schedule(JSONObject jso) throws JSONException {
-				version = jso.getInt("version");
-				if (jso.has("id"))
-					id = jso.getString("id");
 				url = jso.getString("url");
 				title = jso.getString("title");
 
@@ -413,7 +401,7 @@ public class Db {
 			}
 
 			public String toString() {
-				return "SCHEDULE(url=" + url + ", version=" + version + ")";
+				return "SCHEDULE(url=" + url + ", title=" + title + ")";
 			}
 		}
 	}
@@ -553,7 +541,7 @@ public class Db {
 			Log.d("Db.refreshSingle", "Found something that parsed like my json: " + parsed);
 			removeSchedule(parsed.url);
 			app.flushSchedule(parsed.url);
-			updateSchedule(dbh.getWritableDatabase(), parsed, 0);
+			updateSchedule(dbh.getWritableDatabase(), parsed);
 			return true;
 		}
 		
@@ -645,10 +633,11 @@ public class Db {
 					Integer[] mi = toIntArray(q.getBlob(1));
 					double score = 8 * OkapiBM25.Companion.score(mi, 2) +
 					               4 * OkapiBM25.Companion.score(mi, 3) +
-					               1 * OkapiBM25.Companion.score(mi, 3) +
+					               1 * OkapiBM25.Companion.score(mi, 4) +
 					               4 * OkapiBM25.Companion.score(mi, 5) +
 					               2 * OkapiBM25.Companion.score(mi, 6);
 					if (q.getInt(2) > 0) {
+						// Bump starred events up to the top.
 						score += 1000;
 					}
 					Log.d("search", q.getString(0) + " score: " + score + " remind " + q.getInt(2));
@@ -736,15 +725,15 @@ public class Db {
 	}
 
 	public class DbSchedule {
-		private int id_n;
-		private String url, id, title;
+		private int id;
+		private String url, title;
 		private Date start, end;
 		private Date atime;  // Access time, set by setSchedule above, used as sorting key in Chooser.
 		private Date rtime;  // Refresh time, last time Fetcher claimed the server sent new data.
 		private Date itime;  // Index time, last time it was added to the FTS index.
 
 		public DbSchedule(Cursor q) {
-			id_n = q.getInt(q.getColumnIndexOrThrow("sch_id")); 
+			id = q.getInt(q.getColumnIndexOrThrow("sch_id"));
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
 			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
 			start = new Date(q.getLong(q.getColumnIndexOrThrow("sch_start")) * 1000);
@@ -756,10 +745,6 @@ public class Db {
 		
 		public String getUrl() {
 			return url;
-		}
-		
-		public String getId() {
-			return id;
 		}
 		
 		public String getTitle() {
@@ -791,7 +776,7 @@ public class Db {
 
 		public void flushHidden() {
 			Connection db = getConnection();
-			db.flushHidden(id_n);
+			db.flushHidden(id);
 		}
 	}
 }
