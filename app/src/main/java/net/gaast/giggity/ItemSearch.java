@@ -3,7 +3,6 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;

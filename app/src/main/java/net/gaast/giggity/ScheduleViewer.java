@@ -19,8 +19,6 @@
 
 package net.gaast.giggity;
 
-import android.view.View;
-
 public interface ScheduleViewer {
 	/* These two maybe should've just been the same. */
 	/* Called every minute to update clock/marking of currently happening events. */

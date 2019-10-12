@@ -31,8 +31,9 @@ dependencies {
     // implementation 'com.android.support:viewpager:28.0.0'
     implementation 'commons-io:commons-io:2.4'
 
-    // Needed on <26 phones. For now I want to support down to 23.
+    // java.time backport for <26 phones. :<
     implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
