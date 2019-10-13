@@ -18,11 +18,19 @@
 		android:orientation="vertical"
 		android:padding="8dp">
 
-		<TextView
-			android:id="@+id/textView2"
+		<LinearLayout
+			android:id="@+id/titleBar"
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:text="@string/loading_schedule" />
+			android:layout_height="match_parent"
+			android:orientation="horizontal"
+			android:transitionName="title">
+
+			<TextView
+				android:id="@+id/textView2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/loading_schedule" />
+		</LinearLayout>
 
 		<LinearLayout
 			android:id="@+id/errorContainer"

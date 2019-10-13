@@ -382,6 +382,12 @@ public class ScheduleViewActivity extends Activity {
 			});
 		}
 
+		public void setTitle(Db.DbSchedule dbs) {
+			LinearLayout tb = findViewById(R.id.titleBar);
+			tb.removeViewAt(0);
+			ChooserActivity.makeScheduleTitleView(tb, dbs);
+		}
+
 		// TODO: Just don't export the handler directly I think?
 		public Handler getUpdater() {
 			return updater;
@@ -413,6 +419,10 @@ public class ScheduleViewActivity extends Activity {
 
 	private void loadScheduleAsync(final String url, final Fetcher.Source source) {
 		final LoadProgressView prog = new LoadProgressView();
+		Db.DbSchedule dbs = app.getDb().getSchedule(url);
+		if (dbs != null) {
+			prog.setTitle(dbs);
+		}
 		prog.setDone(new LoadProgressDoneInterface() {
 			@Override
 			public void done() {

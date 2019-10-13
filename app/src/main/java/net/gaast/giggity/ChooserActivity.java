@@ -517,28 +517,14 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				RelativeLayout outer = new RelativeLayout(ChooserActivity.this);
 
 				if (item != null) {
-					TextView title, when;
-
-					title = new TextView(ChooserActivity.this);
-					title.setText(item.getTitle());
-					title.setTextSize(22);
-					title.setTextColor(getResources().getColor(R.color.dark_text));
-					inner.addView(title);
-
-					when = new TextView(ChooserActivity.this);
-					when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
-					when.setTextSize(12);
-					inner.addView(when);
-
-					inner.setOrientation(LinearLayout.VERTICAL);
+					makeScheduleTitleView(inner, item);
 					app.setPadding(inner, 10, (flags & FIRST) > 0 ? 0 : 3, 6, (flags & LAST) > 0 ? 10 : 0);
-					inner.setBackgroundResource(R.color.light_back);
 
 					if ((flags & LAST) == 0) {
 						View div = new View(ChooserActivity.this);
 						div.setMinimumHeight(app.dp2px(1));
 						div.setBackgroundResource(R.color.light);
-						app.setPadding(when, 0, 0, 0, 4);
+						app.setPadding(inner.findViewById(R.id.date_range), 0, 0, 0, 4);
 						inner.addView(div, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 					}
 
@@ -549,8 +535,8 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					inner.setClipToPadding(false);
 
 					if ((flags & UNUSED) != 0) {
-						title.setAlpha(0.6F);
-						when.setAlpha(0.6F);
+						inner.findViewById(R.id.title).setAlpha(0.6F);
+						inner.findViewById(R.id.date_range).setAlpha(0.6F);
 					}
 				} else {
 					TextView ret = new TextView(ChooserActivity.this);
@@ -584,5 +570,25 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				return outer;
 			}
 		}
+	}
+
+	static void makeScheduleTitleView(LinearLayout inner, DbSchedule item) {
+		TextView title, when;
+
+		title = new TextView(inner.getContext());
+		title.setText(item.getTitle());
+		title.setTextSize(22);
+		title.setTextColor(inner.getContext().getResources().getColor(R.color.dark_text));
+		title.setId(R.id.title);
+		inner.addView(title);
+
+		when = new TextView(inner.getContext());
+		when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
+		when.setTextSize(12);
+		when.setId(R.id.date_range);
+		inner.addView(when);
+
+		inner.setOrientation(LinearLayout.VERTICAL);
+		inner.setBackgroundResource(R.color.light_back);
 	}
 }
