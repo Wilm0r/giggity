@@ -79,8 +79,7 @@ public class Fetcher {
 		
 		try {
 			/* Do HTTP stuff first, then HTTPS! Once we get a CastClassException, we stop. */
-			HttpURLConnection.setFollowRedirects(true);
-			
+			((HttpURLConnection)dlc).setInstanceFollowRedirects(true);
 			((HttpURLConnection)dlc).addRequestProperty("Accept-Encoding", "gzip");
 			
 			if (prefSource != Source.ONLINE_NOCACHE && fn.canRead() && fn.lastModified() > 0) {
@@ -104,6 +103,10 @@ public class Fetcher {
 				status = h.getResponseCode();
 				statusFull = "" + h.getResponseCode() + " " + h.getResponseMessage();
 				Log.d("Fetcher", "HTTP status " + status);
+				String loc = h.getHeaderField("Location");
+				if (loc != null) {
+					Log.d("http-location", loc);
+				}
 			} catch (ClassCastException e) {
 				/* Assume success if this isn't HTTP.. */
 				status = 200;
