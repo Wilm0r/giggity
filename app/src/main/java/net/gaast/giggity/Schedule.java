@@ -531,7 +531,6 @@ public class Schedule implements Serializable {
 				JSONArray roomlist = md.getJSONArray("rooms");
 				for (int i = 0; i < roomlist.length(); ++i) {
 					JSONObject jroom = roomlist.getJSONObject(i);
-					Log.d("jroom", jroom.toString());
 					for (Line room : getTents()) {
 						if (room.location != null) {
 							// Guess I could allow overlapping regexes starting with more specific
@@ -565,7 +564,6 @@ public class Schedule implements Serializable {
 								// doesn't do utf-8 then it should maybe not be on the Internet?)
 							}
 						}
-						Log.d("room:", room.getTitle() + " " + room.location);
 					}
 				}
 			}
@@ -731,7 +729,6 @@ public class Schedule implements Serializable {
 						st = RoomStatus.EVACUATE;
 						break;
 				}
-				Log.d("roomSt", l.getTitle() + " " + st.toString());
 				ret |= l.setRoomStatus(st);
 			}
 		} catch (JSONException e) {
