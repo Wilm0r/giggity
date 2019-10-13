@@ -38,6 +38,7 @@
 
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Loading schedule data...</string>
+	<string name="use_cached_version">Use cached version</string>
 	<string name="loading_image">Loading image data...</string>
 	<string name="loading_error">Load error</string>
 	<string name="no_viewer_error">No viewer installed for filetype</string>

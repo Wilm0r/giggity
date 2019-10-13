@@ -158,6 +158,12 @@ public class Schedule implements Serializable {
 		}
 	}
 
+	static public class LateException extends LoadException {
+		public LateException() {
+			super("LoadException. This thread has lost the race.");
+		}
+	}
+
 	public static String hashify(String url) {
 		String ret = "";
 		try {

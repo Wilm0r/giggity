@@ -101,6 +101,8 @@ public class Giggity extends Application {
 	public boolean hasSchedule(String url) {
 		return scheduleCache.containsKey(url);
 	}
+
+	public ScheduleUI getCachedSchedule(String url) { return scheduleCache.get(url); }
 	
 	public void flushSchedules() {
 		scheduleCache.clear();
@@ -127,10 +129,6 @@ public class Giggity extends Application {
 			scheduleCache.put(url, ScheduleUI.loadSchedule(this, url, source, progress));
 		}
 		return (scheduleCache.get(url));
-	}
-
-	public ScheduleUI getSchedule(String url, Fetcher.Source source) throws Schedule.LoadException {
-		return getSchedule(url, source, null);
 	}
 
 	public void updateRemind(Schedule.Item item) {

@@ -483,7 +483,7 @@ public class Db {
 			Long sciId = sciIdMap.get(item.getId());
 			db.update("schedule_item", row, "sci_id = " + sciId, null);
 		}
-		
+
 		public ArrayList<DbSchedule> getScheduleList() {
 			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
 			Cursor q;
@@ -497,7 +497,20 @@ public class Db {
 
 			return ret;
 		}
-		
+
+		public DbSchedule getSchedule(String url) {
+			DbSchedule ret = null;
+			Cursor q;
+
+			SQLiteDatabase db = dbh.getReadableDatabase();
+			q = db.rawQuery("Select * From schedule Where sch_url = ?", new String[]{url});
+			if (q.moveToNext()) {
+				ret = new DbSchedule(q);
+			}
+			q.close();
+			return ret;
+		}
+
 		public void refreshScheduleList() {
 			updateData(dbh.getWritableDatabase(), true);
 		}

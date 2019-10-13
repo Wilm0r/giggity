@@ -35,7 +35,8 @@ public class Fetcher {
 	private Giggity app;
 	private File fn, fntmp = null;
 	private URLConnection dlc;
-	private Source source;
+	private Source source = null;
+	private boolean fresh = false;
 	private Handler progressHandler;
 	private long flen;
 	private String type;
@@ -57,7 +58,6 @@ public class Fetcher {
 
 	public Fetcher(Giggity app_, String url, Source prefSource, String type_) throws IOException {
 		app = app_;
-		source = null;
 		type = type_;
 
 		Log.d("Fetcher", "Creating fetcher for " + url + " prefSource=" + prefSource);
@@ -123,9 +123,11 @@ public class Fetcher {
 				inStream = new TeeInputStream(inStream, copy, true);  // true == close copy on close
 
 				source = Source.ONLINE;
+				fresh = true;
 			} else if (status == 304) {
 				Log.i("Fetcher", "HTTP 304, using cached copy");
-				source = Source.ONLINE; /* We're reading cache, but 304 means it should be equivalent. */
+				source = Source.CACHE;  // Though equivalent to ONLINE so:
+				fresh = true;           // Mark data as fresh
 				/* Just continue, inStream = null so we'll read from cache. */
 			} else {
 				throw new IOException("Download error: " + dlc.getHeaderField(0));
@@ -212,9 +214,16 @@ public class Fetcher {
 		}
 		return ret;
 	}
-	
+
+	// Used to return ONLINE even when serving from cache after server returned a 304 which is
+	// kinda wrong and means the caller was asking the wrong question. If you want to know whether
+	// the data is ~guaranteed fresh, use the next method.
 	public Source getSource() {
 		return source;
+	}
+
+	public boolean isFresh() {
+		return fresh;
 	}
 
 	/** If the file is usable, keep it cached. */

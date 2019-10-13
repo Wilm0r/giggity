@@ -49,6 +49,10 @@ public class ScheduleUI extends Schedule {
 		try {
 			f = ctx.fetch(url, source);
 			f.setProgressHandler(ret.progressHandler);
+			Log.d("Fetcher", "source=" + f.getSource());
+			if (f.getSource() == Fetcher.Source.CACHE) {
+				ret.progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.FROM_CACHE);
+			}
 			ret.loadSchedule(f.getReader(), url);
 		} catch (LoadException | IOException e) {
 			if (f != null)
@@ -60,8 +64,16 @@ public class ScheduleUI extends Schedule {
 		}
 		f.keep();
 
+		// Disable the "fall back to cache" button at this stage if it's even shown, since we're
+		// nearly done, only need to apply user/dynamic data.
+		progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.STATIC_DONE);
+		if (ret.app.hasSchedule(url)) {
+			// TODO: Theoretically, online could still win the race over cached..
+			throw new Schedule.LateException();
+		}
+
 		ret.db = ret.app.getDb();
-		ret.db.setSchedule(ret, url, f.getSource() == Fetcher.Source.ONLINE);
+		ret.db.setSchedule(ret, url, f.isFresh());
 		String md_json = ret.db.getMetadata();
 		if (md_json != null) {
 			ret.addMetadata(md_json);

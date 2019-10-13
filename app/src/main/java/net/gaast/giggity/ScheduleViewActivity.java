@@ -56,8 +56,10 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -244,15 +246,12 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (app.hasSchedule(url)) {
-			try {
-				sched = app.getSchedule(url, Fetcher.Source.CACHE_ONLINE);
-			} catch (Exception e) {
-				// Java makes me tired. We've already called hasSchedule so we're fine.
-				e.printStackTrace();
-			}
+			sched = app.getCachedSchedule(url);
 			onScheduleLoaded();
 		} else {
-			loadScheduleAsync(url, Fetcher.Source.CACHE_ONLINE);
+			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+			drawerToggle.setDrawerIndicatorEnabled(false);  // Shows a not functioning back button. :<
+			loadScheduleAsync(url, Fetcher.Source.ONLINE_CACHE);
 		}
 	}
 
@@ -271,15 +270,12 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	/* Progress dialog for schedule/data load. Could consider putting it into Fetcher. */
-	private class LoadProgress extends ProgressDialog {
-		public static final int DONE = 999999;
+	private class LoadProgressDialog extends ProgressDialog implements LoadProgress {
 		private Handler updater;
-		private boolean critical;  // If this load is critical for the activity, leave if it fails.
 		private LoadProgressDoneInterface done;
 
-		public LoadProgress(Context ctx, boolean critical) {
+		public LoadProgressDialog(Context ctx) {
 			super(ctx);
-			this.critical = critical;
 
 			setMessage(getResources().getString(R.string.loading_schedule));
 			setIndeterminate(true);
@@ -297,11 +293,13 @@ public class ScheduleViewActivity extends Activity {
 						}
 						dismiss();
 					} else if (msg.what > 0 ) {
-						if (getMax() == 1) {
-							setIndeterminate(false);
-							setMax(100);
+						if (msg.what <= 100) {
+							if (getMax() == 1) {
+								setIndeterminate(false);
+								setMax(100);
+							}
+							setProgress(msg.what);
 						}
-						setProgress(msg.what);
 					} else {
 						dismiss();
 
@@ -309,16 +307,6 @@ public class ScheduleViewActivity extends Activity {
 								.setTitle(R.string.loading_error)
 								.setMessage(msg.obj != null ? msg.obj.toString() : "(null)")
 								.show();
-
-						// If we ran into an error while loading the main schedule, leave this
-						// activity once the user acknowledges the error.
-						if (LoadProgress.this.critical) {
-							d.setOnDismissListener(new OnDismissListener() {
-								public void onDismiss(DialogInterface dialog) {
-									finish();
-								}
-							});
-						}
 					}
 				}
 			};
@@ -326,17 +314,15 @@ public class ScheduleViewActivity extends Activity {
 			setOnCancelListener(new OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface dialog) {
-					/* If the user gave up, sign out from any progress updates coming from the
-					   downloader thread. Bit ugly to do it this way but stopping a thread isn't
-					   really possible anyway..
-					 */
+					/* This stops any further progress updates from getting delivered to a dead
+					 * activity but keeps the download (?) running, which I suppose is fine. */
 					updater = null;
 					ScheduleViewActivity.this.finish();
 				}
 			});
 		}
 
-		public Handler getHandler() {
+		public Handler getUpdater() {
 			return updater;
 		}
 
@@ -345,38 +331,126 @@ public class ScheduleViewActivity extends Activity {
 		}
 	}
 
+	private class LoadProgressView extends FrameLayout implements LoadProgress {
+		ProgressBar prog;
+		private Handler updater;
+		private LoadProgressDoneInterface done;
+		private LoadProgressFallBackInterface fallBack;
+
+		public LoadProgressView() {
+			super(ScheduleViewActivity.this);
+			inflate(ScheduleViewActivity.this, R.layout.schedule_load_progress, this);
+
+			prog = findViewById(R.id.progressBar);
+			prog.setMax(1);
+
+			updater = new Handler() {
+				@Override
+				public void handleMessage(Message msg) {
+					if (msg.what == DONE) {
+						if (done != null) {
+							done.done();
+						}
+					} else if (msg.what == FROM_CACHE) {
+						// Fetcher reports we're already reading from cache anyway.
+						findViewById(R.id.load_cached).setEnabled(false);
+					} else if (msg.what == STATIC_DONE) {
+						// The download is done so no point in falling back (last stage probably <.1s anyway)
+						findViewById(R.id.load_cached).setEnabled(false);
+					} else if (msg.what > 0) {
+						if (msg.what <= 100) {
+							if (prog.getMax() == 1) {
+								prog.setIndeterminate(false);
+								prog.setMax(100);
+							}
+							prog.setProgress(msg.what);
+						}
+					} else {
+						((TextView)findViewById(R.id.errorMessge)).setText(msg.obj != null ? msg.obj.toString() : "(null)");
+						findViewById(R.id.errorContainer).setVisibility(VISIBLE);
+						prog.setVisibility(GONE);
+					}
+				}
+			};
+
+			Button cached = findViewById(R.id.load_cached);
+			cached.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					fallBack.fallBack();
+				}
+			});
+		}
+
+		// TODO: Just don't export the handler directly I think?
+		public Handler getUpdater() {
+			return updater;
+		}
+
+		public void setDone(LoadProgressDoneInterface done) {
+			this.done = done;
+		}
+
+		public void setFallBack(LoadProgressFallBackInterface fallBack) {
+			this.fallBack = fallBack;
+		}
+	}
+
 	// Interfaces can't be defined inside inner classes. :<
 	interface LoadProgressDoneInterface {
 		void done();
 	}
+	interface LoadProgressFallBackInterface {
+		void fallBack();
+	}
+	interface LoadProgress {
+		public static final int FROM_CACHE = 999997;   // This data is coming from cache
+		public static final int STATIC_DONE = 999998;  // Done loading static data, only db stuff left to do
+		public static final int DONE = 999999;
+		public Handler getUpdater();
+		public void setDone(LoadProgressDoneInterface done);
+	}
 
 	private void loadScheduleAsync(final String url, final Fetcher.Source source) {
-		final LoadProgress prog = new LoadProgress(this, true);
+		final LoadProgressView prog = new LoadProgressView();
 		prog.setDone(new LoadProgressDoneInterface() {
 			@Override
 			public void done() {
 				onScheduleLoaded();
+				viewerContainer.removeView((View) prog);
 			}
 		});
-		prog.show();
+		try {
+			app.fetch(url, Fetcher.Source.CACHE);
+		} catch (IOException e) {
+			// No cached copy available apparently so hide that option.
+			prog.findViewById(R.id.load_cached).setVisibility(View.GONE);
+		}
+		prog.setFallBack(new LoadProgressFallBackInterface() {
+			@Override
+			public void fallBack() {
+				viewerContainer.removeView((View) prog);
+				loadScheduleAsync(url, Fetcher.Source.CACHE);
+			}
+		});
+		viewerContainer.addView((View) prog, new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		new Thread() {
 			@Override
 			public void run() {
 				try {
-					sched = app.getSchedule(url, source, prog.getHandler());
-					if (prog.getHandler() == null) {
-						Log.d("ScheduleViewActivity", "Looks like we're late, activity gone?");
-						return;
+					sched = app.getSchedule(url, source, prog.getUpdater());
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
 					}
-					prog.getHandler().sendEmptyMessage(LoadProgress.DONE);
+				} catch (Schedule.LateException e) {
+					Log.d("LateException", "" + prog.getUpdater());
+					// Hrm, we lost the race. TODO: Figure out what, but for now do nothing.
 				} catch (Throwable t) {
 					t.printStackTrace();
-					if (prog.getHandler() == null) {
-						Log.d("ScheduleViewActivity", "Looks like we're late, activity gone?");
-						return;
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, t));
 					}
-					prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, t));
 				}
 			}
 		}.start();
@@ -454,6 +528,8 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	private void onScheduleLoaded() {
+		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+		drawerToggle.setDrawerIndicatorEnabled(true);
 		sched.setShowHidden(showHidden);
 		if (getIntent().hasExtra("SELECTIONS")) {
 			Schedule.Selections sel = (Schedule.Selections) getIntent().getSerializableExtra("SELECTIONS");
@@ -587,7 +663,7 @@ public class ScheduleViewActivity extends Activity {
 				}
 				return;
 			} else if (allowDownload) {
-				final LoadProgress prog = new LoadProgress(this, false);
+				final LoadProgressDialog prog = new LoadProgressDialog(this);
 				prog.setMessage(getResources().getString(R.string.loading_image));
 				prog.setDone(new LoadProgressDoneInterface() {
 					@Override
@@ -603,7 +679,7 @@ public class ScheduleViewActivity extends Activity {
 					public void run() {
 						try {
 							Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.ONLINE, link.getType());
-							f.setProgressHandler(prog.getHandler());
+							f.setProgressHandler(prog.getUpdater());
 
 							/* Just slurp the entire file into a bogus buffer, what we need is the
 							   file in ExternalCacheDir */
@@ -613,10 +689,10 @@ public class ScheduleViewActivity extends Activity {
 							f.keep();
 
 							/* Will trigger the done() above back in the main thread. */
-							prog.getHandler().sendEmptyMessage(LoadProgress.DONE);
+							prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
 						} catch (IOException e) {
 							e.printStackTrace();
-							prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, e));
+							prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
 						}
 					}
 				};

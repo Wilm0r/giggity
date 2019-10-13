@@ -38,6 +38,7 @@
 
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Programma wordt geladen...</string>
+	<string name="use_cached_version">Uit cache laden</string>
 	<string name="loading_image">Bestand wordt geladen...</string>
 	<string name="loading_error">Laadfout</string>
 	<string name="no_viewer_error">Geen lezer geïnstalleerd voor bestandtype</string>

@@ -44,14 +44,7 @@ public class ScheduleItemActivity extends Activity {
 
 		Schedule sched;
 		if (app_.hasSchedule(url)) {
-			try {
-				sched = app_.getSchedule(url, Fetcher.Source.CACHE);
-			} catch (Exception e) {
-				e.printStackTrace();
-				setResult(RESULT_CANCELED, getIntent());
-				finish();
-				return;
-			}
+			sched = app_.getCachedSchedule(url);
 		} else {
 			setResult(RESULT_CANCELED, getIntent());
 			finish();

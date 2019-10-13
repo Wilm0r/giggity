@@ -44,7 +44,7 @@ public class Reminder extends Service {
 			String url[] = intent.getDataString().split("#", 2);
 			Schedule sched;
 			try {
-				sched = app.getSchedule(url[0], Fetcher.Source.CACHE_ONLINE);
+				sched = app.getSchedule(url[0], Fetcher.Source.CACHE_ONLINE, null);
 			} catch (Exception e) {
 				Log.e("reminder", "Urgh, caught exception while reloading schedule (the OS killed us)");
 				e.printStackTrace();
