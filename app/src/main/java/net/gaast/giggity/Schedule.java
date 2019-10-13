@@ -244,6 +244,20 @@ public class Schedule implements Serializable {
 		}
 	}
 
+	/* Sets day to one overlapping given moment in time and returns day number, or -1 if no match. */
+	public int setDay(ZonedDateTime now) {
+		int i = 0;
+		for (ZonedDateTime day : getDays()) {
+			ZonedDateTime dayEnd = day.plusDays(1);
+			if (day.isBefore(now) && dayEnd.isAfter(now)) {
+				setDay(i);
+				return i;
+			}
+			i ++;
+		}
+		return -1;
+	}
+
 	public DateTimeFormatter getDayFormat() {
 		if (eventLength() > (86400 * 5))
 			return DateTimeFormatter.ofPattern("EE d MMMM");
@@ -252,7 +266,7 @@ public class Schedule implements Serializable {
 	}
 	
 	/** Get earliest item.startTime */
-	private ZonedDateTime getFirstTimeZoned() {
+	public ZonedDateTime getFirstTimeZoned() {
 		if (curDay == null) {
 			return firstTime;
 		} else {
@@ -261,7 +275,7 @@ public class Schedule implements Serializable {
 	}
 	
 	/** Get highest item.endTime */
-	private ZonedDateTime getLastTimeZoned() {
+	public ZonedDateTime getLastTimeZoned() {
 		if (curDay == null) {
 			return lastTime;
 		} else {

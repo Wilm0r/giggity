@@ -51,15 +51,7 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 
 		/* Set the schedule's day to today so we don't show tomorrow's 
 		 * stuff as "next". */
-		int i = 0;
-		for (ZonedDateTime day : sched.getDays()) {
-			ZonedDateTime dayEnd = day.plusDays(1);
-			if (day.isBefore(now) && dayEnd.isAfter(now)) {
-				sched.setDay(i);
-				break;
-			}
-			i ++;
-		}
+		sched.setDay(now);
 
 		if (byTime) {
 			nextList = new TreeSet<>();

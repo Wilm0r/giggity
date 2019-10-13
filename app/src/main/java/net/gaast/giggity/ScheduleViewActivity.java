@@ -509,9 +509,11 @@ public class ScheduleViewActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		/* Bugfix: Search sets day to -1, have to revert that. */
+		/* Bugfix: Search sets day to -1, have to revert that.
+		I think that's the old own-activity search so maybe I don't need this workaround anymore.
 		if (sched != null && sched.getDays().size() > 1 && !viewer.multiDay())
 			sched.setDay(sched.getDb().getDay());
+		 */
 
 		if (redraw) {
 			redrawSchedule();
@@ -541,6 +543,13 @@ public class ScheduleViewActivity extends Activity {
 		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 		drawerToggle.setDrawerIndicatorEnabled(true);
 		sched.setShowHidden(showHidden);
+		ZonedDateTime now = ZonedDateTime.now();
+		int day;
+		if ((day = sched.setDay(now)) != -1 && now.isBefore(sched.getLastTimeZoned())) {
+			// If today is on the schedule and we're not the past of its items yet, this is probably
+			// where the user wants to go now instead of wherever they last were, so overwrite that.
+			sched.getDb().setDay(day);
+		}
 		if (getIntent().hasExtra("SELECTIONS")) {
 			Schedule.Selections sel = (Schedule.Selections) getIntent().getSerializableExtra("SELECTIONS");
 			Dialog dia = new ScheduleUI.ImportSelections(this, sched, sel);
