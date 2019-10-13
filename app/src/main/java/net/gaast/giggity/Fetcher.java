@@ -98,8 +98,11 @@ public class Fetcher {
 		if (prefSource != Source.CACHE && !(fn.canRead() && prefSource == Source.CACHE_ONLINE) &&
 		    network != null && network.isConnected()) {
 			int status;
+			String statusFull = "";
 			try {
-				status = ((HttpURLConnection)dlc).getResponseCode();
+				HttpURLConnection h = (HttpURLConnection)dlc;
+				status = h.getResponseCode();
+				statusFull = "" + h.getResponseCode() + " " + h.getResponseMessage();
 				Log.d("Fetcher", "HTTP status " + status);
 			} catch (ClassCastException e) {
 				/* Assume success if this isn't HTTP.. */
@@ -130,7 +133,7 @@ public class Fetcher {
 				fresh = true;           // Mark data as fresh
 				/* Just continue, inStream = null so we'll read from cache. */
 			} else {
-				throw new IOException("Download error: " + dlc.getHeaderField(0));
+				throw new IOException("Download error: " + statusFull + "\n" + dlc.getHeaderField(0));
 			}
 		}
 
