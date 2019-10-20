@@ -611,7 +611,9 @@ public class Db {
 				if (item.getSpeakers() != null) {
 					row.put("speakers", TextUtils.join(" ", item.getSpeakers()));
 				}
-				row.put("track", item.getTrack().getTitle());
+				if (item.getTrack() != null) {
+					row.put("track", item.getTrack().getTitle());
+				}
 				db.insert("item_search", null, row);
 			}
 
