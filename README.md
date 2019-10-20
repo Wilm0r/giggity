@@ -42,7 +42,24 @@ coincidental. ;-)
 <img src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="64" alt="Play Store">
 </a>
 
-## Using Giggity for your event
+## Deeplinking into Giggity
+
+Giggity reads generic .ics or even .xml files and will not register
+itself as a reader for these file formats with Android.
+
+If you however want to add deeplinks on your website, prompting Android
+phones to open your schedule file directly in Giggity, you can use
+ggt.gaa.st URLs formatted like this:
+
+```
+https://ggt.gaa.st/#url=https://fosdem.org/2019/schedule/xml
+```
+
+This is likely a better option than scanning a QR now that good ad-free
+QR scanners appear to be rare. But where possible, consider just adding
+your event to the menu as explained in the next section.
+
+## Adding your event to the default menu
 
 You can add any suitably formatted schedule to Giggity yourself (use QR
 codes to make this easier), or it can be added to Giggity's main menu.
