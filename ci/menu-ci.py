@@ -12,6 +12,7 @@ reviewing those updates manually.
 Sadly I'll need to duplicate some things from Giggity's Java code I guess...
 """
 
+import datetime
 import json
 import os
 import re
@@ -177,8 +178,11 @@ if re.search(r"^\t* ", raw, flags=re.M):
 	errors.append("File must be tab-indented")
 
 maxver = max(e["version"] for e in new["schedules"])
+todayver = int(datetime.datetime.now().strftime("%Y%m%d99"))
 if new["version"] < maxver:
-	errors.append("File version number must be ≥ %d (highest version in file)" % maxver)
+	errors.append("File version (%d) number must be ≥ %d (highest version in file)" % (new["version"], maxver))
+elif new["version"] > todayver:
+	errors.append("File version (%d) number must be ≤ %d" % (new["version"], todayver))
 
 changed = []
 base_entries = {e["url"]: e for e in base["schedules"]}
