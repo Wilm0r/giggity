@@ -64,7 +64,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -80,11 +83,11 @@ public class Schedule implements Serializable {
 
 	private LinkedList<Schedule.Line> tents = new LinkedList<>();
 	protected HashMap<String,Schedule.Item> allItems = new HashMap<>();
-	private HashMap<String,TreeSet<Schedule.Item>> trackMap = new HashMap<>();
+	private SortedMap<String,Track> tracks = new TreeMap<>();
 
 	private ZonedDateTime firstTime, lastTime;
-	private ZonedDateTime dayFirstTime, dayLastTime;
-	private ZonedDateTime curDay, curDayEnd;
+	private ZonedDateTime dayFirstTime, dayLastTime;  // equal to full schedule bounds (so spanning multiple days) if day = -1
+	private ZonedDateTime curDay, curDayEnd;          // null if day = -1
 	private ZoneId nativeTz = ZoneId.systemDefault();
 	private LocalTime dayChange = LocalTime.of(6, 0);
 	private LinkedList<ZonedDateTime> dayList;
@@ -483,7 +486,7 @@ public class Schedule implements Serializable {
 				String location = microlocation.getString("name");
 
 				if ((line = tentMap.get(location)) == null) {
-					line = new Schedule.Line(location, location);
+					line = new Schedule.Line(location);
 					tents.add(line);
 					tentMap.put(location, line);
 				}
@@ -605,8 +608,8 @@ public class Schedule implements Serializable {
 		return title;
 	}
 	
-	public LinkedList<Schedule.Line> getTents() {
-		LinkedList<Line> ret = new LinkedList<>();
+	public Collection<Schedule.Line> getTents() {
+		ArrayList<Line> ret = new ArrayList<>();
 		for (Line line : tents) {
 			if (line.getItems().size() > 0)
 				ret.add(line);
@@ -618,35 +621,27 @@ public class Schedule implements Serializable {
 	public Item getItem(String id) {
 		return allItems.get(id);
 	}
-	
-	public ArrayList<String> getTracks() {
-		if (trackMap == null)
+
+	public Collection<Track> getTracks() {
+		if (tracks == null || tracks.size() == 0)
 			return null;
-		
-		ArrayList<String> ret = new ArrayList<>();
-		for (String name : trackMap.keySet()) {
-			for (Item item : trackMap.get(name)) {
-				if (!item.isHidden() || showHidden) {
-					ret.add(name);
-					break;
-				}
+
+		TreeSet<Track> ret = new TreeSet<>();
+		for (Track e : tracks.values()) {
+			if (e.getItems().size() > 0) {
+				ret.add(e);
 			}
 		}
-		
+
 		return ret;
 	}
-	
-	public ArrayList<Item> getTrackItems(String track) {
-		if (trackMap == null)
+
+	// Return all of them. Same if day = -1, otherwise the above filters for just non-empty ones today
+	public Map<String, Track> allTracks() {
+		if (tracks == null || tracks.size() == 0)
 			return null;
-		
-		ArrayList<Item> ret = new ArrayList<Item>();
-		for (Item item : trackMap.get(track)) {
-			if (!item.isHidden() || showHidden)
-				ret.add(item);
-		}
-		
-		return ret;
+
+		return tracks;
 	}
 
 	public ArrayList<Item> getByLanguage(String language) {
@@ -864,7 +859,7 @@ public class Schedule implements Serializable {
 				}
 
 				if ((line = tentMap.get(location)) == null) {
-					line = new Schedule.Line(location, location);
+					line = new Schedule.Line(location);
 					tents.add(line);
 					tentMap.put(location, line);
 				}
@@ -956,7 +951,7 @@ public class Schedule implements Serializable {
 					return;
 				
 				if ((line = tentMap.get(name)) == null) {
-					line = new Schedule.Line(name, name);
+					line = new Schedule.Line(name);
 					tents.add(line);
 					tentMap.put(name, line);
 				}
@@ -1096,23 +1091,43 @@ public class Schedule implements Serializable {
 		EVACUATE,
 	};
 
-	public class Line implements Serializable {
-		private String id;
-		private String title;
-		private TreeSet<Schedule.Item> items;
-		private String location;  // geo: URL (set by metadata loader)
-		private RoomStatus roomStatus;
-		Schedule schedule;
+	public class ItemList {
+		protected String title;
+		protected TreeSet<Schedule.Item> items;
 
-		public Line(String id_, String title_) {
-			id = id_;
+		public ItemList(String title_) {
 			title = title_;
 			items = new TreeSet<Schedule.Item>();
-			roomStatus = RoomStatus.UNKNOWN;
 		}
-		
-		public String getId() {
-			return id;
+
+		public String getTitle() {
+			return title;
+		}
+
+		protected void addItem(Schedule.Item item) {
+			items.add(item);
+		}
+
+		public AbstractSet<Schedule.Item> getItems() {
+			TreeSet<Schedule.Item> ret = new TreeSet<Schedule.Item>();
+
+			for (Item item : items) {
+				if ((!item.isHidden() || showHidden) &&
+				    (curDay == null || (!item.getStartTimeZoned().isBefore(curDay) &&
+				                        !item.getEndTimeZoned().isAfter(curDayEnd))))
+					ret.add(item);
+			}
+			return ret;
+		}
+	}
+
+	public class Line extends ItemList implements Serializable {
+		private String location;  // geo: URL (set by metadata loader)
+		private RoomStatus roomStatus;
+
+		public Line(String title_) {
+			super(title_);
+			roomStatus = RoomStatus.UNKNOWN;
 		}
 		
 		public String getTitle() {
@@ -1126,7 +1141,9 @@ public class Schedule implements Serializable {
 		
 		public void addItem(Schedule.Item item) {
 			item.setLine(this);
-			items.add(item);
+			super.addItem(item);
+
+			/* The rest really should be in the caller, but there are several callsites, one per parser. TODO. */
 			allItems.put(item.getId(), item);
 
 			if (firstTime == null || item.getStartTimeZoned().isBefore(firstTime))
@@ -1138,27 +1155,13 @@ public class Schedule implements Serializable {
 				languages.add(item.getLanguage());
 			}
 		}
-		
-		public AbstractSet<Schedule.Item> getItems() {
-			TreeSet<Schedule.Item> ret = new TreeSet<Schedule.Item>();
 
-			// TODO: Hmm what was the dayStart thingy here, how was it different from just using curDay?
-
-			for (Item item : items) {
-				if ((!item.isHidden() || showHidden) &&
-				    (curDay == null || (!item.getStartTimeZoned().isBefore(curDay) &&
-				                        !item.getEndTimeZoned().isAfter(curDayEnd))))
-					ret.add(item);
-			}
-			return ret;
+		public void setLocation(String location) {
+			this.location = location;
 		}
 
 		public String getLocation() {
 			return location;
-		}
-
-		public void setLocation(String location) {
-			this.location = location;
 		}
 
 		public boolean setRoomStatus(RoomStatus newSt) {
@@ -1170,13 +1173,48 @@ public class Schedule implements Serializable {
 		public RoomStatus getRoomStatus() {
 			return roomStatus;
 		}
+
+		// Return Schedule.Line for this track, only if it's one and the same for all its items.
+		public Track getTrack() {
+			HashSet<Track> ret = new HashSet<>();
+			for (Item it : getItems()) {
+				ret.add(it.getTrack());
+				if (ret.size() != 1) {
+					return null;
+				}
+			}
+			return ret.iterator().next();
+		}
+	}
+
+	public class Track extends ItemList implements Comparable<Track>, Serializable {
+		public Track(String title_) {
+			super(title_);
+		}
+
+		// Return Schedule.Line for this track, only if it's one and the same for all its items.
+		public Line getLine() {
+			HashSet<Line> ret = new HashSet<>();
+			for (Item it : getItems()) {
+				ret.add(it.getLine());
+				if (ret.size() != 1) {
+					return null;
+				}
+			}
+			return ret.iterator().next();
+		}
+
+		@Override
+		public int compareTo(Track track) {
+			return getTitle().compareTo(track.getTitle());
+		}
 	}
 	
 	public class Item implements Comparable<Item>, Serializable {
 		private String id;
 		private Line line;
 		private String title, subtitle;
-		private String track;
+		private Track track;
 		private String description;
 		private ZonedDateTime startTime, endTime;
 		private LinkedList<Schedule.Link> links;
@@ -1203,12 +1241,11 @@ public class Schedule implements Serializable {
 		}
 
 		public void setTrack(String track_) {
-			track = track_;
-
-			if (!trackMap.containsKey(track)) {
-				trackMap.put(track, new TreeSet<Schedule.Item>());
+			if (!tracks.containsKey(track_)) {
+				tracks.put(track_, new Track(track_));
 			}
-			trackMap.get(track).add(this);
+			track = tracks.get(track_);
+			track.addItem(this);
 		}
 		
 		public void setDescription(String description_) {
@@ -1287,7 +1324,7 @@ public class Schedule implements Serializable {
 			// return Date.from(getEndTimeZoned().toInstant());
 		}
 
-		public String getTrack() {
+		public Track getTrack() {
 			return track;
 		}
 		

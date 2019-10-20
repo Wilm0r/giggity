@@ -180,7 +180,8 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		});
 
 		y = 0;
-		tents = sched.getTents();
+		// TODO: ArrayList?
+		tents = new LinkedList<>(sched.getTents());
 		for (Schedule.Line tent : tents) {
 			int posx, h, w;
 

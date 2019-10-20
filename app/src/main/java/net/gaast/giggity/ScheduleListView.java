@@ -195,6 +195,8 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				return new ScheduleItemView(ctx, it1, flags);
 			} else if (items.get(position).getClass() == Schedule.Line.class) {
 				return new ScheduleLineView(ctx, (Schedule.Line) items.get(position));
+			} else if (items.get(position).getClass() == Schedule.Track.class) {
+				return new ScheduleTrackView(ctx, (Schedule.Track) items.get(position));
 			} else {
 				String text = (String) items.get(position);
 				if (text.trim().isEmpty()) {
@@ -227,29 +229,16 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			ctx = context;
 			line = line_;
 
-			String track = null;
-			for (Schedule.Item item : line.getItems()) {
-				if (item.getTrack() == null) {
-					track = null;
-					break;
-				} else if (track == null) {
-					/* If the name of the track is in the room name already, don't repeat it. */
-					if (line.getTitle().toLowerCase().contains(item.getTrack().toLowerCase()))
-						break;
-					track = item.getTrack();
-				} else if (!track.equals(item.getTrack())) {
-					track = null;
-					break;
-				}
-			}
 
 			inflate(ctx, R.layout.schedule_line, this);
 
 			TextView tv = findViewById(R.id.lineTitle);
 			tv.setText(line.getTitle());
-			if (track != null) {
+
+			Schedule.Track track = line.getTrack();
+			if (track != null && !line.getTitle().toLowerCase().contains(track.getTitle().toLowerCase())) {
 				tv = findViewById(R.id.lineSubTitle);
-				tv.setText(track);
+				tv.setText(track.getTitle());
 				tv.setVisibility(View.VISIBLE);
 			}
 
@@ -265,17 +254,36 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			}
 		}
 	}
-	
+
+	private class ScheduleTrackView extends LinearLayout {
+		Context ctx;
+		Schedule.Track track;
+
+		public ScheduleTrackView(Context context, Schedule.Track track_) {
+			super(context);
+			ctx = context;
+			track = track_;
+
+			inflate(ctx, R.layout.schedule_line, this);
+
+			TextView tv = findViewById(R.id.lineTitle);
+			tv.setText(track.getTitle());
+
+			Schedule.Line allLine = track_.getLine();
+			if (allLine != null && !track.getTitle().toLowerCase().contains(allLine.getTitle().toLowerCase())) {
+				tv = findViewById(R.id.lineSubTitle);
+				tv.setText(allLine.getTitle());
+				tv.setVisibility(View.VISIBLE);
+			}
+		}
+	}
+
 	/* Need to change this to true in SearchActivity. */
 	private boolean multiDay = false;
 	
 	@Override
 	public boolean multiDay() {
 		return multiDay;
-	}
-
-	public void setMultiDay(boolean md) {
-		multiDay = md;
 	}
 
 	@Override

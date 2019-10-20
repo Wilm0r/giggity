@@ -15,7 +15,6 @@
 			</intent-filter>
 		</activity>
 		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="ScheduleItemActivity"/>
-		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="SearchActivity"/>
 		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="SettingsActivity"/>
 		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="ChooserActivity">
 			<intent-filter>

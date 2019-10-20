@@ -118,7 +118,7 @@ public class EventDialog extends FrameLayout {
 		
 		t = (TextView) root.findViewById(R.id.track);
 		if (item_.getTrack() != null) {
-			t.setText(item_.getTrack());
+			t.setText(item_.getTrack().getTitle());
 		} else {
 			t.setVisibility(View.GONE);
 			v = root.findViewById(R.id.headTrack);
@@ -372,7 +372,7 @@ public class EventDialog extends FrameLayout {
 						for (Schedule.Item other : item_.getLine().getItems())
 							other.setHidden(newValue);
 					} else if (what == 2 && item_.getTrack() != null) {
-						for (Schedule.Item other : sched.getTrackItems(item_.getTrack()))
+						for (Schedule.Item other : item_.getTrack().getItems())
 							other.setHidden(newValue);
 					} else {
 						for (Schedule.Item other : sched.getByLanguage(item_.getLanguage())) {

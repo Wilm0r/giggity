@@ -20,7 +20,6 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
-import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -34,35 +33,40 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.HashMap;
 
 /* Wrapper around ScheduleListView that adds the improvised tabs with room names below action bar. */
 public class TimeTable extends LinearLayout implements ScheduleViewer {
 	private Giggity app;
-	private Schedule sched;
 	private Activity ctx;
 	
-	private Gallery tentSel;
-	private OnItemSelectedListener tentSelL;
+	private Gallery groupSel;
+	private OnItemSelectedListener groupSelL;
 	private ScheduleListView scroller;
 	
-	private LinkedList<Schedule.Line> tents; 
+	private ArrayList<Schedule.ItemList> groups;
+	private HashMap<Schedule.Item,Schedule.ItemList> revGroups = new HashMap<>();
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public TimeTable(Activity ctx_, Schedule sched_) {
+	public TimeTable(Activity ctx_, Collection<Schedule.ItemList> groups_) {
 		super(ctx_);
 		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
-		sched = sched_;
-		tents = sched.getTents();
+		groups = new ArrayList<>(groups_);
 		this.setOrientation(LinearLayout.VERTICAL);
 
 		ArrayList fullList = new ArrayList();
 		
-		for (Schedule.Line tent : tents) {
-			fullList.add(tent);
-			for (Schedule.Item item : tent.getItems()) {
-				fullList.add(item);
+		for (Schedule.ItemList group : groups) {
+			if (group.getItems().isEmpty()) {
+				continue;
+			}
+
+			fullList.add(group);
+			fullList.addAll(group.getItems());
+			for (Schedule.Item it : group.getItems()) {
+				revGroups.put(it, group);
 			}
 		}
 		/* Ugly hack to get some empty space at the bottom of the list for nicer scrolling. */
@@ -73,13 +77,13 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		/* Wannabe Material-style tabs. Gallery's deprecated but I don't like the replacements
 		   all that much. This works, just looks a little different (alpha instead of a thick
 		   underline indicating current tab). */
-		tentSel = new Gallery(ctx);
-		tentSel.setAdapter(new TentListAdapter(ctx, tents));
-		tentSel.setSpacing(0);
-		tentSel.setBackgroundResource(R.color.primary);
-		app.setShadow(tentSel, true);
+		groupSel = new Gallery(ctx);
+		groupSel.setAdapter(new GroupListAdapter());
+		groupSel.setSpacing(0);
+		groupSel.setBackgroundResource(R.color.primary);
+		app.setShadow(groupSel, true);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		addView(tentSel, lp);
+		addView(groupSel, lp);
 
 		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
@@ -89,14 +93,14 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		addView(scroller, lp);
 
 		/* Set up some navigation listeners. */
-		tentSelL = new OnItemSelectedListener() {
+		groupSelL = new OnItemSelectedListener() {
 			@Override
 			public void onItemSelected(AdapterView<?> parent, View view,
 					int position, long id) {
 				int to;
 				for (to = 0; to < scroller.getCount(); to++) {
 					try {
-						if (((Schedule.Item)scroller.getList().get(to)).getLine() == tents.get(position)) {
+						if (revGroups.get(scroller.getList().get(to)) == groups.get(position)) {
 							scroller.setSelection(to - 1);
 							break;
 						}
@@ -110,10 +114,11 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 			public void onNothingSelected(AdapterView<?> arg0) {
 			}
 		};
-		tentSel.setOnItemSelectedListener(tentSelL);
+		groupSel.setOnItemSelectedListener(groupSelL);
 		
 		scroller.setOnScrollListener(new OnScrollListener() {
 			private boolean scrolling = false;
+
 			@Override
 			public void onScroll(AbsListView v, int first, int visible, int total) {
 				ScheduleViewActivity.onScroll(ctx);
@@ -125,9 +130,10 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 				if (first == total)
 					return; /* Hmm. Just titles, no events? */
 				int to;
-				for (to = 0; to < tents.size(); to ++)
-					if (tents.get(to) == ((Schedule.Item)scroller.getList().get(first)).getLine())
-						tentSel.setSelection(to);
+				for (to = 0; to < groups.size(); to ++)
+					if (revGroups.get(scroller.getList().get(first)) == groups.get(to)) {
+						groupSel.setSelection(to);
+					}
 			}
 
 			/* This function is supposed to kill feedback loops between the 
@@ -138,32 +144,24 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 			public void onScrollStateChanged(AbsListView v, int scrollState) {
 				/* Disable this listener while scrolling to avoid the feedback loop. */
 				if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-					tentSel.setOnItemSelectedListener(null);
+					groupSel.setOnItemSelectedListener(null);
 				else if (scrollState == OnScrollListener.SCROLL_STATE_IDLE)
-					tentSel.setOnItemSelectedListener(tentSelL);
+					groupSel.setOnItemSelectedListener(groupSelL);
 				
 				scrolling = scrollState != OnScrollListener.SCROLL_STATE_IDLE;
 			}
 		});
 	}
 	
-	private class TentListAdapter extends BaseAdapter {
-		Context ctx;
-		LinkedList<Schedule.Line> tents;
-		
-		public TentListAdapter(Context ctx_, LinkedList<Schedule.Line> tents_) {
-			ctx = ctx_;
-			tents = tents_;
-		}
-
+	private class GroupListAdapter extends BaseAdapter {
 		@Override
 		public int getCount() {
-			return tents.size();
+			return groups.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return tents.get(position);
+			return groups.get(position);
 		}
 
 		@Override
@@ -175,7 +173,7 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			TextView ret = new TextView(ctx);
 
-			ret.setText(tents.get(position).getTitle().toUpperCase());
+			ret.setText(groups.get(position).getTitle().toUpperCase());
 			ret.setBackgroundResource(R.color.primary);
 			ret.setTextColor(getResources().getColor(android.R.color.white));
 			ret.setTextSize(14);

@@ -71,6 +71,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 
 public class ScheduleViewActivity extends Activity {
@@ -730,8 +731,7 @@ public class ScheduleViewActivity extends Activity {
 
 	public void redrawSchedule() {
 		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
-		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.tracks &&
-		    curView != R.id.search && sched.getDays().size() > 1) {
+		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.search && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
 			setTitle(sched.getDayFormat().format(sched.getDay()) + ", " + sched.getTitle());
 		} else {
@@ -740,13 +740,14 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (curView == R.id.timetable) {
-			setScheduleView(new TimeTable(this, sched));
+			setScheduleView(new TimeTable(this, (Collection) sched.getTents()));
 		} else if (curView == R.id.now_next) {
 			setScheduleView(new NowNext(this, sched));
 		} else if (curView == R.id.my_events) {
 			setScheduleView(new MyItemsView(this, sched));
 		} else if (curView == R.id.tracks) {
-			setScheduleView(new TrackList(this, sched));
+			// TODO: Split
+			setScheduleView(new TimeTable(this, (Collection) sched.getTracks()));
 		} else if (curView == R.id.search) {
 			setScheduleView(new ItemSearch(this, sched));
 		} else {
