@@ -1132,9 +1132,9 @@ public class Schedule implements Serializable {
 		
 		public String getTitle() {
 			if (roomStatus == RoomStatus.FULL)
-				return "⛔" + title;  // no access sign
+				return "⚠️" + title;  // warning sign
 			else if (roomStatus == RoomStatus.EVACUATE)
-				return "\uD83D\uDCA5" + title;  // explosion
+				return "🚫" + title;  // prohibited sign
 			else
 				return title;
 		}
