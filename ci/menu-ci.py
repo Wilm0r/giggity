@@ -12,6 +12,7 @@ reviewing those updates manually.
 Sadly I'll need to duplicate some things from Giggity's Java code I guess...
 """
 
+import argparse
 import datetime
 import json
 import os
@@ -35,6 +36,14 @@ class MenuError(Exception):
 	pass
 
 SCHEMA = "ci/menu-schema.json"
+
+parser = argparse.ArgumentParser(
+	description="Validation of Giggity menu.json files based on JSON "
+	            "schema and some other details.")
+parser.add_argument(
+	"--all", "-a", action="store_true",
+	help="Validate all entries, not just the ones that changed.")
+args = parser.parse_args()
 
 g = subprocess.Popen(["tools/merge.py"],
                      stdout=subprocess.PIPE, encoding="utf-8")
@@ -97,10 +106,15 @@ def fetch(url, img=False):
 	o = urllib3.PoolManager(**kwargs)
 	try:
 		print("Fetching %s" % url)
-		u = o.request("GET", url, preload_content=False)
-		if u.status != 200:
-			# Hmm, any way to make urllib3 throw an exception
-			# on non-success responses?
+		u = o.request("GET", url, redirect=False,
+		              preload_content=False)
+		if 300 <= u.status < 400:
+			return FetchError(
+				"URL redirected to %s, which is an unnecessary "
+				"slowdown. (Also, the Android HTTP fetcher does not "
+				"allow http<>https redirects.)" %
+				(u.get_redirect_location()))
+		elif u.status != 200:
 			return FetchError("%d %s" % (u.status, u.reason))
 		if not img:
 			return u.read()
@@ -191,7 +205,8 @@ for e in new["schedules"]:
 		if e == base_entries[e["url"]]:
 			print("Unchanged: %s" % e["title"])
 			base_entries.pop(e["url"])
-			continue
+			if not args.all:
+				continue
 		else:
 			print("Changed: %s" % e["title"])
 			if e["version"] <= base_entries[e["url"]]["version"]:
