@@ -1,0 +1,25 @@
+{
+	"version": 2019102300,
+	"url": "http://triplea.fr/alchimie/documents/alchimie13.ics",
+	"id": "Alchimie 13",
+	"title": "Alchimie 13",
+	"start": "2019-11-01",
+	"end": "2019-11-03",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://triplea.fr/alchimie/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://triplea.fr/alchimie/pages/reglement_general.php",
+				"title": "Règlement"
+			},
+			{
+				"url": "http://alchimie.party/",
+				"title": "Serveur de vote"
+			}
+		]
+	}
+}
+
