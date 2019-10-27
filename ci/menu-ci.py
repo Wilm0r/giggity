@@ -19,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 
 # version check. This script requires at least python 3.6
 # Currently the only 3.6 feature that is used in this script is `encoding` in
@@ -30,6 +31,8 @@ if sys.version_info[:2] < (3, 6):
 import jsonschema
 import PIL.Image
 import urllib3
+
+from email.utils import formatdate
 
 
 class MenuError(Exception):
@@ -89,44 +92,76 @@ class FetchError(Exception):
 	pass
 
 
-def fetch(url, img=False):
-	"""Simple URL fetcher, will return text or a parsed image depending
-	on what you ask for. Or an exception (returned, not raised :-P)."""
+class HTTP():
+	def __init__(self):
+		certs = "/etc/ssl/certs/ca-certificates.crt"
+		# Kind of ugly. Should I even check, or just not support machines
+		# that don't have this file?
+		kwargs = {}
+		if os.path.exists(certs):
+			kwargs.update({
+				"cert_reqs": "CERT_REQUIRED",
+				"ca_certs": certs,
+			})
 
-	certs = "/etc/ssl/certs/ca-certificates.crt"
-	# Kind of ugly. Should I even check, or just not support machines
-	# that don't have this file?
-	kwargs = {}
-	if os.path.exists(certs):
-		kwargs.update({
-			"cert_reqs": "CERT_REQUIRED",
-			"ca_certs": certs,
-		})
+		self.o = urllib3.PoolManager(**kwargs)
+		self.hcache = {}
 
-	o = urllib3.PoolManager(**kwargs)
-	try:
-		print("Fetching %s" % url)
-		u = o.request("GET", url, redirect=False,
-		              preload_content=False)
-		if 300 <= u.status < 400:
-			return FetchError(
-				"URL redirected to %s, which is an unnecessary "
-				"slowdown. (Also, the Android HTTP fetcher does not "
-				"allow http<>https redirects.)" %
-				(u.get_redirect_location()))
-		elif u.status != 200:
-			return FetchError("%d %s" % (u.status, u.reason))
-		if not img:
-			return u.read()
+	def fetch(self, url, img=False, head=False):
+		"""Simple URL fetcher, will return bytes or a parsed image depending
+		on what you ask for. Or an exception (returned, not raised :-P)."""
+
+		method = head and "HEAD" or "GET"
+		try:
+			print("Fetching %s" % url)
+			u = self.o.request(
+				method, url, redirect=False, preload_content=False)
+			if 300 <= u.status < 400:
+				diff_protocol = ""
+				if not u.get_redirect_location().startswith(
+					url.split("//", 1)[0]):
+					diff_protocol = (" (Also, the Android HTTP "
+						"fetcher does not allow http<>https redirects.)")
+				return FetchError(
+					"URL redirected to %s, which is an unnecessary "
+					"slowdown.%s" %
+					(u.get_redirect_location(), diff_protocol))
+			elif u.status != 200:
+				return FetchError("%d %s" % (u.status, u.reason))
+			self.hcache[url] = {k.lower(): v for k, v in u.getheaders().iteritems()}
+			self.hcache[url]["_ts"] = time.time()
+			if not img:
+				return u.read()
+			else:
+				return PIL.Image.open(u)
+		except urllib3.exceptions.HTTPError as e:
+			error = str(e.reason)
+			return FetchError(error)
+
+	def cache_sensible(self, url):
+		"""Check whether it ever returns 304s. Yeah sure, this is a race. I
+		don't care for a test that runs a few times a week at most."""
+		if url not in self.hcache:
+			return None
+		h = {}
+		if "last-modified" in self.hcache[url]:
+			h["If-Modified-Since"] = self.hcache[url]["last-modified"]
 		else:
-			return PIL.Image.open(u)
-	except urllib3.exceptions.HTTPError as e:
-		error = str(e.reason)
-		return FetchError(error)
+			h["If-Modified-Since"] = formatdate(
+				self.hcache[url]["_ts"], localtime=False, usegmt=True)
+		# GET not HEAD because the CCC webserver is fucking retarded.
+		u = self.o.request(
+			"GET", url, headers=h, redirect=False, preload_content=False)
+		return u.status == 304
+
+
+http = HTTP()
 
 
 def validate_entry(e):
-	sf = fetch(e["url"])
+	# Forced to use GET not HEAD even though I don't need the data because for
+	# example the retarded CCC server refuses HEAD requests.
+	sf = http.fetch(e["url"])
 	if isinstance(sf, FetchError):
 		errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(sf)))
 
@@ -143,7 +178,7 @@ def validate_entry(e):
 	md = e.get("metadata")
 	if md:
 		if "c3nav_base" in md:
-			c3nav = fetch(md["c3nav_base"] + "/api/locations/?format=json")
+			c3nav = http.fetch(md["c3nav_base"] + "/api/locations/?format=json")
 			if isinstance(c3nav, FetchError):
 				errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(c3nav)))
 				c3_by_slug = {}
@@ -160,7 +195,7 @@ def validate_entry(e):
 				errors.append("c3nav room %s not listed in /api/locations/" % room["c3nav_slug"])
 	
 		if "icon" in md:
-			img = fetch(md["icon"], img=True)
+			img = http.fetch(md["icon"], img=True)
 			icon_errors = []
 			if isinstance(img, FetchError):
 				icon_errors.append(str(img))
@@ -178,7 +213,7 @@ def validate_entry(e):
 		
 		if "links" in md:
 			for link in md["links"]:
-				d = fetch(link["url"])
+				d = http.fetch(link["url"], head=True)
 				if isinstance(d, FetchError):
 					errors.append("%s link for %s appears broken: %s" % (link["title"], e["title"], str(d)))
 
@@ -227,11 +262,15 @@ if changed and base:
 		if e["version"] <= base["version"]:
 			errors.append("Schedule %s version number must be > %d (previous version)" % (e["title"], base["version"]))
 
+for e in changed:
+	if e.get("cache_ttl", 86400) < 86400 and not http.cache_sensible(e["url"]):
+		errors.append("Schedule %s cache_ttl set below 1d while server never sends HTTP 304s" % e["title"])
+
 for e in base_entries.values():
 	print("Removed: %s" % e["title"])
 
 if errors:
-	print("There were some problems with this file!")
+	print("\nThere were some problems with this file!")
 	print()
 	print("\n".join(errors))
 	os._exit(1)

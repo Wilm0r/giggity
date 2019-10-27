@@ -55,6 +55,18 @@
               "https://moca.olografix.org/moca2016.ics"
             ]
           },
+          "cache_ttl": {
+            "$id": "/properties/schedules/items/properties/cache_ttl",
+            "type": "integer",
+            "title": "Schedule file maximum cache lifetime (seconds)",
+            "description": "Overrides expiry data from server since it's barely ever set correctly",
+            "default": 86400,
+            "examples": [
+              86400
+            ],
+            "minimum": 300,
+            "maximum": 604800
+          },
           "title": {
             "$id": "/properties/schedules/items/properties/title",
             "type": "string",
