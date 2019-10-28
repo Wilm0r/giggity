@@ -1,0 +1,20 @@
+{
+	"version": 2019102800,
+	"url": "https://osseu19.sched.com/all.ics",
+	"title": "Open Source Summit + Embedded Linux Conference Europe 2019",
+	"id": "osseu19",
+	"start": "2019-10-28",
+	"end": "2019-11-01",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events19.linuxfoundation.org/events/open-source-summit-europe-2019/",
+				"title": "OSSEU Website"
+			},
+			{
+				"url": "https://events19.linuxfoundation.org/events/embedded-linux-conference-europe-2019/",
+				"title": "Embedded Linux Conference Website"
+			}
+		]
+	}
+}
