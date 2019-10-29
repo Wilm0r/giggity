@@ -1,5 +1,5 @@
 {
-    "version": 2019102900,
+    "version": 2019102901,
     "url": "https://promcon.io/2019-munich/schedule.xml",
     "title": "PromCon EU 2019",
         "start": "2019-11-07",
@@ -12,12 +12,18 @@
                     "title": "Website"
                 },
                 {
-                    "url": "https://goo.gl/maps/BgtgjfCDyez",
+                    "url": "https://www.google.de/maps/place/Google/@48.1429092,11.5387586,17z/data=!4m5!3m4!1s0x479e758b6989ce1b:0xdd1b393a488b0ebf!8m2!3d48.1429092!4d11.5409473",
                     "title": "Venue location"
                 },
                 {
                     "url": "https://promcon.io/coc/",
                     "title": "Code of Conduct"
+                }
+            ],
+            "rooms": [
+                {
+                    "name": "Main room",
+                    "latlon": [48.142806, 11.541000]
                 }
             ]
         }
