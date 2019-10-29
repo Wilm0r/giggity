@@ -1,0 +1,24 @@
+{
+    "version": 2019102900,
+    "url": "https://promcon.io/2019-munich/schedule.xml",
+    "title": "PromCon EU 2019",
+        "start": "2019-11-07",
+        "end": "2018-11-08",
+        "metadata": {
+            "icon": "https://promcon.io/assets/favicons/apple-touch-icon.png",
+            "links": [
+                {
+                    "url": "https://promcon.io/2019-munich/",
+                    "title": "Website"
+                },
+                {
+                    "url": "https://goo.gl/maps/BgtgjfCDyez",
+                    "title": "Venue location"
+                },
+                {
+                    "url": "https://promcon.io/coc/",
+                    "title": "Code of Conduct"
+                }
+            ]
+        }
+}
