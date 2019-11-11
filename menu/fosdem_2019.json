@@ -4,7 +4,7 @@
 	"title": "FOSDEM 2019",
 	"start": "2019-02-02",
 	"end": "2019-02-03",
-	"cache_ttl": 1800,
+	"refresh_interval": 1800,
 	"metadata": {
 		"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
 		"links": [

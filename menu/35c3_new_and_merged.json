@@ -15,6 +15,6 @@
 	"url": "https://streaming.media.ccc.de/configs/conferences/35c3/everything.schedule.xml",
 	"start": "2018-12-27",
 	"end": "2018-12-30",
-	"cache_ttl": 1800,
+	"refresh_interval": 1800,
 	"version": 2018122701
 }

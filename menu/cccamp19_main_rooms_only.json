@@ -19,6 +19,6 @@
 	"url": "https://fahrplan.events.ccc.de/camp/2019/Fahrplan/schedule.xml",
 	"start": "2019-08-21",
 	"end": "2019-08-25",
-	"cache_ttl": 1800,
+	"refresh_interval": 1800,
 	"version": 2019080501
 }

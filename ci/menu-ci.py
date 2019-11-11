@@ -263,8 +263,8 @@ if changed and base:
 			errors.append("Schedule %s version number must be > %d (previous version)" % (e["title"], base["version"]))
 
 for e in changed:
-	if e.get("cache_ttl", 86400) < 86400 and not http.cache_sensible(e["url"]):
-		errors.append("Schedule %s cache_ttl set below 1d while server never sends HTTP 304s" % e["title"])
+	if e.get("refresh_interval", 86400) < 86400 and not http.cache_sensible(e["url"]):
+		errors.append("Schedule %s refresh_interval set below 1d while server never sends HTTP 304s" % e["title"])
 
 for e in base_entries.values():
 	print("Removed: %s" % e["title"])
