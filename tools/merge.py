@@ -6,6 +6,7 @@ import json
 import operator
 import os
 import re
+import sys
 
 from dulwich.repo import Repo
 from dulwich import porcelain
@@ -70,10 +71,12 @@ out = {
 	"schedules": [],
 }
 
-for s in sorted(all.values(), key=operator.itemgetter("start", "end", "title")):
+sortkey = lambda kv: operator.itemgetter("start", "end", "title")(kv[1])
+for fn, s in sorted(all.items(), key=sortkey):
 	if s["start"] < first:
 		# Too long ago, don't include. Maybe write a purge script
 		# some day.
+		print("Too old, skipped: %s" % fn, file=sys.stderr)
 		continue
 	out["version"] = max(out["version"], s["version"])
 	out["schedules"].append(s)

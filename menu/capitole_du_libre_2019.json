@@ -1,0 +1,33 @@
+{
+	"version": 2019102400,
+	"url": "https://participez-2019.capitoledulibre.org/schedule/xml/",
+	"title": "Capitole du Libre 2019",
+	"start": "2019-11-16",
+	"end": "2019-11-17",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://capitoledulibre.org/",
+				"title": "Site web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "A.*",
+				"latlon": [43.60248, 1.45464]
+			},
+			{
+				"name": "B.*",
+				"latlon": [43.60247, 1.45566]
+			},
+			{
+				"name": "C.*",
+				"latlon": [43.60214, 1.45462]
+			},
+			{
+				"name": "Foyer.*",
+				"latlon": [43.60207, 1.45591]
+			}
+		]
+	}
+}

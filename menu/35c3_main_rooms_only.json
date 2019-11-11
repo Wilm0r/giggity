@@ -15,5 +15,6 @@
 	"url": "https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml",
 	"start": "2018-12-27",
 	"end": "2018-12-30",
+	"cache_ttl": 1800,
 	"version": 2018122701
 }
