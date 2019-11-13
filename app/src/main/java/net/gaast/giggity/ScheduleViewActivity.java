@@ -250,9 +250,15 @@ public class ScheduleViewActivity extends Activity {
 			sched = app.getCachedSchedule(url);
 			onScheduleLoaded();
 		} else {
+			Fetcher.Source fs;
+			if (getIntent().getBooleanExtra("PREFER_ONLINE", false))
+				fs = Fetcher.Source.ONLINE_CACHE;
+			else
+				fs = Fetcher.Source.CACHE_ONLINE;
+
 			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			drawerToggle.setDrawerIndicatorEnabled(false);  // Shows a not functioning back button. :<
-			loadScheduleAsync(url, Fetcher.Source.ONLINE_CACHE);
+			loadScheduleAsync(url, fs);
 		}
 	}
 

@@ -65,7 +65,7 @@ import java.util.zip.GZIPInputStream;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 17;
+	private static final int dbVersion = 18;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -83,10 +83,6 @@ public class Db {
 		public Helper(Context context, String name, CursorFactory factory,
 				int version) {
 			super(context, name, factory, version);
-			
-			if (oldDbVer < dbVersion) {
-				updateData(getWritableDatabase(), false);
-			}
 		}
 	
 		@Override
@@ -98,6 +94,7 @@ public class Db {
 			                                  "sch_atime Integer, " +
 			                                  "sch_rtime Integer, " +
 			                                  "sch_itime Integer, " +
+			                                  "sch_refresh_interval Integer, " +
 			                                  "sch_start Integer, " +
 			                                  "sch_end Integer, " +
 			                                  "sch_id_s VarChar(128), " +
@@ -120,64 +117,76 @@ public class Db {
 	
 		@Override
 		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			int v = oldVersion;
 			Log.i("DeoxideDb", "Upgrading from database version " + oldVersion + " to " + newVersion);
-			while (v < newVersion) {
-				v++;
-				if (v == 8) {
-					/* Version 8 adds start/end time columns to the db. */
-					try {
-						db.execSQL("Alter Table schedule Add Column sch_start Integer");
-						db.execSQL("Alter Table schedule Add Column sch_end Integer");
-					} catch (SQLiteException e) {
-						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-						e.printStackTrace();
-					}
-				} else if (v == 11) {
-					/* Version 10 adds rtime column. */
-					try {
-						db.execSQL("Alter Table schedule Add Column sch_rtime Integer");
-					} catch (SQLiteException e) {
-						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-						e.printStackTrace();
-					}
-				} else if (v == 12) {
-					/* Version 12 adds hidden column. */
-					try {
-						db.execSQL("Alter Table schedule_item Add Column sci_hidden Boolean");
-					} catch (SQLiteException e) {
-						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-						e.printStackTrace();
-					}
-				} else if (v == 13) {
-					/* Version 13 adds big metadata field. */
-					try {
-						db.execSQL("Alter Table schedule Add Column sch_metadata VarChar(10240)");
-					} catch (SQLiteException e) {
-						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-						e.printStackTrace();
-					}
-				} else if (v == 15) {
-					/* Version 14 added FTS, 15 adds the itime field to avoid needless reindexing. */
-					try {
-						db.execSQL("Alter Table schedule Add Column sch_itime Integer");
-					} catch (SQLiteException e) {
-						Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-						e.printStackTrace();
-					}
-				} else if (v == 16) {
-					/* ItemSearch history stored in database. */
-					try {
-						db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
-						           "hst_query VarChar(128), " +
-						           "hst_atime Integer)");
-					} catch (SQLiteException e) {
-						Log.e("DeoxideDb", "SQLite error, maybe table already exists?");
-						e.printStackTrace();
-					}
-				} else if (v == 17) {
-					/* This is a little more work so "shell out". */
-					mergeDuplicateUrls(db);
+
+			if (oldVersion < 8) {
+				/* Version 8 adds start/end time columns to the db. */
+				try {
+					db.execSQL("Alter Table schedule Add Column sch_start Integer");
+					db.execSQL("Alter Table schedule Add Column sch_end Integer");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
+				}
+			}
+			if (oldVersion < 11) {
+				/* Version 10 adds rtime column. */
+				try {
+					db.execSQL("Alter Table schedule Add Column sch_rtime Integer");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
+				}
+			}
+			if (oldVersion < 12) {
+				/* Version 12 adds hidden column. */
+				try {
+					db.execSQL("Alter Table schedule_item Add Column sci_hidden Boolean");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
+				}
+			}
+			if (oldVersion < 13) {
+				/* Version 13 adds big metadata field. */
+				try {
+					db.execSQL("Alter Table schedule Add Column sch_metadata VarChar(10240)");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
+				}
+			}
+			if (oldVersion < 15) {
+				/* Version 14 added FTS, 15 adds the itime field to avoid needless reindexing. */
+				try {
+					db.execSQL("Alter Table schedule Add Column sch_itime Integer");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
+				}
+			}
+			if (oldVersion < 16) {
+				/* ItemSearch history stored in database. */
+				try {
+					db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
+							   "hst_query VarChar(128), " +
+							   "hst_atime Integer)");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe table already exists?");
+					e.printStackTrace();
+				}
+			}
+			if (oldVersion < 17) {
+				/* This is a little more work so "shell out". */
+				mergeDuplicateUrls(db);
+			}
+			if (oldVersion < 18) {
+				/* Version 18 uses menu.json refresh_interval instead of 1d default. */
+				try {
+					db.execSQL("Alter Table schedule Add Column sch_refresh_interval Integer");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
 				}
 			}
 
@@ -197,7 +206,13 @@ public class Db {
 				e.printStackTrace();
 			}
 
+			// Don't think the Math.min is necessary (anymore). I wrote this possibly >10y ago
+			// assuming maybe that this function gets called multiple times?
 			oldDbVer = Math.min(oldDbVer, oldVersion);
+			Log.d("deoxideDb", "Schema updated " + oldDbVer + "→" + dbVersion);
+			if (oldDbVer < dbVersion && newVersion == dbVersion) {
+				updateData(db, false);
+			}
 		}
 
 		private void mergeDuplicateUrls(SQLiteDatabase db) {
@@ -253,7 +268,8 @@ public class Db {
 
 		int version = pref.getInt("last_menu_seed_version", 0);
 		int newver = seed.version;
-		
+
+		Log.d("DeoxideDb.versions", "" + seed.version + " " + version + " " + oldDbVer + " " + dbVersion);
 		if (seed.version <= version && oldDbVer == dbVersion) {
 			/* No updates required, both data and structure are up to date. */
 			Log.d("DeoxideDb.updateData", "Already up to date: " + version + " " + oldDbVer);
@@ -297,6 +313,7 @@ public class Db {
 			row.put("sch_start", sched.start.getTime() / 1000);
 			row.put("sch_end", sched.end.getTime() / 1000);
 		}
+		row.put("sch_refresh_interval", sched.refresh_interval);
 		row.put("sch_title", sched.title);
 		row.put("sch_metadata", sched.metadata);
 
@@ -374,6 +391,7 @@ public class Db {
 		
 		private static class Schedule {
 			String url, title;
+			int refresh_interval;
 			Date start, end;
 			// Raw JSON string, because we'll only start interpreting this data later on. Will contain
 			// info like extra links to for example room maps, and other stuff I may think of. Would
@@ -383,6 +401,11 @@ public class Db {
 			public Schedule(JSONObject jso) throws JSONException {
 				url = jso.getString("url");
 				title = jso.getString("title");
+				if (jso.has("refresh_interval")) {
+					refresh_interval = jso.getInt("refresh_interval");
+				} else {
+					refresh_interval = 86400;
+				}
 
 				if (jso.has("metadata")) {
 					metadata = jso.getJSONObject("metadata").toString();
@@ -440,7 +463,7 @@ public class Db {
 
 				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 			} else if (q.getCount() == 0) {
-				// Set defaults, and only use schedule fule's title since we didn't already have one.
+				// Set defaults, and only use schedule file's title since we didn't already have one.
 				row.put("sch_day", 0);
 				row.put("sch_title", sched.getTitle());
 				row.put("sch_url", url);
@@ -741,6 +764,7 @@ public class Db {
 		private int id;
 		private String url, title;
 		private Date start, end;
+		private int refresh_interval;  // Number of seconds before checking server for new schedule info.
 		private Date atime;  // Access time, set by setSchedule above, used as sorting key in Chooser.
 		private Date rtime;  // Refresh time, last time Fetcher claimed the server sent new data.
 		private Date itime;  // Index time, last time it was added to the FTS index.
@@ -750,6 +774,7 @@ public class Db {
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
 			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
 			start = new Date(q.getLong(q.getColumnIndexOrThrow("sch_start")) * 1000);
+			refresh_interval = q.getInt(q.getColumnIndexOrThrow("sch_refresh_interval"));
 			end = new Date(q.getLong(q.getColumnIndexOrThrow("sch_end")) * 1000);
 			atime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_atime")) * 1000);
 			rtime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_rtime")) * 1000);
@@ -785,6 +810,13 @@ public class Db {
 
 		public Date getItime() {
 			return itime;
+		}
+
+		public boolean refreshNow() {
+			// TODO: Stop this and all other uses of the decrepit Date API.
+			Date now = new Date();
+			int interval = (refresh_interval > 0) ? refresh_interval : 86400;
+			return now.getTime() > (rtime.getTime() + interval * 1000);
 		}
 
 		public void flushHidden() {

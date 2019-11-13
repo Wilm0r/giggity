@@ -111,7 +111,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 			DbSchedule item = (DbSchedule) lista.getItem(position);
 			if (item != null) {
-				openSchedule(item, false, view);
+				openSchedule(item.getUrl(), item.refreshNow(), null, view);
 			}
 			}
 		});
@@ -211,13 +211,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		} else if (item.getItemId() == 0) {
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched, true, null);
+			openSchedule(sched.getUrl(), true, null, null);
 		} else if (item.getItemId() == 3) {
 			/* Unhide. */
 			sched.flushHidden();
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched, false, null);
+			openSchedule(sched.getUrl(), sched.refreshNow(), null, null);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
 			db.removeSchedule(sched.getUrl());
@@ -263,11 +263,12 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		seedRefreshMenu = null;
 	}
 
-	private void openSchedule(String url, View animationOrigin, Schedule.Selections sel) {
+	private void openSchedule(String url, boolean prefOnline, Schedule.Selections sel, View animationOrigin) {
 		if (!url.contains("://"))
 			url = "http://" + url;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
 				this, ScheduleViewActivity.class);
+		intent.putExtra("PREFER_ONLINE", prefOnline);
 		if (sel != null)
 			intent.putExtra("SELECTIONS", sel);
 
@@ -277,14 +278,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		               this, animationOrigin, "title");
 		}
 		startActivity(intent, options != null ? options.toBundle() : null);
-	}
-
-	private void openSchedule(DbSchedule event, boolean prefOnline, View animationOrigin) {
-		if (!prefOnline) {
-			if (new Date().getTime() - event.getRtime().getTime() > 86400000)
-				prefOnline = true;
-		}
-		openSchedule(event.getUrl(), animationOrigin, null);
 	}
 
 	/* Process barcode scan results. This can be a few things:
@@ -327,7 +320,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 				/* Nope, just a plain URL then hopefully.. Or something corrupted that will generate
 				   a spectacular error message. \o/ */
-				openSchedule(url, null, sel);
+				openSchedule(url, false, sel, null);
 			}
 		}
 	}
@@ -375,7 +368,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		d.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				openSchedule(urlBox.getText().toString(), null, null);
+				openSchedule(urlBox.getText().toString(), false, null, null);
 			}
 		});
 		/* Apparently the "Go"/"Done" button still just simulates an ENTER keypress. Neat!...
@@ -385,7 +378,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN &&
 						keyCode == KeyEvent.KEYCODE_ENTER) {
-					openSchedule(urlBox.getText().toString(), null, null);
+					openSchedule(urlBox.getText().toString(), false, null, null);
 					return true;
 				} else {
 					return false;
