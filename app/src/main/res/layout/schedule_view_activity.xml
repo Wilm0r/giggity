@@ -51,7 +51,7 @@
 			android:orientation="vertical">
 
 			<TextView
-				android:id="@+id/date_range"
+				android:id="@+id/drawer_date_range"
 				style="@style/BurgerMenuHeader"
 				android:text="FANCY DATE RANGE"/>
 

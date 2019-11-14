@@ -595,10 +595,11 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		LinkedList<ZonedDateTime> days = sched.getDays();
-		TextView dr = (TextView) drawerLayout.findViewById(R.id.date_range);
+		TextView dr = (TextView) drawerLayout.findViewById(R.id.drawer_date_range);
 		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
 
 		if (sched.getLinks() != null) {
+			Log.d("finishNavDrawer", "Links " + sched.getLinks().size());
 			ViewGroup menu = (LinearLayout) drawerLayout.findViewById(R.id.menu);
 			View sep = menu.findViewById(R.id.custom_sep);
 			sep.setVisibility(View.VISIBLE);

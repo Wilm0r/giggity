@@ -517,7 +517,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 						View div = new View(ChooserActivity.this);
 						div.setMinimumHeight(app.dp2px(1));
 						div.setBackgroundResource(R.color.light);
-						app.setPadding(inner.findViewById(R.id.date_range), 0, 0, 0, 4);
+						app.setPadding(inner.findViewById(R.id.subtitle), 0, 0, 0, 4);
 						inner.addView(div, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 					}
 
@@ -529,7 +529,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 					if ((flags & UNUSED) != 0) {
 						inner.findViewById(R.id.title).setAlpha(0.6F);
-						inner.findViewById(R.id.date_range).setAlpha(0.6F);
+						inner.findViewById(R.id.subtitle).setAlpha(0.6F);
 					}
 				} else {
 					TextView ret = new TextView(ChooserActivity.this);
@@ -578,7 +578,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		when = new TextView(inner.getContext());
 		when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
 		when.setTextSize(12);
-		when.setId(R.id.date_range);
+		when.setId(R.id.subtitle);
 		inner.addView(when);
 
 		inner.setOrientation(LinearLayout.VERTICAL);
