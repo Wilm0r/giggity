@@ -30,7 +30,7 @@ import java.util.TreeSet;
 public class NowNext extends ScheduleListView implements ScheduleViewer {
 	private Schedule sched;
 	Context ctx;
-	
+
 	public NowNext(Context ctx_, Schedule sched_) {
 		super(ctx_);
 		ctx = ctx_;

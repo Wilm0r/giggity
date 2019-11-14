@@ -201,6 +201,7 @@ public class Giggity extends Application {
 				w.setNavigationBarDividerColor(getColor(R.color.time_back));
 			}
 			w.requestFeature(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			// Apparently not working with API < 26.
 			w.findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
 		}
 	}

@@ -28,7 +28,7 @@ public class MyItemsView extends ScheduleListView implements ScheduleViewer {
 
 		for (Schedule.Line tent : sched.getTents()) {
 			for (Schedule.Item item : tent.getItems()) {
-				if (item.getRemind() || item.getStars() > 0) {
+				if (item.getRemind()) {
 					if (item.compareTo(now) >= 0)
 						seen.add(item);
 					else

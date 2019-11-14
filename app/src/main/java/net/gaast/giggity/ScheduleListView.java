@@ -46,7 +46,6 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	int itemListFlags = 0;
 	Giggity app;
 
-	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
 		super(ctx_);
 		ctx = ctx_;

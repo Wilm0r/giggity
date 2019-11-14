@@ -155,8 +155,6 @@ public class ScheduleUI extends Schedule {
 
 	/* Returns true if any of the statuses has changed. */
 	public boolean updateRoomStatus() {
-		boolean ret = false;
-		JSONArray parsed;
 		try {
 			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.ONLINE_NOCACHE);
 			return updateRoomStatus(f.slurp());

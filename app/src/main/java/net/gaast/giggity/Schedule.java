@@ -636,14 +636,6 @@ public class Schedule implements Serializable {
 		return ret;
 	}
 
-	// Return all of them. Same if day = -1, otherwise the above filters for just non-empty ones today
-	public Map<String, Track> allTracks() {
-		if (tracks == null || tracks.size() == 0)
-			return null;
-
-		return tracks;
-	}
-
 	public ArrayList<Item> getByLanguage(String language) {
 		ArrayList<Item> ret = new ArrayList<>();
 		for (Item item : allItems.values()) {
@@ -908,7 +900,6 @@ public class Schedule implements Serializable {
 	   It's not really maintained anymore though, a recent fork called Frab is more maintained and
 	   Giggity can read its XML exports just as well https://github.com/frab/frab
 	 */
-	@SuppressWarnings("deprecation")
 	private class PentabarfParser implements ContentHandler {
 		private Schedule.Line curTent;
 		private HashMap<String,Schedule.Line> tentMap;
@@ -1226,9 +1217,6 @@ public class Schedule implements Serializable {
 		private boolean hidden;
 		private boolean newData;
 
-		@Deprecated
-		private int stars = -1;
-
 		Item(String id_, String title_, ZonedDateTime startTime_, ZonedDateTime endTime_) {
 			id = id_;
 			title = title_;
@@ -1439,17 +1427,6 @@ public class Schedule implements Serializable {
 			return hidden;
 		}
 
-		public void setStars(int stars_) {
-			if (stars != stars_) {
-				stars = stars_;
-				newData |= fullyLoaded;
-			}
-		}
-		
-		public int getStars() {
-			return stars;
-		}
-		
 		public void commit() {
 			if (newData) {
 				applyItem(this);

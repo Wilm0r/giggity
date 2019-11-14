@@ -310,7 +310,7 @@ public class ScheduleViewActivity extends Activity {
 					} else {
 						dismiss();
 
-						Dialog d = new AlertDialog.Builder(ScheduleViewActivity.this)
+						new AlertDialog.Builder(ScheduleViewActivity.this)
 								.setTitle(R.string.loading_error)
 								.setMessage(msg.obj != null ? msg.obj.toString() : "(null)")
 								.show();
@@ -539,11 +539,6 @@ public class ScheduleViewActivity extends Activity {
 		super.onPause();
 		timer.removeCallbacks(minuteRefresher);
 		timer.removeCallbacks(updateRoomStatus);
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
 	}
 
 	private void onScheduleLoaded() {
@@ -1034,8 +1029,6 @@ public class ScheduleViewActivity extends Activity {
 		private Runnable hideEv;
 
 		public DayButtonsHider() {
-			int id = 0;
-
 			dayButtons = viewerContainer.findViewById(R.id.dayButtons);
 			dayNext = viewerContainer.findViewById(R.id.dayNext);
 			dayNext.setImageResource(R.drawable.ic_arrow_forward_white_32dp);

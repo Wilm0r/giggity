@@ -41,7 +41,7 @@ public class Reminder extends Service {
 				Log.e("reminder", "Empty intent. Huh?");
 				return;
 			}
-			String url[] = intent.getDataString().split("#", 2);
+			String[] url = intent.getDataString().split("#", 2);
 			Schedule sched;
 			try {
 				sched = app.getSchedule(url[0], Fetcher.Source.CACHE_ONLINE, null);

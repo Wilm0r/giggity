@@ -276,7 +276,6 @@ public class Db {
 			return;
 		}
 		
-		long ts = new Date().getTime() / 1000;
 		for (Seed.Schedule sched : seed.schedules) {
 			updateSchedule(db, sched);
 		}
@@ -487,7 +486,6 @@ public class Db {
 
 				item.setRemind(q.getInt(2) != 0);
 				item.setHidden(q.getInt(3) != 0);
-				item.setStars(q.getInt(4));
 				sciIdMap.put(q.getString(1), (long) q.getInt(0));
 			}
 			q.close();
@@ -497,10 +495,9 @@ public class Db {
 			ContentValues row = new ContentValues();
 			row.put("sci_remind", item.getRemind());
 			row.put("sci_hidden", item.isHidden());
-			row.put("sci_stars", item.getStars());
-			
+
 			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") +
-			                   " stars " + row.getAsString("sci_stars") + " hidden " + row.getAsString("sci_hidden"));
+			                   " hidden " + row.getAsString("sci_hidden"));
 
 			SQLiteDatabase db = dbh.getWritableDatabase();
 			Long sciId = sciIdMap.get(item.getId());
@@ -802,14 +799,6 @@ public class Db {
 		
 		public Date getAtime() {
 			return atime;
-		}
-
-		public Date getRtime() {
-			return rtime;
-		}
-
-		public Date getItime() {
-			return itime;
 		}
 
 		public boolean refreshNow() {

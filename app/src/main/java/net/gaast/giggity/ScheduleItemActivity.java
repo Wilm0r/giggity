@@ -33,7 +33,7 @@ public class ScheduleItemActivity extends Activity {
 		app_.setNavBar(getWindow(), R.color.background_material_light);
 
 		if (url.contains("#")) {
-			String parts[] = url.split("#", 2);
+			String[] parts = url.split("#", 2);
 			url = parts[0];
 			id = parts[1];
 		} else {

@@ -22,15 +22,15 @@ package net.gaast.giggity;
 public interface ScheduleViewer {
 	/* These two maybe should've just been the same. */
 	/* Called every minute to update clock/marking of currently happening events. */
-	public void refreshContents();
+	void refreshContents();
 	/* Called after possible event state changes (ScheduleItemActivity or more tricky on tablets) */
-	public void refreshItems();
+	void refreshItems();
 	/* For UI stuff where the constructor would be too early to do it (showing keyboard for example) */
-	public void onShow();
+	void onShow();
 
 	/* Allow date switching. Does not apply to now&next for example. */
-	public boolean multiDay();
+	boolean multiDay();
 
 	/* Currently used by TimeTable only to blend the room tabs with the action bar. */
-	public boolean extendsActionBar();
+	boolean extendsActionBar();
 }

@@ -26,13 +26,11 @@ public class ScheduleItemView extends LinearLayout {
 
 		inflate(ctx, R.layout.schedule_item, this);
 		
-		int n = 0;
 		Format df = new SimpleDateFormat("EE d MMM");
 		Format tf = new SimpleDateFormat("HH:mm");
 		
 		TextView title, room, time, date;
-		RelativeLayout.LayoutParams p;
-		
+
 		time = findViewById(R.id.time);
 		String timeText = tf.format(item.getStartTime());
 		if ((flags & HIDE_ENDTIME) == 0) {

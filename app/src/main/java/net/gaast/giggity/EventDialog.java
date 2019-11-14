@@ -74,21 +74,21 @@ public class EventDialog extends FrameLayout {
 		TextView t;
 		Format tf = new SimpleDateFormat("HH:mm");
 		
-		t = (TextView) root.findViewById(R.id.title);
+		t = root.findViewById(R.id.title);
 		t.setText(item_.getTitle());
 
-		t = (TextView) root.findViewById(R.id.subtitle);
+		t = root.findViewById(R.id.subtitle);
 		if (item_.getSubtitle() != null) {
 			t.setText(item_.getSubtitle());
 		} else {
 			t.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) root.findViewById(R.id.room);
+		t = root.findViewById(R.id.room);
 		t.setText(item_.getLine().getTitle());
 
 		if (item_.getLine().getLocation() != null) {
-			t = (TextView) root.findViewById(R.id.room);
+			t = root.findViewById(R.id.room);
 			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
@@ -106,17 +106,17 @@ public class EventDialog extends FrameLayout {
 		}
 
 		if (item_.getLanguage() != null) {
-			t = (TextView) root.findViewById(R.id.language);
+			t = root.findViewById(R.id.language);
 			t.setText(" (" + item_.getLanguage() + ")");
 		} else {
 			root.findViewById(R.id.language).setVisibility(View.GONE);
 		}
 
-		t = (TextView) root.findViewById(R.id.time);
+		t = root.findViewById(R.id.time);
 		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTimeZoned()) + " " +
 		          tf.format(item_.getStartTime()) + "–" + tf.format(item_.getEndTime()));
 		
-		t = (TextView) root.findViewById(R.id.track);
+		t = root.findViewById(R.id.track);
 		if (item_.getTrack() != null) {
 			t.setText(item_.getTrack().getTitle());
 		} else {
@@ -125,12 +125,12 @@ public class EventDialog extends FrameLayout {
 			v.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) root.findViewById(R.id.speaker);
+		t = root.findViewById(R.id.speaker);
 		if (item_.getSpeakers() != null) {
 			t.setText(TextUtils.join(", ", item_.getSpeakers()));
 			
 			if (item_.getSpeakers().size() > 1) {
-				t = (TextView) root.findViewById(R.id.headSpeaker);
+				t = root.findViewById(R.id.headSpeaker);
 				t.setText(R.string.speakers);
 			}
 		} else {
@@ -152,7 +152,7 @@ public class EventDialog extends FrameLayout {
 			}
 		}
 		
-		t = (TextView) root.findViewById(R.id.alert);
+		t = root.findViewById(R.id.alert);
 		if (overlaps != null) {
 			t.setText(overlaps.replaceAll(", $", ""));
 		} else {
@@ -161,7 +161,7 @@ public class EventDialog extends FrameLayout {
 			v.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) root.findViewById(R.id.description);
+		t = root.findViewById(R.id.description);
 		t.setText(item.getDescriptionSpanned());
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
@@ -184,7 +184,7 @@ public class EventDialog extends FrameLayout {
 		});
 
 		if (item_.getLinks() != null) {
-			ViewGroup g = (ViewGroup) root.findViewById(R.id.links);
+			ViewGroup g = root.findViewById(R.id.links);
 			for (Schedule.Link link : item_.getLinks()) {
 				LinkButton btn = new LinkButton(ctx_, link);
 				g.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
@@ -192,7 +192,7 @@ public class EventDialog extends FrameLayout {
 			g.setVisibility(View.VISIBLE);
 		}
 
-		final ScrollView scr = (ScrollView) root.findViewById(R.id.scrollDescription);
+		final ScrollView scr = root.findViewById(R.id.scrollDescription);
 		scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
 			@Override
 			public void onScrollChanged() {
@@ -207,7 +207,7 @@ public class EventDialog extends FrameLayout {
 		});
 
 		/* Bottom box used to be a bunch of things but now just the remind checkbox + delete icon. */
-		LinearLayout bottomBox = (LinearLayout) root.findViewById(R.id.bottomBox);
+		LinearLayout bottomBox = root.findViewById(R.id.bottomBox);
 
 		cb_ = new CheckBox(ctx_);
 		cb_.setText(R.string.remind_me);
@@ -250,7 +250,7 @@ public class EventDialog extends FrameLayout {
 	}
 
 	public void saveScroll() {
-		final ScrollView sv = (ScrollView) root.findViewById(R.id.scrollDescription);
+		final ScrollView sv = root.findViewById(R.id.scrollDescription);
 		final View inner = sv.getChildAt(0);
 		if (sv.getScrollY() == 0 || inner.getHeight() <= sv.getHeight()) {
 			return;
