@@ -1333,10 +1333,10 @@ public class Schedule implements Serializable {
 		}
 
 		public String getDescriptionStripped() {
-			String ret = description;
 			if (description == null) {
 				return null;
 			}
+			String ret = description;
 			/* Very clunky HTML stripper */
 			if (ret.startsWith("<") || ret.contains("<p>")) {
 				ret = ret.replaceAll("<[^>]*>", "");
@@ -1362,6 +1362,10 @@ public class Schedule implements Serializable {
 		}
 
 		public Spanned getDescriptionSpanned() {
+			if (description == null) {
+				return null;
+			}
+
 			String html;
 			if (description.startsWith("<") || description.contains("<p>")) {
 				html = description;
@@ -1370,8 +1374,8 @@ public class Schedule implements Serializable {
 			}
 			Spanned formatted;
 			if (android.os.Build.VERSION.SDK_INT < 24) {
-			/* This parser is VERY limited, results aren't great, but let's give it a shot.
-			   I'd really like to avoid using a full-blown WebView.. */
+				/* This parser is VERY limited, results aren't great, but let's give it a shot.
+				   I'd really like to avoid using a full-blown WebView.. */
 				Html.TagHandler th = new Html.TagHandler() {
 					@Override
 					public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
