@@ -116,7 +116,7 @@
                       "$id": "/properties/schedules/items/properties/metadata/properties/links/items/properties/url",
                       "type": "string",
                       "title": "URL to extra event info (website or file)",
-                      "pattern": "^https?://.*",
+                      "pattern": "^(geo:|https?://).*",
                       "examples": [
                         "https://moca.olografix.org"
                       ]

@@ -213,6 +213,8 @@ def validate_entry(e):
 		
 		if "links" in md:
 			for link in md["links"]:
+				if link["url"].startswith("geo:"):
+					continue
 				d = http.fetch(link["url"], head=True)
 				if isinstance(d, FetchError):
 					errors.append("%s link for %s appears broken: %s" % (link["title"], e["title"], str(d)))
