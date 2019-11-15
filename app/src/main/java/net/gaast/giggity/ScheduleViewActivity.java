@@ -748,7 +748,6 @@ public class ScheduleViewActivity extends Activity {
 		} else if (curView == R.id.my_events) {
 			setScheduleView(new MyItemsView(this, sched));
 		} else if (curView == R.id.tracks) {
-			// TODO: Split
 			setScheduleView(new TimeTable(this, (Collection) sched.getTracks()));
 		} else if (curView == R.id.search) {
 			setScheduleView(new ItemSearch(this, sched));

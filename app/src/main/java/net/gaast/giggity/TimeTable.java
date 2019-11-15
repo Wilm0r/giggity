@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -34,7 +35,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 
 /* Wrapper around ScheduleListView that adds the improvised tabs with room names below action bar. */
 public class TimeTable extends LinearLayout implements ScheduleViewer {
@@ -46,9 +51,10 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 	private ScheduleListView scroller;
 	
 	private ArrayList<Schedule.ItemList> groups;
+
+	private ArrayList fullList = new ArrayList();
 	private HashMap<Schedule.Item,Schedule.ItemList> revGroups = new HashMap<>();
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+
 	public TimeTable(Activity ctx_, Collection<Schedule.ItemList> groups_) {
 		super(ctx_);
 		ctx = ctx_;
@@ -56,21 +62,7 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		groups = new ArrayList<>(groups_);
 		this.setOrientation(LinearLayout.VERTICAL);
 
-		ArrayList fullList = new ArrayList();
-		
-		for (Schedule.ItemList group : groups) {
-			if (group.getItems().isEmpty()) {
-				continue;
-			}
-
-			fullList.add(group);
-			fullList.addAll(group.getItems());
-			for (Schedule.Item it : group.getItems()) {
-				revGroups.put(it, group);
-			}
-		}
-		/* Ugly hack to get some empty space at the bottom of the list for nicer scrolling. */
-		fullList.add("\n\n\n\n\n\n\n\n");
+		flatten();
 
 		RelativeLayout.LayoutParams lp;
 
@@ -89,6 +81,9 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
 		scroller.setHideEndtime(true);
 		scroller.setList(fullList);
+		if (!groups.isEmpty() && groups.get(0).getClass() == Schedule.Track.class) {
+			scroller.setMultiRoom(true);
+		}
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(scroller, lp);
 
@@ -151,6 +146,72 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 				scrolling = scrollState != OnScrollListener.SCROLL_STATE_IDLE;
 			}
 		});
+	}
+
+	private void flatten() {
+		for (Schedule.ItemList group : groups) {
+			if (group.getItems().isEmpty()) {
+				continue;
+			}
+
+			fullList.add(group);
+			if (group.getClass() == Schedule.Track.class) {
+				fullList.addAll(trackGrouper(group.getItems()));
+			} else {
+				fullList.addAll(group.getItems());
+			}
+			for (Schedule.Item it : group.getItems()) {
+				revGroups.put(it, group);
+			}
+		}
+		/* Ugly hack to get some empty space at the bottom of the list for nicer scrolling. */
+		fullList.add("\n\n\n\n\n\n\n\n");
+	}
+
+	static private ArrayList<Schedule.Item> trackGrouper(Collection<Schedule.Item> in) {
+		ArrayList<Schedule.Item> ret = new ArrayList<>();
+		final HashMap<Schedule.Line,Integer> rooms = new HashMap<>();
+		HashSet<Schedule.Line> overlappers = new HashSet<>();
+		Schedule.Item last = null;
+		for (Schedule.Item it : in) {
+			if (!rooms.containsKey(it.getLine())) {
+				rooms.put(it.getLine(), 1);
+			} else {
+				// TODO: use getOrDefault() once I do API 24+ since until then Android-- Java-- didn't bother to have that.
+				rooms.put(it.getLine(), rooms.get(it.getLine()) + 1);
+			}
+			if (last != null && it.overlaps(last)) {
+				overlappers.add(last.getLine());
+				overlappers.add(it.getLine());
+			}
+			last = it;
+		}
+
+		// TODO: Similarly, dumbass Android-- Java-- has no comparingByValue yet API<24.
+		ArrayList<Schedule.Line> roomsSorted = new ArrayList<>(rooms.keySet());
+		Collections.sort(roomsSorted, new Comparator<Schedule.Line>() {
+			@Override
+			public int compare(Schedule.Line e0, Schedule.Line e1) {
+				return rooms.get(e1).compareTo(rooms.get(e0));
+			}
+		});
+
+		for (Schedule.Line room : roomsSorted) {
+			//if (!overlappers.contains(room)) continue;
+			if (rooms.get(room) < 3) break;
+			for (Schedule.Item it : in) {
+				if (it.getLine() == room)
+					ret.add(it);
+			}
+		}
+
+		for (Schedule.Item it : in) {
+			//if (!overlappers.contains(it.getLine()))
+			if (!ret.contains(it))
+				ret.add(it);
+		}
+
+		return ret;
 	}
 	
 	private class GroupListAdapter extends BaseAdapter {

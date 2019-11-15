@@ -18,8 +18,9 @@ public class ScheduleItemView extends LinearLayout {
 	public static final int SHOW_REMIND = 2;
 	public static final int SHOW_NOW = 4;
 	public static final int SHORT_TITLE = 8;
-	public static final int HIDE_ENDTIME = 16;
 	public static final int HIDE_DATE = 32;
+	public static final int HIDE_ENDTIME = 256;
+	public static final int MULTI_ROOM = 512;   // For ListView actually, to be used with COMPACT (un-COMPACT if it.room != it[-1].room).
 
 	public ScheduleItemView(Context ctx, Schedule.Item item, int flags) {
 		super(ctx);
