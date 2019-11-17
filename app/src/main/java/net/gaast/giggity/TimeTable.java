@@ -170,19 +170,21 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 
 	static private ArrayList<Schedule.Item> trackGrouper(Collection<Schedule.Item> in) {
 		ArrayList<Schedule.Item> ret = new ArrayList<>();
-		final HashMap<Schedule.Line,Integer> rooms = new HashMap<>();
+		final HashMap<Schedule.Line,ArrayList<Schedule.Item>> rooms = new HashMap<>();
 		HashSet<Schedule.Line> overlappers = new HashSet<>();
 		Schedule.Item last = null;
+		int changes = 1;
 		for (Schedule.Item it : in) {
 			if (!rooms.containsKey(it.getLine())) {
-				rooms.put(it.getLine(), 1);
-			} else {
-				// TODO: use getOrDefault() once I do API 24+ since until then Android-- Java-- didn't bother to have that.
-				rooms.put(it.getLine(), rooms.get(it.getLine()) + 1);
+				rooms.put(it.getLine(), new ArrayList<Schedule.Item>());
 			}
+			rooms.get(it.getLine()).add(it);
 			if (last != null && it.overlaps(last)) {
 				overlappers.add(last.getLine());
 				overlappers.add(it.getLine());
+			}
+			if (last != null && !it.getLine().equals(last.getLine())) {
+				++changes;
 			}
 			last = it;
 		}
@@ -192,23 +194,20 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		Collections.sort(roomsSorted, new Comparator<Schedule.Line>() {
 			@Override
 			public int compare(Schedule.Line e0, Schedule.Line e1) {
-				return rooms.get(e1).compareTo(rooms.get(e0));
+				// Sort key: start time of track's first talk in given room.
+				return rooms.get(e0).get(0).compareTo(rooms.get(e1).get(0));
 			}
 		});
 
-		for (Schedule.Line room : roomsSorted) {
-			//if (!overlappers.contains(room)) continue;
-			if (rooms.get(room) < 3) break;
-			for (Schedule.Item it : in) {
-				if (it.getLine() == room)
-					ret.add(it);
+		// Heuristics so far: When a track uses multiple rooms but not any talk overlaps with another,
+		// and if chronologically not too many room changes happen (<150% the number of rooms), just
+		// list them chronologically. Otherwise, the grouping code right here kicks in.
+		if (!overlappers.isEmpty() || changes > (1.5 * rooms.size())) {
+			for (Schedule.Line room : roomsSorted) {
+				ret.addAll(rooms.get(room));
 			}
-		}
-
-		for (Schedule.Item it : in) {
-			//if (!overlappers.contains(it.getLine()))
-			if (!ret.contains(it))
-				ret.add(it);
+		} else {
+			ret.addAll(in);
 		}
 
 		return ret;
