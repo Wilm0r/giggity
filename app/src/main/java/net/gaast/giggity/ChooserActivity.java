@@ -395,10 +395,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 					startActivityForResult(intent, 0);
 				} catch (ActivityNotFoundException e) {
-					new AlertDialog.Builder(ChooserActivity.this)
-							.setMessage("Please install the Barcode Scanner app")
-							.setTitle("Error")
-							.show();
+					Giggity.zxingError(ChooserActivity.this);
 				}
 			}
 		});

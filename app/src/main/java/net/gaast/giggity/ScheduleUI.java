@@ -1,5 +1,6 @@
 package net.gaast.giggity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -192,7 +193,7 @@ public class ScheduleUI extends Schedule {
 
 
 	// Bunch of static utility/UI functions/etc that I originally created this class for.
-	static public void exportSelections(Context ctx, Schedule sched) {
+	static public void exportSelections(Activity ctx, Schedule sched) {
 		Schedule.Selections sel = sched.getSelections();
 		
 		if (sel == null) {
@@ -213,10 +214,7 @@ public class ScheduleUI extends Schedule {
 			ctx.startActivity(intent);
 			Toast.makeText(ctx, R.string.qr_tip, Toast.LENGTH_LONG).show();
 		} catch (android.content.ActivityNotFoundException e) {
-			new AlertDialog.Builder(ctx)
-			  .setTitle("Not available")
-			  .setMessage("This functionality needs a Barcode Scanner application")
-			  .show();
+			Giggity.zxingError(ctx);
 		}
 
 	}

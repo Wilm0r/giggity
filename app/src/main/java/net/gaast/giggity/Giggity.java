@@ -22,11 +22,14 @@ package net.gaast.giggity;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -231,5 +234,22 @@ public class Giggity extends Application {
 			// but at this stage no element has focus yet so that means null.getWindowToken() → kaboom
 			imm.hideSoftInputFromWindow(new View(a).getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 		}
+	}
+
+	public static void zxingError(final Activity ctx) {
+		new AlertDialog.Builder(ctx)
+				.setMessage("This functionality depends on the (deprecated) ZXing Barcode scanner")
+				.setTitle("Error")
+				.setPositiveButton("Install", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						// Deeplink into fdroid only since for whatever tedious stupid reason the app
+						// is visible but not installable on the Play Store anymore. But Giggity and
+						// FDroid have a pretty strong overlap in users so I guess we're ok. :-)
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://f-droid.org/en/packages/com.google.zxing.client.android/"));
+						ctx.startActivity(intent);
+					}
+				})
+				.show();
 	}
 }

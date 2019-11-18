@@ -952,7 +952,7 @@ public class ScheduleViewActivity extends Activity {
 				toggleShowHidden();
 				break;
 			case R.id.export_selections:
-				ScheduleUI.exportSelections(this, sched);
+				ScheduleUI.exportSelections(ScheduleViewActivity.this, sched);
 				break;
 			case R.id.home_shortcut:
 				addHomeShortcut();
