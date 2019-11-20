@@ -29,7 +29,7 @@
 			</intent-filter>
 			<meta-data android:name="android.appwidget.provider" android:resource="@xml/widget_info"/>
 		</receiver>
-		<provider android:name="android.support.v4.content.FileProvider" android:authorities="net.gaast.giggity.paths" android:grantUriPermissions="true" android:exported="false">
+		<provider android:name="androidx.core.content.FileProvider" android:authorities="net.gaast.giggity.paths" android:grantUriPermissions="true" android:exported="false">
 			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/paths"/>
 		</provider>
 	</application>
