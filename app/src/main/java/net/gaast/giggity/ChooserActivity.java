@@ -280,13 +280,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		startActivity(intent, options != null ? options.toBundle() : null);
 	}
 
-	/* Process barcode scan results. This can be a few things:
+	/* DEPRECATED, not by my choice but by ZXing team's choice.. :<
 
-	   * Plain URL, in which case just handle it
+	   Process barcode scan results. This can be a few things:
+
 	   * zlib-compressed binary blob containing selection data exported by another Giggity
-	   * (gzip-compressed) JSON blob containing a menu.json entry
-
-	   We'll just have to figure out which one of the 3/4..
+	     (keeping this code around for just that feature since I have no replacement yet)
+	   * Plain URL, in which case just handle it
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -302,11 +302,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 						   properly. */
 						Toast.makeText(this, "Your QR generator seems to have used multiple segments, " +
 						               "this corrupts binary data!", Toast.LENGTH_LONG).show();
-					}
-
-					/* Start with #3, (gzipped) json blob */
-					if (db.refreshSingleSchedule(bin)) {
-						return;
 					}
 
 					/* Or 2? */

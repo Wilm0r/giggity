@@ -46,6 +46,7 @@ import android.support.v4.content.pm.ShortcutManagerCompat;
 import android.support.v4.graphics.drawable.IconCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.transition.Explode;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,6 +63,7 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -230,7 +232,15 @@ public class ScheduleViewActivity extends Activity {
 				for (String param : parsed.getEncodedFragment().split("&")) {
 					if (param.startsWith("url=")) {
 						url = URLDecoder.decode(param.substring(4), "utf-8");
-						break;
+					} else if (param.startsWith("json=")) {
+						String jsonb64 = URLDecoder.decode(param.substring(5), "utf-8");
+						byte[] json = Base64.decode(jsonb64, Base64.URL_SAFE);
+						url = app.getDb().refreshSingleSchedule(json);
+						if (url == null) {
+							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT);
+							finish();
+							return;
+						}
 					}
 				}
 			}

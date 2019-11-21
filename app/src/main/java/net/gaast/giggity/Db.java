@@ -535,7 +535,7 @@ public class Db {
 			updateData(dbh.getWritableDatabase(), true);
 		}
 
-		public boolean refreshSingleSchedule(byte[] blob) {
+		public String refreshSingleSchedule(byte[] blob) {
 			String jsons;
 			try {
 				jsons = new String(blob, "UTF-8");
@@ -553,7 +553,7 @@ public class Db {
 					return refreshSingleSchedule(plain.toByteArray());
 				} catch (IOException e) {
 					Log.d("gunzip", e.toString());
-					return false;
+					return null;
 				}
 			}
 			Log.d("Db.refreshSingle", "Found something that looks like json");
@@ -564,16 +564,16 @@ public class Db {
 				parsed = new Seed.Schedule(obj);
 				if (parsed.url == null) {
 					Log.d("Db.refreshSingle", "Object didn't even contain a URL?");
-					return false;
+					return null;
 				}
 			} catch (JSONException e) {
-				return false;
+				return null;
 			}
 			Log.d("Db.refreshSingle", "Found something that parsed like my json: " + parsed);
 			removeSchedule(parsed.url);
 			app.flushSchedule(parsed.url);
 			updateSchedule(dbh.getWritableDatabase(), parsed);
-			return true;
+			return parsed.url;
 		}
 		
 		public int getDay() {

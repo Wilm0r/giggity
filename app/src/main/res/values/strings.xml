@@ -49,6 +49,7 @@
 	<string name="qr_tip">Please use the QR scan button in the main menu on your other device to import this</string>
 	<string name="schedule_empty">Schedule appears to be empty</string>
 	<string name="format_unknown">File format not recognised</string>
+	<string name="no_json_data">Could not extract JSON data from URL</string>
 	<string name="no_network">No network connection available</string>
 	<string name="no_network_or_cached">No network connection or cached copy available</string>
 
