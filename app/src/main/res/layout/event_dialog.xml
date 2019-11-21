@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:background="@android:color/background_light"
               android:orientation="vertical">
@@ -20,7 +21,7 @@
             android:id="@+id/title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Linux on the desktop, y u no happen"
+            tools:text="Linux on the desktop, y u no happen"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@color/light_text"/>
 
@@ -31,7 +32,7 @@
             android:ellipsize="end"
             android:maxLines="2"
             android:paddingBottom="6dp"
-            android:text="2050 will be the year, I swear!"
+            tools:text="2050 will be the year, I swear!"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/light_text"/>
 
@@ -45,7 +46,7 @@
                 android:id="@+id/room"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="De grote zael"
+                tools:text="De grote zael"
                 android:textColor="@color/light_text"
                 android:textStyle="bold"/>
 
@@ -61,14 +62,14 @@
                 android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Sat 20:00–22:00"
+                tools:text="Sat 20:00–22:00"
                 android:textColor="@color/light_text"/>
 
             <TextView
                 android:id="@+id/language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=" (Angrish)"
+                tools:text=" (Angrish)"
                 android:textColor="@color/light_text"/>
         </LinearLayout>
 
@@ -119,7 +120,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignBaseline="@+id/headTrack"
-                        android:text="Blaaaaaaat"
+                        tools:text="Blaaaaaaat"
                         android:textColor="@color/light_text"
                         android:textIsSelectable="true"/>
                 </LinearLayout>
@@ -149,7 +150,7 @@
                         android:ellipsize="end"
                         android:maxLines="2"
                         android:singleLine="true"
-                        android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
+                        tools:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
                         android:textColor="@color/light_text"
                         android:textIsSelectable="true"/>
                 </LinearLayout>
@@ -179,7 +180,7 @@
                         android:id="@+id/alert"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Conflicts bla"
+                        tools:text="Conflicts bla"
                         android:textIsSelectable="true"/>
                 </LinearLayout>
 
@@ -188,12 +189,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alertBox"
-                    android:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would've thought that this one would take even longer than going from 0.7 to 1.0 (which only took three years)?
+                    tools:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would've thought that this one would take even longer than going from 0.7 to 1.0 (which only took three years)?
 
         There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the Duke Nukem Forever in the BitlBee community. Looks like we won!
 
         This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it's waaaay late to release a BitlBee 2 at this point, let's go for 3.0 immediately. :-)"
-                    android:textIsSelectable="true"/>
+                    android:textIsSelectable="true" />
 
                 <!-- oops, this one seems lost, does it still work? Or, should I keep the icon links at all? -->
                 <LinearLayout
