@@ -55,6 +55,10 @@ ggt.gaa.st URLs formatted like this:
 https://ggt.gaa.st/#url=https://fosdem.org/2019/schedule/xml
 ```
 
+Starting with Giggity 2.0, you can also include your JSON metadata in these
+URLs if you have any. Use [this script](tools/ggt.sh) to generate the
+right (and backward compatible) URL.
+
 This is likely a better option than scanning a QR now that good ad-free
 QR scanners appear to be rare. But where possible, consider just adding
 your event to the menu as explained in the next section.
@@ -129,17 +133,16 @@ room instead of taking advantage of regex matching.
 To test your entry, QR-encode it using for example this command:
 
 ```sh
-gzip -9 < YOURFILE.json | python3-qr --optimize=0
+(echo -n ggt.gaa.st/#json=; gzip < YOURFILE.json | base64 -w0 | tr +/ -_) | qr
 ```
 
-(`sudo apt-get install python3-qrcode` if it doesn't work, or at your own
-risk use a different encoder. The `--optimize=0` bit is to disable some
-optimisation code that corrupts binary data. Or if your entry is small
-and your phone camera good, just leave out the gzip.)
+(`sudo apt-get install python3-qrcode` if it doesn't work, or use any other
+encoder that you may know of.)
 
-Then scan the code from the Giggity main menu (+ on the top-right, then
-"SCAN QR").
+And use a QR scanner (for example Lens in the Camera application) to open it
+on your phone. (Or feel free to use any other non-QR method to send a long
+URL from your PC to your phone.)
 
-To get your entry added to Giggity, just add it to [this directory](menu)
-and send a pull request. To save time, run `ci/menu-ci.py` for sanity
-checking. (Same check is run automatically through Travis-CI.)
+To get your entry added to Giggity, just add it to [this directory](menu) and
+send a pull request. To save time, run `ci/menu-ci.py` for sanity checking. 
+(Same check is run automatically through Travis-CI.)
