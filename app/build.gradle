@@ -23,12 +23,12 @@ android {
     }
 }
 dependencies {
-    implementation 'com.android.support:support-core-ui:28.0.0'
+    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
     // Hmpf, the above is needed for just ActionBarDrawerToggle and makes the following three unnecessary?
     // That one's deprecated though so at some point I can split again:
-    // implementation 'com.android.support:drawerlayout:28.0.0'
-    // implementation 'com.android.support:swiperefreshlayout:28.0.0'
-    // implementation 'com.android.support:viewpager:28.0.0'
+    // implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
+    // implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    // implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'commons-io:commons-io:2.4'
 
     // java.time backport for <26 phones. :<

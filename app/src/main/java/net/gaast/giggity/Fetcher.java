@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 
 import org.apache.commons.io.input.TeeInputStream;
