@@ -193,6 +193,11 @@ def validate_entry(e):
 			
 			if "c3nav_slug" in room and room["c3nav_slug"] not in c3_by_slug:
 				errors.append("c3nav room %s not listed in /api/locations/" % room["c3nav_slug"])
+
+			try:
+				re.compile(room.get("name"))
+			except re.error as err:
+				errors.append("Room name %r not a valid regular expression: %s" % (room.get("name"), err))
 	
 		if "icon" in md:
 			img = http.fetch(md["icon"], img=True)
