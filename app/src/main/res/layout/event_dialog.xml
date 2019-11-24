@@ -31,7 +31,6 @@
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="2"
-            android:paddingBottom="6dp"
             tools:text="2050 will be the year, I swear!"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:textColor="@color/light_text"/>
@@ -40,7 +39,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
-            android:paddingBottom="4dp">
+            android:paddingTop="6dp"
+            android:paddingBottom="1dp">
 
             <TextView
                 android:id="@+id/room"
@@ -104,7 +104,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingBottom="4dp">
+                    android:paddingBottom="1dp">
 
                     <TextView
                         android:id="@+id/headTrack"
@@ -129,7 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:paddingBottom="4dp">
+                    android:paddingBottom="10dp">
 
                     <TextView
                         android:id="@+id/headSpeaker"
@@ -203,14 +203,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_below="@id/description"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:id="@+id/textView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/links_header"/>
+                    android:orientation="vertical">
                 </LinearLayout>
 
             </RelativeLayout>

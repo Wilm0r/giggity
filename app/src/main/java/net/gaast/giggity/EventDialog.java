@@ -280,8 +280,7 @@ public class EventDialog extends FrameLayout {
 			TextView url = new TextView(ctx);
 			url.setText(link.getTitle());
 			url.setOnClickListener(this);
-			url.setPaintFlags(url.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-			url.setTextColor(getResources().getColor(R.color.accent));
+			url.setTextColor(getResources().getColor(R.color.primary_dark));
 			app_.setPadding(url, 0, 3, 0, 3);
 			addView(url);
 		}

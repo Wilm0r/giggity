@@ -1356,9 +1356,9 @@ public class Schedule implements Serializable {
 
 			String html;
 			if (description.startsWith("<") || description.contains("<p>")) {
-				html = description;
+				html = description.trim();
 			} else {
-				html = descriptionMarkdownHack(description);
+				html = descriptionMarkdownHack(description.trim());
 			}
 			Spanned formatted;
 			if (android.os.Build.VERSION.SDK_INT < 24) {
