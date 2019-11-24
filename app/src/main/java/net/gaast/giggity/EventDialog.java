@@ -48,6 +48,9 @@ import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import static net.gaast.giggity.Schedule.RoomStatus.EVACUATE;
+import static net.gaast.giggity.Schedule.RoomStatus.OK;
+
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
 @SuppressLint({"SimpleDateFormat", "SetTextI18n"})
@@ -93,16 +96,8 @@ public class EventDialog extends FrameLayout {
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
 
-		switch (item_.getLine().getRoomStatus()) {
-			case OK:
-				t.setTextColor(0xff00ff00);
-				break;
-			case FULL:
-				t.setTextColor(0xffffa500);
-				break;
-			case EVACUATE:
-				t.setTextColor(0xffff0000);
-				break;
+		if (item_.getLine().getRoomStatus() != OK) {
+			t.setTextColor(0xffffa500);
 		}
 
 		if (item_.getLanguage() != null) {

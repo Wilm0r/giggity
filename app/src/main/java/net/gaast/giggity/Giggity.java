@@ -196,19 +196,6 @@ public class Giggity extends Application {
 		v.setElevation(on ? dp2px(8) : 0);
 	}
 
-	public void setNavBar(Window w, int colour) {
-		w.setNavigationBarColor(getResources().getColor(colour));
-		if (colour == R.color.background_material_light) {
-			if (Build.VERSION.SDK_INT >= 28) {
-				// TODO: Improper reuse of colour.
-				w.setNavigationBarDividerColor(getColor(R.color.time_back));
-			}
-			w.requestFeature(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-			// Apparently not working with API < 26.
-			w.findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR);
-		}
-	}
-
 	/* ActionBar is not a view, just looks a lot like one! */
 	public void setShadow(ActionBar v, boolean on) {
 		v.setElevation(on ? dp2px(8) : 0);

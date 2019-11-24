@@ -30,8 +30,6 @@ public class ScheduleItemActivity extends Activity {
 		String id, url = getIntent().getDataString();
 		app_ = (Giggity) getApplication();
 
-		app_.setNavBar(getWindow(), R.color.background_material_light);
-
 		if (url.contains("#")) {
 			String[] parts = url.split("#", 2);
 			url = parts[0];

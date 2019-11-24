@@ -98,7 +98,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		*/
 
 		Giggity app = (Giggity) getApplication();
-		app.setNavBar(getWindow(), R.color.background_material_light);
 
 		db = app.getDb();
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
