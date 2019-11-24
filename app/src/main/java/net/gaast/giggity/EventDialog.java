@@ -49,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import static net.gaast.giggity.Schedule.RoomStatus.EVACUATE;
+import static net.gaast.giggity.Schedule.RoomStatus.FULL;
 import static net.gaast.giggity.Schedule.RoomStatus.OK;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
@@ -96,7 +97,7 @@ public class EventDialog extends FrameLayout {
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
 
-		if (item_.getLine().getRoomStatus() != OK) {
+		if (item_.getLine().getRoomStatus().compareTo(FULL) >= 0) {
 			t.setTextColor(0xffffa500);
 		}
 

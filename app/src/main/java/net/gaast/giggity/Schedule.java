@@ -1078,7 +1078,7 @@ public class Schedule implements Serializable {
 	public enum RoomStatus {
 		UNKNOWN,
 		OK,
-		FULL,
+		FULL,  // Options from here will be rendered in red. Modify EventDialog if that's no longer okay.
 		EVACUATE,
 	};
 
