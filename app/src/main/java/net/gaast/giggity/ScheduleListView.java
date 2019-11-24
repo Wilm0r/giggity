@@ -20,13 +20,17 @@
 package net.gaast.giggity;
 
 import android.content.Context;
-import android.graphics.Paint;
+import android.graphics.Bitmap;
+import android.graphics.Shader;
 import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,7 +46,6 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	int itemListFlags = 0;
 	Giggity app;
 
-	@SuppressWarnings("rawtypes")
 	public ScheduleListView(Context ctx_) {
 		super(ctx_);
 		ctx = ctx_;
@@ -62,10 +65,27 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 
 				Schedule.Item item = (Schedule.Item) list.get(position);
 				ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-				sva.showItem(item, others);
+
+				sva.showItem(item, others, false, v);
 			}
 		});
-		
+
+		// Grey background for the time(+date) column on the left, but continuous so drawn here.
+		Bitmap bmp = Bitmap.createBitmap(app.dp2px(102), 1, Bitmap.Config.ARGB_8888);
+		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
+		for (int x = 0; x < bmp.getWidth() - 1; x++) {
+			bmp.setPixel(x, 0, getResources().getColor(R.color.time_back));
+		}
+		// Leave the last pixel transparent since that one gets repeated all the way to the right?
+
+		BitmapDrawable bg = new BitmapDrawable(bmp);
+		bg.setTileModeY(Shader.TileMode.REPEAT);
+		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
+		setBackgroundDrawable(bg);
+
+		setDivider(new ColorDrawable(getResources().getColor(R.color.time_back)));
+		setDividerHeight(app.dp2px(1));
+
 		list = new ArrayList();
 		setAdapter(adje = new EventAdapter(list));
 	}
@@ -80,14 +100,21 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	protected AbstractList<?> getList() {
 		return list;
 	}
-	
+
 	protected void setCompact(boolean compact) {
 		if (compact)
 			itemViewFlags |= ScheduleItemView.COMPACT;
 		else
 			itemViewFlags &= ~ScheduleItemView.COMPACT;
 	}
-	
+
+	protected void setHideDate(boolean hideDate) {
+		if (hideDate)
+			itemViewFlags |= ScheduleItemView.HIDE_DATE;
+		else
+			itemViewFlags &= ~ScheduleItemView.HIDE_DATE;
+	}
+
 	protected void setShowNow(boolean showNow) {
 		if (showNow)
 			itemViewFlags |= ScheduleItemView.SHOW_NOW;
@@ -108,7 +135,14 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		else
 			itemListFlags &= ~ScheduleItemView.HIDE_ENDTIME;
 	}
-	
+
+	protected void setMultiRoom(boolean multiRoom) {
+		if (multiRoom)
+			itemListFlags |= ScheduleItemView.MULTI_ROOM;
+		else
+			itemListFlags &= ~ScheduleItemView.MULTI_ROOM;
+	}
+
 	@Override
 	public void refreshContents() {
 		adje.notifyDataSetChanged();
@@ -117,6 +151,11 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	@Override
 	public void refreshItems() {
 		adje.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onShow() {
+		app.showKeyboard(getContext(), null);
 	}
 
 	private class EventAdapter extends BaseAdapter {
@@ -151,10 +190,21 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			if (items.get(position).getClass() == Schedule.Item.class) {
 				Schedule.Item it1 = (Schedule.Item) items.get(position);
 				int flags = itemViewFlags;
+				if ((itemListFlags & ScheduleItemView.MULTI_ROOM) > 0 && position > 0) {
+					if (items.get(position-1).getClass() == Schedule.Item.class) {
+						if (((Schedule.Item)items.get(position)).getLine() != ((Schedule.Item)items.get(position-1)).getLine()) {
+							flags &= ~ScheduleItemView.COMPACT;
+						}
+					} else if (items.get(position-1).getClass() == Schedule.Track.class) {
+						if (((Schedule.Item) items.get(position)).getLine() != ((Schedule.Track) items.get(position - 1)).getLine()) {
+							flags &= ~ScheduleItemView.COMPACT;
+						}
+					}
+				}
 				if ((itemListFlags & ScheduleItemView.HIDE_ENDTIME) > 0) {
-					if (items.size() >= position && items.get(position + 1).getClass() == Schedule.Item.class) {
+					if (position < (items.size() - 1) && items.get(position + 1).getClass() == Schedule.Item.class) {
 						Schedule.Item it2 = (Schedule.Item) items.get(position + 1);
-						if (it1.getEndTime().equals(it2.getStartTime())) {
+						if (it1.getLine().equals(it2.getLine()) && it1.getEndTime().equals(it2.getStartTime())) {
 							flags |= ScheduleItemView.HIDE_ENDTIME;
 						}
 					}
@@ -162,17 +212,32 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				return new ScheduleItemView(ctx, it1, flags);
 			} else if (items.get(position).getClass() == Schedule.Line.class) {
 				return new ScheduleLineView(ctx, (Schedule.Line) items.get(position));
+			} else if (items.get(position).getClass() == Schedule.Track.class) {
+				return new ScheduleTrackView(ctx, (Schedule.Track) items.get(position));
 			} else {
-				TextView tv = new TextView(ctx);
-				tv.setText((String) items.get(position));
-				tv.setTextSize(18);
-				tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-				return tv;
+				String text = (String) items.get(position);
+				if (text.trim().isEmpty()) {
+					/* Still abusing whitespace-only strings for spacing. */
+					TextView tv = new TextView(ctx);
+					tv.setText(text);
+					tv.setTextSize(18);
+					tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
+					tv.setTextColor(getResources().getColor(R.color.dark_text));
+					app.setPadding(tv, 4, 0, 0, 0);
+					return tv;
+				} else {
+					/* There's actual text. Box it. */
+					RelativeLayout ret = new RelativeLayout(ctx);
+					inflate(ctx, R.layout.schedule_line, ret);
+					TextView tv = ret.findViewById(R.id.lineTitle);
+					tv.setText(text.trim());
+					return ret;
+				}
 			}
 		}
 	}
 
-	private class ScheduleLineView extends RelativeLayout {
+	private class ScheduleLineView extends LinearLayout {
 		Context ctx;
 		Schedule.Line line;
 
@@ -181,56 +246,60 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			ctx = context;
 			line = line_;
 
-			String track = null;
-			for (Schedule.Item item : line.getItems()) {
-				if (item.getTrack() == null) {
-					track = null;
-					break;
-				} else if (track == null) {
-					/* If the name of the track is in the room name already, don't repeat it. */
-					if (line.getTitle().toLowerCase().contains(item.getTrack().toLowerCase()))
-						break;
-					track = item.getTrack();
-				} else if (!track.equals(item.getTrack())) {
-					track = null;
-					break;
-				}
+			inflate(ctx, R.layout.schedule_line, this);
+
+			TextView tv = findViewById(R.id.lineTitle);
+			tv.setText(line.getTitle());
+
+			Schedule.Track track = line.getTrack();
+			if (track != null && !line.getTitle().toLowerCase().contains(track.getTitle().toLowerCase())) {
+				tv = findViewById(R.id.lineSubTitle);
+				tv.setText(track.getTitle());
+				tv.setVisibility(View.VISIBLE);
 			}
 
-			TextView tv = new TextView(ctx);
-			tv.setText("\n\n" + line.getTitle() + (track == null ? "" : " (" + track + ")"));
-			tv.setTextSize(18);
-			tv.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-
-			LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-			tv.setId(1);
-			addView(tv, lp);
-
 			if (line.getLocation() != null) {
-				tv.setPaintFlags(tv.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+				// TODO: Restore icon or so to indicate location info is available for room?
+				// Also, maybe a nicer way to show (FOSDEM-specific, for now) room status
 				setOnClickListener(ScheduleUI.locationClickListener(getContext(), line));
 
+				// No clue when I stopped adding this view but I guess it can indeed stay away?
 				ImageView iv = new ImageView(ctx);
 				iv.setImageResource(R.drawable.ic_place_black_24dp);
 				iv.setId(2);
-				lp = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				lp.addRule(RelativeLayout.RIGHT_OF, 1);
-				lp.addRule(RelativeLayout.ALIGN_BOTTOM, 1);
-				addView(iv, lp);
 			}
 		}
 	}
-	
+
+	private class ScheduleTrackView extends LinearLayout {
+		Context ctx;
+		Schedule.Track track;
+
+		public ScheduleTrackView(Context context, Schedule.Track track_) {
+			super(context);
+			ctx = context;
+			track = track_;
+
+			inflate(ctx, R.layout.schedule_line, this);
+
+			TextView tv = findViewById(R.id.lineTitle);
+			tv.setText(track.getTitle());
+
+			Schedule.Line allLine = track_.getLine();
+			if (allLine != null && !track.getTitle().toLowerCase().contains(allLine.getTitle().toLowerCase())) {
+				tv = findViewById(R.id.lineSubTitle);
+				tv.setText(allLine.getTitle());
+				tv.setVisibility(View.VISIBLE);
+			}
+		}
+	}
+
 	/* Need to change this to true in SearchActivity. */
 	private boolean multiDay = false;
 	
 	@Override
 	public boolean multiDay() {
 		return multiDay;
-	}
-
-	public void setMultiDay(boolean md) {
-		multiDay = md;
 	}
 
 	@Override

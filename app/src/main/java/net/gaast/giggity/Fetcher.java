@@ -7,7 +7,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.content.FileProvider;
+import androidx.core.content.FileProvider;
 import android.util.Log;
 
 import org.apache.commons.io.input.TeeInputStream;
@@ -35,7 +35,8 @@ public class Fetcher {
 	private Giggity app;
 	private File fn, fntmp = null;
 	private URLConnection dlc;
-	private Source source;
+	private Source source = null;
+	private boolean fresh = false;
 	private Handler progressHandler;
 	private long flen;
 	private String type;
@@ -46,9 +47,9 @@ public class Fetcher {
 	public enum Source {
 		CACHE,			/* Get from cache or fail. */
 		CACHE_ONLINE,	/* Get from cache, allow fetch if not available. */
-		ONLINE_CACHE,	/* Check online if we can, otherwise use cache. */
-		ONLINE,			/* Check online (304 -> cache). */
-		ONLINE_NOCACHE,	/* Fetch online, ignore cached version. */
+		ONLINE_CACHE,	/* Check online if we're not offline, otherwise use cache. */
+		ONLINE,			/* Check online (304 -> cache, and fail if we're offline). */
+		ONLINE_NOCACHE,	/* Fetch online, ignore cached version, fail if offline. */
 	}
 	
 	public Fetcher(Giggity app_, String url, Source prefSource) throws IOException {
@@ -57,7 +58,6 @@ public class Fetcher {
 
 	public Fetcher(Giggity app_, String url, Source prefSource, String type_) throws IOException {
 		app = app_;
-		source = null;
 		type = type_;
 
 		Log.d("Fetcher", "Creating fetcher for " + url + " prefSource=" + prefSource);
@@ -79,8 +79,7 @@ public class Fetcher {
 		
 		try {
 			/* Do HTTP stuff first, then HTTPS! Once we get a CastClassException, we stop. */
-			HttpURLConnection.setFollowRedirects(true);
-			
+			((HttpURLConnection)dlc).setInstanceFollowRedirects(true);
 			((HttpURLConnection)dlc).addRequestProperty("Accept-Encoding", "gzip");
 			
 			if (prefSource != Source.ONLINE_NOCACHE && fn.canRead() && fn.lastModified() > 0) {
@@ -98,9 +97,16 @@ public class Fetcher {
 		if (prefSource != Source.CACHE && !(fn.canRead() && prefSource == Source.CACHE_ONLINE) &&
 		    network != null && network.isConnected()) {
 			int status;
+			String statusFull = "";
 			try {
-				status = ((HttpURLConnection)dlc).getResponseCode();
+				HttpURLConnection h = (HttpURLConnection)dlc;
+				status = h.getResponseCode();
+				statusFull = "" + h.getResponseCode() + " " + h.getResponseMessage();
 				Log.d("Fetcher", "HTTP status " + status);
+				String loc = h.getHeaderField("Location");
+				if (loc != null) {
+					Log.d("http-location", loc);
+				}
 			} catch (ClassCastException e) {
 				/* Assume success if this isn't HTTP.. */
 				status = 200;
@@ -123,12 +129,14 @@ public class Fetcher {
 				inStream = new TeeInputStream(inStream, copy, true);  // true == close copy on close
 
 				source = Source.ONLINE;
+				fresh = true;
 			} else if (status == 304) {
 				Log.i("Fetcher", "HTTP 304, using cached copy");
-				source = Source.ONLINE; /* We're reading cache, but 304 means it should be equivalent. */
+				source = Source.CACHE;  // Though equivalent to ONLINE so:
+				fresh = true;           // Mark data as fresh
 				/* Just continue, inStream = null so we'll read from cache. */
 			} else {
-				throw new IOException("Download error: " + dlc.getHeaderField(0));
+				throw new IOException("Download error: " + statusFull + "\n" + dlc.getHeaderField(0));
 			}
 		}
 
@@ -212,9 +220,16 @@ public class Fetcher {
 		}
 		return ret;
 	}
-	
+
+	// Used to return ONLINE even when serving from cache after server returned a 304 which is
+	// kinda wrong and means the caller was asking the wrong question. If you want to know whether
+	// the data is ~guaranteed fresh, use the next method.
 	public Source getSource() {
 		return source;
+	}
+
+	public boolean isFresh() {
+		return fresh;
 	}
 
 	/** If the file is usable, keep it cached. */

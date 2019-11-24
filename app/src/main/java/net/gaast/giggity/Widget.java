@@ -88,7 +88,6 @@ public class Widget extends AppWidgetProvider {
 			/* Note that we don't call Schedule*Item*Activity directly here because we may need to
 			   re-load the schedule if we got killed in the meantime. SIA can't do that. */
 			Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(url), app, ScheduleViewActivity.class);
-			evi.putExtra("PREFER_CACHED", true);
 			if (!others.isEmpty()) {
 				evi.putExtra("others", others.toArray(new String[others.size()]));
 			}

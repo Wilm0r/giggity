@@ -9,10 +9,8 @@
 	<!--  Settings -->
 	<string name="default_view">Standaard weergave</string>
 	<string name="font_size">Letterype blokkenschema</string>
-	<string name="always_refresh">Programma\'s altijd verversen</string>
-	<string name="always_refresh_sub_off">Éénmaal per dag nieuwe versie downloaden</string>
-	<string name="strict_ssl">Strikte SSL</string>
-	<string name="strict_ssl_sub">SSL certificaten van HTTPS servers controleren</string>
+	<string name="strict_ssl">Strikte TLS</string>
+	<string name="strict_ssl_sub">TLS certificaten van HTTPS servers controleren</string>
     
 	<string name="block_schedule_style">Stijl</string>
 	<string name="block_schedule">Blokkenschema</string>
@@ -40,6 +38,7 @@
 
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Programma wordt geladen...</string>
+	<string name="use_cached_version">Uit cache laden</string>
 	<string name="loading_image">Bestand wordt geladen...</string>
 	<string name="loading_error">Laadfout</string>
 	<string name="no_viewer_error">Geen lezer geïnstalleerd voor bestandtype</string>
@@ -64,12 +63,12 @@
 	
 	<!-- NowNext -->
 	<string name="no_events_today">Niks op het programma vandaag.</string>
-	<string name="now">Nu:</string>
-	<string name="next">Straks:</string>
+	<string name="now">Nu</string>
+	<string name="next">Straks</string>
 	
 	<!-- MyItemsView -->
-	<string name="coming_up">Nog te gaan:</string>
-	<string name="seen_so_far">Voorbij:</string>
+	<string name="coming_up">Nog te gaan</string>
+	<string name="seen_so_far">Voorbij</string>
 	<string name="none_marked">Nog niks gemarkeerd.</string>
 
 	<!-- SearchActivity -->
@@ -80,9 +79,9 @@
 	<string name="unhide">Verborgen items herstellen</string>
 	<string name="remove">Verwijderen</string>
 	<string name="show_url">URL weergeven...</string>
-	<string name="chooser_now">Huidige evenementen:</string>
-	<string name="chooser_later">Toekomstige evenementen:</string>
-	<string name="chooser_past">Afgelopen evenementen:</string>
+	<string name="chooser_now">Nu</string>
+	<string name="chooser_later">Later</string>
+	<string name="chooser_past">Afgelopen</string>
 	<string name="add_dialog">Toevoegen...</string>
 	<string name="qr_scan">QR scannen</string>
 	<string name="enter_url">Voer programma URL in</string>
@@ -96,4 +95,7 @@
 	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Binnenkort</string>
 	<string name="widg_no_upcoming">Niks op komst :-(</string>
+	<string name="home_shortcut">Aan thuisscherm toevoegen</string>
+	<string name="type_query_prompt">Voer zoekopdracht in</string>
+	<string name="search_results_empty">Deze zoekopdracht geeft geen resultaten.</string>
 </resources>

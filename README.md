@@ -1,30 +1,28 @@
 # Giggity
 
 Giggity is an Android app that loads
-xcal/[Pentabarf](https://github.com/nevs/pentabarf)/[frab](https://github.com/frab/frab)/[wafer](https://github.com/CTPUG/wafer)/[Pretalx](https://github.com/pretalx/pretalx)
-XML files (that contain schedules of conferences/festivals/other events)
-and lets you browse them in various convenient formats.
+[Pentabarf](https://github.com/nevs/pentabarf)/[frab](https://github.com/frab/frab)/[wafer](https://github.com/CTPUG/wafer)/[Pretalx](https://github.com/pretalx/pretalx)
+XML files (or if none are available, .ics) with schedules of conferences
+and other events, and displays them in various convenient formats.
 
-Nowadays many events release dedicated apps (sometimes with limited
-features) which I don't like. :-( With Giggity I try to just offer a
-generic app that can be used for any event that publishes their schedule
-in an open format, and offer more features to help with organising your
-visit, like:
+Nowadays many events release dedicated apps (with limited features) which I
+don't like. :-( Giggity is a generic app that can be used for any event that
+publishes their schedule in an open format, and offers more features to help
+with organising your visit, like:
 
  * Various different views besides a plain timetable.
- * Search function so you can search for the exact topics you care
-   about.
+ * Powerful search function.
  * Set reminders.
- * Get a warning when talks overlap with other talks you're going to.
+ * Warnings when your selected talks overlap.
  * Delete/hide talks/entire topics you're not interested in.
- * Export your selections via a QR code to sync with other devices or
-   with your friends.
  * Events can include direct links to related web content (main website,
    Wiki), or include off-line viewable venue maps, etc.
  * Include coordinates of all the venue's rooms so you can see where
-   they are in your preferred maps application.
- * Add direct shortcuts or a widget (always showing the next talk) to
-   your homescreen.
+   they are in your preferred maps application, or c3nav integration.
+ * Add direct shortcut (or widget) to your homescreen.
+ * Export your selections via a QR code to sync with other devices or with your
+   friends. (Relies on deprecated ZXing QR scanner, functionality to be
+   replaced.
 
 It's free software, and available on [Google
 Play](https://play.google.com/store/apps/details?id=net.gaast.giggity&hl=en),
@@ -55,56 +53,61 @@ ggt.gaa.st URLs formatted like this:
 https://ggt.gaa.st/#url=https://fosdem.org/2019/schedule/xml
 ```
 
+Starting with Giggity 2.0, you can also include your JSON metadata in these
+URLs if you have any. Use [this script](tools/ggt.sh) to generate the
+right (and backward compatible) URL.
+
 This is likely a better option than scanning a QR now that good ad-free
 QR scanners appear to be rare. But where possible, consider just adding
 your event to the menu as explained in the next section.
 
 ## Adding your event to the default menu
 
-You can add any suitably formatted schedule to Giggity yourself (use QR
-codes to make this easier), or it can be added to Giggity's main menu.
+To do this, construct a JSON file formatted like this in the [menu directory](menu):
 
-To do this, construct a JSON file formatted like this:
-
-```json
-	{
-		"version": 2016080500,
-		"url": "URL_OF_YOUR_PENTABARF_FILE",
-		"title": "TITLE (preferably have it match the title in your Pentabarf",
-		"start": "2016-08-10",
-		"end": "2016-08-12",
-		"metadata": {
-			// Must have an alpha layer, be square and not too large.
-			// Will be used for notifications and home shortcut.
-			"icon": "https://www.conference.org/logo.png",
-			"links": [
-				{
-					"url": "https://www.conference.org/",
-					"title": "Website"
-				},
-				{
-					"url": "https://www.conference.org/info.pdf",
-					"title": "Info",
-					"type": "application/pdf"
-				},
-				{
-					"url": "https://www.conference.org/floorplan.png",
-					"title": "Map",
-					"type": "image/png"
-				}
-			],
-			"rooms": [
-				{
-					"name": "ROOM 1",
-					"latlon": [51.482598, -0.144742]
-				},
-				{
-					"name": "ROOM 2",
-					"latlon": [51.481024, -0.145571]
-				}
-			]
-		}
+```js
+{
+	"version": 2019122000,
+	"url": "URL_OF_YOUR_PENTABARF_FILE",
+	"title": "TITLE",  // preferably have it match the title in your Pentabarf
+	"start": "2020-02-01",
+	"end": "2020-02-02",
+	// To be used only if your event tends to make last-minute changes, and allowed only if the
+	// server hosting your Pentabarf file sends HTTP 304s when no changes are made:
+	"refresh_interval": 1800,
+	"metadata": {
+		// Must have an alpha layer, be square and not too large. Will be used for
+		// notifications and home shortcut.
+		"icon": "https://www.conference.org/logo.png",
+		"links": [
+			{
+				"url": "https://www.conference.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://www.conference.org/info.pdf",
+				"title": "Info",
+				"type": "application/pdf"
+			},
+			{
+				"url": "https://www.conference.org/floorplan.png",
+				"title": "Map",
+				"type": "image/png"
+			}
+		],
+		// Entirely optional:
+		"rooms": [
+			{
+				"name": "ROOM 1",  // Warning: it's a regex!
+				"latlon": [51.482598, -0.144742]
+			},
+			{
+				"name": "ROOM 2",
+				"latlon": [51.481024, -0.145571]
+			}
+		]
 	}
+}
 ```
 
 The `metadata` section (and/or its two subsections) is optional but
@@ -126,20 +129,19 @@ For those conferences using [c3nav](https://github.com/c3nav/c3nav), the
 In case of c3nav you'll likely just want to have an entry for every
 room instead of taking advantage of regex matching.
 
-To test your entry, QR-encode it using for example this command:
+To test your entry, you can for example turn it into a QR-encode
+using previously mentioned [tools/ggt.sh](tools/ggt.sh) and `python3-qr`:
 
 ```sh
-gzip -9 < YOURFILE.json | python3-qr --optimize=0
+tools/ggt.sh menu/YOURFILE.json | qr
 ```
 
-(`sudo apt-get install python3-qrcode` if it doesn't work, or at your own
-risk use a different encoder. The `--optimize=0` bit is to disable some
-optimisation code that corrupts binary data. Or if your entry is small
-and your phone camera good, just leave out the gzip.)
+(`sudo apt-get install python3-qrcode` if it doesn't work, or use any other
+encoder that you may know of.)
 
-Then scan the code from the Giggity main menu (+ on the top-right, then
-"SCAN QR").
+And use a QR scanner (for example Lens in the Camera application) to open it
+on your phone.
 
-To get your entry added to Giggity, just add it to [this directory](menu)
-and send a pull request. To save time, run `ci/menu-ci.py` for sanity
-checking. (Same check is run automatically through Travis-CI.)
+To get your entry added to Giggity, just add it to the [menu directory](menu) and
+send a pull request. To save time, run `ci/menu-ci.py` for sanity checking. 
+(Same check is run automatically through Travis-CI.)

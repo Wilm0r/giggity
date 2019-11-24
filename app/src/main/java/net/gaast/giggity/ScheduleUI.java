@@ -1,10 +1,15 @@
 package net.gaast.giggity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -12,10 +17,183 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import java.io.UnsupportedEncodingException;
+import org.json.JSONArray;
 
-public class ScheduleUI {
-	static public void exportSelections(Context ctx, Schedule sched) {
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.AbstractList;
+import java.util.Collection;
+import java.util.LinkedList;
+
+public class ScheduleUI extends Schedule {
+	/* Schedule subclass which should carry, among other things, elements that depend on Android.
+	 * The Base class should be plain-ish Java so that I can use it externally as well. This is
+	 * in fact not just UI stuff but also for example database stuff (user reminders/deletions/etc
+	 * persistence) */
+
+	public Giggity app;
+	public Db.Connection db;
+
+	private Handler progressHandler;
+
+	private ScheduleUI(Giggity ctx) {
+		app = ctx;
+	}
+
+	public static ScheduleUI loadSchedule(Giggity ctx, String url, Fetcher.Source source, Handler progressHandler) throws LoadException {
+		ScheduleUI ret = new ScheduleUI(ctx);
+		ret.progressHandler = progressHandler;
+
+		Fetcher f = null;
+
+		try {
+			f = ctx.fetch(url, source);
+			f.setProgressHandler(ret.progressHandler);
+			Log.d("Fetcher", "source=" + f.getSource());
+			if (f.getSource() == Fetcher.Source.CACHE) {
+				ret.progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.FROM_CACHE);
+			}
+			ret.loadSchedule(f.getReader(), url);
+		} catch (LoadException | IOException e) {
+			if (f != null)
+				f.cancel();
+
+			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
+			e.printStackTrace();
+			throw new LoadException("Network I/O problem: " + e);
+		}
+		f.keep();
+
+		// Disable the "fall back to cache" button at this stage if it's even shown, since we're
+		// nearly done, only need to apply user/dynamic data.
+		progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.STATIC_DONE);
+		if (ret.app.hasSchedule(url)) {
+			// TODO: Theoretically, online could still win the race over cached..
+			throw new Schedule.LateException();
+		}
+
+		ret.db = ret.app.getDb();
+		ret.db.setSchedule(ret, url, f.isFresh());
+		String md_json = ret.db.getMetadata();
+		if (md_json != null) {
+			ret.addMetadata(md_json);
+		}
+
+		/* From now, changes should be marked to go back into the db. */
+		ret.fullyLoaded = true;
+
+		return ret;
+	}
+
+	public String getString(int id) {
+		return app.getString(id);
+	}
+
+	public void setProgressHandler(Handler handler) {
+		progressHandler = handler;
+	}
+
+	/** Would like to kill this, but still used for remembering currently
+	 * viewed day for a schedule. */
+	public Db.Connection getDb() {
+		return db;
+	}
+
+	private InputStream getIconStream() {
+		if (getIconUrl() == null || getIconUrl().isEmpty()) {
+			return null;
+		}
+
+		try {
+			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE);
+			return f.getStream();
+		} catch (IOException e) {
+			// This probably means it's not in cache. :-( So we'll fetch it in the background and
+			// will hopefully succeed on the next call.
+		}
+		/* For fetching the icon file in the background. */
+		Thread iconFetcher = new Thread() {
+			@Override
+			public void run() {
+				Fetcher f;
+				try {
+					f = new Fetcher(app, getIconUrl(), Fetcher.Source.ONLINE);
+				} catch (IOException e) {
+					Log.e("getIconStream", "Fetch error: " + e);
+					return;
+				}
+				if (BitmapFactory.decodeStream(f.getStream()) != null) {
+					/* Throw-away decode seems to have worked so instruct Fetcher to keep cached. */
+					f.keep();
+				}
+			}
+		};
+		iconFetcher.start();
+		return null;
+	}
+
+	public Bitmap getIconBitmap() {
+		InputStream stream = getIconStream();
+		Bitmap ret = null;
+		if (stream != null) {
+			ret = BitmapFactory.decodeStream(stream);
+			if (ret == null) {
+				Log.w("getIconBitmap", "Discarding unparseable file");
+				return null;
+			}
+			if (ret.getHeight() > 512 || ret.getHeight() != ret.getWidth()) {
+				Log.w("getIconBitmap", "Discarding, icon not square or >512 pixels");
+				return null;
+			}
+			if (!ret.hasAlpha()) {
+				Log.w("getIconBitmap", "Discarding, no alpha layer");
+				return null;
+			}
+		}
+		return ret;
+	}
+
+	/* Returns true if any of the statuses has changed. */
+	public boolean updateRoomStatus() {
+		try {
+			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.ONLINE_NOCACHE);
+			return updateRoomStatus(f.slurp());
+		} catch (IOException e) {
+			Log.d("updateRoomStatus", "Fetch setup failure");
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	protected void applyItem(Item item) {
+		if (fullyLoaded) {
+			db.saveScheduleItem(item);
+		}
+		app.updateRemind(item);
+	}
+
+	public void initSearch() {
+		db.resetIndex(allItems.values());
+	}
+
+	public AbstractList<Item> searchItems(String q_) {
+		Collection<String> ids = db.searchItems(q_);
+		if (ids == null) {
+			return null;
+		}
+		LinkedList<Item> ret = new LinkedList<Item>();
+		Log.d("searchItems", "" + ids.size() + " items");
+		for (String id : ids) {
+			Log.d("searchItems", "id=" + id + " " + allItems.containsKey(id));
+			ret.add(allItems.get(id));
+		}
+		return ret;
+	}
+
+
+	// Bunch of static utility/UI functions/etc that I originally created this class for.
+	static public void exportSelections(Activity ctx, Schedule sched) {
 		Schedule.Selections sel = sched.getSelections();
 		
 		if (sel == null) {
@@ -36,10 +214,7 @@ public class ScheduleUI {
 			ctx.startActivity(intent);
 			Toast.makeText(ctx, R.string.qr_tip, Toast.LENGTH_LONG).show();
 		} catch (android.content.ActivityNotFoundException e) {
-			new AlertDialog.Builder(ctx)
-			  .setTitle("Not available")
-			  .setMessage("This functionality needs a Barcode Scanner application")
-			  .show();
+			Giggity.zxingError(ctx);
 		}
 
 	}

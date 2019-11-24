@@ -21,53 +21,65 @@ package net.gaast.giggity;
 
 import android.content.Context;
 
+import org.threeten.bp.ZonedDateTime;
+
+import java.util.AbstractCollection;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
+import java.util.TreeSet;
 
 public class NowNext extends ScheduleListView implements ScheduleViewer {
 	private Schedule sched;
 	Context ctx;
-	
+
 	public NowNext(Context ctx_, Schedule sched_) {
 		super(ctx_);
 		ctx = ctx_;
 		sched = sched_;
-		
+
+		setHideDate(true);
 		refreshContents();
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void refreshContents() {
-		Date now = new Date();
-		LinkedList<Schedule.Item> nextList = new LinkedList<>();
+		ZonedDateTime now = ZonedDateTime.now();
+		AbstractCollection<Schedule.Item> nextList;
 		ArrayList fullList = new ArrayList();
+
+		boolean byTime = true;
 
 		/* Set the schedule's day to today so we don't show tomorrow's 
 		 * stuff as "next". */
-		int i = 0;
-		for (Date day : sched.getDays()) {
-			long d = now.getTime() - day.getTime();
-			if (d > 0 && d < 86400000) {
-				sched.setDay(i);
-				break;
-			}
-			i ++;
+		sched.setDay(now);
+
+		if (byTime) {
+			nextList = new TreeSet<>();
+		} else {
+			nextList = new ArrayList<>();
 		}
-		
+
 		if (sched.getDay() == null) {
 			fullList.add(this.getResources().getString(R.string.no_events_today));
 		} else {
 			fullList.add(this.getResources().getString(R.string.now));
-			
+
+			ZonedDateTime nextHour = now.plusHours(1);
+
 			for (Schedule.Line tent : sched.getTents()) {
+				boolean haveNext = false;  // Found at least one next item?
 				for (Schedule.Item item : tent.getItems()) {
-					if (item.getStartTime().before(now) && item.getEndTime().after(now)) {
+					if (item.getStartTimeZoned().isBefore(now) && item.getEndTimeZoned().isAfter(now)) {
 						fullList.add(item);
-					} else if (item.getStartTime().after(now)) {
+					} else if (item.getStartTimeZoned().isAfter(now)) {
+						if (byTime && haveNext && item.getStartTimeZoned().isAfter(nextHour)) {
+							break;
+						}
 						nextList.add(item);
-						break;
+						haveNext = true;
+						if (!byTime) {
+							break;
+						}
 					}
 				}
 			}

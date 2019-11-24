@@ -9,10 +9,8 @@
 	<!--  Settings -->
 	<string name="default_view">Vista predefinita</string>
 	<string name="font_size">Dimensione font programma a blocchi</string>
-	<string name="always_refresh">Ricarica sempre nuovi programmi</string>
-	<string name="always_refresh_sub_off">Controlla nuove versioni una volta al giorno</string>
-	<string name="strict_ssl">Controllo rigoroso SSL</string>
-	<string name="strict_ssl_sub">Validazione corretta certificati SSL</string>
+	<string name="strict_ssl">Controllo rigoroso TLS</string>
+	<string name="strict_ssl_sub">Validazione corretta certificati TLS</string>
 
 	<string name="block_schedule_style">Stile</string>
 	<string name="block_schedule">Programma a blocchi</string>
@@ -65,11 +63,11 @@
 	<!-- NowNext -->
 	<string name="no_events_today">Nessun evento oggi.</string>
 	<string name="now">Adesso:</string>
-	<string name="next">Prossimo:</string>
+	<string name="next">Prossimo</string>
 	
 	<!-- MyItemsView -->
-	<string name="coming_up">Prossimi:</string>
-	<string name="seen_so_far">Visti finora:</string>
+	<string name="coming_up">Prossimi</string>
+	<string name="seen_so_far">Visti finora</string>
 	<string name="none_marked">Nessun elemento segnato.</string>
 	
 	<!-- ChooserActivity -->
@@ -77,9 +75,9 @@
 	<string name="unhide">Recupera elementi nascosti</string>
 	<string name="remove">Rimuovi</string>
 	<string name="show_url">Mostra URL...</string>
-	<string name="chooser_now">Eventi in corso:</string>
-	<string name="chooser_later">Eventi in arrivo:</string>
-	<string name="chooser_past">Eventi precedenti:</string>
+	<string name="chooser_now">Eventi in corso</string>
+	<string name="chooser_later">Eventi in arrivo</string>
+	<string name="chooser_past">Eventi precedenti</string>
 	<string name="add_dialog">Aggiungi...</string>
 	<string name="qr_scan">Leggi QR</string>
 	<string name="enter_url">Inserisci URL del programma</string>

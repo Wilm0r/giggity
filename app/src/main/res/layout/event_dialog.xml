@@ -1,241 +1,223 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/background_light"
-    android:paddingTop="0dp"
-    android:orientation="vertical" >
-
-<RelativeLayout
-    android:id="@+id/header"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/primary"
-    android:paddingBottom="4dp"
-    android:paddingLeft="2dp"
-    android:paddingTop="2dp">
-    <!-- only when subheader is invisible: android:elevation="8dp"> -->
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Linux on the desktop, y u no happen"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:paddingTop="0dp"
-        android:textColor="@color/light_text"/>
-
-    <TextView
-        android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/title"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:text="2050 will be the year, I swear!"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@color/light_text"/>
-
-    <TextView
-        android:id="@+id/room"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:text="De grote zael"
-        android:layout_below="@+id/subtitle"
-        android:textColor="@color/light_text"/>
-
-    <TextView
-        android:id="@+id/room_time_sep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/room"
-        android:text=" · "
-        android:layout_below="@+id/subtitle"
-        android:textColor="@color/light_text"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/room_time_sep"
-        android:text="Sat 20:00-22:00"
-        android:layout_below="@+id/subtitle"
-        android:textColor="@color/light_text"/>
-
-    <TextView
-        android:id="@+id/lang_sep"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/time"
-        android:text=" · "
-        android:layout_below="@+id/subtitle"
-        android:textColor="@color/light_text"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/language"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/lang_sep"
-        android:text="Angrish"
-        android:layout_below="@+id/subtitle"
-        android:textColor="@color/light_text"/>
-</RelativeLayout>
-
-<ScrollView
-    android:id="@+id/scrollDescription"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_weight="1"
-    android:padding="0dp"
-    android:paddingTop="0dp" >
+              android:layout_height="wrap_content"
+              android:background="@android:color/background_light"
+              android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/scrollDescriptionInner"
-        android:orientation="vertical"
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="6dp"
+        android:paddingTop="6dp">
+        <!-- only when subheader is invisible: android:elevation="8dp"> -->
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            tools:text="Linux on the desktop, y u no happen"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@color/light_text"/>
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="2050 will be the year, I swear!"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/light_text"/>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/subHeader"
-            android:background="@color/primary"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:elevation="8dp">
+            android:orientation="horizontal"
+            android:paddingTop="6dp"
+            android:paddingBottom="1dp">
 
             <TextView
-                android:id="@+id/headTrack"
+                android:id="@+id/room"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:text="@string/track"
-                android:textStyle="bold"
-                android:paddingTop="0dp"
-                android:textColor="@color/light_text"/>
-
-            <TextView
-                android:id="@+id/track"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/headTrack"
-                android:layout_alignParentRight="true"
-                android:layout_toRightOf="@+id/headTrack"
-                android:textIsSelectable="true"
-                android:text="Blaaaaaaat"
-                android:paddingLeft="4dp"
-                android:textColor="@color/light_text"/>
-
-            <TextView
-                android:id="@+id/headSpeaker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/headTrack"
-                android:maxLines="1"
-                android:selectAllOnFocus="false"
-                android:text="@string/speaker"
-                android:textStyle="bold"
-                android:paddingBottom="3dp"
-                android:textColor="@color/light_text"/>
-
-            <TextView
-                android:id="@+id/speaker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBaseline="@+id/headSpeaker"
-                android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/headSpeaker"
-                android:layout_alignBottom="@+id/headSpeaker"
-                android:layout_toRightOf="@+id/headSpeaker"
-                android:textIsSelectable="true"
-                android:ellipsize="end"
-                android:maxLines="2"
-                android:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
-                android:paddingLeft="4dp"
-                android:paddingBottom="0dp"
+                tools:text="De grote zael"
                 android:textColor="@color/light_text"
-                android:singleLine="true"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:id="@+id/descriptionBox">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/alertBox">
-
-                <ImageView
-                    android:id="@+id/headAlert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_warning_black_36dp" />
-
-                <TextView
-                    android:id="@+id/alert"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/headAlert"
-                    android:layout_marginLeft="12dp"
-                    android:layout_toRightOf="@+id/headAlert"
-                    android:textIsSelectable="true"
-                    android:text="Conflicts bla" />
-            </LinearLayout>
+                android:textStyle="bold"/>
 
             <TextView
-                android:id="@+id/description"
+                android:id="@+id/room_time_sep"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/alertBox"
-                android:layout_marginTop="4dp"
-                android:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would&apos;ve thought that this one would take even longer than going from 0.7 to 1.0 (which &quot;only&quot; took three years)?
+                android:text=": "
+                android:textColor="@color/light_text"
+                android:textStyle="bold"/>
 
-        There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the &quot;Duke Nukem Forever&quot; in the BitlBee community. Looks like we won!
-
-        This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it&apos;s waaaay late to release a BitlBee 2 at this point, let&apos;s go for 3.0 immediately. :-)"
-                android:textIsSelectable="true"/>
-
-            <!-- oops, this one seems lost, does it still work? Or, should I keep the icon links at all? -->
-            <LinearLayout
-                android:id="@+id/links"
+            <TextView
+                android:id="@+id/time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@id/description"
-                android:orientation="vertical"
-                android:paddingTop="8dp"
-                android:visibility="gone" >
+                tools:text="Sat 20:00–22:00"
+                android:textColor="@color/light_text"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/links_header"
-                    android:id="@+id/textView"/>
-            </LinearLayout>
+            <TextView
+                android:id="@+id/language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text=" (Angrish)"
+                android:textColor="@color/light_text"/>
+        </LinearLayout>
 
-        </RelativeLayout>
     </LinearLayout>
 
-</ScrollView>
+    <ScrollView
+        android:id="@+id/scrollDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        >
 
-<LinearLayout
-    android:id="@+id/bottomBox"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="right|center_vertical"
-    android:orientation="horizontal" >
+        <LinearLayout
+            android:id="@+id/scrollDescriptionInner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-</LinearLayout>
+            <LinearLayout
+                android:id="@+id/subHeader"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="8dp"
+                android:background="@color/primary"
+                android:elevation="8dp"
+                android:orientation="vertical"
+                android:paddingBottom="2dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="6dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingBottom="1dp">
+
+                    <TextView
+                        android:id="@+id/headTrack"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingRight="3dp"
+                        android:text="@string/track"
+                        android:textColor="@color/light_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/track"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/headTrack"
+                        tools:text="Blaaaaaaat"
+                        android:textColor="@color/light_text"
+                        android:textIsSelectable="true"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/headSpeaker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:paddingRight="3dp"
+                        android:selectAllOnFocus="false"
+                        android:text="@string/speaker"
+                        android:textColor="@color/light_text"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/speaker"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/headSpeaker"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:singleLine="true"
+                        tools:text="The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, The Dude, El Duderino, Duder, Jeff Lebowski, "
+                        android:textColor="@color/light_text"
+                        android:textIsSelectable="true"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/descriptionBox"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingRight="6dp">
+
+                <LinearLayout
+                    android:id="@+id/alertBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/headAlert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_warning"/>
+
+                    <TextView
+                        android:id="@+id/alert"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="Conflicts bla"
+                        android:textIsSelectable="true"/>
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/alertBox"
+                    tools:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would've thought that this one would take even longer than going from 0.7 to 1.0 (which only took three years)?
+
+        There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the Duke Nukem Forever in the BitlBee community. Looks like we won!
+
+        This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it's waaaay late to release a BitlBee 2 at this point, let's go for 3.0 immediately. :-)"
+                    android:textIsSelectable="true" />
+
+                <!-- oops, this one seems lost, does it still work? Or, should I keep the icon links at all? -->
+                <LinearLayout
+                    android:id="@+id/links"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/description"
+                    android:orientation="vertical">
+                </LinearLayout>
+
+            </RelativeLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right|center_vertical"
+        android:orientation="horizontal">
+
+    </LinearLayout>
 
 </LinearLayout>

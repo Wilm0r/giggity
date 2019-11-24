@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@color/light">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_horizontal|center_vertical"
+		android:layout_margin="16dp"
+		android:background="@color/light_back"
+		android:clipChildren="false"
+		android:clipToPadding="false"
+		android:elevation="8dp"
+		android:orientation="vertical"
+		android:padding="8dp">
+
+		<LinearLayout
+			android:id="@+id/titleBar"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal"
+			android:transitionName="title">
+
+			<TextView
+				android:id="@+id/textView2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/loading_schedule" />
+		</LinearLayout>
+
+		<LinearLayout
+			android:id="@+id/errorContainer"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:orientation="horizontal"
+			android:visibility="gone"
+			tools:visibility="visible">
+
+			<ImageView
+				android:id="@+id/imageView"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_weight="0.5"
+				android:src="@drawable/ic_warning" />
+
+			<TextView
+				android:id="@+id/errorMessge"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_vertical"
+				android:layout_weight="1"
+				android:gravity="center_vertical"
+				android:paddingLeft="8dp"
+				tools:text="Error message here" />
+		</LinearLayout>
+
+		<ProgressBar
+			android:id="@+id/progressBar"
+			style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Horizontal"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:indeterminate="true"
+			android:max="1" />
+
+		<Button
+			android:id="@+id/load_cached"
+			style="@android:style/Widget.DeviceDefault.Button"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:enabled="true"
+			android:text="@string/use_cached_version" />
+	</LinearLayout>
+</FrameLayout>

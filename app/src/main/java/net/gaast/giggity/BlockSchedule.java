@@ -180,7 +180,8 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		});
 
 		y = 0;
-		tents = sched.getTents();
+		// TODO: ArrayList?
+		tents = new LinkedList<>(sched.getTents());
 		for (Schedule.Line tent : tents) {
 			int posx, h, w;
 
@@ -292,7 +293,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 				@Override
 				public void onClick(View v) {
 					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-					sva.showItem(item, new ArrayList<>(item.getLine().getItems()));
+					sva.showItem(item, new ArrayList<>(item.getLine().getItems()), false, Element.this);
 				}
 			});
 		}
@@ -411,9 +412,12 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 	
 	static private abstract class Colours {
 		public int background, lines;
-		public int clockbg[], clockfg[];
-		public int itembg[], itemfg[];
-		public int tentbg[], tentfg[];
+		public int[] clockbg;
+		public int[] clockfg;
+		public int[] itembg;
+		public int[] itemfg;
+		public int[] tentbg;
+		public int[] tentfg;
 		
 		public Colours() {
 			clockbg = new int[3];
@@ -425,28 +429,6 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		}
 	}
 
-	static private class Light extends Colours {
-		public Light() {
-			super();
-			background = 0xFFF9FCDA;
-			lines = 0xFFA3D3FC;
-			clockbg[0] = 0xFFF5FC49;
-			clockbg[1] = 0xFFF8FC9C;
-			clockbg[2] = 0xFF00CF00;
-			itembg[0] = 0xFFE0EFFC;
-			itembg[1] = 0xFFC2E1FC;
-			itembg[2] = 0xFF00CF00;
-			itembg[3] = 0xFF00CF00;
-			tentbg[0] = 0xFFFAFCB8;
-			tentbg[1] = 0xFFF8FC9C;
-			clockfg[0] = clockfg[1] = clockfg[2] = itemfg[0] = itemfg[1] =
-					tentfg[0] = tentfg[1] = 0xFF000000;
-			itemfg[0] = itemfg[1] = itemfg[2] = itemfg[3] = 0xFF000000;
-		}
-	}
-
-	/* Improved colour scheme, closer to the "material design" colour combinations I picked up last
-	   year. */
 	static private class LightNew extends Colours {
 		public LightNew() {
 			super();
@@ -484,6 +466,11 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			Element e = (Element) schedCont.getChildAt(i);
 			e.setBackgroundColor();
 		}
+	}
+
+	@Override
+	public void onShow() {
+		app.showKeyboard(getContext(), null);
 	}
 
 	@Override

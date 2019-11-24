@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
@@ -32,8 +33,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.widget.SwipeRefreshLayout;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.InputType;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -52,6 +54,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -83,7 +86,11 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		requestWindowFeature(Window.FEATURE_PROGRESS);
-		
+		// Fancy shared-element animations when opening event dialogs.
+		requestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+		//getWindow().setExitTransition(new ChangeImageTransform());
+		getWindow().setExitTransition(new Explode());
+
 		/*//test stuff
 		Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
 		long[] pattern = {  };
@@ -91,6 +98,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		*/
 
 		Giggity app = (Giggity) getApplication();
+
 		db = app.getDb();
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 
@@ -102,7 +110,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 			DbSchedule item = (DbSchedule) lista.getItem(position);
 			if (item != null) {
-				openSchedule(item, false);
+				openSchedule(item.getUrl(), item.refreshNow(), null, view);
 			}
 			}
 		});
@@ -116,11 +124,15 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				menu.setHeaderTitle(sched.getTitle());
 				menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
 				menu.add(ContextMenu.NONE, 3, 0, R.string.unhide);
-				menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
+				// Don't support this for now. With tedious versioning of menu.json removed, I can't
+				// be bothered to try to preserve these deletions. (Who does this anyway?)
+				// menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
 				menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
 			}
 			}
 		});
+		list.setBackgroundResource(R.color.light);
+		list.setDividerHeight(0);
 		
 		/* Filling in the list in onResume(). */
 		refresher = new SwipeRefreshLayout(this);
@@ -198,13 +210,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		} else if (item.getItemId() == 0) {
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched, true);
+			openSchedule(sched.getUrl(), true, null, null);
 		} else if (item.getItemId() == 3) {
 			/* Unhide. */
 			sched.flushHidden();
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched, false);
+			openSchedule(sched.getUrl(), sched.refreshNow(), null, null);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
 			db.removeSchedule(sched.getUrl());
@@ -217,9 +229,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				intent.putExtra("ENCODE_DATA", sched.getUrl());
 				startActivity(intent);
 			} catch (ActivityNotFoundException e) {
+				TextView selectableUrl = new TextView(this);
+				selectableUrl.setText(sched.getUrl());
+				selectableUrl.setTextIsSelectable(true);
+				app.setPadding(selectableUrl, 16, 8, 8, 16);
 				new AlertDialog.Builder(ChooserActivity.this)
 						.setTitle(sched.getTitle())
-						.setMessage(sched.getUrl())
+						.setView(selectableUrl)
 						.show();
 			}
 		}
@@ -246,33 +262,30 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		seedRefreshMenu = null;
 	}
 
-	private void openSchedule(String url, boolean prefOnline, Schedule.Selections sel) {
+	private void openSchedule(String url, boolean prefOnline, Schedule.Selections sel, View animationOrigin) {
 		if (!url.contains("://"))
 			url = "http://" + url;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
 				this, ScheduleViewActivity.class);
-		intent.putExtra("PREFER_CACHED", !prefOnline);
+		intent.putExtra("PREFER_ONLINE", prefOnline);
 		if (sel != null)
 			intent.putExtra("SELECTIONS", sel);
-		startActivity(intent);
-	}
 
-	private void openSchedule(DbSchedule event, boolean prefOnline) {
-		if (!prefOnline) {
-			if (pref.getBoolean("always_refresh", false) ||
-					new Date().getTime() - event.getRtime().getTime() > 86400000)
-				prefOnline = true;
+		ActivityOptions options = null;
+		if (animationOrigin != null) {
+			options = ActivityOptions.makeSceneTransitionAnimation(
+		               this, animationOrigin, "title");
 		}
-		openSchedule(event.getUrl(), prefOnline, null);
+		startActivity(intent, options != null ? options.toBundle() : null);
 	}
 
-	/* Process barcode scan results. This can be a few things:
+	/* DEPRECATED, not by my choice but by ZXing team's choice.. :<
 
-	   * Plain URL, in which case just handle it
+	   Process barcode scan results. This can be a few things:
+
 	   * zlib-compressed binary blob containing selection data exported by another Giggity
-	   * (gzip-compressed) JSON blob containing a menu.json entry
-
-	   We'll just have to figure out which one of the 3/4..
+	     (keeping this code around for just that feature since I have no replacement yet)
+	   * Plain URL, in which case just handle it
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -290,11 +303,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 						               "this corrupts binary data!", Toast.LENGTH_LONG).show();
 					}
 
-					/* Start with #3, (gzipped) json blob */
-					if (db.refreshSingleSchedule(bin)) {
-						return;
-					}
-
 					/* Or 2? */
 					try {
 						sel = new Schedule.Selections(bin);
@@ -306,7 +314,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 				/* Nope, just a plain URL then hopefully.. Or something corrupted that will generate
 				   a spectacular error message. \o/ */
-				openSchedule(url, false, sel);
+				openSchedule(url, false, sel, null);
 			}
 		}
 	}
@@ -354,7 +362,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		d.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				openSchedule(urlBox.getText().toString(), false, null);
+				openSchedule(urlBox.getText().toString(), false, null, null);
 			}
 		});
 		/* Apparently the "Go"/"Done" button still just simulates an ENTER keypress. Neat!...
@@ -364,7 +372,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN &&
 						keyCode == KeyEvent.KEYCODE_ENTER) {
-					openSchedule(urlBox.getText().toString(), false, null);
+					openSchedule(urlBox.getText().toString(), false, null, null);
 					return true;
 				} else {
 					return false;
@@ -381,10 +389,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 					startActivityForResult(intent, 0);
 				} catch (ActivityNotFoundException e) {
-					new AlertDialog.Builder(ChooserActivity.this)
-							.setMessage("Please install the Barcode Scanner app")
-							.setTitle("Error")
-							.show();
+					Giggity.zxingError(ChooserActivity.this);
 				}
 			}
 		});
@@ -407,27 +412,33 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			later = new ArrayList<>();
 			past = new ArrayList<>();
 			for (DbSchedule sched : scheds) {
-				if (sched.getStart().after(new Date()))
+				if (sched.getStart().after(new Date())) {
 					later.add(new Element(sched));
-				else if (sched.getEnd().before(new Date()))
-					past.add(new Element(sched));
-				else
+				} else if (sched.getEnd().before(new Date())) {
+					Element e = new Element(sched);
+					if (sched.getAtime().equals(sched.getStart())) {
+						e.setUnused();
+					}
+					past.add(e);
+				} else {
 					now.add(new Element(sched));
+				}
 			}
 
 			list = new ArrayList<>();
-			if (now.size() > 0) {
-				list.add(new Element(R.string.chooser_now));
-				list.addAll(now);
+			addAll(now, R.string.chooser_now);
+			addAll(later, R.string.chooser_later);
+			addAll(past, R.string.chooser_past);
+		}
+
+		private void addAll(ArrayList<Element> bunch, int title) {
+			if (bunch.size() == 0) {
+				return;
 			}
-			if (later.size() > 0) {
-				list.add(new Element(R.string.chooser_later));
-				list.addAll(later);
-			}
-			if (past.size() > 0) {
-				list.add(new Element(R.string.chooser_past));
-				list.addAll(past);
-			}
+			bunch.get(0).setFirst();
+			bunch.get(bunch.size() - 1).setLast();
+			list.add(new Element(title));
+			list.addAll(bunch);
 		}
 
 		@Override
@@ -458,47 +469,110 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		private class Element {
 			String header;
 			DbSchedule item;
+			int flags;
 
-			public Element(int res) {
-				header = ChooserActivity.this.getResources().getString(res);
-			}
+			final static int FIRST = 1;
+			final static int LAST = 2;
+			final static int UNUSED = 4;
 
 			public Element(DbSchedule item_) {
 				item = item_;
 			}
 
+			public Element(int res) {
+				header = ChooserActivity.this.getResources().getString(res);
+			}
+
+			public void setFirst() {
+				flags |= FIRST;
+			}
+
+			public void setLast() {
+				flags |= LAST;
+			}
+
+			public void setUnused() {
+				flags |= UNUSED;
+			}
+
 			public View getView() {
 				Giggity app = (Giggity) getApplication();
+				LinearLayout inner = new LinearLayout(ChooserActivity.this);
+				RelativeLayout outer = new RelativeLayout(ChooserActivity.this);
+
 				if (item != null) {
-					LinearLayout ret = new LinearLayout(ChooserActivity.this);
-					TextView title, when;
+					makeScheduleTitleView(inner, item);
+					app.setPadding(inner, 10, (flags & FIRST) > 0 ? 0 : 3, 6, (flags & LAST) > 0 ? 10 : 0);
 
-					title = new TextView(ChooserActivity.this);
-					title.setText(item.getTitle());
-					title.setTextSize(22);
-					title.setTextColor(getResources().getColor(R.color.dark_text));
-					ret.addView(title);
+					if ((flags & LAST) == 0) {
+						View div = new View(ChooserActivity.this);
+						div.setMinimumHeight(app.dp2px(1));
+						div.setBackgroundResource(R.color.light);
+						app.setPadding(inner.findViewById(R.id.subtitle), 0, 0, 0, 4);
+						inner.addView(div, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					}
 
-					when = new TextView(ChooserActivity.this);
-					when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
-					when.setTextSize(12);
-					ret.addView(when);
+					app.setPadding(outer, 20, 0, 16, (flags & LAST) > 0 ? 16 : 0);
+					outer.addView(inner, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					inner.setElevation(app.dp2px(4));
+					outer.setClipToPadding(false);
+					inner.setClipToPadding(false);
 
-					ret.setOrientation(LinearLayout.VERTICAL);
-					app.setPadding(ret, 0, 3, 0, 4);
-
-					return ret;
+					if ((flags & UNUSED) != 0) {
+						inner.findViewById(R.id.title).setAlpha(0.6F);
+						inner.findViewById(R.id.subtitle).setAlpha(0.6F);
+					}
 				} else {
 					TextView ret = new TextView(ChooserActivity.this);
 					ret.setText(header);
 					ret.setTextSize(18);
 					ret.setTypeface(Typeface.DEFAULT, Typeface.BOLD);
-					ret.setTextColor(getResources().getColor(R.color.dark_text));
-					app.setPadding(ret, 0, 24, 0, 3);
+					ret.setBackgroundResource(R.color.primary);
+					ret.setTextColor(getResources().getColor(R.color.light_text));
+					app.setPadding(ret, 6, 3, 6, 3);
 
-					return ret;
+					inner.addView(ret);
+					app.setPadding(inner, 8, 8, 0, 0);
+
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+					lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+					lp.setMargins(app.dp2px(20), 0, app.dp2px(16), 0);
+					View blob = new View(ChooserActivity.this);
+					blob.setMinimumHeight(app.dp2px(10));
+					blob.setBackgroundResource(R.color.light_back);
+					app.setPadding(blob, 20, 20, 20, 20);
+					outer.addView(blob, lp);
+
+					outer.addView(inner, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+					ret.setElevation(app.dp2px(8));
+					blob.setElevation(app.dp2px(4));
+					inner.setElevation(app.dp2px(4));
+					outer.setClipToPadding(false);
+					inner.setClipToPadding(false);
 				}
+
+				return outer;
 			}
 		}
+	}
+
+	static void makeScheduleTitleView(LinearLayout inner, DbSchedule item) {
+		TextView title, when;
+
+		title = new TextView(inner.getContext());
+		title.setText(item.getTitle());
+		title.setTextSize(22);
+		title.setTextColor(inner.getContext().getResources().getColor(R.color.dark_text));
+		title.setId(R.id.title);
+		inner.addView(title);
+
+		when = new TextView(inner.getContext());
+		when.setText(Giggity.dateRange(item.getStart(), item.getEnd()));
+		when.setTextSize(12);
+		when.setId(R.id.subtitle);
+		inner.addView(when);
+
+		inner.setOrientation(LinearLayout.VERTICAL);
+		inner.setBackgroundResource(R.color.light_back);
 	}
 }

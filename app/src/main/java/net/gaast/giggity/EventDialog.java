@@ -32,7 +32,6 @@ import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +47,10 @@ import android.widget.TextView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.StringJoiner;
+
+import static net.gaast.giggity.Schedule.RoomStatus.EVACUATE;
+import static net.gaast.giggity.Schedule.RoomStatus.FULL;
+import static net.gaast.giggity.Schedule.RoomStatus.OK;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
@@ -76,64 +78,55 @@ public class EventDialog extends FrameLayout {
 		TextView t;
 		Format tf = new SimpleDateFormat("HH:mm");
 		
-		t = (TextView) root.findViewById(R.id.title);
+		t = root.findViewById(R.id.title);
 		t.setText(item_.getTitle());
 
-		t = (TextView) root.findViewById(R.id.subtitle);
+		t = root.findViewById(R.id.subtitle);
 		if (item_.getSubtitle() != null) {
 			t.setText(item_.getSubtitle());
 		} else {
 			t.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) root.findViewById(R.id.room);
+		t = root.findViewById(R.id.room);
 		t.setText(item_.getLine().getTitle());
 
 		if (item_.getLine().getLocation() != null) {
-			t = (TextView) root.findViewById(R.id.room);
+			t = root.findViewById(R.id.room);
 			t.setPaintFlags(t.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			t.setOnClickListener(ScheduleUI.locationClickListener(getContext(), item_.getLine()));
 		}
 
-		switch (item_.getLine().getRoomStatus()) {
-			case OK:
-				t.setTextColor(0xff00ff00);
-				break;
-			case FULL:
-				t.setTextColor(0xffffa500);
-				break;
-			case EVACUATE:
-				t.setTextColor(0xffff0000);
-				break;
+		if (item_.getLine().getRoomStatus().compareTo(FULL) >= 0) {
+			t.setTextColor(0xffffa500);
 		}
 
 		if (item_.getLanguage() != null) {
-			t = (TextView) root.findViewById(R.id.language);
-			t.setText(item_.getLanguage());
+			t = root.findViewById(R.id.language);
+			t.setText(" (" + item_.getLanguage() + ")");
 		} else {
-			root.findViewById(R.id.lang_sep).setVisibility(View.GONE);
 			root.findViewById(R.id.language).setVisibility(View.GONE);
 		}
 
-		t = (TextView) root.findViewById(R.id.time);
-		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTime()) + " " +
-		          tf.format(item_.getStartTime()) + "-" + tf.format(item_.getEndTime()));
+		t = root.findViewById(R.id.time);
+		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTimeZoned()) + " " +
+		          tf.format(item_.getStartTime()) + "–" + tf.format(item_.getEndTime()));
 		
-		t = (TextView) root.findViewById(R.id.track);
+		t = root.findViewById(R.id.track);
 		if (item_.getTrack() != null) {
-			t.setText(item_.getTrack());
+			t.setText(item_.getTrack().getTitle());
 		} else {
 			t.setVisibility(View.GONE);
 			v = root.findViewById(R.id.headTrack);
 			v.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) root.findViewById(R.id.speaker);
+		t = root.findViewById(R.id.speaker);
 		if (item_.getSpeakers() != null) {
 			t.setText(TextUtils.join(", ", item_.getSpeakers()));
 			
 			if (item_.getSpeakers().size() > 1) {
-				t = (TextView) root.findViewById(R.id.headSpeaker);
+				t = root.findViewById(R.id.headSpeaker);
 				t.setText(R.string.speakers);
 			}
 		} else {
@@ -149,13 +142,13 @@ public class EventDialog extends FrameLayout {
 				if (overlaps == null)
 					overlaps = ctx_.getResources().getString(R.string.overlap) + " ";
 				overlaps += other.getTitle() +
-				         " (" + tf.format(other.getStartTime()) + "-" + tf.format(other.getEndTime()) + "), ";
+				         " (" + tf.format(other.getStartTime()) + "–" + tf.format(other.getEndTime()) + "), ";
 			} else if (other.getStartTime().after(item_.getEndTime())){
 				break;
 			}
 		}
 		
-		t = (TextView) root.findViewById(R.id.alert);
+		t = root.findViewById(R.id.alert);
 		if (overlaps != null) {
 			t.setText(overlaps.replaceAll(", $", ""));
 		} else {
@@ -164,8 +157,8 @@ public class EventDialog extends FrameLayout {
 			v.setVisibility(View.GONE);
 		}
 		
-		t = (TextView) root.findViewById(R.id.description);
-		t.setText(item.getDescriptionSpannable());
+		t = root.findViewById(R.id.description);
+		t.setText(item.getDescriptionSpanned());
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
 		/* This is frustrating: a TextView cannot support text selection and clickable links at the
@@ -187,7 +180,7 @@ public class EventDialog extends FrameLayout {
 		});
 
 		if (item_.getLinks() != null) {
-			ViewGroup g = (ViewGroup) root.findViewById(R.id.links);
+			ViewGroup g = root.findViewById(R.id.links);
 			for (Schedule.Link link : item_.getLinks()) {
 				LinkButton btn = new LinkButton(ctx_, link);
 				g.addView(btn, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1));
@@ -195,26 +188,22 @@ public class EventDialog extends FrameLayout {
 			g.setVisibility(View.VISIBLE);
 		}
 
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			/* Lollipop+. I think owners of older devs will survive without drop shadows, right? :> */
-			/* TODO: Remove check above if I find a way to do drop shadows pre-L. */
-			final ScrollView scr = (ScrollView) root.findViewById(R.id.scrollDescription);
-			scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
-				@Override
-				public void onScrollChanged() {
-					Rect scrollBounds = new Rect();
-					scr.getHitRect(scrollBounds);
-					View subHeader = root.findViewById(R.id.subHeader);
-					View header = root.findViewById(R.id.header);
+		final ScrollView scr = root.findViewById(R.id.scrollDescription);
+		scr.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+			@Override
+			public void onScrollChanged() {
+				Rect scrollBounds = new Rect();
+				scr.getHitRect(scrollBounds);
+				View subHeader = root.findViewById(R.id.subHeader);
+				View header = root.findViewById(R.id.header);
 
-					app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
-					app_.setShadow(subHeader, subHeader.getLocalVisibleRect(scrollBounds));
-				}
-			});
-		}
+				app_.setShadow(header, !subHeader.getLocalVisibleRect(scrollBounds));
+				app_.setShadow(subHeader, subHeader.getLocalVisibleRect(scrollBounds));
+			}
+		});
 
 		/* Bottom box used to be a bunch of things but now just the remind checkbox + delete icon. */
-		LinearLayout bottomBox = (LinearLayout) root.findViewById(R.id.bottomBox);
+		LinearLayout bottomBox = root.findViewById(R.id.bottomBox);
 
 		cb_ = new CheckBox(ctx_);
 		cb_.setText(R.string.remind_me);
@@ -257,7 +246,7 @@ public class EventDialog extends FrameLayout {
 	}
 
 	public void saveScroll() {
-		final ScrollView sv = (ScrollView) root.findViewById(R.id.scrollDescription);
+		final ScrollView sv = root.findViewById(R.id.scrollDescription);
 		final View inner = sv.getChildAt(0);
 		if (sv.getScrollY() == 0 || inner.getHeight() <= sv.getHeight()) {
 			return;
@@ -287,8 +276,7 @@ public class EventDialog extends FrameLayout {
 			TextView url = new TextView(ctx);
 			url.setText(link.getTitle());
 			url.setOnClickListener(this);
-			url.setPaintFlags(url.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-			url.setTextColor(getResources().getColor(R.color.accent));
+			url.setTextColor(getResources().getColor(R.color.primary_dark));
 			app_.setPadding(url, 0, 3, 0, 3);
 			addView(url);
 		}
@@ -321,15 +309,10 @@ public class EventDialog extends FrameLayout {
 				ctx_, item_.getStartTime().getTime(), item_.getEndTime().getTime(),
 				DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
 
-			StringJoiner speakers = new StringJoiner(", ");
-			for (String speaker: item_.getSpeakers()) {
-				speakers.add(speaker);
-			}
-			
 			t.putExtra(android.content.Intent.EXTRA_TEXT,
 				item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
 				item_.getLine().getTitle() + ", " + time + "\n" +
-				speakers + "\n" +
+				TextUtils.join(", ", item_.getSpeakers()) +
 				item_.getWebLink() + "\n" +
 				"\n" +
 				item_.getDescriptionStripped());
@@ -384,7 +367,7 @@ public class EventDialog extends FrameLayout {
 						for (Schedule.Item other : item_.getLine().getItems())
 							other.setHidden(newValue);
 					} else if (what == 2 && item_.getTrack() != null) {
-						for (Schedule.Item other : sched.getTrackItems(item_.getTrack()))
+						for (Schedule.Item other : item_.getTrack().getItems())
 							other.setHidden(newValue);
 					} else {
 						for (Schedule.Item other : sched.getByLanguage(item_.getLanguage())) {

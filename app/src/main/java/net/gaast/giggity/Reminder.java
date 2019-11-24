@@ -13,7 +13,6 @@ import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -42,10 +41,10 @@ public class Reminder extends Service {
 				Log.e("reminder", "Empty intent. Huh?");
 				return;
 			}
-			String url[] = intent.getDataString().split("#", 2);
+			String[] url = intent.getDataString().split("#", 2);
 			Schedule sched;
 			try {
-				sched = app.getSchedule(url[0], Fetcher.Source.CACHE_ONLINE);
+				sched = app.getSchedule(url[0], Fetcher.Source.CACHE_ONLINE, null);
 			} catch (Exception e) {
 				Log.e("reminder", "Urgh, caught exception while reloading schedule (the OS killed us)");
 				e.printStackTrace();
@@ -120,7 +119,6 @@ public class Reminder extends Service {
 		/* Prepare the intent that will show the EventDialog. */
 		Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
 				app, ScheduleViewActivity.class);
-		evi.putExtra("PREFER_CACHED", true);
 
 		/* Generate a notification. */
 		NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
@@ -133,14 +131,11 @@ public class Reminder extends Service {
 				.setAutoCancel(true)
 				.setDefaults(Notification.DEFAULT_SOUND)
 				.setVibrate(((item.getStartTime().getDate() & 1) == 0) ? giggitygoo : mario)
-				.setLights(getResources().getColor(R.color.primary), 500, 5000);
+				.setLights(getResources().getColor(R.color.primary), 500, 5000)
+				.setVisibility(Notification.VISIBILITY_PUBLIC)
+				.setColor(getResources().getColor(R.color.primary));
 
-		if (Build.VERSION.SDK_INT >= 21) {
-			nb.setVisibility(Notification.VISIBILITY_PUBLIC)
-			  .setColor(getResources().getColor(R.color.primary));
-		}
-
-		Bitmap icon = item.getSchedule().getIconBitmap();
+		Bitmap icon = ((ScheduleUI)item.getSchedule()).getIconBitmap();
 		if (icon != null) {
 			nb.setLargeIcon(icon);
 		}
@@ -195,13 +190,9 @@ public class Reminder extends Service {
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		Intent i = new Intent(Reminder.ACTION);
 		i.setDataAndType(Uri.parse(item.getUrl()), "text/x-giggity");
-		if (android.os.Build.VERSION.SDK_INT >= 19) {
-			// .set is inexact (though not clear how much) from API 19 for powersaving reasons.
-			// Giggity uses timers sporadically enough that I think .setExact() is justified.
-			am.setExact(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
-		} else {
-			am.set(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
-		}
+		// .set is inexact (though not clear how much) from API 19 for powersaving reasons.
+		// Giggity uses timers sporadically enough that I think .setExact() is justified.
+		am.setExact(AlarmManager.RTC_WAKEUP, tm, PendingIntent.getBroadcast(app, 0, i, 0));
 		Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
 				(tm - System.currentTimeMillis()) / 1000 + " seconds");
 	}

@@ -21,6 +21,7 @@ package net.gaast.giggity;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -39,11 +40,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.content.pm.ShortcutInfoCompat;
-import android.support.v4.content.pm.ShortcutManagerCompat;
-import android.support.v4.graphics.drawable.IconCompat;
-import android.support.v4.widget.DrawerLayout;
+import androidx.legacy.app.ActionBarDrawerToggle;
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import android.transition.Explode;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -51,39 +54,48 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
 import java.util.LinkedList;
 
 public class ScheduleViewActivity extends Activity {
-	protected Schedule sched;
+	protected ScheduleUI sched;
 	protected Giggity app;
 
+	// This list is JUST used to highlight the current view in the navdrawer. Order is irrelevant.
+	// There are two orders: One in arrays which is in order of invention for cfg compatibility.
+	// The order in the nav drawer UI XML is the one that matters to the user.
+	// TODO: Figure out whether I can stop needing this one :<
 	private final static int VIEWS[] = {
 		R.id.block_schedule,
-		R.id.timetable,
-		R.id.now_next,
 		R.id.my_events,
+		R.id.now_next,
+		R.id.search,
+		R.id.timetable,
 		R.id.tracks,
 	};
 
 	private int curView;
 	private boolean tabletView;  // EventDialog integrated instead of invoking a separate activity
 	private boolean showHidden;
-
-	private Format dateFormat = new SimpleDateFormat("EE d MMMM");
 
 	/* Set this if when returning to this activity we need a *full* redraw.
 	 * (I.e. when returning from the settings menu.) */
@@ -101,7 +113,7 @@ public class ScheduleViewActivity extends Activity {
 	private ScheduleViewer viewer;
 	private RelativeLayout viewerContainer;
 	private EventDialogPager eventDialogView;
-	private DayButtons days;
+	private DayButtonsHider days;
 
 	private SharedPreferences pref;
 
@@ -121,6 +133,12 @@ public class ScheduleViewActivity extends Activity {
 		/* Consider making this a setting, some may find their tablet too small. */
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 		tabletView = (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE);
+
+		// Fancy shared-element animations when opening event dialogs.
+		getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+		//getWindow().setExitTransition(new ChangeImageTransform());
+		getWindow().setExitTransition(new Explode());
+		//getWindow().setAllowEnterTransitionOverlap(false);
 
 		setContentView(R.layout.schedule_view_activity);
 		View dl = drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
@@ -183,8 +201,7 @@ public class ScheduleViewActivity extends Activity {
 		lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
 		lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-		days = new DayButtons(this);
-		viewerContainer.addView(days, lp);
+		days = new DayButtonsHider();
 
 		redraw = false;
 		timer = new Handler();
@@ -203,11 +220,6 @@ public class ScheduleViewActivity extends Activity {
 			return;
 
 		String url = getIntent().getDataString();
-		Fetcher.Source fs;
-		if (getIntent().getBooleanExtra("PREFER_CACHED", false))
-			fs = Fetcher.Source.CACHE_ONLINE;
-		else
-			fs = Fetcher.Source.ONLINE_CACHE;
 
 		try {
 			Uri parsed = Uri.parse(url);
@@ -218,7 +230,15 @@ public class ScheduleViewActivity extends Activity {
 				for (String param : parsed.getEncodedFragment().split("&")) {
 					if (param.startsWith("url=")) {
 						url = URLDecoder.decode(param.substring(4), "utf-8");
-						break;
+					} else if (param.startsWith("json=")) {
+						String jsonb64 = URLDecoder.decode(param.substring(5), "utf-8");
+						byte[] json = Base64.decode(jsonb64, Base64.URL_SAFE);
+						url = app.getDb().refreshSingleSchedule(json);
+						if (url == null) {
+							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT);
+							finish();
+							return;
+						}
 					}
 				}
 			}
@@ -235,14 +255,17 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (app.hasSchedule(url)) {
-			try {
-				sched = app.getSchedule(url, fs);
-			} catch (Exception e) {
-				// Java makes me tired.
-				e.printStackTrace();
-			}
+			sched = app.getCachedSchedule(url);
 			onScheduleLoaded();
 		} else {
+			Fetcher.Source fs;
+			if (getIntent().getBooleanExtra("PREFER_ONLINE", false))
+				fs = Fetcher.Source.ONLINE_CACHE;
+			else
+				fs = Fetcher.Source.CACHE_ONLINE;
+
+			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+			drawerToggle.setDrawerIndicatorEnabled(false);  // Shows a not functioning back button. :<
 			loadScheduleAsync(url, fs);
 		}
 	}
@@ -262,15 +285,12 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	/* Progress dialog for schedule/data load. Could consider putting it into Fetcher. */
-	private class LoadProgress extends ProgressDialog {
-		public static final int DONE = 999999;
+	private class LoadProgressDialog extends ProgressDialog implements LoadProgress {
 		private Handler updater;
-		private boolean critical;  // If this load is critical for the activity, leave if it fails.
 		private LoadProgressDoneInterface done;
 
-		public LoadProgress(Context ctx, boolean critical) {
+		public LoadProgressDialog(Context ctx) {
 			super(ctx);
-			this.critical = critical;
 
 			setMessage(getResources().getString(R.string.loading_schedule));
 			setIndeterminate(true);
@@ -288,28 +308,20 @@ public class ScheduleViewActivity extends Activity {
 						}
 						dismiss();
 					} else if (msg.what > 0 ) {
-						if (getMax() == 1) {
-							setIndeterminate(false);
-							setMax(100);
+						if (msg.what <= 100) {
+							if (getMax() == 1) {
+								setIndeterminate(false);
+								setMax(100);
+							}
+							setProgress(msg.what);
 						}
-						setProgress(msg.what);
 					} else {
 						dismiss();
 
-						Dialog d = new AlertDialog.Builder(ScheduleViewActivity.this)
+						new AlertDialog.Builder(ScheduleViewActivity.this)
 								.setTitle(R.string.loading_error)
 								.setMessage(msg.obj != null ? msg.obj.toString() : "(null)")
 								.show();
-
-						// If we ran into an error while loading the main schedule, leave this
-						// activity once the user acknowledges the error.
-						if (LoadProgress.this.critical) {
-							d.setOnDismissListener(new OnDismissListener() {
-								public void onDismiss(DialogInterface dialog) {
-									finish();
-								}
-							});
-						}
 					}
 				}
 			};
@@ -317,17 +329,15 @@ public class ScheduleViewActivity extends Activity {
 			setOnCancelListener(new OnCancelListener() {
 				@Override
 				public void onCancel(DialogInterface dialog) {
-					/* If the user gave up, sign out from any progress updates coming from the
-					   downloader thread. Bit ugly to do it this way but stopping a thread isn't
-					   really possible anyway..
-					 */
+					/* This stops any further progress updates from getting delivered to a dead
+					 * activity but keeps the download (?) running, which I suppose is fine. */
 					updater = null;
 					ScheduleViewActivity.this.finish();
 				}
 			});
 		}
 
-		public Handler getHandler() {
+		public Handler getUpdater() {
 			return updater;
 		}
 
@@ -336,38 +346,136 @@ public class ScheduleViewActivity extends Activity {
 		}
 	}
 
+	private class LoadProgressView extends FrameLayout implements LoadProgress {
+		ProgressBar prog;
+		private Handler updater;
+		private LoadProgressDoneInterface done;
+		private LoadProgressFallBackInterface fallBack;
+
+		public LoadProgressView() {
+			super(ScheduleViewActivity.this);
+			inflate(ScheduleViewActivity.this, R.layout.schedule_load_progress, this);
+
+			prog = findViewById(R.id.progressBar);
+			prog.setMax(1);
+
+			updater = new Handler() {
+				@Override
+				public void handleMessage(Message msg) {
+					if (msg.what == DONE) {
+						if (done != null) {
+							done.done();
+						}
+					} else if (msg.what == FROM_CACHE) {
+						// Fetcher reports we're already reading from cache anyway.
+						findViewById(R.id.load_cached).setEnabled(false);
+					} else if (msg.what == STATIC_DONE) {
+						// The download is done so no point in falling back (last stage probably <.1s anyway)
+						findViewById(R.id.load_cached).setEnabled(false);
+					} else if (msg.what > 0) {
+						if (msg.what <= 100) {
+							if (prog.getMax() == 1) {
+								prog.setIndeterminate(false);
+								prog.setMax(100);
+							}
+							prog.setProgress(msg.what);
+						}
+					} else {
+						((TextView)findViewById(R.id.errorMessge)).setText(msg.obj != null ? msg.obj.toString() : "(null)");
+						findViewById(R.id.errorContainer).setVisibility(VISIBLE);
+						prog.setVisibility(GONE);
+					}
+				}
+			};
+
+			Button cached = findViewById(R.id.load_cached);
+			cached.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					fallBack.fallBack();
+				}
+			});
+		}
+
+		public void setTitle(Db.DbSchedule dbs) {
+			LinearLayout tb = findViewById(R.id.titleBar);
+			tb.removeViewAt(0);
+			ChooserActivity.makeScheduleTitleView(tb, dbs);
+		}
+
+		// TODO: Just don't export the handler directly I think?
+		public Handler getUpdater() {
+			return updater;
+		}
+
+		public void setDone(LoadProgressDoneInterface done) {
+			this.done = done;
+		}
+
+		public void setFallBack(LoadProgressFallBackInterface fallBack) {
+			this.fallBack = fallBack;
+		}
+	}
+
 	// Interfaces can't be defined inside inner classes. :<
 	interface LoadProgressDoneInterface {
 		void done();
 	}
+	interface LoadProgressFallBackInterface {
+		void fallBack();
+	}
+	interface LoadProgress {
+		public static final int FROM_CACHE = 999997;   // This data is coming from cache
+		public static final int STATIC_DONE = 999998;  // Done loading static data, only db stuff left to do
+		public static final int DONE = 999999;
+		public Handler getUpdater();
+		public void setDone(LoadProgressDoneInterface done);
+	}
 
 	private void loadScheduleAsync(final String url, final Fetcher.Source source) {
-		final LoadProgress prog = new LoadProgress(this, true);
+		final LoadProgressView prog = new LoadProgressView();
+		Db.DbSchedule dbs = app.getDb().getSchedule(url);
+		if (dbs != null) {
+			prog.setTitle(dbs);
+		}
 		prog.setDone(new LoadProgressDoneInterface() {
 			@Override
 			public void done() {
 				onScheduleLoaded();
+				viewerContainer.removeView((View) prog);
 			}
 		});
-		prog.show();
+		try {
+			app.fetch(url, Fetcher.Source.CACHE);
+		} catch (IOException e) {
+			// No cached copy available apparently so hide that option.
+			prog.findViewById(R.id.load_cached).setVisibility(View.GONE);
+		}
+		prog.setFallBack(new LoadProgressFallBackInterface() {
+			@Override
+			public void fallBack() {
+				viewerContainer.removeView((View) prog);
+				loadScheduleAsync(url, Fetcher.Source.CACHE);
+			}
+		});
+		viewerContainer.addView((View) prog, new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
 		new Thread() {
 			@Override
 			public void run() {
 				try {
-					sched = app.getSchedule(url, source, prog.getHandler());
-					if (prog.getHandler() == null) {
-						Log.d("ScheduleViewActivity", "Looks like we're late, activity gone?");
-						return;
+					sched = app.getSchedule(url, source, prog.getUpdater());
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
 					}
-					prog.getHandler().sendEmptyMessage(LoadProgress.DONE);
+				} catch (Schedule.LateException e) {
+					Log.d("LateException", "" + prog.getUpdater());
+					// Hrm, we lost the race. TODO: Figure out what, but for now do nothing.
 				} catch (Throwable t) {
 					t.printStackTrace();
-					if (prog.getHandler() == null) {
-						Log.d("ScheduleViewActivity", "Looks like we're late, activity gone?");
-						return;
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, t));
 					}
-					prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, t));
 				}
 			}
 		}.start();
@@ -416,9 +524,11 @@ public class ScheduleViewActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		/* Bugfix: Search sets day to -1, have to revert that. */
+		/* Bugfix: Search sets day to -1, have to revert that.
+		I think that's the old own-activity search so maybe I don't need this workaround anymore.
 		if (sched != null && sched.getDays().size() > 1 && !viewer.multiDay())
 			sched.setDay(sched.getDb().getDay());
+		 */
 
 		if (redraw) {
 			redrawSchedule();
@@ -439,13 +549,17 @@ public class ScheduleViewActivity extends Activity {
 		timer.removeCallbacks(updateRoomStatus);
 	}
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
-
 	private void onScheduleLoaded() {
+		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+		drawerToggle.setDrawerIndicatorEnabled(true);
 		sched.setShowHidden(showHidden);
+		ZonedDateTime now = ZonedDateTime.now();
+		int day;
+		if ((day = sched.setDay(now)) != -1 && now.isBefore(sched.getLastTimeZoned())) {
+			// If today is on the schedule and we're not the past of its items yet, this is probably
+			// where the user wants to go now instead of wherever they last were, so overwrite that.
+			sched.getDb().setDay(day);
+		}
 		if (getIntent().hasExtra("SELECTIONS")) {
 			Schedule.Selections sel = (Schedule.Selections) getIntent().getSerializableExtra("SELECTIONS");
 			Dialog dia = new ScheduleUI.ImportSelections(this, sched, sel);
@@ -462,36 +576,44 @@ public class ScheduleViewActivity extends Activity {
 		updateRoomStatus.run();
 
 		/* Change our title + icon in the recent tasks view. Only supported from Lollipop+. */
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			/* On first load, getIconBitmap() will kick off a background fetch so we'll miss out on
-			   the custom icon then. So be it... */
-			Bitmap icon = sched.getIconBitmap();
-			ActivityManager.TaskDescription d;
-			if (icon == null) {
-				icon = ((BitmapDrawable)getResources().getDrawable(R.drawable.deoxide_icon)).getBitmap();
-			}
-			d = new ActivityManager.TaskDescription(sched.getTitle(), icon, getResources().getColor(R.color.primary));
-			this.setTaskDescription(d);
+		/* On first load, getIconBitmap() will kick off a background fetch so we'll miss out on
+		   the custom icon then. So be it... */
+		Bitmap icon = sched.getIconBitmap();
+		ActivityManager.TaskDescription d;
+		if (icon == null) {
+			icon = ((BitmapDrawable)getResources().getDrawable(R.drawable.deoxide_icon)).getBitmap();
 		}
+		d = new ActivityManager.TaskDescription(sched.getTitle(), icon, getResources().getColor(R.color.primary));
+		this.setTaskDescription(d);
 	}
 
 	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */
 	public void finishNavDrawer() {
+		if (!wantDrawer) {
+			return;
+		}
 		if (sched == null) {
 			Log.e("finishNavDrawer", "Called before critical was loaded?");
 			return;
 		}
 
-		LinkedList<Date> days = sched.getDays();
-		TextView dr = (TextView) drawerLayout.findViewById(R.id.date_range);
+		LinkedList<ZonedDateTime> days = sched.getDays();
+		TextView dr = (TextView) drawerLayout.findViewById(R.id.drawer_date_range);
 		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
 
 		if (sched.getLinks() != null) {
+			Log.d("finishNavDrawer", "Links " + sched.getLinks().size());
 			ViewGroup menu = (LinearLayout) drawerLayout.findViewById(R.id.menu);
 			View sep = menu.findViewById(R.id.custom_sep);
 			sep.setVisibility(View.VISIBLE);
 			for (final Schedule.Link link : sched.getLinks()) {
-				TextView item = (TextView) getLayoutInflater().inflate(R.layout.burger_menu_item, null);
+				TextView item = (TextView) TextView.inflate(this, R.layout.burger_menu_item, null);
+				app.setPadding(item, 8, 8, 8, 8);
+				// Better would be if the retard would take the margin + padding layout options but
+				// when I follow instructions from https://stackoverflow.com/questions/7714323/it-inflate-the-view-without-the-margin/7714382
+				// the inflater will return a LinearLayout (menu) not TextView and shit explodes.
+				// Since these items will never be active I got better things to do than convincing
+				// the Android API to not be shite.
 				item.setText(link.getTitle());
 				item.setOnClickListener(new View.OnClickListener() {
 					@Override
@@ -507,13 +629,12 @@ public class ScheduleViewActivity extends Activity {
 
 	/* Other updates that depend on more state (like currently active view). */
 	public void updateNavDrawer() {
+		if (!wantDrawer) {
+			return;
+		}
 		/* Show currently selected view */
 		for (int v : VIEWS) {
-			if (curView == v) {
-				drawerLayout.findViewById(v).setBackgroundResource(R.drawable.menu_gradient);
-			} else {
-				drawerLayout.findViewById(v).setBackgroundResource(R.color.light);
-			}
+			navDrawerItemState((TextView) drawerLayout.findViewById(v), curView == v);
 		}
 
 		if (sched == null) {
@@ -522,14 +643,23 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		drawerLayout.findViewById(R.id.tracks).setVisibility(
-				sched.getTracks() != null ? View.VISIBLE : View.GONE);
+			(sched.getTracks() != null && sched.getTracks().size() > 0) ? View.VISIBLE : View.GONE);
 		drawerLayout.findViewById(R.id.change_day).setVisibility(
 				!viewer.multiDay() && (sched.getDays().size() > 1) ? View.VISIBLE : View.GONE);
-		drawerLayout.findViewById(R.id.show_hidden).setBackgroundResource(
-				showHidden ? R.drawable.menu_gradient : R.color.light);
+		navDrawerItemState((TextView) drawerLayout.findViewById(R.id.show_hidden), showHidden);
 
 		/* TimeTable extends the action bar with "tabs" and will have its own shadow. */
 		app.setShadow(getActionBar(), !viewer.extendsActionBar());
+	}
+
+	private void navDrawerItemState(TextView v, boolean enabled) {
+		if (enabled) {
+			v.setBackgroundResource(R.drawable.burger_menu_active_background);
+			v.setTextColor(getResources().getColor(R.color.light_text));
+		} else {
+			v.setBackgroundResource(R.color.light);
+			v.setTextColor(((TextView)drawerLayout.findViewById(R.id.settings)).getTextColors());
+		}
 	}
 
 	/** Open a link object, either just through the browser or by downloading locally and using a
@@ -563,7 +693,7 @@ public class ScheduleViewActivity extends Activity {
 				}
 				return;
 			} else if (allowDownload) {
-				final LoadProgress prog = new LoadProgress(this, false);
+				final LoadProgressDialog prog = new LoadProgressDialog(this);
 				prog.setMessage(getResources().getString(R.string.loading_image));
 				prog.setDone(new LoadProgressDoneInterface() {
 					@Override
@@ -579,7 +709,7 @@ public class ScheduleViewActivity extends Activity {
 					public void run() {
 						try {
 							Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.ONLINE, link.getType());
-							f.setProgressHandler(prog.getHandler());
+							f.setProgressHandler(prog.getUpdater());
 
 							/* Just slurp the entire file into a bogus buffer, what we need is the
 							   file in ExternalCacheDir */
@@ -589,10 +719,10 @@ public class ScheduleViewActivity extends Activity {
 							f.keep();
 
 							/* Will trigger the done() above back in the main thread. */
-							prog.getHandler().sendEmptyMessage(LoadProgress.DONE);
+							prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
 						} catch (IOException e) {
 							e.printStackTrace();
-							prog.getHandler().sendMessage(Message.obtain(prog.getHandler(), 0, e));
+							prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
 						}
 					}
 				};
@@ -611,7 +741,7 @@ public class ScheduleViewActivity extends Activity {
 
 	public void redrawSchedule() {
 		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
-		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.tracks && sched.getDays().size() > 1) {
+		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.search && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
 			setTitle(sched.getDayFormat().format(sched.getDay()) + ", " + sched.getTitle());
 		} else {
@@ -620,13 +750,15 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (curView == R.id.timetable) {
-			setScheduleView(new TimeTable(this, sched));
+			setScheduleView(new TimeTable(this, (Collection) sched.getTents()));
 		} else if (curView == R.id.now_next) {
 			setScheduleView(new NowNext(this, sched));
 		} else if (curView == R.id.my_events) {
 			setScheduleView(new MyItemsView(this, sched));
 		} else if (curView == R.id.tracks) {
-			setScheduleView(new TrackList(this, sched));
+			setScheduleView(new TimeTable(this, (Collection) sched.getTracks()));
+		} else if (curView == R.id.search) {
+			setScheduleView(new ItemSearch(this, sched));
 		} else {
 			curView = R.id.block_schedule; /* Just in case curView is set to something weird. */
 			setScheduleView(new BlockSchedule(this, sched));
@@ -648,7 +780,7 @@ public class ScheduleViewActivity extends Activity {
 					}
 				}
 			}
-			showItem(item, items);
+			showItem(item, items, false, null);
 			showEventId = null;
 		}
 
@@ -673,15 +805,12 @@ public class ScheduleViewActivity extends Activity {
 			viewerContainer.removeView((View) viewer);
 		viewer = (ScheduleViewer) viewer_;
 		viewerContainer.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3));
+		viewer.onShow();
 
 		days.show();
 	}
 
-	public void showItem(Schedule.Item item, AbstractList<Schedule.Item> others) {
-		showItem(item, others, false);
-	}
-
-	public void showItem(Schedule.Item item, final AbstractList<Schedule.Item> others, boolean new_activity) {
+	public void showItem(Schedule.Item item, final AbstractList<Schedule.Item> others, boolean new_activity, View animationOrigin) {
 		/* No cleanup required for non-tablet view. */
 		if (tabletView) {
 			bigScreen.removeView(eventDialogView);
@@ -697,7 +826,7 @@ public class ScheduleViewActivity extends Activity {
 			eventDialogView.setTitleClick(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					showItem(eventDialogView.getShownItem(), others, true);
+					showItem(eventDialogView.getShownItem(), others, true, null);
 				}
 			});
 			bigScreen.addView(eventDialogView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 4));
@@ -712,7 +841,14 @@ public class ScheduleViewActivity extends Activity {
 				}
 				intent.putExtra("others", ids);
 			}
-			startActivityForResult(intent, 0);
+			ActivityOptions options = null;
+			if (animationOrigin != null) {
+				options = ActivityOptions.makeSceneTransitionAnimation(
+					this, animationOrigin, "title");
+			}
+			// TODO: Hmm if I don't care about the result why am I not just calling refreshItems()
+			// in a on-resume handler or something?
+			startActivityForResult(intent, 0, (options != null) ? options.toBundle() : null);
 		}
 	}
 
@@ -739,6 +875,11 @@ public class ScheduleViewActivity extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		// TODO: Should I keep the Search button at all, now that it's just another view mode?
+		if (curView == R.id.search) {
+			// Well at least already don't show it if we're in search anyway.
+			return false;
+		}
 		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.scheduleviewactivity, menu);
@@ -746,7 +887,8 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void showDayDialog() {
-		LinkedList<Date> days = sched.getDays();
+		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EE d MMMM");
+		LinkedList<ZonedDateTime> days = sched.getDays();
 		CharSequence dayList[] = new CharSequence[days.size()];
 		int i, cur = -1;
 		for (i = 0; i < days.size(); i ++) {
@@ -785,7 +927,7 @@ public class ScheduleViewActivity extends Activity {
 
 	private void setView(int view_) {
 		curView = view_;
-		showItem(null, null);
+		showItem(null, null, false, null);
 		redrawSchedule();
 		updateNavDrawer();
 	}
@@ -817,15 +959,13 @@ public class ScheduleViewActivity extends Activity {
 			case R.id.show_hidden:
 				toggleShowHidden();
 				break;
-			case R.id.search:
-				onSearchRequested();
-				break;
 			case R.id.export_selections:
-				ScheduleUI.exportSelections(this, sched);
+				ScheduleUI.exportSelections(ScheduleViewActivity.this, sched);
 				break;
 			case R.id.home_shortcut:
 				addHomeShortcut();
 				break;
+			case R.id.search:
 			case R.id.timetable:
 			case R.id.tracks:
 			case R.id.block_schedule:
@@ -887,44 +1027,36 @@ public class ScheduleViewActivity extends Activity {
 		me.onScroll();
 	}
 
-	private class DayButtons extends RelativeLayout {
-		private Button dayPrev, dayNext;
+	// Used to contain the buttons, now just a handler to automatically show and hide the buttons,
+	// rest is just part of the XML layout.
+	private class DayButtonsHider {
+		private ViewGroup dayButtons;
+		private ImageButton dayPrev, dayNext;
 		private Handler h;
 		private Runnable hideEv;
 
-		public DayButtons(Context ctx) {
-			super(ctx);
+		public DayButtonsHider() {
+			dayButtons = viewerContainer.findViewById(R.id.dayButtons);
+			dayNext = viewerContainer.findViewById(R.id.dayNext);
+			dayNext.setImageResource(R.drawable.ic_arrow_forward_white_32dp);
 
-			RelativeLayout.LayoutParams lp;
+			dayPrev = viewerContainer.findViewById(R.id.dayPrev);
+			dayPrev.setImageResource(R.drawable.ic_arrow_back_white_32dp);
 
-			dayPrev = new Button(ScheduleViewActivity.this);
-			dayPrev.setText("<");
-			lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-			addView(dayPrev, lp);
-
-			dayNext = new Button(ScheduleViewActivity.this);
-			dayNext.setText(">");
-			lp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-			lp.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-			addView(dayNext, lp);
-
-			dayPrev.setOnClickListener(new OnClickListener() {
+			dayPrev.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					daySwitch(-1);
 				}
 			});
-			dayNext.setOnClickListener(new OnClickListener() {
+			dayNext.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					daySwitch(+1);
 				}
 			});
 
-			setVisibility(View.INVISIBLE);
+			dayButtons.setVisibility(View.INVISIBLE);
 
 			h = new Handler();
 			hideEv = new Runnable() {
@@ -938,13 +1070,17 @@ public class ScheduleViewActivity extends Activity {
 		public void show() {
 			if (sched == null || viewer == null || sched.getDays().size() <= 1 || viewer.multiDay())
 				return;
-			
+			if (sched.getDays().size() == 2) {
+				dayPrev.setVisibility(View.GONE);
+				dayNext.setImageResource(R.drawable.ic_calendar_24px);
+			}
+
 			/* Z ordering in RelativeLayouts seems to be most-recently-added,
 			 * so we have to keep bringing the buttons to front. :-/ */
-			this.bringToFront();
-			if (this.getVisibility() != View.VISIBLE) {
-				setVisibility(View.VISIBLE);
-				days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_in));
+			dayButtons.bringToFront();
+			if (dayButtons.getVisibility() != View.VISIBLE) {
+				dayButtons.setVisibility(View.VISIBLE);
+				dayButtons.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_in));
 			}
 			
 			/* Set a timer if we're now fading in the buttons, or reset it if
@@ -957,12 +1093,12 @@ public class ScheduleViewActivity extends Activity {
 			/* During the animation, visibility will be overridden to visible.
 			 * Which means I can already set it to hidden now and the right
 			 * thing will happen after the animation. */
-			setVisibility(View.INVISIBLE);
-			days.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_out));
+			dayButtons.setVisibility(View.INVISIBLE);
+			dayButtons.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_out));
 		}
 
 		private void daySwitch(int d) {
-			LinkedList<Date> days = sched.getDays();
+			LinkedList<ZonedDateTime> days = sched.getDays();
 			int i, cur = -1;
 			for (i = 0; i < days.size(); i ++)
 				if (sched.getDay().equals(days.get(i)))

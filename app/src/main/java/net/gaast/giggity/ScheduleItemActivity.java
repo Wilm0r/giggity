@@ -3,6 +3,7 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.Window;
 
@@ -20,11 +21,17 @@ public class ScheduleItemActivity extends Activity {
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+		// Fancy shared-element animations when opening event dialogs.
+		getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+		//getWindow().setEnterTransition(new ChangeImageTransform());
+		getWindow().setEnterTransition(new Explode());
+		//getWindow().setAllowEnterTransitionOverlap(false);
+
 		String id, url = getIntent().getDataString();
 		app_ = (Giggity) getApplication();
 
 		if (url.contains("#")) {
-			String parts[] = url.split("#", 2);
+			String[] parts = url.split("#", 2);
 			url = parts[0];
 			id = parts[1];
 		} else {
@@ -35,14 +42,7 @@ public class ScheduleItemActivity extends Activity {
 
 		Schedule sched;
 		if (app_.hasSchedule(url)) {
-			try {
-				sched = app_.getSchedule(url, Fetcher.Source.CACHE);
-			} catch (Exception e) {
-				e.printStackTrace();
-				setResult(RESULT_CANCELED, getIntent());
-				finish();
-				return;
-			}
+			sched = app_.getCachedSchedule(url);
 		} else {
 			setResult(RESULT_CANCELED, getIntent());
 			finish();
@@ -64,6 +64,7 @@ public class ScheduleItemActivity extends Activity {
 		}
 
 		pager_ = new EventDialogPager(this, item, others);
+		//pager_.getHeader().setTransitionName("title");
 		setContentView(pager_);
 	}
 

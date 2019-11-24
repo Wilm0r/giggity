@@ -9,9 +9,7 @@
 	<!--  Settings -->
 	<string name="default_view">Default view</string>
 	<string name="font_size">Block schedule font size</string>
-	<string name="always_refresh">Always reload schedules</string>
-	<string name="always_refresh_sub_off">Check for new version once a day</string>
-	<string name="strict_ssl">Strict SSL</string>
+	<string name="strict_ssl">Strict TLS</string>
 	<string name="strict_ssl_sub">Proper HTTPS certificate validation</string>
     
 	<string name="block_schedule_style">Style</string>
@@ -20,9 +18,8 @@
 	<string name="block_schedule_element_size">Block size</string>
 
 	<string name="reminder">Event reminders</string>
-	<string name="reminder_enabled_sub_on">Remind me of marked events</string>
-	<string name="reminder_enabled_sub_off">Don\'t remind me of marked events</string>
-	<string name="reminder_enabled">Enable reminders</string>
+	<string name="reminder_enabled_sub_on">Notifications before my events start</string>
+	<string name="reminder_enabled">Enable notifications</string>
 	<string name="reminder_period">Minutes before event</string>
 	
 	<!-- EventDialog -->
@@ -41,6 +38,7 @@
 
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Loading schedule data...</string>
+	<string name="use_cached_version">Use cached version</string>
 	<string name="loading_image">Loading image data...</string>
 	<string name="loading_error">Load error</string>
 	<string name="no_viewer_error">No viewer installed for filetype</string>
@@ -51,6 +49,7 @@
 	<string name="qr_tip">Please use the QR scan button in the main menu on your other device to import this</string>
 	<string name="schedule_empty">Schedule appears to be empty</string>
 	<string name="format_unknown">File format not recognised</string>
+	<string name="no_json_data">Could not extract JSON data from URL</string>
 	<string name="no_network">No network connection available</string>
 	<string name="no_network_or_cached">No network connection or cached copy available</string>
 
@@ -69,25 +68,29 @@
 
 	<!-- NowNext -->
 	<string name="no_events_today">No events today.</string>
-	<string name="now">Now:</string>
-	<string name="next">Next:</string>
+	<string name="now">Now</string>
+	<string name="next">Next</string>
 	
 	<!-- MyItemsView -->
-	<string name="coming_up">Coming up:</string>
-	<string name="seen_so_far">Seen so far:</string>
+	<string name="coming_up">Coming up</string>
+	<string name="seen_so_far">Seen so far</string>
 	<string name="none_marked">No items marked yet.</string>
 
-	<!-- SearchActivity -->
+	<!-- SearchActivity (deprecated) -->
 	<string name="search_results">Results for \"%1$s\" in %2$s</string>
+
+	<!-- IteamSearchActivity -->
+	<string name="type_query_prompt">Type your search query</string>
+	<string name="search_results_empty">Your search query did not match any events.</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>
 	<string name="unhide">Recover hidden items</string>
 	<string name="remove">Remove</string>
 	<string name="show_url">Show URL...</string>
-	<string name="chooser_now">Current events:</string>
-	<string name="chooser_later">Upcoming events:</string>
-	<string name="chooser_past">Previous events:</string>
+	<string name="chooser_now">Now</string>
+	<string name="chooser_later">Later</string>
+	<string name="chooser_past">Over</string>
 	<string name="add_dialog">Add...</string>
 	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Enter schedule URL</string>
@@ -101,4 +104,5 @@
 	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Coming soon</string>
 	<string name="widg_no_upcoming">No upcoming events :-(</string>
+	<string name="reminder_enabled_sub_off">Notifications suppressed</string>
 </resources>

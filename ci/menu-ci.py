@@ -177,11 +177,11 @@ def validate_entry(e):
 
 	md = e.get("metadata")
 	if md:
+		c3_by_slug = {}
 		if "c3nav_base" in md:
 			c3nav = http.fetch(md["c3nav_base"] + "/api/locations/?format=json")
 			if isinstance(c3nav, FetchError):
 				errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(c3nav)))
-				c3_by_slug = {}
 			else:
 				c3nav = json.loads(c3nav)
 				c3_by_slug = {v["slug"]: v for v in c3nav}
@@ -193,6 +193,11 @@ def validate_entry(e):
 			
 			if "c3nav_slug" in room and room["c3nav_slug"] not in c3_by_slug:
 				errors.append("c3nav room %s not listed in /api/locations/" % room["c3nav_slug"])
+
+			try:
+				re.compile(room.get("name"))
+			except re.error as err:
+				errors.append("Room name %r not a valid regular expression: %s" % (room.get("name"), err))
 	
 		if "icon" in md:
 			img = http.fetch(md["icon"], img=True)

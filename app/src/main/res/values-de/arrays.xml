@@ -6,11 +6,4 @@
 		<item>Helle Farben</item>
 	</string-array>
 	-->
-	<string-array name="default_view">
-		<item>Programmübersicht</item>
-		<item>Zeitplan</item>
-		<item>Tracks</item>
-		<item>Jetzt und gleich</item>
-		<item>Meine Veranstaltungen</item>
-	</string-array>
 </resources>

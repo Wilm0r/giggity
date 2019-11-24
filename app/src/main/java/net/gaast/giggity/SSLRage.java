@@ -60,7 +60,7 @@ public class SSLRage {
 	}
 	
 	public static final SSLSocketFactory getSocketFactory() {
-		TrustManager tm[] = new TrustManager[] { new SSLRage().new MitmMeTrustManager() };
+		TrustManager[] tm = new TrustManager[]{new SSLRage().new MitmMeTrustManager()};
 		SSLContext ctx;
 		try {
 			ctx = SSLContext.getInstance("TLS");
@@ -72,7 +72,7 @@ public class SSLRage {
 			e.printStackTrace();
 			return null;
 		}
-		return (SSLSocketFactory) ctx.getSocketFactory ();
+		return ctx.getSocketFactory ();
 	}
 
 	/* For now I'm not using this one anymore, since IMHO getting the hostname

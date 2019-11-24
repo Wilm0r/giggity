@@ -21,15 +21,28 @@ package net.gaast.giggity;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Application;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+
+import com.jakewharton.threetenabp.AndroidThreeTen;
+
+import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -37,7 +50,6 @@ import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.TreeSet;
 
 /* OK so I'm not using ISO8601 ... but at least it's not middle-endian. And there's no portable date
@@ -45,40 +57,31 @@ import java.util.TreeSet;
 @SuppressLint({"SimpleDateFormat"})
 public class Giggity extends Application {
 	private Db db;
-	
-	HashMap<String,Schedule> scheduleCache;
-	Schedule lastSchedule;
-	
-	TreeSet<Schedule.Item> remindItems;
+	HashMap<String,ScheduleUI> scheduleCache = new HashMap<>();  // url→ScheduleUI
+	TreeSet<Schedule.Item> remindItems = new TreeSet<>();
 	
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		db = new Db(this);
 		
-		scheduleCache = new HashMap<>();
-		remindItems = new TreeSet<>();
-		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		
-		/* This makes me sad: Most schedule file formats use timezone-unaware times.
-		 * And Java's Date objects are timezone aware. The result is that if you load
-		 * a file and then change the timezone on your phone, Giggity will show the
-		 * wrong times. The easiest fix for now is to just reload everything.. */
+		/* This was necessary when using timezone-naive Date classes. I've mostly dropped those
+		 * but haven't finished picking up tz-awareness yet, also schedule files lack tz info
+		 * still most of the time. So ... keep flushing data for now I guess. :-( */
 		registerReceiver(new BroadcastReceiver() {
 			@Override
 			public void onReceive(Context arg0, Intent arg1) {
-				HashSet<String> urls = new HashSet<>();
 				for (Schedule sched : scheduleCache.values()) {
-					urls.add(sched.getUrl());
 					sched.commit();
 				}
 				
 				scheduleCache.clear();
-				lastSchedule = null;
-				/* Disabled for now, database initialisation issue. (Crashes on db writes.)
-				 * This means alarms are still wrong but the user will most likely reload
-				 * before that becomes a problem.
+
+				/* Ideally, reload all the schedules that were previously resident. But this
+				 * was fragile when I wrote it, so ... just rely on the user reloading so that
+				 * all alarms will get set in the right timezone?
 				try {
 					for (String url : urls)
 						getSchedule(url, true);
@@ -89,6 +92,9 @@ public class Giggity extends Application {
 				*/
 			}
 		}, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+
+		// java.time backport for Android <26
+		AndroidThreeTen.init(this);
 	}
 	
 	public Db.Connection getDb() {
@@ -98,6 +104,8 @@ public class Giggity extends Application {
 	public boolean hasSchedule(String url) {
 		return scheduleCache.containsKey(url);
 	}
+
+	public ScheduleUI getCachedSchedule(String url) { return scheduleCache.get(url); }
 	
 	public void flushSchedules() {
 		scheduleCache.clear();
@@ -119,28 +127,16 @@ public class Giggity extends Application {
 		scheduleCache.remove(url);
 	}
 	
-	public Schedule getSchedule(String url, Fetcher.Source source, Handler progress) throws Exception {
+	public ScheduleUI getSchedule(String url, Fetcher.Source source, Handler progress) throws Schedule.LoadException {
 		if (!hasSchedule(url)) {
-			Schedule sched = new Schedule(this);
-			sched.setProgressHandler(progress);
-			sched.loadSchedule(url, source);
-			scheduleCache.put(url, sched);
+			scheduleCache.put(url, ScheduleUI.loadSchedule(this, url, source, progress));
 		}
-		return (lastSchedule = scheduleCache.get(url));
+		return (scheduleCache.get(url));
 	}
 
-	public Schedule getSchedule(String url, Fetcher.Source source) throws Exception {
-		return getSchedule(url, source, null);
-	}
-
-	public Schedule getLastSchedule() {
-		/* Ugly, but I need it for search, since it starts a new activity with no state.. :-/ */
-		return lastSchedule;
-	}
-	
 	public void updateRemind(Schedule.Item item) {
 		if (item.getRemind()) {
-			if (item.compareTo(new Date()) < 0)
+			if (item.compareTo(ZonedDateTime.now()) < 0)
 				remindItems.add(item);
 		} else
 			remindItems.remove(item);
@@ -172,28 +168,37 @@ public class Giggity extends Application {
 		return new Fetcher(this, url, source, type);
 	}
 
+	// TODO: IIRC there's a localised version for this already? Though honestly I prefer mine since
+	// it avoids doing atrocious middle-endian dates which is factually a good thing.
 	public static String dateRange(Date start, Date end) {
 		String ret = "";
 		if (start.getDate() == end.getDate() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
 			ret = new SimpleDateFormat("d MMMM").format(end);
 		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
-			ret = "" + start.getDate() + "-" + new SimpleDateFormat("d MMMM").format(end);
+			ret = "" + start.getDate() + "–" + new SimpleDateFormat("d MMMM").format(end);
 		else
-			ret = new SimpleDateFormat("d MMMM").format(start) + "-" + new SimpleDateFormat("d MMMM").format(end);
+			ret = new SimpleDateFormat("d MMMM").format(start) + "–" + new SimpleDateFormat("d MMMM").format(end);
 		return ret + " " + (1900 + end.getYear());
 	}
 
+	public static String dateRange(ZonedDateTime start, ZonedDateTime end) {
+		String ret = "";
+		if (start.getDayOfMonth() == end.getDayOfMonth() && start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
+			ret = DateTimeFormatter.ofPattern("d MMMM").format(end);
+		else if (start.getMonth() == end.getMonth() && start.getYear() == end.getYear())
+			ret = "" + start.getDayOfMonth() + "–" + DateTimeFormatter.ofPattern("d MMMM").format(end);
+		else
+			ret = DateTimeFormatter.ofPattern("d MMMM").format(start) + "–" + DateTimeFormatter.ofPattern("d MMMM").format(end);
+		return ret + " " + end.getYear();
+	}
+
 	public void setShadow(View v, boolean on) {
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			v.setElevation(on ? dp2px(8) : 0);
-		}
+		v.setElevation(on ? dp2px(8) : 0);
 	}
 
 	/* ActionBar is not a view, just looks a lot like one! */
 	public void setShadow(ActionBar v, boolean on) {
-		if (android.os.Build.VERSION.SDK_INT >= 21) {
-			v.setElevation(on ? dp2px(8) : 0);
-		}
+		v.setElevation(on ? dp2px(8) : 0);
 	}
 
 	static boolean fuzzyStartsWith(String prefix, String full) {
@@ -204,5 +209,34 @@ public class Giggity extends Application {
 		prefix = prefix.replaceAll("<[^>]*>", "").replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 		full = full.replaceAll("<[^>]*>", "").replaceAll("[^A-Za-z0-9]", "").toLowerCase();
 		return full.startsWith(prefix);
+	}
+
+	public void showKeyboard(Context ctx, View rx) {
+		InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
+		if (rx != null) {
+			imm.showSoftInput(rx, InputMethodManager.SHOW_IMPLICIT);
+		} else {
+			Activity a = (Activity) ctx;
+			// TODO: Fecker isn't hiding anything. Some examples use getCurrentFocus().getWindowToken()
+			// but at this stage no element has focus yet so that means null.getWindowToken() → kaboom
+			imm.hideSoftInputFromWindow(new View(a).getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+		}
+	}
+
+	public static void zxingError(final Activity ctx) {
+		new AlertDialog.Builder(ctx)
+				.setMessage("This functionality depends on the (deprecated) ZXing Barcode scanner")
+				.setTitle("Error")
+				.setPositiveButton("Install", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						// Deeplink into fdroid only since for whatever tedious stupid reason the app
+						// is visible but not installable on the Play Store anymore. But Giggity and
+						// FDroid have a pretty strong overlap in users so I guess we're ok. :-)
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://f-droid.org/en/packages/com.google.zxing.client.android/"));
+						ctx.startActivity(intent);
+					}
+				})
+				.show();
 	}
 }

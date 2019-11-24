@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<!-- See if refs to strings are possible here? -->
 	<string-array name="default_view">
-		<item>Block schedule</item>
-		<item>Timetable</item>
-		<item>Tracks</item>
-		<item>Now and next</item>
-		<item>My marked events</item>
+		<item>@string/block_schedule</item>
+		<item>@string/timetable</item>
+		<item>@string/tracks</item>
+		<item>@string/now_next</item>
+		<item>@string/my_events</item>
+		<item>@string/search</item>
 	</string-array>
 	<string-array name="font_size">
 		<item>Small</item>
@@ -20,6 +20,7 @@
 		<item>net.gaast.giggity:id/tracks</item>
 		<item>net.gaast.giggity:id/now_next</item>
 		<item>net.gaast.giggity:id/my_events</item>
+		<item>net.gaast.giggity:id/search</item>
 	</string-array>
 	<string-array name="font_size_values">
 		<item>small</item>

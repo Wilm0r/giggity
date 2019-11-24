@@ -1,11 +1,14 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     defaultConfig {
         applicationId "net.gaast.giggity"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion 23
+        targetSdkVersion 28
+        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
         release {
@@ -20,7 +23,19 @@ android {
     }
 }
 dependencies {
-    implementation 'com.android.support:support-v4:27.1.1'
-    implementation 'com.android.support:support-compat:27.1.1'
+    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
+    // Hmpf, the above is needed for just ActionBarDrawerToggle and makes the following three unnecessary?
+    // That one's deprecated though so at some point I can split again:
+    // implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
+    // implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
+    // implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'commons-io:commons-io:2.4'
+
+    // java.time backport for <26 phones. :<
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
