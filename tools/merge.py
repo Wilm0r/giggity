@@ -36,53 +36,71 @@ def check_indents(lines, fn):
 			raise SyntaxError(
 				"Bad mix of whitespace on %s line %d" % (fn, num + 1))
 
-all = {}
-if not args.revision:
-	for p, _, flist in os.walk("menu"):
+def load_locally(path):
+	all = {}
+	for p, _, flist in os.walk(path):
 		for fn in flist:
 			text = open(os.path.join(p, fn), "r", encoding="utf-8").read()
 			check_indents(text, fn)
 			all[fn] = json.loads(text)
-else:
+
+	return all
+
+def load_git(path, revision):
 	# Thanks to Jelmer Vernooij for spelling this one out for me :-D
-	repo = Repo('.')
-	rev = args.revision.encode("ascii")
+	repo = Repo(path)
+	rev = revision.encode("ascii")
 	for r in repo.get_walker():
 		if r.commit.id.startswith(rev):
 			rev = r.commit.id
 			break
 	menu = porcelain.get_object_by_path(repo, "menu", rev)
+	all = {}
 	for name, mode, object_id in menu.iteritems():
 		text = str(repo[object_id].data, "utf-8")
 		check_indents(text, name)
 		all[name] = json.loads(text)
+	
+	return all
 
-if args.weeks:
+def start_date(all, weeks=None):
+	if not weeks:
+		return ""
 	dates = [datetime.datetime.strptime(e["start"], "%Y-%m-%d") for e in all.values()]
 	# Using max(dates) instead of just today's date so we're a
 	# little more deterministic.
 	last = max(dates)
-	first = datetime.datetime.strftime(last - datetime.timedelta(weeks=args.weeks), "%Y-%m-%d")
-else:
-	first = ""
+	return datetime.datetime.strftime(last - datetime.timedelta(weeks=args.weeks), "%Y-%m-%d")
 
-out = {
-	"version": 0,
-	"schedules": [],
-}
+def merge(all, first):
+	out = {
+		"version": 0,
+		"schedules": [],
+	}
 
-sortkey = lambda kv: operator.itemgetter("start", "end", "title")(kv[1])
-for fn, s in sorted(all.items(), key=sortkey):
-	if s["start"] < first:
-		# Too long ago, don't include. Maybe write a purge script
-		# some day.
-		print("Too old, skipped: %s" % fn, file=sys.stderr)
-		continue
-	out["version"] = max(out["version"], s["version"])
-	out["schedules"].append(s)
+	sortkey = lambda kv: operator.itemgetter("start", "end", "title")(kv[1])
+	for fn, s in sorted(all.items(), key=sortkey):
+		if s["start"] < first:
+			# Too long ago, don't include. Maybe write a purge script
+			# some day.
+			print("Too old, skipped: %s" % fn, file=sys.stderr)
+			continue
+		out["version"] = max(out["version"], s["version"])
+		out["schedules"].append(s)
 
-indented = json.dumps(out, indent="\t", ensure_ascii=False)
-latlon1line = re.compile(r"(\"latlon\": \[)\s+(-?[0-9.]+),\s+(-?[0-9.]+)\s+(\])")
-formatted = latlon1line.sub(r"\1\2, \3\4", indented)
+	return out
 
-print(formatted)
+def format_file(menu_json):
+	indented = json.dumps(menu_json, indent="\t", ensure_ascii=False)
+	latlon1line = re.compile(r"(\"latlon\": \[)\s+(-?[0-9.]+),\s+(-?[0-9.]+)\s+(\])")
+	formatted = latlon1line.sub(r"\1\2, \3\4", indented)
+
+	return formatted
+
+if __name__ == "__main__":
+	if args.revision:
+		all = load_git(".", args.revision)
+	else:
+		all = load_locally("menu")
+
+	print(format_file(merge(all, start_date(all, args.weeks))))
