@@ -82,7 +82,8 @@ def update():
 	path = git_pull(REPO)
 
 	rj = request.json or {}
-	head = rj.get("head", request.args.get("rev", "HEAD"))
+	# The wonderfully up-to-date docs can't make their minds up on head/after field name.
+	head = rj.get("head", rj.get("after", request.args.get("rev", "HEAD")))
 	for rev in set([head, "HEAD"]):
 		cached = bucket.blob("menu-cache/%s" % rev)
 		items = merge.load_git(path, rev)
