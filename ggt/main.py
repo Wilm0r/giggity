@@ -5,6 +5,7 @@ import hmac
 import json
 import jsonschema
 import os
+import re
 import tempfile
 
 from flask import Flask, Response
@@ -26,6 +27,8 @@ storage_client = storage.Client()
 bucket = storage_client.get_bucket("giggity.appspot.com")
 
 REPO = "https://github.com/Wilm0r/giggity"
+MASTER_REF = "refs/heads/master"
+
 # Couldn't really find a better way to store secrets. I would've been
 # fine with just a password to check against a hash, shithub. :<
 GITHUB_SECRET = bucket.blob("github-secret").download_as_string().strip() # actually bytes?
@@ -79,12 +82,26 @@ def update():
 	else:
 		return Response("HMAC header missing", 403)
 
+	rj = request.json or {}
+	if rj.get("ref", MASTER_REF) != MASTER_REF:
+		return Response("Not a master commit, won't update cache", 200)
+
+	todo = set()
+	if "rev" in request.args:
+		todo.add(request.args["rev"])
+	for commit in rj.get("commits", []):
+		files = commit.get("added", []) + commit.get("modified", []) + commit.get("removed", [])
+		if any(re.search(r"^(ggt|menu|tools)/", fn) for fn in files):
+			todo.add(commit["id"])
+	
+	if not todo:
+		return Response("No interesting commits, won't update cache", 200)
+	
 	path = git_pull(REPO)
 
-	rj = request.json or {}
-	# The wonderfully up-to-date docs can't make their minds up on head/after field name.
-	head = rj.get("head", rj.get("after", request.args.get("rev", "HEAD")))
-	for rev in set([head, "HEAD"]):
+	# The only name normally actually fetched from cache.
+	todo.add("HEAD")
+	for rev in todo:
 		cached = bucket.blob("menu-cache/%s" % rev)
 		items = merge.load_git(path, rev)
 		raw_json = merge.merge(items, merge.start_date(items, 60))
@@ -97,7 +114,7 @@ def update():
 				"Content-Type": "text/plain"
 			})
 
-	return Response("OK, updated to %s" % head)
+	return Response("OK, updated revisions %s" % " ".join(sorted(todo)))
 
 
 @app.route('/menu.json')
