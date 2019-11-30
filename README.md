@@ -143,5 +143,5 @@ And use a QR scanner (for example Lens in the Camera application) to open it
 on your phone.
 
 To get your entry added to Giggity, just add it to the [menu directory](menu) and
-send a pull request. To save time, run `ci/menu-ci.py` for sanity checking. 
+send a pull request. To save time, run `tools/menu-ci.py` for sanity checking. 
 (Same check is run automatically through Travis-CI.)

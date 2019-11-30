@@ -8,19 +8,9 @@ import os
 import re
 import sys
 
+import dulwich
 from dulwich.repo import Repo
 from dulwich import porcelain
-
-parser = argparse.ArgumentParser(
-	description="Merge json fragments into a single menu.json file.")
-parser.add_argument(
-	"--revision", "-r", type=str, nargs="?",
-	help="git revision to read from instead of live files")
-parser.add_argument(
-	"--weeks", "-w", type=int, nargs="?",
-	help="max range in weeks of items to preserve (counting from last/most future one)")
-
-args = parser.parse_args()
 
 def check_indents(lines, fn):
 	indent = None
@@ -63,6 +53,23 @@ def load_git(path, revision):
 	
 	return all
 
+def load_github(url):
+	# Wrote this to get around GAE constraints ... then I realised
+	# the Python3 environment *does* allow local fs access. :<
+	import urllib3
+	import tarfile
+	pm = urllib3.PoolManager()
+
+	all = {}
+	u = pm.request("GET", url, preload_content=False)
+	with tarfile.open(fileobj=u, mode="r|gz") as tf:
+		for f in tf:
+			p = f.path.split("/")
+			if len(p) != 3 or p[1] != "menu" or not p[2]:
+				continue
+			all[p[2]] = json.loads(tf.extractfile(f).read())
+	return all
+
 def start_date(all, weeks=None):
 	if not weeks:
 		return ""
@@ -70,7 +77,7 @@ def start_date(all, weeks=None):
 	# Using max(dates) instead of just today's date so we're a
 	# little more deterministic.
 	last = max(dates)
-	return datetime.datetime.strftime(last - datetime.timedelta(weeks=args.weeks), "%Y-%m-%d")
+	return datetime.datetime.strftime(last - datetime.timedelta(weeks=weeks), "%Y-%m-%d")
 
 def merge(all, first):
 	out = {
@@ -98,6 +105,17 @@ def format_file(menu_json):
 	return formatted
 
 if __name__ == "__main__":
+	parser = argparse.ArgumentParser(
+		description="Merge json fragments into a single menu.json file.")
+	parser.add_argument(
+		"--revision", "-r", type=str, nargs="?",
+		help="git revision to read from instead of live files")
+	parser.add_argument(
+		"--weeks", "-w", type=int, nargs="?",
+		help="max range in weeks of items to preserve (counting from last/most future one)")
+
+	args = parser.parse_args()
+
 	if args.revision:
 		all = load_git(".", args.revision)
 	else:

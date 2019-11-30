@@ -1,0 +1,13 @@
+runtime: python37
+
+handlers:
+- url: /
+  secure: always
+  redirect_http_response_code: 301
+  static_files: index.html
+  upload: index.html
+
+- url: /.*
+  secure: always
+  redirect_http_response_code: 301
+  script: auto

@@ -34,11 +34,12 @@ import urllib3
 
 from email.utils import formatdate
 
+import merge
 
 class MenuError(Exception):
 	pass
 
-SCHEMA = "ci/menu-schema.json"
+SCHEMA = "tools/menu-schema.json"
 
 parser = argparse.ArgumentParser(
 	description="Validation of Giggity menu.json files based on JSON "
@@ -57,6 +58,8 @@ try:
 	new = json.loads(raw)
 except ValueError as e:
 	raise MenuError("JSON parse failure %r" % e)
+
+new = merge.merge(merge.load_locally("menu"), "")
 
 try:
 	env = os.environ
@@ -78,6 +81,8 @@ try:
 		base = json.loads(base_raw)
 	else:
 		print("Failed to read base version, going to skip diffing.")
+	base = merge.merge(merge.load_git(".", base_ref), "")
+
 except ValueError as e:
 	raise MenuError("JSON parse failure (in baseline!) %r" % e)
 

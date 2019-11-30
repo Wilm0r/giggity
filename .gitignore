@@ -10,3 +10,4 @@ _cache
 /app/build
 /build
 *.apk
+__pycache__

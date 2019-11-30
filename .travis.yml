@@ -14,7 +14,7 @@ matrix:
       # Annoying: Need python3.6. std python3 in Travis is 3.4. 3.6 is
       # installed above which will set /usr/bin/python to point at it
       # but not /usr/bin/python3. :<
-      script: ci/menu-ci.py
+      script: tools/menu-ci.py
 
     - language: android
       before_install:
