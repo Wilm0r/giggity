@@ -92,8 +92,8 @@ def update():
 		try:
 			jsonschema.validate(json.loads(formatted), MENU_JSON_SCHEMA)
 			cached.upload_from_string(formatted)
-		except jsonschema.ValidationError as inval:
-			return Response("Generated invalid JSON:\n%s\n%s" % (str(inval), formatted), 500, headers={
+		except (json.decoder.JSONDecodeError, jsonschema.ValidationError) as inval:
+			return Response("Generated invalid JSON:\n\n%s\n\n%s" % (str(inval), formatted), 500, headers={
 				"Content-Type": "text/plain"
 			})
 
