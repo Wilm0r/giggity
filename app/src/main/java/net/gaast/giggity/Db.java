@@ -329,7 +329,16 @@ public class Db {
 		CACHED,			/* Cached copy, or refetch if missing. */
 		ONLINE,			/* Poll for an update. */
 	}
-	private final String SEED_URL = "https://wilmer.gaa.st/deoxide/menu.json";
+
+	// Auto updated though Github webhooks.
+	private final String PROD_SEED_URL = "https://ggt.gaa.st/menu.json";
+	// Old location, manually updated, sometimes useful during development.
+	private final String DEBUG_SEED_URL = "https://wilmer.gaa.st/deoxide/menu.json";
+
+	private String getSeedUrl() {
+		return BuildConfig.DEBUG ? DEBUG_SEED_URL : PROD_SEED_URL;
+	}
+
 	public static final long SEED_FETCH_INTERVAL = 86400 * 1000; /* Once a day. */
 	
 	private Seed loadSeed(SeedSource source) {
@@ -343,8 +352,8 @@ public class Db {
 				IOUtils.copy(inr, sw);
 				json = sw.toString();
 			} else {
-				f = app.fetch(SEED_URL, source == SeedSource.ONLINE ?
-				                        Fetcher.Source.ONLINE : Fetcher.Source.CACHE_ONLINE);
+				f = app.fetch(getSeedUrl(),
+				              source == SeedSource.ONLINE ? Fetcher.Source.ONLINE : Fetcher.Source.CACHE_ONLINE);
 				json = f.slurp();
 			}
 		} catch (IOException e) {
