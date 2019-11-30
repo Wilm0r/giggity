@@ -1,0 +1,4 @@
+cron:
+- description: "daily refresh"
+  url: "/update-menu-cache?rev=HEAD"
+  schedule: every 24 hours
