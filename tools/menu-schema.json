@@ -23,16 +23,6 @@
         "$id": "/properties/schedules/items",
         "type": "object",
         "properties": {
-          "id": {
-            "$id": "/properties/schedules/items/properties/id",
-            "type": "string",
-            "title": "Schedule ID",
-            "description": "Should match ID in schedule file, but only for xcal files as for others an md5sum of the URL is used (again, historical reasons..)",
-            "default": "",
-            "examples": [
-              "MOCA 2016"
-            ]
-          },
           "version": {
             "$id": "/properties/schedules/items/properties/version",
             "type": "integer",
