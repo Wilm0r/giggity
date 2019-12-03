@@ -552,6 +552,7 @@ public class ScheduleViewActivity extends Activity {
 	private void onScheduleLoaded() {
 		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 		drawerToggle.setDrawerIndicatorEnabled(true);
+		invalidateOptionsMenu();
 		sched.setShowHidden(showHidden);
 		ZonedDateTime now = ZonedDateTime.now();
 		int day;
@@ -883,6 +884,9 @@ public class ScheduleViewActivity extends Activity {
 		super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.scheduleviewactivity, menu);
+		if (sched != null) {
+			menu.findItem(R.id.search).setVisible(true);
+		}
 		return true;
 	}
 

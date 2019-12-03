@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Switched to nav drawer for everything now except search in the action bar. -->
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:orderInCategory="6" android:id="@+id/search" android:title="@string/search" android:icon="@drawable/ic_search_white_24dp" android:showAsAction="always"/>
+    <item android:orderInCategory="6" android:id="@+id/search" android:title="@string/search" android:icon="@drawable/ic_search_white_24dp" android:showAsAction="always" android:visible="false"/>
 </menu>
