@@ -8,6 +8,7 @@ android {
         applicationId "net.gaast.giggity"
         minSdkVersion 23
         targetSdkVersion 28
+        // Thought I was going to use this for something but forgot. And it may break reproducible builds?
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
