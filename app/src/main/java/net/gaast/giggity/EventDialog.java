@@ -309,13 +309,17 @@ public class EventDialog extends FrameLayout {
 				ctx_, item_.getStartTime().getTime(), item_.getEndTime().getTime(),
 				DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
 
-			t.putExtra(android.content.Intent.EXTRA_TEXT,
-				item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
-				item_.getLine().getTitle() + ", " + time + "\n" +
-				TextUtils.join(", ", item_.getSpeakers()) +
-				item_.getWebLink() + "\n" +
-				"\n" +
-				item_.getDescriptionStripped());
+			String text = item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
+			              item_.getLine().getTitle() + ", " + time + "\n";
+			if (item_.getSpeakers() != null && item_.getSpeakers().size() > 0) {
+				text += TextUtils.join(", ", item_.getSpeakers()) + "\n";
+			}
+			if (item_.getWebLink() != null) {
+				text += item_.getWebLink() + "\n";
+			}
+			text += "\n" + item_.getDescriptionStripped();
+
+			t.putExtra(android.content.Intent.EXTRA_TEXT, text);
 
 			ctx_.startActivity(Intent.createChooser(t, "Share via"));
 
