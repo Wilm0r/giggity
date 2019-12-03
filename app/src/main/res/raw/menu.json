@@ -1,113 +1,6 @@
 {
-	"version": 2019102901,
+	"version": 2019120101,
 	"schedules": [
-		{
-			"version": 2018101900,
-			"url": "https://fahrplan.privacyweek.at/pw18/schedule/export/schedule.xml",
-			"title": "PrivacyWeek 2018",
-			"start": "2018-10-22",
-			"end": "2018-10-28",
-			"metadata": {
-				"icon": "https://privacyweek.at/icon-256x256.png",
-				"links": [
-					{
-						"url": "https://privacyweek.at/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2018090800,
-			"url": "https://afup.org/event/forumphp2018/planning.ics",
-			"title": "Forum PHP 2018",
-			"id": "Forum PHP 2018",
-			"start": "2018-10-25",
-			"end": "2018-10-26",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://event.afup.org/",
-						"title": "Site Web"
-					},
-					{
-						"url": "https://afup.org/event/forumphp2018/tickets",
-						"title": "Tarifs et inscription"
-					}
-				]
-			}
-		},
-		{
-			"version": 2018102400,
-			"url": "https://participez-2018.capitoledulibre.org/schedule/xml/",
-			"title": "Capitole du Libre 2018",
-			"start": "2018-11-17",
-			"end": "2018-11-18",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://2018.capitoledulibre.org/",
-						"title": "Site web"
-					}
-				],
-				"rooms": [
-					{
-						"name": "A.*",
-						"latlon": [43.60248, 1.45464]
-					},
-					{
-						"name": "B.*",
-						"latlon": [43.60247, 1.45566]
-					},
-					{
-						"name": "C.*",
-						"latlon": [43.60214, 1.45462]
-					},
-					{
-						"name": "Foyer.*",
-						"latlon": [43.60207, 1.45591]
-					}
-				]
-			}
-		},
-		{
-			"version": 2018102401,
-			"url": "https://rml12.duniter.io/rml12.ics",
-			"id": "RML 12",
-			"title": "RML 12",
-			"start": "2018-11-17",
-			"end": "2018-11-25",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://rml12.duniter.io/",
-						"title": "Site Web"
-					}
-				],
-				"rooms": [
-					{
-						"name": "Bibliothèque Flora Tristan.*",
-						"latlon": [44.82132, -0.55073]
-					},
-					{
-						"name": "Halle des Douves.*",
-						"latlon": [44.83063, -0.5663]
-					},
-					{
-						"name": "Athénée Municipal.*",
-						"latlon": [44.839834, -0.577189]
-					},
-					{
-						"name": "Chez 1000i100.*",
-						"latlon": [44.81118, -0.55375]
-					},
-					{
-						"name": "Salle Marengo.*",
-						"latlon": [44.83314, -0.56883]
-					}
-				]
-			}
-		},
 		{
 			"title": "35c3 - main rooms only",
 			"metadata": {
@@ -1258,6 +1151,232 @@
 					{
 						"title": "Inscription",
 						"url": "https://www.jres.org/fr/inscriptions/"
+					}
+				]
+			}
+		},
+		{
+			"start": "2020-01-13",
+			"end": "2020-01-17",
+			"version": 2019120100,
+			"url": "https://linux.conf.au/schedule/conference.ics",
+			"title": "linux.conf.au 2020",
+			"metadata": {
+				"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
+				"links": [
+					{
+						"url": "https://linux.conf.au/",
+						"title": "Website"
+					},
+					{
+						"url": "https://linux.conf.au/about/location/",
+						"title": "Location"
+					},
+					{
+						"url": "https://linux.conf.au/schedule/",
+						"title": "Online schedule"
+					}
+				]
+			}
+		},
+		{
+			"version": 2019120101,
+			"url": "https://fosdem.org/2020/schedule/xml",
+			"title": "FOSDEM 2020",
+			"start": "2020-02-01",
+			"end": "2020-02-02",
+			"refresh_interval": 1800,
+			"metadata": {
+				"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
+				"links": [
+					{
+						"url": "https://fosdem.org/2020/",
+						"title": "Website"
+					},
+					{
+						"url": "https://archive.fosdem.org/2019/assets/campusmap-bde646158c3e7b5d10f071e6b432b2857e574efd3b8d2ee490a855f179950a46.png",
+						"title": "Map",
+						"type": "image/png"
+					},
+					{
+						"url": "https://fosdem.org/2020/stands/",
+						"title": "Stands"
+					}
+				],
+				"icon": "https://fosdem.org/2020/assets/style/bg-visual-panel-73f1975ffc7435da092f7de492966249bd09606d7e9d6241cc31591203c5a2d6.png",
+				"c3nav_base": "https://nav.fosdem.org",
+				"rooms": [
+					{
+						"name": "AW1\\.120",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1-120"
+					},
+					{
+						"name": "AW1\\.121",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1121"
+					},
+					{
+						"name": "AW1\\.125",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1125"
+					},
+					{
+						"name": "AW1\\.126",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1-126"
+					},
+					{
+						"name": "H\\.1301\\ \\(Cornil\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1301"
+					},
+					{
+						"name": "H\\.1302\\ \\(Depage\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1302"
+					},
+					{
+						"name": "H\\.1308\\ \\(Rolin\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1308"
+					},
+					{
+						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1309"
+					},
+					{
+						"name": "H\\.2213",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2213"
+					},
+					{
+						"name": "H\\.2214",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2214"
+					},
+					{
+						"name": "H\\.2215\\ \\(Ferrer\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2215"
+					},
+					{
+						"name": "Janson",
+						"latlon": [50.813231, 4.3791498],
+						"c3nav_slug": "j-main"
+					},
+					{
+						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k1105"
+					},
+					{
+						"name": "K\\.3\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3201"
+					},
+					{
+						"name": "K\\.3\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3401"
+					},
+					{
+						"name": "K\\.4\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4201"
+					},
+					{
+						"name": "K\\.4\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4401"
+					},
+					{
+						"name": "K\\.4\\.601",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4601"
+					},
+					{
+						"name": "UA2\\.114\\ \\(Baudoux\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2114"
+					},
+					{
+						"name": "UA2\\.118\\ \\(Henriot\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2118"
+					},
+					{
+						"name": "UA2\\.220\\ \\(Guillissen\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2220"
+					},
+					{
+						"name": "UB2\\.147",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2147"
+					},
+					{
+						"name": "UB2\\.252A\\ \\(Lameere\\)",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2-252a"
+					},
+					{
+						"name": "UB4.*",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176]
+					},
+					{
+						"name": "UD2\\.119",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2119"
+					},
+					{
+						"name": "UD2\\.120\\ \\(Chavanne\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2120"
+					},
+					{
+						"name": "UD2\\.208\\ \\(Decroly\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2208"
+					},
+					{
+						"name": "UD2\\.218A",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2218a"
+					},
+					{
+						"name": "UD2\\.Corridor",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "545fe4c1e56d7"
 					}
 				]
 			}
