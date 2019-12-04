@@ -94,6 +94,7 @@
 	<string name="add_dialog">Add...</string>
 	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Enter schedule URL</string>
+	<string name="refresh_failed">Menu refresh unsuccessful.</string>
 
 	<!-- Reminder -->
 	<string name="soon_in">Soon in</string>

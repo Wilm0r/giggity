@@ -85,6 +85,7 @@
 	<string name="add_dialog">Toevoegen...</string>
 	<string name="qr_scan">QR scannen</string>
 	<string name="enter_url">Voer programma URL in</string>
+	<string name="refresh_failed">Kon menu niet verversen.</string>
 
 	<!-- Reminder -->
 	<string name="soon_in">Zo in</string>

@@ -203,21 +203,16 @@ public class Fetcher {
 		return inReader;
 	}
 	
-	public String slurp() {
+	public String slurp() throws IOException {
 		String ret = "";
 		char[] buf = new char[1024];
 		int n;
 
 		// Just to ensure inReader exists.
 		getReader();
-		
-		try {
-			while ((n = inReader.read(buf, 0, buf.length)) > 0)
-				ret += new String(buf, 0, n);
-		} catch (IOException e) {
-			e.printStackTrace();
-			ret = null;
-		}
+		while ((n = inReader.read(buf, 0, buf.length)) > 0)
+			ret += new String(buf, 0, n);
+
 		return ret;
 	}
 

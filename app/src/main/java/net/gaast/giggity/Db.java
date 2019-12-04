@@ -249,7 +249,7 @@ public class Db {
 	}
 	
 	/* For ease of use, seed the main menu with some known schedules. */
-	public void updateData(SQLiteDatabase db, boolean online) {
+	public boolean updateData(SQLiteDatabase db, boolean online) {
 		Seed seed = loadSeed(online ? SeedSource.ONLINE : SeedSource.CACHED);
 		Seed localSeed = loadSeed(SeedSource.BUILT_IN);
 		/* Pick the best one. localSeed *can* be newer than the cached one. Should not
@@ -262,7 +262,7 @@ public class Db {
 				seed = localSeed;
 			if (seed == null) {
 				Log.w("DeoxideDb.updateData", "Failed to fetch both seeds, uh oh..");
-				return;
+				return false;
 			}
 		}
 
@@ -273,7 +273,7 @@ public class Db {
 		if (seed.version <= version && oldDbVer == dbVersion) {
 			/* No updates required, both data and structure are up to date. */
 			Log.d("DeoxideDb.updateData", "Already up to date: " + version + " " + oldDbVer);
-			return;
+			return true;
 		}
 		
 		for (Seed.Schedule sched : seed.schedules) {
@@ -285,6 +285,7 @@ public class Db {
 			p.putInt("last_menu_seed_version", newver);
 			p.commit();
 		}
+		return true;
 	}
 
 	private void updateSchedule(SQLiteDatabase db, Seed.Schedule sched) {
@@ -540,8 +541,8 @@ public class Db {
 			return ret;
 		}
 
-		public void refreshScheduleList() {
-			updateData(dbh.getWritableDatabase(), true);
+		public boolean refreshScheduleList() {
+			return updateData(dbh.getWritableDatabase(), true);
 		}
 
 		public String refreshSingleSchedule(byte[] blob) {

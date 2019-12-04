@@ -163,22 +163,27 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 						lista = new ScheduleAdapter(db.getScheduleList());
 						list.setAdapter(lista);
-
-						setProgressBarIndeterminateVisibility(false);
-						setProgressBarVisibility(false);
-						refresher.setRefreshing(false);
+					} else {
+						// TODO: Error never gets reported because the built-in file fallback should just work.
+						Toast.makeText(ChooserActivity.this,
+								getResources().getString(R.string.refresh_failed),
+								Toast.LENGTH_SHORT).show();
 					}
+					setProgressBarIndeterminateVisibility(false);
+					setProgressBarVisibility(false);
+					refresher.setRefreshing(false);
 				}
 			};
 
 			loader = new Thread() {
 				@Override
 				public void run() {
-					db.refreshScheduleList();
-					if (seedRefreshMenu != null)
-						seedRefreshMenu.sendEmptyMessage(1);
-					else
+					boolean ok = db.refreshScheduleList();
+					if (seedRefreshMenu != null) {
+						seedRefreshMenu.sendEmptyMessage(ok ? 1 : 0);
+					} else {
 						Log.d("Chooser", "I had a handler but you eated it");
+					}
 				}
 			};
 
