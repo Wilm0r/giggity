@@ -354,7 +354,7 @@ public class Db {
 				json = sw.toString();
 			} else {
 				f = app.fetch(getSeedUrl(),
-				              source == SeedSource.ONLINE ? Fetcher.Source.ONLINE : Fetcher.Source.CACHE_ONLINE);
+				              source == SeedSource.ONLINE ? Fetcher.Source.ONLINE : Fetcher.Source.CACHE);
 				json = f.slurp();
 			}
 		} catch (IOException e) {
