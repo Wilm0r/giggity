@@ -163,10 +163,23 @@ class HTTP():
 http = HTTP()
 
 
+def validate_url(url):
+	if not url.startswith("http:"):
+		return []
+	https = re.sub("^http:", "https:", url)
+	if http.fetch(https):
+		return ["Use URL %s instead of non-TLS HTTP?" % https]
+	else:
+		return ["URL %s is insecure (but no TLS version available?)" % url]
+
+
 def validate_entry(e):
+	global errors
+	
 	# Forced to use GET not HEAD even though I don't need the data because for
 	# example the retarded CCC server refuses HEAD requests.
 	sf = http.fetch(e["url"])
+	errors += validate_url(e["url"])
 	if isinstance(sf, FetchError):
 		errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(sf)))
 
@@ -175,6 +188,7 @@ def validate_entry(e):
 		c3_by_slug = {}
 		if "c3nav_base" in md:
 			c3nav = http.fetch(md["c3nav_base"] + "/api/locations/?format=json")
+			errors += validate_url(md["c3nav_base"] + "/api/locations/?format=json")
 			if isinstance(c3nav, FetchError):
 				errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(c3nav)))
 			else:
@@ -196,6 +210,7 @@ def validate_entry(e):
 	
 		if "icon" in md:
 			img = http.fetch(md["icon"], img=True)
+			errors += validate_url(md["icon"])
 			icon_errors = []
 			if isinstance(img, FetchError):
 				icon_errors.append(str(img))
@@ -215,7 +230,8 @@ def validate_entry(e):
 			for link in md["links"]:
 				if link["url"].startswith("geo:"):
 					continue
-				d = http.fetch(link["url"], head=True)
+				d = http.fetch(link["url"])
+				errors += validate_url(link["url"])
 				if isinstance(d, FetchError):
 					errors.append("%s link for %s appears broken: %s" % (link["title"], e["title"], str(d)))
 
