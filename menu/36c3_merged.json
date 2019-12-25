@@ -1,0 +1,240 @@
+{
+	"title": "36c3 - merged",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events.ccc.de/congress/2019/wiki/index.php/Main_Page",
+				"title": "Wiki"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		],
+		"c3nav_base": "https://36c3.c3nav.de",
+		"rooms": [
+			{
+				"name": "Ada",
+				"show_name": "Hall 1",
+				"latlon": [
+					51.39553,
+					12.39962
+				],
+				"c3nav_slug": "hall-a"
+			},
+			{
+				"name": "Art\\-and\\-Play\\ Installation",
+				"c3nav_slug": "artandplay"
+			},
+			{
+				"name": "Art\\-and\\-Play\\ Stage",
+				"c3nav_slug": "ap-stage"
+			},
+			{
+				"name": "Assembly:Anarchist\\ Village",
+				"c3nav_slug": "ap-stage"
+			},
+			{
+				"name": "Assembly:Art\\-and\\-Play",
+				"c3nav_slug": "ap-stage"
+			},
+			{
+				"name": "Assembly:Backspace",
+				"c3nav_slug": "backspace"
+			},
+			{
+				"name": "Assembly:C\\-base\\ /\\ CCC\\-B\\ /\\ xHain",
+				"c3nav_slug": "xhain"
+			},
+			{
+				"name": "Assembly:C3blind",
+				"c3nav_slug": "c3blind"
+			},
+			{
+				"name": "Assembly:ChaosZone",
+				"c3nav_slug": "chaoszone"
+			},
+			{
+				"name": "Assembly:Foodhackingbase",
+				"c3nav_slug": "fhb"
+			},
+			{
+				"name": "Assembly:Free\\ Software\\ Foundation\\ Europe",
+				"c3nav_slug": "fsfe"
+			},
+			{
+				"name": "Assembly:HSBE",
+				"c3nav_slug": "hsbe"
+			},
+			{
+				"name": "Assembly:Haecksen",
+				"c3nav_slug": "haecksen"
+			},
+			{
+				"name": "Assembly:Hardware\\ Hacking\\ Area",
+				"c3nav_slug": "hardwarehackingarea"
+			},
+			{
+				"name": "Assembly:ICMP",
+				"c3nav_slug": "icmp"
+			},
+			{
+				"name": "Assembly:Milliways",
+				"c3nav_slug": "milliways"
+			},
+			{
+				"name": "Assembly:Nibble\\ Area",
+				"c3nav_slug": "nibble"
+			},
+			{
+				"name": "Assembly:Vintage\\ Computing",
+				"c3nav_slug": "vintage"
+			},
+			{
+				"name": "Assembly:WikipakaWG",
+				"c3nav_slug": "wikipaka-living"
+			},
+			{
+				"name": "Borg",
+				"show_name": "Hall 3",
+				"latlon": [
+					51.39512,
+					12.40239
+				],
+				"c3nav_slug": "hall-b"
+			},
+			{
+				"name": "C\\-base",
+				"c3nav_slug": "c-base"
+			},
+			{
+				"name": "CCL\\ Terrace",
+				"c3nav_slug": "ccl-terrace"
+			},
+			{
+				"name": "Chaos\\-West\\ Bühne",
+				"c3nav_slug": "cw-stage"
+			},
+			{
+				"name": "ChaosZone\\ Bühne",
+				"c3nav_slug": "chaoszone-stage"
+			},
+			{
+				"name": "ChaosZone\\ Workshop",
+				"c3nav_slug": "cz-workshop"
+			},
+			{
+				"name": "Clarke",
+				"show_name": "Hall 4",
+				"latlon": [
+					51.39811,
+					12.40496
+				],
+				"c3nav_slug": "hall-c"
+			},
+			{
+				"name": "DLF\\-\\ und\\ Podcast\\-Bühne",
+				"c3nav_slug": "dlf-sendezentrum"
+			},
+			{
+				"name": "Dijkstra",
+				"show_name": "Hall 1",
+				"latlon": [
+					51.39553,
+					12.39962
+				],
+				"c3nav_slug": "hall-d"
+			},
+			{
+				"name": "Eliza",
+				"show_name": "CCL Hall 2",
+				"latlon": [
+					51.39783,
+					12.40023
+				],
+				"c3nav_slug": "hall-e"
+			},
+			{
+				"name": "Kidspace",
+				"c3nav_slug": "kidspace"
+			},
+			{
+				"name": "Lecture\\ room\\ 11",
+				"c3nav_slug": "self-organized-sessions-11"
+			},
+			{
+				"name": "Lecture\\ room\\ M1",
+				"c3nav_slug": "self-organized-sessions-m1"
+			},
+			{
+				"name": "Lecture\\ room\\ M2",
+				"c3nav_slug": "self-organized-sessions-m2"
+			},
+			{
+				"name": "Lecture\\ room\\ M3",
+				"c3nav_slug": "self-organized-sessions-m3"
+			},
+			{
+				"name": "OIO\\ Solder\\ Area",
+				"c3nav_slug": "oio-workshop"
+			},
+			{
+				"name": "OIO\\ Stage",
+				"c3nav_slug": "oio-stage"
+			},
+			{
+				"name": "OIO\\ Workshop\\ Dome",
+				"c3nav_slug": "oio-stage"
+			},
+			{
+				"name": "Seminar\\ room\\ 13",
+				"c3nav_slug": "self-organized-sessions-13"
+			},
+			{
+				"name": "Seminar\\ room\\ 14\\-15",
+				"c3nav_slug": "self-organized-sessions-14-15"
+			},
+			{
+				"name": "Sendetisch",
+				"c3nav_slug": "sendetisch"
+			},
+			{
+				"name": "Vintage\\ Computing\\ Cluster",
+				"c3nav_slug": "vintage"
+			},
+			{
+				"name": "WikiPaka\\ WG:\\ Bibliothek",
+				"c3nav_slug": "wikipaka-library"
+			},
+			{
+				"name": "WikiPaka\\ WG:\\ Esszimmer",
+				"c3nav_slug": "wikipaka-dining"
+			},
+			{
+				"name": "cinopolis",
+				"c3nav_slug": "wikipaka-dining"
+			},
+			{
+				"name": "dezentrale\\*",
+				"c3nav_slug": "dezentrale"
+			},
+			{
+				"name": "headnut",
+				"c3nav_slug": "dezentrale"
+			},
+			{
+				"name": "nokingdome",
+				"c3nav_slug": "dezentrale"
+			},
+			{
+				"name": "soupworx",
+				"c3nav_slug": "dezentrale"
+			}
+		]
+	},
+	"url": "http://data.c3voc.de/36C3/everything.schedule.xml",
+	"start": "2019-12-27",
+	"end": "2019-12-30",
+	"refresh_interval": 1800,
+	"version": 2019122500
+}
