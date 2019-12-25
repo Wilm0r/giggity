@@ -24,7 +24,7 @@
 			},
 			{
 				"name": "Art\\-and\\-Play\\ Installation",
-				"c3nav_slug": "artandplay"
+				"c3nav_slug": "ap-stage"
 			},
 			{
 				"name": "Art\\-and\\-Play\\ Stage",
@@ -32,11 +32,11 @@
 			},
 			{
 				"name": "Assembly:Anarchist\\ Village",
-				"c3nav_slug": "ap-stage"
+				"c3nav_slug": "anarchist-assembly"
 			},
 			{
 				"name": "Assembly:Art\\-and\\-Play",
-				"c3nav_slug": "ap-stage"
+				"c3nav_slug": "artandplay"
 			},
 			{
 				"name": "Assembly:Backspace",
@@ -184,7 +184,7 @@
 			},
 			{
 				"name": "OIO\\ Workshop\\ Dome",
-				"c3nav_slug": "oio-stage"
+				"c3nav_slug": "oio-workshop-dome"
 			},
 			{
 				"name": "Seminar\\ room\\ 13",
@@ -211,23 +211,7 @@
 				"c3nav_slug": "wikipaka-dining"
 			},
 			{
-				"name": "cinopolis",
-				"c3nav_slug": "wikipaka-dining"
-			},
-			{
 				"name": "dezentrale\\*",
-				"c3nav_slug": "dezentrale"
-			},
-			{
-				"name": "headnut",
-				"c3nav_slug": "dezentrale"
-			},
-			{
-				"name": "nokingdome",
-				"c3nav_slug": "dezentrale"
-			},
-			{
-				"name": "soupworx",
 				"c3nav_slug": "dezentrale"
 			}
 		]
@@ -236,5 +220,5 @@
 	"start": "2019-12-27",
 	"end": "2019-12-30",
 	"refresh_interval": 1800,
-	"version": 2019122500
+	"version": 2019122501
 }
