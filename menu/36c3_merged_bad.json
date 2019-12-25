@@ -1,5 +1,5 @@
 {
-	"title": "36c3 - merged",
+	"title": "36c3 (non-HTTPS, broken, ignore)",
 	"metadata": {
 		"links": [
 			{
@@ -212,7 +212,7 @@
 			}
 		]
 	},
-	"url": "https://data.c3voc.de/36C3/everything.schedule.xml",
+	"url": "http://data.c3voc.de/36C3/everything.schedule.xml",
 	"start": "2019-12-27",
 	"end": "2019-12-30",
 	"refresh_interval": 1800,
