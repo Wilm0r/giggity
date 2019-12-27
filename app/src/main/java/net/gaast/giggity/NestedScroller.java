@@ -138,8 +138,13 @@ public class NestedScroller extends HorizontalScrollView {
 					if (scaleY > 10 || scaleY < 0.1)
 						scaleY = 1;
 
-					c.setScaleX(scaleX);
-					c.setScaleY(scaleY);
+					try {
+						c.setScaleX(scaleX);
+						c.setScaleY(scaleY);
+					} catch (IllegalArgumentException _) {
+						// NaN? Not caught by the check above and apparently Float.isFinite
+						// is way too advanced for my current Android API version...
+					}
 				}
 			} else if (event.getAction() == MotionEvent.ACTION_POINTER_2_DOWN) {
 				distStartX = Math.abs(x0 - x1);
