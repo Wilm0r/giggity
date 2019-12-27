@@ -393,7 +393,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					Intent intent = new Intent(BARCODE_SCANNER);
 					intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 					startActivityForResult(intent, 0);
-				} catch (ActivityNotFoundException e) {
+				} catch (ActivityNotFoundException | SecurityException e) {
 					Giggity.zxingError(ChooserActivity.this);
 				}
 			}

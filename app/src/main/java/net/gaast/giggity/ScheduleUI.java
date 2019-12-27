@@ -3,6 +3,7 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -213,7 +214,7 @@ public class ScheduleUI extends Schedule {
 		try {
 			ctx.startActivity(intent);
 			Toast.makeText(ctx, R.string.qr_tip, Toast.LENGTH_LONG).show();
-		} catch (android.content.ActivityNotFoundException e) {
+		} catch (ActivityNotFoundException | SecurityException e) {
 			Giggity.zxingError(ctx);
 		}
 
