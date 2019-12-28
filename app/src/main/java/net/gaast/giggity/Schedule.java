@@ -1167,14 +1167,15 @@ public class Schedule implements Serializable {
 
 		// Return Schedule.Line for this track, only if it's one and the same for all its items.
 		public Track getTrack() {
-			HashSet<Track> ret = new HashSet<>();
+			Track ret = null;
 			for (Item it : getItems()) {
-				ret.add(it.getTrack());
-				if (ret.size() != 1) {
+				if (ret == null) {
+					ret = it.getTrack();
+				} else if (ret != it.getTrack()) {
 					return null;
 				}
 			}
-			return ret.iterator().next();
+			return ret;
 		}
 	}
 
@@ -1185,14 +1186,15 @@ public class Schedule implements Serializable {
 
 		// Return Schedule.Line for this track, only if it's one and the same for all its items.
 		public Line getLine() {
-			HashSet<Line> ret = new HashSet<>();
+			Line ret = null;
 			for (Item it : getItems()) {
-				ret.add(it.getLine());
-				if (ret.size() != 1) {
+				if (ret == null) {
+					ret = it.getLine();
+				} else if (ret != it.getLine()) {
 					return null;
 				}
 			}
-			return ret.iterator().next();
+			return ret;
 		}
 
 		@Override
