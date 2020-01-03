@@ -33,14 +33,9 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 public class SSLRage {
-	/* SSL Rage, since SSLFFFFFUUUUUUUU would be too annoying to spell.
-	 * 
-	 * This tool needs to download schedules, sometimes from https servers.
-	 * OSS events often don't have a lot of $$$$ so understandably they're
-	 * not going to pay money for a proper certificate.
-	 * 
-	 * The result is this file, the hack required to make Java accept them.
-	 * 'cause really, what'd be the benefit of MitM'ing this download?
+	/* This should probably go away soon. I wrote this >10y ago when LetsEncrypt wasn't a thing yet
+	 * (and nobody had a clue who Edward Snowden was). By now you should either have proper certs or
+	 * just use http:// if you couldn't be bothered.
 	 */
 	private class MitmMeTrustManager implements X509TrustManager {
 		@Override
@@ -73,15 +68,5 @@ public class SSLRage {
 			return null;
 		}
 		return ctx.getSocketFactory ();
-	}
-
-	/* For now I'm not using this one anymore, since IMHO getting the hostname
-	 * of your certs right isn't that hard/expensive.
-	 */
-	final class TestVerifier implements javax.net.ssl.HostnameVerifier {
-		@Override
-		public boolean verify(String hostname, SSLSession session) {
-			return true;
-		}
 	}
 }

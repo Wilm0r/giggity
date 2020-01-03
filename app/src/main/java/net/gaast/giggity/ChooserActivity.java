@@ -297,6 +297,10 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		if (requestCode == 0) {
 			if (resultCode == RESULT_OK) {
 				String url = intent.getStringExtra("SCAN_RESULT");
+				if (url == null) {
+					// Shouldn't happen unless the scanner is broken. Anyway, this code goes away soon.
+					return;
+				}
 				Schedule.Selections sel = null;
 				if (intent.hasExtra("SCAN_RESULT_BYTE_SEGMENTS_0")) {
 					byte[] bin = intent.getByteArrayExtra("SCAN_RESULT_BYTE_SEGMENTS_0");

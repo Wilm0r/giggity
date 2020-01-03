@@ -46,6 +46,12 @@ public class ScheduleUI extends Schedule {
 		ScheduleUI ret = new ScheduleUI(ctx);
 		ret.progressHandler = progressHandler;
 
+		if (ret.progressHandler == null) {
+			// TODO: Test this uncommon codepath to ensure noop handlers are noop and not crashop.
+			// (Can't test this now because it looks like reminders are kinda broken... :< )
+			ret.progressHandler = new Handler();
+		}
+
 		Fetcher f = null;
 
 		try {
@@ -68,7 +74,7 @@ public class ScheduleUI extends Schedule {
 
 		// Disable the "fall back to cache" button at this stage if it's even shown, since we're
 		// nearly done, only need to apply user/dynamic data.
-		progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.STATIC_DONE);
+		ret.progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.STATIC_DONE);
 		if (ret.app.hasSchedule(url)) {
 			// TODO: Theoretically, online could still win the race over cached..
 			throw new Schedule.LateException();
