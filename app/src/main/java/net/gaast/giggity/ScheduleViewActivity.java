@@ -219,10 +219,16 @@ public class ScheduleViewActivity extends Activity {
 			return;
 
 		String url = getIntent().getDataString();
+		Uri parsed = Uri.parse(url);
 
-		try {
-			Uri parsed = Uri.parse(url);
-			if (parsed.getHost().equals("ggt.gaa.st") && parsed.getEncodedFragment() != null) {
+		if (parsed.getHost() == null) {
+			// Honestly no clue what can cause this (one article suggests underscores) but one user
+			// on a Nokia with Android 9 managed!
+			return;
+		}
+
+		if (parsed.getHost().equals("ggt.gaa.st") && parsed.getEncodedFragment() != null) {
+			try {
 				// Boo. Is there really no library to do this? Uri (instead of URL) supports CGI-
 				// style arguments but not when that syntax is used after the #. (Using # instead of
 				// ? to avoid the data hitting the server, should the query fall through.)
@@ -234,19 +240,21 @@ public class ScheduleViewActivity extends Activity {
 						byte[] json = Base64.decode(jsonb64, Base64.URL_SAFE);
 						url = app.getDb().refreshSingleSchedule(json);
 						if (url == null) {
-							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT);
+							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT).show();
 							finish();
 							return;
 						}
 					}
 				}
+				parsed = Uri.parse(url);
+			} catch (UnsupportedEncodingException e) {
+				// IT'S UTF-8 DO YOU NOT SPEAK IT? WHAT YEAR IS IT?
 			}
-		} catch (UnsupportedEncodingException e) {
-			// IT'S UTF-8 DO YOU NOT SPEAK IT? WHAT YEAR IS IT?
 		}
 
 		/* I think reminders come in via this activity (instead of straight to itemview)
 		   because we may have to reload schedule data? */
+		// TODO: Use parsed.
 		if (url.contains("#")) {
 			String parts[] = url.split("#", 2);
 			url = parts[0];
@@ -740,6 +748,11 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void redrawSchedule() {
+		if (sched == null) {
+			Log.e("finishNavDrawer", "Called before critical was loaded?");
+			return;
+		}
+
 		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
 		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.search && sched.getDays().size() > 1) {
 			sched.setDay(sched.getDb().getDay());
