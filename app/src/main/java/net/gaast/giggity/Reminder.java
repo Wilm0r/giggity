@@ -13,6 +13,7 @@ import android.content.IntentFilter.MalformedMimeTypeException;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -138,6 +139,10 @@ public class Reminder extends Service {
 		Bitmap icon = ((ScheduleUI)item.getSchedule()).getIconBitmap();
 		if (icon != null) {
 			nb.setLargeIcon(icon);
+		}
+
+		if (Build.VERSION.SDK_INT >= 26) {
+			nb.setChannelId(Giggity.CHANNEL_ID);
 		}
 
 		Notification.BigTextStyle extra = new Notification.BigTextStyle();

@@ -98,6 +98,8 @@
 
 	<!-- Reminder -->
 	<string name="soon_in">Soon in</string>
+	<string name="notification_channel">Reminders</string>
+	<string name="notification_channel_description">Notification ahead of a selected event starting</string>
 
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'at\' HH:mm</string>

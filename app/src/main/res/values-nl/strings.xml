@@ -89,6 +89,8 @@
 
 	<!-- Reminder -->
 	<string name="soon_in">Zo in</string>
+	<string name="notification_channel">Herrineringen</string>
+	<string name="notification_channel_description">Notificatie voordat een gekozen evenement begint</string>
 
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'om\' HH:mm</string>

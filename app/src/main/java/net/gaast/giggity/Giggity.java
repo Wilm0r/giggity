@@ -24,6 +24,8 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -59,6 +61,8 @@ public class Giggity extends Application {
 	private Db db;
 	HashMap<String,ScheduleUI> scheduleCache = new HashMap<>();  // url→ScheduleUI
 	TreeSet<Schedule.Item> remindItems = new TreeSet<>();
+
+	static final String CHANNEL_ID = "X-GIGGITY-REMINDER";
 	
 	@Override
 	public void onCreate() {
@@ -92,6 +96,14 @@ public class Giggity extends Application {
 				*/
 			}
 		}, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
+
+		if (Build.VERSION.SDK_INT >= 26) {
+			int importance = NotificationManager.IMPORTANCE_HIGH;  // Make sound but don't pup up.
+			NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getString(R.string.notification_channel), importance);
+			channel.setDescription(getString(R.string.notification_channel_description));
+			NotificationManager notificationManager = getSystemService(NotificationManager.class);
+			notificationManager.createNotificationChannel(channel);
+		}
 
 		// java.time backport for Android <26
 		AndroidThreeTen.init(this);
