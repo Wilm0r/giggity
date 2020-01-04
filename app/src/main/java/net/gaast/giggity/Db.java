@@ -718,13 +718,14 @@ public class Db {
 						// id's should either have been here when we loaded the schedule, or been
 						// added to in-mem map in the else below.
 						Log.w("Db.IdMap", "Shouldn't have happened: id " + key + " appeared in table behind my back?");
-						sciId = new Long(q.getLong(0));
+						sciId = q.getLong(0);
 					} else {
 						ContentValues row = new ContentValues();
 						row.put("sci_sch_id", schId);
 						row.put("sci_id_s", key);
 						super.put(key, sciId = db.insert("schedule_item", null, row));
 					}
+					q.close();
 					return sciId;
 				}
 			}
