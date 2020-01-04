@@ -152,7 +152,6 @@ public class ScheduleViewActivity extends Activity {
 		});
 
 		ViewGroup menu = (LinearLayout) dl.findViewById(R.id.menu);
-		menu.getChildCount();
 		/* Set event handler for all static buttons, going to the option menu code. Dynamic buttons
 		 * (from the schedule) have their own handlers. */
 		for (int i = 0; i < menu.getChildCount(); ++i) {
@@ -756,7 +755,7 @@ public class ScheduleViewActivity extends Activity {
 			setScheduleView(new NowNext(this, sched));
 		} else if (curView == R.id.my_events) {
 			setScheduleView(new MyItemsView(this, sched));
-		} else if (curView == R.id.tracks) {
+		} else if (curView == R.id.tracks && sched.getTracks() != null) {
 			setScheduleView(new TimeTable(this, (Collection) sched.getTracks()));
 		} else if (curView == R.id.search) {
 			setScheduleView(new ItemSearch(this, sched));
@@ -896,7 +895,7 @@ public class ScheduleViewActivity extends Activity {
 		CharSequence dayList[] = new CharSequence[days.size()];
 		int i, cur = -1;
 		for (i = 0; i < days.size(); i ++) {
-			if (sched.getDay().equals(days.get(i)))
+			if (days.get(i).equals(sched.getDay()))
 				cur = i;
 			dayList[i] = dateFormat.format(days.get(i));
 		}
@@ -1105,7 +1104,7 @@ public class ScheduleViewActivity extends Activity {
 			LinkedList<ZonedDateTime> days = sched.getDays();
 			int i, cur = -1;
 			for (i = 0; i < days.size(); i ++)
-				if (sched.getDay().equals(days.get(i)))
+				if (days.get(i).equals(sched.getDay()))
 					cur = i;
 
 			sched.getDb().setDay((cur + d + days.size()) % days.size());

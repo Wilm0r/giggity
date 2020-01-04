@@ -240,6 +240,7 @@ public class Db {
 			for (Map.Entry e : idId.entrySet()) {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + e.getKey()});
 			}
+			q.close();  // WTF isn't this a garbage-collected language?
 		}
 
 		@Override
@@ -351,6 +352,7 @@ public class Db {
 				InputStreamReader inr = new InputStreamReader(app.getResources().openRawResource(R.raw.menu), "UTF-8");
 				StringWriter sw = new StringWriter();
 				IOUtils.copy(inr, sw);
+				inr.close();
 				json = sw.toString();
 			} else {
 				f = app.fetch(getSeedUrl(),
@@ -716,7 +718,7 @@ public class Db {
 						// id's should either have been here when we loaded the schedule, or been
 						// added to in-mem map in the else below.
 						Log.w("Db.IdMap", "Shouldn't have happened: id " + key + " appeared in table behind my back?");
-						sciId = q.getLong(0);
+						sciId = new Long(q.getLong(0));
 					} else {
 						ContentValues row = new ContentValues();
 						row.put("sci_sch_id", schId);
@@ -748,6 +750,7 @@ public class Db {
 			while (q.moveToNext()) {
 				ret.add(q.getString(0));
 			}
+			q.close();
 			return ret;
 		}
 

@@ -215,11 +215,7 @@ public class Schedule implements Serializable {
 	}
 	
 	public ZonedDateTime getDay() {
-		if (curDay != null) {
-			return curDay;
-		} else {
-			return null;
-		}
+		return curDay;
 	}
 	
 	public void setDay(int day) {
