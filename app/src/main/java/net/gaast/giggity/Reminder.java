@@ -59,7 +59,7 @@ public class Reminder {
 
 		Notification.Builder nb = new Notification.Builder(app)
 				                          .setSmallIcon(R.drawable.ic_schedule_white_48dp)
-				                          .setContentText(item.getLine().getTitle())
+				                          .setColor(app.getResources().getColor(R.color.primary))
 				                          .setContentTitle(item.getTitle())
 				                          .setWhen(item.getStartTime().getTime())
 										  .setShowWhen(true)
@@ -68,17 +68,23 @@ public class Reminder {
 				                          .setAutoCancel(true)
 				                          .setDefaults(Notification.DEFAULT_SOUND)
 				                          .setVibrate(((item.getStartTime().getDate() & 1) == 0) ? giggitygoo : mario)
-				                          .setLights(app.getResources().getColor(R.color.primary), 500, 5000)
-				                          .setColor(app.getResources().getColor(R.color.primary));
+				                          .setSortKey(Long.toHexString((item.getStartTime().getTime() / 1000)))
+				                          .setLights(app.getResources().getColor(R.color.primary), 500, 5000);
+
+		String location = item.getLine().getLocation();
+		if (location != null) {
+			PendingIntent geoi = PendingIntent.getActivity(app, 0, new Intent(Intent.ACTION_VIEW, Uri.parse(location)), 0);
+			nb.addAction(new Notification.Action(R.drawable.ic_place_black_24dp, item.getLine().getTitle(), geoi));
+		} else {
+			Notification.BigTextStyle extra = new Notification.BigTextStyle();
+			extra.setSummaryText(item.getLine().getTitle());
+			nb.setStyle(extra);
+		}
 
 		if (Build.VERSION.SDK_INT >= 26) {
 			nb.setChannelId(Giggity.CHANNEL_ID);
 		}
 
-		Notification.BigTextStyle extra = new Notification.BigTextStyle();
-		extra.setSummaryText(item.getLine().getTitle());
-		extra.bigText(item.getDescriptionStripped());
-		nb.setStyle(extra);
 
 		return nb.build();
 	}
@@ -89,7 +95,7 @@ public class Reminder {
 		}
 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
-		boolean enabled =  pref.getBoolean("reminder_enabled", true);
+		boolean enabled = pref.getBoolean("reminder_enabled", true);
 		int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
 		long tm;
 
@@ -108,6 +114,7 @@ public class Reminder {
 
 		if (enabled && item.getRemind()) {
 			am.setExact(AlarmManager.RTC_WAKEUP, tm = item.getStartTime().getTime() - period, ntfIntent);
+			// debugging aid  am.setExact(AlarmManager.RTC_WAKEUP, tm = System.currentTimeMillis() + 5000, ntfIntent);
 			am.setExact(AlarmManager.RTC_WAKEUP, item.getEndTime().getTime(), endIntent);
 
 			Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
