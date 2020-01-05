@@ -141,7 +141,7 @@ public class NestedScroller extends HorizontalScrollView {
 					try {
 						c.setScaleX(scaleX);
 						c.setScaleY(scaleY);
-					} catch (IllegalArgumentException _) {
+					} catch (IllegalArgumentException e) {
 						// NaN? Not caught by the check above and apparently Float.isFinite
 						// is way too advanced for my current Android API version...
 					}

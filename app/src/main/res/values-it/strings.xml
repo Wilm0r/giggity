@@ -83,7 +83,6 @@
 	<string name="enter_url">Inserisci URL del programma</string>
 
 	<!-- Reminder -->
-	<string name="soon_in">Prossimamente in</string>
 
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'alle\' HH:mm</string>

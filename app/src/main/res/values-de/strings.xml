@@ -91,7 +91,6 @@
 	<string name="enter_url">URL eingeben</string>
 
 	<!-- Reminder -->
-	<string name="soon_in">Demnächst in</string>
 
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'um\' HH:mm</string>
