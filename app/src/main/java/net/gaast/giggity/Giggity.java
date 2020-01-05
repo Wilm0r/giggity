@@ -37,8 +37,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.jakewharton.threetenabp.AndroidThreeTen;
@@ -48,8 +46,8 @@ import org.threeten.bp.format.DateTimeFormatter;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TreeSet;
@@ -123,17 +121,13 @@ public class Giggity extends Application {
 	
 	public void flushSchedules() {
 		scheduleCache.clear();
-		/* I *think* this one's safe because alarms are still set and once the first rings, the
-		   schedule will get reloaded. May not go as well if the user is observing multiple
-		   schedules ATM but who does that..
-		 */
 		remindItems.clear();
 	}
 
 	public void flushSchedule(String url) {
 		if (hasSchedule(url)) {
 			Schedule sched = scheduleCache.get(url);
-			for (Schedule.Item item : new ArrayList<Schedule.Item>(remindItems)) {
+			for (Schedule.Item item : getRemindItems()) {
 				if (item.getSchedule() == sched)
 					remindItems.remove(item);
 			}
@@ -160,13 +154,13 @@ public class Giggity extends Application {
 	}
 
 	public void updateRemind() {
-		for (Schedule.Item it : remindItems) {
+		for (Schedule.Item it : getRemindItems()) {
 			updateRemind(it);
 		}
 	}
 	
-	protected AbstractSet<Schedule.Item> getRemindItems() {
-		return remindItems;
+	protected Collection<Schedule.Item> getRemindItems() {
+		return new ArrayList<>(remindItems);
 	}
 	
 	public int dp2px(int dp) {
