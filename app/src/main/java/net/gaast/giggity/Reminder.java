@@ -68,7 +68,7 @@ public class Reminder {
 				                          .setAutoCancel(true)
 				                          .setDefaults(Notification.DEFAULT_SOUND)
 				                          .setVibrate(((item.getStartTime().getDate() & 1) == 0) ? giggitygoo : mario)
-				                          .setSortKey(Long.toHexString((item.getStartTime().getTime() / 1000)))
+				                          .setSortKey(Long.toHexString((item.getStartTime().getTime() / 1000)))  // redundant with setWhen()?
 				                          .setLights(app.getResources().getColor(R.color.primary), 500, 5000);
 
 		String location = item.getLine().getLocation();
@@ -99,9 +99,10 @@ public class Reminder {
 		int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
 		long tm;
 
-		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
-
-		int id = item.hashCode();
+		// Use hashCode() (rewritten for better entropy) as id for notifications etc to keep things
+		// nicely stateless and be able to cancel alarms and notifications later when necessary.
+		// bit 0 == 0 for creation and 1 for deletion alarm (when event has passed)
+		int id = item.hashCode() << 1;
 
 		Intent intent = new Intent(NotificationPoster.ACTION);
 		intent.putExtra("id", id);
@@ -110,12 +111,13 @@ public class Reminder {
 
 		intent = new Intent(NotificationPoster.ACTION);
 		intent.putExtra("id", id);
-		PendingIntent endIntent = PendingIntent.getBroadcast(app, id ^ 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent endIntent = PendingIntent.getBroadcast(app, id | 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
+		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		if (enabled && item.getRemind()) {
-			am.setExact(AlarmManager.RTC_WAKEUP, tm = item.getStartTime().getTime() - period, ntfIntent);
+			am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, tm = item.getStartTime().getTime() - period, ntfIntent);
 			// debugging aid  am.setExact(AlarmManager.RTC_WAKEUP, tm = System.currentTimeMillis() + 5000, ntfIntent);
-			am.setExact(AlarmManager.RTC_WAKEUP, item.getEndTime().getTime(), endIntent);
+			am.set(AlarmManager.RTC, item.getEndTime().getTime(), endIntent);
 
 			Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
 					                  (tm - System.currentTimeMillis()) / 1000 + " seconds");
