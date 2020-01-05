@@ -593,6 +593,10 @@ public class ScheduleViewActivity extends Activity {
 		}
 		d = new ActivityManager.TaskDescription(sched.getTitle(), icon, getResources().getColor(R.color.primary));
 		this.setTaskDescription(d);
+
+		// Notifications were already scheduled at load time but that was before extra metadata (like c3nav)
+		// was loaded. Kick off a refresh now.
+		app.updateRemind();
 	}
 
 	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */
