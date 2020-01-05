@@ -17,6 +17,8 @@ import android.util.Log;
 
 import org.threeten.bp.ZonedDateTime;
 
+import java.util.ArrayList;
+
 public class Reminder {
 	Giggity app;
 
@@ -56,6 +58,13 @@ public class Reminder {
 	private Notification buildNotification(Schedule.Item item) {
 		Intent evi = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()), app,
 				ScheduleViewActivity.class);
+		ArrayList<String> others = new ArrayList<>();
+		for (Schedule.Item it : app.getRemindItems()) {
+			if (it.getSchedule() == item.getSchedule()) {
+				others.add(it.getId());
+			}
+		}
+		evi.putStringArrayListExtra("others", others);
 
 		Notification.Builder nb = new Notification.Builder(app)
 				                          .setSmallIcon(R.drawable.ic_schedule_white_48dp)

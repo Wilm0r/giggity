@@ -784,9 +784,7 @@ public class ScheduleViewActivity extends Activity {
 		/* User tapped on a reminder? */
 		if (showEventId != null) {
 			Schedule.Item item = sched.getItem(showEventId);
-			/* This is a little annoying - normally we get here through Widgets which call into us
-			   instead of straight into SItemViewAct because the schedule may need to be re-loaded.
-			   Need to convert the others list back and forth.. */
+			/* Converting back and forth between item objects and just id strings is a little crappy but meh.. */
 			ArrayList<Schedule.Item> items = new ArrayList<>();
 			if (getIntent().hasExtra("others")) {
 				Log.d("ScheduleViewActivity", "Copying others object :-/");
