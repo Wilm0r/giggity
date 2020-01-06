@@ -493,12 +493,12 @@ public class ScheduleViewActivity extends Activity {
 	private Runnable minuteRefresher = new Runnable() {
 		@Override
 		public void run() {
-			if (viewer != null)
-				viewer.refreshContents();
-
 			/* Run again at the next minute boundary. */
 			timer.removeCallbacks(minuteRefresher);
-			timer.postDelayed(minuteRefresher, 60000 - (System.currentTimeMillis() % 60000));
+			timer.postDelayed(minuteRefresher, -System.currentTimeMillis() % 60000);
+
+			if (viewer != null)
+				viewer.refreshContents();
 		}
 	};
 
@@ -516,14 +516,14 @@ public class ScheduleViewActivity extends Activity {
 			if (sched == null || !sched.hasRoomStatus())
 				return;
 
+			timer.removeCallbacks(updateRoomStatus);
+			timer.postDelayed(updateRoomStatus, 60000);
+
 			new Thread() {
 				@Override
 				public void run() {
 					if ((sched.isToday() || BuildConfig.DEBUG) && sched.updateRoomStatus())
 						runOnUiThread(miscRefresher);
-
-					timer.removeCallbacks(updateRoomStatus);
-					timer.postDelayed(updateRoomStatus, 60000);
 				}
 			}.start();
 		}
@@ -531,12 +531,6 @@ public class ScheduleViewActivity extends Activity {
 
 	@Override
 	protected void onResume() {
-		/* Bugfix: Search sets day to -1, have to revert that.
-		I think that's the old own-activity search so maybe I don't need this workaround anymore.
-		if (sched != null && sched.getDays().size() > 1 && !viewer.multiDay())
-			sched.setDay(sched.getDb().getDay());
-		 */
-
 		if (redraw) {
 			redrawSchedule();
 			redraw = false;
