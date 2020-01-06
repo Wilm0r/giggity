@@ -15,7 +15,9 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZonedDateTime;
+import org.threeten.bp.temporal.ChronoUnit;
 
 import java.util.ArrayList;
 
@@ -99,14 +101,13 @@ public class Reminder {
 	}
 
 	public void poke(Schedule.Item item) {
-		if (item.getStartTimeZoned().isBefore(ZonedDateTime.now())) {
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
+		int period = Integer.parseInt(pref.getString("reminder_period", "5"));
+
+		ZonedDateTime tm = item.getStartTimeZoned().minusMinutes(period);
+		if (tm.isBefore(ZonedDateTime.now())) {
 			return;
 		}
-
-		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
-		boolean enabled = pref.getBoolean("reminder_enabled", true);
-		int period = Integer.parseInt(pref.getString("reminder_period", "5")) * 60000;
-		long tm;
 
 		// Use hashCode() (rewritten for better entropy) as id for notifications etc to keep things
 		// nicely stateless and be able to cancel alarms and notifications later when necessary.
@@ -123,13 +124,13 @@ public class Reminder {
 		PendingIntent endIntent = PendingIntent.getBroadcast(app, id | 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
+		boolean enabled = pref.getBoolean("reminder_enabled", true);
 		if (enabled && item.getRemind()) {
-			am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, tm = item.getStartTime().getTime() - period, ntfIntent);
-			// debugging aid  am.setExact(AlarmManager.RTC_WAKEUP, tm = System.currentTimeMillis() + 5000, ntfIntent);
+			am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, tm.toEpochSecond() * 1000, ntfIntent);
 			am.set(AlarmManager.RTC, item.getEndTime().getTime(), endIntent);
 
 			Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
-					                  (tm - System.currentTimeMillis()) / 1000 + " seconds");
+			      ChronoUnit.SECONDS.between(ZonedDateTime.now(), tm) + " seconds");
 		} else {
 			am.cancel(ntfIntent);
 			am.cancel(endIntent);
