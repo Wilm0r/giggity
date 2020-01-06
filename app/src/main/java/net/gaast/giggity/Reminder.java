@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.threeten.bp.LocalTime;
 import org.threeten.bp.ZonedDateTime;
@@ -105,6 +106,7 @@ public class Reminder {
 		int period = Integer.parseInt(pref.getString("reminder_period", "5"));
 
 		ZonedDateTime tm = item.getStartTimeZoned().minusMinutes(period);
+		tm = ZonedDateTime.now().plusSeconds(5);
 		if (tm.isBefore(ZonedDateTime.now())) {
 			return;
 		}
@@ -117,23 +119,30 @@ public class Reminder {
 		Intent intent = new Intent(NotificationPoster.ACTION);
 		intent.putExtra("id", id);
 		intent.putExtra("notification", buildNotification(item));
-		PendingIntent ntfIntent = PendingIntent.getBroadcast(app, id, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent ntfIntent = PendingIntent.getBroadcast(app, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		intent = new Intent(NotificationPoster.ACTION);
 		intent.putExtra("id", id);
-		PendingIntent endIntent = PendingIntent.getBroadcast(app, id | 1, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		PendingIntent endIntent = PendingIntent.getBroadcast(app, id | 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		boolean enabled = pref.getBoolean("reminder_enabled", true);
+		am.cancel(ntfIntent);
+		am.cancel(endIntent);
 		if (enabled && item.getRemind()) {
-			am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, tm.toEpochSecond() * 1000, ntfIntent);
-			am.set(AlarmManager.RTC, item.getEndTime().getTime(), endIntent);
+			try {
+				am.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, tm.toEpochSecond() * 1000, ntfIntent);
+				am.set(AlarmManager.RTC, item.getEndTime().getTime(), endIntent);
 
-			Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
-			      ChronoUnit.SECONDS.between(ZonedDateTime.now(), tm) + " seconds");
-		} else {
-			am.cancel(ntfIntent);
-			am.cancel(endIntent);
+				Log.d("reminder", "Alarm set for " + item.getTitle() + " in " +
+						                  ChronoUnit.SECONDS.between(ZonedDateTime.now(), tm) + " seconds");
+			} catch (SecurityException e) {
+				// https://github.com/Wilm0r/giggity/issues/147
+				// I don't really know what's going on there, nor all do I understand all the intricacies of this API.
+				// But apparently Samsung don't either. :-P I hope I've worked around that now while keeping this functionality reliable..
+				Toast.makeText(app, "Warning: Caught SecurityException while setting reminder. Please report on #147 on github.", Toast.LENGTH_LONG);
+				e.printStackTrace();
+			}
 		}
 	}
 }
