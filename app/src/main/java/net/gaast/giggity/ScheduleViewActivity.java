@@ -519,7 +519,7 @@ public class ScheduleViewActivity extends Activity {
 			new Thread() {
 				@Override
 				public void run() {
-					if (sched.updateRoomStatus())
+					if ((sched.isToday() || BuildConfig.DEBUG) && sched.updateRoomStatus())
 						runOnUiThread(miscRefresher);
 
 					timer.removeCallbacks(updateRoomStatus);
