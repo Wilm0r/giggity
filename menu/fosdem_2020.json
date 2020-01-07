@@ -1,5 +1,5 @@
 {
-	"version": 2020010700,
+	"version": 2020010701,
 	"url": "https://fosdem.org/2020/schedule/xml",
 	"title": "FOSDEM 2020",
 	"start": "2020-02-01",
@@ -22,7 +22,7 @@
 				"title": "Stands"
 			}
 		],
-		"icon": "https://fosdem.org/2020/assets/style/bg-visual-panel-73f1975ffc7435da092f7de492966249bd09606d7e9d6241cc31591203c5a2d6.png",
+		"icon": "https://fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png",
 		"c3nav_base": "https://nav.fosdem.org",
 		"rooms": [
 			{
