@@ -107,7 +107,7 @@ public class Reminder {
 
 		ZonedDateTime tm = item.getStartTimeZoned().minusMinutes(period);
 		// debug: tm = ZonedDateTime.now().plusSeconds(5);
-		if (tm.isBefore(ZonedDateTime.now())) {
+		if (tm.isBefore(ZonedDateTime.now()) || tm.isAfter(ZonedDateTime.now().plusDays(1))) {
 			return;
 		}
 
