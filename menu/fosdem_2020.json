@@ -1,5 +1,5 @@
 {
-	"version": 2019120101,
+	"version": 2020010700,
 	"url": "https://fosdem.org/2020/schedule/xml",
 	"title": "FOSDEM 2020",
 	"start": "2020-02-01",
@@ -92,6 +92,12 @@
 				"c3nav_slug": "h2215"
 			},
 			{
+				"name": "J\\.1\\.106",
+				"show_name": "J.1.106 (Salle Van Buuren)",
+				"latlon": [50.813012, 4.3792101],
+				"c3nav_slug": "j1106"
+			},
+			{
 				"name": "Janson",
 				"latlon": [50.813231, 4.3791498],
 				"c3nav_slug": "j-main"
@@ -139,12 +145,6 @@
 				"c3nav_slug": "ua2114"
 			},
 			{
-				"name": "UA2\\.118\\ \\(Henriot\\)",
-				"show_name": "UA wing",
-				"latlon": [50.811683, 4.3826425],
-				"c3nav_slug": "ua2118"
-			},
-			{
 				"name": "UA2\\.220\\ \\(Guillissen\\)",
 				"show_name": "UA wing",
 				"latlon": [50.811683, 4.3826425],
@@ -163,9 +163,34 @@
 				"c3nav_slug": "ub2-252a"
 			},
 			{
-				"name": "UB4.*",
+				"name": "UB4\\.132",
 				"show_name": "UB wing",
-				"latlon": [50.8120565, 4.382176]
+				"latlon": [50.8120565, 4.382176],
+				"c3nav_slug": "ub4132"
+			},
+			{
+				"name": "UB4\\.136",
+				"show_name": "UB wing",
+				"latlon": [50.8120565, 4.382176],
+				"c3nav_slug": "ub4136"
+			},
+			{
+				"name": "UB4\\.228",
+				"show_name": "UB wing",
+				"latlon": [50.8120565, 4.382176],
+				"c3nav_slug": "ub4228"
+			},
+			{
+				"name": "UB5\\.132",
+				"show_name": "UB wing",
+				"latlon": [50.8120565, 4.382176],
+				"c3nav_slug": "ub5132"
+			},
+			{
+				"name": "UB5\\.230",
+				"show_name": "UB wing",
+				"latlon": [50.8120565, 4.382176],
+				"c3nav_slug": "ub5230"
 			},
 			{
 				"name": "UD2\\.119",
