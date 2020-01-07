@@ -843,12 +843,11 @@ public class ScheduleViewActivity extends Activity {
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(item.getUrl()),
 					this, ScheduleItemActivity.class);
 			if (others != null) {
-				String[] ids = new String[others.size()];
-				int i = 0;
+				ArrayList<String> ids = new ArrayList<>();
 				for (Schedule.Item o : others) {
-					ids[i++] = o.getId();
+					ids.add(o.getId());
 				}
-				intent.putExtra("others", ids);
+				intent.putExtra("others", ids.toArray(new String[others.size()]));
 			}
 			ActivityOptions options = null;
 			if (animationOrigin != null) {

@@ -67,7 +67,7 @@ public class Reminder {
 				others.add(it.getId());
 			}
 		}
-		evi.putStringArrayListExtra("others", others);
+		evi.putExtra("others", others.toArray(new String[others.size()]));
 
 		Notification.Builder nb = new Notification.Builder(app)
 				                          .setSmallIcon(R.drawable.ic_schedule_white_48dp)
