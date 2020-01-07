@@ -106,7 +106,7 @@ public class Reminder {
 		int period = Integer.parseInt(pref.getString("reminder_period", "5"));
 
 		ZonedDateTime tm = item.getStartTimeZoned().minusMinutes(period);
-		tm = ZonedDateTime.now().plusSeconds(5);
+		// debug: tm = ZonedDateTime.now().plusSeconds(5);
 		if (tm.isBefore(ZonedDateTime.now())) {
 			return;
 		}
