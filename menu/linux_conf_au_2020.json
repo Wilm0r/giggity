@@ -18,6 +18,10 @@
 			{
 				"url": "https://linux.conf.au/schedule/",
 				"title": "Online schedule"
+			},
+			{
+				"url": "https://lca2020.linux.org.au/wiki/Main_Page",
+				"title": "Wiki"
 			}
 		]
 	}
