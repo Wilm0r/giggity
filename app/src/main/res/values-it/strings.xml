@@ -10,7 +10,7 @@
 	<string name="default_view">Vista predefinita</string>
 	<string name="font_size">Dimensione font programma a blocchi</string>
 	<string name="strict_ssl">Controllo rigoroso TLS</string>
-	<string name="strict_ssl_sub">Validazione corretta certificati TLS</string>
+	<string name="strict_ssl_sub">Validazione corretta certificati HTTPS</string>
 
 	<string name="block_schedule_style">Stile</string>
 	<string name="block_schedule">Programma a blocchi</string>
@@ -19,7 +19,6 @@
 
 	<string name="reminder">Promemoria eventi</string>
 	<string name="reminder_enabled_sub_on">Ricordami gli eventi segnati</string>
-	<string name="reminder_enabled_sub_off">Non ricordarmi gli eventi segnati</string>
 	<string name="reminder_enabled">Abilita promemoria</string>
 	<string name="reminder_period">Minuti prima di un evento</string>
 	
@@ -38,15 +37,21 @@
 
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Caricamento del programma...</string>
+	<string name="use_cached_version">Usa versione in cache</string>
 	<string name="loading_image">Caricamento immagine...</string>
 	<string name="loading_error">Errore di caricamento</string>
 	<string name="no_viewer_error">Nessun programma installato per visualizzare il file</string>
 	<string name="export_selections">Esporta selezioni</string>
+	<string name="home_shortcut">Crea shortcut</string>
 	<string name="import_selections">Importa selezioni</string>
 	<string name="no_selections">Nessuna selezione da esportare</string>
 	<string name="qr_tip">Usa il tasto per leggere il QR nel menu principale sull\'altro dispositivo per importare questo elemento</string>
 	<string name="schedule_empty">Il programma sembra essere vuoto</string>
 	<string name="format_unknown">Formato del file non riconosciuto</string>
+	<string name="no_json_data">Estrazione dati JSON da URL fallita</string>
+	<string name="no_network">Connessione di rete non disponibile</string>
+	<string name="no_network_or_cached">Connessione di rete e copia cache non disponibili</string>
+
 	<!-- Menu -->
 	<string name="settings">Impostazioni</string>
 	<string name="change_day">Cambia giorno</string>
@@ -70,6 +75,13 @@
 	<string name="seen_so_far">Visti finora</string>
 	<string name="none_marked">Nessun elemento segnato.</string>
 	
+	<!-- SearchActivity (deprecated) -->
+	<string name="search_results">Risultati per \"%1$s\" in %2$s</string>
+	
+	<!-- ItemSearchActivity -->
+	<string name="type_query_prompt">Digita la tua query di ricerca</string>
+	<string name="search_results_empty">Nessun risultato per la tua query di ricerca</string>
+	
 	<!-- ChooserActivity -->
 	<string name="refresh">Ricarica</string>
 	<string name="unhide">Recupera elementi nascosti</string>
@@ -81,12 +93,17 @@
 	<string name="add_dialog">Aggiungi...</string>
 	<string name="qr_scan">Leggi QR</string>
 	<string name="enter_url">Inserisci URL del programma</string>
+	<string name="refresh_failed">Caricamento del menu fallito.</string>
 
 	<!-- Reminder -->
+	<string name="notification_channel">Promemoria</string>
+	<string name="notification_channel_description">Notifiche prima di un evento selezionato</string>
 
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'alle\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'alle\' HH:mm</string>
 	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Prossimamente</string>
+	<string name="widg_no_upcoming">Nessun evento in vista :-(</string>
+	<string name="reminder_enabled_sub_off">Non ricordarmi gli eventi segnati</string>
 </resources>
