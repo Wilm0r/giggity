@@ -2,8 +2,8 @@
 	"start": "2020-01-13",
 	"end": "2020-01-17",
 	"version": 2020010802,
-	"url": "https://lca2020.linux.org.au/schedule/conference.ics",
-	"title": "linux.conf.au 2020",
+	"url": "https://linux.conf.au/schedule/conference.ics",
+	"title": "LCA 2020 (old URL, avoid unless you have selections already)",
 	"metadata": {
 		"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
 		"links": [
