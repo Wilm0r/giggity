@@ -495,7 +495,7 @@ public class ScheduleViewActivity extends Activity {
 		public void run() {
 			/* Run again at the next minute boundary. */
 			timer.removeCallbacks(minuteRefresher);
-			timer.postDelayed(minuteRefresher, -System.currentTimeMillis() % 60000);
+			timer.postDelayed(minuteRefresher, 60000 + (-System.currentTimeMillis() % 60000));
 
 			if (viewer != null)
 				viewer.refreshContents();
