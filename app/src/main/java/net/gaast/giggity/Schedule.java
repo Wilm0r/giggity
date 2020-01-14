@@ -1501,7 +1501,7 @@ public class Schedule implements Serializable {
 
 		public boolean overlaps(Item other) {
 			// True if other's start- or end-time is during our event, or if it starts before and ends after ours.
-			return (compareTo(other.getStartTimeZoned()) == 0 || compareTo(other.getEndTimeZoned()) == 0 ||
+			return (compareTo(other.getStartTimeZoned()) == 0 || compareTo(other.getEndTimeZoned().minusSeconds(1)) == 0 ||
 			        (!other.getStartTimeZoned().isAfter(getStartTimeZoned()) && !other.getEndTimeZoned().isBefore(getEndTimeZoned())));
 		}
 	}
