@@ -54,6 +54,7 @@ import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.Collator;
 import java.text.ParseException;
 import java.text.ParsePosition;
 import java.util.AbstractList;
@@ -65,7 +66,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -84,7 +84,8 @@ public class Schedule implements Serializable {
 
 	private LinkedList<Schedule.Line> tents = new LinkedList<>();
 	protected HashMap<String,Schedule.Item> allItems = new HashMap<>();
-	private SortedMap<String,Track> tracks = new TreeMap<>();
+	private Collator trackSort;
+	private SortedMap<String,Track> tracks;
 
 	private ZonedDateTime firstTime, lastTime;
 	private ZonedDateTime dayFirstTime, dayLastTime;  // equal to full schedule bounds (so spanning multiple days) if day = -1
@@ -103,6 +104,12 @@ public class Schedule implements Serializable {
 	protected String roomStatusUrl;
 
 	protected boolean fullyLoaded;
+
+	public Schedule() {
+		trackSort = Collator.getInstance();
+		trackSort.setStrength(Collator.PRIMARY);
+		tracks = new TreeMap<>(trackSort);
+	}
 
 	protected void loadSchedule(BufferedReader in, String url_) throws IOException, LoadException {
 		url = url_;
@@ -623,7 +630,7 @@ public class Schedule implements Serializable {
 		if (tracks == null || tracks.size() == 0)
 			return null;
 
-		TreeSet<Track> ret = new TreeSet<>();
+		ArrayList<Track> ret = new ArrayList<>();
 		for (Track e : tracks.values()) {
 			if (e.getItems().size() > 0) {
 				ret.add(e);
@@ -1195,8 +1202,8 @@ public class Schedule implements Serializable {
 		}
 
 		@Override
-		public int compareTo(Track track) {
-			return getTitle().compareTo(track.getTitle());
+		public int compareTo(Track other) {
+			return trackSort.compare(getTitle(), other.getTitle());
 		}
 	}
 	
