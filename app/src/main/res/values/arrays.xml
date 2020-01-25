@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<string-array name="font_size">
+		<item>Small</item>
+		<item>3 lines</item>
+		<item>2 lines</item>
+	</string-array>
+	<string-array name="import_selections_options">
+		<item>Preserve existing reminders</item>
+		<item>Preserve deletions</item>
+		<item>Import new reminders</item>
+		<item>Import deletions</item>
+	</string-array>
+	<!-- Only the two above need translation. In the future, I should probably just put string refs in this file and not have per-language arrays at all. -->
 	<string-array name="default_view">
 		<item>@string/block_schedule</item>
 		<item>@string/timetable</item>
@@ -8,12 +20,6 @@
 		<item>@string/my_events</item>
 		<item>@string/search</item>
 	</string-array>
-	<string-array name="font_size">
-		<item>Small</item>
-		<item>3 lines</item>
-		<item>2 lines</item>
-	</string-array>
-	<!-- Eww, ordering a bit odd since tracks was added later. -->
 	<string-array name="default_view_values">
 		<item>net.gaast.giggity:id/block_schedule</item>
 		<item>net.gaast.giggity:id/timetable</item>
@@ -32,11 +38,5 @@
 		<item>5</item>
 		<item>10</item>
 		<item>15</item>
-	</string-array>
-	<string-array name="import_selections_options">
-	    <item>Preserve existing reminders</item>
-		<item>Preserve deletions</item>
-		<item>Import new reminders</item>
-		<item>Import deletions</item>
 	</string-array>
 </resources>
