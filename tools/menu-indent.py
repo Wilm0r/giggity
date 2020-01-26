@@ -10,5 +10,9 @@ if len(sys.argv) > 1:
 p = json.loads(sys.stdin.read())
 
 latlon1line = re.compile(r"(\"latlon\": \[)\s+([0-9.]+),\s+([0-9.]+)\s+(\])")
-print(latlon1line.sub(r"\1\2, \3\4", json.dumps(p, indent="\t", ensure_ascii=False)))
+res = latlon1line.sub(r"\1\2, \3\4", json.dumps(p, indent="\t", ensure_ascii=False))
 
+if len(sys.argv) > 1:
+	open(sys.argv[1], "w").write(res)
+else:
+	print(res)
