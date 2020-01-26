@@ -1,5 +1,5 @@
 {
-	"version": 2020010702,
+	"version": 2020012600,
 	"url": "https://fosdem.org/2020/schedule/xml",
 	"title": "FOSDEM 2020",
 	"start": "2020-02-01",
@@ -13,9 +13,18 @@
 				"title": "Website"
 			},
 			{
-				"url": "https://archive.fosdem.org/2019/assets/campusmap-bde646158c3e7b5d10f071e6b432b2857e574efd3b8d2ee490a855f179950a46.png",
+				"url": "https://fosdem.org/2020/assets/booklet_general-524ce70f2c4832809c07d4195ea203df38d96e3e710acf94e748fa762d55e85b.pdf",
+				"title": "Info booklet",
+				"type": "application/pdf"
+			},
+			{
+				"url": "https://fosdem.org/2020/assets/campusmap-6166e45e7e736823c218c45ac65e02f5f7237111253db302da17bbaa0f4b5683.png",
 				"title": "Map",
 				"type": "image/png"
+			},
+			{
+				"url": "https://volunteers.fosdem.org/faq/",
+				"title": "Volunteer"
 			},
 			{
 				"url": "https://fosdem.org/2020/stands/",
