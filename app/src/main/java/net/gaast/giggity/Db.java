@@ -669,7 +669,7 @@ public class Db {
 			});
 			SQLiteDatabase db = dbh.getReadableDatabase();
 			try {
-				Cursor q = db.rawQuery("Select item_search.sci_id_s, matchinfo(item_search, \"pcnalx\"), sci_remind " +
+				Cursor q = db.rawQuery("Select item_search.sci_id_s, matchinfo(item_search, \"pcnalx\"), sci_remind, sci_hidden " +
 				                       " From item_search Left Join schedule_item On (sci_sch_id = sch_id" +
 				                       " And item_search.sci_id_s = schedule_item.sci_id_s) Where sch_id = " + schId +
 				                       " And item_search Match ?", new String[]{query});
@@ -684,6 +684,9 @@ public class Db {
 					if (q.getInt(2) > 0) {
 						// Bump starred events up to the top.
 						score += 1000;
+					} else if (q.getInt(3) > 0) {
+						// And deleted items to the bottom (if they're even going to be shown).
+						score -= 1000;
 					}
 					Log.d("search", q.getString(0) + " score: " + score + " remind " + q.getInt(2));
 					rank.put(q.getString(0), score);
