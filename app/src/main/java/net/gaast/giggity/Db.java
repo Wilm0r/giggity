@@ -230,6 +230,7 @@ public class Db {
 					urlId.put(q.getString(1), q.getInt(0));
 				}
 			}
+			q.close();  // WTF isn't this a garbage-collected language?
 			// Update sci_sch_id refs
 			for (Map.Entry e : idId.entrySet()) {
 				ContentValues row = new ContentValues();
@@ -240,7 +241,6 @@ public class Db {
 			for (Map.Entry e : idId.entrySet()) {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + e.getKey()});
 			}
-			q.close();  // WTF isn't this a garbage-collected language?
 		}
 
 		@Override
