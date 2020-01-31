@@ -1,5 +1,5 @@
 {
-	"version": 2020012600,
+	"version": 2020013100,
 	"url": "https://fosdem.org/2020/schedule/xml",
 	"title": "FOSDEM 2020",
 	"start": "2020-02-01",
@@ -38,7 +38,7 @@
 				"name": "AW1\\.120",
 				"show_name": "AW building",
 				"latlon": [50.8127773, 4.3799053],
-				"c3nav_slug": "aw1-120"
+				"c3nav_slug": "aw1120"
 			},
 			{
 				"name": "AW1\\.121",
@@ -56,7 +56,7 @@
 				"name": "AW1\\.126",
 				"show_name": "AW building",
 				"latlon": [50.8127773, 4.3799053],
-				"c3nav_slug": "aw1-126"
+				"c3nav_slug": "aw1126"
 			},
 			{
 				"name": "H\\.1301\\ \\(Cornil\\)",
@@ -101,6 +101,14 @@
 				"c3nav_slug": "h2215"
 			},
 			{
+				"name": "H\\.3242",
+				"c3nav_slug": "h3242"
+			},
+			{
+				"name": "H\\.3244",
+				"c3nav_slug": "h3244"
+			},
+			{
 				"name": "J\\.1\\.106",
 				"show_name": "J.1.106 (Salle Van Buuren)",
 				"latlon": [50.813012, 4.3792101],
@@ -109,7 +117,7 @@
 			{
 				"name": "Janson",
 				"latlon": [50.813231, 4.3791498],
-				"c3nav_slug": "j-main"
+				"c3nav_slug": "janson"
 			},
 			{
 				"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
@@ -169,7 +177,7 @@
 				"name": "UB2\\.252A\\ \\(Lameere\\)",
 				"show_name": "UB wing",
 				"latlon": [50.8120565, 4.382176],
-				"c3nav_slug": "ub2-252a"
+				"c3nav_slug": "ub2252a"
 			},
 			{
 				"name": "UB4\\.132",
@@ -229,7 +237,7 @@
 				"name": "UD2\\.Corridor",
 				"show_name": "UD wing",
 				"latlon": [50.812691, 4.3818835],
-				"c3nav_slug": "545fe4c1e56d7"
+				"c3nav_slug": "ud2corridor"
 			}
 		]
 	}
