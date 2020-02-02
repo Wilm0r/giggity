@@ -22,6 +22,7 @@ package net.gaast.giggity;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
@@ -86,7 +87,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		app = (Giggity) ctx.getApplication();
 		sched = sched_;
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
-		c = new LightNew();
+		c = new Colours(getResources());
 		
 		setOrientation(LinearLayout.VERTICAL);
 		
@@ -410,7 +411,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		}
 	}
 	
-	static private abstract class Colours {
+	static private class Colours {
 		public int background, lines;
 		public int[] clockbg;
 		public int[] clockfg;
@@ -419,35 +420,39 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		public int[] tentbg;
 		public int[] tentfg;
 		
-		public Colours() {
-			clockbg = new int[3];
-			clockfg = new int[3];
-			itembg = new int[4];
-			itemfg = new int[4];
-			tentbg = new int[2];
-			tentfg = new int[2];
-		}
-	}
-
-	static private class LightNew extends Colours {
-		public LightNew() {
-			super();
-			background = 0xFFf0f3f4;
-			lines = 0xFFb5c3c9;
-			itembg[0] = 0xFF039be5;
-			itembg[1] = 0xFF0288d1;
-			itembg[2] = 0xFFff5722;
-			itembg[3] = 0xFFff5722;
-			itemfg[0] = itemfg[1] = itemfg[2] = itemfg[3] = 0xEEFFFFFF;
-
-			clockbg[0] = 0xFF039be5;
-			clockbg[1] = 0xFF0288d1;
-			clockbg[2] = 0xFF00CF00;
-			clockfg[0] = clockfg[1] = clockfg[2] = 0xEEFFFFFF;
-
-			tentbg[0] = 0xFFd3dbdf;
-			tentbg[1] = 0xFFe1e7ea;
-			tentfg[0] = tentfg[1] = 0xFF000000;
+		public Colours(Resources r) {
+			background = r.getColor(R.color.blocks_bg);
+			lines = r.getColor(R.color.blocks_lines);
+			clockbg = new int[]{
+					r.getColor(R.color.blocks_clockbg_0),
+					r.getColor(R.color.blocks_clockbg_1),
+					r.getColor(R.color.blocks_clockbg_now),
+			};
+			clockfg = new int[]{
+					r.getColor(R.color.blocks_clockfg),
+					r.getColor(R.color.blocks_clockfg),
+					r.getColor(R.color.blocks_clockfg_now),
+			};
+			itembg = new int[]{
+					r.getColor(R.color.blocks_itembg_0),
+					r.getColor(R.color.blocks_itembg_1),
+					r.getColor(R.color.blocks_itembg_selected),
+					r.getColor(R.color.blocks_itembg_selected),
+			};
+			itemfg = new int[]{
+					r.getColor(R.color.blocks_itemfg),
+					r.getColor(R.color.blocks_itemfg),
+					r.getColor(R.color.blocks_itemfg_selected),
+					r.getColor(R.color.blocks_itemfg_selected),
+			};
+			tentbg = new int[]{
+					r.getColor(R.color.blocks_tentbg_0),
+					r.getColor(R.color.blocks_tentbg_1),
+			};
+			tentfg = new int[]{
+					r.getColor(R.color.blocks_tentfg),
+					r.getColor(R.color.blocks_tentfg),
+			};
 		}
 	}
 
