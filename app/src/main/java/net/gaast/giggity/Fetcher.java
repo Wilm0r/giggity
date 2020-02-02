@@ -81,6 +81,7 @@ public class Fetcher {
 			/* Do HTTP stuff first, then HTTPS! Once we get a CastClassException, we stop. */
 			((HttpURLConnection)dlc).setInstanceFollowRedirects(true);
 			((HttpURLConnection)dlc).addRequestProperty("Accept-Encoding", "gzip");
+			((HttpURLConnection)dlc).addRequestProperty("User-Agent", "Giggity/" + BuildConfig.VERSION_NAME);
 			
 			if (prefSource != Source.ONLINE_NOCACHE && fn.canRead() && fn.lastModified() > 0) {
 				/* TODO: Not sure if it's a great idea to use inode metadata to store
