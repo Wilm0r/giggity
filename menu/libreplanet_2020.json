@@ -1,0 +1,20 @@
+{
+    "start": "2019-03-14",
+    "end": "2019-03-15",
+    "version": 2020021000,
+    "url": "https://libreplanet.org/2020/lp2020-schedule.ics",
+    "title": "LibrePlanet 2020",
+    "metadata": {
+	"icon": "https://libreplanet.org/2020/assets/img/logo.svg",
+	"links": [
+	    {
+		"url": "https://libreplanet.org/2020/",
+		"title": "Website"
+	    },
+	    {
+		"url": "https://www.libreplanet.org/2020/live",
+		"title": "Livestream"
+	    }
+	]
+    }
+}
