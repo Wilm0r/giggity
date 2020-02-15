@@ -1,5 +1,5 @@
 {
-	"version": 2020021001,
+	"version": 2020021501,
 	"url": "https://cloud.bib.uni-mannheim.de/index.php/s/AwMc2ao8C2fX8rJ/download",
 	"title": "Bibliothekartag 2020",
 	"start": "2020-05-26",
@@ -16,9 +16,9 @@
 				"title": "Informationen von A-Z"
 			},
 			{
-				"url": "https://bibliothekartag2020.de/wp-content/uploads/2019/04/Behindertengerechte-Einrichtungen-HCC.jpg",
-				"title": "Karte HCC",
-				"type": "image/jpeg"
+				"url": "https://bibliothekartag2020.de/wp-content/uploads/2020/02/HCC.pdf",
+				"title": "Lageplan HCC",
+				"type": "applicaton/pdf"
 			}
 		]
 	}
