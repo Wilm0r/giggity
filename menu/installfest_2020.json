@@ -1,0 +1,20 @@
+{
+    "version": 2020021801,
+    "url": "https://pretalx.installfest.cz/installfest-2020/schedule/export/schedule.xml",
+    "title": "Installfest 2020",
+    "start": "2020-02-29",
+    "end": "2020-03-01",
+    "metadata": {
+            "icon": "https://installfest.cz/if19/images/logo-tux.png",
+            "links": [
+                {
+                    "url": "https://installfest.cz/if20/",
+                    "title": "Web Installfestu"
+                },
+                {
+                    "url": "https://installfest.cz/if20/info.html",
+                    "title": "Info o konferenci"
+                }
+            ]
+    }
+}
