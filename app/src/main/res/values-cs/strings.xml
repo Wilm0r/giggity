@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="app_name">Giggity</string>
+	<string name="search_hint">Hledat eventy</string>
+
+	<string name="ok">OK</string>
+	<string name="cancel">Zrušit</string>
+
+	<!--  Settings -->
+	<string name="default_view">Výchozí pohled</string>
+	<string name="font_size">Velikost písma blokového programu</string>
+	<string name="strict_ssl">Vyžadovat TLS</string>
+	<string name="strict_ssl_sub">Vyžadovat ověření HTTPS certifikátů</string>
+    
+	<string name="block_schedule_style">Styl</string>
+	<string name="block_schedule">Blokový program</string>
+	<string name="block_schedule_element_size_sub">Velikost bloku v blokovém programu</string>
+	<string name="block_schedule_element_size">Velikost bloku</string>
+
+	<string name="reminder">Připomínky eventů</string>
+	<string name="reminder_enabled_sub_on">Zobrazit připomínku před začátkem eventu</string>
+	<string name="reminder_enabled">Povolit připomínky</string>
+	<string name="reminder_period">Minuty před začátkem</string>
+	
+	<!-- EventDialog -->
+	<string name="speaker">Přednášející:</string>
+	<string name="speakers">Přednášející:</string>
+	<string name="track">Track:</string>
+	<string name="remind_me">Připomeň mi</string>
+	<string name="overlap">Překrývá se s</string>
+	<string name="hide_what">Skrýt...</string>
+	<string name="unhide_what">Odkrýt...</string>
+	<string name="hide_item">...tuto položku</string>
+	<string name="hide_room">...celou místnost</string>
+	<string name="hide_track">...celý track</string>
+	<string name="hide_lang">...vše v %s</string>
+	<string name="links_header">Odkazy:</string>
+
+	<!-- ScheduleViewActivity -->
+	<string name="loading_schedule">Načítání programu...</string>
+	<string name="use_cached_version">Použití nakešované verze</string>
+	<string name="loading_image">Načítání obrázků...</string>
+	<string name="loading_error">Chyba při načítání</string>
+	<string name="no_viewer_error">Není nainstalován prohlížeč pro tento typ souboru</string>
+	<string name="export_selections">Exportovat výběr</string>
+	<string name="home_shortcut">Přidat odkaz na domovskou obrazovku</string>
+	<string name="import_selections">Importovat výběr</string>
+	<string name="no_selections">Žádný výběr k exportování</string>
+	<string name="qr_tip">K importování použijte tlačítko Naskenovat QR v hlavním menu na druhém zařízení</string>
+	<string name="schedule_empty">Program se jeví jako prázdný</string>
+	<string name="format_unknown">Formát souboru nebyl rozpoznám</string>
+	<string name="no_json_data">Nepovedlo se načíst JSON data z URL</string>
+	<string name="no_network">Není dostupné internetové připojení</string>
+	<string name="no_network_or_cached">Není dostupné internetové připojení ani nakešovaná verze</string>
+
+	<!-- Menu -->
+	<string name="settings">Nastavení</string>
+	<string name="change_day">Změnit den</string>
+	<string name="show_hidden">Zobrazit skryté položky</string>
+	<string name="timetable">Rozvrh</string>
+	<string name="tracks">Tracky</string>
+	<string name="now_next">Probíhající a následující</string>
+	<string name="my_events">Moje eventy</string>
+	<string name="search">Hledat</string>
+	<!-- navdrawer (toggler) -->
+	<string name="navdrawer_on">Zobrazit menu</string>
+	<string name="navdrawer_off">Skrýt menu</string>
+
+	<!-- NowNext -->
+	<string name="no_events_today">Dnes nejsou žádné eventy.</string>
+	<string name="now">Probíhající</string>
+	<string name="next">Následující</string>
+	
+	<!-- MyItemsView -->
+	<string name="coming_up">Následuje</string>
+	<string name="seen_so_far">Zatím viděno</string>
+	<string name="none_marked">Zatím neoznačena žádná položka.</string>
+
+	<!-- SearchActivity (deprecated) -->
+	<string name="search_results">Výsledky pro \"%1$s\" za %2$s</string>
+
+	<!-- IteamSearchActivity -->
+	<string name="type_query_prompt">Napište řetězec k vyhledání</string>
+	<string name="search_results_empty">Vámi zadaný řetězec neodpovídá žádnému eventu.</string>
+
+	<!-- ChooserActivity -->
+	<string name="refresh">Aktualizovat</string>
+	<string name="unhide">Odkrýt skryté položky</string>
+	<string name="remove">Odstranit</string>
+	<string name="show_url">Zobrazit URL...</string>
+	<string name="chooser_now">Probíhající</string>
+	<string name="chooser_later">Naplánované</string>
+	<string name="chooser_past">Proběhlé</string>
+	<string name="add_dialog">Přidat...</string>
+	<string name="qr_scan">Naskenovat QR</string>
+	<string name="enter_url">Vložte URL programu</string>
+	<string name="refresh_failed">Aktualizace menu selhala.</string>
+
+	<!-- Reminder -->
+	<string name="notification_channel">Připomínka</string>
+	<string name="notification_channel_description">Vámi sledovaný event za chvíli začíná</string>
+
+	<!--  Widget -->
+	<string name="widg_longdate">EEEE d MMMM \'v\' HH:mm</string>
+	<string name="widg_shortdate">EEEE \'v\' HH:mm</string>
+	<string name="widg_in_room">v</string>
+	<string name="widg_soon">Již brzy</string>
+	<string name="widg_no_upcoming">Žádný nadcházející event :-(</string>
+	<string name="reminder_enabled_sub_off">Připomínky vypnuty</string>
+</resources>
