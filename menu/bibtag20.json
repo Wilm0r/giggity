@@ -1,5 +1,5 @@
 {
-	"version": 2020021501,
+	"version": 2020021502,
 	"url": "https://cloud.bib.uni-mannheim.de/index.php/s/AwMc2ao8C2fX8rJ/download",
 	"title": "Bibliothekartag 2020",
 	"start": "2020-05-26",
@@ -18,7 +18,7 @@
 			{
 				"url": "https://bibliothekartag2020.de/wp-content/uploads/2020/02/HCC.pdf",
 				"title": "Lageplan HCC",
-				"type": "applicaton/pdf"
+				"type": "application/pdf"
 			}
 		]
 	}
