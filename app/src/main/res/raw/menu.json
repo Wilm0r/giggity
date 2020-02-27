@@ -1,393 +1,6 @@
 {
-	"version": 2020012600,
+	"version": 2020021801,
 	"schedules": [
-		{
-			"title": "35c3 - main rooms only",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
-						"title": "Wiki"
-					},
-					{
-						"title": "Weblog",
-						"url": "https://events.ccc.de/"
-					}
-				]
-			},
-			"url": "https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml",
-			"start": "2018-12-27",
-			"end": "2018-12-30",
-			"refresh_interval": 1800,
-			"version": 2018122701
-		},
-		{
-			"title": "35c3 - new and merged",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
-						"title": "Wiki"
-					},
-					{
-						"title": "Weblog",
-						"url": "https://events.ccc.de/"
-					}
-				]
-			},
-			"url": "https://streaming.media.ccc.de/configs/conferences/35c3/everything.schedule.xml",
-			"start": "2018-12-27",
-			"end": "2018-12-30",
-			"refresh_interval": 1800,
-			"version": 2018122701
-		},
-		{
-			"start": "2019-01-21",
-			"end": "2019-01-25",
-			"version": 2019011800,
-			"url": "https://2019.linux.conf.au/schedule/conference.ics",
-			"title": "linux.conf.au 2019",
-			"metadata": {
-				"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
-				"links": [
-					{
-						"url": "https://2019.linux.conf.au/",
-						"title": "Website"
-					},
-					{
-						"url": "https://2019.linux.conf.au/schedule/",
-						"title": "Online schedule"
-					},
-					{
-						"url": "https://2019.linux.conf.au/wiki/Main_Page",
-						"title": "Wiki"
-					}
-				],
-				"rooms": [
-					{
-						"name": "C1",
-						"latlon": [-43.52307088323096, 172.58377421683943]
-					},
-					{
-						"name": "C2",
-						"latlon": [-43.523066173454346, 172.5836225959817]
-					},
-					{
-						"name": "C3",
-						"latlon": [-43.5232231993839, 172.58392661196348]
-					},
-					{
-						"name": "A\\d",
-						"latlon": [-43.524166195271505, 172.583842929392]
-					}
-				]
-			}
-		},
-		{
-			"version": 2019028001,
-			"url": "https://fosdem.org/2019/schedule/xml",
-			"title": "FOSDEM 2019",
-			"start": "2019-02-02",
-			"end": "2019-02-03",
-			"refresh_interval": 1800,
-			"metadata": {
-				"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
-				"links": [
-					{
-						"url": "https://fosdem.org/2019/",
-						"title": "Website"
-					},
-					{
-						"url": "https://fosdem.org/2019/assets/booklet_general-3a78d1f9f0a625a3ac784d403bb75fb8723a99a135a38fa53cb244031ea4bfcb.pdf",
-						"title": "Info booklet",
-						"type": "application/pdf"
-					},
-					{
-						"url": "https://fosdem.org/2019/assets/campusmap-bde646158c3e7b5d10f071e6b432b2857e574efd3b8d2ee490a855f179950a46.png",
-						"title": "Map",
-						"type": "image/png"
-					},
-					{
-						"url": "https://fosdem.org/2019/practical/transportation/",
-						"title": "Transportation"
-					},
-					{
-						"url": "https://fosdem.org/2019/stands/",
-						"title": "Stands"
-					}
-				],
-				"icon": "https://fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png",
-				"c3nav_base": "https://nav.fosdem.org",
-				"rooms": [
-					{
-						"name": "AW1\\.120",
-						"show_name": "AW building",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "aw1-120"
-					},
-					{
-						"name": "AW1\\.121",
-						"show_name": "AW building",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "aw1121"
-					},
-					{
-						"name": "AW1\\.125",
-						"show_name": "AW building",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "aw1125"
-					},
-					{
-						"name": "AW1\\.126",
-						"show_name": "AW building",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "aw1-126"
-					},
-					{
-						"name": "H\\.1301\\ \\(Cornil\\)",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "h1301"
-					},
-					{
-						"name": "H\\.1302\\ \\(Depage\\)",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "h1302"
-					},
-					{
-						"name": "H\\.1308\\ \\(Rolin\\)",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "h1308"
-					},
-					{
-						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "h1309"
-					},
-					{
-						"name": "H\\.2213",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "h2213"
-					},
-					{
-						"name": "H\\.2214",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "h2214"
-					},
-					{
-						"name": "H\\.2215\\ \\(Ferrer\\)",
-						"show_name": "H.*",
-						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "h2215"
-					},
-					{
-						"name": "Janson",
-						"latlon": [50.813231, 4.3791498],
-						"c3nav_slug": "j-main"
-					},
-					{
-						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
-						"show_name": "K building",
-						"latlon": [50.8146969, 4.3817676],
-						"c3nav_slug": "k1105"
-					},
-					{
-						"name": "K\\.3\\.201",
-						"show_name": "K building",
-						"latlon": [50.8146969, 4.3817676],
-						"c3nav_slug": "k3201"
-					},
-					{
-						"name": "K\\.3\\.401",
-						"show_name": "K building",
-						"latlon": [50.8146969, 4.3817676],
-						"c3nav_slug": "k3401"
-					},
-					{
-						"name": "K\\.4\\.201",
-						"show_name": "K building",
-						"latlon": [50.8146969, 4.3817676],
-						"c3nav_slug": "k4201"
-					},
-					{
-						"name": "K\\.4\\.401",
-						"show_name": "K building",
-						"latlon": [50.8146969, 4.3817676],
-						"c3nav_slug": "k4401"
-					},
-					{
-						"name": "K\\.4\\.601",
-						"show_name": "K building",
-						"latlon": [50.8146969, 4.3817676],
-						"c3nav_slug": "k4601"
-					},
-					{
-						"name": "UA2\\.114\\ \\(Baudoux\\)",
-						"show_name": "UA wing",
-						"latlon": [50.811683, 4.3826425],
-						"c3nav_slug": "ua2114"
-					},
-					{
-						"name": "UA2\\.118\\ \\(Henriot\\)",
-						"show_name": "UA wing",
-						"latlon": [50.811683, 4.3826425],
-						"c3nav_slug": "ua2118"
-					},
-					{
-						"name": "UA2\\.220\\ \\(Guillissen\\)",
-						"show_name": "UA wing",
-						"latlon": [50.811683, 4.3826425],
-						"c3nav_slug": "ua2220"
-					},
-					{
-						"name": "UB2\\.147",
-						"show_name": "UB wing",
-						"latlon": [50.8120565, 4.382176],
-						"c3nav_slug": "ub2147"
-					},
-					{
-						"name": "UB2\\.252A\\ \\(Lameere\\)",
-						"show_name": "UB wing",
-						"latlon": [50.8120565, 4.382176],
-						"c3nav_slug": "ub2-252a"
-					},
-					{
-						"name": "UB4.*",
-						"show_name": "UB wing",
-						"latlon": [50.8120565, 4.382176]
-					},
-					{
-						"name": "UD2\\.119",
-						"show_name": "UD wing",
-						"latlon": [50.812691, 4.3818835],
-						"c3nav_slug": "ud2119"
-					},
-					{
-						"name": "UD2\\.120\\ \\(Chavanne\\)",
-						"show_name": "UD wing",
-						"latlon": [50.812691, 4.3818835],
-						"c3nav_slug": "ud2120"
-					},
-					{
-						"name": "UD2\\.208\\ \\(Decroly\\)",
-						"show_name": "UD wing",
-						"latlon": [50.812691, 4.3818835],
-						"c3nav_slug": "ud2208"
-					},
-					{
-						"name": "UD2\\.218A",
-						"show_name": "UD wing",
-						"latlon": [50.812691, 4.3818835],
-						"c3nav_slug": "ud2218a"
-					},
-					{
-						"name": "UD2\\.Corridor",
-						"show_name": "UD wing",
-						"latlon": [50.812691, 4.3818835],
-						"c3nav_slug": "545fe4c1e56d7"
-					}
-				]
-			}
-		},
-		{
-			"version": 2019011700,
-			"url": "https://cfgmgmtcamp.eu/schedule/schedule.ics",
-			"id": "CfgMgmtCamp 2019 Ghent",
-			"title": "CfgMgmtCamp 2019 Ghent",
-			"start": "2019-02-04",
-			"end": "2019-02-05",
-			"metadata": {
-				"icon": "https://cfgmgmtcamp.eu/images/logo_name_big.png",
-				"links": [
-					{
-						"url": "https://cfgmgmtcamp.eu/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2019028002,
-			"url": "https://installfest.cz/if19/schedule.xml",
-			"title": "Installfest 2019",
-			"start": "2019-03-02",
-			"end": "2019-03-03",
-			"metadata": {
-				"icon": "https://installfest.cz/if19/images/logo-tux.png",
-				"links": [
-					{
-						"url": "https://installfest.cz",
-						"title": "Web Installfestu"
-					},
-					{
-						"url": "https://installfest.cz/if19/info",
-						"title": "Info o konferenci"
-					}
-				]
-			}
-		},
-		{
-			"start": "2019-03-23",
-			"end": "2019-03-24",
-			"version": 2019032300,
-			"url": "https://libreplanet.org/2019/lp2019-schedule.ics",
-			"id": "LibrePlanet 2019",
-			"title": "LibrePlanet 2019",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://libreplanet.org/2019/",
-						"title": "Website"
-					},
-					{
-						"url": "https://www.libreplanet.org/2019/live",
-						"title": "Livestream"
-					}
-				],
-				"rooms": [
-					{
-						"name": "Workshop.*|.*26-.*",
-						"latlon": [42.361, -71.09054]
-					},
-					{
-						"name": ".*31-.*",
-						"latlon": [42.36043, -71.09275]
-					},
-					{
-						"name": ".*32-.*",
-						"latlon": [42.36159, -71.09045]
-					},
-					{
-						"name": ".*34-.*",
-						"latlon": [42.36111, -71.09194]
-					}
-				]
-			}
-		},
-		{
-			"version": 2016080500,
-			"title": "IETF 104 Prague",
-			"url": "https://datatracker.ietf.org/meeting/104/agenda.ics",
-			"start": "2019-03-23",
-			"end": "2019-03-29",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://www.ietf.org/how/meetings/104/",
-						"title": "Website"
-					},
-					{
-						"url": "https://datatracker.ietf.org/meeting/104/floor-plan",
-						"title": "Floor plans"
-					}
-				]
-			}
-		},
 		{
 			"version": 2019022500,
 			"url": "https://frab.luga.de/de/LIT2019/public/schedule.xml",
@@ -1442,7 +1055,7 @@
 			}
 		},
 		{
-			"version": 2020012600,
+			"version": 2020013100,
 			"url": "https://fosdem.org/2020/schedule/xml",
 			"title": "FOSDEM 2020",
 			"start": "2020-02-01",
@@ -1481,7 +1094,7 @@
 						"name": "AW1\\.120",
 						"show_name": "AW building",
 						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "aw1-120"
+						"c3nav_slug": "aw1120"
 					},
 					{
 						"name": "AW1\\.121",
@@ -1499,7 +1112,7 @@
 						"name": "AW1\\.126",
 						"show_name": "AW building",
 						"latlon": [50.8127773, 4.3799053],
-						"c3nav_slug": "aw1-126"
+						"c3nav_slug": "aw1126"
 					},
 					{
 						"name": "H\\.1301\\ \\(Cornil\\)",
@@ -1544,6 +1157,14 @@
 						"c3nav_slug": "h2215"
 					},
 					{
+						"name": "H\\.3242",
+						"c3nav_slug": "h3242"
+					},
+					{
+						"name": "H\\.3244",
+						"c3nav_slug": "h3244"
+					},
+					{
 						"name": "J\\.1\\.106",
 						"show_name": "J.1.106 (Salle Van Buuren)",
 						"latlon": [50.813012, 4.3792101],
@@ -1552,7 +1173,7 @@
 					{
 						"name": "Janson",
 						"latlon": [50.813231, 4.3791498],
-						"c3nav_slug": "j-main"
+						"c3nav_slug": "janson"
 					},
 					{
 						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
@@ -1612,7 +1233,7 @@
 						"name": "UB2\\.252A\\ \\(Lameere\\)",
 						"show_name": "UB wing",
 						"latlon": [50.8120565, 4.382176],
-						"c3nav_slug": "ub2-252a"
+						"c3nav_slug": "ub2252a"
 					},
 					{
 						"name": "UB4\\.132",
@@ -1672,7 +1293,52 @@
 						"name": "UD2\\.Corridor",
 						"show_name": "UD wing",
 						"latlon": [50.812691, 4.3818835],
-						"c3nav_slug": "545fe4c1e56d7"
+						"c3nav_slug": "ud2corridor"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020021801,
+			"url": "https://pretalx.installfest.cz/installfest-2020/schedule/export/schedule.xml",
+			"title": "Installfest 2020",
+			"start": "2020-02-29",
+			"end": "2020-03-01",
+			"metadata": {
+				"icon": "https://installfest.cz/if19/images/logo-tux.png",
+				"links": [
+					{
+						"url": "https://installfest.cz/if20/",
+						"title": "Web Installfestu"
+					},
+					{
+						"url": "https://installfest.cz/if20/info.html",
+						"title": "Info o konferenci"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020021502,
+			"url": "https://cloud.bib.uni-mannheim.de/index.php/s/AwMc2ao8C2fX8rJ/download",
+			"title": "Bibliothekartag 2020",
+			"start": "2020-05-26",
+			"end": "2020-05-29",
+			"metadata": {
+				"icon": "https://pbs.twimg.com/profile_images/1138817129342521344/3jcmODs__200x200.png",
+				"links": [
+					{
+						"url": "https://bibliothekartag2020.de/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://bibliothekartag2020.de/der-kongress/informationen-von-a-z/",
+						"title": "Informationen von A-Z"
+					},
+					{
+						"url": "https://bibliothekartag2020.de/wp-content/uploads/2020/02/HCC.pdf",
+						"title": "Lageplan HCC",
+						"type": "application/pdf"
 					}
 				]
 			}
