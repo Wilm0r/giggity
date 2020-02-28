@@ -1,0 +1,17 @@
+{
+	"version": 2020022800,
+	"url": "https://piandmore.de/de/conference/pam12-5/schedule/download",
+	"title": "Pi and More 12½", 
+	"start": "2020-03-14",
+	"end": "2020-03-14",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://cmd-ev.github.io/assets/piandmore-square.png",
+		"links": [
+			{
+				"url": "https://piandmore.de/de/conference/pam12-5/",
+				"title": "Website"
+			}
+		]
+	}
+}
