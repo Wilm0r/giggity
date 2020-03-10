@@ -1,0 +1,10 @@
+{
+  "version": 202003100,
+  "url": "https://pretalx.com/fossgis2020/schedule.xml",
+  "title": "FOSSGIS-Konferenz 2020",
+  "start": "2020-03-11",
+  "end": "2020-03-14",
+  "metadata": {
+    "icon": "https://fossgis-konferenz.de/2020/img/fossgis20-logo.png"
+  }
+}
