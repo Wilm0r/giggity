@@ -1,0 +1,16 @@
+{
+	"version": 2020061701,
+	"url": "https://scheduler.hope.net/hope2020/schedule/export/schedule.xml",
+	"title": "HOPE 2020",
+	"start": "2020-07-25",
+	"end": "2020-08-02",
+	"metadata": {
+		"icon": "https://pbs.twimg.com/profile_images/1194682670346907650/Uu73PLJc_200x200.jpg",
+		"links": [
+			{
+				"url": "https://www.hope.net/",
+				"title": "Website"
+			}
+		]
+	}
+}
