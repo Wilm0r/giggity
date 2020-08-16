@@ -596,10 +596,12 @@ public class Db {
 			day = day_;
 			ContentValues row;
 
-			SQLiteDatabase db = dbh.getWritableDatabase();
-			row = new ContentValues();
-			row.put("sch_day", day);
-			db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
+			if (day >= 0) {
+				SQLiteDatabase db = dbh.getWritableDatabase();
+				row = new ContentValues();
+				row.put("sch_day", day);
+				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
+			}
 		}
 
 		public String getMetadata() {

@@ -90,8 +90,12 @@ public class Schedule implements Serializable {
 
 	private ZonedDateTime firstTime, lastTime;
 	private ZonedDateTime dayFirstTime, dayLastTime;  // equal to full schedule bounds (so spanning multiple days) if day = -1
-	private ZonedDateTime curDay, curDayEnd;          // null if day = -1
-	private LinkedList<ZonedDateTime> dayList;
+	private int curDayNum;
+	private ZonedDateTime curDay, curDayEnd;          // null if curDayNum = -1
+	// For internal use, *exact* hour boundaries (day-before for some day change + tz offset combs)
+	private LinkedList<ZonedDateTime> dayList = new LinkedList<>();
+	// For external use, dates only
+	private LinkedList<ZonedDateTime> day0List = new LinkedList<>();
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
 	private ZoneId nativeTz = ZoneId.systemDefault();
@@ -149,6 +153,31 @@ public class Schedule implements Serializable {
 		if (allItems.size() == 0) {
 			throw new LoadException(getString(R.string.schedule_empty));
 		}
+
+		ZonedDateTime day = firstTime.truncatedTo(ChronoUnit.DAYS).plus(dayChangeOffsetMins, ChronoUnit.MINUTES);
+		/* Add a day 0 (maybe there's an event before the first day officially
+		 * starts?). Saw this in the CCC Fahrplan for example. */
+		if (day.isAfter(firstTime))
+			day = day.minusDays(1);
+
+		ZonedDateTime dayEnd = day.plusDays(1);
+
+		dayList = new LinkedList<>();
+		while (day.isBefore(lastTime)) {
+			/* Some schedules have empty days in between. :-/ Skip those. */
+			for (Schedule.Item item : allItems.values()) {
+				if (item.getStartTimeZoned().compareTo(day) >= 0 &&
+				    item.getEndTimeZoned().compareTo(dayEnd) <= 0) {
+					// Exact start time of day (could be "yesterday")
+					dayList.add(day);
+					// Midnight date-only for display purpose.
+					day0List.add(day.minus(dayChangeOffsetMins, ChronoUnit.MINUTES).truncatedTo(ChronoUnit.DAYS));
+					break;
+				}
+			}
+			day = dayEnd;
+			dayEnd = dayEnd.plusDays(1);
+		}
 	}
 
 	public String getString(int id) {
@@ -194,30 +223,7 @@ public class Schedule implements Serializable {
 	}
 	
 	public LinkedList<ZonedDateTime> getDays() {
-		if (dayList == null) {
-			ZonedDateTime day = firstTime.truncatedTo(ChronoUnit.DAYS).plus(dayChangeOffsetMins, ChronoUnit.MINUTES);
-			/* Add a day 0 (maybe there's an event before the first day officially
-			 * starts?). Saw this in the CCC Fahrplan for example. */
-			if (day.isAfter(firstTime))
-				day = day.minusDays(1);
-
-			ZonedDateTime dayEnd = day.plusDays(1);
-
-			dayList = new LinkedList<>();
-			while (day.isBefore(lastTime)) {
-				/* Some schedules have empty days in between. :-/ Skip those. */
-				for (Schedule.Item item : allItems.values()) {
-					if (item.getStartTimeZoned().compareTo(day) >= 0 &&
-						item.getEndTimeZoned().compareTo(dayEnd) <= 0) {
-						dayList.add(day);
-						break;
-					}
-				}
-				day = dayEnd;
-				dayEnd = dayEnd.plusDays(1);
-			}
-		}
-		return dayList;
+		return day0List;
 	}
 	
 	/** Total duration of this event in seconds. */
@@ -226,19 +232,26 @@ public class Schedule implements Serializable {
 	}
 	
 	public ZonedDateTime getDay() {
-		return curDay;
+		if (curDayNum != -1) {
+			return day0List.get(curDayNum);
+		} else {
+			return null;
+		}
+	}
+
+	public int getDayNum() {
+		return curDayNum;
 	}
 	
-	public void setDay(int day) {
+	public ZonedDateTime setDay(int day) {
 		if (day == -1) {
+			curDayNum = day;
 			curDay = curDayEnd = null;
 			dayFirstTime = firstTime;
 			dayLastTime = lastTime;
 		} else {
-			if (day >= getDays().size())
-				day = 0;
-
-			curDay = getDays().get(day);
+			curDayNum = day % dayList.size();
+			curDay = dayList.get(curDayNum);
 			curDayEnd = curDay.plusDays(1);
 
 			dayFirstTime = dayLastTime = null;
@@ -252,6 +265,7 @@ public class Schedule implements Serializable {
 				}
 			}
 		}
+		return getDay();
 	}
 
 	private void addTzOffset(double hoursOff) {
@@ -272,7 +286,7 @@ public class Schedule implements Serializable {
 	/* Sets day to one overlapping given moment in time and returns day number, or -1 if no match. */
 	public int setDay(ZonedDateTime now) {
 		int i = 0;
-		for (ZonedDateTime day : getDays()) {
+		for (ZonedDateTime day : dayList) {
 			ZonedDateTime dayEnd = day.plusDays(1);
 			if (day.isBefore(now) && dayEnd.isAfter(now)) {
 				setDay(i);

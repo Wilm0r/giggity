@@ -761,8 +761,10 @@ public class ScheduleViewActivity extends Activity {
 
 		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
 		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.search && sched.getDays().size() > 1) {
-			sched.setDay(sched.getDb().getDay());
-			setTitle(sched.getDayFormat().format(sched.getDay()) + ", " + sched.getTitle());
+			ZonedDateTime d = sched.setDay(sched.getDb().getDay());
+			if (d != null) {
+				setTitle(sched.getDayFormat().format(d) + ", " + sched.getTitle());
+			}
 		} else {
 			sched.setDay(-1);
 			setTitle(sched.getTitle());
@@ -908,25 +910,23 @@ public class ScheduleViewActivity extends Activity {
 	public void showDayDialog() {
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EE d MMMM");
 		LinkedList<ZonedDateTime> days = sched.getDays();
-		CharSequence dayList[] = new CharSequence[days.size()];
-		int i, cur = -1;
-		for (i = 0; i < days.size(); i ++) {
-			if (days.get(i).equals(sched.getDay()))
-				cur = i;
-			dayList[i] = dateFormat.format(days.get(i));
-		}
 
 		if (days.size() == 2) {
 			/* If there are only two days, don't bother showing the dialog, even
 			 * though we did promise to show it. :-P */
-			sched.getDb().setDay(1 - cur);
+			sched.getDb().setDay(1 - sched.getDayNum());
 			redrawSchedule();
 			return;
 		}
 
+		CharSequence dayList[] = new CharSequence[days.size()];
+		for (int i = 0; i < days.size(); i ++) {
+			dayList[i] = dateFormat.format(days.get(i));
+		}
+
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.change_day);
-		builder.setSingleChoiceItems(dayList, cur, new DialogInterface.OnClickListener() {
+		builder.setSingleChoiceItems(dayList, sched.getDayNum(), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				sched.getDb().setDay(item);
 				redrawSchedule();
@@ -1117,13 +1117,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		private void daySwitch(int d) {
-			LinkedList<ZonedDateTime> days = sched.getDays();
-			int i, cur = -1;
-			for (i = 0; i < days.size(); i ++)
-				if (days.get(i).equals(sched.getDay()))
-					cur = i;
-
-			sched.getDb().setDay((cur + d + days.size()) % days.size());
+			sched.getDb().setDay((sched.getDayNum() + d + sched.getDays().size()) % sched.getDays().size());
 			redrawSchedule();
 		}
 	}

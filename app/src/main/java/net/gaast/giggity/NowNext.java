@@ -59,7 +59,7 @@ public class NowNext extends ScheduleListView implements ScheduleViewer {
 			nextList = new ArrayList<>();
 		}
 
-		if (sched.getDay() == null) {
+		if (sched.getDayNum() == -1) {
 			fullList.add(this.getResources().getString(R.string.no_events_today));
 		} else {
 			fullList.add(this.getResources().getString(R.string.now));
