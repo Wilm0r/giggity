@@ -91,13 +91,14 @@ public class Schedule implements Serializable {
 	private ZonedDateTime firstTime, lastTime;
 	private ZonedDateTime dayFirstTime, dayLastTime;  // equal to full schedule bounds (so spanning multiple days) if day = -1
 	private ZonedDateTime curDay, curDayEnd;          // null if day = -1
-	private ZoneId nativeTz = ZoneId.systemDefault();
-	private LocalTime dayChange = LocalTime.of(6, 0);
 	private LinkedList<ZonedDateTime> dayList;
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
-	private HashSet<String> languages = new HashSet<>();
+	private ZoneId nativeTz = ZoneId.systemDefault();
 	private HashSet<Double> tzOffset = new HashSet<>();
+	private int dayChangeOffsetMins = 6 * 60;  // 06:00. Raw int so it can be negative (will include tzOffset).
+
+	private HashSet<String> languages = new HashSet<>();
 
 	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
 	 * nice if some file formats could start supplying this info themselves. */
@@ -194,7 +195,7 @@ public class Schedule implements Serializable {
 	
 	public LinkedList<ZonedDateTime> getDays() {
 		if (dayList == null) {
-			ZonedDateTime day = ZonedDateTime.of(firstTime.toLocalDate(), dayChange, nativeTz);
+			ZonedDateTime day = firstTime.truncatedTo(ChronoUnit.DAYS).plus(dayChangeOffsetMins, ChronoUnit.MINUTES);
 			/* Add a day 0 (maybe there's an event before the first day officially
 			 * starts?). Saw this in the CCC Fahrplan for example. */
 			if (day.isAfter(firstTime))
@@ -251,6 +252,14 @@ public class Schedule implements Serializable {
 				}
 			}
 		}
+	}
+
+	private void addTzOffset(double hoursOff) {
+		if (tzOffset.isEmpty()) {
+			// Integrate the first tz offset we run into into the day change time.
+			dayChangeOffsetMins -= hoursOff * 60;
+		}
+		tzOffset.add(hoursOff);
 	}
 
 	public double getTzOffset() {
@@ -981,7 +990,7 @@ public class Schedule implements Serializable {
 			if (localName.equals("conference")) {
 				title = propMap.get("title");
 				if (propMap.get("day_change") != null) {
-					dayChange = LocalTime.parse(propMap.get("day_change"), tf);
+					dayChangeOffsetMins = LocalTime.parse(propMap.get("day_change"), tf).toSecondOfDay() / 60;
 					// TODO: PARSE ERROR?
 				}
 			} else if (localName.equals("event")) {
@@ -1007,13 +1016,12 @@ public class Schedule implements Serializable {
 					// to extend tz awareness further when things are back to normal.
 					startTime = origStart.withZoneSameInstant(nativeTz);
 					// Save the offset so it can be reported to the user.
-					double offset = startTime.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0;
-					tzOffset.add(offset);
+					addTzOffset(startTime.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0);
 				} else {
 					LocalTime rawTime = LocalTime.parse(startTimeS, tf);
 					startTime = ZonedDateTime.of(curDay, rawTime, nativeTz);
 
-					if (rawTime.isBefore(dayChange)) {
+					if (rawTime.toSecondOfDay() < (dayChangeOffsetMins * 60)) {
 						// In Frab files, if a time is before day_change it's technically the next
 						// day.
 						startTime = startTime.plusDays(1);
