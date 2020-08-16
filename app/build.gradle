@@ -30,7 +30,7 @@ dependencies {
     // implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
     // implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     // implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'commons-io:commons-io:20030203.000550'
+    implementation 'commons-io:commons-io:2.3'
     implementation 'com.google.android.material:material:1.2.0-alpha03'
 
     // java.time backport for <26 phones. :<
