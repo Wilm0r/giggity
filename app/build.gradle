@@ -30,10 +30,11 @@ dependencies {
     // implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
     // implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     // implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'commons-io:commons-io:2.4'
+    implementation 'commons-io:commons-io:20030203.000550'
+    implementation 'com.google.android.material:material:1.2.0-alpha03'
 
     // java.time backport for <26 phones. :<
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.1.1'
+    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.4'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
