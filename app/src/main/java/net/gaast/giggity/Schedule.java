@@ -37,6 +37,7 @@ import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
 import org.threeten.bp.format.DateTimeParseException;
+import org.threeten.bp.temporal.ChronoUnit;
 import org.threeten.bp.temporal.TemporalAccessor;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
@@ -96,6 +97,7 @@ public class Schedule implements Serializable {
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
 	private HashSet<String> languages = new HashSet<>();
+	private HashSet<Double> tzOffset = new HashSet<>();
 
 	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
 	 * nice if some file formats could start supplying this info themselves. */
@@ -249,6 +251,13 @@ public class Schedule implements Serializable {
 				}
 			}
 		}
+	}
+
+	public double getTzOffset() {
+		if (tzOffset.size() == 1) {
+			return tzOffset.iterator().next();
+		}
+		return 0;
 	}
 
 	/* Sets day to one overlapping given moment in time and returns day number, or -1 if no match. */
@@ -913,16 +922,18 @@ public class Schedule implements Serializable {
 		private LinkedList<Link> links;
 		private LocalDate curDay;
 
-		private DateTimeFormatter df, tf;
+		private DateTimeFormatter df, tf, zdf;
 
 		public PentabarfParser() {
 			tentMap = new HashMap<>();
 
-			//nativeTz = ZoneId.of("Europe/Brussels");
-			//nativeTz = ZoneId.of("US/Pacific");
 			df = DateTimeFormatter.ISO_LOCAL_DATE;
 			//tf = DateTimeFormatter.ISO_LOCAL_TIME;
 			tf = DateTimeFormatter.ofPattern("H:mm[:ss]");
+
+			// zoned date+time format in the <date/> tag, not used by all schedules BUT the only one
+			// that may have tz awareness... (Used by several schedules yet for example not FOSDEM.
+			zdf = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 		}
 		
 		@Override
@@ -974,28 +985,42 @@ public class Schedule implements Serializable {
 					// TODO: PARSE ERROR?
 				}
 			} else if (localName.equals("event")) {
-				String id, title, startTimeS, durationS, s, desc, wl;
+				String id, title, startTimeS, startZonedTimeS, durationS, s, desc, wl;
 				ZonedDateTime startTime, endTime;
 				Schedule.Item item;
-				
+
+				startTimeS = propMap.get("start");
+				startZonedTimeS = propMap.get("date");
 				if ((id = propMap.get("id")) == null ||
 				    (title = propMap.get("title")) == null ||
-				    (startTimeS = propMap.get("start")) == null ||
+				    (startTimeS == null && startZonedTimeS == null) ||
 				    (durationS = propMap.get("duration")) == null) {
 					Log.w("Schedule.loadPentabarf", "Invalid event, some attributes are missing.");
 					return;
 				}
 
-				LocalTime rawTime = LocalTime.parse(startTimeS, tf);
-				startTime = ZonedDateTime.of(curDay, rawTime, nativeTz);
+				if (startZonedTimeS != null) {
+					// This will be the tz-native starting time in the conf's zone
+					ZonedDateTime origStart = ZonedDateTime.parse(startZonedTimeS, zdf);
+					// What we'll save is a ZDT in the phone's local tz since during COVID-19 that's
+					// all what's going to matter. Shout out to future Wilmer or whomever is going
+					// to extend tz awareness further when things are back to normal.
+					startTime = origStart.withZoneSameInstant(nativeTz);
+					// Save the offset so it can be reported to the user.
+					double offset = startTime.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0;
+					tzOffset.add(offset);
+				} else {
+					LocalTime rawTime = LocalTime.parse(startTimeS, tf);
+					startTime = ZonedDateTime.of(curDay, rawTime, nativeTz);
 
-				if (rawTime.isBefore(dayChange)) {
-					// In Frab files, if a time is before day_change it's technically the next
-					// day.
-					startTime = startTime.plusDays(1);
+					if (rawTime.isBefore(dayChange)) {
+						// In Frab files, if a time is before day_change it's technically the next
+						// day.
+						startTime = startTime.plusDays(1);
+					}
 				}
 
-				rawTime = LocalTime.parse(durationS, tf);
+				LocalTime rawTime = LocalTime.parse(durationS, tf);
 				endTime = startTime.plusHours(rawTime.getHour()).plusMinutes(rawTime.getMinute());
 
 				item = new Schedule.Item(id, title, startTime, endTime);

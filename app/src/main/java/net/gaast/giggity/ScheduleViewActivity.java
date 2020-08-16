@@ -71,6 +71,8 @@ import org.threeten.bp.format.DateTimeFormatter;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -606,6 +608,12 @@ public class ScheduleViewActivity extends Activity {
 		LinkedList<ZonedDateTime> days = sched.getDays();
 		TextView dr = (TextView) drawerLayout.findViewById(R.id.drawer_date_range);
 		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
+
+		double offset = sched.getTzOffset();
+		if (offset != 0) {
+			String plus = offset > 0 ? "+" : "";
+			dr.setText(dr.getText() + "\n" + getString(R.string.drw_tz_offset) + " " + plus + offset);
+		}
 
 		if (sched.getLinks() != null) {
 			Log.d("finishNavDrawer", "Links " + sched.getLinks().size());

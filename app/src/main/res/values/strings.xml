@@ -54,6 +54,7 @@
 	<string name="no_network_or_cached">No network connection or cached copy available</string>
 
 	<!-- Menu -->
+	<string name="drw_tz_offset">Timezone offset:</string>
 	<string name="settings">Settings</string>
 	<string name="change_day">Change day</string>
 	<string name="show_hidden">Show hidden items</string>

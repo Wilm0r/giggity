@@ -52,6 +52,7 @@
 	<string name="no_network_or_cached">Geen netwerkverbinding of cache kopie beschikbaar</string>
 
 	<!-- Menu -->
+	<string name="drw_tz_offset">Tijdzone verschil:</string>
 	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>
 	<string name="show_hidden">Verborgen items tonen</string>
