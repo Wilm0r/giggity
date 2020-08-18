@@ -95,7 +95,6 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 			setLines(1);
 			setSingleLine();
 			setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-			setCompoundDrawables(null, getResources().getDrawable(R.drawable.ic_clear_black_24dp), null, null);
 		}
 
 		@Override
