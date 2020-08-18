@@ -1,104 +1,6 @@
 {
-	"version": 2020021801,
+	"version": 2020081800,
 	"schedules": [
-		{
-			"version": 2019022500,
-			"url": "https://frab.luga.de/de/LIT2019/public/schedule.xml",
-			"title": "Augsburger Linux-Infotag 2019",
-			"start": "2019-04-06",
-			"end": "2019-04-06",
-			"metadata": {
-				"icon": "https://luga-ev.github.io/frab-extras/Tux2.png",
-				"links": [
-					{
-						"url": "https://www.luga.de/Aktionen/LIT-2019/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2019040409,
-			"url": "https://pretalx.jdll.org/jdll2019/schedule.xml",
-			"title": "Journées du Logiciel Libre 2019",
-			"start": "2019-04-06",
-			"end": "2019-04-07",
-			"metadata": {
-				"links": [
-					{
-						"url": "http://www.jdll.org/",
-						"title": "Site web"
-					},
-					{
-						"url": "http://www.jdll.org/pratique/plan/",
-						"title": "Plan"
-					}
-				]
-			}
-		},
-		{
-			"version": 2019042600,
-			"url": "http://rml13.creationmonetaire.info/rml.ics",
-			"id": "RML13",
-			"title": "RML 13",
-			"start": "2019-05-23",
-			"end": "2019-05-26",
-			"metadata": {
-				"icon": "https://git.duniter.org/nodes/typescript/duniter/raw/dev/images/450%C3%97450.png",
-				"links": [
-					{
-						"url": "http://rml13.creationmonetaire.info/",
-						"title": "Site Web"
-					}
-				],
-				"rooms": [
-					{
-						"name": "Cyberbodega.*",
-						"latlon": [42.695884249268495, 2.8846125304698944]
-					}
-				]
-			}
-		},
-		{
-			"version": 2019042600,
-			"url": "https://www.opensouthcode.org/conferences/opensouthcode2019/schedule.xml",
-			"title": "Opensouthcode 2019",
-			"start": "2019-05-24",
-			"end": "2019-05-25",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://www.opensouthcode.org/",
-						"title": "Website"
-					}
-				],
-				"icon": "https://www.opensouthcode.org/logo1.png"
-			}
-		},
-		{
-			"version": 2019050500,
-			"url": "https://programme.passageenseine.fr/index.ics",
-			"title": "PSES 2019",
-			"start": "2019-06-27",
-			"end": "2019-06-30",
-			"metadata": {
-				"icon": "https://passageenseine.fr/logo.png",
-				"links": [
-					{
-						"url": "https://passageenseine.fr/",
-						"title": "Site web"
-					},
-					{
-						"url": "https://programme.passageenseine.fr/",
-						"title": "Programme web"
-					},
-					{
-						"url": "https://live.passageenseine.fr/",
-						"title": "Streaming"
-					}
-				]
-			}
-		},
 		{
 			"version": 2019053100,
 			"url": "https://www.tuebix.org/2019/giggity.xml",
@@ -115,60 +17,6 @@
 					{
 						"url": "https://www.tuebix.org/anfahrt/",
 						"title": "Anfahrt"
-					}
-				]
-			}
-		},
-		{
-			"version": 2019071800,
-			"url": "https://debconf19.debconf.org/schedule/pentabarf.xml",
-			"title": "DebConf 19",
-			"start": "2019-07-20",
-			"end": "2019-07-28",
-			"metadata": {
-				"icon": "https://debconf19.debconf.org/static/img/favicon/favicon-196.095c311cf060.png",
-				"links": [
-					{
-						"url": "https://debconf19.debconf.org/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2019071700,
-			"url": "https://programm.froscon.de/2019/schedule.xml",
-			"title": "FrOSCon 2019",
-			"start": "2019-08-10",
-			"end": "2019-08-11",
-			"metadata": {
-				"icon": "https://www.froscon.de/fileadmin/images/logos/frog_button.png",
-				"links": [
-					{
-						"url": "https://www.froscon.org/",
-						"title": "Website"
-					},
-					{
-						"url": "https://programm.froscon.de/maps/map1.png",
-						"title": "Map1",
-						"type": "image/png"
-					},
-					{
-						"url": "https://programm.froscon.de/maps/map2.png",
-						"title": "Map2",
-						"type": "image/png"
-					},
-					{
-						"url": "https://www.froscon.de/en/news/",
-						"title": "News"
-					},
-					{
-						"url": "http://streaming.media.ccc.de/",
-						"title": "Streams"
-					},
-					{
-						"url": "http://froscon.tv/",
-						"title": "Recordings"
 					}
 				]
 			}
@@ -1319,6 +1167,43 @@
 			}
 		},
 		{
+			"version": 2020022800,
+			"url": "https://piandmore.de/de/conference/pam12-5/schedule/download",
+			"title": "Pi and More 12½",
+			"start": "2020-03-14",
+			"end": "2020-03-14",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://cmd-ev.github.io/assets/piandmore-square.png",
+				"links": [
+					{
+						"url": "https://piandmore.de/de/conference/pam12-5/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"start": "2020-03-14",
+			"end": "2020-03-15",
+			"version": 2020030900,
+			"url": "https://libreplanet.org/2020/lp2020-schedule.ics",
+			"title": "LibrePlanet 2020",
+			"metadata": {
+				"icon": "https://libreplanet.org/2020/assets/img/logo.png",
+				"links": [
+					{
+						"url": "https://libreplanet.org/2020/",
+						"title": "Website"
+					},
+					{
+						"url": "https://libreplanet.org/2020/live/",
+						"title": "Livestream"
+					}
+				]
+			}
+		},
+		{
 			"version": 2020021502,
 			"url": "https://cloud.bib.uni-mannheim.de/index.php/s/AwMc2ao8C2fX8rJ/download",
 			"title": "Bibliothekartag 2020",
@@ -1339,6 +1224,66 @@
 						"url": "https://bibliothekartag2020.de/wp-content/uploads/2020/02/HCC.pdf",
 						"title": "Lageplan HCC",
 						"type": "application/pdf"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020061701,
+			"url": "https://scheduler.hope.net/hope2020/schedule/export/schedule.xml",
+			"title": "HOPE 2020",
+			"start": "2020-07-25",
+			"end": "2020-08-02",
+			"metadata": {
+				"icon": "https://pbs.twimg.com/profile_images/1194682670346907650/Uu73PLJc_200x200.jpg",
+				"links": [
+					{
+						"url": "https://www.hope.net/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020081800,
+			"url": "https://programm.froscon.de/2020/schedule.xml",
+			"title": "FrOSCon 2020",
+			"start": "2020-08-22",
+			"end": "2020-08-23",
+			"metadata": {
+				"icon": "https://www.froscon.de/fileadmin/images/logos/frog_button.png",
+				"links": [
+					{
+						"url": "https://www.froscon.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.froscon.de/en/news/",
+						"title": "News"
+					},
+					{
+						"url": "http://streaming.media.ccc.de/",
+						"title": "Streams"
+					},
+					{
+						"url": "http://froscon.tv/",
+						"title": "Recordings"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020080900,
+			"url": "https://debconf20.debconf.org/schedule/pentabarf.xml",
+			"title": "DebConf 20",
+			"start": "2020-08-23",
+			"end": "2020-08-29",
+			"metadata": {
+				"icon": "https://debconf20.debconf.org/static/img/favicon/favicon-196.083c69e44c2b.png",
+				"links": [
+					{
+						"url": "https://debconf20.debconf.org/",
+						"title": "Website"
 					}
 				]
 			}
