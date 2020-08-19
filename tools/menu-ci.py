@@ -183,10 +183,10 @@ def validate_entry(e):
 	if isinstance(sf, FetchError):
 		errors.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(sf)))
 
-	if e["start"] > e["end"]:
-		errors.append("Conference starts (%(start)s) before it ends (%(end)s)?" % e)
+	if e["end"] < e["start"]:
+		errors.append("Conference ends (%(end)s) before it starts (%(start)s)?" % e)
 	if e["end"] < datetime.datetime.now().strftime("%Y-%m-%d"):
-		errors.append("Conference alread ended (%(end)s)?" % e)
+		errors.append("Conference already ended (%(end)s)?" % e)
 
 	md = e.get("metadata")
 	if md:
