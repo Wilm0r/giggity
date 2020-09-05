@@ -1,0 +1,25 @@
+{
+	"version": 2020090600,
+	"url": "https://kielux.de/content/calendars/LPD20.ics",
+	"title": "Kieler Linux Presentation Day 2020.2", 
+	"start": "2020-09-17",
+	"end": "2020-09-17",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+		"links": [
+      {
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"url": "https://kielux.de/programm/LPD20",
+				"title": "Schedule"
+			},
+      {
+        "url": "https://kielux.de/archiv",
+        "title": "News"
+      }
+		]
+	}
+}
