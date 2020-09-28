@@ -1022,16 +1022,22 @@ public class Schedule implements Serializable {
 					return;
 				}
 
-				if (startZonedTimeS != null) {
-					// This will be the tz-native starting time in the conf's zone
-					ZonedDateTime origStart = ZonedDateTime.parse(startZonedTimeS, zdf);
-					// What we'll save is a ZDT in the phone's local tz since during COVID-19 that's
-					// all what's going to matter. Shout out to future Wilmer or whomever is going
-					// to extend tz awareness further when things are back to normal.
-					startTime = origStart.withZoneSameInstant(nativeTz);
-					// Save the offset so it can be reported to the user.
-					addTzOffset(startTime.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0);
-				} else {
+				startTime = null;
+				try {
+					if (startZonedTimeS != null) {
+						// This will be the tz-native starting time in the conf's zone
+						ZonedDateTime origStart = ZonedDateTime.parse(startZonedTimeS, zdf);
+						// What we'll save is a ZDT in the phone's local tz since during COVID-19 that's
+						// all what's going to matter. Shout out to future Wilmer or whomever is going
+						// to extend tz awareness further when things are back to normal.
+						startTime = origStart.withZoneSameInstant(nativeTz);
+						// Save the offset so it can be reported to the user.
+						addTzOffset(startTime.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0);
+					}
+				} catch (DateTimeParseException e){
+					startZonedTimeS = null;
+				}
+				if (startZonedTimeS == null) {
 					LocalTime rawTime = LocalTime.parse(startTimeS, tf);
 					startTime = ZonedDateTime.of(curDay, rawTime, nativeTz);
 
