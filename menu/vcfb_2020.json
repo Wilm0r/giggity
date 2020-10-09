@@ -1,5 +1,5 @@
 {
-	"version": 2020101000,
+	"version": 2020100900,
 	"url": "https://vcfb.de/2020/schedule.xml",
 	"title": "Vintage Computing Festival Berlin 2020",
 	"start": "2020-10-10",
@@ -7,18 +7,20 @@
 	"refresh_interval": 1800,
 	"metadata": {
 		"icon": "https://wiki.vcfb.de/2020/_media/wiki:logo.png",
-                "links": [
-                        {
-                                "url": "https://vcfb.de/2020/",
-                                "title": "Website"
-                        },
-                        {
-                                "url": "https://wiki.vcfb.de/2020/",
-                                "title": "Event Wiki"
-                        },
-                        {
-                                "url": "https://wiki.vcfb.de/2020/stream",
-                                "title": "Stream"
-                        }
-                ]
+		"links": [
+			{
+				"url": "https://vcfb.de/2020/",
+				"title": "Website"
+			},
+			{
+				"url": "https://wiki.vcfb.de/2020/",
+				"title": "Event Wiki"
+			},
+			{
+				"url": "https://wiki.vcfb.de/2020/stream",
+				"title": "Stream"
+			}
+		]
+	}
 }
+
