@@ -1,0 +1,16 @@
+{
+  "version": 2021012000,
+  "url": "https://in2021.mini.debconf.org/schedule/pentabarf.xml",
+  "title": "MiniDebConf India 2021",
+  "start": "2021-01-23",
+  "end": "2021-01-24",
+  "metadata": {
+    "icon": "https://in2021.mini.debconf.org/static/img/logo.8224b7f40c56.png",
+    "links": [
+      {
+        "url": "https://in2021.mini.debconf.org/",
+        "title": "Website"
+      }
+    ]
+  }
+}
