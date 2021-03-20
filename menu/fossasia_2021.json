@@ -1,0 +1,16 @@
+{
+    "start": "2021-03-13",
+    "end": "2021-03-21",
+    "version": 2021031100,
+    "url": "https://api.eventyay.com/v1/events/fa96ae2c.ics?include_sessions",
+    "title": "FOSSASIA Summit 2021",
+    "metadata": {
+        "icon": "https://pbs.twimg.com/profile_images/1141238022/fossasia-cubelogo_200x200.jpg",
+        "links": [
+            {
+                "url": "https://summit.fossasia.org/",
+                "title": "Website"
+            }
+        ]
+    }
+}
