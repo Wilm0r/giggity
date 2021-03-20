@@ -1,0 +1,20 @@
+{
+    "start": "2021-03-20",
+    "end": "2021-03-21",
+    "version": 2021031000,
+    "url": "https://libreplanet.org/2021/lp2021-schedule.ics",
+    "title": "LibrePlanet 2021",
+    "metadata": {
+        "icon": "https://libreplanet.org/2021/assets/img/logo.png",
+        "links": [
+            {
+                "url": "https://libreplanet.org/2021/",
+                "title": "Website"
+            },
+            {
+                "url": "https://libreplanet.org/2021/live/",
+                "title": "Livestream"
+            }
+        ]
+    }
+}
