@@ -11,14 +11,6 @@
                                 "url": "https://2021.stateofthemap.org/",
                                 "title": "Website"
                         }
-                ],
-                "rooms": [
-                        {
-                                "name": "Track 1 - Talks"
-                        },
-                        {
-                                "name": "Track 2 - Panels and Workshops"
-                        }
                 ]
         }
 }
