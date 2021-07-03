@@ -1,0 +1,16 @@
+{
+        "version": 2021070100,
+        "url": "https://sotm.osmz.ru/2021.xml",
+        "title": "State of the Map 2021",
+        "start": "2021-07-09",
+        "end": "2021-07-11",
+        "metadata": {
+                "icon": "https://2021.stateofthemap.org/img/sotm_2021-logo-small.png",
+                "links": [
+                        {
+                                "url": "https://2021.stateofthemap.org/",
+                                "title": "Website"
+                        }
+                ]
+        }
+}
