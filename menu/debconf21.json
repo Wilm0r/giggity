@@ -1,0 +1,16 @@
+{
+  "version": 2021081000,
+  "url": "https://debconf21.debconf.org/schedule/pentabarf.xml",
+  "title": "DebConf 21",
+  "start": "2021-08-24",
+  "end": "2021-08-28",
+  "metadata": {
+    "icon": "https://debconf21.debconf.org/static/img/favicon/favicon-196.3b67242f2574.png",
+    "links": [
+      {
+        "url": "https://debconf21.debconf.org/",
+        "title": "Website"
+      }
+    ]
+  }
+}
