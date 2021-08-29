@@ -1,0 +1,25 @@
+{
+	"version": 2021082900,
+	"url": "https://kielux.de/content/calendars/LPD21.ics",
+	"title": "Kieler Linux Presentation Day 2021.2", 
+	"start": "2021-09-16",
+	"end": "2021-09-16",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+		"links": [
+			{
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"url": "https://kielux.de/programm/LPD21",
+				"title": "Schedule"
+			},
+			{
+				"url": "https://kielux.de/archiv",
+				"title": "News"
+			}
+		]
+	}
+}
