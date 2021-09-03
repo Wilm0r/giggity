@@ -288,5 +288,5 @@ for e in base_entries.values():
 if errors:
 	print("\nThere were some problems with this file!")
 	print()
-	print("\n".join(errors), file=sys.stderr)
+	print("\n".join(errors))
 	os._exit(1)
