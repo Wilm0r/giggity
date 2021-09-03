@@ -1,6 +1,13 @@
 name: Menu CI
 
-on: [push]
+on:
+  pull_request:
+    paths:
+      - '.github/**'
+      - 'menu/**'
+      - 'tools/**'
+
+# Skip push for now since I can't really figure out a suitable base ref?
 
 jobs:
   build:
@@ -23,4 +30,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install dulwich jsonschema pillow urllib3
       - name: Run menu JSON checker
-        run: tools/menu-ci.py
+        run: tools/menu-ci.py --base ${{ github.base_ref }}
