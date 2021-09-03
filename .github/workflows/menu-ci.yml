@@ -33,4 +33,4 @@ jobs:
           pip install dulwich jsonschema pillow urllib3
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }} >&2
+        run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }}
