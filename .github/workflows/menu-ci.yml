@@ -17,9 +17,6 @@ jobs:
       matrix:
         python-version: [3.9]
 
-    outputs:
-      res: ${{ steps.main.outputs }}
-
     steps:
       - uses: actions/checkout@v2
         with:
@@ -36,4 +33,4 @@ jobs:
           pip install dulwich jsonschema pillow urllib3
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --base ${{ github.event.pull_request.base.sha }}
+        run: tools/menu-ci.py --base ${{ github.event.pull_request.base.sha }} >&2
