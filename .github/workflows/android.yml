@@ -1,7 +1,11 @@
 name: Android CI
 
 on:
-  [push, pull_request]:
+  push:
+    paths-ignore:
+      - 'tools/**'
+      - 'menu/**'
+  pull_request:
     paths-ignore:
       - 'tools/**'
       - 'menu/**'
