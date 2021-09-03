@@ -47,7 +47,15 @@ parser = argparse.ArgumentParser(
 parser.add_argument(
 	"--all", "-a", action="store_true",
 	help="Validate all entries, not just the ones that changed.")
+parser.add_argument(
+	"--base", "-b",	default="HEAD", help="Base ref to diff against.")
+parser.add_argument(
+	"--stderr", action="store_true",
+	help="All output to stderr, useful when running inside a crappy GitHub Actions environment but you may want to *gasp* see some actual output.")
 args = parser.parse_args()
+
+if args.stderr:
+	sys.stdout = sys.stderr
 
 g = subprocess.Popen(["tools/merge.py"],
                      stdout=subprocess.PIPE, encoding="utf-8")
@@ -62,16 +70,7 @@ except ValueError as e:
 new = merge.merge(merge.load_locally("menu"), "")
 
 try:
-	env = os.environ
-	travis_vars = sorted("%s=%s" % (k, v) for k, v in env.items() if k.startswith("TRAVIS_"))
-	if travis_vars:
-		print("\n".join(travis_vars))
-	if env.get("TRAVIS_EVENT_TYPE") == "pull_request":
-		base_ref = env["TRAVIS_BRANCH"]
-	elif "TRAVIS_COMMIT_RANGE" in env:
-		base_ref = env["TRAVIS_COMMIT_RANGE"].split(".")[0]
-	else:
-		base_ref = "HEAD"
+	base_ref = args.base
 	print("Base ref: %s" % base_ref)
 	g = subprocess.Popen(["tools/merge.py", "-r", base_ref],
 	                     stdout=subprocess.PIPE, encoding="utf-8")
