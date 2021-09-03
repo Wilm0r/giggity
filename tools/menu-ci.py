@@ -49,7 +49,13 @@ parser.add_argument(
 	help="Validate all entries, not just the ones that changed.")
 parser.add_argument(
 	"--base", "-b",	default="HEAD", help="Base ref to diff against.")
+parser.add_argument(
+	"--stderr", action="store_true",
+	help="All output to stderr, useful when running inside a crappy GitHub Actions environment but you may want to *gasp* see some actual output.")
 args = parser.parse_args()
+
+if args.stderr:
+	sys.stdout = sys.stderr
 
 g = subprocess.Popen(["tools/merge.py"],
                      stdout=subprocess.PIPE, encoding="utf-8")
