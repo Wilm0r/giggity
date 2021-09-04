@@ -1,6 +1,6 @@
 /*
  * Giggity -- Android app to view conference/festival schedules
- * Copyright 2008-2011 Wilmer van der Gaast <wilmer@gaast.net>
+ * Copyright 2008-2021 Wilmer van der Gaast <wilmer@gaast.net>
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of version 2 of the GNU General Public
