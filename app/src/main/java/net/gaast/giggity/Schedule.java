@@ -31,8 +31,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.threeten.bp.DateTimeUtils;
+import org.threeten.bp.Duration;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalTime;
+import org.threeten.bp.Period;
 import org.threeten.bp.ZoneId;
 import org.threeten.bp.ZonedDateTime;
 import org.threeten.bp.format.DateTimeFormatter;
@@ -44,6 +46,7 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.AttributesImpl;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -61,11 +64,13 @@ import java.text.ParsePosition;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.SortedMap;
@@ -268,7 +273,8 @@ public class Schedule implements Serializable {
 		return getDay();
 	}
 
-	private void addTzOffset(double hoursOff) {
+	private void addTzOffset(ZonedDateTime origStart, ZonedDateTime localStart) {  // TODO: Difference, not offset!
+		double hoursOff = localStart.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0;
 		if (tzOffset.isEmpty()) {
 			// Integrate the first tz offset we run into into the day change time.
 			dayChangeOffsetMins -= hoursOff * 60;
@@ -384,13 +390,22 @@ public class Schedule implements Serializable {
 					} else if (key.equals("end")) {
 						p.endElement("", value.toLowerCase(), "");
 					} else {
-						/* Chop off attributes. Could pass them but not reading them anyway. */
-						if (key.contains(";"))
-							key = key.substring(0, key.indexOf(";"));
+						key = null;
+						AttributesImpl at = new AttributesImpl();
+						for (String bit : split[0].split(";")) {
+							if (key == null) {
+								key = bit.toLowerCase();
+								continue;
+							}
+							String kv[] = bit.split("=", 2);
+							if (kv.length == 2) {
+								at.addAttribute("", kv[0].toLowerCase(), kv[0].toLowerCase(), "", kv[1]);
+							}
+						}
 						value = value.replace("\\n", "\n").replace("\\,", ",")
 						             .replace("\\;", ";").replace("\\\\", "\\");
 						/* Fake <key>value</key> */
-						p.startElement("", key, "", null);
+						p.startElement("", key, "", at);
 						p.characters(value.toCharArray(), 0, value.length());
 						p.endElement("", key, "");
 					}
@@ -784,6 +799,7 @@ public class Schedule implements Serializable {
 	private class XcalParser implements ContentHandler {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
+		private HashMap<String,Attributes> eventDataAttr;
 		private String curString;
 
 		DateTimeFormatter dfUtc, dfLocal;
@@ -795,12 +811,16 @@ public class Schedule implements Serializable {
 			dfLocal = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss").withZone(nativeTz);
 		}
 
-		private ZonedDateTime parseTime(String s) throws ParseException {
+		private ZonedDateTime parseTime(String s, String tz) throws ParseException {
 			TemporalAccessor ret;
 			try {
 				ret = dfUtc.parse(s, new ParsePosition(0));
 			} catch (DateTimeParseException e) {
-				ret = dfLocal.parse(s, new ParsePosition(0));
+				if (tz == null) {
+					ret = dfLocal.parse(s, new ParsePosition(0));
+				} else {
+					ret = dfLocal.withZone(ZoneId.of(tz)).parse(s, new ParsePosition(0));
+				}
 			}
 			return ZonedDateTime.from(ret);
 		}
@@ -809,7 +829,7 @@ public class Schedule implements Serializable {
 		   Don't feel like importing a non-GPL library for just this. Also, returning an int (seconds) instead
 		   of some kind of timedelta since the Java/Android version I'm targeting (<8?) doesn't have one yet.
 		 */
-		private int parseDuration(String durSpec) {
+		private Duration parseDuration(String durSpec) {
 			int ret = 0;
 			Matcher m = Pattern.compile("(\\d+)([WDHMS])").matcher(durSpec);
 			while (m.find()) {
@@ -827,8 +847,7 @@ public class Schedule implements Serializable {
 				}
 				ret += bit;
 			}
-			Log.d("parseDuration", durSpec + ": " + ret + " seconds");
-			return ret;
+			return Duration.ofSeconds(ret);
 		}
 
 		@Override
@@ -837,6 +856,11 @@ public class Schedule implements Serializable {
 			curString = "";
 			if (localName.equals("vevent")) {
 				eventData = new HashMap<>();
+				eventDataAttr = new HashMap<>();
+			} else {
+				if (atts != null && atts.getLength() > 0) {
+					eventDataAttr.put(localName, atts);
+				}
 			}
 		}
 	
@@ -865,11 +889,28 @@ public class Schedule implements Serializable {
 				}
 				
 				try {
-					startTime = parseTime(startTimeS);
-					if (endTimeS != null) {
-						endTime = parseTime(endTimeS);
+					Attributes at = eventDataAttr.get("dtstart");
+					String tz = null;
+					if (at != null) {
+						tz = at.getValue("tzid");
+					}
+
+					ZonedDateTime origStart = parseTime(startTimeS, tz);
+					Duration d;
+					if (durationS != null) {
+						d = parseDuration(durationS);
 					} else {
-						endTime = startTime.plusSeconds(parseDuration(durationS));
+						// If dtend has a different tz then you're a terrible person.
+						d = Duration.between(origStart, parseTime(endTimeS, tz));
+					}
+
+					startTime = origStart.withZoneSameInstant(nativeTz);
+					endTime = startTime.plus(d);
+
+					if (tz != null) {
+						// If the event/schedule seems to have a native timezone instead of just raw UTC
+						// timestamps, record the time difference so it can be shared with the user.
+						addTzOffset(origStart, startTime);
 					}
 				} catch (ParseException e) {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
@@ -1032,7 +1073,7 @@ public class Schedule implements Serializable {
 						// to extend tz awareness further when things are back to normal.
 						startTime = origStart.withZoneSameInstant(nativeTz);
 						// Save the offset so it can be reported to the user.
-						addTzOffset(startTime.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0);
+						addTzOffset(origStart, startTime);
 					}
 				} catch (DateTimeParseException e){
 					startZonedTimeS = null;
