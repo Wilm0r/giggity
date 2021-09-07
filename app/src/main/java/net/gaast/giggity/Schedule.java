@@ -30,23 +30,15 @@ import android.widget.CheckBox;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.threeten.bp.DateTimeUtils;
-import org.threeten.bp.Duration;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalTime;
-import org.threeten.bp.Period;
-import org.threeten.bp.ZoneId;
-import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.format.DateTimeFormatter;
-import org.threeten.bp.format.DateTimeParseException;
-import org.threeten.bp.temporal.ChronoUnit;
-import org.threeten.bp.temporal.TemporalAccessor;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
+import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
+import org.xml.sax.Parser;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.AttributesImpl;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
@@ -61,16 +53,23 @@ import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.text.ParseException;
 import java.text.ParsePosition;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAccessor;
 import java.util.AbstractList;
 import java.util.AbstractSet;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.SortedMap;
@@ -81,6 +80,9 @@ import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class Schedule implements Serializable {
 	private final int detectHeaderSize = 1024;
@@ -123,7 +125,7 @@ public class Schedule implements Serializable {
 		tracks = new TreeMap<>(trackSort);
 	}
 
-	protected void loadSchedule(BufferedReader in, String url_) throws IOException, LoadException {
+	public void loadSchedule(BufferedReader in, String url_) throws IOException, LoadException {
 		url = url_;
 		char[] headc = new char[detectHeaderSize];
 
@@ -329,13 +331,11 @@ public class Schedule implements Serializable {
 	}
 
 	public Date getFirstTime() {
-		return DateTimeUtils.toDate(getFirstTimeZoned().toInstant());
-		// return Date.from(getFirstTimeZoned().toInstant());
+		return Date.from(getFirstTimeZoned().toInstant());
 	}
 
 	public Date getLastTime() {
-		return DateTimeUtils.toDate(getLastTimeZoned().toInstant());
-		// return Date.from(getLastTimeZoned().toInstant());
+		return Date.from(getLastTimeZoned().toInstant());
 	}
 
 	public boolean isToday() {
@@ -353,7 +353,12 @@ public class Schedule implements Serializable {
 	
 	private void loadXml(BufferedReader in, ContentHandler parser) {
 		try {
-			Xml.parse(in, parser);
+			//SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
+			//saxParser.parse(in, parser);
+			//SaxParserMain.BaeldungHandler baeldungHandler = new SaxParserMain.BaeldungHandler();
+			XMLReader reader = XMLReaderFactory.createXMLReader();
+			reader.setContentHandler(parser);
+			reader.parse(new InputSource(in));
 			in.close();
 		} catch (Exception e) {
 			Log.e("Schedule.loadXml", "XML parse exception: " + e);
@@ -1418,13 +1423,11 @@ public class Schedule implements Serializable {
 		}
 
 		public Date getStartTime() {
-			return DateTimeUtils.toDate(getStartTimeZoned().toInstant());
-			// return Date.from(getStartTimeZoned().toInstant());
+			return Date.from(getStartTimeZoned().toInstant());
 		}
 
 		public Date getEndTime() {
-			return DateTimeUtils.toDate(getEndTimeZoned().toInstant());
-			// return Date.from(getEndTimeZoned().toInstant());
+			return Date.from(getEndTimeZoned().toInstant());
 		}
 
 		public Track getTrack() {

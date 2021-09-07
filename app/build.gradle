@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "net.gaast.giggity"
         minSdkVersion 23
-        targetSdkVersion 28
+        targetSdkVersion 29
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
@@ -32,11 +32,12 @@ dependencies {
     // implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'commons-io:commons-io:2.3'
 
-    // java.time backport for <26 phones. :<
-    implementation 'com.jakewharton.threetenabp:threetenabp:1.2.4'
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    testImplementation 'junit:junit:4.12'
+
 }
+
 repositories {
     mavenCentral()
 }

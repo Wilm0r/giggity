@@ -39,13 +39,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
-import com.jakewharton.threetenabp.AndroidThreeTen;
-
-import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.format.DateTimeFormatter;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -104,9 +101,6 @@ public class Giggity extends Application {
 			NotificationManager notificationManager = getSystemService(NotificationManager.class);
 			notificationManager.createNotificationChannel(channel);
 		}
-
-		// java.time backport for Android <26
-		AndroidThreeTen.init(this);
 	}
 	
 	public Db.Connection getDb() {

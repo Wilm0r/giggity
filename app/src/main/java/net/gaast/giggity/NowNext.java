@@ -21,8 +21,7 @@ package net.gaast.giggity;
 
 import android.content.Context;
 
-import org.threeten.bp.ZonedDateTime;
-
+import java.time.ZonedDateTime;
 import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.TreeSet;

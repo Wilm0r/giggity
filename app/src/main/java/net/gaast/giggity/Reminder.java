@@ -9,17 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import org.threeten.bp.LocalTime;
-import org.threeten.bp.ZonedDateTime;
-import org.threeten.bp.temporal.ChronoUnit;
-
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 public class Reminder {
