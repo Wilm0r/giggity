@@ -889,7 +889,7 @@ public class Schedule implements Serializable {
 				    (startTimeS = eventData.get("dtstart")) == null ||
 				    ((endTimeS = eventData.get("dtend")) == null &&
 				     (durationS = eventData.get("duration")) == null)) {
-					Log.w("Schedule.loadXcal", "Invalid event, some attributes are missing.");
+					Log.w("Schedule.loadXcal", "Invalid event, some attributes are missing. Have: " + String.join(", ", eventData.keySet()));
 					return;
 				}
 				

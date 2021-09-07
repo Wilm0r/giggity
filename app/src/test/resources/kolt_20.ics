@@ -1,0 +1,625 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Kielux//ical-file//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:18. Kieler Open Source und Linux Tage
+X-WR-CALDESC:18. Kieler Open Source und Linux Tage
+BEGIN:VEVENT
+UID:460@KOLT20
+DTSTART:20200918T110000Z
+DTEND:20200918T120000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:OpenCelium - Der generische OpenSoure API-Hub
+LOCATION:Ravensberg
+DESCRIPTION:von: Jakob Semere\n\nSie möchten wertvolle Daten von einer App
+ likation zu anderen Applikationen auf unkomplizierte Weise synchronisieren
+ ? Nutzen Sie dafür unseren Open Source API-Hub OpenCelium. Verbinden Sie I
+ hre Applikationen auf einfache Art\, damit sie nahtlos kommunizieren und D
+ aten einfach untereinander austauschen können. Durch eine intuitive Webobe
+ rfläche ist kein technisches Wissen notwendig um einen Datenaustauch zu re
+ alisieren. Haben wir Ihr Interesse geweckt? Dann besuchen Sie gerne unsere
+ n Vortrag auf den Kieler Open Source und Linux Tagen indem wir Ihnen unser
+ e Lösung Schritt für Schritt vorstellen.\nhttps://www.opencelium.io
+ATTENDEE;CN="Jakob Semere";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:
+ nomail
+URL:https://kielux.de/programm/KOLT20#460
+END:VEVENT
+BEGIN:VEVENT
+UID:467@KOLT20
+DTSTART:20200918T120000Z
+DTEND:20200918T130000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Xen - ist das nicht tot?
+LOCATION:Ravensberg
+DESCRIPTION:von: Jürgen Groß\n\nXen war lange Zeit <i>die</i> Plattform zu
+ r Virtualisierung in der Open-Source Welt\, da es performante Viertualisie
+ rung ohne die damals noch nicht vorhandenen Hardware-Erweiterungen zur Vir
+ tualisierung auf x86-Prozessoren durch die Verwendung von Para-Virtualisie
+ rung ermöglichte.\n\nHeute wird Xen in der Öffentlichkeit mehr und mehr du
+ rch KVM verdrängt\, ist dieses doch direkt in Linux integriert und benötig
+ t keine derart invasiven Techniken wie Para-Virtualisierung dank heute ver
+ fügbarer Hardware.\n\nDer Vortrag geht noch einmal auf die wesentlichen Un
+ terschiede zwischen KVM und Xen ein\, bevor dann die aktuellen Entwicklung
+ en in Xen beleuchtet werden. Es wird aufgezeigt\, wo Xen auch heute noch d
+ eutliche Vorteile gegenüber KVM hat und warum es noch lange nicht "tot" is
+ t.
+ATTENDEE;CN="Jürgen Groß";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:n
+ omail
+URL:https://kielux.de/programm/KOLT20#467
+END:VEVENT
+BEGIN:VEVENT
+UID:468@KOLT20
+DTSTART:20200919T120000Z
+DTEND:20200919T140000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:LibreOffice Writer - Kurs für Ein- und Umsteiger
+LOCATION:Laboe
+DESCRIPTION:von: Jean-Frederic Vogelbacher\n\nWer mit LibreOffice Writer a
+ nsprechende Dokumente erstellen möchte\, ist hier genau richtig. \nWir wer
+ den gemeinsam währenddessen einen Brief\, ein Dokument\, und eine Rechnung
+  erstellen.\nEs sind keine Vorkenntnisse nötig.\n\nEs werden folgende Funk
+ tionen von LibreOffice Writer vorgestellt:\n- Installation\, Installation 
+ von Fonts\n- Ansichts-Einstellungen\n- Seiteneinstellungen\n- Einfache For
+ matierung\, Überschriften\, Absätze\, ...\n- Formatvorlagen\n- Suchen und 
+ Ersetzen\n- Bilder einfügen\n- Einfache Diagramme\n- Formeln\n- Einfache T
+ abellen\n- Fußnoten\, einfache Funktionen\n- Vorlagen\n- Brief schreiben\n
+ - Rechtsschreib-Prüfung\n- Kommentieren\n\n    Anmeldung unter <a href="ht
+ tps://kielux.de/programm/KOLT20#468">https://kielux.de/programm/KOLT20#468
+ </a> erforderlich!
+ATTENDEE;CN="Jean-Frederic Vogelbacher";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICI
+ PANT:invalid:nomail
+URL:https://kielux.de/programm/KOLT20#468
+END:VEVENT
+BEGIN:VEVENT
+UID:469@KOLT20
+DTSTART:20200919T120000Z
+DTEND:20200919T140000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Einstieg in Flutter für Android 2020
+LOCATION:Düsternbrook
+DESCRIPTION:von: Samuel Albrecht\n\nIn diesem Workshop werden wir mit Flut
+ ter eine kleine Android-App bauen.\n\nDazu gibt es\n* einen kleinen Einsti
+ eg in die Sprache Dart\n* das Erstellen einer neuen App mit Flutter\n* die
+  Verwendung von States und Widgets\n* Navigation mit Übergabe von Paramete
+ rn\n* Debugging\n\nWenn ihr mitmachen wollt\, solltet ihr bereits Flutter 
+ und Android Studio installiert haben:\n* sudo snap install android-studio 
+ --classic\n* sudo snap install flutter --classic\nÜber Android Studio soll
+ tet ihr ein Android SDK und eine Android VM eingerichtet haben:\n* Tools →
+  SDK Manager → Android 10.0 (29)\n* Tools → AVD Manager → Create Virtual D
+ evice\n* File → Settings → Plugins → Flutter\n* File → Settings → Plugins 
+ → Dart\n\n\n    Anmeldung unter <a href="https://kielux.de/programm/KOLT20
+ #469">https://kielux.de/programm/KOLT20#469</a> erforderlich!
+ATTENDEE;CN="Samuel Albrecht";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:inval
+ id:nomail
+URL:https://kielux.de/programm/KOLT20#469
+END:VEVENT
+BEGIN:VEVENT
+UID:470@KOLT20
+DTSTART:20200918T110000Z
+DTEND:20200918T130000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Einstieg in Qt/C++ 2020
+LOCATION:Düsternbrook
+DESCRIPTION:von: Samuel Albrecht\n\nIn diesem Workshop findet ein kleiner 
+ Einstieg in die Programmierung mit Qt/C++ statt\, einer umfangreichen Bibl
+ iothek für die (aber nicht nur) GUI-Programmierung auf allen Plattformen.\
+ n\nIn dem Workshop wird behandelt\n* Umgang mit Qt Creator\n* Projektaufba
+ u mit qmake\n* Signals/Slots\n* Aufbau einer einfachen GUI\n* Anpassung vo
+ n GUI-Elementen\n\nWer mitmachen will\, sollte eine aktuelle Qt-Distributi
+ on inkl Qt Creator auf dem Rechner installiert haben (5.12 oder neuer)\, s
+ owie einen Compiler:\n\nLinux: sudo apt install g++\nmacOS: https://develo
+ per.apple.com/xcode/\nWindows: MinGW oder Visual Studio: https://doc.qt.io
+ /qt-5/windows.html\n\n    Anmeldung unter <a href="https://kielux.de/progr
+ amm/KOLT20#470">https://kielux.de/programm/KOLT20#470</a> erforderlich!
+ATTENDEE;CN="Samuel Albrecht";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:inval
+ id:nomail
+URL:https://kielux.de/programm/KOLT20#470
+END:VEVENT
+BEGIN:VEVENT
+UID:471@KOLT20
+DTSTART:20200919T150000Z
+DTEND:20200919T160000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:OpenRA: Command & Conquer Open Source unter Linux
+LOCATION:Ravensberg
+DESCRIPTION:von: Matthias Mailänder\n\nEin kurzer Einblick in die Entwickl
+ ung von Echtzeitstrategiespielen aus der Westwood Studios Ära von 8 Bit Pi
+ xel über Voxel Grafik der klassischen Vorbilder bis hin zu komplett eigene
+ n Kreationen der Community.
+ATTENDEE;CN="Matthias Mailänder";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:in
+ valid:nomail
+URL:https://kielux.de/programm/KOLT20#471
+END:VEVENT
+BEGIN:VEVENT
+UID:475@KOLT20
+DTSTART:20200918T150000Z
+DTEND:20200918T160000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Bleiben Sie zu Hause ... und unterstützen Sie Debian Med
+LOCATION:Ravensberg
+DESCRIPTION:von: Andreas Tille\n\nDebian Med ist ein sogenanntes Blend - e
+ in internes Projekt in Debian zur Paketierung Freier Software in Bioinform
+ atik und Medizin - also genau der Software\, die zur Untersuchung von COVI
+ D-19 gebraucht wird.\nIm April fand der erste Debian Med COVID-19 Hackatho
+ n statt.  Er brachte dem Projekt einen meßbaren Auftrieb durch neue Entwic
+ kler\, noch größere Anstrengung der aktiven Entwickler und eine sehr große
+  Unterstützung durch Infrastrukturteams in Debian.\nIn dem Vortrag wird be
+ schrieben\, wie das Debian Med Projekt von dem Zustrom profitiert hat und 
+ wie wir die Dynamik auch in Zukunft beibehalten wollen.
+ATTENDEE;CN="Andreas Tille";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid
+ :nomail
+URL:https://kielux.de/programm/KOLT20#475
+END:VEVENT
+BEGIN:VEVENT
+UID:476@KOLT20
+DTSTART:20200919T100000Z
+DTEND:20200919T120000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Debian Paketierworkshop
+LOCATION:Düsternbrook
+DESCRIPTION:von: Andreas Tille\n\nDie Teilnehmer des Workshops sollten ein
+ e freie Software benennen (URL)\, die bisher noch nicht in Debian integrie
+ rt ist. Das Paketieren wird anhand dieser Software gezeigt. Es wird auf Pa
+ ketierteams und deren Versionskontrollsystem verwiesen. Weiterhin wird erl
+ äutert\, wie man als (noch) nicht Debianentwickler einen Sponsor findet\, 
+ der das Paket in den\nDebian-Paketpool bringt. In diversen Workshops\, die
+  nach diesem Prinzip gehalten wurden\, wurde dem Autor bestätigt\, dass di
+ ese Methode effizienter ist\, als nur die einzelnen Tools separat vorzuste
+ llen\, denn hier zeigen sich die Klippen der Praxis und wie sie (hoffentli
+ ch) umschifft werden können. Bisher haben die Workshops dieser Art erfolgr
+ eich zu upload-fähigen Paketen geführt.\n\n\n\n    Anmeldung unter <a href
+ ="https://kielux.de/programm/KOLT20#476">https://kielux.de/programm/KOLT20
+ #476</a> erforderlich!
+ATTENDEE;CN="Andreas Tille";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid
+ :nomail
+URL:https://kielux.de/programm/KOLT20#476
+END:VEVENT
+BEGIN:VEVENT
+UID:477@KOLT20
+DTSTART:20200918T090000Z
+DTEND:20200918T100000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Nachhaltigkeit und Linux - passt das?
+LOCATION:Ravensberg
+DESCRIPTION:von: Dr. Claus Hartmann\n\nNeben den bekannten Vorteilen\, die
+  Linux mit sich bringt wie z.B. Sicherheit\, Stabilität oder Kosten\, kann
+  Linux auch vor dem Hintergrund der Nachhaltigkeit überzeugen. \n\nHier be
+ sticht es vor allem durch geringe Mindestsystemanforderungen\, die zu eine
+ r deutlich erweiterten Nutzung der eingesetzten Hardware führt. \n\nIn die
+ sem Vortrag erfährst du\, bei welchen Nachhaltigkeitsaspekten Linux auch n
+ och überzeugen kann\, damit du bei zukünftigen Diskussionen um das richtig
+ e Betriebssystem auch diesen wichtigen Aspekt mit einfließen lassen kannst
+ .
+ATTENDEE;CN="Dr. Claus Hartmann";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:in
+ valid:nomail
+URL:https://kielux.de/programm/KOLT20#477
+END:VEVENT
+BEGIN:VEVENT
+UID:478@KOLT20
+DTSTART:20200918T140000Z
+DTEND:20200918T150000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:VMs migrieren mit REAR
+LOCATION:Ravensberg
+DESCRIPTION:von: Uwe Kastens\n\nIn diesem Vortrag möchte ich gerne zeigen\
+ , wie man relativ einfach mit REAR (Relax and Recover) Virtuelle Maschinen
+  auch zwischen verschiedenen Hypervisoren migrieren kann. \n\nWir schauen 
+ das am ein oder zwei VMs an.
+ATTENDEE;CN="Uwe Kastens";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:n
+ omail
+URL:https://kielux.de/programm/KOLT20#478
+END:VEVENT
+BEGIN:VEVENT
+UID:479@KOLT20
+DTSTART:20200919T110000Z
+DTEND:20200919T120000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Jitsi und Apache Guacamole in EGroupware
+LOCATION:Ravensberg
+DESCRIPTION:von: Stefan Unverricht\n\nDie Integration von Jitsi ermöglicht
+  geplante  Videokonferenzen ebenso wie Ad-Hoc Anrufe. Es können ein eigene
+ r Jitsi-Server\, freie Jitsi-Server oder Jitsi als SaaS aus dem Rechenzent
+ rum verwendet werden. Nach dem Eintragen der Jitsi-Adresse stehen die Funk
+ tionen in EGroupware zur Verfügung.\n\nApache Guacamole stellt ein clientl
+ ess Remote-Desktop-Gateway zur Verfügung. Als EGroupware-Installations-Pak
+ et lässt es sich leicht in eine bestehende Standard-EGroupware-Installatio
+ n nachinstallieren und ist sofort betriebsbereit. Der Zugriff wird über EG
+ roupware mit 2FA und Transportverschlüsselung abgesichert und stellt somit
+  einen sicheren Zugriff auf Desktop-PCs per VNC/RDP und auf SSH-Konsolen z
+ ur Verfügung. Die Verbindungs- und Berechtigungsverwaltung ist in EGroupwa
+ re integriert.\n\nInhalt des Vortrags:\n* Überblick über EGroupware\n* Tec
+ hnik einer EGroupware Standard-Installation\n* Installation von Guacamole 
+ (aber auch Rocket.Chat\, Collabora Online\, Eigene Anwendungen...)\n* Inte
+ gration/Funktionen Videokonferenzen in EGroupware \n* Integration/Funktion
+ en Guacamole in EGroupware\n\nDie Vortragsfolien werde ich in der auf die 
+ Kielux folgende Woche hier veröffentlichen.
+ATTENDEE;CN="Stefan Unverricht";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:inv
+ alid:nomail
+URL:https://kielux.de/programm/KOLT20#479
+END:VEVENT
+BEGIN:VEVENT
+UID:480@KOLT20
+DTSTART:20200919T140000Z
+DTEND:20200919T160000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:A-Frame - 3D per Webbrowser auch ohne Programmierung
+LOCATION:Düsternbrook
+DESCRIPTION:von: Frank Bartels\n\nMit A-Frame kann man sehr einfach kleine
+  3d-Szenen konstruieren\, die man mit dem Webbrowser (auch mit VR Brille) 
+ besuchen kann. Es basiert auf HTML-Erweiterungskonstrukten\, die man durch
+  einfaches Einbinden einer Javscscript-Bilbliothek ermöglicht. Javascript 
+ programmieren ist nicht erforderlich\, selbst wenn man kleine Animationen 
+ einbauen möchte. Einen ganz kleinen Einblick in die Javascript-Anbindung w
+ ird es aber zusätzlich auch geben.\n\n    Anmeldung unter <a href="https:/
+ /kielux.de/programm/KOLT20#480">https://kielux.de/programm/KOLT20#480</a> 
+ erforderlich!
+ATTENDEE;CN="Frank Bartels";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid
+ :nomail
+URL:https://kielux.de/programm/KOLT20#480
+END:VEVENT
+BEGIN:VEVENT
+UID:481@KOLT20
+DTSTART:20200918T130000Z
+DTEND:20200918T140000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:OWASP DevSecOps Maturity Model
+LOCATION:Ravensberg
+DESCRIPTION:von: Timo Pagel\n\nVom Startup bis zum Unternehmen mit mehrere
+ n tausend Mitarbeitern\, agile Methoden\, Product-Teams und als Teil davon
+  DevOps-Strategien bestimmen die aktuellen Organisations- und Vorgehensmod
+ elle der Softwareentwicklung. \n\nSicherheit in DevOps-Strategien sollten 
+ strategisch geplant werden. Das OWASP DevSecOps Maturity Model gibt da Hin
+ weise welche Aktivitäten in welcher Reihenfolge durchgeführt werden sollte
+ n.\n\nDer Vortrag erläutert die Benutzung des Models und zeigt unterschied
+ liche Ansätze für die Planung der Maßnahmen auf.\n\nAngreifer sind intelli
+ gent und kreativ\, mit neuen Technologien ausgerüstet und zielstrebig. Unt
+ er Anleitung des OWASP DevOps-Security Maturity Models werden geeignete Pr
+ inzipien und Maßnahmen implementiert die die Berührungen der Angreifen kon
+ terkarieren.
+ATTENDEE;CN="Timo Pagel";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:no
+ mail
+URL:https://kielux.de/programm/KOLT20#481
+END:VEVENT
+BEGIN:VEVENT
+UID:482@KOLT20
+DTSTART:20200919T140000Z
+DTEND:20200919T150000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Why DOS was (and is) a thing
+LOCATION:Ravensberg
+DESCRIPTION:von: Jim Hall\n\nFreeDOS is an open source DOS-compatible oper
+ ating system that you can use to play classic DOS games\, run legacy busin
+ ess software\, or develop embedded systems. But FreeDOS and "DOS" are quit
+ e different from Unix and Linux. How did DOS become popular\, and why does
+  DOS include commands like "CLS"\, "DIR" and "COPY" instead of Unix comman
+ ds like "clear"\, "ls" and "cp"? In this presentation\, FreeDOS founder Ji
+ m Hall will explain the history and development of DOS\, why DOS was so po
+ pular in the 1980s and 1990s\, and why DOS continues to be a popular hobby
+  operating system in 2020.
+ATTENDEE;CN="Jim Hall";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:noma
+ il
+URL:https://kielux.de/programm/KOLT20#482
+END:VEVENT
+BEGIN:VEVENT
+UID:485@KOLT20
+DTSTART:20200918T100000Z
+DTEND:20200918T110000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Das m23-Softwareverteilungssystem
+LOCATION:Ravensberg
+DESCRIPTION:von: Hauke Goos-Habermann\n\nDieser (interaktive) Vortrag gibt
+  einen Überblick über Bekanntes und aktuelle Entwicklungen beim Softwareve
+ rteilungssystem m23.\n\nNeben den Grundlagen\, wie dem Installieren einer 
+ Distribution inklusive grafischer Benutzeroberfläche in einer virtuellen M
+ aschine\, können nach den Wünschen der Zuschauer andere m23-Themen behande
+ lt werden.\n\nDas können z.B. sein:\n\n<ul>\n <li>Automatische Updates</li
+ >\n <li>Skripte für Clients erstellen</li>\n <li>Masseninstallation</li>\n
+  <li>Debian-Repositorys erstellen und verwalten</li>\n <li>Interne Entwick
+ lung: Erstellung Netzwerkbootimages\, Kernelkonfiguration\, PHP\, BASH\, e
+ tc.</li>\n <li>...</li>\n</ul>
+ATTENDEE;CN="Hauke Goos-Habermann";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:
+ invalid:nomail
+URL:https://kielux.de/programm/KOLT20#485
+END:VEVENT
+BEGIN:VEVENT
+UID:487@KOLT20
+DTSTART:20200919T100000Z
+DTEND:20200919T120000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Inkscape für Einsteiger
+LOCATION:Laboe
+DESCRIPTION:von: Maren Hachmann\n\nIn diesem Workshop werden wir gemeinsam
+  die Funktionen des Vektorzeichenprogramms <a href="https://inkscape.org">
+ Inkscape</a> erkunden. \n\nDabei werden alle Teilnehmer nach einer theoret
+ ischen Einführung den praktischen Umgang mit den wichtigsten Werkzeugen er
+ lernen. Im Anschluss werden wir gemeinsam schrittweise eine eigene (Pingui
+ n-)Grafik erstellen\, wobei eine Reihe verschiedener Inkscape-Werkzeuge zu
+ m Einsatz kommen werden.\n\n<b>Ihr benötigt:</b>\n\n<ul>\n<li>einen Comput
+ er mit Maus und Mauspad (falls zuvor eingerichtet\, auch gerne ein Grafikt
+ ablett)</li>\n<li>darauf installiertes Inkscape 1.0 oder neuer</li>\n<li>e
+ in Headset mit Kopfhörern und Mikrofon (bitte keine Lautsprecher)</li>\n<l
+ i>eine gute Internet-Anbindung</li>\n<li>einen 'aufgeräumten' Desktop\, de
+ r nur Dinge zeigt\, die öffentlich sichtbar sein dürfen\, da wir ggf. mit 
+ Screensharing arbeiten\, um einander zu helfen</li>\n<li>Eure Kreativität!
+ </li>\n</ul>\n\n<b>Weitere Vorbereitungen:</b>\n\n<ul>\n<li><a href="https
+ ://inkscape.org/de/release/">Inkscape herunterladen</a> und installieren</
+ li>\n<li><b>Linux-Benutzer</b> sorgen bitte dafür\, dass <a href="https://
+ inkscape.org/de/lernen/haufig-gestellte-fragen/#Alt_key_doesn%27t_work_on_
+ Linux">die Alt-Taste nicht vom Fenstermanager verwendet wird</a></li>\n<li
+ >Außerdem benötigt Ihr noch die Workshopdateien\, die Ihr Euch <a href="ht
+ tps://vektorrascheln.de/pages/kielux_2020.html">hier</a> herunterladen kön
+ nt.</li>\n</ul>\n\n\n\n\n\n    Anmeldung unter <a href="https://kielux.de/
+ programm/KOLT20#487">https://kielux.de/programm/KOLT20#487</a> erforderlic
+ h!
+ATTENDEE;CN="Maren Hachmann";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invali
+ d:nomail
+URL:https://kielux.de/programm/KOLT20#487
+END:VEVENT
+BEGIN:VEVENT
+UID:488@KOLT20
+DTSTART:20200919T140000Z
+DTEND:20200919T160000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Inkscape für Entdecker
+LOCATION:Laboe
+DESCRIPTION:von: Maren Hachmann\n\nDas Vektorzeichenprogramm Inkscape biet
+ et neben den grundlegenden Zeichenfunktionen eine große Anzahl weiterer Fu
+ nktionen\, in denen viele ungeahnte\, kreative Möglichkeiten stecken und d
+ ie sich unbedingt zu entdecken lohnen.\n\nManche dieser Funktionen erschli
+ eßen sich nicht auf den ersten Blick\, und auch nach mehreren Jahren der N
+ utzung von Inkscape kann man immer noch auf spannende Überraschungen stoße
+ n\, und jede neue Inkscape-Version bringt weitere neue Funktionen mit.\n\n
+ In diesem Workshop gehen wir gemeinsam auf Entdeckungstour zu den nicht ga
+ nz so häufig verwendeten Inkscape-Funktionen.\nDie Workshop-Teilnehmer bes
+ timmen dabei\, welche der vorbereiteten Themen gemeinsam erarbeitet werden
+ .\nAußerdem wird auf einige häufige Stolperfallen bei der Erstellung / Ver
+ öffentlichung von mit Inkscape erstellten Dokumenten eingegangen.\n\nDer W
+ orkshop richtet sich an Teilnehmer\, die die grundlegende Bedienung von In
+ kscape bereits beherrschen\, aber erfahren möchten\, mit welchen Tricks si
+ e noch mehr aus Inkscape herausholen können.\n\n<b>Ihr braucht für den Wor
+ kshop:</b>\n\n<ul>\n<li>einen Computer mit Maus und Mauspad (falls zuvor e
+ ingerichtet\, auch gerne ein Grafiktablett)</li>\n<li>darauf installiertes
+  Inkscape 1.0 oder neuer</li>\n<li>ein Headset mit Kopfhörern und Mikrofon
+  (bitte keine Lautsprecher)</li>\n<li>eine gute Internet-Anbindung</li>\n<
+ li>einen 'aufgeräumten' Desktop\, der nur Dinge zeigt\, die öffentlich sic
+ htbar sein dürfen\, da wir ggf. mit Screensharing arbeiten\, um einander z
+ u helfen</li>\n<li>Eure Kreativität!</li>\n\n<b>Weitere Vorbereitungen:</b
+ >\n\n<ul>\n<li><a href="https://inkscape.org/de/release/">Inkscape herunte
+ rladen</a> und installieren</li>\n<b>Linux-Benutzer</b> sorgen bitte dafür
+ \, dass <a href="https://inkscape.org/de/lernen/haufig-gestellte-fragen/#A
+ lt_key_doesn%27t_work_on_Linux">die Alt-Taste nicht vom Fenstermanager ver
+ wendet wird</a>.\n</li>\n<li>Außerdem benötigt Ihr noch die Workshopdateie
+ n\, die Ihr Euch <a href="http://vektorrascheln.de/pages/kielux_2020.html"
+ >hier</a> herunterladen könnt.</li>\n</ul>\n\n\n\n    Anmeldung unter <a h
+ ref="https://kielux.de/programm/KOLT20#488">https://kielux.de/programm/KOL
+ T20#488</a> erforderlich!
+ATTENDEE;CN="Maren Hachmann";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invali
+ d:nomail
+URL:https://kielux.de/programm/KOLT20#488
+END:VEVENT
+BEGIN:VEVENT
+UID:489@KOLT20
+DTSTART:20200919T080000Z
+DTEND:20200919T090000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Software-Freedom-Frühstück
+LOCATION:Linux-Lounge
+DESCRIPTION:von: Alle\n\nWir feiern den Software Freedom Day mit einem gem
+ einsamen Frühstück am 19. September.\n\nJe nach Wetterlage und Internetanb
+ indung könnt Ihr Euch zum Frühstücken auch nach draußen oder an einen ande
+ ren Lieblingsort begeben.\n\nWir schalten uns dann über BigBlueButton zusa
+ mmen\, Ihr benötigt also zumindest Kopfhörer und Tastatur für den Textchat
+ . Wer mag\, kann auch über Voicechat dazukommen. Ob wir auch einen Videoch
+ at ermöglichen können\, hängt von der Zahl der Teilnehmer ab.\n\nBitte bes
+ orgt Euch Aufstrich\, Brot/Brötchen\, Müsli\, Milch oder was Ihr sonst ger
+ ne esst. In diesem Jahr gibt es leider keinen Kaffee von uns\, den müsst I
+ hr also ebenfalls selbst kochen - aber wer zu Hause eine hat\, darf (und s
+ ollte :) ) ihn natürlich stilgerecht in seine Kielux-Tasse füllen.\n\nWir 
+ danken den Community-Sponsoren bytemine und openSUSE sowie dem Gewinnspiel
+ sponsor Linuxhotel für ihre Unterstützung!
+ATTENDEE;CN="Alle";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:nomail
+URL:https://kielux.de/programm/KOLT20#489
+END:VEVENT
+BEGIN:VEVENT
+UID:490@KOLT20
+DTSTART:20200919T100000Z
+DTEND:20200919T110000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Sponsorenvorstellung
+LOCATION:Ravensberg
+DESCRIPTION:von: Verschiedene Redner\n\nHier stellen sich die Sponsoren\, 
+ die zum Gelingen unserer Kieler Open Source und Linux Tage beitragen\, in 
+ kurzen Vorträgen oder Präsentationen vor.\n\nMit dabei sind\n<ul>\n  <li>J
+ ulia Petersen vom Kitz</li>\n  <li>DiWiSH mit einem Kurzfilm</li>\n  <li>J
+ akob Semere von becon</li>\n  <li>Cornelius Kölbel von den NetKnights</li>
+ \n  <li>Andreas Hövelmann von GONICUS</li>\n</ul>\n\nAm Ende der Sponsoren
+ vorstellung verlosen wir einen vom <a href="https://linuxhotel.de/">Linuxh
+ otel</a> zur Verfügung gestellten Restplatz in einem der dort angebotenen 
+ Kurse. 
+ATTENDEE;CN="Verschiedene Redner";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:i
+ nvalid:nomail
+URL:https://kielux.de/programm/KOLT20#490
+END:VEVENT
+BEGIN:VEVENT
+UID:491@KOLT20
+DTSTART:20200919T130000Z
+DTEND:20200919T140000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Digital ein Vasallenstaat - wie Microsoft die BRD regiert
+LOCATION:Ravensberg
+DESCRIPTION:von: Andreas Halle\n\nDie Microsoft Programme Windows\, Office
+  und Outlook bilden in der Bundesrepublik seit Jahrzehnten den de facto St
+ andard der öffentlichen IT. Durch diese einseitige Bindung an einen einzig
+ en Hersteller haben sich Bund\, Länder und Kommunen in ein schwer auflösba
+ res Abhängigkeitsverhältnis begeben. Und nicht nur das: Genau genommen ver
+ stößt die Verwaltung damit sogar gegen das Vergaberecht sowie die Datensch
+ utzbestimmungen der EU. Freie und Open-Source Software (FOSS) bietet eine 
+ realistische Option\, dem Vendor lock-in zu entkommen.\n\nWie Deutschlands
+  Weg in die digitale Unabhängigkeit aussehen könnte und warum wir bislang 
+ doch immer wieder vor Microsoft kapitulieren\, darüber spricht der Kieler 
+ Ratsherr Andreas Halle in seinem Vortrag.
+ATTENDEE;CN="Andreas Halle";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid
+ :nomail
+URL:https://kielux.de/programm/KOLT20#491
+END:VEVENT
+BEGIN:VEVENT
+UID:492@KOLT20
+DTSTART:20200919T120000Z
+DTEND:20200919T130000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Wie wir unseren Verein komplett auf FOSS umgestellt haben
+LOCATION:Ravensberg
+DESCRIPTION:von: Stephan Luckow\n\nDSGVO konforme Lösungen\, die selfhoste
+ d sind und von Freiwilligen sicher betrieben werden? Das geht? \n\nJa. \n\
+ nDer Weg war steinig und ich berichte von Hürden über die wir gehen musste
+ n und erfolgreich aus dem Weg räumten und zeige euch ein paar Tools und Wo
+ rkflows\, die ihr gerne mit nach Hause und auch in eure Vereinsarbeit inte
+ grieren könnt. 
+ATTENDEE;CN="Stephan Luckow";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invali
+ d:nomail
+URL:https://kielux.de/programm/KOLT20#492
+END:VEVENT
+BEGIN:VEVENT
+UID:493@KOLT20
+DTSTART:20200918T140000Z
+DTEND:20200918T160000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:OpenCelium - Workshop for beginners
+LOCATION:Düsternbrook
+DESCRIPTION:von: Jakob Semere\n\nIn diesem Workshop erklären wir Ihnen die
+  grundliegenden Funktionen unseres Open Source API-Hubs OpenCelium. Gemein
+ sam bauen wir das System auf und zeigen\, wie Sie über OpenCelium diverse 
+ Schnittstellen realisieren können. Dabei behandeln wir die Themen Installa
+ tion\, Konfiguration und Administration. Verbinden Sie Ihre Applikationen 
+ auf einfache Art\, damit sie nahtlos kommunizieren und Daten einfach unter
+ einander austauschen können. Durch eine intuitive Weboberfläche ist kein t
+ echnisches Wissen notwendig um einen Datenaustauch zu realisieren. Melden 
+ Sie sich an und werden Sie Teil der OpenCelium Community.\n\nhttps://www.O
+ penCelium.io \n\n    Anmeldung unter <a href="https://kielux.de/programm/K
+ OLT20#493">https://kielux.de/programm/KOLT20#493</a> erforderlich!
+ATTENDEE;CN="Jakob Semere";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:
+ nomail
+URL:https://kielux.de/programm/KOLT20#493
+END:VEVENT
+BEGIN:VEVENT
+UID:494@KOLT20
+DTSTART:20200919T090000Z
+DTEND:20200919T100000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:Linux hat gewonnen und ist heute überall
+LOCATION:Ravensberg
+DESCRIPTION:von: Christian Imhorst\n\nLinux hat gewonnen und ist heute übe
+ rall. Deshalb kann man mit Gnu/Linux jederzeit anfangen\, oder damit anfan
+ gen\, es zu lernen\, ohne dass man es auf den eigenen Rechner installieren
+  muss. \n\nDieser Vortrag zeigt die Möglichkeiten auf\, die Linux ohne ein
+ en Installation auf richtige Hardware bietet\, auch wenn man erstmal nur e
+ inen Windows-PC\, ein Tablet oder Smartphone mit iOS oder Android hat.\n\n
+ Außerdem zeigt der Vortrag\, warum das so ist und was die unschlagbare Sup
+ erkraft von Linux ist\, auch in Bereiche vorzudringen\, in denen noch nie 
+ zuvor ein Betriebssystem gewesen ist.\n
+ATTENDEE;CN="Christian Imhorst";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:inv
+ alid:nomail
+URL:https://kielux.de/programm/KOLT20#494
+END:VEVENT
+BEGIN:VEVENT
+UID:495@KOLT20
+DTSTART:20200918T160000Z
+DTEND:20200918T163000Z
+DTSTAMP:20201112T140846Z
+STATUS:CONFIRMED
+CLASS:PUBLIC
+METHOD:PUBLISH
+SUMMARY:FAIR APPS MARKET -  Mach Neuland zum Freiland...
+LOCATION:Ravensberg
+DESCRIPTION:von: Topio Team\n\nUnsere Initiative <b>TOPIO – public space f
+ or privacy</b> möchte die Bekanntheit und Nutzung von Alternativen wie dez
+ entrale\, tracking-freie Smartphone Betriebssysteme\, App-Stores\, Browser
+ \, Suchmaschinen\, Messenger-Dienste und Social Media Plattformen erhöhen.
+ \n\nMit unserem niederschwelligen Beratungsangebot in Form eines mobilen M
+ arktstandes </i>FAIR APPS MARKET</i> sind wir vorrangig im öffentlichen Ra
+ um auf Märkten und Straßenfesten präsent. Ziel unseres Projektes ist es\, 
+ Bürger*Innen zu motivieren\, den digitalen Wandel unter freien\, demokrati
+ schen Gesichtspunkten mitzugestalten. \n\nDas Kernteam von Topio – public 
+ space for privacy kommt aus den Bereichen: Kunst\, Design und Gesellschaft
+ skommunikation. Wir versuchen mit unseren bunten\, spielerischen und einla
+ dend gestalteten Aktionen mehr Aufmerksamkeit für freie Open Source Lösung
+ en zu schaffen.\n\nWir glauben an die Idee\, dass eine digital vernetzte G
+ esellschaft mehr sein kann als ein privatisierter und kommerzialisierter Ü
+ berwachungsapparat.\n\n<a href="https://www.topio.info/fair-apps-market.ht
+ m">Projektseite Fair Apps Market</a> \n\n<a href="https://www.topio.info">
+ Webseite Topio</a> \n\n\n\n
+ATTENDEE;CN="Topio Team";CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT:invalid:no
+ mail
+URL:https://kielux.de/programm/KOLT20#495
+END:VEVENT
+END:VCALENDAR
