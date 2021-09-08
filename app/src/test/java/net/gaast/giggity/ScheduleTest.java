@@ -2,40 +2,73 @@ package net.gaast.giggity;
 
 import android.util.Log;
 
-import org.hamcrest.CoreMatchers;
+import junit.framework.TestCase;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+
+import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.BufferedReader;
-import java.io.IOError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
-public class ScheduleTest {
-	public ScheduleTest() {
-		super();
+@RunWith(Parameterized.class)
+public class ScheduleTest extends TestCase {
+	private Schedule s = new Schedule();
+
+	public void setUp() {
+		Log.d("ScheduleTest", "Running with tz=" + tz_);
 	}
 
-	private Schedule load(String fn) {
-		long start = System.nanoTime();
-		Schedule s = new Schedule();
-		InputStream in = getClass().getClassLoader().getResourceAsStream(fn);
+	@Parameterized.Parameters
+	public static Object[] data() {
+		return new Object[] {
+			"America/Los_Angeles", "America/New_York",
+			"Europe/Dublin", "Europe/Amsterdam",
+			"Asia/Taipei", "Australia/Sydney"
+		};
+	}
 
+	@Parameterized.Parameter(0)
+	public String tz_;
+
+	private void load(String fn) {
+		JSONObject js = null;
+		try {
+			String jsf = fn.split("\\.")[0] + ".json";
+			String jss = IOUtils.toString(getClass().getClassLoader().getResourceAsStream(jsf));
+			js = new JSONObject(jss);
+		} catch (IOException | JSONException e) {
+			Assert.assertFalse(true);
+		}
+		long start = System.nanoTime();
+		ZoneId tz = ZoneId.of(tz_);
+		s.setNativeTz(tz);
+		InputStream in = getClass().getClassLoader().getResourceAsStream(fn);
 		try {
 			s.loadSchedule(new BufferedReader(new InputStreamReader(in)), "file://res/" + fn);
+			JSONObject md;
+			if (js != null && (md = js.optJSONObject(("metadata"))) != null) {
+				s.addMetadata(md.toString());
+			}
 			Log.d("ScheduleTest.load", fn + " loaded in " + ((System.nanoTime() - start) / 1000000.0) + " ms");
 		} catch (IOException e) {
+			Assert.assertFalse(true);
 		}
-		return s;
 	}
 
-	private Collection<String> tentNames(Collection<? extends Schedule.ItemList> in) {
+	private Collection<String> setNames(Collection<? extends Schedule.ItemList> in) {
 		Collection<String> ret = new ArrayList<>();
 		for (Schedule.ItemList i : in) {
 			ret.add(i.getTitle());
@@ -45,120 +78,129 @@ public class ScheduleTest {
 
 	@Test
 	public void testFosdem21() {
-		Schedule s = load("fosdem_2021.xml");
+		load("fosdem_2021.xml");
 		Assert.assertEquals("FOSDEM 2021", s.getTitle());
-		Assert.assertEquals(2, s.getDays().size());
+		assertThat(s.getDays(), hasSize(2));
 
-		Assert.assertEquals(106, s.getTents().size());  // Crazy Covid schedule with ∞ rooms
-		Assert.assertTrue(tentNames(s.getTents()).contains("K.fosdem"));
-		Assert.assertTrue(tentNames(s.getTents()).contains("L.lightningtalks"));
-		Assert.assertTrue(tentNames(s.getTents()).contains("D.mozilla"));
-		Assert.assertTrue(tentNames(s.getTents()).contains("D.radio"));
-		Assert.assertEquals(109, s.getTracks().size());
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Emulator Development"));
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Open Source Design"));
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Monitoring and Observability"));
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Microkernel"));
+		assertThat(s.getTents(), hasSize(106));  // Crazy Covid schedule with ∞ rooms
+		assertThat(setNames(s.getTents()), hasItem("K.fosdem"));
+		assertThat(setNames(s.getTents()), hasItem("L.lightningtalks"));
+		assertThat(setNames(s.getTents()), hasItem("D.mozilla"));
+		assertThat(setNames(s.getTents()), hasItem("D.radio"));
+		assertThat(s.getTracks(), hasSize(109));
+		assertThat(setNames(s.getTracks()), hasItem("Emulator Development"));
+		assertThat(setNames(s.getTracks()), hasItem("Open Source Design"));
+		assertThat(setNames(s.getTracks()), hasItem("Monitoring and Observability"));
+		assertThat(setNames(s.getTracks()), hasItem("Microkernel"));
 
 		s.setDay(0); // Saturday
-		Assert.assertEquals(87, s.getTents().size());
-		Assert.assertTrue(tentNames(s.getTents()).contains("K.fosdem"));
-		Assert.assertTrue(tentNames(s.getTents()).contains("L.lightningtalks"));
-		Assert.assertTrue(tentNames(s.getTents()).contains("D.mozilla"));
-		Assert.assertFalse(tentNames(s.getTents()).contains("D.radio"));
-		Assert.assertEquals(88, s.getTracks().size());
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Emulator Development"));
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Open Source Design"));
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Microkernel"));
-		Assert.assertFalse(tentNames(s.getTracks()).contains("Monitoring and Observability"));
+		assertThat(s.getTents(), hasSize(87));
+		assertThat(setNames(s.getTents()), hasItem("K.fosdem"));
+		assertThat(setNames(s.getTents()), hasItem("L.lightningtalks"));
+		assertThat(setNames(s.getTents()), hasItem("D.mozilla"));
+		assertThat(setNames(s.getTents()), not(hasItem("D.radio")));
+		assertThat(s.getTracks(), hasSize(88));
+		assertThat(setNames(s.getTracks()), hasItem("Emulator Development"));
+		assertThat(setNames(s.getTracks()), hasItem("Open Source Design"));
+		assertThat(setNames(s.getTracks()), hasItem("Microkernel"));
+		assertThat(setNames(s.getTracks()), not(hasItem("Monitoring and Observability")));
 
 		s.setDay(1); // Sunday
-		Assert.assertEquals(42, s.getTents().size());
-		Assert.assertTrue(tentNames(s.getTents()).contains("K.fosdem"));
-		Assert.assertTrue(tentNames(s.getTents()).contains("L.lightningtalks"));
-		Assert.assertFalse(tentNames(s.getTents()).contains("D.mozilla"));
-		Assert.assertTrue(tentNames(s.getTents()).contains("D.radio"));
-		Assert.assertEquals(44, s.getTracks().size());
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Emulator Development"));
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Open Source Design"));
-		Assert.assertFalse(tentNames(s.getTracks()).contains("Microkernel"));
-		Assert.assertTrue(tentNames(s.getTracks()).contains("Monitoring and Observability"));
+		assertThat(s.getTents(), hasSize(42));
+		assertThat(setNames(s.getTents()), hasItem("K.fosdem"));
+		assertThat(setNames(s.getTents()), hasItem("L.lightningtalks"));
+		assertThat(setNames(s.getTents()), not(hasItem("D.mozilla")));
+		assertThat(setNames(s.getTents()), hasItem("D.radio"));
+		assertThat(s.getTracks(), hasSize(44));
+		assertThat(setNames(s.getTracks()), hasItem("Emulator Development"));
+		assertThat(setNames(s.getTracks()), hasItem("Open Source Design"));
+		assertThat(setNames(s.getTracks()), not(hasItem("Microkernel")));
+		assertThat(setNames(s.getTracks()), hasItem("Monitoring and Observability"));
 
 		s.setDay(-1); // Back to all
-		Assert.assertEquals(106, s.getTents().size());
-		Assert.assertEquals(109, s.getTracks().size());
+		assertThat(s.getTents(), hasSize(106));
+		assertThat(s.getTracks(), hasSize(109));
 
-		Assert.assertEquals(0, s.getLanguages().size());
+		assertThat(s.getLanguages(), hasSize(0));
 
-		Assert.assertEquals(0, s.getTzOffset(), .01);  // WRONG, it's actually tz-clueless.. TODO
+		// assertThat(s.getTzOffset(), equalTo(0.0));
 		Assert.assertFalse(s.isToday());
+
+		assertThat(s.getLinks(), hasSize(3));
 	}
 
 	@Test
 	public void test36c3() {
-		Schedule s = load("36c3_merged.xml");
+		load("36c3_merged.xml");
 		Assert.assertEquals("36th Chaos Communication Congress", s.getTitle());
-		Assert.assertEquals(4, s.getDays().size());
+		assertThat(s.getDays(), hasSize(4));
 
-		Assert.assertEquals(92, s.getTents().size());
-		Assert.assertEquals(30, s.getTracks().size());
+		assertThat(s.getTents(), hasSize(92));
+		assertThat(s.getTracks(), hasSize(30));
 
 		s.setDay(0); // Fri
-		Assert.assertEquals(55, s.getTents().size());
-		Assert.assertEquals(27, s.getTracks().size());
+		assertThat(s.getTents(), hasSize(55));
+		assertThat(s.getTracks(), hasSize(27));
 
 		s.setDay(1); // Sat
-		Assert.assertEquals(70, s.getTents().size());
-		Assert.assertEquals(28, s.getTracks().size());
+		assertThat(s.getTents(), hasSize(70));
+		assertThat(s.getTracks(), hasSize(28));
 
 		s.setDay(2); // Sun
-		Assert.assertEquals(78, s.getTents().size());
-		Assert.assertEquals(28, s.getTracks().size());
+		assertThat(s.getTents(), hasSize(78));
+		assertThat(s.getTracks(), hasSize(28));
 
 		s.setDay(3); // Mon
-		Assert.assertEquals(51, s.getTents().size());
-		Assert.assertEquals(20, s.getTracks().size());
+		assertThat(s.getTents(), hasSize(51));
+		assertThat(s.getTracks(), hasSize(20));
 
 		s.setDay(-1); // Back to all
-		Assert.assertEquals(92, s.getTents().size());
-		Assert.assertEquals(30, s.getTracks().size());
+		assertThat(s.getTents(), hasSize(92));
+		assertThat(s.getTracks(), hasSize(30));
 
-		Assert.assertEquals(4, s.getLanguages().size());
-		Assert.assertEquals(543, s.getByLanguage("German").size());
-		Assert.assertEquals(674, s.getByLanguage("English").size());
+		assertThat(s.getLanguages(), hasSize(4));
+		assertThat(s.getByLanguage("German"), hasSize(543));
+		assertThat(s.getByLanguage("English"), hasSize(674));
 		// BS entries? :-/
-		Assert.assertEquals(1, s.getByLanguage("Abkhazian").size());
-		Assert.assertEquals(1, s.getByLanguage("Czech").size());
+		assertThat(s.getByLanguage("Abkhazian"), hasSize(1));
+		assertThat(s.getByLanguage("Czech"), hasSize(1));
 
-		// TODO AWARENESS Assert.assertEquals(0, s.getTzOffset(), .01);  // WRONG, it's actually tz-clueless.. TODO
+		// assertThat(s.getTzOffset(), equalTo(0.0));
 		Assert.assertFalse(s.isToday());
+
+		assertThat(s.getLinks(), hasSize(2));
 	}
 
 	@Test
-	public void testKolt20() {
-		Schedule s = load("kolt_20.ics");
+	public void testKielux2020() {
+		load("kielux_2020.ics");
 		Assert.assertEquals("18. Kieler Open Source und Linux Tage", s.getTitle());
-		Assert.assertEquals(3, s.getDays().size());
+		assertThat(s.getDays(), hasSize(2));
 
-		Assert.assertEquals(4, s.getTents().size());
+		assertThat(s.getTents(), hasSize(4));
 		Assert.assertNull(s.getTracks());
-		Assert.assertEquals(0, s.getLanguages().size());
+		assertThat(s.getLanguages(), hasSize(0));
 
-		Assert.assertEquals(0, s.getTzOffset(), .01);  // WRONG, it's actually tz-clueless.. TODO
+		// assertThat(s.getTzOffset(), equalTo(0.0));
 		Assert.assertFalse(s.isToday());
 	}
 
 	@Test
 	public void testLca20() {
-		Schedule s = load("linux_conf_au_2020.ics");
-		Assert.assertEquals("linux.conf.au 2020", s.getTitle());
-		Assert.assertEquals(6, s.getDays().size());
+		load("linux_conf_au_2020.ics");
+		assertThat(s.getTitle(), is("linux.conf.au 2020"));
+		assertThat(s.getDays(), hasSize(6));
 
-		Assert.assertEquals(7, s.getTents().size());
-		Assert.assertNull(s.getTracks());
-		Assert.assertEquals(0, s.getLanguages().size());
+		assertThat(s.getTents(), hasSize(7));
+		assertThat(s.getTracks(), nullValue());
+		assertThat(s.getLanguages(), hasSize(0));
 
-		Assert.assertEquals(15, s.getTzOffset(), .01);  // WRONG, it's actually tz-clueless.. TODO
+		if (tz_.equals("America/New_York"))
+			assertThat(s.getTzOffset(), equalTo(15.0));
+		else if(tz_.equals("Europe/Dublin"))
+			assertThat(s.getTzOffset(), equalTo(10.0));
+		else if(tz_.equals("Australia/Sydney"))
+			assertThat(s.getTzOffset(), equalTo(-1.0));
 		Assert.assertFalse(s.isToday());
 	}
 }

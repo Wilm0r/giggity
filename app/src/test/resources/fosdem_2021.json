@@ -1,0 +1,25 @@
+{
+	"version": 2021011300,
+	"url": "https://fosdem.org/2021/schedule/xml",
+	"title": "FOSDEM 2021",
+	"start": "2021-02-06",
+	"end": "2021-02-07",
+	"refresh_interval": 1800,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://fosdem.org/2021/",
+				"title": "Website"
+			},
+			{
+				"url": "https://volunteers.fosdem.org/faq/",
+				"title": "Volunteer"
+			},
+			{
+				"url": "https://fosdem.org/2021/stands/",
+				"title": "Stands"
+			}
+		],
+		"icon": "https://archive.fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png"
+	}
+}

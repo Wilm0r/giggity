@@ -237,7 +237,15 @@ public class Schedule implements Serializable {
 	public long eventLength() {
 		return lastTime.toEpochSecond() - firstTime.toEpochSecond();
 	}
-	
+
+	public void setNativeTz(ZoneId nativeTz) {
+		if (fullyLoaded) {
+			throw new RuntimeException("Can't change nativeTz after loading.");
+		}
+
+		this.nativeTz = nativeTz;
+	}
+
 	public ZonedDateTime getDay() {
 		if (curDayNum != -1) {
 			return day0List.get(curDayNum);
@@ -353,9 +361,6 @@ public class Schedule implements Serializable {
 	
 	private void loadXml(BufferedReader in, ContentHandler parser) {
 		try {
-			//SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-			//saxParser.parse(in, parser);
-			//SaxParserMain.BaeldungHandler baeldungHandler = new SaxParserMain.BaeldungHandler();
 			XMLReader reader = XMLReaderFactory.createXMLReader();
 			reader.setContentHandler(parser);
 			reader.parse(new InputSource(in));
@@ -1088,8 +1093,9 @@ public class Schedule implements Serializable {
 					startTime = ZonedDateTime.of(curDay, rawTime, nativeTz);
 
 					if (rawTime.toSecondOfDay() < (dayChangeOffsetMins * 60)) {
-						// In Frab files, if a time is before day_change it's technically the next
-						// day.
+						// In Frab files, if a time is before day_change it's after midnight, thus
+						// date should be incremented by one. (Not needed when using zoned *full*
+						// timestamp above.)
 						startTime = startTime.plusDays(1);
 					}
 				}
