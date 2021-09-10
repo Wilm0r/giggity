@@ -169,6 +169,23 @@ public class ScheduleTest extends TestCase {
 		Assert.assertFalse(s.isToday());
 
 		assertThat(s.getLinks(), hasSize(2));
+
+		Schedule.Item it = s.getItem("1230");
+		assertThat(it.getTitle(), is("Detox Seaweed Bibimbab"));
+		assertThat(it.getTrack().getTitle(), is("self organized sessions"));
+
+		Schedule.Line room = it.getLine();
+		assertThat(room.getTitle(), is("Assembly:Foodhackingbase"));
+		assertThat(room.getLocation(), is("https://36c3.c3nav.de/l/fhb"));
+		assertThat(room.getItems(), hasSize(23));
+		s.setDay(1); // Sat
+		assertThat(room.getItems(), hasSize(7));
+		s.setDay(-1); // Back to all
+		assertThat(room.getItems(), hasSize(23));
+
+		Schedule.Track track = room.getTrack();
+		assertThat(track.getTitle(), is("self organized sessions"));
+		assertThat(track.getLine(), nullValue());
 	}
 
 	@Test
