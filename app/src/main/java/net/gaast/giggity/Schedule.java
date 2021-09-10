@@ -708,36 +708,7 @@ public class Schedule implements Serializable {
 	}
 	
 	public AbstractList<Item> searchItems(String q_) {
-		/* No, sorry, this is no full text search. It's ugly and amateuristic,
-		 * but hopefully sufficient. Full text search would probably require
-		 * me to keep full copies of all schedules in SQLite (or find some
-		 * other FTS solution). And we have the whole thing in RAM anyway so
-		 * this search is pretty fast.
-		 */
-		LinkedList<Item> ret = new LinkedList<Item>();
-		String[] q = q_.toLowerCase().split("\\s+");
-		for (Line line : getTents()) {
-			for (Item item : line.getItems()) {
-				String d = item.getTitle() + " ";
-				if (item.getDescription() != null)
-					d += item.getDescription() + " ";
-				if (item.getTrack() != null)
-					d += item.getTrack() + " ";
-				if (item.getSpeakers() != null)
-					for (String i : item.getSpeakers())
-						d += i + " ";
-				d = d.toLowerCase();
-				int i;
-				for (i = 0; i < q.length; i ++) {
-					if (!d.contains(q[i]))
-						break;
-				}
-				if (i == q.length)
-					ret.add(item);
-			}
-		}
-		
-		return ret;
+		return null;
 	}
 
 	public LinkedList<Link> getLinks() {
