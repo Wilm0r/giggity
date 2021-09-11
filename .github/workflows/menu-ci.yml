@@ -1,4 +1,4 @@
-name: Menu CI
+name: Menu
 
 on:
   pull_request:
