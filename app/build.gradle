@@ -11,6 +11,13 @@ android {
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
+    compileOptions {
+        // Flag to enable support for the new language APIs
+        coreLibraryDesugaringEnabled true
+        // Sets Java compatibility to Java 8
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
     buildTypes {
         release {
             minifyEnabled true
@@ -37,6 +44,10 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.json:json:20171018'
+
+    // Throw this away once API 26 (Android 8) is the min SDK version (probably soon).
+    // needed for java.time API for now.
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 }
 
 repositories {
