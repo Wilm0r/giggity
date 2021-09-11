@@ -1,9 +1,10 @@
 {
-	"version": 2021011300,
+	"version": 2021091100,
 	"url": "https://fosdem.org/2021/schedule/xml",
 	"title": "FOSDEM 2021",
 	"start": "2021-02-06",
 	"end": "2021-02-07",
+	"timezone": "Europe/Brussels",
 	"refresh_interval": 1800,
 	"metadata": {
 		"links": [

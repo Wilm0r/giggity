@@ -1,9 +1,10 @@
 {
-	"version": 2021082900,
+	"version": 2021091100,
 	"url": "https://kielux.de/content/calendars/KOLT21.ics",
 	"title": "19. Kieler Open Source und Linux Tage Online", 
 	"start": "2021-09-17",
 	"end": "2021-09-18",
+	"timezone": "Europe/Berlin",
 	"refresh_interval": 1800,
 	"metadata": {
 		"icon": "https://kielux.de/static/images/kielux_tux_square.png",

@@ -1,11 +1,12 @@
 {
-	"version": 2021062900,
+	"version": 2021091100,
 	"url": "https://www.paris-web.fr/2021/conferences-parisweb-2021.ics",
 	"title": "Paris Web 2021",
 	"id": "Conf\u00E9rences Paris Web 2021",
 	"speakermatch": " \u2014 (.*)",
 	"start": "2021-10-07",
 	"end": "2021-10-08",
+	"timezone": "Europe/Paris",
 	"metadata": {
 		"icon": "https://mamot.fr/system/accounts/avatars/000/053/194/original/692e51a45b72717a.png",
 		"links": [

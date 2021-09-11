@@ -1,6 +1,606 @@
 {
-	"version": 2020081800,
+	"version": 2021091100,
 	"schedules": [
+		{
+			"start": "2018-01-22",
+			"end": "2018-01-26",
+			"version": 2020011000,
+			"url": "https://linux.conf.au/schedule/conference.ics",
+			"title": "LCA 2020 (old URL, avoid unless you have selections already)",
+			"metadata": {
+				"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
+				"links": [
+					{
+						"url": "https://linux.conf.au/",
+						"title": "Website"
+					},
+					{
+						"url": "https://lca2020.linux.org.au/wiki/Main_Page",
+						"title": "Wiki"
+					},
+					{
+						"url": "https://linux.conf.au/about/location/",
+						"title": "Location"
+					},
+					{
+						"url": "https://linux.conf.au/schedule/",
+						"title": "Online schedule"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018101900,
+			"url": "https://fahrplan.privacyweek.at/pw18/schedule/export/schedule.xml",
+			"title": "PrivacyWeek 2018",
+			"start": "2018-10-22",
+			"end": "2018-10-28",
+			"metadata": {
+				"icon": "https://privacyweek.at/icon-256x256.png",
+				"links": [
+					{
+						"url": "https://privacyweek.at/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2018102400,
+			"url": "https://participez-2018.capitoledulibre.org/schedule/xml/",
+			"title": "Capitole du Libre 2018",
+			"start": "2018-11-17",
+			"end": "2018-11-18",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2018.capitoledulibre.org/",
+						"title": "Site web"
+					}
+				],
+				"rooms": [
+					{
+						"name": "A.*",
+						"latlon": [43.60248, 1.45464]
+					},
+					{
+						"name": "B.*",
+						"latlon": [43.60247, 1.45566]
+					},
+					{
+						"name": "C.*",
+						"latlon": [43.60214, 1.45462]
+					},
+					{
+						"name": "Foyer.*",
+						"latlon": [43.60207, 1.45591]
+					}
+				]
+			}
+		},
+		{
+			"version": 2018102401,
+			"url": "https://rml12.duniter.io/rml12.ics",
+			"id": "RML 12",
+			"title": "RML 12",
+			"start": "2018-11-17",
+			"end": "2018-11-25",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://rml12.duniter.io/",
+						"title": "Site Web"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Bibliothèque Flora Tristan.*",
+						"latlon": [44.82132, -0.55073]
+					},
+					{
+						"name": "Halle des Douves.*",
+						"latlon": [44.83063, -0.5663]
+					},
+					{
+						"name": "Athénée Municipal.*",
+						"latlon": [44.839834, -0.577189]
+					},
+					{
+						"name": "Chez 1000i100.*",
+						"latlon": [44.81118, -0.55375]
+					},
+					{
+						"name": "Salle Marengo.*",
+						"latlon": [44.83314, -0.56883]
+					}
+				]
+			}
+		},
+		{
+			"title": "35c3 - main rooms only",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://fahrplan.events.ccc.de/congress/2018/Fahrplan/schedule.xml",
+			"start": "2018-12-27",
+			"end": "2018-12-30",
+			"refresh_interval": 1800,
+			"version": 2018122701
+		},
+		{
+			"title": "35c3 - new and merged",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2018/wiki/index.php/Main_Page",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://streaming.media.ccc.de/configs/conferences/35c3/everything.schedule.xml",
+			"start": "2018-12-27",
+			"end": "2018-12-30",
+			"refresh_interval": 1800,
+			"version": 2018122701
+		},
+		{
+			"start": "2019-01-21",
+			"end": "2019-01-25",
+			"version": 2019011800,
+			"url": "https://2019.linux.conf.au/schedule/conference.ics",
+			"title": "linux.conf.au 2019",
+			"metadata": {
+				"icon": "https://user-images.githubusercontent.com/248565/51358604-07784b80-1b18-11e9-976e-7ff0c81f0b96.png",
+				"links": [
+					{
+						"url": "https://2019.linux.conf.au/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2019.linux.conf.au/schedule/",
+						"title": "Online schedule"
+					},
+					{
+						"url": "https://2019.linux.conf.au/wiki/Main_Page",
+						"title": "Wiki"
+					}
+				],
+				"rooms": [
+					{
+						"name": "C1",
+						"latlon": [-43.52307088323096, 172.58377421683943]
+					},
+					{
+						"name": "C2",
+						"latlon": [-43.523066173454346, 172.5836225959817]
+					},
+					{
+						"name": "C3",
+						"latlon": [-43.5232231993839, 172.58392661196348]
+					},
+					{
+						"name": "A\\d",
+						"latlon": [-43.524166195271505, 172.583842929392]
+					}
+				]
+			}
+		},
+		{
+			"version": 2019028001,
+			"url": "https://fosdem.org/2019/schedule/xml",
+			"title": "FOSDEM 2019",
+			"start": "2019-02-02",
+			"end": "2019-02-03",
+			"refresh_interval": 1800,
+			"metadata": {
+				"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
+				"links": [
+					{
+						"url": "https://fosdem.org/2019/",
+						"title": "Website"
+					},
+					{
+						"url": "https://fosdem.org/2019/assets/booklet_general-3a78d1f9f0a625a3ac784d403bb75fb8723a99a135a38fa53cb244031ea4bfcb.pdf",
+						"title": "Info booklet",
+						"type": "application/pdf"
+					},
+					{
+						"url": "https://fosdem.org/2019/assets/campusmap-bde646158c3e7b5d10f071e6b432b2857e574efd3b8d2ee490a855f179950a46.png",
+						"title": "Map",
+						"type": "image/png"
+					},
+					{
+						"url": "https://fosdem.org/2019/practical/transportation/",
+						"title": "Transportation"
+					},
+					{
+						"url": "https://fosdem.org/2019/stands/",
+						"title": "Stands"
+					}
+				],
+				"icon": "https://fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png",
+				"c3nav_base": "https://nav.fosdem.org",
+				"rooms": [
+					{
+						"name": "AW1\\.120",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1-120"
+					},
+					{
+						"name": "AW1\\.121",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1121"
+					},
+					{
+						"name": "AW1\\.125",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1125"
+					},
+					{
+						"name": "AW1\\.126",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1-126"
+					},
+					{
+						"name": "H\\.1301\\ \\(Cornil\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1301"
+					},
+					{
+						"name": "H\\.1302\\ \\(Depage\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1302"
+					},
+					{
+						"name": "H\\.1308\\ \\(Rolin\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1308"
+					},
+					{
+						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1309"
+					},
+					{
+						"name": "H\\.2213",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2213"
+					},
+					{
+						"name": "H\\.2214",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2214"
+					},
+					{
+						"name": "H\\.2215\\ \\(Ferrer\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2215"
+					},
+					{
+						"name": "Janson",
+						"latlon": [50.813231, 4.3791498],
+						"c3nav_slug": "j-main"
+					},
+					{
+						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k1105"
+					},
+					{
+						"name": "K\\.3\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3201"
+					},
+					{
+						"name": "K\\.3\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3401"
+					},
+					{
+						"name": "K\\.4\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4201"
+					},
+					{
+						"name": "K\\.4\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4401"
+					},
+					{
+						"name": "K\\.4\\.601",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4601"
+					},
+					{
+						"name": "UA2\\.114\\ \\(Baudoux\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2114"
+					},
+					{
+						"name": "UA2\\.118\\ \\(Henriot\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2118"
+					},
+					{
+						"name": "UA2\\.220\\ \\(Guillissen\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2220"
+					},
+					{
+						"name": "UB2\\.147",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2147"
+					},
+					{
+						"name": "UB2\\.252A\\ \\(Lameere\\)",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2-252a"
+					},
+					{
+						"name": "UB4.*",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176]
+					},
+					{
+						"name": "UD2\\.119",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2119"
+					},
+					{
+						"name": "UD2\\.120\\ \\(Chavanne\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2120"
+					},
+					{
+						"name": "UD2\\.208\\ \\(Decroly\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2208"
+					},
+					{
+						"name": "UD2\\.218A",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2218a"
+					},
+					{
+						"name": "UD2\\.Corridor",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "545fe4c1e56d7"
+					}
+				]
+			}
+		},
+		{
+			"version": 2019011700,
+			"url": "https://cfgmgmtcamp.eu/schedule/schedule.ics",
+			"id": "CfgMgmtCamp 2019 Ghent",
+			"title": "CfgMgmtCamp 2019 Ghent",
+			"start": "2019-02-04",
+			"end": "2019-02-05",
+			"metadata": {
+				"icon": "https://cfgmgmtcamp.eu/images/logo_name_big.png",
+				"links": [
+					{
+						"url": "https://cfgmgmtcamp.eu/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2019028002,
+			"url": "https://installfest.cz/if19/schedule.xml",
+			"title": "Installfest 2019",
+			"start": "2019-03-02",
+			"end": "2019-03-03",
+			"metadata": {
+				"icon": "https://installfest.cz/if19/images/logo-tux.png",
+				"links": [
+					{
+						"url": "https://installfest.cz",
+						"title": "Web Installfestu"
+					},
+					{
+						"url": "https://installfest.cz/if19/info",
+						"title": "Info o konferenci"
+					}
+				]
+			}
+		},
+		{
+			"start": "2019-03-23",
+			"end": "2019-03-24",
+			"version": 2019032300,
+			"url": "https://libreplanet.org/2019/lp2019-schedule.ics",
+			"id": "LibrePlanet 2019",
+			"title": "LibrePlanet 2019",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://libreplanet.org/2019/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.libreplanet.org/2019/live",
+						"title": "Livestream"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Workshop.*|.*26-.*",
+						"latlon": [42.361, -71.09054]
+					},
+					{
+						"name": ".*31-.*",
+						"latlon": [42.36043, -71.09275]
+					},
+					{
+						"name": ".*32-.*",
+						"latlon": [42.36159, -71.09045]
+					},
+					{
+						"name": ".*34-.*",
+						"latlon": [42.36111, -71.09194]
+					}
+				]
+			}
+		},
+		{
+			"version": 2016080500,
+			"title": "IETF 104 Prague",
+			"url": "https://datatracker.ietf.org/meeting/104/agenda.ics",
+			"start": "2019-03-23",
+			"end": "2019-03-29",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.ietf.org/how/meetings/104/",
+						"title": "Website"
+					},
+					{
+						"url": "https://datatracker.ietf.org/meeting/104/floor-plan",
+						"title": "Floor plans"
+					}
+				]
+			}
+		},
+		{
+			"version": 2019022500,
+			"url": "https://frab.luga.de/de/LIT2019/public/schedule.xml",
+			"title": "Augsburger Linux-Infotag 2019",
+			"start": "2019-04-06",
+			"end": "2019-04-06",
+			"metadata": {
+				"icon": "https://luga-ev.github.io/frab-extras/Tux2.png",
+				"links": [
+					{
+						"url": "https://www.luga.de/Aktionen/LIT-2019/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2019040409,
+			"url": "https://pretalx.jdll.org/jdll2019/schedule.xml",
+			"title": "Journées du Logiciel Libre 2019",
+			"start": "2019-04-06",
+			"end": "2019-04-07",
+			"metadata": {
+				"links": [
+					{
+						"url": "http://www.jdll.org/",
+						"title": "Site web"
+					},
+					{
+						"url": "http://www.jdll.org/pratique/plan/",
+						"title": "Plan"
+					}
+				]
+			}
+		},
+		{
+			"version": 2019042600,
+			"url": "http://rml13.creationmonetaire.info/rml.ics",
+			"id": "RML13",
+			"title": "RML 13",
+			"start": "2019-05-23",
+			"end": "2019-05-26",
+			"metadata": {
+				"icon": "https://git.duniter.org/nodes/typescript/duniter/raw/dev/images/450%C3%97450.png",
+				"links": [
+					{
+						"url": "http://rml13.creationmonetaire.info/",
+						"title": "Site Web"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Cyberbodega.*",
+						"latlon": [42.695884249268495, 2.8846125304698944]
+					}
+				]
+			}
+		},
+		{
+			"version": 2019042600,
+			"url": "https://www.opensouthcode.org/conferences/opensouthcode2019/schedule.xml",
+			"title": "Opensouthcode 2019",
+			"start": "2019-05-24",
+			"end": "2019-05-25",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.opensouthcode.org/",
+						"title": "Website"
+					}
+				],
+				"icon": "https://www.opensouthcode.org/logo1.png"
+			}
+		},
+		{
+			"version": 2019050500,
+			"url": "https://programme.passageenseine.fr/index.ics",
+			"title": "PSES 2019",
+			"start": "2019-06-27",
+			"end": "2019-06-30",
+			"metadata": {
+				"icon": "https://passageenseine.fr/logo.png",
+				"links": [
+					{
+						"url": "https://passageenseine.fr/",
+						"title": "Site web"
+					},
+					{
+						"url": "https://programme.passageenseine.fr/",
+						"title": "Programme web"
+					},
+					{
+						"url": "https://live.passageenseine.fr/",
+						"title": "Streaming"
+					}
+				]
+			}
+		},
 		{
 			"version": 2019053100,
 			"url": "https://www.tuebix.org/2019/giggity.xml",
@@ -328,28 +928,6 @@
 					{
 						"latlon": [50.105047, 14.390432],
 						"name": "111"
-					}
-				]
-			}
-		},
-		{
-			"version": 2019100200,
-			"url": "https://www.paris-web.fr/2019/conferences-parisweb-2019.ics",
-			"title": "Paris Web 2019",
-			"id": "Conférences Paris Web 2019",
-			"speakermatch": " — (.*)",
-			"start": "2019-10-10",
-			"end": "2019-10-12",
-			"metadata": {
-				"icon": "https://www.paris-web.fr/android-chrome-512x512.png",
-				"links": [
-					{
-						"url": "https://www.paris-web.fr/2019/",
-						"title": "Site Web"
-					},
-					{
-						"url": "https://inscriptions.paris-web.fr/",
-						"title": "Tarifs et inscription"
 					}
 				]
 			}
@@ -1273,17 +1851,331 @@
 			}
 		},
 		{
-			"version": 2020080900,
-			"url": "https://debconf20.debconf.org/schedule/pentabarf.xml",
-			"title": "DebConf 20",
-			"start": "2020-08-23",
-			"end": "2020-08-29",
+			"version": 2020090600,
+			"url": "https://kielux.de/content/calendars/LPD20.ics",
+			"title": "Kieler Linux Presentation Day 2020.2",
+			"start": "2020-09-17",
+			"end": "2020-09-17",
+			"refresh_interval": 1800,
 			"metadata": {
-				"icon": "https://debconf20.debconf.org/static/img/favicon/favicon-196.083c69e44c2b.png",
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
 				"links": [
 					{
-						"url": "https://debconf20.debconf.org/",
+						"url": "https://kielux.de",
 						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/LPD20",
+						"title": "Schedule"
+					},
+					{
+						"url": "https://kielux.de/archiv",
+						"title": "News"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020090600,
+			"url": "https://kielux.de/content/calendars/KOLT20.ics",
+			"title": "18. Kieler Open Source und Linux Tage Online",
+			"start": "2020-09-18",
+			"end": "2020-09-19",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+				"links": [
+					{
+						"url": "https://kielux.de",
+						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/KOLT20",
+						"title": "Schedule and workshop registration"
+					},
+					{
+						"url": "https://kielux.de/archiv",
+						"title": "News"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020100901,
+			"url": "https://vcfb.de/2020/schedule.xml",
+			"title": "Vintage Computing Festival Berlin 2020",
+			"start": "2020-10-10",
+			"end": "2020-10-11",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://wiki.vcfb.de/2020/_media/wiki:logo.png",
+				"links": [
+					{
+						"url": "https://vcfb.de/2020/",
+						"title": "Website"
+					},
+					{
+						"url": "https://wiki.vcfb.de/2020/",
+						"title": "Event Wiki"
+					},
+					{
+						"url": "https://wiki.vcfb.de/2020/stream",
+						"title": "Stream"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020092600,
+			"url": "https://afup.org/event/forumphp2020/planning.ics",
+			"title": "Forum PHP 2020",
+			"start": "2020-10-22",
+			"end": "2020-10-23",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://event.afup.org/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/forumphp2020enligne/tickets",
+						"title": "Tarifs et inscription"
+					},
+					{
+						"url": "https://event.afup.org/afup-day-2020/infos-pratiques-faq/",
+						"title": "Infos pratiques & FAQ"
+					}
+				]
+			}
+		},
+		{
+			"version": 2020100905,
+			"url": "https://www.sfscon.it/?calendar=2020&format=xml",
+			"title": "SFScon - 2020",
+			"start": "2020-11-13",
+			"end": "2020-11-15",
+			"metadata": {
+				"icon": "https://www.sfscon.it/wp-content/uploads/2020/10/cropped-cropped-sfsconnew-180x180.png",
+				"links": [
+					{
+						"url": "https://www.sfscon.it/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.sfscon.it/about/",
+						"title": "About"
+					},
+					{
+						"url": "https://www.sfscon.it/programs/",
+						"title": "Past editions"
+					},
+					{
+						"url": "https://www.sfscon.it/talks-workshops/",
+						"title": "Talks & Workshops"
+					},
+					{
+						"url": "https://www.sfscon.it/speakers/",
+						"title": "Speakers"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021012000,
+			"url": "https://in2021.mini.debconf.org/schedule/pentabarf.xml",
+			"title": "MiniDebConf India 2021",
+			"start": "2021-01-23",
+			"end": "2021-01-24",
+			"metadata": {
+				"icon": "https://in2021.mini.debconf.org/static/img/logo.8224b7f40c56.png",
+				"links": [
+					{
+						"url": "https://in2021.mini.debconf.org/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021091100,
+			"url": "https://fosdem.org/2021/schedule/xml",
+			"title": "FOSDEM 2021",
+			"start": "2021-02-06",
+			"end": "2021-02-07",
+			"timezone": "Europe/Brussels",
+			"refresh_interval": 1800,
+			"metadata": {
+				"links": [
+					{
+						"url": "https://fosdem.org/2021/",
+						"title": "Website"
+					},
+					{
+						"url": "https://volunteers.fosdem.org/faq/",
+						"title": "Volunteer"
+					},
+					{
+						"url": "https://fosdem.org/2021/stands/",
+						"title": "Stands"
+					}
+				],
+				"icon": "https://archive.fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png"
+			}
+		},
+		{
+			"start": "2021-03-13",
+			"end": "2021-03-21",
+			"version": 2021031100,
+			"url": "https://api.eventyay.com/v1/events/fa96ae2c.ics?include_sessions",
+			"title": "FOSSASIA Summit 2021",
+			"metadata": {
+				"icon": "https://pbs.twimg.com/profile_images/1141238022/fossasia-cubelogo_200x200.jpg",
+				"links": [
+					{
+						"url": "https://summit.fossasia.org/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"start": "2021-03-20",
+			"end": "2021-03-21",
+			"version": 2021031000,
+			"url": "https://libreplanet.org/2021/lp2021-schedule.ics",
+			"title": "LibrePlanet 2021",
+			"metadata": {
+				"icon": "https://libreplanet.org/2021/assets/img/logo.png",
+				"links": [
+					{
+						"url": "https://libreplanet.org/2021/",
+						"title": "Website"
+					},
+					{
+						"url": "https://libreplanet.org/2021/live/",
+						"title": "Livestream"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021070100,
+			"url": "https://sotm.osmz.ru/2021.xml",
+			"title": "State of the Map 2021",
+			"start": "2021-07-09",
+			"end": "2021-07-11",
+			"metadata": {
+				"icon": "https://2021.stateofthemap.org/img/sotm_2021-logo-small.png",
+				"links": [
+					{
+						"url": "https://2021.stateofthemap.org/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021071800,
+			"url": "https://framadrive.org/s/fPHajTWPGLwMrfF/download/Tracim.ics",
+			"title": "Entrée Libre #2",
+			"start": "2021-07-28",
+			"end": "2021-07-31",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://entreelibre.frama.site/",
+						"title": "Site Web"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021081000,
+			"url": "https://debconf21.debconf.org/schedule/pentabarf.xml",
+			"title": "DebConf 21",
+			"start": "2021-08-24",
+			"end": "2021-08-28",
+			"metadata": {
+				"icon": "https://debconf21.debconf.org/static/img/favicon/favicon-196.3b67242f2574.png",
+				"links": [
+					{
+						"url": "https://debconf21.debconf.org/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021091100,
+			"url": "https://kielux.de/content/calendars/LPD21.ics",
+			"title": "Kieler Linux Presentation Day 2021.2",
+			"start": "2021-09-16",
+			"end": "2021-09-16",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+				"links": [
+					{
+						"url": "https://kielux.de",
+						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/LPD21",
+						"title": "Schedule"
+					},
+					{
+						"url": "https://kielux.de/archiv",
+						"title": "News"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021091100,
+			"url": "https://kielux.de/content/calendars/KOLT21.ics",
+			"title": "19. Kieler Open Source und Linux Tage Online",
+			"start": "2021-09-17",
+			"end": "2021-09-18",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+				"links": [
+					{
+						"url": "https://kielux.de",
+						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/KOLT21",
+						"title": "Schedule and workshop registration"
+					},
+					{
+						"url": "https://kielux.de/archiv",
+						"title": "News"
+					}
+				]
+			}
+		},
+		{
+			"version": 2021091100,
+			"url": "https://www.paris-web.fr/2021/conferences-parisweb-2021.ics",
+			"title": "Paris Web 2021",
+			"id": "Conférences Paris Web 2021",
+			"speakermatch": " — (.*)",
+			"start": "2021-10-07",
+			"end": "2021-10-08",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"icon": "https://mamot.fr/system/accounts/avatars/000/053/194/original/692e51a45b72717a.png",
+				"links": [
+					{
+						"url": "https://www.paris-web.fr/2021/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://inscriptions.paris-web.fr/",
+						"title": "Tarifs et inscription"
 					}
 				]
 			}
