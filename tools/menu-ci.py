@@ -20,6 +20,7 @@ import re
 import subprocess
 import sys
 import time
+import zoneinfo
 
 # version check. This script requires at least python 3.6
 # Currently the only 3.6 feature that is used in this script is `encoding` in
@@ -186,6 +187,12 @@ def validate_entry(e):
 		errors.append("Conference ends (%(end)s) before it starts (%(start)s)?" % e)
 	if e["end"] < datetime.datetime.now().strftime("%Y-%m-%d"):
 		errors.append("Conference already ended (%(end)s)?" % e)
+
+	if "timezone" in e:
+		try:
+			zoneinfo.ZoneInfo(e["timezone"])
+		except zoneinfo._common.ZoneInfoNotFoundError:
+			errors.append("Timezone does not exist: %s" % e["timezone"])
 
 	md = e.get("metadata")
 	if md:
