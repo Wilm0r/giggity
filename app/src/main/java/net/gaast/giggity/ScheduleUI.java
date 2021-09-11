@@ -23,6 +23,7 @@ import org.json.JSONArray;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.time.ZoneId;
 import java.util.AbstractList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -50,6 +51,14 @@ public class ScheduleUI extends Schedule {
 			// TODO: Test this uncommon codepath to ensure noop handlers are noop and not crashop.
 			// (Can't test this now because it looks like reminders are kinda broken... :< )
 			ret.progressHandler = new Handler();
+		}
+
+		Db.DbSchedule ds = ctx.getDb().getSchedule(url);
+		if (ds != null) {
+			String tz = ds.getTimezone();
+			if (!tz.isEmpty()) {
+				ret.setInTZ(ZoneId.of(tz));
+			}
 		}
 
 		Fetcher f = null;

@@ -65,7 +65,7 @@ import java.util.zip.GZIPInputStream;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 18;
+	private static final int dbVersion = 19;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -97,6 +97,7 @@ public class Db {
 			                                  "sch_refresh_interval Integer, " +
 			                                  "sch_start Integer, " +
 			                                  "sch_end Integer, " +
+			                                  "sch_timezone VarChar(128), " +
 			                                  "sch_id_s VarChar(128), " +
 			                                  "sch_metadata VarChar(10240), " +
 			                                  "sch_day Integer)");
@@ -189,21 +190,31 @@ public class Db {
 					e.printStackTrace();
 				}
 			}
+			if (oldVersion < 19) {
+				try {
+					db.execSQL("Alter Table schedule Add Column sch_timezone VarChar(128)");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
+				}
+			}
 
-			/* Full-text search! FTS4 doesn't exactly do Alter Table anyway so don't try. */
-			try {
-				db.execSQL("Drop Table If Exists item_search");
-				db.execSQL("Create Virtual Table item_search Using FTS4" +
-				           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+			if (oldVersion < 18) {
+				/* Full-text search! FTS4 doesn't exactly do Alter Table anyway so don't try. */
+				try {
+					db.execSQL("Drop Table If Exists item_search");
+					db.execSQL("Create Virtual Table item_search Using FTS4" +
+							           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
 
-				// We've just recreated the search index table, so flush all indexing timestamps
-				// that have now become lies.
-				ContentValues row = new ContentValues();
-				row.put("sch_itime", 0);
-				db.update("schedule", row, "", null);
-			} catch (SQLiteException e) {
-				Log.e("DeoxideDb", "SQLite error, maybe FTS support is missing?");
-				e.printStackTrace();
+					// We've just recreated the search index table, so flush all indexing timestamps
+					// that have now become lies.
+					ContentValues row = new ContentValues();
+					row.put("sch_itime", 0);
+					db.update("schedule", row, "", null);
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe FTS support is missing?");
+					e.printStackTrace();
+				}
 			}
 
 			// Don't think the Math.min is necessary (anymore). I wrote this possibly >10y ago
@@ -317,6 +328,7 @@ public class Db {
 		row.put("sch_refresh_interval", sched.refresh_interval);
 		row.put("sch_title", sched.title);
 		row.put("sch_metadata", sched.metadata);
+		row.put("sch_timezone", sched.timezone);
 
 		if (q.moveToNext()) {
 			db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
@@ -404,6 +416,7 @@ public class Db {
 			String url, title;
 			int refresh_interval;
 			Date start, end;
+			String timezone;
 			// Raw JSON string, because we'll only start interpreting this data later on. Will contain
 			// info like extra links to for example room maps, and other stuff I may think of. Would
 			// be even nicer if (some of) this could become part of the Pentabarf spec..
@@ -412,11 +425,7 @@ public class Db {
 			public Schedule(JSONObject jso) throws JSONException {
 				url = jso.getString("url");
 				title = jso.getString("title");
-				if (jso.has("refresh_interval")) {
-					refresh_interval = jso.getInt("refresh_interval");
-				} else {
-					refresh_interval = 86400;
-				}
+				refresh_interval = jso.optInt("refresh_interval", 86400);
 
 				if (jso.has("metadata")) {
 					metadata = jso.getJSONObject("metadata").toString();
@@ -432,6 +441,8 @@ public class Db {
 					Log.e("DeoxideDb.Seed.Schedule", "Corrupted start/end date.");
 					start = end = new Date();
 				}
+
+				timezone = jso.optString("timezone", "");
 			}
 
 			public String toString() {
@@ -780,6 +791,7 @@ public class Db {
 		private int id;
 		private String url, title;
 		private Date start, end;
+		private String timezone;
 		private int refresh_interval;  // Number of seconds before checking server for new schedule info.
 		private Date atime;  // Access time, set by setSchedule above, used as sorting key in Chooser.
 		private Date rtime;  // Refresh time, last time Fetcher claimed the server sent new data.
@@ -792,6 +804,7 @@ public class Db {
 			start = new Date(q.getLong(q.getColumnIndexOrThrow("sch_start")) * 1000);
 			refresh_interval = q.getInt(q.getColumnIndexOrThrow("sch_refresh_interval"));
 			end = new Date(q.getLong(q.getColumnIndexOrThrow("sch_end")) * 1000);
+			timezone = q.getString(q.getColumnIndexOrThrow("sch_timezone"));
 			atime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_atime")) * 1000);
 			rtime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_rtime")) * 1000);
 			itime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_itime")) * 1000);
@@ -815,7 +828,11 @@ public class Db {
 		public Date getEnd() {
 			return end;
 		}
-		
+
+		public String getTimezone() {
+			return timezone;
+		}
+
 		public Date getAtime() {
 			return atime;
 		}
