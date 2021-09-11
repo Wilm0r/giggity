@@ -24,7 +24,6 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.Spanned;
 import android.util.Log;
-import android.util.Xml;
 import android.widget.CheckBox;
 
 import org.json.JSONArray;
@@ -34,7 +33,6 @@ import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.Locator;
-import org.xml.sax.Parser;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.AttributesImpl;
@@ -81,9 +79,6 @@ import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 public class Schedule implements Serializable {
 	private final int detectHeaderSize = 1024;
 	
@@ -105,9 +100,9 @@ public class Schedule implements Serializable {
 	private LinkedList<ZonedDateTime> day0List = new LinkedList<>();
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
-	private ZoneId nativeTz = ZoneId.systemDefault();
-	private HashSet<Double> tzOffset = new HashSet<>();
-	private int dayChangeOffsetMins = 6 * 60;  // 06:00. Raw int so it can be negative (will include tzOffset).
+	private ZoneId inTZ = ZoneId.systemDefault();   // TZ-less/UTC times to be interpreted as/converted to this.
+	private ZoneId outTZ = ZoneId.systemDefault();  // Usually our local timezone, this is returned externally.
+	private LocalTime dayChange = LocalTime.of(6, 0);
 
 	private HashSet<String> languages = new HashSet<>();
 
@@ -161,7 +156,7 @@ public class Schedule implements Serializable {
 			throw new LoadException(getString(R.string.schedule_empty));
 		}
 
-		ZonedDateTime day = firstTime.truncatedTo(ChronoUnit.DAYS).plus(dayChangeOffsetMins, ChronoUnit.MINUTES);
+		ZonedDateTime day = firstTime.truncatedTo(ChronoUnit.DAYS).with(dayChange);
 		/* Add a day 0 (maybe there's an event before the first day officially
 		 * starts?). Saw this in the CCC Fahrplan for example. */
 		if (day.isAfter(firstTime))
@@ -173,12 +168,12 @@ public class Schedule implements Serializable {
 		while (day.isBefore(lastTime)) {
 			/* Some schedules have empty days in between. :-/ Skip those. */
 			for (Schedule.Item item : allItems.values()) {
-				if (item.getStartTimeZoned().compareTo(day) >= 0 &&
-				    item.getEndTimeZoned().compareTo(dayEnd) <= 0) {
+				if (item.startTime.compareTo(day) >= 0 &&
+				    item.endTime.compareTo(dayEnd) <= 0) {
 					// Exact start time of day (could be "yesterday")
 					dayList.add(day);
 					// Midnight date-only for display purpose.
-					day0List.add(day.minus(dayChangeOffsetMins, ChronoUnit.MINUTES).truncatedTo(ChronoUnit.DAYS));
+					day0List.add(day.truncatedTo(ChronoUnit.DAYS));
 					break;
 				}
 			}
@@ -238,17 +233,21 @@ public class Schedule implements Serializable {
 		return lastTime.toEpochSecond() - firstTime.toEpochSecond();
 	}
 
-	public void setNativeTz(ZoneId nativeTz) {
+	public void setInTZ(ZoneId inTZ) {
 		if (fullyLoaded) {
-			throw new RuntimeException("Can't change nativeTz after loading.");
+			throw new RuntimeException("Can't change inTZ after loading.");
 		}
 
-		this.nativeTz = nativeTz;
+		this.inTZ = inTZ;
+	}
+
+	public void setOutTZ(ZoneId outTZ) {
+		this.outTZ = outTZ;
 	}
 
 	public ZonedDateTime getDay() {
 		if (curDayNum != -1) {
-			return day0List.get(curDayNum);
+			return day0List.get(curDayNum).withZoneSameInstant(outTZ);
 		} else {
 			return null;
 		}
@@ -271,32 +270,28 @@ public class Schedule implements Serializable {
 
 			dayFirstTime = dayLastTime = null;
 			for (Schedule.Item item : allItems.values()) {
-				if (item.getStartTimeZoned().compareTo(curDay) >= 0 &&
-						item.getEndTimeZoned().compareTo(curDayEnd) <= 0) {
-					if (dayFirstTime == null || item.getStartTimeZoned().isBefore(dayFirstTime))
-						dayFirstTime = item.getStartTimeZoned();
-					if (dayLastTime == null || item.getEndTimeZoned().isAfter(dayLastTime))
-						dayLastTime = item.getEndTimeZoned();
+				if (item.startTime.compareTo(curDay) >= 0 &&
+						item.endTime.compareTo(curDayEnd) <= 0) {
+					if (dayFirstTime == null || item.startTime.isBefore(dayFirstTime))
+						dayFirstTime = item.startTime;
+					if (dayLastTime == null || item.endTime.isAfter(dayLastTime))
+						dayLastTime = item.endTime;
 				}
 			}
 		}
 		return getDay();
 	}
 
-	private void addTzOffset(ZonedDateTime origStart, ZonedDateTime localStart) {  // TODO: Difference, not offset!
-		double hoursOff = localStart.toLocalDateTime().until(origStart, ChronoUnit.MINUTES) / 60.0;
-		if (tzOffset.isEmpty()) {
-			// Integrate the first tz offset we run into into the day change time.
-			dayChangeOffsetMins -= hoursOff * 60;
+	public double getTzDiff() {
+		// Calculate difference *now* if the event is current, otherwise at the start of the conf.
+		// (Just in case there's a DST change on one of the sides mid-event?)
+		ZonedDateTime mp = ZonedDateTime.now().withZoneSameInstant(inTZ);
+		if (!isToday()) {
+			mp = firstTime;
 		}
-		tzOffset.add(hoursOff);
-	}
-
-	public double getTzOffset() {
-		if (tzOffset.size() == 1) {
-			return tzOffset.iterator().next();
-		}
-		return 0;
+		int diff = inTZ.getRules().getOffset(mp.toInstant()).getTotalSeconds() -
+		           outTZ.getRules().getOffset(mp.toInstant()).getTotalSeconds();
+		return diff / 3600.0;
 	}
 
 	/* Sets day to one overlapping given moment in time and returns day number, or -1 if no match. */
@@ -323,18 +318,18 @@ public class Schedule implements Serializable {
 	/** Get earliest item.startTime */
 	public ZonedDateTime getFirstTimeZoned() {
 		if (curDay == null) {
-			return firstTime;
+			return firstTime.withZoneSameInstant(outTZ);
 		} else {
-			return dayFirstTime;
+			return dayFirstTime.withZoneSameInstant(outTZ);
 		}
 	}
 	
 	/** Get highest item.endTime */
 	public ZonedDateTime getLastTimeZoned() {
 		if (curDay == null) {
-			return lastTime;
+			return lastTime.withZoneSameInstant(outTZ);
 		} else {
-			return dayLastTime;
+			return dayLastTime.withZoneSameInstant(outTZ);
 		}
 	}
 
@@ -438,7 +433,7 @@ public class Schedule implements Serializable {
 	private void loadJson(BufferedReader in) {
 
 		StringBuffer buffer = new StringBuffer();
-		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(nativeTz);
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(inTZ);
 		HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
 		Boolean hasMicrolocs = false;
 		Scanner s = new Scanner(in);
@@ -789,21 +784,22 @@ public class Schedule implements Serializable {
 			tentMap = new HashMap<String,Schedule.Line>();
 
 			dfUtc = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss'Z'").withZone(ZoneId.of("UTC"));
-			dfLocal = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss").withZone(nativeTz);
+			dfLocal = DateTimeFormatter.ofPattern("yyyyMMdd'T'HHmmss").withZone(inTZ);
 		}
 
 		private ZonedDateTime parseTime(String s, String tz) throws ParseException {
 			TemporalAccessor ret;
 			try {
 				ret = dfUtc.parse(s, new ParsePosition(0));
+				return ZonedDateTime.from(ret).withZoneSameInstant(inTZ);
 			} catch (DateTimeParseException e) {
 				if (tz == null) {
 					ret = dfLocal.parse(s, new ParsePosition(0));
 				} else {
 					ret = dfLocal.withZone(ZoneId.of(tz)).parse(s, new ParsePosition(0));
 				}
+				return ZonedDateTime.from(ret);
 			}
-			return ZonedDateTime.from(ret);
 		}
 
 		/* Yay I'll just write my own parser... Spec is at https://www.kanzaki.com/docs/ical/duration-t.html
@@ -876,22 +872,12 @@ public class Schedule implements Serializable {
 						tz = at.getValue("tzid");
 					}
 
-					ZonedDateTime origStart = parseTime(startTimeS, tz);
-					Duration d;
+					startTime = parseTime(startTimeS, tz);
 					if (durationS != null) {
-						d = parseDuration(durationS);
+						endTime = startTime.plus(parseDuration(durationS));
 					} else {
 						// If dtend has a different tz then you're a terrible person.
-						d = Duration.between(origStart, parseTime(endTimeS, tz));
-					}
-
-					startTime = origStart.withZoneSameInstant(nativeTz);
-					endTime = startTime.plus(d);
-
-					if (tz != null) {
-						// If the event/schedule seems to have a native timezone instead of just raw UTC
-						// timestamps, record the time difference so it can be shared with the user.
-						addTzOffset(origStart, startTime);
+						endTime = parseTime(endTimeS, tz);
 					}
 				} catch (ParseException e) {
 					Log.w("Schedule.loadXcal", "Can't parse date: " + e);
@@ -973,7 +959,7 @@ public class Schedule implements Serializable {
 			tentMap = new HashMap<>();
 
 			df = DateTimeFormatter.ISO_LOCAL_DATE;
-			//tf = DateTimeFormatter.ISO_LOCAL_TIME;
+			// tf = DateTimeFormatter.ISO_LOCAL_TIME;  // Nope, won't take the optional seconds. :<
 			tf = DateTimeFormatter.ofPattern("H:mm[:ss]");
 
 			// zoned date+time format in the <date/> tag, not used by all schedules BUT the only one
@@ -1026,8 +1012,14 @@ public class Schedule implements Serializable {
 			if (localName.equals("conference")) {
 				title = propMap.get("title");
 				if (propMap.get("day_change") != null) {
-					dayChangeOffsetMins = LocalTime.parse(propMap.get("day_change"), tf).toSecondOfDay() / 60;
-					// TODO: PARSE ERROR?
+					dayChange = LocalTime.parse(propMap.get("day_change"), tf);
+				}
+				if (propMap.get("time_zone_name") != null) {
+					ZoneId fTZ = ZoneId.of(propMap.get("time_zone_name"));
+					if (!fTZ.normalized().equals(inTZ.normalized())) {
+						Log.w("ScheduleTZ", "In-file timezone " + fTZ + " seems to mismatch our records: " + inTZ);
+					}
+					inTZ = fTZ;
 				}
 			} else if (localName.equals("event")) {
 				String id, title, startTimeS, startZonedTimeS, durationS, s, desc, wl;
@@ -1047,23 +1039,17 @@ public class Schedule implements Serializable {
 				startTime = null;
 				try {
 					if (startZonedTimeS != null) {
-						// This will be the tz-native starting time in the conf's zone
-						ZonedDateTime origStart = ZonedDateTime.parse(startZonedTimeS, zdf);
-						// What we'll save is a ZDT in the phone's local tz since during COVID-19 that's
-						// all what's going to matter. Shout out to future Wilmer or whomever is going
-						// to extend tz awareness further when things are back to normal.
-						startTime = origStart.withZoneSameInstant(nativeTz);
-						// Save the offset so it can be reported to the user.
-						addTzOffset(origStart, startTime);
+						// All internal timestamps must be the tz-native times, in the conf's zone
+						startTime = ZonedDateTime.parse(startZonedTimeS, zdf);
 					}
 				} catch (DateTimeParseException e){
 					startZonedTimeS = null;
 				}
 				if (startZonedTimeS == null) {
 					LocalTime rawTime = LocalTime.parse(startTimeS, tf);
-					startTime = ZonedDateTime.of(curDay, rawTime, nativeTz);
+					startTime = ZonedDateTime.of(curDay, rawTime, inTZ);
 
-					if (rawTime.toSecondOfDay() < (dayChangeOffsetMins * 60)) {
+					if (rawTime.isBefore(dayChange)) {
 						// In Frab files, if a time is before day_change it's after midnight, thus
 						// date should be incremented by one. (Not needed when using zoned *full*
 						// timestamp above.)
@@ -1184,8 +1170,8 @@ public class Schedule implements Serializable {
 
 			for (Item item : items) {
 				if ((!item.isHidden() || showHidden) &&
-				    (curDay == null || (!item.getStartTimeZoned().isBefore(curDay) &&
-				                        !item.getEndTimeZoned().isAfter(curDayEnd))))
+				    (curDay == null || (!item.startTime.isBefore(curDay) &&
+				                        !item.endTime.isAfter(curDayEnd))))
 					ret.add(item);
 			}
 			return ret;
@@ -1217,10 +1203,10 @@ public class Schedule implements Serializable {
 			/* The rest really should be in the caller, but there are several callsites, one per parser. TODO. */
 			allItems.put(item.getId(), item);
 
-			if (firstTime == null || item.getStartTimeZoned().isBefore(firstTime))
-				firstTime = item.getStartTimeZoned();
-			if (lastTime == null || item.getEndTimeZoned().isAfter(lastTime))
-				lastTime = item.getEndTimeZoned();
+			if (firstTime == null || item.startTime.isBefore(firstTime))
+				firstTime = item.startTime;
+			if (lastTime == null || item.endTime.isAfter(lastTime))
+				lastTime = item.endTime;
 
 			if (item.getLanguage() != null) {
 				languages.add(item.getLanguage());
@@ -1392,19 +1378,19 @@ public class Schedule implements Serializable {
 		}
 
 		public ZonedDateTime getStartTimeZoned() {
-			return startTime;
+			return startTime.withZoneSameInstant(outTZ);
 		}
 		
 		public ZonedDateTime getEndTimeZoned() {
-			return endTime;
+			return endTime.withZoneSameInstant(outTZ);
 		}
 
 		public Date getStartTime() {
-			return Date.from(getStartTimeZoned().toInstant());
+			return Date.from(startTime.toInstant());
 		}
 
 		public Date getEndTime() {
-			return Date.from(getEndTimeZoned().toInstant());
+			return Date.from(endTime.toInstant());
 		}
 
 		public Track getTrack() {
@@ -1532,15 +1518,15 @@ public class Schedule implements Serializable {
 		@Override
 		public int compareTo(Item another) {
 			int ret;
-			if (this == null || getStartTimeZoned() == null || getTitle() == null ||
-			    another == null || another.getStartTimeZoned() == null || another.getTitle() == null) {
+			if (this == null || startTime == null || getTitle() == null ||
+			    another == null || another.startTime == null || another.getTitle() == null) {
 				// Shouldn't happen in normal operation anyway, but it does happen during
 				// de-serialisation for some reason :-( (Possibly because a "hollow" duplicate of an
 				// object is restored before the filled in original?)
 				// Log.d("Schedule.Item.compareTo", "null-ish object passed");
 				return -123;
 			}
-			if ((ret = getStartTimeZoned().compareTo(another.getStartTimeZoned())) != 0) {
+			if ((ret = startTime.compareTo(another.startTime)) != 0) {
 				return ret;
 			} else if ((ret = getTitle().compareTo(another.getTitle())) != 0)
 				return ret;
@@ -1565,9 +1551,9 @@ public class Schedule implements Serializable {
 			/* 0 if the event is "now" (d==now),
 			 * -1 if it's in the future,
 			 * 1 if it's in the past. */
-			if (d.isBefore(getStartTimeZoned()))
+			if (d.isBefore(startTime))
 				return -1;
-			else if (getEndTimeZoned().isAfter(d))
+			else if (endTime.isAfter(d))
 				return 0;
 			else
 				return 1;
@@ -1575,8 +1561,8 @@ public class Schedule implements Serializable {
 
 		public boolean overlaps(Item other) {
 			// True if other's start- or end-time is during our event, or if it starts before and ends after ours.
-			return (compareTo(other.getStartTimeZoned()) == 0 || compareTo(other.getEndTimeZoned().minusSeconds(1)) == 0 ||
-			        (!other.getStartTimeZoned().isAfter(getStartTimeZoned()) && !other.getEndTimeZoned().isBefore(getEndTimeZoned())));
+			return (compareTo(other.startTime) == 0 || compareTo(other.endTime.minusSeconds(1)) == 0 ||
+			        (!other.startTime.isAfter(startTime) && !other.endTime.isBefore(endTime)));
 		}
 	}
 

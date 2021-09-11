@@ -27,8 +27,8 @@ import java.util.Collection;
 public class ScheduleTest extends TestCase {
 	private Schedule s = new Schedule();
 
-	public void setUp() {
-		Log.d("ScheduleTest", "Running with tz=" + tz_);
+	public void setUp() throws Exception {
+		super.setUp();
 	}
 
 	@Parameterized.Parameters
@@ -52,17 +52,22 @@ public class ScheduleTest extends TestCase {
 		} catch (IOException | JSONException e) {
 			Assert.assertFalse(true);
 		}
-		long start = System.nanoTime();
-		ZoneId tz = ZoneId.of(tz_);
-		s.setNativeTz(tz);
+
+		String itz = js.optString("timezone");
+		if (!itz.isEmpty()) {
+			s.setInTZ(ZoneId.of(itz));
+		}
+		s.setOutTZ(ZoneId.of(tz_));
+
 		InputStream in = getClass().getClassLoader().getResourceAsStream(fn);
 		try {
-			s.loadSchedule(new BufferedReader(new InputStreamReader(in)), "file://res/" + fn);
+			long start = System.nanoTime();
+			s.loadSchedule(new BufferedReader(new InputStreamReader(in)), js.optString("url"));
 			JSONObject md;
 			if (js != null && (md = js.optJSONObject(("metadata"))) != null) {
 				s.addMetadata(md.toString());
 			}
-			Log.d("ScheduleTest.load", fn + " loaded in " + ((System.nanoTime() - start) / 1000000.0) + " ms");
+			Log.d("ScheduleTest.load", fn + " loaded with tz=" + tz_ + " in " + ((System.nanoTime() - start) / 1000000.0) + " ms");
 		} catch (IOException e) {
 			Assert.assertFalse(true);
 		}
@@ -123,10 +128,18 @@ public class ScheduleTest extends TestCase {
 
 		assertThat(s.getLanguages(), hasSize(0));
 
-		// assertThat(s.getTzOffset(), equalTo(0.0));
 		Assert.assertFalse(s.isToday());
 
+		if (tz_.equals("America/New_York"))
+			assertThat(s.getTzDiff(), equalTo(  6.0));
+		else if(tz_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(), equalTo(  1.0));
+		else if(tz_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(), equalTo(-10.0));
+
 		assertThat(s.getLinks(), hasSize(3));
+
+		// TODO: s.updateRoomStatus(json string) ?
 	}
 
 	@Test
@@ -161,11 +174,10 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.getLanguages(), hasSize(4));
 		assertThat(s.getByLanguage("German"), hasSize(543));
 		assertThat(s.getByLanguage("English"), hasSize(674));
-		// BS entries? :-/
+		// O_o
 		assertThat(s.getByLanguage("Abkhazian"), hasSize(1));
 		assertThat(s.getByLanguage("Czech"), hasSize(1));
 
-		// assertThat(s.getTzOffset(), equalTo(0.0));
 		Assert.assertFalse(s.isToday());
 
 		assertThat(s.getLinks(), hasSize(2));
@@ -186,6 +198,13 @@ public class ScheduleTest extends TestCase {
 		Schedule.Track track = room.getTrack();
 		assertThat(track.getTitle(), is("self organized sessions"));
 		assertThat(track.getLine(), nullValue());
+
+		if (tz_.equals("America/New_York"))
+			assertThat(s.getTzDiff(), equalTo(  6.0));
+		else if(tz_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(), equalTo(  1.0));
+		else if(tz_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(), equalTo(-10.0));
 	}
 
 	@Test
@@ -198,8 +217,14 @@ public class ScheduleTest extends TestCase {
 		Assert.assertNull(s.getTracks());
 		assertThat(s.getLanguages(), hasSize(0));
 
-		// assertThat(s.getTzOffset(), equalTo(0.0));
 		Assert.assertFalse(s.isToday());
+
+		if (tz_.equals("America/New_York"))
+			assertThat(s.getTzDiff(), equalTo( 6.0));
+		else if(tz_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(), equalTo( 1.0));
+		else if(tz_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(), equalTo(-8.0));
 	}
 
 	@Test
@@ -212,12 +237,13 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.getTracks(), nullValue());
 		assertThat(s.getLanguages(), hasSize(0));
 
-		if (tz_.equals("America/New_York"))
-			assertThat(s.getTzOffset(), equalTo(15.0));
-		else if(tz_.equals("Europe/Dublin"))
-			assertThat(s.getTzOffset(), equalTo(10.0));
-		else if(tz_.equals("Australia/Sydney"))
-			assertThat(s.getTzOffset(), equalTo(-1.0));
 		Assert.assertFalse(s.isToday());
+
+		if (tz_.equals("America/New_York"))
+			assertThat(s.getTzDiff(), equalTo(15.0));
+		else if(tz_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(), equalTo(10.0));
+		else if(tz_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(), equalTo(-1.0));
 	}
 }

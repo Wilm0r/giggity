@@ -606,7 +606,7 @@ public class ScheduleViewActivity extends Activity {
 		TextView dr = (TextView) drawerLayout.findViewById(R.id.drawer_date_range);
 		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
 
-		double offset = sched.getTzOffset();
+		double offset = sched.getTzDiff();
 		if (offset != 0) {
 			String plus = offset > 0 ? "+" : "";
 			dr.setText(dr.getText() + "\n" + getString(R.string.drw_tz_offset) + " " + plus + offset);

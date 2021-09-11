@@ -215,6 +215,7 @@
 	"url": "https://data.c3voc.de/36C3/everything.schedule.xml",
 	"start": "2019-12-27",
 	"end": "2019-12-30",
+	"timezone": "Europe/Berlin",
 	"refresh_interval": 1800,
 	"version": 2019122502
 }

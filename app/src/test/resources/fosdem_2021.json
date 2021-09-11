@@ -4,6 +4,7 @@
 	"title": "FOSDEM 2021",
 	"start": "2021-02-06",
 	"end": "2021-02-07",
+	"timezone": "Europe/Brussels",
 	"refresh_interval": 1800,
 	"metadata": {
 		"links": [

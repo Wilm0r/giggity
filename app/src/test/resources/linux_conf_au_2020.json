@@ -1,6 +1,7 @@
 {
 	"start": "2020-01-13",
 	"end": "2020-01-17",
+	"timezone": "Australia/Brisbane",
 	"version": 2020010802,
 	"url": "https://lca2020.linux.org.au/schedule/conference.ics",
 	"title": "linux.conf.au 2020",
