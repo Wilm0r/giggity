@@ -193,6 +193,8 @@ def validate_entry(e):
 			zoneinfo.ZoneInfo(e["timezone"])
 		except zoneinfo._common.ZoneInfoNotFoundError:
 			errors.append("Timezone does not exist: %s" % e["timezone"])
+	elif e["version"] >= 2021091100:
+		errors.append("The timezone property is now required.")
 
 	md = e.get("metadata")
 	if md:
