@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -122,6 +123,13 @@ public class ScheduleTest extends TestCase {
 		assertThat(setNames(s.getTracks()), not(hasItem("Microkernel")));
 		assertThat(setNames(s.getTracks()), hasItem("Monitoring and Observability"));
 
+		assertThat(s.setDay(ZonedDateTime.of(2021, 2, 6, 12, 0, 0, 0, ZoneId.of(tz_))),
+		           is(0)); // Saturday
+		assertThat(s.getTents(), hasSize(87));
+
+		assertThat(s.setDay(ZonedDateTime.now()),
+		           is(-1)); // Unpossible!
+
 		s.setDay(-1); // Back to all
 		assertThat(s.getTents(), hasSize(106));
 		assertThat(s.getTracks(), hasSize(109));
@@ -129,6 +137,21 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.getLanguages(), hasSize(0));
 
 		Assert.assertFalse(s.isToday());
+
+		Schedule.Item it = s.getItem("11795");
+		assertThat(it.getTitle(), is("Welcome to FOSDEM 2021"));
+		it.setHidden(true);
+		assertThat(s.getTracks(), hasSize(109));
+		s.setDay(0);
+		assertThat(s.getTracks(), hasSize(87));
+
+		it = s.getItem("12237");
+		assertThat(it.getTitle(), is("Closing FOSDEM 2021"));
+		it.setHidden(true);
+		s.setDay(-1);
+		assertThat(s.getTracks(), hasSize(108));
+		s.setShowHidden(true);
+		assertThat(s.getTracks(), hasSize(109));
 
 		if (tz_.equals("America/New_York"))
 			assertThat(s.getTzDiff(), equalTo(  6.0));
