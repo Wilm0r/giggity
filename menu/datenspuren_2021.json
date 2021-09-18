@@ -1,0 +1,16 @@
+{
+	"version": 2021091700,
+	"url": "https://talks.datenspuren.de/ds21/schedule.xml",
+	"title": "Datenspuren 2021",
+	"start": "2021-09-17",
+	"end": "2021-09-19",
+	"metadata": {
+		"icon": "https://www.c3d2.de/images/news/datenspuren-2021.png",
+		"links": [
+			{
+				"url": "https://datenspuren.de/2021/",
+				"title": "Website"
+			}
+		]
+	}
+}
