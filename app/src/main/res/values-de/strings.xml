@@ -9,9 +9,7 @@
 	<!--  Settings -->
 	<string name="default_view">Standardansicht</string>
 	<string name="font_size">Schriftgröße bei der Programmübersicht</string>
-	<string name="strict_ssl">Striktes TLS</string>
-	<string name="strict_ssl_sub">Überprüfung des HTTPS Zertifikats</string>
-    
+
 	<string name="block_schedule_style">Stil</string>
 	<string name="block_schedule">Programmübersicht</string>
 	<string name="block_schedule_element_size_sub">Größe der Zeitabschnitte</string>

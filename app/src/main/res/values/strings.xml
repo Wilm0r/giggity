@@ -9,9 +9,7 @@
 	<!--  Settings -->
 	<string name="default_view">Default view</string>
 	<string name="font_size">Block schedule font size</string>
-	<string name="strict_ssl">Strict TLS</string>
-	<string name="strict_ssl_sub">Proper HTTPS certificate validation</string>
-    
+
 	<string name="block_schedule_style">Style</string>
 	<string name="block_schedule">Block schedule</string>
 	<string name="block_schedule_element_size_sub">Size of a block schedule block</string>

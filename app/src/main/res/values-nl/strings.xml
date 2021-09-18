@@ -9,9 +9,7 @@
 	<!--  Settings -->
 	<string name="default_view">Standaard weergave</string>
 	<string name="font_size">Letterype blokkenschema</string>
-	<string name="strict_ssl">Strikte TLS</string>
-	<string name="strict_ssl_sub">TLS certificaten van HTTPS servers controleren</string>
-    
+
 	<string name="block_schedule_style">Stijl</string>
 	<string name="block_schedule">Blokkenschema</string>
 	<string name="block_schedule_element_size_sub">Blok- en lettergrootte</string>

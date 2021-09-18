@@ -9,8 +9,6 @@
 	<!--  Settings -->
 	<string name="default_view">Vista predefinita</string>
 	<string name="font_size">Dimensione font programma a blocchi</string>
-	<string name="strict_ssl">Controllo rigoroso TLS</string>
-	<string name="strict_ssl_sub">Validazione corretta certificati HTTPS</string>
 
 	<string name="block_schedule_style">Stile</string>
 	<string name="block_schedule">Programma a blocchi</string>

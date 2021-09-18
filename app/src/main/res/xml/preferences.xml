@@ -26,13 +26,6 @@
 					android:summary="%s"
 					android:defaultValue="medium" />
 
-	<CheckBoxPreference android:key="strict_ssl"
-                        android:summary="@string/strict_ssl_sub"
-                        android:title="@string/strict_ssl"
-                        android:defaultValue="true" />
-
-
-
 
 	<PreferenceCategory android:title="@string/reminder">
 	

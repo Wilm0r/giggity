@@ -9,9 +9,7 @@
 	<!--  Settings -->
 	<string name="default_view">Vue par défaut</string>
 	<string name="font_size">Taille de police pour la grille</string>
-	<string name="strict_ssl">TLS strict</string>
-	<string name="strict_ssl_sub">Valider les certificats HTTPS correctement</string>
-    
+
 	<string name="block_schedule_style">Style</string>
 	<string name="block_schedule">Grille</string>
 	<string name="block_schedule_element_size_sub">Taille d\'un bloc de la grille</string>

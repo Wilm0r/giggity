@@ -88,9 +88,6 @@ public class Fetcher {
 				 * modified-since data, but it works so far.. */
 				dlc.setIfModifiedSince(fn.lastModified());
 			}
-			
-			if (!pref.getBoolean("strict_ssl", false))
-				((HttpsURLConnection)dlc).setSSLSocketFactory(SSLRage.getSocketFactory());
 		} catch (ClassCastException e) {
 			/* It failed. Maybe we're HTTP only? Maybe even FTP? Heh well good luck! */
 		}

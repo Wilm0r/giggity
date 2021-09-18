@@ -9,9 +9,7 @@
 	<!--  Settings -->
 	<string name="default_view">Výchozí pohled</string>
 	<string name="font_size">Velikost písma blokového programu</string>
-	<string name="strict_ssl">Vyžadovat TLS</string>
-	<string name="strict_ssl_sub">Vyžadovat ověření HTTPS certifikátů</string>
-    
+
 	<string name="block_schedule_style">Styl</string>
 	<string name="block_schedule">Blokový program</string>
 	<string name="block_schedule_element_size_sub">Velikost bloku v blokovém programu</string>
