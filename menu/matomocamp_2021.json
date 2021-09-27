@@ -1,0 +1,17 @@
+{
+	"version": 2021092700,
+	"url": "https://schedule.matomocamp.org/matomocamp-2021/schedule/export/schedule.xml",
+	"title": "MatomoCamp 2021",
+	"start": "2021-11-04",
+	"end": "2021-11-05",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"icon": "https://matomocamp.org/wp-content/uploads/2021/09/LogoOnly256.png",
+		"links": [
+			{
+				"url": "https://matomocamp.org/",
+				"title": "Website"
+			}
+		]
+	}
+}
