@@ -3,16 +3,18 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "net.gaast.giggity"
         minSdkVersion 23
-        targetSdkVersion 29
+        targetSdkVersion 30
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     compileOptions {
-        // Flag to enable support for the new language APIs
+        // Flag to enable support for the new language APIs (java.time specifically).
+        // Can (likely) be removed once I bump minSdkVersion up to 26. Also coreLibraryDesugaring below.
+        // https://pspdfkit.com/blog/2019/java-8-in-android-apps/
         coreLibraryDesugaringEnabled true
         // Sets Java compatibility to Java 8
         sourceCompatibility JavaVersion.VERSION_1_8
