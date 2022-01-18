@@ -245,24 +245,18 @@ public class Schedule implements Serializable {
 		this.outTZ = outTZ;
 	}
 
-	public ZonedDateTime getDay() {
-		if (curDayNum != -1) {
-			return day0List.get(curDayNum).withZoneSameInstant(outTZ);
-		} else {
-			return null;
-		}
-	}
-
 	public int getDayNum() {
 		return curDayNum;
 	}
 	
+	// Returns DATE in EVENT timezone. Don't use for anything other than date display purposes.
 	public ZonedDateTime setDay(int day) {
 		if (day == -1) {
 			curDayNum = day;
 			curDay = curDayEnd = null;
 			dayFirstTime = firstTime;
 			dayLastTime = lastTime;
+			return null;
 		} else {
 			curDayNum = day % dayList.size();
 			curDay = dayList.get(curDayNum);
@@ -278,8 +272,9 @@ public class Schedule implements Serializable {
 						dayLastTime = item.endTime;
 				}
 			}
+
+			return day0List.get(curDayNum);
 		}
-		return getDay();
 	}
 
 	public double getTzDiff() {
