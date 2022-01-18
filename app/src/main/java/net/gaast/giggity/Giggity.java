@@ -239,6 +239,7 @@ public class Giggity extends Application {
 		new AlertDialog.Builder(ctx)
 				.setMessage("This functionality depends on the (deprecated) ZXing Barcode scanner")
 				.setTitle("Error")
+				.setNegativeButton("Never mind", null)
 				.setPositiveButton("Install", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
