@@ -8,7 +8,7 @@
 
 	<!--  Settings -->
 	<string name="default_view">Standaard weergave</string>
-	<string name="font_size">Letterype blokkenschema</string>
+	<string name="font_size">Lettergrootte blokkenschema</string>
 
 	<string name="block_schedule_style">Stijl</string>
 	<string name="block_schedule">Blokkenschema</string>
@@ -16,7 +16,7 @@
 	<string name="block_schedule_element_size">Blokgrootte</string>
 
 	<string name="reminder">Herinneringen</string>
-	<string name="reminder_enabled">Inschakelen</string>
+	<string name="reminder_enabled">Notificaties</string>
 	<string name="reminder_enabled_sub_on">Waarschuw als een gemarkeerd item begint</string>
 	<string name="reminder_enabled_sub_off">Geen waarschuwing als een gemarkeerd item begint</string>
 	<string name="reminder_period">Minuten voor aanvang</string>
@@ -51,6 +51,7 @@
 
 	<!-- Menu -->
 	<string name="drw_tz_offset">Tijdzone verschil:</string>
+	<string name="drw_tz_is_yours">Tijden naar lokaal omgerekend</string>
 	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>
 	<string name="show_hidden">Verborgen items tonen</string>
