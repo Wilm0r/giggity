@@ -1,0 +1,20 @@
+{
+	"version": 2022031400,
+	"url": "https://pretalx.jdll.org/jdll2022/schedule.xml",
+	"title": "Journées du Logiciel Libre 2022",
+	"start": "2022-04-02",
+	"end": "2022-04-03",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.jdll.org/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://www.jdll.org/contact-and-informations",
+				"title": "Informations pratiques"
+			}
+		]
+	}
+}
