@@ -1,0 +1,20 @@
+{
+    "start": "2022-03-19",
+    "end": "2022-03-20",
+    "version": 2022022700,
+    "url": "https://libreplanet.org/2022/lp2022-schedule.ics",
+    "title": "LibrePlanet 2022",
+    "metadata": {
+        "icon": "https://libreplanet.org/2022/assets/img/logo.png",
+        "links": [
+            {
+                "url": "https://libreplanet.org/2022/",
+                "title": "Website"
+            },
+            {
+                "url": "https://libreplanet.org/2022/live/",
+                "title": "Livestream"
+            }
+        ]
+    }
+}
