@@ -1,0 +1,25 @@
+{
+	"version": 2022022800,
+	"url": "https://www.postgresql.eu/events/pgdayparis2022/schedule.xml",
+	"title": "pgDay Paris 2022",
+	"start": "2022-03-24",
+	"end": "2022-03-24",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2022.pgday.paris/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2022.pgday.paris/registration/",
+				"title": "Registration"
+			},
+			{
+				"url": "https://2022.pgday.paris/venue/",
+				"title": "Venue"
+			}
+		],
+		"icon": "https://files.mastodon.social/accounts/avatars/000/194/494/original/9f75283c634daf2b.png"
+	}
+}
