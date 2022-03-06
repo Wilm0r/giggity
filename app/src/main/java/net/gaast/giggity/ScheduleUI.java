@@ -56,7 +56,7 @@ public class ScheduleUI extends Schedule {
 		Db.DbSchedule ds = ctx.getDb().getSchedule(url);
 		if (ds != null) {
 			String tz = ds.getTimezone();
-			if (!tz.isEmpty()) {
+			if (tz != null && !tz.isEmpty()) {
 				ret.setInTZ(ZoneId.of(tz));
 			}
 		}
