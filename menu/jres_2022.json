@@ -1,5 +1,5 @@
 {
-	"version": 2022030200,
+	"version": 2022030800,
 	"url": "https://conf-ng.jres.org/2021/rest/planning.ics",
 	"title": "JRES 2022",
 	"start": "2022-05-17",
@@ -15,6 +15,7 @@
 				"url": "https://www.jres.org/inscriptions/",
 				"title": "Inscription"
 			}
-		]
+		],
+		"icon": "https://mastodon.gougere.fr/system/media_attachments/files/107/921/767/770/045/210/original/2d9437c0e1a4f80a.png"
 	}
 }
