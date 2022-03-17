@@ -1,7 +1,8 @@
 {
     "start": "2022-03-19",
     "end": "2022-03-20",
-    "version": 2022031700,
+    "timezone": "America/New_York",
+    "version": 2022031701,
     "url": "https://libreplanet.org/2022/lp2022-schedule.ics",
     "title": "LibrePlanet 2022",
     "metadata": {
