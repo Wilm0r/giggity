@@ -1,0 +1,25 @@
+{
+	"version": 2022050101,
+	"url": "https://cloud.bib.uni-mannheim.de/s/QNzesdFeDg6tJ5j/download/bibtag22.xml",
+	"title": "Bibliothekskongress 2022",
+	"start": "2022-05-31",
+	"end": "2022-06-02",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"icon": "https://pbs.twimg.com/profile_images/1415287443021041665/FTLcB15h_400x400.png",
+		"links": [
+			{
+				"url": "https://www.bid-kongress-leipzig.de/",
+				"title": "Webseite"
+			},
+			{
+				"url": "https://www.bid-kongress-leipzig.de/index.php?id=24",
+				"title": "Informationen von A-Z"
+			},
+			{
+				"url": "https://www.ccl-leipzig.de/de/location/gelaendeueberblick/",
+				"title": "Geländeübersicht Congress Center"
+			}
+		]
+	}
+}
