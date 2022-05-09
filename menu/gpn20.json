@@ -1,0 +1,24 @@
+{
+	"version": 2022050901,
+	"url": "https://cfp.gulas.ch/gpn20/schedule/export/schedule.xml",
+	"title": "20. Gulaschprogrammiernacht",
+	"start": "2022-05-19",
+	"end": "2022-05-22",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://entropia.de/GPN20",
+				"title": "Webseite"
+			},
+			{
+				"url": "https://entropia.de/GPN20:FAQ",
+				"title": "FAQ"
+			},
+			{
+				"url": "https://troll.gulas.ch/login",
+				"title": "Trollsystem"
+			}
+		]
+	}
+}
