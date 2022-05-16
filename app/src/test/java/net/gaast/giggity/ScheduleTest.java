@@ -274,4 +274,30 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.setDay(5).getDayOfWeek(), is(DayOfWeek.FRIDAY));
 		assertThat(s.setDay(-1), nullValue());
 	}
+
+	@Test
+	public void testJres2022() {
+		load("jres_2022.ics");
+		assertThat(s.getTitle(), is("JRES 2021/22"));
+		assertThat(s.getDays(), hasSize(4));
+
+		assertThat(s.getTents(), hasSize(15));
+		assertThat(s.getTracks(), nullValue());
+		assertThat(s.getLanguages(), hasSize(0));
+
+		Assert.assertFalse(s.isToday());
+
+		if (tz_.equals("America/New_York"))
+			assertThat(s.getTzDiff(), equalTo( 6.0));
+		else if(tz_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(), equalTo( 1.0));
+		else if(tz_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(), equalTo(-8.0));
+
+		assertThat(s.setDay(0).getDayOfWeek(), is(DayOfWeek.TUESDAY));
+		assertThat(s.getTents(), hasSize(13));
+		assertThat(s.setDay(3).getDayOfWeek(), is(DayOfWeek.FRIDAY));
+		assertThat(s.getTents(), hasSize(5));
+		assertThat(s.setDay(-1), nullValue());
+	}
 }
