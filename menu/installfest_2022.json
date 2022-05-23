@@ -1,0 +1,20 @@
+{
+    "version": 2022052301,
+    "url": "https://pretalx.installfest.cz/installfest-2022/schedule/export/schedule.xml",
+    "title": "Installfest 2022",
+    "start": "2022-06-11",
+    "end": "2022-06-12",
+    "metadata": {
+            "icon": "https://installfest.cz/if22/images/logo-tux.png",
+            "links": [
+                {
+                    "url": "https://installfest.cz/if19/images/logo-tux.png",
+                    "title": "Web Installfestu"
+                },
+                {
+                    "url": "https://installfest.cz/if22/info.html",
+                    "title": "Info o konferenci"
+                }
+            ]
+    }
+}
