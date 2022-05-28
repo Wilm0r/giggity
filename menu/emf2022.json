@@ -1,0 +1,20 @@
+{
+	"version": 2022052801,
+	"url": "https://www.emfcamp.org/schedule/2022.frab",
+	"title": "Electromagnetic Field 2022",
+	"start": "2022-06-02",
+	"end": "2022-06-05",
+	"timezone": "Europe/London",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.emfcamp.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://www.emfcamp.org/about",
+				"title": "FAQ"
+			}
+		]
+	}
+}
