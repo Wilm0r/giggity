@@ -4,6 +4,7 @@
     "title": "Installfest 2022",
     "start": "2022-06-11",
     "end": "2022-06-12",
+    "timezone": "Europe/Prague",
     "metadata": {
             "icon": "https://installfest.cz/if19/images/logo-tux.png",
             "links": [
