@@ -72,6 +72,7 @@ To do this, construct a JSON file formatted like this in the [menu directory](me
 	"title": "TITLE",  // preferably have it match the title in your Pentabarf
 	"start": "2020-02-01",
 	"end": "2020-02-02",
+	"timezone": "Europe/Brussels",
 	// To be used only if your event tends to make last-minute changes, and allowed only if the
 	// server hosting your Pentabarf file sends HTTP 304s when no changes are made:
 	"refresh_interval": 1800,
