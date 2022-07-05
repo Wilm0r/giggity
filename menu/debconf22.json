@@ -1,11 +1,12 @@
 {
-  "version": 2022061400,
+  "version": 2022061910,
   "url": "https://debconf22.debconf.org/schedule/pentabarf.xml",
   "title": "DebConf 22",
   "start": "2022-07-17",
   "end": "2022-07-24",
   "timezone": "Europe/Belgrade",
   "metadata": {
+    "icon": "https://debconf22.debconf.org/static/img/dc22-logo.741bbe09dda7.png",
     "links": [
       {
         "url": "https://debconf22.debconf.org/",
