@@ -1,0 +1,21 @@
+{
+    "version": 2022080800,
+    "url": "https://programm.froscon.org/2022/schedule.xml",
+    "title": "FrOSCon 2022",
+    "start": "2022-08-20",
+    "end": "2022-08-21",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "icon": "https://www.froscon.org/fileadmin/images/logos/frog_button.png",
+        "links": [
+            {
+                "url": "https://www.froscon.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://media.ccc.de/b/conferences/froscon",
+                "title": "Recordings"
+            }
+        ]
+    }
+}
