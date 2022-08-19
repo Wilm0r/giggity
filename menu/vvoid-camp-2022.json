@@ -5,7 +5,6 @@
 	"start": "2022-08-18",
 	"end": "2022-08-21",
 	"timezone": "Europe/Berlin",
-	"refresh_interval": 1800,
 	"metadata": {
 		"links": [
 			{
