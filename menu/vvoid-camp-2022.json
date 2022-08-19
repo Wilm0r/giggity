@@ -1,0 +1,20 @@
+{
+	"version": 2022081800,
+	"url": "https://pretalx.vvoid.camp/vvoid-camp-2022/schedule.xml",
+	"title": "VVoid Camp 2022",
+	"start": "2022-08-18",
+	"end": "2022-08-21",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.vvoid.camp/",
+				"title": "Website"
+			},
+			{
+				"url": "https://vviki.vvoid.camp/",
+				"title": "Wiki"
+			}
+		]
+	}
+}
