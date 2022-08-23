@@ -1,0 +1,35 @@
+{
+	"version": 2022102500,
+	"url": "https://cfp.capitoledulibre.org/cdl-2022/schedule/export/schedule.xml",
+	"title": "Capitole du Libre 2022",
+	"start": "2022-11-19",
+	"end": "2022-11-20",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://framapiaf.s3.framasoft.org/framapiaf/accounts/avatars/000/063/765/original/c5fa7c6864ab5ba2.png",
+		"links": [
+			{
+				"url": "https://capitoledulibre.org/",
+				"title": "Site web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "A.*",
+				"latlon": [43.60248, 1.45464]
+			},
+			{
+				"name": "B.*",
+				"latlon": [43.60247, 1.45566]
+			},
+			{
+				"name": "C.*",
+				"latlon": [43.60214, 1.45462]
+			},
+			{
+				"name": "Foyer.*",
+				"latlon": [43.60207, 1.45591]
+			}
+		]
+	}
+}
