@@ -1,0 +1,44 @@
+{
+	"version": 2022082701,
+	"title": "20. Kieler Open Source und Linux Tage",
+	"url": "https://kielux.de/content/calendars/KOLT22.ics",
+	"start": "2022-09-16",
+	"end": "2022-09-17",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+		"links": [
+			{
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"url": "https://kielux.de/programm/KOLT22",
+				"title": "Schedule and workshop registration"
+			},
+			{
+				"title": "Entertainment",
+				"url": "https://kielux.de/aktionen"
+			},
+			{
+				"title": "Exhibition",
+				"url": "https://kielux.de/aussteller"
+			}
+		],
+		"rooms": [
+			{
+				"name": "R012",
+				"latlon": [54.33497, 10.11928]
+			},
+			{
+				"name": "R007",
+				"latlon": [54.33547, 10.11951]
+			},
+			{
+				"name": "R114",
+				"latlon": [54.33510, 10.11944]
+			}
+		]
+	}
+}

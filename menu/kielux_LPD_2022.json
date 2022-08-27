@@ -1,0 +1,28 @@
+{
+	"version": 2022082701,
+	"title": "Kielux Linux Presentation Day",
+	"url": "https://kielux.de/content/calendars/LPD22.ics",
+	"start": "2022-09-15",
+	"end": "2022-09-15",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+		"links": [
+			{
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"url": "https://kielux.de/programm/LPD22",
+				"title": "Schedule"
+			}
+		],
+		"rooms": [
+			{
+				"name": "R012",
+				"latlon": [54.33497, 10.11928]
+			}
+		]
+	}
+}
