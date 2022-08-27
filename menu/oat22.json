@@ -1,0 +1,17 @@
+	{
+		"version": 2022082401,
+		"url": "https://cloud.bib.uni-mannheim.de/s/f35r5JMRZywZBoa/download/oat22.xml",
+		"title": "Open-Access-Tage 2022",
+		"start": "2022-09-19",
+		"end": "2022-09-21",
+		"timezone": "Europe/Berlin",
+		"metadata": {
+			"icon": "https://cloud.bib.uni-mannheim.de/s/aCFfyztnYjJMC5y/download/oat22-icon.png",
+			"links": [
+				{
+					"url": "https://open-access-tage.de/open-access-tage-2022-bern",
+					"title": "Website"
+				}
+			]
+		}
+	}
