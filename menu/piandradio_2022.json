@@ -1,0 +1,18 @@
+{
+	"version": 2022082702,
+	"url": "https://piandmore.de/de/conference/par22/schedule/download",
+	"title": "UKW-Tagung/Pi and Radio 2022", 
+	"start": "2022-09-11",
+	"end": "2022-09-11",
+	"refresh_interval": 1800,
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"icon": "https://cmd-ev.github.io/assets/piandmore-square.png",
+		"links": [
+			{
+				"url": "https://piandmore.de/de/conference/par22/",
+				"title": "Website"
+			}
+		]
+	}
+}
