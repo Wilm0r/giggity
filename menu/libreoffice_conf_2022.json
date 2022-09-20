@@ -1,0 +1,16 @@
+{
+    "start": "2022-09-29",
+    "end": "2022-10-01",
+    "timezone": "Europe/Rome",
+    "version": 2022092001,
+    "url": "https://events.documentfoundation.org/libreoffice-conference-2022/schedule/export/schedule.xml",
+    "title": "LibreOffice Conference 2022",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://conference.libreoffice.org/2022/",
+                "title": "Website"
+            }
+        ]
+    }
+}
