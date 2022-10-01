@@ -1,0 +1,16 @@
+{
+	"version": 2022092701,
+	"url": "https://charlas.2022.es.pycon.org/pycones2022/schedule/export/schedule.xcal",
+	"title": "PyCon Es 2022",
+	"start": "2022-09-30",
+	"end": "2022-10-02",
+	"timezone": "Europe/Madrid",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2022.es.pycon.org/",
+				"title": "Website"
+			}
+		]
+	}
+}
