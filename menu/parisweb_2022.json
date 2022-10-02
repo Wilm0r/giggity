@@ -1,11 +1,12 @@
 {
-	"version": 2022100100,
+	"version": 2022100200,
 	"url": "https://www.paris-web.fr/2022/conferences-parisweb-2022.ics",
 	"title": "Paris Web 2022",
 	"start": "2022-10-06",
 	"end": "2022-10-08",
 	"timezone": "Europe/Paris",
 	"metadata": {
+		"icon": "https://www.paris-web.fr/logo/2019/ParisWeb_logo-rond_RVB.png",
 		"links": [
 			{
 				"url": "https://www.paris-web.fr/2022/",
