@@ -3,7 +3,7 @@
 	"url": "https://dev.btcwiki.nl/btcams2022/processed/latest_penta_v0.xml",
 	"title": "Bitcoin Amsterdam 2022",
 	"start": "2022-10-12",
-	"end": "2022-10.14",
+	"end": "2022-10-14",
 	"timezone": "Europe/Brussels",
 	"refresh_interval": 1800,
 	"metadata": {
