@@ -11,7 +11,12 @@
 			{
 				"url": "https://b.tc/conference/amsterdam/",
 				"title": "Website"
-			}
+			},
+			{
+				"url": "https://dev.btcwiki.nl/btcams2022/processed/map.png",
+				"title": "Map",
+				"type": "image/png"
+			}		
 		],
 		"icon": "https://dev.btcwiki.nl/btcams2022/processed/btcams.png"
 	}
