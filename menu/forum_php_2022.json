@@ -1,0 +1,25 @@
+{
+	"version": 2022101200,
+	"url": "https://afup.org/event/forumphp2022/planning.ics",
+	"title": "Forum PHP 2022",
+	"start": "2022-10-13",
+	"end": "2022-10-14",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://event.afup.org/wp-content/uploads/cropped-afup-02-192x192.png",
+		"links": [
+			{
+				"url": "https://event.afup.org/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://afup.org/event/forumphp2022/tickets",
+				"title": "Tarifs et inscription"
+			},
+			{
+				"url": "https://event.afup.org/forum-php-2022/infos-pratiques-forumphp2022/",
+				"title": "Infos pratiques & FAQ"
+			}
+		]
+	}
+}
