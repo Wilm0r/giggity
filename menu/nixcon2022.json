@@ -1,0 +1,24 @@
+{
+	"version": 2022101100,
+	"url": "https://pretalx.com/nixcon-2022/schedule/export/schedule.xml",
+	"title": "NixCon 2022",
+	"start": "2022-10-20",
+	"end": "2022-10-22",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2022.nixcon.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://tickets.nixcon.org/2022/",
+				"title": "Tickets"
+			},
+			{
+				"url": "https://discourse.nixos.org/t/nixcon-2022-sponsorship-opportunities/20603",
+				"title": "Sponsor"
+			}
+		]
+	}
+}
