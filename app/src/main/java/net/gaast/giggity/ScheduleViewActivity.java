@@ -609,7 +609,7 @@ public class ScheduleViewActivity extends Activity {
 		double offset = sched.getTzDiff();
 		if (offset != 0) {
 			String plus = offset > 0 ? "+" : "";
-			dr.setText(dr.getText() + "\n" + getString(R.string.drw_tz_offset) + " " + plus + offset);
+			dr.setText(dr.getText() + "\n" + getString(R.string.drw_tz_offset) + " " + plus + offset + "\n" + getString(R.string.drw_tz_is_yours));
 		}
 
 		if (sched.getLinks() != null) {

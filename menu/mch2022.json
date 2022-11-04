@@ -1,0 +1,28 @@
+{
+	"version": 2022061900,
+	"url": "https://program.mch2022.org/mch2021-2020/schedule/export/schedule.xml",
+	"title": "MCH2022",
+	"start": "2022-07-22",
+	"end": "2022-07-26",
+	"timezone": "Europe/Amsterdam",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://map.mch2022.org/",
+				"title": "Map"
+			},
+			{
+				"url": "https://mch2022.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://wiki.mch2022.org/Main_Page",
+				"title": "Wiki"
+			},
+			{
+				"url": "https://tickets.mch2022.org/",
+				"title": "Tickets"
+			}
+		]
+	}
+}

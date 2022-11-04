@@ -1,0 +1,28 @@
+{
+	"version": 2022072619,
+	"url": "https://bornhack.dk/bornhack-2022/program/frab.xml",
+	"title": "BornHack 2022",
+	"start": "2022-08-03",
+	"end": "2022-08-10",
+	"timezone": "Europe/Copenhagen",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://bornhack.dk/bornhack-2022/",
+				"title": "Website"
+			},
+			{
+			"url": "https://bornhack.dk/bornhack-2022/info/",
+			"title": "Info"
+			},
+			{
+				"url": "https://bornhack.dk/news/",
+				"title": "News"
+			},
+			{
+				"url": "https://bornhack.dk/bornhack-2022/facilities/",
+				"title": "Facilities"
+			}
+		]
+	}
+}

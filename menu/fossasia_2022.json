@@ -1,0 +1,16 @@
+{
+    "version": 2022040400,
+    "url": "https://api.eventyay.com/v1/events/6b901f56.ics?include_sessions",
+    "title": "FOSSASIA Summit 2022",
+    "start": "2022-04-07",
+    "end": "2022-04-09",
+    "timezone": "Asia/Singapore",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://summit.fossasia.org/",
+                "title": "Website"
+            }
+        ]
+    }
+}

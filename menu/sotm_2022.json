@@ -1,0 +1,17 @@
+{
+        "version": 2022080901,
+        "url": "https://sotm.osmz.ru/2022.xml",
+        "title": "State of the Map 2022",
+        "start": "2022-08-19",
+        "end": "2022-08-21",
+        "timezone": "Europe/Rome",
+        "metadata": {
+                "icon": "https://2022.stateofthemap.org/img/icons/apple-touch-icon.png",
+                "links": [
+                        {
+                                "url": "https://2022.stateofthemap.org/",
+                                "title": "Website"
+                        }
+                ]
+        }
+}

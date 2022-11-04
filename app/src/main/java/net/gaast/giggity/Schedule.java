@@ -245,24 +245,18 @@ public class Schedule implements Serializable {
 		this.outTZ = outTZ;
 	}
 
-	public ZonedDateTime getDay() {
-		if (curDayNum != -1) {
-			return day0List.get(curDayNum).withZoneSameInstant(outTZ);
-		} else {
-			return null;
-		}
-	}
-
 	public int getDayNum() {
 		return curDayNum;
 	}
 	
+	// Returns DATE in EVENT timezone. Don't use for anything other than date display purposes.
 	public ZonedDateTime setDay(int day) {
 		if (day == -1) {
 			curDayNum = day;
 			curDay = curDayEnd = null;
 			dayFirstTime = firstTime;
 			dayLastTime = lastTime;
+			return null;
 		} else {
 			curDayNum = day % dayList.size();
 			curDay = dayList.get(curDayNum);
@@ -278,8 +272,9 @@ public class Schedule implements Serializable {
 						dayLastTime = item.endTime;
 				}
 			}
+
+			return day0List.get(curDayNum);
 		}
-		return getDay();
 	}
 
 	public double getTzDiff() {
@@ -375,10 +370,14 @@ public class Schedule implements Serializable {
 		 * nothing else). */ 
 		XcalParser p = new XcalParser();
 		String line, s;
+		int lnum = -1;  // Note: Code below around line continuation results in "somewhat" funky flow and lnum value!
+		// Also, I've noticed that the JRES schedule (see jres_2022.ics test file) has spurious CRCRLF (yes, double CR) newlines which messes up the line number counting but meh.
 		try {
 			line = "";
 			while (true) {
+				++lnum;
 				s = in.readLine();
+				//Log.d("icalRead", s);
 				if (s != null && s.startsWith(" ")) {
 					line += s.substring(1);
 					/* Line continuation. Get the rest before we process anything. */
@@ -414,18 +413,17 @@ public class Schedule implements Serializable {
 						p.characters(value.toCharArray(), 0, value.length());
 						p.endElement("", key, "");
 					}
+				} else if (lnum > 0){
+					Log.w("ical", "No clue what to do with line " + lnum + ": " + s);
 				}
 				if (s != null)
 					line = s;
 				else
 					break;
 			}
-		} catch (IOException e) {
+		} catch (IOException|SAXException|NullPointerException e) {
 			e.printStackTrace();
-			throw new LoadException("Read error: " + e);
-		} catch (SAXException e) {
-			e.printStackTrace();
-			throw new LoadException("Parse error: " + e);
+			throw new LoadException("Read error at line " + lnum + ": " + e);
 		}
 	}
 
@@ -835,7 +833,7 @@ public class Schedule implements Serializable {
 				eventData = new HashMap<>();
 				eventDataAttr = new HashMap<>();
 			} else {
-				if (atts != null && atts.getLength() > 0) {
+				if (atts != null && atts.getLength() > 0 && eventDataAttr != null) {
 					eventDataAttr.put(localName, atts);
 				}
 			}

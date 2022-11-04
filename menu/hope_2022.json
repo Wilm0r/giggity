@@ -1,0 +1,17 @@
+{
+	"version": 2022070801,
+	"url": "https://scheduler.hope.net/new-hope/schedule/export/schedule.xml",
+	"title": "HOPE 2022",
+	"start": "2022-07-22",
+	"end": "2022-07-24",
+	"timezone": "America/New_York",
+	"metadata": {
+		"icon": "https://www.hope.net/img/hopexiv_192x192.png",
+		"links": [
+			{
+				"url": "https://www.hope.net/",
+				"title": "Website"
+			}
+		]
+	}
+}

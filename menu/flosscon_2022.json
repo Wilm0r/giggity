@@ -1,0 +1,16 @@
+{
+	"version": 2022052500,
+	"url": "https://www.flosscon.org/conferences/FLOSSCon2022/schedule.xml",
+	"title": "FLOSSCon 2022",
+	"start": "2022-06-02",
+	"end": "2022-06-03",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.flosscon.org/conferences/FLOSSCon2022",
+				"title": "Site web"
+			}
+		]
+	}
+}

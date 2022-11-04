@@ -1,0 +1,26 @@
+{
+	"version": 2022060800,
+	"url": "https://cfp.pass-the-salt.org/pts2022/schedule/export/schedule.xml",
+	"title": "Pass the SALT 2022",
+	"start": "2022-07-04",
+	"end": "2022-07-06",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2022.pass-the-salt.org/",
+				"title": "Site web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Amphi.*",
+				"latlon": [50.60776, 3.13637]
+			},
+			{
+				"name": "Workshop.*",
+				"latlon": [50.60776, 3.13637]
+			}
+		]
+	}
+}

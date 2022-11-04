@@ -1,0 +1,16 @@
+{
+	"version": 2022081800,
+	"url": "https://events.hackerspace.gent/en/newline2022/public/schedule.xml",
+	"title": "Newline 2022",
+	"start": "2022-09-02",
+	"end": "2022-09-04",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackerspace.gent/landing/newline.php",
+				"title": "Website"
+			}
+		]
+	}
+}

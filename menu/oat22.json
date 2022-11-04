@@ -1,0 +1,56 @@
+{
+	"version": 2022090201,
+	"url": "https://cloud.bib.uni-mannheim.de/s/f35r5JMRZywZBoa/download/oat22.xml",
+	"title": "Open-Access-Tage 2022",
+	"start": "2022-09-19",
+	"end": "2022-09-21",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"icon": "https://cloud.bib.uni-mannheim.de/s/aCFfyztnYjJMC5y/download/oat22-icon.png",
+		"links": [
+			{
+				"url": "https://open-access-tage.de/open-access-tage-2022-bern",
+				"title": "Website"
+			},
+			{
+				"url": "https://cloud.bib.uni-mannheim.de/s/anJxSLffPYPNDCq/download/OAT%20Plan%20Gurten.png",
+				"title": "Map",
+				"type": "image/png"
+			},
+			{
+				"url": "https://zenodo.org/communities/oat22/",
+				"title": "Poster + Folien"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Kulturschür",
+				"latlon": [46.91895, 7.43811]
+			},
+			{
+				"name": "Pavillon",
+				"latlon": [46.91961, 7.43900]
+			},
+			{
+				"name": "Gurtenbahn Talstation",
+				"latlon": [46.92777, 7.44602]
+			},
+			{
+				"name": "Ussicht/Wytsicht",
+				"latlon": [46.91985, 7.43792]
+			},
+			{
+				"name": "Sibe",
+				"latlon": [46.91985, 7.43792]
+			},
+			{
+				"name": "Gewölbekeller",
+				"latlon": [46.91985, 7.43792]
+			},
+			{
+				"name": "Eis, Zwöi, Vier, Sächs",
+				"latlon": [46.91985, 7.43792]
+			}
+		]
+	}
+}

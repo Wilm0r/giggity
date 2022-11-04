@@ -1,0 +1,29 @@
+{
+	"version": 2021122701,
+	"url": "https://static.rc3.world/schedule/everything.xml",
+	"title": "rC3: NOWHERE - 2021",
+	"start": "2021-12-27",
+	"end": "2021-12-30",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"metadata": {
+		"links": [
+			{
+				"title": "Links",
+				"url": "https://links.rc3.world/"
+			},
+			{
+				"title": "Live-streams",
+				"url": "https://streaming.media.ccc.de/rc3/"
+			},
+			{
+				"title": "rC3 World",
+				"url": "https://rc3.world/2021/"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		]
+	}
+}

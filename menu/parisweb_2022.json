@@ -1,0 +1,20 @@
+{
+	"version": 2022100100,
+	"url": "https://www.paris-web.fr/2022/conferences-parisweb-2022.ics",
+	"title": "Paris Web 2022",
+	"start": "2022-10-06",
+	"end": "2022-10-08",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.paris-web.fr/2022/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://inscriptions.paris-web.fr/",
+				"title": "Tarifs et inscription"
+			}
+		]
+	}
+}

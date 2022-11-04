@@ -1,0 +1,29 @@
+{
+  "version": 2022091818,
+  "url": "https://www.linuxday.at/vortraege/2022/calendar.ics",
+  "title": "LinuxDay.at Vortraege",
+  "id": "LinuxDay.at Vortraege",
+  "start": "2022-09-24",
+  "end": "2022-09-24",
+  "timezone": "Europe/Berlin",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://www.linuxday.at/",
+        "title": "Webseite"
+      },
+      {
+         "url": "https://www.linuxday.at/aussteller/2022",
+         "title": "Aussteller"
+      },
+      {
+         "url": "https://www.linuxday.at/vortraege/2022",
+         "title": "Vorträge"
+      },
+      {
+         "url": "https://www.linuxday.at/ort.html",
+         "title": "Wie komme ich zur HTL-Dornbirn"
+      }    
+    ]
+  }
+}

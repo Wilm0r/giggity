@@ -1,0 +1,2904 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//hacksw/handcal//NONSGML v1.0//EN
+X-WR-CALNAME;CHARSET=UTF-8;ENCODING=8BIT:JRES 2021/22
+BEGIN:VEVENT
+UID:presentation_94@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T110000
+DTEND;TZID=Europe/Paris:20220517T123000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Accueil Parc Chanot
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Accueil congressistes
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_95@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T123000
+DTEND;TZID=Europe/Paris:20220517T140000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espace Restauration
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Buffet
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_129@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T140000
+DTEND;TZID=Europe/Paris:20220517T160000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:182 - Numérique : Enjeux géopolitiques, externalités environnementales et chaînes de dépendance
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les interdépendances du monde numérique commencent par les territoires, leurs richesses, leur géographie, leur histoire… 
+ \n
+ Et, aujourd'hui, aucun acteur ne peut prétendre maîtriser l’ensemble de son “territoire numérique”. 
+ \n
+ Mais malgré ces interdépendances de l'existant, il est nécessaire de conserver notre capacité d'autodétermination et les possibilités d'action dans la formulation de futurs désirables. Pour cela, nous proposons de considérer les enjeux géopolitiques et les externalités du choix technologique afin d’être en mesure de formuler une vision stratégique cohérente. 
+ \n
+ 
+ \n
+ La maîtrise des technologies, enrichie d’une gestion raisonnée des dépendances, est nécessaire à la formalisation d’un numérique plus responsable.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_93@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T160000
+DTEND;TZID=Europe/Paris:20220517T163000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espaces Pauses
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Pause
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_3@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T163000
+DTEND;TZID=Europe/Paris:20220517T171000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:34 - Plateforme d'enseignement en ligne Moodle en temps de COVID19
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:La plateforme d'enseignement en ligne Moodle est très largement déployée dans nos établissements. A Aix-Marseille, nous l'exploitons depuis 2005. Gérée à l'origine par le Pôle Infrastructure, l'application a été confiée au Pôle Environnement Numérique quelques années plus tard.
+ \n
+ Au Pôle Environnement Numérique, nous n'avons jamais dédié un personnel à temps plein sur cette application, et de ce fait, nous n'avons pas vraiment d'expert Moodle. Cependant, nous avons acquis les connaissances au fil de l'eau. Par contre, nous avons la gestion de la partie système et travaillons depuis longtemps sur les problèmes de performance avec nos collègues de l'infra pour les aspects réseau, stockage et virtualisation sous VMWARE.
+ \n
+ Au début, Moodle était plutôt utilisé en supplément d'autres support de cours. Le confinement a changé la donne, en plus des visio-conférences, Moodle est devenu l'outil incontournable de support de cours mais aussi de plateforme d'examens, aspect particulièrement critique générant des pics de charge importants et fréquents.
+ \n
+ Avant confinement, nous avions 8000 cours, 8000 quiz et 7500 utilisateurs par heure. 
+ \n
+ Après confinement, nous avions 15000 cours, 16000 quiz et 14000 étudiants par heure. 
+ \n
+ Ceci nous a amené à échanger autour de nos configurations avec les collègues des autres universités dans le cadre d'un GT ESUP et constater que nos architectures peuvent être très disparates. 
+ \n
+ Nous avons passé du temps sur nos configurations, analysés tous les incidents, et levé quelques lièvres (systèmes, base de données, réseau, virtualisation).
+ \n
+ C'est cette histoire que nous voulons raconter.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_4@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T171000
+DTEND;TZID=Europe/Paris:20220517T175000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:40 - UCAmedia : Plateforme de création, gestion et diffusion de médias basée sur Opencast
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:En janvier 2017, la fusion des deux universités auvergnates a entraîné de profonds changements, notamment au niveau structurel avec le regroupement des deux DSI. Chaque établissement disposait de son propre système de captation, l’un n’étant plus maintenu par l’éditeur et l’autre étant trop onéreux. Il était donc indispensable de mettre en place un nouveau procédé afin d’homogénéiser la production de capsules audio et vidéo.
+ \n
+ 
+ \n
+ Un projet ambitieux a été lancé avec pour objectif de créer, gérer et diffuser du contenu vidéo sur l’ensemble des plateformes de l’université. La stratégie retenue a été de construire une chaîne de production audiovisuelle autour d’une solution ouverte permettant de nombreuses interactions. Ainsi, la solution Opencast est apparue comme étant la plus adaptée et a été retenue selon plusieurs critères : son coût, sa compatibilité avec les agents de capture Extron, sa communauté très réactive et sa modularité qui offre une réelle liberté de développement.
+ \n
+ 
+ \n
+ Afin de développer l’autonomie des enseignants et des étudiants à la production de ressources vidéo, tout en évitant de bouleverser les habitudes liées aux solutions passées, une suite d’outils baptisée UCAmedia a vu le jour. Celle-ci permet la production de vidéo offrant la meilleure qualité possible et de diffuser rapidement et simplement sur la plateforme pédagogique et la WebTV de l’université.
+ \n
+ 
+ \n
+ Dans cette présentation, nous détaillerons les choix retenus pour la mise en place de l’architecture et nous apporterons une attention particulière concernant les applications déployées autour d’Opencast : un outil d’enregistrement assisté sur navigateur, un gestionnaire de vidéos intégré à l’ENT, un plugin Moodle et un assistant d’enregistrement en amphithéâtre.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_5@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T175000
+DTEND;TZID=Europe/Paris:20220517T181000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:43 - Esup-Pod : retour sur son usage et ses adaptations face aux confinements
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Créé en 2014, le projet Esup-Pod est, depuis septembre 2015, piloté par le consortium Esup-Portail.
+ \n
+ Le projet et la plateforme homonyme sont orientés vers les usagers de nos établissements en permettant la publication de vidéos dans les domaines de la recherche, la formation ou la vie institutionnelle proposant ainsi plusieurs jours de contenu.
+ \n
+ Dans le cadre du contexte sanitaire pandémique CoVid-19, la plateforme a été mise en lumière au regard des contraintes de la continuité d'activités de l'ESR en particulier dans le domaine pédagogique.
+ \n
+ Ainsi, les différentes instances de la plateforme déployées à travers la France, plus de 46 à l'heure actuelle, ont reçu en quelques jours l'équivalent de quelques semaines voire des mois d'activité normale.
+ \n
+ La communauté s’est alors réorganisée avec la mise en place d'un comité de pilotage pour échanger sur les usages et les besoins imposés par cette période et ainsi faire évoluer la solution de gestion de vidéo.
+ \n
+ Trois axes majeurs ont été fixés : consolider l'accessibilité, renforcer l'interopérabilité et faciliter la maintenabilité du projet.
+ \n
+ C'est pourquoi le code a été revu afin d'améliorer les différents périmètres de  la plateforme comme la diffusion de vidéos et de nouvelles fonctionnalités ont été ajoutées afin de mieux s'inscrire dans l'environnement de nos établissements.
+ \n
+ Après une courte présentation de la solution Esup-Pod, nous exposerons l'organisation et les avancées du projet évoquées dans le contexte pandémique que nous connaissons.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_6@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T163000
+DTEND;TZID=Europe/Paris:20220517T181000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:4 - Proxmox : de la virtualisation de serveurs à l'hyperconvergence ... libre !
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:===== PRÉREQUIS =====
+ \n
+ 
+ \n
+   * Bases de la virtualisation : virtualisation légère (conteneur), virtualisation complète, hyperviseur ;
+ \n
+   * Bases en réseau : TCP/IP (commutation, routage, ...) ;
+ \n
+   * Des connaissances en environnement SAN (types de stockage, protocole iSCSI, ...) et en sécurité (firewall) permettent une meilleure compréhension des fonctionnalités présentées.
+ \n
+ 
+ \n
+ 
+ \n
+ ===== LES GRANDES FONCTIONNALITÉS DE PROXMOX =====
+ \n
+ 
+ \n
+ ==== INTERFACE D'ADMINISTRATION ====
+ \n
+ Démo de l'interface Web avec ses trois modes de visualisation (Serveur, Dossier, Stockage)
+ \n
+ 
+ \n
+ 
+ \n
+ ==== CONFIGURATION ====
+ \n
+ Paramétrage du stockage
+ \n
+ Paramétrage du réseau
+ \n
+ 
+ \n
+ 
+ \n
+ ==== CLUSTER ====
+ \n
+ Créer un cluster multiserveur
+ \n
+ Administrer un cluster de manière centralisée
+ \n
+ 
+ \n
+ 
+ \n
+ ==== GESTION DES VM ET CONTAINERS ====
+ \n
+ Création d'une VM
+ \n
+ Paramétrage avancé d'une VM
+ \n
+ Création d'un conteneur
+ \n
+ Paramétrage avancé d'un container
+ \n
+ Extension d'un disque virtuel
+ \n
+ Déplacement d'un disque virtuel
+ \n
+ 
+ \n
+ ==== HAUTE DISPONIBILITÉ ====
+ \n
+ Paramétrage de la haute dispo 
+ \n
+ Test de reprise automatique en cas d'arrêt d'un serveur
+ \n
+ Paramétrage de la haute disponibilité par VM
+ \n
+ 
+ \n
+ ==== TRANSFERT ENTRE HOSTS ====
+ \n
+ Transfert de VM (à chaud, à froid)
+ \n
+ Transfert de container (y compris depuis un stockage sur disque dur local !)
+ \n
+ Transfert de VM entre serveurs sans stockage SAN
+ \n
+ 
+ \n
+ ==== SAUVEGARDE ET RESTAURATION ====
+ \n
+ Sauvegarde simple
+ \n
+ Sauvegarde avec Proxmox Backup Server
+ \n
+ Restauration d'une VM ou d'un container
+ \n
+ Créer une nouvelle VM ou un container à partir d'une sauvegarde (et sa subtile gestion des MacAdress !)
+ \n
+ 
+ \n
+ ==== LES TROIS NIVEAUX DE FIREWALL ====
+ \n
+ Cluster
+ \n
+ Host
+ \n
+ VM ou container
+ \n
+ 
+ \n
+ ==== SUPERVISION ET MÉTROLOGIE ====
+ \n
+ Gestion des accès
+ \n
+ Paramétrage et démo de l'export des données statistiques vers un serveur InfluxDB avec tableau de bord sous Grafana
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_7@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T163000
+DTEND;TZID=Europe/Paris:20220517T165000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:5 - Référentiel des locaux techniques avec RackTables
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L’Université de Montpellier n’échappe pas à la mode des bases de données de gestion de configuration (**CMDB**) qui visent à donner une **vue** d’ensemble sur les actifs matériels et logiciels du S.I.
+ \n
+ 
+ \n
+ Dans cette perspective, **RackTables** est une solution libre et gratuite. Basée sur une **architecture LAMP**, elle permet d’établir l’inventaire des locaux techniques. Cette technologie se révèle à la hauteur de sa tâche, mais nous autres, insatiables humains et néanmoins collègues, exigeons toujours plus de confort et de facilité.
+ \n
+ 
+ \n
+ Des outils maison sous forme de **plugins** viennent donc compléter RackTables :
+ \n
+    * RackMaps pour **géolocaliser** les bâtiments dans les cartes Google et OpenStreetMap.
+ \n
+    * RackReports pour **vérifier** d’un coup d’œil le **nommage** des divers objets référencés.  
+ \n
+    * RackArchives, pour faciliter l’**accès aux documents archivés** notamment les images.
+ \n
+  
+ \n
+ Nous répertorions aujourd’hui plus de 400 baies, 290 locaux, 300 commutateurs et 600 tiroirs optiques sur 6 villes et 22 sites. Les matériels sont référencés selon le triptyque fondamental à RackTables (**Location / Row / Rack**) : une localisation (bâtiment avec ses coordonnées GPS), un local (local technique, placard, bureau, gaine technique…) et une position dans une baie.
+ \n
+ 
+ \n
+ Avec un accès restreint pour l’instant aux quelques agents du service des infrastructures de la DSIN via une authentification Radius, notre usage de RackTables se heurte déjà à un cruel constat : les évolutions matérielles vont bon train et l’inventaire ne reste pas à jour. Nous évoquerons donc en fin de présentation quelques pistes pour tenter de remédier à ce problème crucial pour la qualité de notre cher référentiel.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_8@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T165000
+DTEND;TZID=Europe/Paris:20220517T171000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:65 - Du réseau pour la reine des alpes et les marmottes !
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Déployer du réseau à 2100m parfois sous un mètre de neige et par des températures polaires, tout en ayant la qualité de service réseau "comme au labo", telle est la demande que nous a formulé le jardin du Lautaret de l'Université Grenoble Alpes (UGA).  
+ \n
+ Ses missions englobent le développement de services pour la recherche, l’entretien de collections botaniques, la formation des étudiants et la vulgarisation scientifique auprès du grand public.
+ \n
+ Entre 2008 et 2014, après avoir écarté une interconnexion par satellite, le SDSL est retenu. D’abord à 512 Kbps puis 2 Mbps. 
+ \n
+ En 2015, un nouveau bâtiment voit le jour. « la Galerie de l’Alpe », superbe outil de recherche et de vulgarisation ouvert au grand public. C’est un vrai succès et le Sdsl ne suffit plus… 
+ \n
+ Après plus d'un an d'études, des visites de site sur des pentes vertigineuses en Escarpins, des rotations d'hélicoptères millimétrées, des discussions animées avec les Remontées Mécaniques, à l'automne 2018, une liaison digne de ce nom est enfin opérationnelle !
+ \n
+ Lors de la présentation nous vous décrirons les moments phares du chantier qui permet désormais une accélération de l'offre d'accueil de nombreux projets de recherche sur site : on analyse les algues dans la neige, on surveille les glaciers, on étudie l’impact du réchauffement climatique sur les étages alpins de la flore, ... une couverture Lora est en cours de déploiement.
+ \n
+ Tout cela peut paraître banal, mais vu la situation du site tout devient vite très compliqué !
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_9@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T171000
+DTEND;TZID=Europe/Paris:20220517T173000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:113 - Résilience des réseaux de l'enseignement supérieur et de la recherche
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Fin 2019, une coupure de l'accès Internet nous a plongé dans le noir pendant plus de 24 heures. Les activités normales de milliers de personnels et d'étudiants ont été empêchées.  C'est une panne extrêmement rare. Mais elle pose question.
+ \n
+ 
+ \n
+ Alors que plusieurs centaines d'établissement sont connectés à RENATER, pourquoi un nombre infime d'entre eux a mis en place une connexion redondante ? En utilisant des données publiques, nous dresserons un état des lieux de la résilience des établissement de l'enseignement supérieur et de la recherche.
+ \n
+ 
+ \n
+ Puis nous évoquerons les stratégies possibles pour augmenter la résistance aux pannes de l'accès à Internet : évolution des architectures, diversification du routage IP, distribution des services critiques dans des domaines de routages différents. Nous analyserons en particulier les coûts et la complexité induits, qui ne sont pas excessifs en regard des enjeux.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_10@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T173000
+DTEND;TZID=Europe/Paris:20220517T181000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:152 - XiVO from buds to blooms : une petite solution de téléphonie IP devenue grande...
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Après un déploiement test de 100 postes au sein de la DGDSI, l'un des premiers services de la toute nouvelle Université Grenoble Alpes, fusion de 3 universités grenobloises, nous avons constaté que la solution XIVO répondait à l'ensemble de nos critères et proposait une souplesse et une capacité d’intégration à notre environnement existant.
+ \n
+ 
+ \n
+ La mise en place de la nouvelle université avec ses nouveaux services et ses nouvelles compétences, a été le véritable déclencheur d'un déploiement à grande échelle. Nos solutions de téléphonie existantes n'étaient alors pas en mesure de répondre aux nouvelles fonctionnalités de téléphonie avancée demandées dans les délais impartis. 
+ \n
+ 
+ \n
+ Aujourd'hui, nous gérons avec cette solution de téléphonie, de manière centralisée, plus de 3000 lignes avec une cible à 7000 lignes. L'évolution constante de XiVO nous a notamment permis de rentrer dans un déploiement massif, contrôlé et surtout adapté aux nouveaux usages qui se sont imposés dans un contexte (sanitaire) changeant.
+ \n
+ 
+ \n
+ Alors Xivo est-elle l’ultime solution de téléphonie ? Existe-t-il des alternatives ? Est-elle financièrement intéressante ?
+ \n
+ Comment passe-t-on d’un POC de 10 postes à un déploiement test, puis à l’échelle d’une université ? C’est ce que nous tenterons de vous expliquer, tout en vous présentant les développements que nous avons effectués afin de moderniser un service de téléphonie basique et peu évolutif. Venez vous rendre compte comment nous sommes alors passés d’un bourgeon à une fleur !
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_11@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T163000
+DTEND;TZID=Europe/Paris:20220517T171000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:33 - Sécurité dans un contexte de fédération d'identité
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les fédérations d'identité, qu'elles soient de portée locale, nationale, ou internationale, sont aujourd'hui largement utilisées dans notre communauté. En effet, il s'agit d'un mécanisme extrêmement pratique pour mettre en relation facilement des SI indépendants, un besoin récurrent dans le monde de l'enseignement supérieur et la recherche.
+ \n
+ 
+ \n
+ Néanmoins, la complexité du sujet fait qu'il est rarement maitrisé, et les risques de sécurité encourus sous-estimés. Il est ainsi fréquent de voir des applications à usage interne accessibles dans les fait à l'ensemble des personnes relevant de l'enseignement supérieur, utilisant des identifiants utilisateur triviaux à forger, ou dont l'architecture technique inadéquate diminue la sécurité.
+ \n
+ 
+ \n
+ Cette présentation commence par expliciter la différence entre les notions de délégation d'authentification et de fédération d'identité. Elle aborde ensuite les problématiques de contrôle d'accès et de limitation des risques d'usurpation d'identité lorsque l'authentification est déléguée à un ou plusieurs tiers. Enfin, elle évoque quelques aspects plus techniques, liés à l'architecture ou au durcissement des composants utilisés.
+ \n
+ 
+ \n
+ L'objet de cette présentation est de démystifier le fonctionnement d'une fédération d'identité, afin de permettre à chaque participant de prendre conscience des enjeux de sécurité pour lui-même, mais aussi pour les autres. Car si chaque établissement reste souverain pour assumer les risques sur son propre périmètre, une fédération d'identité constitue par définition un périmètre mutualisé, ce qui impose une autre gouvernance des risques liés à la sécurité.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_12@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T171000
+DTEND;TZID=Europe/Paris:20220517T173000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:48 - Evolutions du service TCS de RENATER (Trusted Certificate Service)
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Depuis plus d’une quinzaine d’années, le service de certificats TCS (Trusted Certificates Service) mis à disposition par RENATER pour la communauté Education/Recherche, permet d’obtenir des certificats électroniques de sécurisation pour les applications en ligne. Ces certificats électroniques sont reconnus par défaut par la plupart des logiciels (navigateurs internet, clients de messagerie électronique, smartphones…) et ne nécessitent aucune configuration préalable sur les postes clients.
+ \n
+ Le service TCS est la déclinaison française du contrat signé entre GéANT Association et un prestataire de certification commercial, au bénéfice de plus d’une trentaine de réseaux nationaux d’Enseignement et Recherche en Europe (NREN), dont RENATER. Ce service évolue pour s’adapter aux demandes et aux attentes de la communauté européenne Education/Recherche. En mai 2020, lors du dernier renouvellement du marché géré par l’association GÉANT, la société Sectigo a été retenue pour succéder à Digicert dans la quatrième mouture du service TCS.
+ \n
+ Dans cette proposition nous reviendrons tout d’abord sur un bref historique de l’évolution du service TCS. Nous exposerons plus en détails le bilan du service TCS opéré avec Digicert entre 2015 et 2020. Nous décrirons ensuite les fonctionnalités et les principaux changements depuis le lancement de TCS avec Sectigo en mai 2020. Dans une dernière partie, nous évoquerons les difficultés croissantes qui touchent la gestion des certificats serveur depuis quelques années. Dans ce contexte il est nécessaire d’être de plus en plus organisé et réactif ; nous nous focaliserons enfin sur différentes solutions permettant de centraliser et/ou d’automatiser la gestion des certificats.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_13@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T173000
+DTEND;TZID=Europe/Paris:20220517T181000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:74 - « Le graal » : WebAuthn, l’authentification web renforcée pour tous
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Nos utilisateurs sont régulièrement confrontés au supplice du mot de passe : « je ne m’en souviens plus », « il est trop complexe », « je me le suis fait voler ». Mais de nouvelles technologies vont y mettre fin !
+ \n
+ 
+ \n
+ Depuis 10 ans, le consortium FIDO Alliance produit des standards libres et ouverts pour réduire la dépendance aux mots de passe.
+ \n
+ 
+ \n
+ Cela a abouti aux spécifications d’authentification FIDO2 dont la composante web « WebAuthn » est standardisée par le W3C depuis mars 2019. Celles-ci proposent une alternative ergonomique et sécurisée aux mots de passe et aux multiples facteurs d’authentification existant sur le web (mots de passe, certificats x509, OTP…).
+ \n
+ 
+ \n
+ Dans cet article et cette présentation, nous exposerons ce standard et ses avantages par rapport aux autres facteurs les plus courant.
+ \n
+ 
+ \n
+ Nous expliquerons ensuite pourquoi le CNRS l’a choisi pour sécuriser les accès sensibles de son système d’information de gestion et de service (SIGS) par des mécanismes à plusieurs facteurs.
+ \n
+ 
+ \n
+ Pour continuer, nous présenterons et nous détaillerons un retour d’expérience sur la mise en place d’un second fournisseur d’identité dédié à l’authentification forte et basé sur Keycloak. Aussi, nous dévoilerons quelques développements « maison » déployés pour la gestion de clés de sécurité FIDO2. Nous évoquerons les mécanismes de support, d’enrôlement et de secours.
+ \n
+ 
+ \n
+ Enfin, nous partagerons nos perspectives pour proposer aux utilisateurs une alternative aux mots de passe pour les accès les moins sensibles du SIGS du CNRS grâce à WebAuthn.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_169@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T181500
+DTEND;TZID=Europe/Paris:20220517T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:POMEGUES
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:183 - ZEXTRAS : Faites évoluer votre messagerie - les clés d’une migration sereine
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:description à venir.
+ \n
+ 
+ \n
+ **__Intervenants__** : 
+ \n
+   * Julien Nicolas
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_170@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T181500
+DTEND;TZID=Europe/Paris:20220517T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:EN VAU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:186 - ECONOCOM & APPLE : Apple Silicon & macOS Monterey - Nouveautés pour le déploiement, la supervision et la gestion de flotte - En collaboration avec Apple et avec un témoignage client
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Cet atelier met l'accent sur les nouveaux Mac dotés de la puce Apple. 
+ \n
+ Il permet de mieux comprendre le fonctionnement des puces Apple Silicon M1. Leurs performances exceptionnelles, leurs technologies sur mesure et leur efficacité énergétique ont fixé une nouvelle norme pour le secteur et constituent un véritable bond en avant. En tant que système sur une puce (SoC), la famille de puces M1 réunit de nombreuses technologies très puissantes au sein d’une même puce avec une architecture de mémoire unifiée.
+ \n
+ 
+ \n
+ Chaque Mac est équipé de macOS Monterey. Conçu pour les puces Apple, le système d’exploitation macOS Monterey profite au maximum des améliorations considérables en termes de CPU, de GPU et de bande passante mémoire. 
+ \n
+ 
+ \n
+ Découvrez les nouveautés pour le déploiement, la supervision, la gestion de flotte (Mobile Device Management), la sécurité et les mécanismes de mise à jour.
+ \n
+ 
+ \n
+ **__Intervenants__** : 
+ \n
+   * Michel Netzer – Ingénieur avant-vente – Apple France
+ \n
+   * Christophe Tasquer – Ingénieur avant-vente, expert Apple – Econocom
+ \n
+   * Laurent Garinot – Ingénieur avant-vente, expert Apple – Econocom
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_171@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T181500
+DTEND;TZID=Europe/Paris:20220517T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:SUGITON
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:189 - ATEMPO : Brisez les compromis : changez d'ère pour le stockage de vos données !
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Performance, sécurité, capacitif, évolutivité, … autant d’enjeux que rencontrent bon nombre de responsables informatiques dans la gestion du cycle de vie de leurs données.
+ \n
+ 
+ \n
+ Les experts Atempo et VAST Data vous aident à relever ces nouveaux défis, vous permettant de libérer le potentiel de vos données à l’échelle Exascale.
+ \n
+ 
+ \n
+ **__Intervenants__** : 
+ \n
+   * Thibaut Lauzière, Technical Product Manager – Atempo
+ \n
+   * Lionel Meoni, Senior Pre-Sales Engineer – Vast Data
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_172@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T181500
+DTEND;TZID=Europe/Paris:20220517T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:RIOU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:192 - ARUBA-HPE : Renforcer la sécurité de vos datacenters : nouveaux modèles de microsegmentation avec Aruba
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Parmi toutes ses solutions de sécurité des accès, allant des réseaux filaires au sans-fils, en passant par le SD-WAN, Aruba propose dorénavant une solution innovante de micro-segmentation et de sécurisation des flux au sein du Datacenter.
+ \n
+ 
+ \n
+ Cette session détaillera comment Aruba et Pensando proposent le premier commutateur de services distribués du marché - l'Aruba CX 10000 - qui distribue l'intelligence à la périphérie du réseau Datacenter, ce qui simplifie radicalement la conception et les opérations existantes et accélère les services de réseau et de sécurité.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Arnaud Le Gall, Avant-vente Aruba
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_173@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T181500
+DTEND;TZID=Europe/Paris:20220517T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:SAMENA
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:195 - GOOGLE : Notre savoir-faire au service de la Recherche
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:.
+ \n
+   * A propos de Google Research  
+ \n
+   * Que propose Google Cloud pour le monde de la Recherche
+ \n
+   * La recherche chez nos clients 
+ \n
+   * Quelques mots sur la Souveraineté Description à venir.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Alexandre Rodrigues – Avant-vente Recherche
+ \n
+   * Khrystyma Grnynko – Avant-vente Data
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_175@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220517T181500
+DTEND;TZID=Europe/Paris:20220517T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:ENDOUME 3
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:218 - JUNIPER : Les bénéfices de l’architecture EVPN-VxLAN dans les réseaux de campus.
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Ces dernières années, les besoins et les usages ont fortement évolué. Leurs contraintes sont de plus en plus similaires à celles rencontrées dans les datacenters.
+ \n
+ C’est donc tout naturellement que l’on voit apparaitre les architectures EVPN-VxLAN dans ces nouveaux environnements.
+ \n
+ 
+ \n
+ Nous verrons comment ces architectures d’apparence complexes peuvent être simplifiées grâce à des outils modernes.
+ \n
+ Nous aborderons également les différents bénéfices et avantages de ces solutions ainsi que l’intérêt d’avoir une interface unique pour l’administration des réseaux LAN et WLAN.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Thomas Munzer, Consulting Engineer Specialist
+ \n
+   * Ramyan Selvam, Sales Engineer
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_21@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T084000
+DTEND;TZID=Europe/Paris:20220518T102000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:20 - Installation de pare-feu redondants avec OpenBSD
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:====== Pré-requis ======
+ \n
+ 
+ \n
+ Connaissances de base sur :
+ \n
+   * les systèmes de type Unix (Linux, *BSD,…)
+ \n
+   * les protocoles réseau TCP/IP
+ \n
+   * la sécurité des systèmes d'information
+ \n
+   * être capable d'utiliser un système en ligne de commande
+ \n
+ 
+ \n
+ 
+ \n
+ ====== Contenu ======
+ \n
+ 
+ \n
+ Ce tutoriel présente le fonctionnement d'un pare-feu basé sur le filtre de paquets **pf** d'OpenBSD et va jusqu'à la configuration complète d'un système redondant, composé de deux machines fonctionnant en routeur en entrée d'un réseau, ou en cœur du réseau pour réaliser un filtrage inter-VLAN.
+ \n
+ 
+ \n
+ Le tutoriel abordera les points suivants :
+ \n
+ 
+ \n
+   *  Avant de commencer :
+ \n
+     * choix et dimensionnement du matériel utilisé,
+ \n
+     * présentation de l'architecture en détaillant quelques cas d'utilisation.
+ \n
+     * installation du système et configuration initiale du réseau en IPv4 et IPv6.
+ \n
+ 
+ \n
+   * Configuration et paramétrage
+ \n
+     * écriture des règles de filtrage pour implémenter une politique de sécurité.
+ \n
+     * utilisation des domaines de routage pour isoler les interface d'administration.
+ \n
+     * ré-écriture des entêtes des paquets pour réaliser la traduction d'adresses.
+ \n
+     * filtrage dynamique pour implémenter des contres-mesures pour réagir à certaines attaques.
+ \n
+     * synchronisation entre deux pare-feu via le protocole pfsync.
+ \n
+     * redondance via le protocole CARP.
+ \n
+ 
+ \n
+   * Exploitation au quotidien
+ \n
+     * gestion des traces via l'interface pflog.
+ \n
+     * outils pour l'analyse des performances et la collecte de métriques.
+ \n
+     * possibilités de remontées de paquets au niveau applicatif afin d'implémenter une inspection plus poussée (deep paquet inspection)
+ \n
+     * gestion des mises à jour de sécurité et les montées de versions sans interruption grâce à l'architecture mise en place.
+ \n
+ 
+ \n
+ 
+ \n
+ Toute la configuration est en double-pile IPv4 et IPv6.
+ \n
+ 
+ \n
+ Après ce tuto, vous pourrez étendre cette configuration pour fournir d'autres services (proxy web, serveur DHCP, cache DNS récursif, passerelle VPN,…).
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_14@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T084000
+DTEND;TZID=Europe/Paris:20220518T102000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:133 - Le Deep Learning en 100 minutes !
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Devinez quoi, le **Deep Leaning** est toujours à la mode !
+ \n
+ 
+ \n
+ Certes, on en cause moins qu'à l'époque de notre dernier JRES, mais les progrès et l'utilisation des ces techniques n'ont cessées de progresser !
+ \n
+ 
+ \n
+ En permettant de modéliser le comportement de systèmes très complexes ou d’analyser efficacement d’importantes quantités de données, l’IA est devenue un outil incontournable sur le plan scientifique, mais également dans la gestion de nos infrastructures (analyses de logs, supervision, détection d'incidents, ...)
+ \n
+ 
+ \n
+ En 100 minutes, nous vous proposons une **découverte par la pratique**, avec :
+ \n
+ 
+ \n
+   * un panorama rapide et synthétique de l’historique et des concepts qui ont conduit à l’émergence des réseaux de neurones,
+ \n
+   * un premier exemple pratique de **regression**, dont l’objectif sera de prédire la qualité de vins à partir de mesures physico chimiques,
+ \n
+   * un second exemple, de **classification** automatique, consistant à classer des images.
+ \n
+ 
+ \n
+ L’ensemble de ces travaux pratiques sera effectué dans un environnement logiciel, basé sur Tensorflow, Keras, Jupyter lab et Python, identique à ceux proposés dans nos mésocentres ou à l'IDRIS sur Jean Zay.
+ \n
+ 
+ \n
+ Quelques prérequis avant de sauter dans la piscine :
+ \n
+ 
+ \n
+ Chaque participant(e) sera invité(e) à installer préalablement un environnement python, localement sur son portable ou sur une machine accessible via le réseau. 
+ \n
+ Une procédure détaillée sera proposée, pour les environnements Windows, Linux et MacOS.
+ \n
+ Une maîtrise minimale de la programmation en Python est également souhaitable.
+ \n
+ 
+ \n
+ Pour aller plus loin :
+ \n
+ 
+ \n
+ Celles et ceux qui souhaiteront approfondir le sujet pourront s'appuyer sur notre formation FIDLE (Formation Introduction au Deep Learning), dont l'ensemble des contenus (vidéos, supports, notebooks, etc.), sont librement disponibles en ligne :
+ \n
+ 
+ \n
+ Web : https://fidle.cnrs.fr
+ \n
+ Gitlab : https://fidle.cnrs.fr/depot
+ \n
+ Youtube : https://fidle.cnrs.fr/youtube
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_15@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T084000
+DTEND;TZID=Europe/Paris:20220518T092000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:29 - Le travail co-construction au service de la transformation des métiers du numérique
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les DSI s’organisent pour rester au rendez-vous des enjeux des établissements qu’elles servent. Au-delà de devoir s’aligner de plus en plus vite sur les usages, les acteurs du numérique doivent s’adapter à de nouvelles méthodes de travail. Les enjeux consistent à conserver un haut niveau d’expertise tout en développant de nouvelles compétences de gestion de projets, d’accompagnement des usages ou de conduite du changement. Toutes ces transformations reposent sur un levier majeur : l’appropriation et la mise en œuvre par les agents. 
+ \n
+ 
+ \n
+ Pour l’Institut de Recherche pour le Développement (IRD), un certain nombre d’évolutions organisationnelles sont lancées pour œuvrer dans le sens de ces transformations. L’article a pour objectif de présenter un retour d’expérience sur ces dynamiques créées en co-construction. Elles ont entre autres permis la formalisation de la stratégie numérique de l’institut en collaboration avec les métiers. Elles ont aussi été utilisées pour faire évoluer l’organisation de la direction des usages numériques innovants, en lien avec les directions métier qu'elles servent.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_16@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T092000
+DTEND;TZID=Europe/Paris:20220518T094000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:77 - Une plateforme d'hébergement et d'exploitation pour et par les établissements
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:La solution Pégase se déploie progressivement dans les établissements et sera proposée de façon privilégiée en mode hébergé. Le projet PC Scol utilise les ressources de la communauté pour proposer la solution Pégase aux établissements. La plate forme s'appuie sur deux datacenter universitaires et des personnels qui travaillent en co-administration (CoAdministration). Ces personnels resteront dans leur établissement, mais seront dédiés au projet. 
+ \n
+ 
+ \n
+ Nous présenterons la démarche mise en place pour identifier les datacenter et les équipes de CoAdministration, les difficultés rencontrées et les résultats. Nous ferons également le point sur l'organisation entre PC Scol et les établissements proposant les datacenter, ainsi que les relations mises en place au sein du projet entre les équipes.  
+ \n
+ 
+ \n
+ Nous poursuivrons cette présentation par une description des missions des équipes de CoAdministration sur la partie exploitation et sur la partie support. Pour cela nous rentrerons plus précisément dans le détail des relations entre les établissements, les équipe de CoAdministration et l'ensemble des équipes au sein du projet. Nous insisterons plus particulièrement sur la partie support aux établissements. 
+ \n
+ 
+ \n
+ Enfin nous nous projetterons sur les évolutions de la plateforme de CoAdministration dans les années à venir en termes de composition, de service à rendre aux établissements et d'organisation.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_17@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T094000
+DTEND;TZID=Europe/Paris:20220518T100000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:164 - Le projet Apps - Des communs du numérique pour tous les agents.
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Le projet Apps, mis en production dans une version beta pendant le premier confinement, en avril 2020, est un portefeuille d'outils collaboratifs à destination de l'ensemble des agents du ministère de l’Éducation Nationale (académies, administration centrale, ainsi que personnel enseignant). 
+ \n
+ 
+ \n
+ Il regroupe des outils de cloud, partage de vidéos, visioconférence, et d'autres encore, chacun porté par une académie différente au profit de tous, accessibles à travers un portail unique : apps.education.fr. 
+ \n
+ 
+ \n
+ Nous reviendrons, dans cette présentation, sur les objectifs du projet, l'engagement des académies au profit de l'ensemble des agents, sur le travail centré utilisateur effectué avec l’aide de designers d’intérêt général, mais aussi sur la différence essentielle entre version beta et version finale : une identité centralisée et pérenne pour tous les agents, en lien avec leur identité académique habituelle, leur permettant de conserver leur accès à la plateforme tout au long de leur carrière. 
+ \n
+ 
+ \n
+ Il s'agit aussi de pérenniser le projet dans le temps en internalisant certains services dans l'infrastructure d’État, tout en laissant d'autres services chez des hébergeurs tiers. La présence d'indicateurs d'usage de la plateforme sera aussi abordée. 
+ \n
+ 
+ \n
+ Nous présenterons enfin le travail réalisé sur le choix des outils intégrés dans Apps, sur le parcours utilisateur, ainsi que les échanges avec la communauté du logiciel libre.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_18@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T084000
+DTEND;TZID=Europe/Paris:20220518T092000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:42 - Administrer votre cloud Openstack sans aspirine avec Kolla
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:En 2019, l'équipe en charge du cluster Openstack du campus Grenoblois (Nova) présentait la genèse du projet d'une plateforme de cloud computing. Après quelques années d'exploitation, il nous semblait pertinent de nous pencher plus en détail sur la solution que nous avons retenu pour le déploiement et la gestion de cette infrastructure, à l'exception notable de la partie stockage, basée sur Ceph.
+ \n
+ 
+ \n
+ Le projet Openstack est devenue la solution libre de cloud computing de référence. Son architecture modulaire et les nombreux services qui la composent permettent de couvrir un très large spectre d'utilisation et représente de ce fait un véritable défi pour les administrateurs, d'autant plus quand les problématiques de haute disponibilité et de passage à l'échelle s'invitent.
+ \n
+ 
+ \n
+ Pour Nova, qui propose actuellement 1152 cœurs de calcul, 5 To de RAM, 200 To de stockage distribué et des GPU, nous avons choisi Kolla-Ansible, qui se base sur des services conteneurisés déployés via Ansible. Nous expliquerons cependant que nous avons décidé de ne pas l'utiliser pour déployer la partie stockage de l'infrastructure. Nous éclairerons les raisons de nos choix, détaillerons le fonctionnement et présenterons les nombreux avantages de cette solution pour le déploiement, l'exploitation quotidienne et les opérations de maintenance importantes telles que les mises à jour, sans oublier d'évoquer rapidement les quelques frayeurs, rares, qui ont parsemé le projet.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_19@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T092000
+DTEND;TZID=Europe/Paris:20220518T100000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:97 - Migration vers une double infrastructure hyperconvergée
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:La DSI de l’université de Rennes1 opérait depuis 2013 une plateforme de virtualisation et de stockage architecturée autour d’un SAN classique, connecté à plusieurs hyperviseurs VMware, afin de fournir 500 machines virtuelles. En 2018, notre SAN ne nous convenait plus : performances dégradées, peu de maîtrise par l’équipe, pas de reprise automatique, manque d’élasticité, fin de vie annoncée par l’éditeur.
+ \n
+ 
+ \n
+ En évaluant les différentes solutions de stockage, nous nous sommes intéressés au stockage distribué, et plus particulièrement à Ceph. Nous pensions alors adosser ce stockage aux hyperviseurs vSphere mais l’intégration de Ceph dans vSphere est complexe et trop peu performante. Nous avons donc choisi l’hyperviseur opensource KVM, qui pouvait tirer parti de Ceph nativement.
+ \n
+ 
+ \n
+ Conjointement nous avons découvert avec enthousiasme les HCI matérielles, dont les coûts dépassaient toutefois nos budgets.
+ \n
+ 
+ \n
+ Proxmox est une HCI logicielle : une solution de virtualisation libre basée sur KVM qui intègre Ceph. En parallèle, nous constatons que le SDS de VMware (vSAN) est devenu plus simple à installer.
+ \n
+ 
+ \n
+ C’est pourquoi nous avons fait le choix de déployer nous-mêmes Proxmox/Ceph et vSphere/vSAN, sur du matériel commun. Ce socle de serveurs identiques nous permet de pouvoir réutiliser les hyperviseurs dans l’une ou l’autre des infrastructures. De plus, opérer 2 Infrastructures nous donne la liberté d’héberger les VMs dans l’une ou l’autre en fonction des contraintes propres à chaque service.
+ \n
+ 
+ \n
+ Cette présentation détaillera les avantages et inconvénients de chaque solution, (du point de vue maîtrise, coûts, résilience, fiabilité), ainsi que les atouts et les faiblesses du MCO de 2 technologies concurrentes.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_20@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T100000
+DTEND;TZID=Europe/Paris:20220518T102000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:131 - Retour d'expérience sur l'évolution d'une infrastructure à l'ancienne vers des clouds institutionnels
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Depuis 2004, la PLMTeam, une équipe d'ASR du réseau de métier MATHRICE, a déployé des services numériques pour la communauté mathématique dans le cadre de petites infrastructures de laboratoires. À l'occasion de son renouvellement quinquennal, le réseau s'est interrogé sur la refonte de son modèle en anticipant des évolutions métiers. Nous avons opté pour la migration de l'intégralité de notre infrastructure sur quatre clouds : Openstack (GRICAD à Grenoble et VirtualData à Paris-Saclay) et VMware (GRICAD et RENATER). Nous nous orientons donc vers une consolidation multicloud, générique et redondante des services dans le périmètre des outils pour la recherche.
+ \n
+ 
+ \n
+ Le contexte de la pandémie nous a soudainement fait basculer de la réflexion à la concrétisation. En effet, nous avons commencé par le déploiement de services de visioconférence et de plateformes de recherche à propos de la covid19 sur ces clouds partenaires.
+ \n
+ 
+ \n
+ Nous avons alors eu à aborder les problématiques suivantes :
+ \n
+ - les libertés et particularités d'implantation des IaaS ;
+ \n
+ - les conceptions différentes de connectivité réseau ;
+ \n
+ - l'état de l'art dans la gestion de services cloud ;
+ \n
+ - la variété des modes d'organisation de chaque site (interlocuteurs, tickets, procédures, etc.) ;
+ \n
+ - l'orchestration de conteneurs.
+ \n
+ 
+ \n
+ Tous ces aspects ont bousculé nos organisations de travail. Nous avons dû appréhender de nouveaux concepts tels que l'Infrastructure-as-Code et nous détacher ainsi de l'administration du serveur BareMetal.
+ \n
+ 
+ \n
+ Ces évolutions nous paraissent inéluctables. Elles nous conduisent à partager ces retours d’expériences concrets, fruits de la réflexion d’une équipe disséminée dans différents établissements de l'ESR.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_92@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T102000
+DTEND;TZID=Europe/Paris:20220518T110000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espaces Pauses
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Pause
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_78@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T110000
+DTEND;TZID=Europe/Paris:20220518T114000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:11 - Outillage "open-source" pour de l'analyse post-mortem et réponse aux incidents
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les incidents de sécurité se multiplient depuis des années à un rythme effréné. Bien souvent, l’urgence est de remettre en état rapidement, passant sous le radar le besoin d’investigation pour déterminer l’origine d’un incident. Il est donc important de s’intéresser à la notion de DFIR (Digital Forensic And Incident Response).
+ \n
+ 
+ \n
+ Depuis 2019, les retours sur les listes communautaires montrent que le besoin opérationnel reste toujours d'actualité afin de savoir comment rechercher des éléments de preuve d’un poste compromis.
+ \n
+ Nous vous présenterons dans cet exposé l'objectif d'avoir un outillage "open-source" possible afin de pouvoir commencer à faire de l'analyse post-mortem et de la réponse aux incidents.
+ \n
+ Nous essayerons d’exposer une méthodologie envisageable dans cette démarche de collecte de preuves avant de présenter des outils permettant de réaliser cette collecte.
+ \n
+ 
+ \n
+ Enfin, nous proposerons divers outils libres accessibles par tous et leur usage dans chaque étape et chaque aspect d'une analyse forensique (analyse de disque dur, analyse de mémoire vive), notamment avec un focus particulier en terme de retour d'expérience sur le produit Velociraptor que nous avons commencé à déployer au sein du parc machine. Ce dernier permet à distance d'avoir une vision très fine d'une machine (fichiers, base de registre, processus en cours, ...) et même de capturer la mémoire volatile à distance ou du trafic réseau sur le poste.
+ \n
+ 
+ \n
+ Nous conclurons sur l'intérêt de la mise en place de ces outils au sein de nos établissements dans une démarche d'amélioration continue sur la visibilité des "Endpoints" dans notre parc.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_79@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T114000
+DTEND;TZID=Europe/Paris:20220518T120000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:103 - Laboratoire d'analyse forensique
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L’analyse forensique consiste à rechercher des preuves sur des supports numériques pour comprendre un incident informatique passé ou en cours, de manière à y remédier et pouvoir prendre des décisions éclairées. 
+ \n
+ Ces preuves sont des traces, des artefacts numériques qui fournissent des informations sur l’incident. Une fois agrégés, ils permettent de dégager un scénario factuel d'évènements et d'apporter des réponses à l’équipe en charge des investigations.
+ \n
+ Au travers de cette présentation, nous exposerons l’architecture technique ainsi que les composants sur lesquels repose le laboratoire forensique du SOC d’Inria :
+ \n
+     • les moyens de collecte d’artefacts, qu’ils soient en mémoire, réseau, ou présents sur disque ;
+ \n
+     • les capacités de transfert et de stockage des artefacts précédemment récoltés sur la machine ;
+ \n
+     • le traitement jusqu’à l’affichage à l’équipe de sécurité pour investigation.
+ \n
+ Ce dernier point comprend notamment l’analyse syntaxique des journaux, l’exploitation de règles de détection et l’intégration de l’information dans l’outil de recherche, en automatisant au mieux toute cette procédure.
+ \n
+ Enfin, nous ferons un retour sur l’utilisation de cette solution par le SOC d’Inria lors de la résolution d’incidents de sécurité, en présentant les avantages en matière de capacité de traitement et les limites de cet outil.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_80@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T120000
+DTEND;TZID=Europe/Paris:20220518T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:115 - Recherche et déploiement d’une solution de détection et réponse à incident
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Depuis un peu plus d'un an nous avons accueilli une nouvelle bête sur notre réseau, un EDR (Endpoint Detection & Response) ou plutôt un NDR (Node Detection & Response). Nous misons beaucoup sur ce cerveau, petit nom de la bête, pour remonter le moral de l'équipe.
+ \n
+ 
+ \n
+ Le principe est simple. On positionne des sondes à des points stratégiques de notre réseau qui vont alimenter le cerveau. On le laisse ensuite digérer un peu, on saupoudre d'IA (important) et puis on analyse ce qu'il nous remonte.
+ \n
+ 
+ \n
+ En quoi cet outil miracle améliore-t-il notre quotidien, la sécurité de notre réseau ?
+ \n
+ Le remède a-t-il été pire que l'état initial et sommes-nous noyés sous les faux-positifs ?
+ \n
+ Cette IA (important, l'IA) apporte-t-elle une réelle plus-value en corrélant différentes analyses ?
+ \n
+ Avons-nous pu mettre en place de la réponse à incident avec succès ?
+ \n
+ Et surtout cela nous a-t-il amené à faire évoluer notre politique de filtrage en la simplifiant ?
+ \n
+ 
+ \n
+ Vous avez envie d'avoir la réponse à toutes ces questions ? Venez assister à notre présentation.
+ \n
+ 
+ \n
+ On vous attend nombreux,
+ \n
+ 
+ \n
+ Luisa et Sylvain
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_74@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T110000
+DTEND;TZID=Europe/Paris:20220518T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:151 - [ALERT] SUPERVISION IS DOWN, OBSERVABILITY IS UP
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Après le déploiement rapide d’une infrastructure définie logiciellement qui comporte :
+ \n
+ 
+ \n
+   * une ou plusieurs machines virtuelles productrices de métriques et journaux pour la supervision d’applications non conteneurisées ;
+ \n
+   * plusieurs clusters Kubernetes qui permettront d’illustrer les avantages de Thanos dont ses fonctionnalités de supervision globale (multi clusters) ;
+ \n
+   * plusieurs applications distribuées (ou « cloud native ») déployées dans Kubernetes, productrices de métriques et journaux ;
+ \n
+   * un stockage objet compatible S3 pour le stockage des données produites.
+ \n
+ 
+ \n
+ Nous détaillerons au travers d’un pas à pas didactique les étapes de préparation et de déploiement des briques techniques permettant d’aboutir à une plateforme de centralisation et de consultation des métriques et des journaux.
+ \n
+ 
+ \n
+ La pile technique pour la centralisation des métriques est constituée de :
+ \n
+ 
+ \n
+   * exporters, agents logiciels qui exposeront des métriques pour Prometheus ;
+ \n
+   * Prometheus, qui moissonnera les métriques exposées par les différents agents et applications productrices de métriques ;
+ \n
+   * Thanos, qui se chargera du stockage des métriques sur un stockage objet ;
+ \n
+   * Grafana, qui nous permettra de fouiller les métriques et d’en faire des graphes et tableaux de bord.
+ \n
+ 
+ \n
+ La pile technique pour la centralisation des journaux sera constituée de :
+ \n
+ 
+ \n
+   * Promtail, un agent qui recoltera les journaux produits par les systèmes et applications et de les enrichir de metadonnées ;
+ \n
+   * Loki, qui s’occupera de recevoir les journaux transmis par les agents Promtail, de les stocker sur un stockage objet et de les indexer ;
+ \n
+   * Grafana, déjà utilisé pour les métriques, qui nous offrira une vue et recherche unifiée sur les journaux.
+ \n
+ 
+ \n
+ Nous ponctuerons le tutoriel de notre retour d’expérience sur ces outils dans le cadre de la construction et de l'hébergement du logiciel Pégase au sein de PC-SCOL.
+ \n
+ 
+ \n
+ Prérequis : Conteneurisation, Docker, ligne de commande
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_75@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T110000
+DTEND;TZID=Europe/Paris:20220518T114000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:38 - Consul, l'outil magique pour une infrastructure dynamique
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:La généralisation de l’automatisation des déploiements de systèmes d’exploitation, d’applications ou de conteneurs, nous contraint de mettre à jour constamment la configuration de nos applications et de nos différents outils d’infrastructure, tels que les DNS, les outils de répartition de charge, nos outils de supervision et de monitoring, ainsi que les ouvertures et fermetures de flux.
+ \n
+ La configuration manuelle de ces outils est parfois source d’erreurs et ne reflète pas en temps réel l’état de notre système d’information. Nous avons donc naturellement cherché s’il existait des outils permettant d’automatiser toutes ces tâches.
+ \n
+ Notre choix s’est tourné vers Consul que nous avions déjà mis en place afin de servir de base de données à notre gestionnaire de secret Vault, logiciel développé par la même société Hashicorp.
+ \n
+ Consul est un outil relativement méconnu, mais qui pourtant rend de très nombreux services. Il permet de répondre simplement aux différentes problématiques que nous rencontrons quotidiennement dans nos infrastructures. 
+ \n
+ Consul est utilisable quel que soit le type d’environnement, serveurs physiques, machines virtuelles ou conteneurs pilotés par Kubernetes. Cette polyvalence lui permet d’être un outil clé pour nous aider à transformer notre environnement statique en environnement dynamique, tout en renforçant la sécurité et la fiabilité.
+ \n
+ Les différentes fonctionnalités de Consul peuvent être mises en place progressivement sans tout révolutionner du jour au lendemain.
+ \n
+ Nous parcourrons ces fonctionnalités, la façon dont nous les avons mises en place, les bonnes pratiques à respecter. Nous verrons également l’impact que cela a sur notre façon d’inventorier nos applications, d’y accéder, de les superviser et de les connecter entre elles.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_76@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T114000
+DTEND;TZID=Europe/Paris:20220518T122000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:95 - Kubernetes à l'OSUG : regards croisés administrateurs/utilisateurs
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L'Observatoire des Sciences de l'Univers de Grenoble (OSUG) a mis en place, depuis 2019, une infrastructure Kubernetes pour offrir un service d'hébergement de conteneurs. Les Services Nationaux d'Observation de l'OSUG ont investi la plateforme pour déployer leurs services autour des données scientifiques.
+ \n
+ 
+ \n
+ Après une présentation aux JRES 2019, cette contribution présentera un regard croisé sur «le virage Kubernetes» qui a été abordé de plusieurs manières par les développeurs d'application, les acteurs en charge de la production et du déploiement, et les administrateurs de la plateforme.
+ \n
+ 
+ \n
+ Pour ces acteurs, l'arrivée de la technologie Kubernetes a exigé un changement profond pour le déploiement, la supervision, l'administration et la maintenance. Cela a aussi poussé l'adoption de meilleures pratiques de développement et renforcé les liens entre administrateurs systèmes, développeurs et responsables d'exploitation.
+ \n
+ 
+ \n
+ Nous proposons un retour d'expérience sur plusieurs points de vue et cas de figure :
+ \n
+ 
+ \n
+   * administration d'un cluster Kubernetes mutualisé pour des services de production (sécurité, maintenance, supervision) ;
+ \n
+   * soutien aux équipes de développement et de déploiement pour l'adoption de cette plateforme et accompagnement au changement (démarches DevOps, GitOps, aide à la conception de conteneurs…) ;
+ \n
+   * développement et déploiement d'applications de zéro, avec le déploiement Kubernetes en ligne de mire ;
+ \n
+   * migration d'applications et de services existants, administration et exploitation des ressources d'un cluster de production.
+ \n
+ 
+ \n
+ Nous regarderons aussi les raisons qui ont poussé les différents acteurs à engager ces changements et en quoi Kubernetes est une solution pertinente dans ce contexte.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_77@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T122000
+DTEND;TZID=Europe/Paris:20220518T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:116 - Monitoring étendu d'infrastructures avec Kwollect
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Kwollect est un logiciel de monitoring pour les utilisateurs des infrastructures informatiques spécialisé dans la collecte de métriques environnementales.
+ \n
+ 
+ \n
+ C'est la solution de monitoring d'expérience proposée aux utilisateurs de Grid'5000, l'infrastructure de recherche en informatique distribuée : pour alimenter les expérimentations des chercheurs, Kwollect y réalise la collecte et la mise à disposition de métriques issues de plus de 2500 équipements différents, dont des appareils de mesure de consommation électrique réalisant 50 mesures par seconde, des sondes de températures, etc.
+ \n
+ 
+ \n
+ Kwollect possède plusieurs spécificités par rapport aux solutions de monitoring usuelles :
+ \n
+ 
+ \n
+ - il est en mesure d'effectuer la collecte de métriques à haute fréquence et leur conservation, sans perte, durant de longues durées ;
+ \n
+ - il est spécialisé dans la collecte de métriques «externes» aux serveurs : capteurs environnementaux, équipements réseaux, contrôleurs BMC, PDUs… mais supporte également les métriques Prometheus ;
+ \n
+ - il est prévu pour être utilisé par les utilisateurs des plateformes et pas uniquement par ses administrateurs (possibilité d'insérer ses propres métriques, métriques activables à la demande, API pour récupérer les données, intégration avec les «jobs schedulers» des centres de calcul…).
+ \n
+ 
+ \n
+ Kwollect est conçu comme un cadriciel et réutilise au maximum des briques logicielles existantes : il utilise notamment une base de donnée PostgreSQL et son extension TimescaleDB pour stocker les métriques, fournir une API et s'occuper de la logique applicative. La visualisation s'appuie sur Grafana.
+ \n
+ 
+ \n
+ Lors de la présentation, nous détaillerons le fonctionnement de Kwollect, expliquerons les choix technologiques effectués pour sa conception et présenterons son déploiement sur Grid'5000.
+ \n
+ 
+ \n
+ 
+ \n
+ https://gitlab.inria.fr/grid5000/kwollect
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_85@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T110000
+DTEND;TZID=Europe/Paris:20220518T114000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:60 - Mise en œuvre de Rocket.Chat, interaction avec notre système d’information et développement collaboratif d’un plugin Moodle
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Depuis le début de la crise sanitaire, nos méthodes de travail ont évolué. Le recours massif au travail à distance nous a obligés à mettre en œuvre des outils de communication inédits dans nos établissements. Rocket.Chat, outil de communication synchrone équivalent à Slack ou Discord, est ainsi devenu rapidement indispensable. Plusieurs établissements de l'enseignement supérieur français ont mis en place cet outil au même moment, des relations d'entraide et d'échanges inter-établissements se sont ainsi créées. Nous vous proposons une illustration de cette synergie.
+ \n
+ 
+ \n
+ Après avoir présenté le contexte et la mise en œuvre de Rocket.Chat au sein de l’université de Lorraine, nous présenterons les différentes intégrations que nous avons faites de cet outil au sein de nos applications (Zimbra, sites web, espaces collaboratifs, etc.).
+ \n
+ 
+ \n
+ Nous expliquerons ensuite pourquoi et comment nous avons initié une collaboration inter-établissements (portée par l'université de Strasbourg et l’université de Lorraine) afin de développer ensemble un plugin Moodle permettant aux enseignants de créer un canal Rocket.Chat associé à leur cours Moodle et synchronisé avec leurs étudiants.
+ \n
+ 
+ \n
+ Nous souhaitons, au travers de cette présentation, faire découvrir ce nouvel outil Rocket.Chat et montrer la faisabilité d’un projet inter-établissements en présentant la méthode qui nous a permis de mutualiser nos ressources afin d'atteindre un objectif commun utile pour l'ensemble de la communauté.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_86@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T114000
+DTEND;TZID=Europe/Paris:20220518T120000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:147 - Chronique d’une mort annoncée (des serveurs de fichiers)
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:En 2017, l’université de Nantes a lancé UNCloud un service de partage de fichiers et de travail collaboratif basé sur Nextcloud à destination de ses personnels et étudiants.
+ \n
+ 
+ \n
+ Adopté en masse, UNCloud a rapidement bouleversé les usages. L’accès universel au service, la simplicité de partage et l’édition collaborative ont vite motivé les utilisateurs à s’en emparer à la fois pour leurs données individuelles de travail mais aussi pour les données d’établissement. Or, si les données des utilisateurs ont naturellement trouvé leur place sur cette nouvelle plateforme, les données d’établissement se devaient de rester sur les serveurs de fichiers traditionnels, et ce malgré leur utilisation parfois chaotique.
+ \n
+ 
+ \n
+ Plutôt que de lutter contre cette migration logique, nous avons préféré accompagner et mettre en place des « garde-fous » permettant de préserver le cycle de vie particulier des données d’établissement et leur sécurité tout en offrant aux utilisateurs une simplification de la gestion de ces documents de service. Cette stratégie repose sur la brique Group Folders de Nextcloud et un suivi individualisé à la migration.
+ \n
+ 
+ \n
+ Ces solutions requirent un changement de méthodologie dans la gestion des données d’établissement. L’utilisateur final voit ainsi sa façon de travailler modifiée et la transition ne se fait pas forcement sans écueils. 
+ \n
+ 
+ \n
+ Dans cet article et cette présentation, nous décrivons comment nous avons réussi à concilier notre plateforme de partage avec une  gestion de données de groupes. Une question demeure toutefois : //signons-nous ainsi la mort des serveurs de fichiers traditionnels ?//
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_87@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T120000
+DTEND;TZID=Europe/Paris:20220518T122000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:141 - Migration de l'Université de Strasbourg sur Partage... la suite
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:**S**uite à la migration de l'Université de Strasbourg vers la messagerie mutualisée Partage opérée par RENATER, il nous est apparu important de maintenir une vision communautaire de la messagerie et de ses services associés.
+ \n
+ 
+ \n
+ À ce titre, l'université de Strasbourg a ressenti le besoin de renforcer le lien entre les utilisateurs de Partage et leurs informaticiens de proximité. Pour cela une délégation de droits semblait nécessaire afin de permettre à ces personnes en charge de gérer les comptes de messagerie des composantes/laboratoires/autres de :
+ \n
+   * créer des liens de proximité ;
+ \n
+   * améliorer la satisfaction des utilisateurs ;
+ \n
+   * accélérer le temps de traitement des demandes.
+ \n
+ 
+ \n
+ Cette possibilité de délégation n'étant pas présente dans le panneau d’administration de Partage (BSS), nous avons donc décidé de l'implémenter dans notre propre application de gestion des comptes de messagerie (Mélusine).
+ \n
+ 
+ \n
+ Mélusine  reprend ainsi l'ensemble des fonctionnalités exposées par l'API de Partage en s'interfaçant avec notre Système d'information, elle constitue ainsi le nouveau référentiel des comptes de messagerie.
+ \n
+ 
+ \n
+ Notre objectif est maintenant de reverser cette application à la communauté en la rendant la plus générique et la plus interfaçable possible afin qu’elle puisse être utile à tous.
+ \n
+ 
+ \n
+ Durant cette présentation, nous vous vous exposerons le déroulement de ce projet. Nous justifierons nos choix, de la phase de développement à la mise en œuvre !
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_88@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T122000
+DTEND;TZID=Europe/Paris:20220518T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:156 - Améliorer l'intégration du service PARTAGE avec les serveurs de listes des établissements
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:RENATER opère un service de messagerie collaborative pour la communauté éducation recherche, basé sur le logiciel Zimbra : PARTAGE. Le service PARTAGE est utilisé par 80 établissements de la communauté de l’ESR et gère 550 000 comptes utilisateurs. La plupart des établissements raccordés à PARTAGE opèrent également un service de liste de diffusion, avec le logiciel Sympa pour la majorité.
+ \n
+ 
+ \n
+ Le nombre de listes de diffusion dans un établissement d'enseignement supérieur peut être significatif. Les noms de ces listes sont parfois très complexes à interpréter au vu de leur génération automatique ayant de multiples paramètres : composante, étape, parcours pédagogique, groupe d'étudiants. Un sondage de 2020 dans la liste sympa-fr concernant les listes de diffusion pour les étudiants indiquait une fourchette de 1 000 à 5 000 listes par établissement. 
+ \n
+ 
+ \n
+ Le sus-mentionné a permis d'identifier un développement réalisé par l'Université Clermont Auvergne. Une extension Zimbra (Zimlet) permet aux personnels de sélectionner facilement une adresse de liste Sympa au moment de la rédaction d'un message dans le Webmail. L'utilisateur peut naviguer dans la hiérarchie des listes et sélectionner une ou plusieurs listes de diffusion.  Le couplage entre la Zimlet et le serveur Sympa repose sur un fichier JSON.
+ \n
+ 
+ \n
+ 
+ \n
+ Cette présentation exposera les modalités d'intégration d'une Zimlet Sympa dans la plateforme mutualisée PARTAGE, les difficultés rencontrées, les choix techniques, les modalités de mise en œuvre pour un établissement utilisateur de Partage.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_101@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T124000
+DTEND;TZID=Europe/Paris:20220518T143000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espace Restauration
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Déjeuner
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_25@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T143000
+DTEND;TZID=Europe/Paris:20220518T153000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:130 - GÉANT Network Management as a Service tutoriel
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Pré-requis: Urbanisme des systèmes d'information, compétences basiques UNIX, conteneurs, orchestration de conteneurs, compréhension de l'anglais technique
+ \n
+ 
+ \n
+ ​​La supervision est une composante essentielle dans le maintien en conditions opérationnelles des réseaux, et ce, indépendamment de sa taille. Cependant, les organisations font face à des contraintes budgétaires qui militent en défaveur du « poste de dépense supervision ».
+ \n
+ 
+ \n
+ NMaaS (Network Management as a Service) est un service GÉANT en production qui donne aux organisations, la possibilité de déployer avec un minimum de configuration initiale un ensemble d’outils Open Source. L’organisation se voit donc proposée, la possibilité de se créer sans effort, un portfolio de service de supervision sous forme de catalogue d’application. L’utilisateur par ailleurs, bénéficie ainsi de toute l’expérience des ASR qui ont participé à l’intégration des applications dans ce même catalogue.
+ \n
+ 
+ \n
+ Développé au-dessus de l’orchestrateur de conteneur Kubernetes, il est possible de déployer le service GÉANT NMaaS sous forme d’une instance privée. Cette instance peut être dédiée à la supervision centralisée de plusieurs domaines de réseaux distincts par la mise en œuvre de tunnels VPN.
+ \n
+ 
+ \n
+ De nouvelles applications peuvent être intégrées sous forme de paquetage appelé « Helm chart », le standard industriel utilisé pour créer des paquetages Kubernetes. NMaaS affranchit les utilisateurs de la complexité opérationnelle de déploiement des logiciels en lui proposant une application web où il peut déployer et configurer de manière ad hoc de nouveaux services de supervision.
+ \n
+ 
+ \n
+ Ce tutoriel décrit : 
+ \n
+   *L’installation de NMaaS au sein d’un cluster mono nœud Kubernetes.
+ \n
+   *L’interface applicative NMaaS
+ \n
+   *Le processus de déploiement d’une application du catalogue
+ \n
+   *La configuration d’une application en utilisant l’approche « GitOps »
+ \n
+   *L’intégration d’une nouvelle application utilisateur dans le catalogue
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_28@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T143000
+DTEND;TZID=Europe/Paris:20220518T145000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:73 - 20 ans de science ouverte au laboratoire LEGI : Quels succès ? Quelles difficultés ? Quels enseignements ? Un tremplin vers le futur
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:La Science Ouverte est un mouvement qui cherche à rendre la recherche scientifique accessibles à tous. 
+ \n
+ Des plans nationaux ont été initiés par le gouvernement et cette problématique soulève énormément de questionnement. La Science Ouverte implique plusieurs principes : transparence, reproductibilité, efficacité, confiance, sobriété, pérennité. Son application passe ainsi par l’ouverture des données, mais aussi l’ouverture des logiciels et le libre accès aux publications scientifiques. Bien que vécu parfois comme une contrainte, il apparaît que son application au sein des organismes publics ne peut être que bénéfique, que ce soit pour les initiateurs de la dynamique, les organismes financeurs ou plus généralement nos communautés.
+ \n
+ 
+ \n
+ Au laboratoire LEGI, cette stratégie scientifique a été initiée depuis plus de deux décennies. L’objectif initial était de partager les données expérimentales obtenues dans la plateforme CORIOLIS, grand instrument de recherche du CNRS, en respectant les principes FAIR (Findable, Accessible, Interoperable, Reusable). Puis, une partie des numériciens de l’unité a pris exemple, en partageant des données, mais aussi des logiciels. La reproductibilité des activités du laboratoire s’est ainsi améliorée et une méthodologie a été définie.
+ \n
+ 
+ \n
+ Toutefois, l’ouverture des données, des logiciels et des publications se confronte à des obstacles pratiques, à des problèmes financiers et à certaines réticences. Des chartes incitatives sont nécessaires afin que les communautés scientifiques prennent plus en considération la Science Ouverte. Le plan de données ouvertes du CNRS et l’initiative européenne RDA (Research Data Alliance) représentent des avancées intéressantes. Il serait également utile que l’usage et la mise à disposition de logiciels et données ouvertes soient valorisables.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_29@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T145000
+DTEND;TZID=Europe/Paris:20220518T151000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:105 - Guide de bonnes pratiques sur la gestion des données de la Recherche
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Tout ce que les ASR devraient savoir sur la gestion des données de la recherche sans jamais oser le demander.
+ \n
+ 
+ \n
+ La gestion rigoureuse et cohérente des données de la recherche constitue un enjeu majeur pour la production de nouvelles connaissances scientifiques. Améliorer les pratiques de gestion des données de la science devient nécessaire pour garantir l’intégrité scientifique et la traçabilité de la recherche produite, mais aussi pour rendre accessible, partager, permettre la réutilisation et la reproductibilité des données dans le cadre d'une gestion "FAIR". 
+ \n
+ 
+ \n
+ Dans leurs différentes pratiques, les réseaux du CNRS, regroupés au sein de la Mission pour les Initiatives Transverses et Interdisciplinaires (MITI) ou soutenus par les Instituts, participent à ce mouvement d’ouverture et de partage des données. Ce "Guide de bonnes pratiques sur la gestion des données de la recherche" est une production du groupe de travail inter-réseaux "Atelier Données".
+ \n
+   
+ \n
+ L’originalité de ce guide réside dans son application aux données de la recherche sous l’angle de différents métiers. Il fournit un point de vue transversal et traduit les efforts et le soutien des personnels d’appui à la recherche dans la gestion et la valorisation des données scientifiques à travers les nombreux séminaires, communications et formations, qui fournissent l'état de l'art du moment en matière de gestion des données. 
+ \n
+  
+ \n
+ Réalisé avec Jupyter Book, ce guide est mis à disposition sous Licence Creative Commons Attribution .0 International (CC BY 4.0).
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_30@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T151000
+DTEND;TZID=Europe/Paris:20220518T153000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:137 - Logiciels libres : à la recherche du bien commun
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Le Logiciel libre et la recherche publique partagent un objectif : le bien commun, au service de tous. Cette présentation revient sur ce que sont le bien commun et la science ouverte pour essayer de les analyser à l'aide de l'exemple de la plateforme scientifique Analyses protéomiques de Paris Sud-Ouest (PAPPSO).
+ \n
+ PAPPSO s'est dotée d'une infrastructure informatique complète basée exclusivement sur du Logiciel libre : réseau, serveurs, stockage, calcul et postes personnels. Elle développe plusieurs logiciels sous licence libre, dont ceux qui forment la chaîne de traitement des données de spectrométrie de masse. Ce choix naturel facilite la reproductibilité des traitements, apporte la maîtrise des logiciels et permet l'intégration de code source tiers.
+ \n
+ L'apport majeur du Logiciel libre à la recherche publique permet l'utilisation des réseaux et systèmes informatiques. Scientifiquement, l'ouverture du code source et la liberté d'utilisation des logiciels garantissent l'échange des données, leur réutilisation et leur vérification par les pairs. Cet ensemble forme un bien commun protégé par des licences. De nombreux laboratoires y contribuent en utilisant ou en produisant des logiciels libres, comme en témoigne en partie la forge du code source du secteur public (https://code.etalab.gouv.fr).
+ \n
+ Comment contribuer efficacement ? Quelles sont les recommandations et obligations pour les établissements publics ? Quelle licence choisir ? Comment une licence copyleft peut-elle aussi séduire les partenaires privés ? Nous apporterons des réponses et des éléments de réflexion pour corriger quelques fausses croyances et promouvoir la construction collective d'une culture libre, au service du bien commun.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_22@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T143000
+DTEND;TZID=Europe/Paris:20220518T145000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:7 - Gestion de parc Apple (macOS et iOS) avec JAMF
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:JAMF est une solution MDM (mobile device management) pour la gestion de parc de produits Apple.
+ \n
+ 
+ \n
+ Elle permet la gestion des appareils sous macOS (macbook, iMac), iOS (iPhone, iPad) et TVOS (Apple TV).
+ \n
+ 
+ \n
+ Les principaux points abordés seront :
+ \n
+ - les briques Apple (DEP et VPP),
+ \n
+ - l'enrôlement (manuel ou automatisé),
+ \n
+ - l'inventaire (informations sur le périphérique et l'utilisation),
+ \n
+ - la sécurité (profils, règles, gestion des vols avec localisation GPS),
+ \n
+ - le packaging et déploiement d'application (App Store ou personnalisée),
+ \n
+ - la gestion des mises à jour (app ou OS),
+ \n
+ - l’administration de groupe (intelligent et statique),
+ \n
+ - l’intégration dans l'écosystème de l'université (p.ex. Active Directory),
+ \n
+ - le « self-service » (app store personnalisé).
+ \n
+ 
+ \n
+ Nous présenterons les usages de la solution (gestion des prêts, d’examens, classes pédagogiques) mais aussi les contraintes et limitations que nous avons rencontrées depuis son implémentation en 2016 et sa mutualisation depuis 2017 pour les composantes de l’université de Grenoble Alpes
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_23@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T145000
+DTEND;TZID=Europe/Paris:20220518T151000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:31 - Firejail : Le couteau suisse du confinement sous Linux
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L'isolation des processus sous Linux est un sujet bien connu des administrateurs systèmes qui peut porter sur un grand nombre d'éléments distincts (//e.g.// système de fichiers, réseau, espace mémoire, espace de PID). Du simple changement de racine (//i.e.// //chroot//) à la virtualisation lourde (//e.g.// //QEMU//, //VirtualBox//), en passant par les conteneurs (//e.g.// //LXC//, //runC//) ou bien encore les systèmes de contrôle d’accès obligatoire (//e.g.// //SELinux//, //AppArmor//), un grand nombre de techniques existe pour répondre à ce besoin de confinement (sans mauvais jeu de mots). Toute technique d'isolation a malheureusement un coût, que ce soit en espace de stockage, en perte de performance suite aux opérations induites par la surcouche du système d'isolation mais aussi en complexité de configuration et d'intégration.
+ 
+ \n
+ 
+ \n
+ Le noyau Linux propose un ensemble de fonctionnalités allant dans le sens d'une isolation sur mesure tout en minimisant le coût de surcharge (//i.e.//, **Namespaces**, **Control Groups**, **Capabilities** et **Seccomp-bpf**). **Firejail** est un outil libre offrant une interface simplifiée et donnant accès à la manipulation de ces fonctionnalités.
+ \n
+ 
+ \n
+ L’objectif de cette proposition est de donner un aperçu ainsi que des cas d'usages d'un tel outil dans le cadre d'un système d'information mais également dans un contexte d'enseignement. Cette proposition utilise **Firejail** comme moyen d'aborder la problématique de l'isolation des processus sous Linux dans sa globalité.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_24@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T151000
+DTEND;TZID=Europe/Paris:20220518T153000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:87 - Retour d'expérience suite à une défaillance du stockage de l'infra de virtualisation
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Début 2021, en pleine nuit du vendredi au samedi, la baie de stockage hébergeant les disques de la majorité des machines virtuelles de Télécom Paris plante. En un instant, on bascule de « tous les services fonctionnent » à « rien ne marche ». Une situation redoutée dans n'importe quelle DSI. Une baie de disque en panne, c'est un peu une grosse boite noire autour de laquelle on peut prier pour que le support du constructeur la remette en service rapidement. C'est aussi un moment de doute : « est-ce que la mise en œuvre de mon PRA va se dérouler sans accroc ? »
+ \n
+ 
+ \n
+ Une première partie décrira le déroulement de l'incident et les actions réalisées jusqu'à la remise en service. Une seconde partie mettra en lumière les enseignements techniques et organisationnels qui ont pu être tirés de cet évènement.
+ \n
+ 
+ \n
+ Un focus sera apporté sur notre réponse aux problématiques rencontrées :
+ \n
+   * comment se synchroniser au sein de l'équipe DSI avec la plupart des systèmes de communications habituels hors services ?
+ \n
+   * activer son PRA immédiatement ou espérer une réparation rapide ?
+ \n
+   * comment bien travailler avec un support constructeur intervenant H24 alors que ce n'est pas le cas de notre DSI ?
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_26@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T143000
+DTEND;TZID=Europe/Paris:20220518T145000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:24 - RETEX : élaboration simple d'une PSSI
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:À la question posée « Avez-vous une PSSI ? », tout RSSI devrait pouvoir répondre : « Oui, bien sûr ! ». Mais voilà, c’est loin d’être toujours le cas. Car il faut du temps pour l'élaborer, et de nombreux RSSI sont, comme moi, à temps très partiel sur la fonction (officiellement 10 % en ce qui me concerne) ; dans ce contexte, tout le temps est passé sur de l’opérationnel, pas sur de l’organisationnel.
+ \n
+ 
+ \n
+ Or, une PSSI est indispensable. Souvenons-nous de ce que nous disait Benoît Moreau, ex FSSI, aux JRES 2015 : « sans PSSI, vous n’y arriverez pas ».
+ \n
+ 
+ \n
+ Mais par où commencer ? Les guides parlent de consultations, d’analyses de risque, etc.
+ \n
+ 
+ \n
+ Bon, j’en étais là, pensant devoir partir de zéro, jusqu’au jour où j’ai pris conscience que je disposais déjà des bases d’une PSSI : lettre de mission, charte informatique, règlement intérieur, schéma directeur, politique du cycle de vie des comptes, procédures, etc. Certains de ces documents étaient même déjà validés en CA ou autre commission, et faisaient donc autorité de fait.
+ \n
+ 
+ \n
+ En agrégeant l’ensemble de ces documents, structurés selon le plan de la PSSIE, j’ai ainsi pu initialiser une première PSSI, implicitement validée. Il a été alors beaucoup plus facile de parvenir, en quelques mois, à une nouvelle PSSI, beaucoup plus complète et proche des guides tels que celui de l’ANSSI.
+ \n
+ 
+ \n
+ L’article décrit les étapes, les embûches et tente de répondre à quelques questions de base.
+ \n
+ 
+ \n
+ Il ne s’agit pas d’une méthode mais d’un simple retour d’expérience qui, peut-être, donnera quelques pistes à ceux encore bloqués au pied du mur.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_27@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T145000
+DTEND;TZID=Europe/Paris:20220518T153000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:177 - Attaques volumétriques, retour d’expérience sur 6 années de protection de la communauté RENATER
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les attaques volumétriques, communément nommées DDoS (acronyme de l'anglais Distributed Denial of Service) sont malheureusement aujourd’hui accessibles très (trop) facilement sur Internet. Les établissements de la communauté RENATER sont régulièrement la cible de ces attaques. En forte croissance depuis trois ans, ces attaques sont pour la plupart arrêtées au niveau du backbone RENATER par des équipements dédiés. Le point de vue réseau (par le GIP RENATER) de l’évolution de ces évènements et des cibles sera présenté dans cet article, ainsi qu’un retour d’expérience sur les mécanismes de protection utilisés au cours de ces dernières années. Enfin nous présenterons la future architecture qui sera déployée sur le réseau RENATER afin de garantir les accès réseaux des établissements.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_102@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T153000
+DTEND;TZID=Europe/Paris:20220518T164500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espace Posters
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Posters
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_208@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T164500
+DTEND;TZID=Europe/Paris:20220518T165500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:222 - Refroidissement par immersion dans de l'huile, premiers résultats.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_214@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T165500
+DTEND;TZID=Europe/Paris:20220518T170500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:223 - Traitement massif de photos avec intelligence artificielle
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_215@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T170500
+DTEND;TZID=Europe/Paris:20220518T171500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:225 - Boire pour oublier les utilisateurs
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_216@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T171500
+DTEND;TZID=Europe/Paris:20220518T172500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:226 - DataKairos, portail SaaS évaluation de l'hébergement des infras IT et opportunité de migrer
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_217@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T172500
+DTEND;TZID=Europe/Paris:20220518T173500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:227 - PLMlatex : Migration d'une application à l'ancienne vers le cloud pour une offre nationale
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_218@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T173500
+DTEND;TZID=Europe/Paris:20220518T174500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:228 - Projet CoLab.IA:  Plateforme expérimentale d’ingénierie  pour le Deep Learning
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_220@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T174500
+DTEND;TZID=Europe/Paris:20220518T175500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:231 - ACME-certs
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_219@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:229 - Evolutions de la Fédération Education/Recherche: la 3e va vous surprendre...
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_159@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:EN VAU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:187 - EFFICIENT IP : Pourquoi l'automatisation du DDI est essentielle pour les réseaux IP?
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les initiatives IT en lien avec la transformation numérique, telles que le Cloud, Zero-Trust, l’Internet des Objets et la 5G ont accru la complexité de la gestion des réseaux ainsi que les risques de sécurité.
+ \n
+ Pour les universités, le nombre très important des utilisateurs et équipements connectés à l'infrastructure requiert des services de cœur de réseau performants et résilients.  
+ \n
+ 
+ \n
+ Le DDI (DNS-DHCP-IPAM) est à la base des initiatives IT stratégiques, et devrait donc être intégré aux processus d'orchestration pour fournir une réelle automatisation de bout-en-bout, la sécurité et le contrôle. 
+ \n
+ 
+ \n
+   * DNS peut fournir la première ligne de défense contre le vol de données, les attaques DDoS et les autres menaces pour les utilisateurs, les AVEC (Apportez Votre Équipement personnel de Communication, BYOD en anglais) et l'Internet des Objets.
+ \n
+   * Un DHCP hautes performances permet à un très grand nombre d’utilisateurs de se déplacer au sein des différentes zones des campus tout en restant connectés.
+ \n
+   * L’IPAM réduit la complexité de gestion des ressources IP en fournissant un référentiel unique de vérité des données réseaux (Single Source of Truth data repository) pour des opérations Zéro Contact (Zero Touch) en aidant à la transition et au management d’IPv6.
+ \n
+ 
+ \n
+ Dans cette session, venez apprendre comment un DDI Intelligent vous aidera à simplifier et à sécuriser l’exploitation de vos réseaux.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Société EFFICIENT IP
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_158@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:SUGITON
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:190 - EXTREME NETWORKS : La FABRIC dans tous ses états 
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:.  
+ \n
+   * Sur n’importe quels types d’infrastructures : LAN/WLAN/DC/MAN/WAN/SDWAN
+ \n
+   * Comment automatiser, fiabiliser, simplifier et sécuriser tous mes réseaux ?
+ \n
+   * Connecter n’importe quels types de devices, n’importe quels types d’équipements,
+ \n
+   * Comment rajouter de nouveaux services, comment rajouter de nouveaux réseaux rapidement et en toute simplicité ?
+ \n
+   * Cloud ou pas Cloud ?
+ \n
+ 
+ \n
+ Questions que vous vous posez au quotidien
+ \n
+ 
+ \n
+ Extreme Networks vous invite à répondre à ces différentes questions dans « les ateliers découverte » du 18 mai de 18h15 à 19h.
+ \n
+ 
+ \n
+ **Intervenants** :
+ \n
+   * Nicola Nguyen
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_160@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:RIOU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:193 - ECONOCOM & JAMF : Cas d’usages et retours d’expérience sur le déploiement, la gestion et la sécurisation de vos appareils Apple avec Econocom et Jamf
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Avec plus de 26 millions d’appareils Apple sous gestion dans le monde, Jamf est la solution préférée des administrateurs de parcs Apple. 
+ \n
+ L’histoire Jamf/Econocom a débuté il y a 10 ans.
+ \n
+ En tant qu’acteur de la transformation numérique et intégrateur de solutions de gestion, la philosophie et les solutions Jamf se sont imposées d’elles-mêmes dans notre environnement Apple, dont le groupement Matinfo. 
+ \n
+ 
+ \n
+ L’enjeu des administrateurs de parcs consiste à offrir aux utilisateurs d’appareils Apple les applications qu’ils souhaitent, intégrer avec les services d’identité tels que Azure Active Directory ou Okta, et sécuriser les Mac.
+ \n
+ 
+ \n
+ À travers cette présentation, Matthieu Castel, Systems Engineer chez Jamf, Christophe Tasquer et Laurent Garinot Ingénieurs Avant-Vente experts Apple chez Econocom, vous donneront les clés pour réussir votre déploiement, de l’équipement individuel aux appareils en libre-service, de la configuration au déploiement d’applications, permettant d’offrir à vos utilisateurs les moyens de réussir avec Apple.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Matthieu Castel – Ingénieur système – Jamf
+ \n
+   * Christophe Tasquer – Ingénieur avant-vente, expert Apple – Econocom
+ \n
+   * Laurent Garinot – Ingénieur avant-vente, expert Apple – Econocom
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_161@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:SAMENA
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:196 - GOOGLE : Cloud : commencez par l’hybridation de votre IT
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Description à venir.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Alexandre Rodrigues – Avant-vente Recherche
+ \n
+   * Khrystyma Grnynko – Avant-vente Data
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_155@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:POMEGUES
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:184 - BLUEMEGA : Optimiser et suivre votre parc d’imprimantes et de copieurs avec KPAX et PaperCut MF
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Lors de cette présentation, l’équipe Bluemega vous présentera les fonctionnalités de PaperCut MF comme le reporting de la politique d’impression, l’authentification par code et badge, l’impression mobile et la facturation IZLY.
+ \n
+ 
+ \n
+ PaperCut MF vous permet de mettre en place facilement une véritable politique d’impression pour gérer l’usage des équipements.
+ \n
+ Le logiciel de gestion de parc multimarques KPAX qui permet de remonter les informations sur les compteurs, les consommables et les alertes techniques des équipements, vous pouvez ainsi d’une manière centralisée suivre l’état des machines.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Damien Smets
+ \n
+   * Alain Cardeau
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_209@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:213 - CSAN, un catalogue d'applications scientifiques open-source conteneurisées prêtes à l'emploi et optimisées
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:**Résumé** : L'initiative du projet CSAN (Comprehensive Software Archive Network) est de proposer à la communauté ESRI un catalogue d'applications scientifiques open-source prêtes à l'emploi et optimisées pour les centres de calcul nationaux et les mésocentres. Cette proposition part du constat que les applications scientifiques dans les différents mésocentres sont souvent les mêmes selon les secteurs (bio-info, physique, etc.). La plateforme CSAN permettra aux auteurs de logiciels d’y déposer les versions de leurs sources (ou de pointer vers des dépôts versionnés). Ensuite, le groupe d’experts de CSAN traitera ce code et analysera sa configuration de compilation et de déploiement, via des méthodes d’intégration et de développement continu, afin de le rendre accessible et installable sans effort sur différents systèmes d�
+ ��exploitation.
+ \n
+ 
+ \n
+   * Titre du BoF : Présentation et explication de CSAN en présence des membres du projet; comment mettre à disposition un catalogue d'applications scientifiques open-source prêtes à l'emploi et optimisées pour les mesocentres et les centres nationaux
+ \n
+   * Créneau souhaité : le mercredi 18/5
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_203@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220518T181500
+DTEND;TZID=Europe/Paris:20220518T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéatre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:208 - NextCloud, configuration, mise à l'échelle et déploiement
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_34@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T084000
+DTEND;TZID=Europe/Paris:20220519T102000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:122 - Déploiement d'une solution complète de type PaaS dans un environnement de Cloud ou de laboratoire, destinée à une large communauté
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L'instance OKD4, baptisée PLMshift [1] au sein de la PLM de Mathrice [2], permet aux chercheurs et informaticiens des laboratoires de mathématiques de déployer des applications de différents types : sites web statiques ou CMS, démonstrateurs mathématiques (ShinyR, etc.), des instances de notebook Jupyter et JupyterHub pour la formation, etc.
+ \n
+ Forts de l'expérience acquise, nous présenterons dans ce tuto, le déploiement [3] d'une solution OKD4 basée sur du matériel BareMetal ou sur une infrastructure Cloud OpenStack en abordant l'ensemble des points permettant de mettre en œuvre cette solution complète de Plateform-as-a-Service, gérée, supervisée et en exploitation.
+ \n
+ Il débutera par une brève introduction à l'infrastructure Kubernetes.
+ \n
+ Il abordera les spécificités dans un contexte PaaS ouvert à un public large (problématique d'isolation et de sécurisation des ressources).
+ \n
+ Ensuite, nous découvrirons de nombreux aspects dans un contexte de production dont :
+ \n
+ - le branchement à une authentification fédérée ;
+ \n
+ - les quotas sur les ressources par utilisateur ;
+ \n
+ - l'utilisation avancée des opérateurs Kubernetes ;
+ \n
+ - l'industrialisation des configurations ;
+ \n
+ - le provisionnement automatique des ressources ;
+ \n
+ - le ciblage et la réservation des ressources par les teintes, les tolérances et les affinités ;
+ \n
+ - la gestion des flux réseaux ;
+ \n
+ - la supervision ; la délégation des accès aux logs ;
+ \n
+ - l'exploitation de GPU ;
+ \n
+ - le stockage hyperconvergé de type bloc, fichier ou S3 ;
+ \n
+ - les spécificités de la sauvegarde et du PRA ;
+ \n
+ - etc.
+ \n
+ 
+ \n
+ Nous aborderons également les différents écueils et choix nécessaires qui ne sont pas toujours très explicites dans la documentation à disposition.
+ \n
+ 
+ \n
+ Par ailleurs, à travers notre présentation, nous montrerons tout le potentiel qu'apporte une telle plateforme [4] en matière de co-construction de services communs et de passage du savoir et des compétences dans les laboratoires.
+ \n
+ 
+ \n
+ [1] https://plmshift.pages.math.cnrs.fr
+ \n
+ 
+ \n
+ [2] https://www.mathrice.fr
+ \n
+ 
+ \n
+ [3] https://plmteam.pages.math.cnrs.fr/docs/okd
+ \n
+ 
+ \n
+ [4] https://plmlab.math.cnrs.fr/plmshift
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_35@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T084000
+DTEND;TZID=Europe/Paris:20220519T092000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:49 - un IDM pour fusions, réorganisations, confinements... sans douleur ou presque
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L'Université Grenoble Alpes (UGA) utilise un gestionnaire d'identité (IDM) développé en interne depuis 2010 : Biper (123.000 comptes, 30.000 groupes, 6.300 ressources).
+ \n
+ Multiétablissements, Biper est alimenté par 40+ bases de gestion qui pilotent les informations, complétées par des correspondants. Il génère des annuaires, ou directement des accès dans des applications.
+ \n
+ 
+ \n
+ Pour la création de l’UGA (2016), l’IDM a permis de générer le nouveau SI en « dupliquant » ceux des 3 établissements préexistants, de maintenir les anciens accès et de les fermer progressivement. La fusion a été transparente pour les utilisateurs ! Toute évolution de l’organisation de l’établissement doit être paramétrée dans Biper pour permettre la continuité des droits (réorganisation 2020).
+ \n
+ 
+ \n
+ L’UGA pilote finement les accès numériques, et l’IDM fournit des outils de gestion en proximité : listes de diffusion, intranets, espace de partage… Les services informatiques peuvent accompagner les fonctionnels pour définir des règles d’accès. Pour des accès particuliers, il faut en identifier les responsables (pas toujours facile) et faire des revues de droits.
+ \n
+ 
+ \n
+ Les accès étant automatisés au maximum, nous avions tous les outils pour que la bascule en distanciel en mars 2020 se fasse quasi instantanément ! En quelques jours, outils de tchat (avec délégation de droits) et de visio furent ouverts aux personnels UGA.
+ \n
+ 
+ \n
+ Gérer l’IDM implique de maintenir paramétrage et scripts, de comprendre l’organisation de l’établissement et son SI. Nous profitons d’un outil souple, adapté à nos besoins et spécificités, moyennant des développements internes et réactifs.
+ \n
+ 
+ \n
+ Un IDM au centre du SI permet de faire face à tout... à condition de s’en occuper.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_36@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T092000
+DTEND;TZID=Europe/Paris:20220519T094000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:51 - Évolution de la Fédération d’identités
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:La Fédération Éducation-Recherche met en relation des organismes proposant des services avec des fournisseurs d’identités.
+ \n
+ Elle permet à la fois de réduire le nombre de mots de passe à connaître et de mieuxmaîtriser la diffusion des données à caractère personnel.
+ \n
+ 
+ \n
+ Lors des JRES 2019, nous avons exposé nos objectifs pour améliorer la qualité de la Fédération Éducation-Recherche.
+ \n
+ Dans cette présentation, nous exposerons le chemin parcouru et les évolutions à venir.
+ \n
+ 
+ \n
+ Le fonctionnement de la Fédération Éducation-Recherche repose principalement sur deux outils développés par RENATER :
+ \n
+   * **Le Guichet de la Fédération** – outil principal à disposition de la communauté ;
+ \n
+   * **La Supervision Métier de la Fédération** qui permet de vérifier le respect du cadre technique, et le démarrage d’un dialogue avec nos membres pour la résolution des problèmes détectés
+ \n
+ 
+ \n
+ La mise à jour du **Guichet de la Fédération** a permis de faciliter notre travail d’opérateur. En effet, les saisies étant effectuées par chaque membre, un guichet plus fiable génère moins de support et une meilleure expérience utilisateur.
+ \n
+ 
+ \n
+ Nous avons également ajouté d’autres fonctionnalités :
+ \n
+   * support du Single-Logout ;
+ \n
+   * conformité R&S ;
+ \n
+   * renforcement des fonctionnalités de fédérations locales.
+ \n
+ 
+ \n
+ La **Supervision Métier de la Fédération** a permis de réduire fortement le nombre de problèmes constatés, au prix d’une certaine rigidité vis-à-vis de notre communauté.
+ \n
+ Ce travail nous amène à faire évoluer nos outils pour mieux accompagner ces usages, problématiques à l'échelle de la Fédération Éducation-Recherche, mais tout à fait anodins ou légitimes du point de vue d’un établissement.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_37@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T094000
+DTEND;TZID=Europe/Paris:20220519T100000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:96 - Digitalisation Erasmus et mise en oeuvre de l'identifiant étudiant européen (ESI) dans les établissements d'enseignement supérieur
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L’initiative « Carte étudiante européenne » ou « Erasmus+ Digital » est un programme de dématérialisation des procédures administratives de la mobilité étudiante Erasmus +, lancée par la Commission Européenne en 2015.
+ \n
+ 
+ \n
+ Elle vise à faciliter les démarches des étudiants et alléger la charge de gestion administrative des établissements d’enseignement supérieur.
+ \n
+ 
+ \n
+ Elle s’appuie pour cela sur trois briques développées dans le cadre de projets européens Erasmus+ :
+ \n
+ 
+ \n
+   * un réseau d’échange de données sécurisé entre établissements d’enseignement supérieur en Europe, appelé Erasmus Without Paper ;
+ \n
+   * des services en ligne destinés aux étudiants afin de faciliter la gestion de leur mobilité, telle que l’application OLA (Online Learning Agreement) ou l’application mobile Erasmus+ ;
+ \n
+   * un identifiant étudiant européen appelé ESI (European Student Identifier).
+ \n
+ 
+ \n
+ Au regard des récents développements à l’échelle nationale et européenne, l’objet de cette présentation sera : 
+ \n
+   * de démystifier l’écosystème « dense » lié à la digitalisation Erasmus, en présentant les principaux enjeux pour les établissements et en rappelant la feuille de route fixée par la Commission Européenne ;
+ \n
+   * de faire un focus sur le nouvel identifiant étudiant européen appelé ESI (rôle dans le processus de mobilité et impacts liés à sa mise en œuvre côté établissements) ;
+ \n
+   * de dresser un état des lieux du niveau actuel de digitalisation Erasmus dans les établissements d’enseignement supérieur français ; 
+ \n
+   * de faire un point de situation - un an après (en 2022) – sur l’implémentation de cette digitalisation dans les établissements et les principales difficultés rencontrées.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_38@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T100000
+DTEND;TZID=Europe/Paris:20220519T102000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:110 - UsersDSI, un gestionnaire de comptes SI et des services associés.
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Il est de notoriété publique qu’un système d’information universitaire est une affaire de spécialistes, de mécaniciens aguerris, seuls capables de naviguer dans la jungle des comptes LDAP, Active Directory, messagerie, Microsoft 365, impression …
+ \n
+ Ces mécaniciens multi-compétences étant une espèce en voie de disparition, l’Université Clermont Auvergne (UCA) a mis en place Users.DSI, une application qui centralise et vulgarise les informations d’un utilisateur du SI afin que des acteurs non spécialistes puissent dépanner les utilisateurs.
+ \n
+ Cette application web fédère un ensemble de micro-services sur différents réseaux et vulgarise les termes techniques des informations retournées.
+ \n
+ 
+ \n
+ La stratégie SI de l’UCA est basée sur la délégation des responsabilités de saisie aux détenteurs de l’information et Users.DSI se conforme à ce principe.
+ \n
+ 
+ \n
+ Ainsi par exemple :
+ \n
+ 
+ \n
+   * un agent du service logistique recherche et ajoute des utilisateurs dans un groupe LDAP pour autoriser l’accès à un parking ;
+ \n
+   * une ingénieure pédagogique crée des comptes pour une formation en ligne hors cursus universitaire ;
+ \n
+   * un responsable des travaux gère des comptes anonymes liés à des badges d’accès pour les entreprises intervenant dans les locaux ;
+ \n
+   * une cheffe de service gère les agents ayant accès aux boîtes mail de services ;
+ \n
+   * un agent de scolarité envoie une réinitialisation de mot de passe à un étudiant qui se présente au guichet.
+ \n
+ 
+ \n
+ Cette courte présentation aborde la complexité de gestion des comptes du système d’information universitaire par une approche pragmatique centrée sur les usages des utilisateurs.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_39@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T084000
+DTEND;TZID=Europe/Paris:20220519T090000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:16 - Migration d'une infrastructure réseau statique vers une infrastructure dynamique (SPB IEEE 802.1aq) : retour d'expérience
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Dans le domaine des infrastructures réseau, les erreurs les plus communes sont dues à des erreurs de configuration manuelles.
+ \n
+ Il est commun d’oublier un paramètre de configuration sur un port de commutateur ou dans une liaison entre commutateurs, et/ou de supprimer le service à des dizaines d’utilisateurs involontairement.
+ \n
+ Nous essayons à l’UCLouvain de fournir une configuration réseau consistante à chaque utilisateur, où qu’il se trouve sur chacun des cinq sites principaux, sur réseau filaire ou aérien.  En se basant sur des protocoles ouverts et permettant l’automatisation sans interaction humaine.
+ \n
+ Cette session concernera principalement le retour d’expérience de la mise en service du protocole SPB.  SPB est un protocole de niveau 2, standard (IEEE 802.1aq) et qui supprime la nécessité du spanning-tree tout en restant assez simple à configurer.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_40@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T090000
+DTEND;TZID=Europe/Paris:20220519T092000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:118 - Retour d’expérience de la solution SDN CISCO ACI de l’UGA
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Depuis six ans, l’équipe SPRING gère la solution d’infrastructure réseau du datacentre de l'Université Grenoble Alpes (UGA). Elle est basée sur une approche centralisée et virtualisée de la gestion des réseaux proposée par la solution SDN Cisco ACI (Application Centric Infrastructure). Cette solution a été présentée lors des JRES 2017 et la présentation sera l’occasion d’un retour objectif sur ces six années d’exploitation d’une infrastructure conséquente, composée de près de 80 équipements réseau et gérant 3500 points de connexion, répartis sur trois salles.
+ \n
+ 
+ \n
+ À travers cette courte présentation, nous ferons un retour d’expérience de cette solution qui s’avère toujours pertinente et qui simplifie grandement nos opérations courantes. Nous mettrons en avant plusieurs d’entre elles : 
+ \n
+ ·	cas d’usage du déménagement d’une salle de datacentre ;
+ \n
+ ·	ajouts, retraits ou remplacements d’équipements réseaux ;
+ \n
+ ·	intégration de machines virtuelles et de serveurs physiques ;
+ \n
+ ·	gestion des mises à jour ;
+ \n
+ ·	accueil de réseaux externes ;
+ \n
+ ·	automatisation.
+ \n
+ 
+ \n
+ Ce retour d’expérience très favorable ne saurait cacher quelques difficultés rencontrées comme :
+ \n
+ ·	la délégation fine des droits aux utilisateurs  ;
+ \n
+ ·	la gestion du filtrage avec un grand nombre d’entités/services  ;
+ \n
+ ·	le renommage d’objets.
+ \n
+ 
+ \n
+ Nous terminerons par le bilan de ces quelques années d’utilisation et nos perspectives.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_41@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T092000
+DTEND;TZID=Europe/Paris:20220519T100000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:143 - Gestion et interconnexion de fabrics eVPN/VxLAN
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Pour l'urbanisation réseau du datacenter de l'université de Strasbourg (Unistra), la Direction du Numérique (DNum) a fait le choix de déployer une fabric IP eVPN/VxLAN avec une architecture de type Spine/Leaf. Cette même technologie a naturellement été choisie pour le site de PRA. De même, des fabrics IP eVPN/VxLAN ont été déployées dans les anciennes salles informatiques afin de faciliter le déménagement des serveurs.
+ \n
+ 
+ \n
+ Pour permettre la propagation de services de niveau 2 ou 3 entre ces //fabrics// IP, nous avons dû considérer différentes approches d'interconnexion de datacenter (//Data Center Interconnect// - DCI) ayant chacune leurs avantages et leurs inconvénients. Dans l'article, nous exposerons les travaux réalisés pour instruire cette problématique.
+ \n
+ 
+ \n
+ Nous présenterons les trois scénarios de DCI que nous avons été amenés à étudier :
+ \n
+ 
+ \n
+   * l’extension de la //fabric// IP d’un site à un autre;
+ \n
+   * l’interconnexion par //stitching// de vlan (//vlan handoff//);
+ \n
+   * l’utilisation d’//eVPN gateway// en bordure de la //fabric// IP.
+ \n
+ 
+ \n
+ Nous analyserons en détail ces différents scénarios d’un point de vue technique. Nous expliquerons les choix que nous avons faits pour les interconnexions des différentes //fabrics// IP en précisant leurs avantages et leurs inconvénients dans le contexte de l’Unistra.
+ \n
+ 
+ \n
+ Nous évoquerons ensuite les modifications que nous avons apportées à nos outils pour gérer plusieurs //fabrics//. Nous détaillerons les choix effectués pour garantir l’autonomie des //fabrics// en terme d’exploitation.
+ \n
+ 
+ \n
+ Enfin, nous présenterons l’état d’avancement des travaux que nous effectuons avec l’université de Lorraine pour permettre l'interconnexion de nos datacenters respectifs en nous appuyant sur l’infrastructure optique de Renater.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_42@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T100000
+DTEND;TZID=Europe/Paris:20220519T102000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:167 - Osiris 4, un réseau métropolitain EVPN VXLAN
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Osiris est le réseau métropolitain Strasbourgeois de l'enseignement supérieur et de la recherche. Jusqu'à peu, Osiris s'appuyait sur une architecture classique de transport de VLAN et de routage centralisé. Pour sa quatrième version, nous avions expliqué aux JRES 2019 notre choix d'apporter une véritable rupture technologique. Notre démarche a consisté à étudier les différentes technologies de //réseaux d'overlay//. Nous avons finalement opté pour EVPN/VXLAN. C'est une technologie à notre connaissance encore peu déployée sur les réseaux de campus dans l'enseignement supérieur et la recherche. 
+ \n
+ 
+ \n
+ Osiris 4 consiste en une //fabric// de 150 équipements délivrant des services de niveau 2 et 3 jusqu'en pied de bâtiment. Nous évoquerons son architecture et son fonctionnement, et nous présenterons la topologie choisie.
+ \n
+ 
+ \n
+ Après une phase préparatoire, le nouveau réseau a été déployé très rapidement, en 4 mois, tout en cohabitant avec le réseau existant. Nous expliquerons quelles stratégies et quels outils ont été utilisés pour atteindre les objectifs fixés.
+ \n
+ 
+ \n
+ Puis nous ferons un retour sur l’exploitation d'Osiris et nous parlerons des gains constatés, notamment au niveau des problèmes récurrents sur les versions précédentes d'Osiris.
+ \n
+ 
+ \n
+ Et enfin, nous ouvrirons sur quelques perspectives d'évolutions.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_31@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T084000
+DTEND;TZID=Europe/Paris:20220519T092000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:13 - Un changement d’approche face aux menaces. Bastion, supervision et évolutions
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Pour beaucoup d’entre nous, 2018 fut une année de prise de conscience des vulnérabilités de nos systèmes informatiques. Wanacry, la faille Eternal Blue, les piratages retentissants d’acteurs majeurs de l’Internet mondial, autant de signaux qui nous ont amenés à repenser l’ensemble de la sécurité de nos systèmes. 
+ \n
+ 
+ \n
+ Étions-nous correctement protégés, nos habitudes de travail étaient-elles sans risque ? Comment assurer une sécurité maximale sans trop contraindre les usages ?  
+ \n
+ 
+ \n
+ Une seule certitude, il fallait changer d’approche face aux menaces. Cette prise de conscience à amené les membres du Pôle Système de la DOSI, à partir d’un constat, à s’investir dans une démarche globale d’amélioration continue de la sécurité.
+ \n
+ 
+ \n
+ Le périmètre à sécuriser étant gigantesque, nous nous sommes attachés à la protection des comptes sensibles disposant des droits d’administration, à la surveillance et à l’alerte de comportements anormaux comme les mouvements latéraux, la modification de groupes sensibles, etc. 
+ \n
+ 
+ \n
+ Pour ce faire, nous avons déployé de nombreuses solutions techniques : audit, machine learning, MFA, mais surtout accordé des droits d’administrateur « Just In Time ». La démarche entreprise reposait aussi sur une évolution de nos habitudes de travail. 
+ \n
+ 
+ \n
+ Il a fallu proposer, mais aussi écouter nos collègues pour adapter les bonnes pratiques afin que celles-ci soient acceptées, en cherchant la ligne de crête entre sécurité et usages.
+ \n
+  
+ \n
+ À travers cette présentation, nous montrerons comment nous avons amélioré la sécurité du SI, mais également de quelle manière ce paradigme a transformé nos habitudes et nous amène à faire évoluer les pratiques de travail.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_33@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T092000
+DTEND;TZID=Europe/Paris:20220519T100000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:30 - Wireguard ou comment mettre en place un VPN en un temps record
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les VPNs représentent une technologie de plus en plus populaire notamment de part la généralisation du travail à distance. En effet, l’accès aux ressources d'un réseau privé depuis l’extérieur est devenu un élément critique de sécurité mais aussi de continuité opérationnelle et pédagogique.
+ \n
+ 
+ \n
+ Bien qu'un certain nombre de solutions Open Source de serveurs VPN soient disponibles depuis de nombreuses années, **Wireguard** présente une philosophie radicalement différente de la concurrence. Il dispose d'une implémentation légère ayant la particularité d'être intégrée comme module au noyau Linux depuis 2020. **Wireguard** ne se limite néanmoins pas au monde Linux ; il est en effet disponible sur un grand nombre de plateformes (//e.g.// Windows, Mac OSX, Android, iOS). Son concepteur ayant souhaité son utilisation la plus simple possible, il s'est grandement inspiré du modèle des clés SSH rendant ainsi la mise en place de **Wireguard** des plus triviales.
+ \n
+ 
+ \n
+ Dans cette proposition, nous présenterons les concepts principaux régissant l'architecture de **Wireguard** (//e.g.// réseau, cryptographie) et nous feront une comparaison de mise en place et de performance avec des projets plus classiques tels que **OpenVPN** ou encore **strongSwan**. Nous mettrons en lumière les cas d'usage pour lesquels une telle solution nous paraît pertinente, notamment la mise en place de multi-réseaux privés virtuels ad hoc dédiés à des projets ou usages spécifiques.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_213@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T100000
+DTEND;TZID=Europe/Paris:20220519T102000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:224 - Ingénierie sociale, sécurité de l'information
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_105@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T102000
+DTEND;TZID=Europe/Paris:20220519T110000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espaces Pauses
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Pause
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_89@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T110000
+DTEND;TZID=Europe/Paris:20220519T120000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:37 - Sécurité : est-ce pêcher, que de croquer la pomme au CNRS ?
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les ordinateurs Apple ont toujours fait partie de l’écosystème informatique au sein de la communauté enseignement supérieur et recherche. L’achat de ces machines fruitées pourrait même être qualifié de « culturel » dans certaines unités.
+ \n
+ Il convient donc de faire un tour d’horizon sur la mise en réseau de ces ordinateurs dans nos laboratoires avec tout ce que cela implique en termes de sécurité et de sauvegarde.
+ \n
+ Cet atelier a été présenté lors de la formation Sécurité Informatique pour les Administrateurs Systèmes et Réseau du CNRS en Île de France (SIARS V2) en 2019.
+ \n
+ 
+ \n
+ Dans un cadre institutionnel tel que le nôtre, tout comme avec Windows 10, il convient de ne pas activer certaines options de Mac OS, comme Siri par exemple. Via un pas-à-pas, nous détaillerons l’installation du système d’exploitation, la mise en place du compte administrateur de service, la liste des paramètres de sécurité liés aux sessions utilisateurs sur la machine, les bonnes pratiques à respecter, les options de chiffrement disponibles et compatibles pour les voyages à l’étranger (Chine, USA) et enfin comment mettre en place un système de sauvegarde automatique et adapté aux plateformes Apple.
+ \n
+ 
+ \n
+ Ce tutoriel donnera toutes les pistes afin de permettre à un gestionnaire de parc ou un ASR d’installer et d’intégrer un Mac dans son organisation, en respectant à minima les préconisations de la PSSI du CNRS.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_49@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T110000
+DTEND;TZID=Europe/Paris:20220519T112000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:19 - Impact des langages de programmation sur la performance énergétique des applications de calcul scientifique : un challenge ?
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Alors que la France s’engage sur le chemin de l’exascale, le **calcul scientifique** est de plus en plus utilisé dans la société. Il permet de concevoir, simuler et optimiser de nombreux scénarios pour un coût limité comparativement à la réalisation de prototypes.
+ \n
+ Il apparaît primordial de se poser la question de l'**impact environnemental associé** au calcul scientifique. Lorsque l’on développe un code de calcul scientifique, la première question qui se pose est celle du **choix du langage**. Il est commun de considérer un certain nombre de critères (lisibilité, pérennité, efficacité, maitrise du langage). Il est bien plus rare de considérer l’efficience énergétique. Cette étude a pour objectif de sensibiliser et inciter à la considération de ce critère.
+ \n
+ Un code de démonstration permettant la simulation d’écoulements a ainsi été considéré.
+ \n
+ Initialement développé en **python**, ce code a été accéléré (pythran, numba) puis porté dans les langages **C, fortran, java, julia, rust, go**. Des mesures de performance et de consommation électrique ont été réalisées sur la plate-forme expérimentale Grid’5000, ce qui a permis d’évaluer, dans le contexte très précis du code considéré, l’efficience des langages considérés sur **plusieurs architectures**.
+ \n
+ Le portage rigoureux de code dans un autre langage que celui d’origine, ainsi que l’optimisation de code prend un temps considérable, mais il y a des potentiels de gains énergétiques importants sur la consommation de la phase d’usage du service associé.
+ \n
+ Ce travail, réalisé dans une approche de science ouverte et reproductible, montre ainsi l’importance des développeurs sur les impacts environnementaux des usages du numérique.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_50@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T112000
+DTEND;TZID=Europe/Paris:20220519T114000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:72 - Les impacts environnementaux et sociétaux des données : un défi pour l'avenir
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Le numérique nous offre l'opportunité d'approfondir notre compréhension du monde. Cependant, avec une cinquantaine de ZettaOctets de données créées en 2020, le numérique doit lui aussi __impérativement se pencher sur ses usages__ et participer aux efforts de réduction des impacts environnementaux qu'il engendre.
+ \n
+ 
+ \n
+ Que ce soit avec le streaming vidéo, le cloud gaming, l'internet des objets (IOT), les réseaux sociaux,  l'IA ou les bitcoins, les usages font croître les volumes de données.
+ \n
+ Dans la recherche, la production et la consommation des données s'envolent également (calculs complexes, modélisation, imagerie spatiale, études environnementales.) Cette accumulation de données se répercute sur les besoins logiciels, matériels et énergétiques qui peinent, malgré les gains d’efficacité, à compenser l'accroissement des usages. Le paradoxe de Jevons reste tristement d'actualité.
+ \n
+ 
+ \n
+ Ces usages participent voire amplifient les dérèglements environnementaux (changement climatique, baisse de la biodiversité, épuisement des ressources naturelles, pollutions) tout en soulevant également des questions d'ordre éthique et morale sur la question de qui bénéficie et qui subit.
+ \n
+ 
+ \n
+ Les actions permettant de limiter nos impacts sont multiples mais les réponses souvent complexes imposent une réflexion approfondie sur nos usages prenant en compte les aspects sociaux, sociétaux, éco responsable et humains afin d'apporter des réponses pertinentes.
+ \n
+ 
+ \n
+ Nous aborderons également la notion d'//open data//, un des piliers de la science ouverte qui favorise la mutualisation et le partage des données. En effet, le //FAIR//, même si il peut conduire à un impact numérique accru, reste fondamental afin de respecter le coût environnemental de l’acquisition.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_51@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T114000
+DTEND;TZID=Europe/Paris:20220519T120000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:161 - Empreinte carbone de la transmission de données sur le backbone Renater
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:En 2020, en collaboration avec EcoInfo, Renater a réalisé une étude afin d’estimer l’empreinte carbone de la transmission de 1 Go de données sur son //backbone//. Cet article propose une présentation du modèle de calcul d’empreinte carbone appliquée au service de transmission de données sur un réseau de fibre optique et de la méthode de collecte des données. Sur le segment Orsay-Montpellier, nous obtenons une empreinte carbone moyenne de 1,5 g équivalent CO2 par Go. Les phases du cycle de vie prises en compte dans le calcul sont : l'extraction des matières premières, la production des équipements, le transport des équipements et l'utilisation des équipements. Tous les équipements de routage et de transport optique du //backbone// nécessaires à la transmission de données sur le segment identifié ont été recensés. Plusi
+ eurs analyses de sensibilité ont été également réalisées pour identifier les paramètres influençant le résultat final. L'article présente les calculs employés pour chaque phase prise en compte dans l’étude (formules, données nécessaires, hypothèses, etc.), les difficultés rencontrées lors de la récupération des données (inaccessibilité des données, protocoles de communication avec les équipements, communication avec les fournisseurs, etc.) et des leviers de réduction de l’empreinte carbone (maximiser le trafic sur les équipements, prolonger la durée de vie, etc.).
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_46@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T110000
+DTEND;TZID=Europe/Paris:20220519T112000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:66 - IOT au service de la performance réseau
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:A l’air du big data où les transferts massifs de données entre les différents sites d’un institut sont devenus la norme, il est nécessaire sinon primordial d’être en mesure de s’assurer du bon fonctionnement des liens opérateurs et de leur capacité à tenir la charge imposée.
+ \n
+ 
+ \n
+ Cette problématique a été explorée sous différents angles par l’INRAE et dès 2013 nous présentions avec un poster au JRES de Montpellier, une première approche au travers de générateurs de charge réseau.
+ \n
+ 
+ \n
+ Grâce à l’expérience acquise durant ces dernières années, nous avons pu améliorer l’architecture, les indicateurs et les méthodes de collecte. Ce que nous proposons aujourd’hui est la dernière génération des plateformes mise en production sur nos sites avec les prérequis suivants :
+ \n
+ 
+ \n
+   * La couverture de l’ensemble de nos 112 implantations physiques ;
+ \n
+   * Une solution uniforme pouvant fournir sur tous les sites des indicateurs minimums (Latence, Jigue, Consommation, Débit max, Capture réseau.. ) auxquels s’ajoutent suivant l’architecture locale d’autres indicateurs à valeur ajoutée (SFLOW, Wifi..) ;
+ \n
+   * L’utilisation de matériel peu coûteux et facilement remplaçable ne nécessitant aucun contrat de maintenance ;
+ \n
+   * Un composant facilement configurable au travers d’une interface web ;
+ \n
+   * Des données disponibles localement ou au travers d’un tableau de bord central.
+ \n
+ 
+ \n
+ Et nous avons retenu le Raspberry Pi 4 équipé d’un module PoE.
+ \n
+ 
+ \n
+ Cette solution déployée à l’échelle de l'INRAE (environ 112 sites, coût moyen 90€ par déploiement) permet aujourd’hui de facilement prendre en charge les incidents liés aux accès réseaux en offrant des éléments de troubleshooting détaillés en temps réel.
+ \n
+ 
+ \n
+ Une courte vidéo : [[https://youtu.be/gr19tdbG2_E]]
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_47@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T112000
+DTEND;TZID=Europe/Paris:20220519T120000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:67 - AIops - mythe ou réalité ?
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:AIops (AI - Artificial Intelligence) semble être le dernier terme à la mode dans le monde des systèmes et réseaux. Derrière toute l'agitation du marché et les délires des équipes marketing de nombreux constructeurs, l'application des principes de l'intelligence artificielle à l'opération de réseaux informatiques est bel et bien une réalité. Les usages de l'intelligence artificielle se développent dans tous les domaines et les réseaux ne font pas exception. Cette présentation et l'article associé ont pour but de faire le point sur la notion d'AIops, de clarifier les mécanismes associés et ce que l'on peut concrètement en attendre.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_44@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T110000
+DTEND;TZID=Europe/Paris:20220519T112000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:127 - BBB une réponse à l'explosion des besoins en visioconférence?
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Nous présentons l'expérience humaine, technique et organisationnelle qui a permis à la PLM (Plateforme en Ligne pour les Mathématiques) de remplacer en très peu de temps une plateforme de webconférences, vieillissante et limitée. L'objectif était de répondre à une augmentation massive du nombre d'utilisateurs, en restant sur une solution de type "logiciel libre".
+ \n
+ 
+ \n
+ Alors que le premier confinement se profile, une instance du couple Greenlight/BigBlueButton est installée. Rapidement la demande explose et la "recette" se transmet entre les ASR des laboratoires de mathématiques. Des installations sont mises en production sur des petites infrastructures de laboratoires et testées sur le cloud VirtualData à Paris-Saclay. Dans un second temps, une frontale Greenlight, un système de répartition de charge Scalelite, et quatorze workers BigBlueButton y sont déployés. Des solutions sont trouvées pour résoudre les problèmes de filtrage rencontrés par certains utilisateurs, pour l'authentification SSO sur la fédération RENATER et pour pallier la défaillance éventuelle d'un site.
+ \n
+ 
+ \n
+ Les différentes installations sont documentées et publiées.
+ \n
+ 
+ \n
+ Au travers de cette présentation, nous partagerons notre vision des avantages et inconvénients de cette solution ainsi que nos choix de configuration. Ils se sont révélés utiles lors des sollicitations pour héberger des évènements tels que JDEV, conférences internationales, ou  réunions à plus de 200 personnes.
+ \n
+ 
+ \n
+ Avec l'acquisition massive de licences propriétaires (telles que Zoom, Teams, etc) au sein de l'ESR et le retour en présentiel, se pose désormais la question de l'avenir et le maintien de tout ou partie de ces solutions de visioconférences.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_116@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T112000
+DTEND;TZID=Europe/Paris:20220519T120000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:158 - Une Visioconférence à grande échelle
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Le projet Visio-Agents et Webinaire de l’État vise à proposer à l’ensemble des agents un service de Web-conférence accessible via un simple navigateur afin de permettre à l’ensemble des agents d’échanger en grand nombre.
+ \n
+ 
+ \n
+ Le **logiciel libre BigBlueButton** a été retenu car il permet notamment une grande souplesse de **configurations via un ensemble d’API**. Par ailleurs, des entreprises françaises (Arawa) sont en capacité d’accompagner le ministère pour sa mise en place sur un** hébergement souverain** (Scaleway).
+ \n
+ 
+ \n
+ Pour l’Éducation Nationale ce service vise à se substituer aux classes virtuelles que l’opérateur du ministère – le CNED – loue à l’américain Blackboard, hébergé sur Amazon, ainsi que l’outil VIA utilisé pour les réunions entre pairs et les formations Magistère.
+ \n
+ 
+ \n
+ L’usage vise à couvrir le besoin des agents (administratifs et enseignants) et aussi les séances pédagogiques avec les élèves.
+ \n
+ 
+ \n
+ Une première étape a été de proposer lors de la rentrée 2020 une infrastructure pouvant accueillir **100 000 participants simultanés**, suivis pour la rentrée 2021 d’une mise à l’échelle à **500 000 participants**.
+ \n
+ 
+ \n
+ Le Ministère de l’Éducation Nationale en relation avec le DINUM opère aussi une instance dédiée à l’ensemble des autres ministères et opérateurs de l’État.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_199@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T121000
+DTEND;TZID=Europe/Paris:20220519T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:EN VAU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:207 - Rendez-vous et réservations, 2 plateformes pour les gérer tous
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:**Rdvweb et Resaweb** sont 2 applications web (php/mysql) développées à l’Université de Perpignan.
+ \n
+ 
+ \n
+ Les 2 plateformes sont **multi-espaces** avec des gestionnaires pour chaque espace.
+ \n
+ Sur les 2 plateformes, les gestionnaires font le paramétrage de leur espace et consultent les rendez-vous ou réservations qui ont été fait dans leur espace.
+ \n
+ Les utilisateurs peuvent prendre des rendez-vous sur rdvweb ou réserver (une ressource, leur place dans une séance d'une activité, leur place à un évènement ...) sur resaweb.
+ \n
+ 
+ \n
+ Les 2 applications sont très **hautement paramétrables** de sorte qu’elles offrent de nombreuses possibilités et permettent de couvrir tous les besoins sur ces périmètres.
+ \n
+ Elles ne sont pas conçues exclusivement pour les établissements d’enseignement supérieur et pourront être utilisées par n’importe quelle entité.
+ \n
+ Elle peuvent être utilisées avec des utilisateurs locaux et/ou ldap et/ou **CAS**.
+ \n
+ 
+ \n
+ Les outils libres existants pour répondre à ces besoins sont rares et peu satisfaisants.
+ \n
+ Dans un contexte où les besoins sont grandissants sur ces périmètres et où certains établissements se tournent vers des solutions privées payantes, j’ai à cœur de partager les applications que j’ai réalisées et que nous utilisons à l’UPVD.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_200@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T121000
+DTEND;TZID=Europe/Paris:20220519T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:RIOU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:206 - Référentiel des espaces et des locaux - REEL
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L’université Rennes 2 et, par son intermédiaire, la Direction du Système d’information et la Direction des Ressources Immobilières, ont souhaité se doter d’un système centralisé référençant les espaces immobiliers.  La vocation du référentiel REEL (Référentiel des Espaces et des Locaux) est d’être centralisé, ouvert en permettant l’irrigation des autres logiciels via une API, et open source.  Très vite, le choix a été de développer l’application au sein de la DSI. Ce choix a été en grande partie initié par la Direction des Ressources Immobilières qui a un grand besoin de connexion entre les applications.  
+ \n
+ 
+ \n
+ REEL, en production au sein de l’université, est devenu l’interface unique de listage des locaux.  Il irrigue l’annuaire de l’université en proposant la liste des locaux correspondant à l’emplacement de chaque agent. 
+ \n
+ 
+ \n
+ L’organisation de conception et de développement de REEL s’est faite autour de 2 axes : souplesse et rendu régulier.  Nous avons choisi d’utiliser une méthodologie de type agile.
+ \n
+  La répartition des tâches a été la suivante :
+ \n
+   * MOA pour l’ingénieur DRIM responsable de la gestion des locaux et demandeur de la solution informatique ;
+ \n
+   * MOE pour le développeur de la DSI ;
+ \n
+   * AMO pour l’équipe AMO de la DSI afin d’assurer les relations entre les équipes, la direction via le CODIR et les différentes structures de l’université intéressées par le produit.
+ \n
+ 
+ \n
+ Une "démo" est prévue le jeudi 19 à 12h10. Le lieu n'est pas encore connu.
+ \n
+ En 30 minutes nous aborderons l'interface utilisateur, l'interface administrateur et l'api.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_202@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T121000
+DTEND;TZID=Europe/Paris:20220519T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:ENDOUME 3
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:209 - Hackesr - Démos
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:[[https://groupes.renater.fr/sympa/info/hackesr|Hackesr]] est un réseau ouvert à l'Enseignement Supérieur Recherche et l’Éducation Nationale portant sur la sécurité offensive et défensive et plus particulièrement sur le hacking éthique. Cela consiste essentiellement en la compréhension des méthodes d'attaques informatiques, la connaissance des mesures défensives et la recherche de vulnérabilités, non pas pour les exploiter, mais pour les corriger. Le réseau compte plus de 500 membres inscrits sur la liste de diffusion.
+ \n
+ 
+ \n
+ Les menaces cyber ne cessent de croître et nous concernent toutes et tous. Le réseau hackesr ambitionne de proposer des canaux de discussions, d'organiser des échanges et des activités sur ces sujets avec la particularité de regrouper des profils métiers différents de nos communautés. Lors de cette session, nous vous proposons non seulement de découvrir le réseau et ses activités, mais aussi les techniques et outils utilisés par les attaquants. Vous découvrirez des méthodes de test de vos systèmes et des illustrations de compromissions qui pourront vous aider à mieux évaluer la sécurité de vos SI. Des challenges ludiques vous seront proposés afin de comprendre les modes d'attaques et les contre-mesures défensives. Venez nous rencontrer et vous initier au hacking éthique!
+ \n
+ 
+ \n
+ Hackesr : Partage d'infos sur les vulnérabilités, outils de découverte, outils d'exploitation, post-exploitation, actualités, méthodes d'attaque, mitigations des attaques, forensique, crypto, threat intelligence, CTF, wargame, challenges en ligne, bobby tables, p0wn, bug bounty, débats ouverts, esprit hacker...
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_201@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T121000
+DTEND;TZID=Europe/Paris:20220519T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:SAMENA
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:212 - Déployer un tchat en urgence avec kubernetes
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT://Veille du premier confinement, mon chef : "tu peux déployer un tchat ?". Moi : "ok, c'est fait."//
+ \n
+ 
+ \n
+ 
+ \n
+ Cette démo propose de découvrir quelques outils qui permettent facilement de déployer un cluster Kubernetes on premise et une application de tchat résiliente et scalable en quelques instants. On utilisera RKE, Rancher, Rook Ceph, Helm et Prometheus sans rien y connaitre.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_126@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T124000
+DTEND;TZID=Europe/Paris:20220519T143000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espace Restauration
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Déjeuner
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_130@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T143000
+DTEND;TZID=Europe/Paris:20220519T160000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:181 - Les décisions absurdes et comment les éviter
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:À partir de l’analyse de dysfonctionnements majeurs dans des organisations comme le nucléaire, l’aéronautique, l’armée, les hôpitaux, les secours et les entreprises, **Christian Morel** en déduit les mécanismes des grandes erreurs de décision et les principes, applicables à tout type d’activités, permettant de les éviter. 
+ \n
+ 
+ \n
+ Sont distingués les pièges collectifs, les problèmes réglementaires et les biais cognitifs, ainsi que les solutions concernant ces différentes catégories. 
+ \n
+ 
+ \n
+ Il met l’accent sur les facteurs humains, à la fois pour expliquer les erreurs et pour proposer des principes permettant de les éviter (tels que la collégialité, le débat contradictoire, la non-punition des actes non intentionnels, la communication intensive, la sécurisation du langage, etc.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_147@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T160000
+DTEND;TZID=Europe/Paris:20220519T160000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espace Posters
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:12 - Portail invités EDUSPOT
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L’INRAE en tant qu’organisme national de recherche publique accueille sur ses infrastructures une population d’utilisateurs très variée. Outre les agents de l’institut, nous recevons régulièrement des partenaires d’autres établissements membres de la fédération éducation-recherche, des étudiants mais aussi des intervenants externes.
+ \n
+ 
+ \n
+ Afin de faciliter l’accès à internet au travers de nos infrastructures (wifi ou filaire), nous avons mis en place un portail captif pour nos invités permettant différents modes d’authentification :
+ \n
+ 
+ \n
+ - Partenaires de la fédération Education/Recherche : Authentification simple via l’IDP de l’institut de l’utilisateur ;
+ \n
+ - Comptes invités : authentification via un compte invité temporaire nominatif créé par un membre de l’établissement ;
+ \n
+ - Personnes participant à un séminaire hébergé dans l’établissement : authentification via un jeton unique de séminaire.
+ \n
+ 
+ \n
+ La solution UnivNautes préconisée par la communauté EduSpot n’étant plus maintenue et ne répondant pas à tous nos besoins, nous avons développé notre propre système de portail pilotant via API un firewall Palo-Alto qui est le seul composant positionné en coupure des flux.
+ \n
+ 
+ \n
+ Le firewall se charge de la collecte des logs enrichis avec les données d’identification de la personne connectée (également via API). La recherche d’événements liés à une session est alors très simple. Le firewall, à l'aide de règles de routage conditionnelles (PBF), redirige les utilisateurs non authentifiés sur la machine hébergeant le portail captif.
+ \n
+ 
+ \n
+ Cette solution est en production depuis 4 ans.
+ \n
+ 
+ \n
+ Le poster reprendra ces différents éléments en offrant des schémas techniques et des captures des interfaces associées.
+ \n
+ 
+ \n
+ Nous pourrons discuter ensemble de comment partager le code et l'adapter à d'autres constructeurs.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_108@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T160000
+DTEND;TZID=Europe/Paris:20220519T171500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espace Posters
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Posters
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_54@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T171500
+DTEND;TZID=Europe/Paris:20220519T181500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:145 - Reproductibilité des environnements logiciels avec GNU Guix
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:GNU Guix est un gestionnaire de paquets transactionnel et déclaratif. Il implémente une discipline de gestion de paquet fonctionnelle. Autrement dit, le processus de construction et d’installation des paquets est vu comme une fonction dans le sens mathématique du terme : cette fonction a des entrées (comme des scripts de construction, un compilateur, des bibliothèques ou dépendances) et renvoie une construction (comme un programme compilé). En tant que fonction pure, son résultat ne dépend que de ses entrées ; par exemple, il ne peut pas faire référence à des logiciels ou des scripts qui n’ont pas été explicitement passés en entrée. Par conséquent, une fonction de construction produit toujours le même résultat quand on lui donne le même ensemble d’entrée. Les constructions sont dites reproductibles.
+ \n
+ 
+ \n
+ Basé sur ces fondations, Guix est un gestionnaire d'environnements logiciels : il peut utiliser les paquets qu’il connaît pour créer des environnements sous différentes formes, temporaires ou « permanentes ». Un environnement (collection de paquets) peut être déclaré par un manifeste pour générer un « profil », chaque profil ayant son propre historique permettant de revenir en arrière ou en avant. Un environnement temporaire peut aussi être créé à la volée, et optionnellement isolé (conteneur Linux), ou n'autorisant lecture, écriture ou réseau que spécifiquement. Aussi, ces environnements peuvent être empaquetés dans des images Docker, Singularity ou simplement des archives repositionnables. Pour finir, Guix permet, sur le même principe, la génération de « machines virtuelles » à partir d'une déclaration pouvant contenir un système d'exploitation. Une f
+ ois installé, Guix ne nécessite pas de droits spécifiques pour manipuler ses différents environnements.
+ \n
+ 
+ \n
+ Dans ce tutoriel, nous nous proposons d'illustrer en détails les spécificités de Guix. Ce tutoriel fera echo à la présentation « Administration système reproductible avec GNU Guix » par Julien Lepillier au JRES 2019.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_65@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T171500
+DTEND;TZID=Europe/Paris:20220519T173500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:104 - Inst'AMU
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Quel établissement ne voudrait pas avoir une appli mobile qui puisse répondre à tous les besoins de ses utilisateurs. Une appli mobile qui satisfasse la communication de l’établissement, qui soit un élément indispensable à chaque étudiant, chaque enseignant, chaque personnel. Qui permette à nos politiques de dire que tous nos utilisateurs ont l’université dans la poche !!!!
+ \n
+ 
+ \n
+ Évidemment chez Aix-Marseille Université, nous avons le même rêve. Et depuis 2014 déjà. Mais le chemin est étonnamment plus chaotique que prévu car, à ce projet que nous pensions avant tout technique, se greffent des considérations humaines et politiques que nous n’avons pas vues venir. 
+ \n
+ 
+ \n
+ Au travers de cette intervention, nous vous présenterons les difficultés que nous avons rencontrées ainsi que nos réussites sur les domaines techniques, organisationnels et politiques. Nous vous présenterons également les choix que nous avons faits pour nous outiller techniquement afin de maîtriser l’ensemble du processus de développement et la stratégie involontaire qui a été provoquée par la pandémie au début de l’année 2020. 
+ \n
+ 
+ \n
+ Notre appli mobile est en production depuis janvier 2020 et nous la faisons progressivement évoluer en codant de nouvelles fonctionnalités dans l’idée de rendre un service à nos populations et en accord avec la gouvernance.
+ \n
+ 
+ \n
+ Cette présentation se veut être à la fois un message à ceux qui s’interrogent sur la façon de démarrer un projet d’appli mobile et un moyen d’échanger des pratiques, des idées et du code aussi.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_66@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T173500
+DTEND;TZID=Europe/Paris:20220519T181500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:157 - To delete or not to delete, that is our question
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Archivistes et Délégué.e.s à la protection des données participent à la gestion des données, au sein de leur établissement et en lien avec les services métiers et supports. Dans ce cadre, ils s’intéressent notamment à leur sort final ; sous le prisme de leurs réglementations respectives (Code du patrimoine ou RGPD), leurs approches peuvent se rejoindre ou diverger.
+ \n
+ 
+ \n
+ En pratique, on a pu constater dans les établissements des injonctions contradictoires, et un nécessaire dialogue entre ces deux métiers complémentaires. Les associations des archivistes (section Aurore de l'AAF) et des délégué.e.s (SupDPO) étant en contact depuis plusieurs années, elles se sont naturellement rapprochées dans un groupe de travail commun pour traiter de cette problématique au niveau national ; il s’agissait de mutualiser la réflexion et la diffusion de la réponse apportée, des livrables et bonnes pratiques.
+ \n
+ 
+ \n
+ L’intervention visera à expliciter les cas concrets identifiés, leur impact sur les systèmes d’information et la sécurité - technique et juridique - des établissements, la méthodologie retenue par le groupe de travail, son articulation avec les initiatives des autorités concernées (CNIL et SIAF au premier chef) ainsi que les résultats produits et à venir.
+ \n
+ 
+ \n
+ L’intervention ambitionne également de démontrer l’intérêt théorique et pratique de ce travail, entre réflexion collective et construction d’un référentiel utilisable par les établissements comme socle commun dans le paramétrage des applicatifs.
+ \n
+ 
+ \n
+ A terme, ce travail pourra ainsi contribuer à identifier les jeux de données maîtres, à faciliter la minimisation des données traitées - contribuant incidemment à la sobriété numérique -, et à sécuriser sur le long terme les données effectivement conservées.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_52@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T171500
+DTEND;TZID=Europe/Paris:20220519T173500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:23 - Calcul intensif sur GPU : retour d'expérience de l'UMR d’(Epi)génomique Fonctionnelle et Physiologie Moléculaire Du Diabète et Maladies Associées du CNRS (1283/8199) à Lille
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les thématiques de recherche du laboratoire sont caractérisées par la production de très grandes quantités de données de séquençage en un temps limité. Lors de chaque run, jusqu’à 1.2To de données brutes sont générées sur l’appareil Illumina Novaseq, ce qui représente 30 génomes humains, et ce en 40 heures seulement. L’analyse de ces données génère jusqu’à 10 To supplémentaires, et doit être réalisée dans des délais compatibles avec les impératifs cliniques et le débit de production de données des séquenceurs.
+ \n
+ La société NVIDIA a récemment développé des versions « GPU accelerated » d'outils phares de la bioinformatique, tel GATK (Genome Analysis Tool Kit) ou BWA (Burrow-Wheeler Aligner). Ces développements visent à répondre à la problématique des temps de calcul nécessaires à l’analyse bioinformatique de données de génétique, qui constitue l’un des grands challenges actuels de la bioinformatique.
+ \n
+ 
+ \n
+ Dans ce retour d'expérience, nous présenterons les prérequis matériels, systèmes et réseaux de notre nouvelle infrastructure de calcul (serveur DELL R740, carte GPU Tesla T4, Clara Parabricks). Puis nous présenterons les résultats de l’exploitation de GPUs, en comparaison d'une solution purement CPU, à la fois concernant les temps de calcul et concernant l’identité des résultats générés.
+ \n
+ 
+ \n
+ En complément, une comparaison avec une autre solution d’accélération basée sur une carte FPGA spécialement développée pour l’utilisation de ces logiciels (carte Dragen proposée par Illumina) sera également abordée.
+ \n
+ 
+ \n
+ Enfin nous terminerons par une solution d’implémentation hybride (multi-CPU/multi-GPU), pour répondre aux besoins d’un pipeline complet d’analyse et d’annotation de variants issus du séquençage d’ADN (méthode WES ou WGS).
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_53@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T173500
+DTEND;TZID=Europe/Paris:20220519T181500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:58 - FALL : Du VDI au HPC, mutualisation d'une infrastructure GPU
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Il ne manquait plus qu'une quatrième saison à l'Université Grenoble Alpes pour terminer sa pizza Vivaldi. SUMMER & WINTER pour le stockage & le cloud mutualisé, SPRING pour le réseau DataCentre, FALL boucle enfin la série avec une plateforme VDI survitaminée et mutualisée.
+ \n
+ 
+ \n
+ Avec une douzaine de nœuds riches en GPU et rythmés par VMwware Horizon, FALL offre depuis la rentrée 2020 un service de virtualisation d'applications et de postes de travail aux différentes entités de l'établissement.
+ \n
+ 
+ \n
+ Une plateforme VDI, ça coûte une blinde peuchère ! Ça vaut vraiment le coup ? Le retour sur investissement est complexe à déterminer !
+ \n
+ 
+ \n
+ L'usage du VDI étant concentré principalement sur les horaires de bureau, que faire de tous ces temps "morts" de GPU ? Miner du Bitcoin ? Et pourquoi pas du calcul ...
+ \n
+ 
+ \n
+ Le mésocentre de calcul intensif grenoblois n'en est d'ailleurs pas à sa première expérience de ce genre. Dès les années 2000, le projet "CIMENT" mettait en place sa grille de calcul "CiGri" basée sur le principe de la récupération des cycles inutilisés. (rien à voir avec les vélos)
+ \n
+ 
+ \n
+ Pour l'utilisateur calcul, FALL est une grappe de calcul dans laquelle les ressources GPU sont volatiles. Bien entendu, cela ne s'adresse qu'à une petite part des utilisateurs, car ce mode de fonctionnement ne convient qu'à certains jobs particuliers.
+ \n
+ 
+ \n
+ Alors qu'avons-nous gagné à mutualiser ces ressources GPU ? Comment ça marche techniquement ? Comment tout cela est ressenti côté utilisateurs ? Et du coup, c'est rentable ou pas cette affaire ?
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_114@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T171500
+DTEND;TZID=Europe/Paris:20220519T173500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:59 - Construire un outil de visioconférence polyvalent et multi-accès à partir d'un service de webconférence
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Grâce à leur simplicité d’utilisation, les webconférences (Jitsi-Meet, BigBlueButton...) accessibles via un navigateur, sont progressivement devenues l'outil de visioconférence prédominant ces dernières années.
+ \n
+ Les briques logicielles "open-source" sur lesquelles ils reposent, favorisent l'évolutivité de ces services. Néanmoins, des briques additionnelles doivent être fournies pour en faire des services de visioconférence complets et multi-accès.
+ \n
+ Dans une première partie nous ferons le point sur les grands principes de la visioconférence. En particulier les principales approches seront présentées de façon à mettre en perspective les cas d'usage et la consommation en ressources CPU.
+ \n
+ Dans une seconde partie nous présenterons nos travaux autour d'une passerelle SIP pour le service Rendez-vous (Jitsi-Meet) de Renater. 
+ \n
+ Nous détaillerons les options techniques retenues pour construire une passerelle multimedia permettant d'échanger des flux audio et vidéo entre une webconférence et un équipement de salle de réunion. Dans son principe, la passerelle SIP récupère des flux audio et vidéo issus du rendu d'un navigateur internet et peut facilement s'interconnecter avec d'autres services de webconférence.
+ \n
+ Ensuite nous aborderons les aspects d'hébergement et de gestion des ressources propres à cette passerelle SIP et nous présenterons, pour finir, quelques évolutions possibles de cette solution pour en faire une passerelle multimédia généraliste à même de fournir toutes les fonctionnalités attendues d'un service de visioconférence polyvalent.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_58@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T173500
+DTEND;TZID=Europe/Paris:20220519T175500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:68 - Zoom à Aix Marseille Université - Comment garder le contrôle de nos données
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Comme beaucoup d’établissements, la pandémie et le confinement nous ont forcé à nous adapter en urgence pour assurer la continuité de service auprès de notre communauté.
+ \n
+ Notre université disposait déjà de plusieurs plateformes permettant de communiquer et d’enseigner à distance : Skype Entreprise ; Adobe Connect ; Teams et BigBlueButton.
+ \n
+ Il était important pour l’Université de préserver les données, l’identité et la confidentialité des échanges pour ces plateformes. Notre établissement regroupant près de 80 000 étudiants et 8 000 personnels, la solution se devait d’être robuste et supporter une montée rapide en charge sans concessions sur les usages souhaités par les enseignants. 
+ \n
+ Nous avons donc recherché parmi les outils de communications existant ceux correspondant à nos critères en termes de fonctionnalités, de sécurité et de budget.
+ \n
+ Nous en avons retenu deux : BigBlueButton, produit libre et attractif aux vues de ses récentes évolutions et Zoom, plébiscité par les enseignants lors du premier confinement. 
+ \n
+ Nous avons donc mis en place ces deux produits en test à disposition des enseignants (POC) sur un trimestre. Nous décrirons les raisons qui nous ont fait choisir Zoom au détriment de BigBlueButton. 
+ \n
+ Nous détaillerons les méthodes utilisées pour l’intégration de Zoom au SI de l’établissement et comment nous gérons le provisionnement des serveurs en fonction de la charge. 
+ \n
+ Nous vous raconterons également les difficultés rencontrées, les doutes et les réussites. Enfin, nous vous dirons tout sur les chiffres, sur la mise en production plus rapide que dans nos prévisions face à l’engouement des enseignants.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_60@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T175500
+DTEND;TZID=Europe/Paris:20220519T181500
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:159 - Des concours en visioconférence afin de faciliter l’accès à la fonction publique.
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Pour se conformer au décret n°2017-1748 et l’arrêté du 22 décembre 2017 fixant les conditions de recours à la visioconférence pour l’organisation des voies d’accès à la fonction publique de l’État, le ministère a eu pour objectif en 2018 de proposer une infrastructure de web-conférence (WebRTC) à destination des services centraux et déconcentrés afin qu’ils puissent organiser par visioconférence les épreuves orales, auditions ou entretiens pour le recrutement des agents.
+ \n
+ 
+ \n
+ D’un point de vue technique, le ministère a mis place un service national de web-conférence et fournit :
+ \n
+ 
+ \n
+   * un équipement dédié pour la visioconférence (matériel et logiciel)
+ \n
+   * une plateforme de service : 
+ \n
+     * Application de mises en relation des salles de jury et de centre d’examen.
+ \n
+     * Serveurs de visioconférence.
+ \n
+ 
+ \n
+ Les équipements  sont déployés dans les locaux des services centraux et déconcentrés du ministère en métropole ainsi que dans les DOM/COM. 
+ \n
+ 
+ \n
+ Cette présentation aura pour objectif de vous faire découvrir tant le côté technique, matériel dans les salles, plateforme centrale basée entre autres sur le **logiciel libre Jitsi**, qu’organisationnelle (relation avec les services des concours, le SI Concours et le Pôle de développement logiciel libre du ministère).
+ \n
+ 
+ \n
+ Nous aborderons aussi les impacts de la crise sanitaire sur ce déploiement qui a été réalisé en mars 2020 ainsi que les ajustements qui ont été nécessaires pour faire face à l’augmentation des concours en visioconférence.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_167@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:SAMENA
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:216 - HUAWEI : L’innovation pour l’ESR
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Description à venir
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * On the road to Wifi7 par Guillaume Antona (15’)
+ \n
+   * End To End NVMe : l’Avenir du Stockage par Stéphane Fritsch (15’)
+ \n
+   * Le Collaboratif du futur : L’Ideahub par Hugo Xia (15’)
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_165@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:RIOU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:194 - ZOOM : L’intégration de la plateforme Zoom (Meeting / Phone / Room) dans votre écosystème.
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Zoom est une plateforme complète de communication Unifiée, dont la particularité est de pouvoir s’intégrer à n’importe quel écosystème.
+ \n
+ Lors de cette intervention nous parlerons des intégrations natives Zimbra, Moodle, Panopto, mais aussi des intégrations aux annuaires (Shibboleth, CAS, etc..)
+ \n
+ 
+ \n
+ Nous évoquerons les solutions Zoom Phone et Zoom Room dans le cadre du témoignage de Grenoble EM et l’ENSA Marseille.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Christophe ROUSSY: Chef de projet Innovation IT - Grenoble École de Management
+ \n
+   * Eric ZENATTI : Responsable des systèmes d’information - ENSA Marseille
+ \n
+   * Pierre Krajewski: Ingénieur Avant-Vente - Zoom France
+ \n
+   * Baptiste Auber: Account Exec Enseignement Supérieur - Zoom France
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_168@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:ENDOUME 3
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:217 - ARUBA-HPE : HPC et IA avec HPE, Aujourd’hui et demain
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Description à venir.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Sébastien Grimonet
+ \n
+   * Raphael Godoffe
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_164@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:POMEGUES
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:185 - FORTINET : Sécurité et transformation numérique dans le secteur de l'Enseignement Supérieur et la Recherche
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Description à venir.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * M. Vincent Chanal, Systems Engineer, Fortinet.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_163@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:EN VAU
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:188 - NEXANS : Exigences pour des infrastructures informatiques évolutives basées sur BIoT & Digital Ceiling 
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Description à venir.
+ \n
+ 
+ \n
+ **__Intervenants__** :
+ \n
+   * Géraud Danzel d'Aumont
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_166@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:SUGITON
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:191 - NUTANIX : De la modernisation vers l’automatisation, comment la DSI devient le centre de services espéré dans la mutualisation inter-établissements
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Confrontée à des contraintes budgétaires importantes, la DSI se transforme en centre de services pour assurer une force de frappe mutualisée des établissements. L’automatisation de toutes les couches du datacenter est un des critères de succès clairement identifié.
+ \n
+ 
+ \n
+ 
+ \n
+ Nutanix contribue à la diminution des coûts grâce à des solutions qui simplifient le déploiement, la gestion des environnements d’infrastructure et la fourniture d’applications.
+ \n
+ La rationalisation de vos environnements ainsi que la réduction du temps de maintenance des plateformes consacré par vos équipes vous permettront de réallouer votre budget vers des projets d’innovations mieux supportés par votre cloud privé Nutanix. 
+ \n
+ 
+ \n
+ 
+ \n
+ Lors de cette session, Quentin Bonnaudet reviendra sur trois  exemples de transformations tels que :  
+ \n
+  
+ \n
+   * l’Université d’Evry qui a fait le choix des solutions Nutanix dans le contexte d’un rassemblement de 14 établissements qui vise à accroître leur visibilité internationale & devenir l’établissement de référence en terme d’automatisation
+ \n
+   * le partenariat avec le groupement d’intérêt public Bretagne numérique qui assure le développement d’infrastructures numériques mutualisées contribuant à l’aménagement numérique du territoire pour la communauté de l’Enseignement Supérieur, de la Recherche et de l’Innovation (ESRI) en Bretagne.
+ \n
+   * l’Institut Catholique des Arts & Métiers et son socle VDI hyperconvergé Nutanix qui leur a permis de garantir des moyens d’enseignements évolutifs en période de crise sanitaire.
+ \n
+ 
+ \n
+ Intervenants :
+ \n
+   * Quentin Bonnaudet
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_222@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:230 - FusionDirectory - échanges entre développeur / utilisateurs / contributeur
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_212@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Salle Endoume
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:214 - Arrête de pousser pépère puisqu'on te dit que ca ne rentre pas dans le tuyau !
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Les données produites par les systèmes expérimentaux continuent de suivre une progression exponentielle s’apparentant à la loi de Moore. Dans le même temps, les médias de stockage continuent à suivre eux aussi une loi similaire pour leur densité d’information (Kryder). Ainsi, des unités de recherche engrangent exponentiellement de la donnée à budgets d’équipement constants sans inflation des volumes physiques occupés par leurs matériels informatiques & leur consommation énergétique.
+ \n
+ Aujourd’hui, notre communauté souhaiterait mutualiser en mésocentre ses infrastructures :
+ \n
+ - matérielles pour factoriser le travail de gestion des petites salles machines des laboratoires,
+ \n
+ - logicielles par "cloudification" (institutionnel&hybride) pour absorber la complexité d'implémentation et maintenance et se focaliser sur le besoin utilisateur.
+ \n
+ 
+ \n
+ Hélas, les réseaux WAN&MAN connectant laboratoires et mésocentres, s’ils suivent bien une loi exponentielle (Edholm) d’augmentation de leurs bandes passantes, ils ont des vies longuse, parfois dimensionnées sans une juste anticipation des besoins.
+ \n
+ 
+ \n
+ Ayant quitté un laboratoire témoignant d'une augmentation de 50%/an pendant 15 ans des volumes de données (4Po brut en 2022Q1), avec une demande en systèmes de calculs de proximité ; j’ai vécu l’usure de l’ASR isolé essayant de supporter les besoins de ses chercheurs, se retrouvant SDF (sans datacentre fixe) et ayant à utiliser un MAN comme un LAN.
+ \n
+ 
+ \n
+ A ces JRES, ne pouvant plus être taxé de défendre ma paroisse, je vous invite à échanger le temps d’un BoF, de vos expériences, de vos solutions aux arrivées de mésocentre et si un constat était partagé, à discuter des périmètres de reconnaissance d'une communauté d’ASR pour l'expérimentation.
+ \n
+ 
+ \n
+ Birds of a Feather Flock Together.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_211@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220519T181500
+DTEND;TZID=Europe/Paris:20220519T190000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéatre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:221 - Quelle forme pour un comité d'utilisateurs Partage
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_61@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220520T090000
+DTEND;TZID=Europe/Paris:20220520T100000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre Callelongue
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:52 - ERDDAP : une plateforme de gestion de données interopérables
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:Erddap est une plateforme logicielle de distribution de données scientifiques élaborée par la NOAA (https://coastwatch.pfeg.noaa.gov/erddap/index.html). Le mantra de cette application est « //Easier Access to Scientific Data// ». Son but est de faciliter la gestion, l'affichage, et l'accès aux données scientifiques, intégrées au serveur. 
+ \n
+ 
+ \n
+ L'outil possède de nombreuses fonctionnalités qui en font un outil parfait pour la gestion FAIR des données. En effet, les données sont **F**aciles à trouver par des fonctions de recherche et de nombreux mots clés, **A**ccessible par des protocoles standards (API REST HTTP et openDAP), **I**nteropérables par l'utilisation de formats et protocoles ouverts... et donc **R**éutilisables.
+ \n
+ 
+ \n
+ L'interface graphique peut paraître difficile au prime abord, mais l'outil est un //middleware// servant de dépôt centralisé, qui gère plusieurs dizaines de formats en entrée/sortie, et qui permet de chercher, interroger, accéder aux données, et générer des graphes.
+ \n
+ 
+ \n
+ Erddap est parfait pour centraliser et rendre des données accessibles dans une unité ou dans des projets de gestion de données collaboratifs regroupant les données de plusieurs instituts en réseau, comme par exemple le projet EMSO (http://erddap.emso.eu/erddap/info/index.html?page=1&itemsPerPage=1000)
+ \n
+ 
+ \n
+ Dans ce tutoriel, nous verrons comment :
+ \n
+ - installer l'application, 
+ \n
+ - configurer et paramétrer le serveur, 
+ \n
+ - intégrer des jeux de données représentatifs de nos usages (formats CSV et NetCDF principalement),
+ \n
+ - utiliser Erddap pour lire et écrire des données dans de nombreux formats,
+ \n
+ - générer des graphes,
+ \n
+ - faire des requêtes multicritères dans les données,
+ \n
+ - extraire et formater les données en utilisant divers formats et protocoles.
+ \n
+ 
+ \n
+ Ce tutoriel s'adresse principalement aux personnels concernés par la gestion FAIR et la diffusion de données scientifiques dans leurs unités.
+ \n
+ 
+ \n
+ **Prérequis** : être à l'aise avec le système Linux en ligne de commande (manipulations de répertoires, édition et formats de fichiers de données et de fichiers de configuration).
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_67@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220520T090000
+DTEND;TZID=Europe/Paris:20220520T094000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1200
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:107 - Router for Academia, Research & Education
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:RARE/freeRtr est une plateforme programmable Open Source de routage qui à la particularité d’être associée à des plans de données ayant des capacités de commutation multiples. Par conséquent, ces routeurs sont capables d'atteindre des performances allant de l’ordre du Gigabit jusqu’au  Térabit par seconde, et ce pour un coût moindre comparé aux solutions commerciales traditionnelles. C’est également une plateforme de  développement utilisable pour répondre aux besoins particuliers des projets de recherche. Elle peut être utilisée à des vocations tactiques (sécurité) nécessitant une indépendance vis-à-vis d’un logiciel de plan de contrôle.
+ \n
+ L’un de ces plans de données est constitué d' ASIC spécialisé dans la commutation de paquets. Ces circuits sont programmables par le biais d’un langage de développement spécifique ou par le biais de librairies logicielles implémentant des fonctions de « kernel by-pass ».
+ \n
+ L’architecture modulaire de RARE/freeRtr se prête au développement rapide et aux tests automatisés de nouveaux protocoles et fonctionnalités :
+ \n
+ 
+ \n
+   * plan de contrôle open source ;
+ \n
+   * plan programmable de données [P4 (BMv2 et les circuits intégrés « Intel® Tofino ™ »), DPDK, Libpcap et UDP Socket] ;
+ \n
+   * interface entre le plan de contrôle et le plan de commutation.
+ \n
+ Cet exposé présentera la solution développée dans le cadre du projet GÉANT: RARE. Associée au plan de contrôle FreeRtr, la plateforme est extrêmement versatile et propose un large éventail de fonctionnalités. Elle peut ainsi donc instancier des implémentations de routeur répondant à plusieurs cas d’usage distinct: réflecteur de routes, routeur d’agrégation, routeur de campus ou de réseau régional, point d’échange, routeur d’accès (SOHO).
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_62@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220520T090000
+DTEND;TZID=Europe/Paris:20220520T092000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:8 - Retour d'expérience d'EduVPN dans le cadre de pédagogie en comodale
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:En 2020, la pandémie mondiale a favorisé le déploiement d’outils de travail à distance dans le monde. Au sein de l’Université de Reims Champagne-Ardenne, une solution de télétravail mise à disposition pour le personnel était en place et s’est développée lors du premier confinement, mais n’était pas adaptable pour les étudiants par manque de licences.
+ \n
+ 
+ \n
+ Pour répondre au besoin d’ouvertures d'accès à des ressources pédagogiques internes et offrir une solution de pédagogie en comodalité, nous avons fait le choix de nous tourner vers la solution EduVPN, poussée par Renater, pour ses multiples avantages (multi-OS, connexion LDAP, mise à l’échelle facile).
+ \n
+ 
+ \n
+ Cependant, cet outil ne correspondait pas totalement à notre besoin. La granularité des accès via les profils de connexion était limitée. Chacun nécessitait des ports réseaux et requêtes LDAP spécifiques. De plus, créer ou modifier un profil obligeait un redémarrage du service rendant les évolutions difficiles en production.
+ \n
+ 
+ \n
+ Nous avons donc fait le choix de n’utiliser qu’un seul profil EduVPN dans lequel nous créons des règles d’accès à la connexion d’un utilisateur. Grâce à des tables Netfilter/IPSet associées à des attributs LDAP spécifiques (UID, CodeVET, CodeETP), nous autorisons les connexions des utilisateurs vers les ressources auxquelles ils doivent avoir accès uniquement. Notre serveur EduVPN sert donc à filtrer le trafic réseau en plus de sa fonction de tunnel VPN.
+ \n
+ 
+ \n
+ Tout cela a été créé à l’aide de scripts bash qui permettent d’avoir un environnement autour du service EduVPN nous rendant quasiment indépendants et autonomes sur cet outil pour le gérer quotidiennement et de manière efficace.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_63@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220520T092000
+DTEND;TZID=Europe/Paris:20220520T094000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:98 - Plasma : plateforme d’e-learning pour l’analyse interactive de données
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:L’objectif de Plasma (https://plasmabio.org/) est de former les étudiants à l'exploration et à l'analyse de données massives, principalement issues d’expériences de génomique en biologie.
+ \n
+ 
+ \n
+ Ce projet est basé sur l'utilisation de notebooks Jupyter, véritables carnets électroniques interactifs, qui intègrent du code informatique, du texte, des équations mathématiques et la visualisation des résultats d'analyse sous forme de graphiques ou de tableaux. Cette technologie devient progressivement un standard pour l'analyse de données, comme en témoignent, par exemple, les récentes publications scientifiques sur le sujet.
+ \n
+ 
+ \n
+ Ces notebooks sont hébergés sur un serveur informatique performant basé sur la technologie open source JupyterHub. Nous avons développé une évolution de cette technologie qui permet aux enseignants de créer des environnements informatiques à façon suivant les enseignements ciblés.
+ \n
+ 
+ \n
+ Les étudiants peuvent se connecter à distance quand et d’où ils le souhaitent pour effectuer leurs analyses dans un environnement convivial et performant.
+ \n
+ 
+ \n
+ Nous avons utilisé cette solution de septembre 2020 à avril 2021, pour des cours de programmation Python, R et d’analyses de données RNA-seq. Malgré des conditions sanitaires difficiles, nos étudiants ont pu poursuivre leurs enseignements pratiques grâce à cette solution, qu’ils ont appréciée et plébiscitée.
+ \n
+ 
+ \n
+ Ce projet est réalisé en collaboration avec QuantStack, une société fortement impliquée dans le développement de l'écosystème Jupyter. Plasma est open source, documenté et librement accessible à la communauté universitaire.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_124@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220520T100000
+DTEND;TZID=Europe/Paris:20220520T104000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espaces Pauses
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Pause
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_131@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220520T104000
+DTEND;TZID=Europe/Paris:20220520T124000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Amphithéâtre 1600
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:180 - Sciences cognitives et enjeux éthiques en design
+DESCRIPTION;CHARSET=UTF-8;ENCODING=8BIT:**Quel est l'impact des outils technologiques sur l'humain et sa société ?**
+ \n
+ 
+ \n
+ Assistés des sciences cognitives, les experts en ergonomie et facteurs humains se préoccupent particulièrement de cette question, et ont pour mission d'offrir la meilleure expérience utilisateurs (UX) possible avec les systèmes, services, ou même les jeux vidéo. 
+ \n
+ Mais les connaissances sur les limites et les biais du cerveau humain peuvent également alimenter des pratiques éthiquement discutables, voire des "dark patterns" qui sont aux antipodes de l'état d'esprit UX. 
+ \n
+ 
+ \n
+ **Celia Hodent**, docteure en psychologie et ancienne directrice UX chez Epic Games (Fortnite) aborde dans cette présentation les principales limites de nos processus mentaux et explique comment l'approche UX utilise ces connaissances afin d'améliorer les interactions humain-machine, notamment dans la conception de jeux vidéo. 
+ \n
+ 
+ \n
+ Elle propose également une exploration du côté obscur consistant au contraire à exploiter ces biais dans le but d'améliorer les profits d'une entreprise au détriment des utilisateurs. Les problématiques éthiques soulevées par ces pratiques, à l'heure où la technologie est au cœur de nos activités quotidiennes, seront discutées.
+END:VEVENT
+BEGIN:VEVENT
+UID:presentation_113@conf-ng.jres.org
+DTSTAMP;TZID=Europe/Paris:20220516T012116
+DTSTART;TZID=Europe/Paris:20220520T124000
+DTEND;TZID=Europe/Paris:20220520T141000
+LOCATION;CHARSET=UTF-8;ENCODING=8BIT:Espace Restauration
+SUMMARY;CHARSET=UTF-8;ENCODING=8BIT:Buffet
+END:VEVENT
+END:VCALENDAR

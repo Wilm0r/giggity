@@ -1,0 +1,23 @@
+{
+	"version": 2022100801,
+	"url": "https://dev.btcwiki.nl/btcams2022/processed/latest_penta_v0.xml",
+	"title": "Bitcoin Amsterdam 2022",
+	"start": "2022-10-12",
+	"end": "2022-10-14",
+	"timezone": "Europe/Brussels",
+	"refresh_interval": 1800,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://b.tc/conference/amsterdam/",
+				"title": "Website"
+			},
+			{
+				"url": "https://dev.btcwiki.nl/btcams2022/processed/map.png",
+				"title": "Map",
+				"type": "image/png"
+			}		
+		],
+		"icon": "https://dev.btcwiki.nl/btcams2022/processed/btcams.png"
+	}
+}
