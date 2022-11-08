@@ -1,0 +1,22 @@
+{
+	"version": 2022110400,
+	"url": "https://www.sfscon.it/?calendar=2022&format=xml",
+	"title": "SFScon 2022",
+	"start": "2022-11-11",
+	"end": "2022-11-12",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"icon": "https://www.sfscon.it/wp-content/uploads/2020/10/cropped-cropped-sfsconnew-180x180.png",
+		"links": [
+			{
+				"url": "https://www.sfscon.it/",
+				"title": "Website"
+			},
+			{
+				"url": "https://cloud.opendatahub.com/index.php/s/k9E3CEmeZcjN9Tq",
+				"title": "Attendee Guide",
+				"type": "application/pdf"
+			}
+		]
+	}
+}
