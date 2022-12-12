@@ -12,11 +12,11 @@
 				"title": "Website"
 			},
 			{
-				"url": "https://wiki.hip-berlin.de/",
+				"url": "https://wiki.hip-berlin.de/index.php?title=Main_Page",
 				"title": "Wiki"
 			},
 			{
-				"url": "https://engelsystem.hip-berlin.de/",
+				"url": "https://engelsystem.hip-berlin.de/angeltypes?action=about",
 				"title": "Angel Center"
 			}
 		]
