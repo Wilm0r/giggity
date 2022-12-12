@@ -1,0 +1,24 @@
+{
+	"version": 2022122700,
+	"url": "https://pretalx.c3voc.de/hip-berlin-2022/schedule.xml",
+	"title": "///Hacking in Parallel 2022///",
+	"start": "2022-12-27",
+	"end": "2022-12-30",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hip-berlin.de/",
+				"title": "Website"
+			},
+			{
+				"url": "https://wiki.hip-berlin.de/",
+				"title": "Wiki"
+			},
+			{
+				"url": "https://engelsystem.hip-berlin.de/",
+				"title": "Angel Center"
+			}
+		]
+	}
+}
