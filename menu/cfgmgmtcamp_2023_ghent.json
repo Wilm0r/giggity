@@ -1,0 +1,26 @@
+{
+	"version": 2023013000,
+	"url": "https://cfp.cfgmgmtcamp.org/2023/schedule/export/schedule.ics",
+	"title": "CfgMgmtCamp 2023 Ghent BE",
+	"start": "2023-02-06",
+	"end": "2023-02-08",
+	"timezone": "Europe/Brussels",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://cfgmgmtcamp.eu/images/logo_top.png",
+		"links": [
+			{
+				"url": "https://cfgmgmtcamp.eu/ghent2023",
+				"title": "Website"
+			},
+			{
+				"url": "https://registration.cfgmgmtcamp.org/ghent/2023/",
+				"title": "Registration"
+			},
+			{
+				"url": "https://cfgmgmtcamp.eu/ghent2023/location/",
+				"title": "Venue Location"
+			}
+		]
+	}
+}
