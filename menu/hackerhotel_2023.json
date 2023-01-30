@@ -1,0 +1,16 @@
+{
+	"version": 2023013000,
+	"url": "https://pretalx.hackerhotel.nl/hackerhotel-2023/schedule.xml",
+	"title": "HackerHotel 2023",
+	"start": "2023-02-10",
+	"end": "2023-02-12",
+	"timezone": "Europe/Amsterdam",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackerhotel.nl/",
+				"title": "Website"
+			}
+		]
+	}
+}
