@@ -67,7 +67,7 @@ def bytes_if_not(src):
 		return src.encode("utf-8")
 
 
-@app.route('/update-menu-cache', methods=["GET", "POST"])
+@app.route("/update-menu-cache", methods=["GET", "POST"])
 def update():
 	req_digest = request.headers.get("X-Hub-Signature")
 	if req_digest:
@@ -117,7 +117,7 @@ def update():
 	return Response("OK, updated revisions %s" % " ".join(sorted(todo)))
 
 
-@app.route('/menu.json')
+@app.route("/menu.json")
 def menu_json():
 	rev = request.args.get("rev", "HEAD")
 	cached = bucket.blob("menu-cache/%s" % rev)
@@ -131,5 +131,5 @@ def menu_json():
 		pass
 
 
-if __name__ == '__main__':
-	app.run(host='127.0.0.1', port=8080, debug=True)
+if __name__ == "__main__":
+	app.run(host="127.0.0.1", port=8080, debug=True)
