@@ -414,7 +414,7 @@ public class Schedule implements Serializable {
 						p.endElement("", key, "");
 					}
 				} else if (lnum > 0){
-					Log.w("ical", "No clue what to do with line " + lnum + ": " + s);
+					// Log.d("ical", "No clue what to do with line " + lnum + ": " + s);
 				}
 				if (s != null)
 					line = s;
