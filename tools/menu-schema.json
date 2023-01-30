@@ -14,7 +14,7 @@
         2018020100
       ],
       "minimum": 2008010100,
-      "maximum": 2022123199
+      "maximum": 2029123199
     },
     "schedules": {
       "$id": "/properties/schedules",
@@ -33,7 +33,7 @@
               2016072901
             ],
             "minimum": 2008010100,
-            "maximum": 2022123199
+            "maximum": 2029123199
           },
           "url": {
             "$id": "/properties/schedules/items/properties/url",
