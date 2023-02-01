@@ -1,0 +1,16 @@
+{
+	"version": 2023013001,
+	"url": "https://pretalx.lebib.org/universit-d-hiver-2022/schedule/export/schedule.xml",
+	"title": "Université d'hiver de l'Interhack 2023",
+	"start": "2023-02-23",
+	"end": "2023-02-26",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://pretalx.lebib.org/universit-d-hiver-2022/",
+				"title": "Site web"
+			}
+		]
+	}
+}
