@@ -26,11 +26,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-nomini.txt'
         }
     }
-    lintOptions {
-        abortOnError false
-    }
     productFlavors {
     }
+    lint {
+        abortOnError false
+    }
+    namespace 'net.gaast.giggity'
 }
 dependencies {
     implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
