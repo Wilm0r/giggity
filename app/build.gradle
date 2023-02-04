@@ -3,11 +3,11 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 31
     defaultConfig {
         applicationId "net.gaast.giggity"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
