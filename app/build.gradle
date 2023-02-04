@@ -6,19 +6,10 @@ android {
     compileSdkVersion 31
     defaultConfig {
         applicationId "net.gaast.giggity"
-        minSdkVersion 23
+        minSdkVersion 26
         targetSdkVersion 31
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
         buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
-    }
-    compileOptions {
-        // Flag to enable support for the new language APIs (java.time specifically).
-        // Can (likely) be removed once I bump minSdkVersion up to 26. Also coreLibraryDesugaring below.
-        // https://pspdfkit.com/blog/2019/java-8-in-android-apps/
-        coreLibraryDesugaringEnabled true
-        // Sets Java compatibility to Java 8
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -42,6 +33,7 @@ dependencies {
     // implementation 'androidx.viewpager:viewpager:1.0.0'
     implementation 'commons-io:commons-io:2.3'
 
+    // So far, only for the Okapi.BM25 module. Any day now I should just rewrite that stupid file?
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     testImplementation 'junit:junit:4.12'
