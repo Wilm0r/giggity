@@ -18,13 +18,13 @@
 		</activity>
 		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="ScheduleItemActivity"/>
 		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="SettingsActivity"/>
-		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="ChooserActivity">
+		<activity android:configChanges="keyboardHidden|orientation|screenSize" android:name="ChooserActivity" android:exported="true">
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN"/>
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
-		<receiver android:icon="@drawable/deoxide_icon" android:name="Widget" android:label="Giggity">
+		<receiver android:icon="@drawable/deoxide_icon" android:name="Widget" android:label="Giggity" android:exported="true">
 			<intent-filter>
 				<action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
 			</intent-filter>
