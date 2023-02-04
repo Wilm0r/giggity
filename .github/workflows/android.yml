@@ -29,5 +29,6 @@ jobs:
     - name: Tests
       run: ./gradlew test -i
     - name: Build with Gradle
-      run: sed -i -e s:coreLibraryDesugaringEnabled://coreLibraryDesugaringEnabled/ app/build.gradle
-      run: ./gradlew assemble
+      run: 
+      - sed -i -e s:coreLibraryDesugaringEnabled://coreLibraryDesugaringEnabled/ app/build.gradle
+      - ./gradlew assemble
