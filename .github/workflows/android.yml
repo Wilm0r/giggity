@@ -29,6 +29,6 @@ jobs:
     - name: Tests
       run: ./gradlew test -i
     - name: Disable desugaring (eats too much RAM apparently?)
-      run: sed -i -e s:coreLibraryDesugaringEnabled://coreLibraryDesugaringEnabled: app/build.gradle
+      run: "sed -i -e s:coreLibraryDesugaringEnabled://coreLibraryDesugaringEnabled: app/build.gradle"
     - name: Build with Gradle
       run: ./gradlew assemble
