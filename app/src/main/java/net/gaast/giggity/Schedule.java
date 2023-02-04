@@ -19,9 +19,11 @@
 
 package net.gaast.giggity;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.Html;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.Log;
 import android.widget.CheckBox;
@@ -78,6 +80,10 @@ import java.util.regex.Pattern;
 import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+
+import io.noties.markwon.Markwon;
+import io.noties.markwon.html.HtmlPlugin;
+import io.noties.markwon.linkify.LinkifyPlugin;
 
 public class Schedule implements Serializable {
 	private final int detectHeaderSize = 1024;
@@ -1076,8 +1082,7 @@ public class Schedule implements Serializable {
 				if ((s = propMap.get("abstract")) != null &&
 				    (!propMap.containsKey("description") ||
 				     !Giggity.fuzzyStartsWith(propMap.get("abstract"), propMap.get("description")))) {
-					s = s.replaceAll("\n*$", "");
-					desc += s + "\n\n";
+					desc += s.trim() + "\n\n";
 				}
 				if ((s = propMap.get("description")) != null) {
 					desc += s;
@@ -1318,6 +1323,7 @@ public class Schedule implements Serializable {
 		}
 		
 		public void setDescription(String description_) {
+			// Keep the trim pls k thx baibai!
 			description = description_.trim();
 		}
 
@@ -1415,56 +1421,30 @@ public class Schedule implements Serializable {
 			return language;
 		}
 
-		private String descriptionMarkdownHack(String md) {
-			String ret = md;
-			ret = ret.replaceAll("(?m)^#### (.*)$", "<h4>$1</h4>");
-			ret = ret.replaceAll("(?m)^### (.*)$", "<h3>$1</h3>");
-			ret = ret.replaceAll("(?m)^## (.*)$", "<h2>$1</h2>");
-			ret = ret.replaceAll("(?m)^# (.*)$", "<h1>$1</h1>");
-			ret = ret.replaceAll("(?m)^ {0,2}[-+*] ", "<li>");
-			ret = ret.replaceAll("(?m)^ {0,2}([0-9]+\\. )", "<br>$1");
-			ret = ret.replaceAll("\n\n(?=[^<])", "<p>");
-			ret = ret.replaceAll("\\[([^\\]]+)\\]\\((http[^\\)]+)\\)", "<a href=\"$2\">$1</a>");
-			return ret;
-		}
-
-		public Spanned getDescriptionSpanned() {
+		public Spanned getDescriptionSpanned(Context ctx) {
 			if (description == null) {
 				return null;
 			}
 
-			String html;
-			if (description.startsWith("<") || description.contains("<p>")) {
-				html = description.trim();
-			} else {
-				html = descriptionMarkdownHack(description.trim());
+			if (description.contains("</")) {
+				// Mild suggestion of HTML detected. Let's first check whether it's serious?
+				Pattern htmlCheck = Pattern.compile("(?i)</?(?!p)\\b");
+				if (htmlCheck.matcher(description).find()) {
+					// Meaningful HTML found (i.e. more than just a few <p> tags) \o/
+					// Markwon doesn't turn <p>..</p> into proper paragraphs AFAICT, so mangle them
+					// a little bit.
+					description = description.replaceAll("(?is)(</?p>|\\s){2,}", "<p><p>").trim();
+					final Markwon mw = Markwon.builder(ctx).usePlugin(HtmlPlugin.create()).build();
+					return mw.toMarkdown(description);
+				}
+				// Seen in the FOSDEM schedule: Markdown-ish but with paragraphs marked with both
+				// whitespace and <p> tags. Well let's make it markdown then...
+				description = description.replaceAll("(?is)(\\s*</?p>\\s*)+", "\n\n").trim();
 			}
-			Spanned formatted;
-			if (android.os.Build.VERSION.SDK_INT < 24) {
-				/* This parser is VERY limited, results aren't great, but let's give it a shot.
-				   I'd really like to avoid using a full-blown WebView.. */
-				Html.TagHandler th = new Html.TagHandler() {
-					@Override
-					public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-						if (tag.equals("li")) {
-							if (opening) {
-								output.append(" • ");
-							} else {
-								output.append("\n");
-							}
-						} else if (tag.equals("ul") || tag.equals("ol")) {
-							/* For both opening and closing */
-							output.append("\n");
-						}
-					}
-				};
-				formatted = (Spannable) Html.fromHtml(html, null, th);
-			} else {
-				formatted = Html.fromHtml(html, Html.FROM_HTML_SEPARATOR_LINE_BREAK_LIST_ITEM, null, null);
-			}
-			// TODO: This, too, ruins existing links. WTF guys.. :<
-			// Linkify.addLinks(formatted, Linkify.WEB_URLS | Linkify.EMAIL_ADDRESSES);
-			return formatted;
+
+			final Markwon mw = Markwon.builder(ctx)
+					                   .usePlugin(LinkifyPlugin.create()).build();
+			return mw.toMarkdown(description);
 		}
 
 		public AbstractList<String> getSpeakers() {

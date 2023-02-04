@@ -158,7 +158,7 @@ public class EventDialog extends FrameLayout {
 		}
 		
 		t = root.findViewById(R.id.description);
-		t.setText(item.getDescriptionSpanned());
+		t.setText(item.getDescriptionSpanned(ctx));
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
 		/* This is frustrating: a TextView cannot support text selection and clickable links at the
