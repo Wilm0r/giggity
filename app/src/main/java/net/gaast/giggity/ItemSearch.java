@@ -3,8 +3,10 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -81,7 +83,9 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		addView(resultList, lp);
 
-		query.requestFocus();
+		if (query.getText().toString().isEmpty()) {
+			query.requestFocus();
+		}
 		new UpdateIndexTask().execute(true);
 	}
 
@@ -95,6 +99,18 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 			setLines(1);
 			setSingleLine();
 			setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+			// This is only really relevant when running inside the emulator it seems, where hitting
+			// Enter on the physical keyboard by default isn't the same like clicking/tapping Go.
+			setOnKeyListener(new OnKeyListener() {
+				@Override
+				public boolean onKey(View view, int i, KeyEvent keyEvent) {
+					if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+						onEditorAction(EditorInfo.IME_ACTION_SEARCH);
+					}
+					return false;
+				}
+			});
 		}
 
 		@Override
