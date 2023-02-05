@@ -5,7 +5,6 @@
 	"start": "2023-02-06",
 	"end": "2023-02-08",
 	"timezone": "Europe/Brussels",
-	"refresh_interval": 1800,
 	"metadata": {
 		"icon": "https://cfgmgmtcamp.eu/images/logo_top.png",
 		"links": [
