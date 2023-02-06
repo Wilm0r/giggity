@@ -83,9 +83,6 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		addView(resultList, lp);
 
-		if (query.getText().toString().isEmpty()) {
-			query.requestFocus();
-		}
 		new UpdateIndexTask().execute(true);
 	}
 
@@ -270,7 +267,17 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 	@Override
 	public void onShow() {
-		app.showKeyboard(getContext(), query);
+		// Focus query field and auto-show keyboard only if there's no query entered yet and/or if
+		// the results list is almost empty.
+		if (query.getText().toString().isEmpty() ||
+		    (resultList != null && resultList.list.size() <= 2)) {
+			query.requestFocus();
+			app.showKeyboard(getContext(), query);
+		} else {
+			// If there's something in the query field already then let them browse other results
+			// first. Unless there barely were any. :)
+			query.clearFocus();
+		}
 	}
 
 	@Override

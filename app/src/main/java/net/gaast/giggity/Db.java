@@ -701,7 +701,7 @@ public class Db {
 						// And deleted items to the bottom (if they're even going to be shown).
 						score -= 1000;
 					}
-					Log.d("search", q.getString(0) + " score: " + score + " remind " + q.getInt(2));
+//					Log.d("search", q.getString(0) + " score: " + score + " remind " + q.getInt(2));
 					rank.put(q.getString(0), score);
 					res.add(q.getString(0));
 				}
