@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+       <style name="Theme.Giggity" parent="@android:style/Theme.DeviceDefault.DayNight">
+               <item name="android:colorPrimary">@color/primary</item>
+               <item name="android:colorPrimaryDark">@color/primary_dark</item>
+               <item name="android:colorAccent">@color/accent</item>
+
+               <item name="android:navigationBarDividerColor">@color/time_back</item>
+               <item name="android:navigationBarColor">@color/background_material_light</item>
+               <item name="android:windowLightNavigationBar">true</item>
+       </style>
+</resources>

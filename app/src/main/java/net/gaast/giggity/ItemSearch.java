@@ -45,7 +45,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		RelativeLayout.LayoutParams lp;
 
 		LinearLayout queryOuter = new LinearLayout(ctx);
-		queryOuter.setBackgroundResource(R.color.primary);
+		queryOuter.setBackgroundResource(R.color.search_back);
 		app.setShadow(queryOuter, true);
 		app.setPadding(queryOuter, 16, 0, 16, 16);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);

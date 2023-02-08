@@ -42,7 +42,7 @@
 		android:layout_width="240dp"
 		android:layout_height="match_parent"
 		android:layout_gravity="start"
-		android:background="#CFD8DC"> <!-- material-blue-grey-100, how to ref? -->
+		android:background="@color/light"> <!-- material-blue-grey-100, how to ref? -->
 
 		<LinearLayout
 			android:id="@+id/header"

@@ -16,7 +16,7 @@
 	</style>
 
 	<style name="Theme.Giggity.ActionBar.Text">
-		<item name="android:textColor">#ffffffff</item>
+		<item name="android:textColor">#ffff00ff</item>
 	</style>
 
 	<style name="BurgerMenuItem" parent="@android:style/TextAppearance">

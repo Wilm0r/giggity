@@ -1433,7 +1433,8 @@ public class Schedule implements Serializable {
 					// Meaningful HTML found (i.e. more than just a few <p> tags) \o/
 					// Markwon doesn't turn <p>..</p> into proper paragraphs AFAICT, so mangle them
 					// a little bit.
-					description = description.replaceAll("(?is)(</?p>|\\s){2,}", "<p><p>").trim();
+					description = description.replaceAll("(?is)(\\s*</?p>\\s*)+", "<p><p>").trim();
+					description = description.replaceAll("(?i)(<[^/p][^>]+>)(<p>)+", "$1");
 					final Markwon mw = Markwon.builder(ctx).usePlugin(HtmlPlugin.create()).build();
 					return mw.toMarkdown(description);
 				}

@@ -98,7 +98,7 @@ public class EventDialog extends FrameLayout {
 		}
 
 		if (item_.getLine().getRoomStatus().compareTo(FULL) >= 0) {
-			t.setTextColor(0xffffa500);
+			t.setTextColor(getResources().getColor(R.color.evd_room_busy));
 		}
 
 		if (item_.getLanguage() != null) {
@@ -276,7 +276,7 @@ public class EventDialog extends FrameLayout {
 			TextView url = new TextView(ctx);
 			url.setText(link.getTitle());
 			url.setOnClickListener(this);
-			url.setTextColor(getResources().getColor(R.color.primary_dark));
+			url.setTextColor(getResources().getColor(R.color.accent));
 			app_.setPadding(url, 0, 3, 0, 3);
 			addView(url);
 		}
