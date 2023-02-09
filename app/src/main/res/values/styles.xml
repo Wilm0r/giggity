@@ -9,7 +9,7 @@
 		<item name="android:windowContentOverlay">@null</item>
 	</style>
 
-	<style name="Theme.Giggity.ActionBar" parent="@android:style/Widget.Holo.ActionBar">
+	<style name="Theme.Giggity.ActionBar" parent="@android:style/Widget.Material.Light.ActionBar">
 		<item name="android:background">@color/primary</item>
 		<item name="android:titleTextStyle">@style/Theme.Giggity.ActionBar.Text</item>
 		<item name="android:logo">@android:color/transparent</item>

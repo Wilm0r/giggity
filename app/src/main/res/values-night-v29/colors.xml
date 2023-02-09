@@ -28,7 +28,7 @@
     <color name="remind_back">@color/accent</color>
 
     <!-- ItemSearch -->
-    <color name="search_back">@color/time_back</color>
+    <color name="search_back">@color/primary_dark</color>
 
     <color name="light_text">#EEFFFFFF</color> <!-- on material/blue backgrounds -->
     <color name="light_text_on_white">#EECCCCCC</color> <!-- on material/blue backgrounds -->
