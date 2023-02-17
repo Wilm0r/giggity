@@ -72,7 +72,7 @@ public class ScheduleItemView extends LinearLayout {
 		} else if ((flags & SHOW_NOW) != 0 && item.compareTo(new Date()) == 0) {
 			setBackgroundColor(0x11FFFFFF);
 		} else {
-			setBackgroundColor(0x00000000);
+			setBackgroundResource(android.R.color.transparent);
 		}
 
 		if (item.isHidden()) {

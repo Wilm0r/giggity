@@ -11,10 +11,14 @@
 
     <!-- ScheduleItemView -->
     <color name="time_back">#FFE9ECF3</color>
+    <color name="remind_back">#FFFA8E72</color>
 
-    <color name="light_text">#EEFFFFFF</color> <!-- on material/blue backgrounds -->
+    <!-- ItemSearch -->
+    <color name="search_back">@color/primary</color>
+
+    <color name="light_text">#EEFFFFFF</color>          <!-- on material/blue backgrounds -->
     <color name="light_text_on_white">#EECCCCCC</color> <!-- on material/blue backgrounds -->
-    <color name="dark_text">#FF000000</color> <!-- darker than default, for titles, etc -->
+    <color name="dark_text">#FF000000</color>           <!-- darker than default, for titles, etc -->
 
     <color name="light_back">#FFEEEEEE</color>
     <color name="background_material_light">#fffafafa</color>
@@ -22,14 +26,14 @@
     <color name="blocks_bg">#FFf0f3f4</color>
     <color name="blocks_lines">#FFb5c3c9</color>
 
-    <color name="blocks_itembg_0">#FF039be5</color>
-    <color name="blocks_itembg_1">#FF0288d1</color>
-    <color name="blocks_itembg_selected">#FFff5722</color>
+    <color name="blocks_itembg_0">@color/primary</color>
+    <color name="blocks_itembg_1">@color/primary_dark</color>
+    <color name="blocks_itembg_selected">@color/accent</color>
     <color name="blocks_itemfg">#EEFFFFFF</color>
     <color name="blocks_itemfg_selected">#EEFFFFFF</color>
 
-    <color name="blocks_clockbg_0">#FF039be5</color>
-    <color name="blocks_clockbg_1">#FF0288d1</color>
+    <color name="blocks_clockbg_0">@color/primary</color>
+    <color name="blocks_clockbg_1">@color/primary_dark</color>
     <color name="blocks_clockbg_now">#FF00CF00</color>
     <color name="blocks_clockfg">#EEFFFFFF</color>
     <color name="blocks_clockfg_now">#EEFFFFFF</color>
@@ -37,4 +41,7 @@
     <color name="blocks_tentbg_0">#FFd3dbdf</color>
     <color name="blocks_tentbg_1">#FFe1e7ea</color>
     <color name="blocks_tentfg">#FF000000</color>
+
+    <!-- EventDialog -->
+    <color name="evd_room_busy">#ffffa500</color>
 </resources>

@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+### This is years old experimentation with storing selections in Firebase. I'm never going to finish it because meh @ firebase.
+
+import datetime
 import hashlib
 import hmac
 import json
@@ -7,6 +10,8 @@ import jsonschema
 import os
 import re
 import tempfile
+import time
+import uuid
 
 from flask import Flask, Response
 from flask import request
@@ -17,11 +22,17 @@ from dulwich import porcelain
 
 from google.cloud import storage
 
+#import firebase_admin
+#from firebase_admin import credentials
+#from firebase_admin import firestore
+
 from ggt_tools import merge
 
 
 app = Flask(__name__)
 
+
+UTC = datetime.timezone.utc
 
 storage_client = storage.Client()
 bucket = storage_client.get_bucket("giggity.appspot.com")
@@ -34,6 +45,10 @@ MASTER_REF = "refs/heads/master"
 GITHUB_SECRET = bucket.blob("github-secret").download_as_string().strip() # actually bytes?
 
 MENU_JSON_SCHEMA = json.load(open("ggt_tools/menu-schema.json", "r"))
+
+#cred = credentials.Certificate(os.getenv("GOOGLE_APPLICATION_CREDENTIALS"))
+#firebase_admin.initialize_app(cred)
+#fdb = firestore.client()
 
 
 def git_pull(path, local_path="/tmp/giggity.git"):
@@ -131,5 +146,105 @@ def menu_json():
 		pass
 
 
+def id_encode(raw_id):
+	if "/" in raw_id or len(raw_id) > 33:
+		return "_" + hashlib.md5(raw_id.encode("utf-8")).hexdigest()
+	return raw_id
+
+
+@app.route("/sync", methods=["POST"])
+def sync():
+	msg = request.get_json()
+	if "/" in msg["user"] or "/" in msg["login"] or "/" in msg["s_id"]:
+		return Response("Bad data", 400)
+	
+	sched_ref = fdb.document("schedules/%s" % msg["s_id"])
+	user_ref = fdb.document("users/%s" % msg["user"])
+	#items_ref = fdb.collection_group("items")
+	items_ref = fdb.collection("users/%s/items" % msg["user"])
+	login_ref = fdb.document("users/%s/logins/%s" % (msg["user"], msg["login"]))
+	if not login_ref.get().exists:
+		return Response("User or login does not exist", 403)
+
+	items_ref = (items_ref.where("schedule", "==", sched_ref)
+	                      .where("sts", ">", datetime.datetime.fromtimestamp(msg["last_sync"], UTC)))
+
+	raw_items = {}
+	ret = {}
+	warnings = []
+	for item in items_ref.stream():
+		d = item.to_dict()
+		id = d["i_id"]
+		raw_items[id] = item
+		if item.exists:
+			ret[id] = {
+				"remind": d["remind"],
+				"hidden": d["hidden"],
+			}
+
+	for id, item in msg["items"].items():
+		item_ref = fdb.document("schedules/%s/items/%s" % (msg["s_id"], id_encode(id)))
+		ts = datetime.datetime.fromtimestamp(item["ts"], UTC)
+		if id in ret:
+			if ts < raw_items[id].get("cts"):
+				warnings.append("Item %s overwritten by more recent entry in database." % id)
+				continue
+			else:
+				ret.pop(id)
+
+		fdb.collection("users/%s/items" % msg["user"]).document(id_encode(id)).set({
+			"i_id": id,
+			"sts": firestore.SERVER_TIMESTAMP,
+			"cts": ts,
+			"last_login": login_ref,
+			"schedule": sched_ref,
+			"item": item_ref,
+			"remind": item["remind"],
+			"hidden": item["hidden"],
+		})
+
+	if msg["my_time"] > time.time() + 60:
+		warnings.append("Client time ahead of server's.")
+	elif msg["my_time"] < time.time() - 3600:
+		warnings.append("Client time more than an hour behind on server's.")
+
+	return {"items": ret, "warnings": warnings, "timestamp": time.time()}
+
+
+KEY = b'\x03\xaa\x85\xce^\xb7M!\xa6\xab\xf2\xd6R\xc8\xc4\xc0'
+
+
+@app.route("/login", methods=["POST"])
+def login():
+	msg = request.get_json()
+	if "/" in msg["user"] or "/" in msg.get("login", "") or "name" not in msg:
+		return Response("Bad data", 400)
+	
+	user_ref = fdb.document("users/%s" % msg["user"])
+
+	new_id = uuid.uuid4().hex
+	new_ref = fdb.document("users/%s/logins/%s" % (msg["user"], new_id))
+
+	if msg.get("login"):
+		# user = username, login = existing login
+		# Adding another login for an existing user.
+		login_ref = fdb.document("users/%s/logins/%s" % (msg["user"], msg["login"]))
+		if not login_ref.get().exists:
+			return Response("User or login does not exist", 403)
+
+		new_ref.set({"name": msg["name"]})
+		return {"login": new_id}
+	
+	u = user_ref.get().to_dict()
+	if not u.get("mail"):
+		return Response("No existing login given, and no e-mail address on account", 403)
+
+	return {
+		"new_id": new_id,
+		"sig": hmac.HMAC(KEY, new_id.encode("utf-8"), "sha224").hexdigest(),
+	}
+
+
 if __name__ == "__main__":
-	app.run(host="127.0.0.1", port=8080, debug=True)
+	#app.run(host="127.0.0.1", port=8080, debug=True)
+	app.run(host="0.0.0.0", port=8080, debug=True)

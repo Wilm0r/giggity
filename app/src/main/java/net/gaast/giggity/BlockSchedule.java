@@ -283,7 +283,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			super(ctx);
 			setGravity(Gravity.CENTER_HORIZONTAL);
 			setHeight(TentHeight);
-			setTextColor(0xFFFFFFFF);
+			// This was here but seems no-op? setTextColor(0xFFFFFFFF);
 			setPadding(0, 0, 0, 0);
 			setTextSize(fontSize);
 		}

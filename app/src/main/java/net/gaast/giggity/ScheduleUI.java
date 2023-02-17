@@ -201,7 +201,7 @@ public class ScheduleUI extends Schedule {
 		LinkedList<Item> ret = new LinkedList<Item>();
 		Log.d("searchItems", "" + ids.size() + " items");
 		for (String id : ids) {
-			Log.d("searchItems", "id=" + id + " " + allItems.containsKey(id));
+//			Log.d("searchItems", "id=" + id + " " + allItems.containsKey(id));
 			ret.add(allItems.get(id));
 		}
 		return ret;

@@ -1,0 +1,20 @@
+{
+	"version": 2023021100,
+	"url": "https://pretalx.hackerhotel.nl/hackerhotel-2023/schedule.xml",
+	"title": "HackerHotel 2023",
+	"start": "2023-02-10",
+	"end": "2023-02-12",
+	"timezone": "Europe/Amsterdam",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackerhotel.nl/",
+				"title": "Website"
+			},
+			{
+				"url": "https://mapcomplete.osm.be/indoors?z=18&lat=52.22072&lon=5.721302&language=en",
+				"title": "Map"
+			}
+		]
+	}
+}

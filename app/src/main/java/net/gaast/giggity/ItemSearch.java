@@ -3,8 +3,10 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -43,7 +45,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		RelativeLayout.LayoutParams lp;
 
 		LinearLayout queryOuter = new LinearLayout(ctx);
-		queryOuter.setBackgroundResource(R.color.primary);
+		queryOuter.setBackgroundResource(R.color.search_back);
 		app.setShadow(queryOuter, true);
 		app.setPadding(queryOuter, 16, 0, 16, 16);
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -81,7 +83,6 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		addView(resultList, lp);
 
-		query.requestFocus();
 		new UpdateIndexTask().execute(true);
 	}
 
@@ -95,6 +96,18 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 			setLines(1);
 			setSingleLine();
 			setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+
+			// This is only really relevant when running inside the emulator it seems, where hitting
+			// Enter on the physical keyboard by default isn't the same like clicking/tapping Go.
+			setOnKeyListener(new OnKeyListener() {
+				@Override
+				public boolean onKey(View view, int i, KeyEvent keyEvent) {
+					if (keyEvent.getAction() == KeyEvent.ACTION_UP && keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+						onEditorAction(EditorInfo.IME_ACTION_SEARCH);
+					}
+					return false;
+				}
+			});
 		}
 
 		@Override
@@ -254,7 +267,17 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 
 	@Override
 	public void onShow() {
-		app.showKeyboard(getContext(), query);
+		// Focus query field and auto-show keyboard only if there's no query entered yet and/or if
+		// the results list is almost empty.
+		if (query.getText().toString().isEmpty() ||
+		    (resultList != null && resultList.list.size() <= 2)) {
+			query.requestFocus();
+			app.showKeyboard(getContext(), query);
+		} else {
+			// If there's something in the query field already then let them browse other results
+			// first. Unless there barely were any. :)
+			query.clearFocus();
+		}
 	}
 
 	@Override

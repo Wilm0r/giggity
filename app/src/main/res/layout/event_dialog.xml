@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:background="@android:color/background_light"
               android:orientation="vertical">
 
     <LinearLayout
@@ -201,10 +200,10 @@
                     android:id="@+id/links"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:layout_below="@id/description"
-                    android:orientation="vertical">
-                </LinearLayout>
+                    android:layout_alignParentLeft="true"
+                    android:orientation="vertical"
+                    android:paddingTop="25sp"></LinearLayout>
 
             </RelativeLayout>
         </LinearLayout>

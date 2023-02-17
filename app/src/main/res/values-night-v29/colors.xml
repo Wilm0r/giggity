@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- material design "primary colours" -->
+    <!-- https://colorhunt.co/palette/150485590995c62a8803c4a1
+    purple too odd
+    <color name="primary">#590995</color>
+    <color name="primary_dark">#150485</color>
+    <color name="accent">#03C4A1</color>
+    -->
+
+    <!-- https://colorhunt.co/palette/1829522b35957045afe14594
+    <color name="primary_dark">#182952</color>
+    <color name="primary">#2B3595</color>
+    <color name="accent">#E14594</color>
+    -->
+
+    <!-- https://colorhunt.co/palette/15196532407b51558546b5d1 -->
+    <color name="primary_dark">#151965</color>
+    <color name="primary">#32407B</color>
+    <color name="accent">#46B5D1</color>
+
+    <!-- light background/nav drawer colours -->
+    <color name="light">#FF1E1E1E</color>
+    <color name="light_dark">#FF121212</color> <!-- naming is hard! esp in a dark theme :D -->
+
+    <!-- ScheduleItemView -->
+    <color name="time_back">#FF222222</color>
+    <color name="remind_back">@color/accent</color>
+
+    <!-- ItemSearch -->
+    <color name="search_back">@color/primary_dark</color>
+
+    <color name="light_text">#EEFFFFFF</color> <!-- on material/blue backgrounds -->
+    <color name="light_text_on_white">#EECCCCCC</color> <!-- on material/blue backgrounds -->
+    <color name="dark_text">#FFDDDDDD</color> <!-- darker than default, for titles, etc -->
+
+    <color name="light_back">#FF121212</color>
+    <color name="background_material_light">#ff121212</color>
+
+    <color name="blocks_bg">#FF121212</color>
+    <color name="blocks_lines">#FF181818</color>
+
+    <color name="blocks_itembg_0">#FF121212</color>
+    <color name="blocks_itembg_1">#FF212121</color>
+    <color name="blocks_itembg_selected">@color/primary</color>
+    <color name="blocks_itemfg">#EEFFFFFF</color>
+    <color name="blocks_itemfg_selected">#EEFFFFFF</color>
+
+    <color name="blocks_clockbg_now">#FF00CF00</color>
+    <color name="blocks_clockfg">#EEFFFFFF</color>
+    <color name="blocks_clockfg_now">#EEFFFFFF</color>
+
+    <color name="blocks_tentbg_0">#FF282828</color>
+    <color name="blocks_tentbg_1">#FF303030</color>
+    <color name="blocks_tentfg">#FFEEEEEE</color>
+</resources>

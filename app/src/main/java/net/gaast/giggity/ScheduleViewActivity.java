@@ -533,6 +533,10 @@ public class ScheduleViewActivity extends Activity {
 		if (redraw) {
 			redrawSchedule();
 			redraw = false;
+		} else {
+			if (viewer != null) {
+				viewer.onShow();
+			}
 		}
 		minuteRefresher.run();
 		updateRoomStatus.run();
