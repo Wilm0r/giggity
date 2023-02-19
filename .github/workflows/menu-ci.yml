@@ -37,7 +37,7 @@ jobs:
         run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }} --summary_comment /tmp/menu-ci-comment.md
 
       - name: Update PR comment
-        if: ${{ github.event_name == 'pull_request' && job.status == "success"}}
+        if: ${{ github.event_name == 'pull_request' && job.status == 'success'}}
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: menu-ci
@@ -45,7 +45,7 @@ jobs:
           filePath: /tmp/menu-ci-comment.md
 
       - name: Update PR comment
-        if: ${{ github.event_name == 'pull_request' && job.status != "success"}}
+        if: ${{ github.event_name == 'pull_request' && job.status != 'success'}}
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: menu-ci
