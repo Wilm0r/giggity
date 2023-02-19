@@ -44,7 +44,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: 1435830948,
-              reaction_id: rocket
+              reaction_id: "rocket"
             })
 
       - name: Update PR comment
