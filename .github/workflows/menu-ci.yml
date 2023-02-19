@@ -37,13 +37,14 @@ jobs:
         run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }} --summary_comment /tmp/menu-ci-comment.md
 
       - uses: actions/github-script@v6
+        if: ${{ github.event_name == 'pull_request' && failure()}}
         with:
           script: |
             github.rest.reactions.deleteForPullRequestComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: 1435830948,
-              reaction_id: confused
+              reaction_id: rocket
             })
 
       - name: Update PR comment
