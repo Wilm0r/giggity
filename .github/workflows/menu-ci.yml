@@ -11,7 +11,7 @@ on:
 # If I ever fix that, then the ifs below should be updated
 
 jobs:
-  run-validator:
+  validate:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -38,7 +38,7 @@ jobs:
   update-comment-ok:
     runs-on: ubuntu-latest
     needs: run-validator
-    if: ${{ github.event_name == 'pull_request' && jobs.run-validator.result == "success"}}
+    if: ${{ github.event_name == 'pull_request' && jobs.validate.result == "success"}}
     steps:
       - name: Update PR comment
         uses: thollander/actions-comment-pull-request@v2
@@ -50,7 +50,7 @@ jobs:
   update-comment-failed:
     runs-on: ubuntu-latest
     needs: run-validator
-    if: ${{ github.event_name == 'pull_request' && jobs.run-validator.result != "success"}}
+    if: ${{ github.event_name == 'pull_request' && jobs.validate.result != "success"}}
     steps:
       - name: Update PR comment
         uses: thollander/actions-comment-pull-request@v2
