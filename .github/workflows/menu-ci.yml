@@ -8,9 +8,10 @@ on:
       - 'tools/**'
 
 # Skip push for now since I can't really figure out a suitable base ref?
+# If I ever fix that, then the ifs below should be updated
 
 jobs:
-  build:
+  run-validator:
 
     runs-on: ubuntu-latest
     strategy:
@@ -33,4 +34,26 @@ jobs:
           pip install dulwich jsonschema pillow urllib3
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }}
+        run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }} --summary_comment /tmp/menu-ci-comment.md
+
+  update-comment-ok:
+    needs: run-validator
+    if: ${{ github.event_name == 'pull_request' && jobs.run-validator.result == "success"}}
+    steps:
+      - name: Update PR comment
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: menu-ci
+          reactions: rocket
+          filePath: /tmp/menu-ci-comment.md
+  
+  update-comment-failed:
+    needs: run-validator
+    if: ${{ github.event_name == 'pull_request' && jobs.run-validator.result != "success"}}
+    steps:
+      - name: Update PR comment
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: menu-ci
+          reactions: confused
+          filePath: /tmp/menu-ci-comment.md
