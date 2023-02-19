@@ -40,12 +40,17 @@ jobs:
         if: ${{ github.event_name == 'pull_request' && failure()}}
         with:
           script: |
+            github.rest.reactions.listForPullRequestReviewComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              comment_id: 1435830948
+            });
             github.rest.reactions.deleteForPullRequestComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
               comment_id: 1435830948,
               reaction_id: 1
-            })
+            });
       - uses: actions/github-script@v6
         if: ${{ github.event_name == 'pull_request' && failure()}}
         with:
