@@ -1,0 +1,25 @@
+{
+	"version": 2023022200,
+	"url": "https://www.postgresql.eu/events/pgdayparis2023/schedule.xml",
+	"title": "pgDay Paris 2023",
+	"start": "2023-03-22",
+	"end": "2023-03-23",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.pgday.paris/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2023.pgday.paris/registration/",
+				"title": "Registration"
+			},
+			{
+				"url": "https://2023.pgday.paris/venue/",
+				"title": "Venue"
+			}
+		],
+		"icon": "https://files.mastodon.social/accounts/avatars/000/194/494/original/9f75283c634daf2b.png"
+	}
+}
