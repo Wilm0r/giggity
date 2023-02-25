@@ -33,33 +33,7 @@ jobs:
         id: main
         run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }} --summary_comment /tmp/menu-ci-comment.md
 
-      - uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' && failure()}}
-        with:
-          script: |
-            github.rest.reactions.listForPullRequestReviewComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: 1435830948
-            });
-            github.rest.reactions.deleteForPullRequestComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: 1435830948,
-              reaction_id: 1
-            });
-      - uses: actions/github-script@v6
-        if: ${{ github.event_name == 'pull_request' && failure()}}
-        with:
-          script: |
-            github.rest.reactions.deleteForPullRequestComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              comment_id: 1435830948,
-              reaction_id: 2
-            })
-
-      - name: Update PR comment
+      - name: "Update PR comment: Ready to go!"
         if: ${{ github.event_name == 'pull_request' && success()}}
         uses: thollander/actions-comment-pull-request@v2
         with:
@@ -67,10 +41,9 @@ jobs:
           reactions: rocket
           filePath: /tmp/menu-ci-comment.md
 
-      - name: Update PR comment
+      - name: "Update PR comment: Remaining issues"
         if: ${{ github.event_name == 'pull_request' && failure()}}
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: menu-ci
-          reactions: confused
           filePath: /tmp/menu-ci-comment.md
