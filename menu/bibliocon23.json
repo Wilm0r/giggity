@@ -1,0 +1,25 @@
+{
+	"version": 2023022401,
+	"url": "https://cloud.bib.uni-mannheim.de/s/3NdTDTKfDmz9pqy/download/bibliocon23.xml",
+	"title": "BiblioCon 2023",
+	"start": "2023-05-23",
+	"end": "2023-05-26",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.bibliocon.de/",
+				"title": "Webseite"
+			},
+			{
+				"url": "https://2023.bibliocon.de/informationen-von-a-z/",
+				"title": "Informationen von A-Z"
+			},
+			{
+				"url": "https://2023.bibliocon.de/wp-content/uploads/2020/02/HCC.pdf",
+				"title": "Lageplan Hannover Congress Centrum (PDF)",
+				"type": "application/pdf"
+			}
+		]
+	}
+}
