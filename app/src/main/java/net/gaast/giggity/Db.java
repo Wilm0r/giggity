@@ -500,17 +500,29 @@ public class Db {
 			                "From schedule_item Where sci_sch_id = ?",
 			                new String[]{"" + schId});
 			while (q.moveToNext()) {
-				Schedule.Item item = sched.getItem(q.getString(1));
+				String id = q.getString(1);
+				Schedule.Item item = sched.getItem(id);
 				if (item == null) {
-					/* ZOMGWTF D: */
-					Log.e("DeoxideDb", "Db has info about missing schedule item " +
-					      q.getString(1) + " remind " + q.getInt(2) + " stars " + q.getInt(4) + " hidden " + q.getInt(3));
-					continue;
+					String cId = sched.getCId(id);
+					if (cId != null) {
+						Log.i("DeoxideDb", "Db has info for stale id=" + id + ", replacing with cId=" + cId);
+						sciIdMap.put(cId, (long) q.getInt(0));
+						item = sched.getItem(cId);
+						if (item == null) {
+							Log.e("DeoxideDb", "... except even that ID seems to be missing? That's probably a Giggity bug :(");
+							continue;
+						}
+					} else {
+						/* ZOMGWTF D: */
+						Log.e("DeoxideDb", "Db has info about missing schedule item id=" +
+								                   id + " remind=" + q.getInt(2) + " stars=" + q.getInt(4) + " hidden=" + q.getInt(3));
+						continue;
+					}
 				}
 
 				item.setRemind(q.getInt(2) != 0);
 				item.setHidden(q.getInt(3) != 0);
-				sciIdMap.put(q.getString(1), (long) q.getInt(0));
+				sciIdMap.put(id, (long) q.getInt(0));
 			}
 			q.close();
 		}

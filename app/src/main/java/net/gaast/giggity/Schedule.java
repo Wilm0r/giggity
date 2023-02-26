@@ -93,6 +93,7 @@ public class Schedule implements Serializable {
 
 	private LinkedList<Schedule.Line> tents = new LinkedList<>();
 	protected HashMap<String,Schedule.Item> allItems = new HashMap<>();
+	protected HashMap<String,String> cIdMap = new HashMap<>();
 	private Collator trackSort;
 	private SortedMap<String,Track> tracks;
 
@@ -682,6 +683,10 @@ public class Schedule implements Serializable {
 		return allItems.get(id);
 	}
 
+	public String getCId(String id) {
+		return cIdMap.get(id);
+	}
+
 	public Collection<Track> getTracks() {
 		if (tracks == null || tracks.size() == 0)
 			return null;
@@ -977,8 +982,12 @@ public class Schedule implements Serializable {
 			curString = "";
 			if (localName.equals("conference") || localName.equals("event")) {
 				propMap = new HashMap<String,String>();
-				propMap.put("id", atts.getValue("id"));
-				
+
+				if (atts.getValue("id") != null)
+					propMap.put("id", atts.getValue("id"));
+				if (atts.getValue("guid") != null)
+					propMap.put("guid", atts.getValue("guid"));
+
 				links = new LinkedList<>();
 				persons = new LinkedList<>();
 			} else if (localName.equals("day")) {
@@ -1026,13 +1035,16 @@ public class Schedule implements Serializable {
 					inTZ = fTZ;
 				}
 			} else if (localName.equals("event")) {
-				String id, title, startTimeS, startZonedTimeS, durationS, s, desc, wl;
+				String id = null, guid = null;
+				String title, startTimeS, startZonedTimeS, durationS, s, desc, wl;
 				ZonedDateTime startTime, endTime;
 				Schedule.Item item;
 
 				startTimeS = propMap.get("start");
 				startZonedTimeS = propMap.get("date");
-				if ((id = propMap.get("id")) == null ||
+				id = propMap.get("id");
+				guid = propMap.get("guid");
+				if ((id == null && guid == null) ||
 				    (title = propMap.get("title")) == null ||
 				    (startTimeS == null && startZonedTimeS == null) ||
 				    (durationS = propMap.get("duration")) == null) {
@@ -1064,7 +1076,25 @@ public class Schedule implements Serializable {
 				LocalTime rawTime = LocalTime.parse(durationS, tf);
 				endTime = startTime.plusHours(rawTime.getHour()).plusMinutes(rawTime.getMinute());
 
-				item = new Schedule.Item(id, title, startTime, endTime);
+				String cid = null;  // canonical ID. This file format has been, hm, evolving?
+				if (guid != null) {
+					cid = guid;
+					if (id != null) {
+						String prev = cIdMap.put(id, guid);
+						if (prev != null) {
+							Log.i("Schedule.loadPentabarf", "Schedule contains duplicate event id=" +
+									     id + " used by both guid=" + prev + " and guid=" + guid);
+						}
+					}
+				} else if (id != null) {
+					// FOSDEM still uses just these, as do a few others. :(
+					cid = id;
+					if (allItems.get(id) != null) {
+						Log.e("Schedule.loadPentabarf", "Schedule contains duplicate event id=" + id + ", and does NOT provide GUIDs for deduplication!");
+					}
+				}
+
+				item = new Schedule.Item(cid, title, startTime, endTime);
 				
 				if ((s = propMap.get("subtitle")) != null) {
 					if (!s.isEmpty())
