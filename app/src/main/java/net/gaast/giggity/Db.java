@@ -35,7 +35,6 @@ import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -792,7 +791,7 @@ public class Db {
 
 	// Not mine, this was originally Kotlin code from I think https://medium.com/android-news/offline-full-text-search-in-android-ios-b4dd5bed3acd
 	// and decompiled back into Java by me.
-	private static double OkapiBM25Score(@NotNull Integer[] matchinfo, int column) {
+	private static double OkapiBM25Score(Integer[] matchinfo, int column) {
 		double b = 0.75;
 		double k1 = 1.2;
 		int pOffset = 0;
