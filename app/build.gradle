@@ -39,18 +39,9 @@ dependencies {
     implementation  "io.noties.markwon:ext-strikethrough:$markwon_version"  // html seems to depend on this one? #shruggie
     implementation  "io.noties.markwon:linkify:$markwon_version"
 
-//    implementation "androidx.appcompat:appcompat:1.6.0"
-//    implementation "androidx.appcompat:appcompat-resources:1.6.0"
-
-    // Dark mode?
-//    implementation "com.google.android.material:material:1.4.0"
-
-    // So far, only for the Okapi.BM25 module. Any day now I should just rewrite that stupid file?
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest:2.2'
-    testImplementation 'org.json:json:20171018'
+    testImplementation 'org.json:json:20230227'
 }
 
 repositories {
