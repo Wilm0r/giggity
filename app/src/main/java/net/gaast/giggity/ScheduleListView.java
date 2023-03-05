@@ -79,7 +79,6 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				                  .appendStyleRun(bliep.getPaint(), timeText.length(), false)
 				                  .build();
 		int greyWidth = (int) mt.getWidth(0, timeText.length()) + app.dp2px(10);
-		// TODO: Ideally the above should set the padding on schedule_line as well. Seems to matter if user has large fonts?
 
 		// Grey background for the time(+date) column on the left, but continuous so drawn here.
 		Bitmap bmp = Bitmap.createBitmap(greyWidth, 1, Bitmap.Config.ARGB_8888);
