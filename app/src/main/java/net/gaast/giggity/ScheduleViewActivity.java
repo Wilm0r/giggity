@@ -841,8 +841,15 @@ public class ScheduleViewActivity extends Activity {
 			return;
 		}
 
+		String searchQuery = null;
+		try {
+			ItemSearch its = (ItemSearch) viewer;
+			searchQuery = its.getQuery();
+		} catch (ClassCastException e) {
+			// OK! null will do.
+		}
 		if (tabletView && !new_activity) {
-			eventDialogView = new EventDialogPager(this, item, others);
+			eventDialogView = new EventDialogPager(this, item, others, searchQuery);  // TODO
 			eventDialogView.setTitleClick(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -858,6 +865,7 @@ public class ScheduleViewActivity extends Activity {
 				for (Schedule.Item o : others) {
 					ids.add(o.getId());
 				}
+				intent.putExtra("search_query", searchQuery);
 				intent.putExtra("others", ids.toArray(new String[others.size()]));
 			}
 			ActivityOptions options = null;

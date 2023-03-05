@@ -25,13 +25,20 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +54,8 @@ import android.widget.TextView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static net.gaast.giggity.Schedule.RoomStatus.EVACUATE;
 import static net.gaast.giggity.Schedule.RoomStatus.FULL;
@@ -64,7 +73,7 @@ public class EventDialog extends FrameLayout {
 
 	private CheckBox cb_;
 
-	public EventDialog(Context ctx, Schedule.Item item) {
+	public EventDialog(Context ctx, Schedule.Item item, String searchQuery) {
 		super(ctx);
 
 		ctx_ = ctx;
@@ -157,8 +166,33 @@ public class EventDialog extends FrameLayout {
 			v.setVisibility(View.GONE);
 		}
 		
+		Spannable desc = new SpannableString(item.getDescriptionSpanned(ctx));
+		if (searchQuery != null && !searchQuery.isEmpty()) {
+			String raw = desc.toString().toLowerCase();
+			Matcher m = Pattern.compile("(\"([^\"]*)\"|'([^']*)'|(\\S+))").matcher(searchQuery.toLowerCase());
+			while (m.find()) {
+				String term = m.group();
+				// Couldn't figure out how to get the inner alternate capture groups to all go into m.group(SAMENUMBER), PCRE does that with (?|...) ?
+				if (term.length() > 2 && "\"'".contains(term.substring(0, 1)) &&
+				    term.substring(0, 1).equals(term.substring(term.length() - 1))) {
+					term = term.substring(1, term.length() - 1);
+				}
+
+				if (term.isEmpty()) continue;
+				int start = -1;
+				while (true) {
+					start = raw.indexOf(term, start + 1);
+					if (start == -1) {
+						break;
+					}
+					desc.setSpan(new BackgroundColorSpan(app_.getColor(R.color.evd_highlight_bg)), start, start + term.length(), 0);
+					desc.setSpan(new ForegroundColorSpan(app_.getColor(R.color.evd_highlight_fg)), start, start + term.length(), 0);
+				}
+			}
+		}
+
 		t = root.findViewById(R.id.description);
-		t.setText(item.getDescriptionSpanned(ctx));
+		t.setText(desc);
 		t.setMovementMethod(LinkMovementMethod.getInstance());
 
 		/* This is frustrating: a TextView cannot support text selection and clickable links at the

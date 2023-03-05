@@ -14,8 +14,9 @@ public class EventDialogPager extends ViewPager {
 	private AbstractList<Schedule.Item> items_;
 	private int item_index_ = -1;
 	private OnClickListener title_click_;
+	private String searchQuery_;
 
-	public EventDialogPager(Context ctx, Schedule.Item item, AbstractList<Schedule.Item> items) {
+	public EventDialogPager(Context ctx, Schedule.Item item, AbstractList<Schedule.Item> items, String searchQuery) {
 		super(ctx);
 
 		item_ = item;
@@ -38,6 +39,8 @@ public class EventDialogPager extends ViewPager {
 			items_.add(0, item);
 			item_index_ = 0;
 		}
+
+		searchQuery_ = searchQuery;
 
 		setAdapter(new Adapter());
 		setCurrentItem(item_index_);
@@ -64,7 +67,7 @@ public class EventDialogPager extends ViewPager {
 
 		@Override
 		public Object instantiateItem(ViewGroup parent, int position) {
-			EventDialog d = new EventDialog(getContext(), items_.get(position));
+			EventDialog d = new EventDialog(getContext(), items_.get(position), searchQuery_);
 			if (title_click_ != null) {
 				d.setTitleClick(title_click_);
 			}
