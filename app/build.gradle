@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def generatedRes = 'build/genrule/res'
+
 android {
     compileSdkVersion 33
     defaultConfig {
@@ -12,13 +14,20 @@ android {
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-nomini.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-nomini.txt'
         }
-    }
-    productFlavors {
     }
     lint {
         abortOnError false
+    }
+    sourceSets {
+        // build/generated/res/raw exists too but a menu.json there just got ignored?
+        // Specifying the genrule resource directory for build variants is a hack to hopefully
+        // get smooth fallback to a stale menu.json if needed.
+        // Normally these point at build/$variant/res but I definitely won't need that.
+        debug.res.srcDirs = [generatedRes]
+        release.res.srcDirs = [generatedRes]
+        main.res.srcDirs = ['src/main/res']
     }
     namespace 'net.gaast.giggity'
 }
@@ -44,4 +53,31 @@ dependencies {
 
 repositories {
     mavenCentral()
+}
+
+tasks.register('generateMenu') {
+    doLast {
+        def menuJson = new ByteArrayOutputStream()
+        mkdir "${generatedRes}/raw"
+        def res = exec {
+            workingDir = '..'
+            standardOutput = menuJson
+            commandLine = 'tools/merge.py'
+            ignoreExitValue = true
+        }
+        if (res.getExitValue() == 0) {
+            new File(projectDir, "${generatedRes}/raw/menu.json").text = menuJson
+        } else {
+            logger.warn("WARNING: The menu merger did not run successfully! Will fall back to a stale menu.json file.")
+        }
+    }
+}
+
+// generate${buildType}Resources is dynamically created so you have to add this dependency dynamically, too..
+// https://stackoverflow.com/questions/32878383/gradle-how-to-run-custom-task-after-an-android-library-is-built
+tasks.whenTaskAdded {
+    theTask ->
+        if (theTask.name =~ /generate.*Resources/) {
+            theTask.dependsOn generateMenu
+        }
 }
