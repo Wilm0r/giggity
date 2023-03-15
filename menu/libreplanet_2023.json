@@ -1,0 +1,25 @@
+{
+	"version": 2023031500,
+	"url": "https://libreplanet.org/2023/lp2023-schedule.ics",
+	"title": "LibrePlanet 2023",
+	"start": "2023-03-18",
+	"end": "2023-03-19",
+	"timezone": "America/New_York",
+	"metadata": {
+		"icon": "https://libreplanet.org/2023/assets/img/logo-small.png",
+		"links": [
+			{
+				"url": "https://libreplanet.org/2023/",
+				"title": "Website"
+			},
+			{
+				"url": "https://libreplanet.org/2023/live/",
+				"title": "Live Stream"
+			},
+			{
+				"url": "https://libreplanet.org/2023/safe-space-policy/",
+				"title": "Safe Space Policy"
+			}
+		]
+	}
+}
