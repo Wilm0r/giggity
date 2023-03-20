@@ -1,5 +1,5 @@
 {
-	"version": 2023031000,
+	"version": 2023032000,
 	"url": "https://events.hackerspace.gent/en/newline2023/public/schedule.xml",
 	"title": "Newline 2023",
 	"start": "2023-03-31",
@@ -10,6 +10,10 @@
 			{
 				"url": "https://hackerspace.gent/newline/2023/",
 				"title": "Website"
+			},
+			{
+				"url": "https://hackerspace.gent/landing/contact.php",
+				"title": "Location and Contact"
 			}
 		]
 	}
