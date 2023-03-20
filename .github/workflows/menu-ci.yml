@@ -11,6 +11,19 @@ on:
 # If I ever fix that, then the ifs below should be updated
 
 jobs:
+  permissions:
+    issues: write
+    pull-requests: write
+    # Rest are defaults but apparently if you omit them they'll be set to none. https://github.blog/changelog/2021-04-20-github-actions-control-permissions-for-github_token/
+    actions: read
+    checks: read
+    contents: read
+    deployments: read
+    packages: read
+    repository-projects: read
+    security-events: read
+    statuses: read
+
   validate:
     runs-on: ubuntu-latest
 
