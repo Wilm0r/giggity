@@ -32,7 +32,7 @@ jobs:
         run: |
           set -x
           PR_URL=$(jq -r ".pull_request.base.repo.clone_url" "$GITHUB_EVENT_PATH")
-          PR_SHA=$(jq -r ".pull_request.base.sha" "$GITHUB_EVENT_PATH")
+          PR_SHA=$(jq -r ".pull_request.base.ref" "$GITHUB_EVENT_PATH")
           HEAD="$(mktemp -d)/head"
           echo git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
           git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
