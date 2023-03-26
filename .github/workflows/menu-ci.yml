@@ -28,19 +28,18 @@ jobs:
           python -m pip install --upgrade pip
           pip install dulwich jsonschema pillow urllib3
 
-      - name: Shithub
+      - name: Fetch PR
+        id: fetch_pr
         run: |
-          set -x
           PR_URL=$(jq -r ".pull_request.base.repo.clone_url" "$GITHUB_EVENT_PATH")
           PR_SHA=$(jq -r ".pull_request.base.ref" "$GITHUB_EVENT_PATH")
           HEAD="$(mktemp -d)/head"
-          echo git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
           git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
-          echo "::set-output name=pr_cloned::$HEAD"
+          echo "dst=${HEAD}" >> "$GITHUB_OUTPUT"
 
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }} --summary_comment /tmp/menu-ci-comment.md
+        run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.dst}} --summary_comment /tmp/menu-ci-comment.md
 
       - name: "Update PR comment: Ready to go!"
         if: ${{ github.event_name == 'pull_request' && success()}}

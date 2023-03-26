@@ -70,6 +70,8 @@ parser.add_argument(
 parser.add_argument(
 	"--base", "-b",	default="HEAD", help="Base ref to diff against.")
 parser.add_argument(
+	"--load-new-from", help="Load new menu from specified path, and diff it against local menu.")
+parser.add_argument(
 	"--stderr", action="store_true",
 	help="All output to stderr, useful when running inside a crappy GitHub Actions environment but you may want to *gasp* see some actual output.")
 parser.add_argument(
@@ -83,7 +85,10 @@ if args.stderr:
 LOG = Log(args.summary_comment)
 
 try:
-	new = merge.merge(merge.load_locally("menu"), "")
+	if args.load_new_from:
+		new = merge.merge(merge.load_locally(args.load_new_from), "")
+	else:
+		new = merge.merge(merge.load_locally("menu"), "")
 except Exception as e:
 	LOG.E("Merge/parse failure while loading menu.")
 	raise
@@ -92,9 +97,12 @@ base_ref = args.base
 LOG.C("Base ref: %s" % base_ref)
 
 try:
-	base = merge.merge(merge.load_git(".", base_ref), "")
+	if args.load_new_from:
+		base = merge.merge(merge.load_locally("menu"), "")
+	else:
+		base = merge.merge(merge.load_git(".", base_ref), "")
 except Exception as e:
-	LOG.E("Merge/parse failure while loading baseline version. Very confused now.")
+	LOG.E("Merge/parse failure while loading baseline menu. Very confused now.")
 	raise
 
 schema = json.load(open(SCHEMA, "r"))
