@@ -2,7 +2,7 @@
 	"version": 2019028001,
 	"url": "https://fosdem.org/2019/schedule/xml",
 	"title": "FOSDEM 2019",
-	"start": "2019-02-02",
+	"start": "2020-02-02",
 	"end": "2019-02-03",
 	"refresh_interval": 1800,
 	"metadata": {
