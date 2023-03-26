@@ -39,7 +39,7 @@ jobs:
 
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}} --summary_comment /tmp/menu-ci-comment.md
+        run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}}/menu --summary_comment /tmp/menu-ci-comment.md
 
       - name: "Update PR comment: Ready to go!"
         if: ${{ github.event_name == 'pull_request' && success()}}
