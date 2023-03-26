@@ -30,9 +30,11 @@ jobs:
 
       - name: Shithub
         run: |
-          echo ${GITHUB_EVENT_PATH}
-          cat echo ${GITHUB_EVENT_PATH}
-          jq < ${GITHUB_EVENT_PATH}
+          PR_URL=$(jq -r ".pull_request.base.repo.clone_url" "$GITHUB_EVENT_PATH")
+          PR_SHA=$(jq -r ".pull_request.base.sha" "$GITHUB_EVENT_PATH")
+          HEAD="$(mktemp -d)/head"
+          git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
+          echo "::set-output name=pr_cloned::$HEAD"
 
       - name: Run menu JSON checker
         id: main
