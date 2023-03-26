@@ -3,6 +3,7 @@ name: Menu
 on:
   pull_request:
     paths:
+      - '.github/**'
       - 'menu/**'
 
 # Skip push for now since I can't really figure out a suitable base ref?
