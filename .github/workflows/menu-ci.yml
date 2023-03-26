@@ -3,9 +3,7 @@ name: Menu
 on:
   pull_request:
     paths:
-      - '.github/**'
       - 'menu/**'
-      - 'tools/**'
 
 # Skip push for now since I can't really figure out a suitable base ref?
 # If I ever fix that, then the ifs below should be updated
@@ -13,18 +11,6 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
-      # Rest are defaults but apparently if you omit them they'll be set to none. https://github.blog/changelog/2021-04-20-github-actions-control-permissions-for-github_token/
-      actions: read
-      checks: read
-      contents: read
-      deployments: read
-      packages: read
-      repository-projects: read
-      security-events: read
-      statuses: read
 
     steps:
       - uses: actions/checkout@v3
@@ -40,6 +26,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install dulwich jsonschema pillow urllib3
+
+      - name: Shithub
+        run: |
+          echo ${GITHUB_EVENT_PATH}
+          cat echo ${GITHUB_EVENT_PATH}
+          jq < ${GITHUB_EVENT_PATH}
 
       - name: Run menu JSON checker
         id: main
