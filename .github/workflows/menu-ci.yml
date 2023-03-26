@@ -46,7 +46,7 @@ jobs:
         run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}}/menu --summary_comment /tmp/menu-ci-comment.md
 
       - name: "Update PR comment: Ready to go!"
-        if: ${{ github.event_name == 'pull_request' && success()}}
+        if: ${{ success() }}
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: menu-ci
@@ -54,7 +54,7 @@ jobs:
           filePath: /tmp/menu-ci-comment.md
 
       - name: "Update PR comment: Remaining issues"
-        if: ${{ github.event_name == 'pull_request' && failure()}}
+        if: ${{ failure() }}
         uses: thollander/actions-comment-pull-request@v2
         with:
           comment_tag: menu-ci
