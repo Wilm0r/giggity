@@ -1,5 +1,10 @@
 name: Menu
 
+# Now running on pull_request_target events instead of plain pull_request.
+# This means the action will always run in the context of my own repo, looking only at the *menu* portion of a PR.
+# I've done this to make the comment-pull-request stuff below work but maybe this is generally cleaner/better/securerer or something.
+# Also it was way too much work. :(
+# Some ideas taken from https://github.com/bugout-dev/locust/blob/1bebcc2cac67e90c1efb09b42c37e91cdae829f9/.github/workflows/locust.yaml
 on:
   pull_request_target:
     paths:
