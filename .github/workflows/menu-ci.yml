@@ -1,9 +1,8 @@
 name: Menu
 
 on:
-  pull_request:
+  pull_request_target:
     paths:
-      - '.github/**'
       - 'menu/**'
 
 # Skip push for now since I can't really figure out a suitable base ref?
@@ -31,8 +30,8 @@ jobs:
       - name: Fetch PR
         id: fetch_pr
         run: |
-          PR_URL=$(jq -r ".pull_request.base.repo.clone_url" "$GITHUB_EVENT_PATH")
-          PR_SHA=$(jq -r ".pull_request.base.ref" "$GITHUB_EVENT_PATH")
+          PR_URL=$(jq -r ".pull_request.head.repo.clone_url" "$GITHUB_EVENT_PATH")
+          PR_SHA=$(jq -r ".pull_request.head.ref" "$GITHUB_EVENT_PATH")
           HEAD="$(mktemp -d)/head"
           git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
           echo "dst=${HEAD}" >> "$GITHUB_OUTPUT"
