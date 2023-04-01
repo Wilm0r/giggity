@@ -113,6 +113,10 @@ public class Db {
 			           "hst_query VarChar(128), " +
 					   "hst_atime Integer)");
 
+			// Immediately populate from in-apk seed file. Otherwise new installs, in case of network
+			// issues, may just open up with a blank screen.
+			updateData(db, false);
+
 			oldDbVer = 0;
 		}
 	
