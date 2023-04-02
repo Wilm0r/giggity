@@ -32,6 +32,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -40,11 +41,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import androidx.legacy.app.ActionBarDrawerToggle;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import android.transition.Explode;
 import android.util.Base64;
 import android.util.Log;
@@ -74,6 +70,12 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+
+import androidx.core.content.pm.ShortcutInfoCompat;
+import androidx.core.content.pm.ShortcutManagerCompat;
+import androidx.core.graphics.drawable.IconCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.legacy.app.ActionBarDrawerToggle;
 
 public class ScheduleViewActivity extends Activity {
 	protected ScheduleUI sched;
@@ -593,7 +595,20 @@ public class ScheduleViewActivity extends Activity {
 
 		// Notifications were already scheduled at load time but that was before extra metadata (like c3nav)
 		// was loaded. Kick off a refresh now.
-		app.updateRemind();
+		if (app.checkReminderPermissions(this, !app.getRemindItems().isEmpty())) {
+			app.updateRemind();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (grantResults.length != 1) {
+			return;
+		}
+		if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+			Toast.makeText(this, "Note that event reminders won't show up if notifications aren't granted.", Toast.LENGTH_LONG).show();
+		}
+		// Nothing to do if it was granted: Alarms are already set, and this permission is only needed once those go off.
 	}
 
 	/* Add dynamic links based on schedule data. Diff from update* is this should be done only once. */

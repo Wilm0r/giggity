@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "net.gaast.giggity"
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 33
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
-        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
+        // buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
         release {
@@ -23,8 +23,9 @@ android {
     sourceSets {
         // build/generated/res/raw exists too but a menu.json there just got ignored?
         // Specifying the genrule resource directory for build variants is a hack to hopefully
-        // get smooth fallback to a stale menu.json if needed.
-        // Normally these point at build/$variant/res but I definitely won't need that.
+        // get smooth fallback to a stale menu.json if needed - If you just list both generated
+        // and default under main, build will complain about duplicate menu.json file. :(
+        // Normally debug/release point at build/$variant/res but I definitely won't need that.
         debug.res.srcDirs = [generatedRes]
         release.res.srcDirs = [generatedRes]
         main.res.srcDirs = ['src/main/res']
@@ -63,6 +64,7 @@ tasks.register('generateMenu') {
             workingDir = '..'
             standardOutput = menuJson
             commandLine = 'tools/merge.py'
+            args = ['-w', '60']
             ignoreExitValue = true
         }
         if (res.getExitValue() == 0) {

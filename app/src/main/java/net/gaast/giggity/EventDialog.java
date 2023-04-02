@@ -25,20 +25,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,9 +54,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static net.gaast.giggity.Schedule.RoomStatus.EVACUATE;
 import static net.gaast.giggity.Schedule.RoomStatus.FULL;
-import static net.gaast.giggity.Schedule.RoomStatus.OK;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
@@ -247,6 +242,7 @@ public class EventDialog extends FrameLayout {
 		cb_.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				((Giggity) app_).checkReminderPermissions(ctx, isChecked);
 				item_.setRemind(isChecked);
 				try {
 					ScheduleViewActivity sva = (ScheduleViewActivity) getContext();

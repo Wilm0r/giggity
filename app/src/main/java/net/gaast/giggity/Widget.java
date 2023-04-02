@@ -91,7 +91,7 @@ public class Widget extends AppWidgetProvider {
 			if (!others.isEmpty()) {
 				evi.putExtra("others", others.toArray(new String[others.size()]));
 			}
-			PendingIntent pi = PendingIntent.getActivity(app, 0, evi, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pi = PendingIntent.getActivity(app, 0, evi, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 			v.setOnClickPendingIntent(R.id.title, pi);
 
 			v.setTextViewText(R.id.title, title);
