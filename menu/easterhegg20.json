@@ -1,0 +1,24 @@
+{
+	"version": 2023040500,
+	"url": "https://cfp.eh20.easterhegg.eu/eh20/schedule.xml",
+	"title": "Easterhegg 20",
+	"start": "2023-04-07",
+	"end": "2023-04-10",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://eh20.easterhegg.eu/",
+				"title": "Website"
+			},
+			{
+				"url": "https://presale.eh20.easterhegg.eu/",
+				"title": "Tickets"
+			},
+			{
+				"url": "https://engel.eh20.easterhegg.eu/login",
+				"title": "Angel Center"
+			}
+		]
+	}
+}
