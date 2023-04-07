@@ -1,0 +1,17 @@
+{
+    "version": 2023040522,
+    "url": "https://dcnc-eu.github.io/lineup/cloudland23.ics",
+    "title": "CloudLand 2023 - Das Cloud Native(s) Festival",
+    "start": "2023-06-20",
+    "end": "2023-06-23",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "icon": "https://dcnc-eu.github.io/lineup/cloudland23.png",
+        "links": [
+            {
+                "url": "https://www.cloudland.org/de/home/",
+                "title": "Website"
+            }
+        ]
+    }
+}
