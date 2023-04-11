@@ -1,0 +1,20 @@
+{
+	"version": 2023032500,
+	"url": "https://pretalx.jdll.org/jdll2023/schedule.xml",
+	"title": "Journées du Logiciel Libre 2023",
+	"start": "2023-04-01",
+	"end": "2023-04-02",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.jdll.org/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://www.jdll.org/contact-and-informations",
+				"title": "Informations pratiques"
+			}
+		]
+	}
+}

@@ -25,6 +25,7 @@ import android.graphics.Shader;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.text.MeasuredText;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -70,8 +71,17 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			}
 		});
 
+		ViewGroup bla = new LinearLayout(ctx);
+		inflate(ctx, R.layout.schedule_item, bla);
+		TextView bliep = bla.findViewById(R.id.time);
+		CharSequence timeText = bliep.getText();
+		MeasuredText mt = new MeasuredText.Builder(timeText.toString().toCharArray())  // O_o
+				                  .appendStyleRun(bliep.getPaint(), timeText.length(), false)
+				                  .build();
+		int greyWidth = (int) mt.getWidth(0, timeText.length()) + app.dp2px(10);
+
 		// Grey background for the time(+date) column on the left, but continuous so drawn here.
-		Bitmap bmp = Bitmap.createBitmap(app.dp2px(102), 1, Bitmap.Config.ARGB_8888);
+		Bitmap bmp = Bitmap.createBitmap(greyWidth, 1, Bitmap.Config.ARGB_8888);
 		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
 		for (int x = 0; x < bmp.getWidth() - 1; x++) {
 			bmp.setPixel(x, 0, getResources().getColor(R.color.time_back));

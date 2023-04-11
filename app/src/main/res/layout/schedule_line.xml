@@ -1,35 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:layout_marginBottom="5dp"
-              android:layout_marginLeft="107dp"
-              android:layout_marginRight="5dp"
-              android:layout_marginTop="25dp"
-              android:background="@color/primary"
-              android:orientation="vertical"
-              android:paddingBottom="10dp"
-              android:paddingLeft="20dp"
-              android:paddingRight="20dp"
-              android:paddingTop="10dp">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/lineTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Janson"
-        android:textColor="@color/light_text"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+    <!-- Only here for alignment with schedule_item. -->
+    <LinearLayout
+        android:id="@+id/timedateFiller"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="4dp">
 
-    <TextView
-        android:id="@+id/lineSubTitle"
+        <!-- Roboto hardcoded because it's reasonably non-proportional, as opposed to some recent
+             modern Pixel fonts. Text picked because they're wide characters, in case phone lacks Roboto? -->
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="Roboto"
+            android:minEms="5"
+            android:text="09:00–09:50"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/titlecolumn"
+        android:background="@drawable/schedule_line_background"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/lineTitle"
-        android:gravity="center_horizontal"
-        android:text="Main track"
-        android:textColor="@color/light_text"
-        android:visibility="gone" />
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:layout_margin="3dp"
+        android:padding="7dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/lineTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Janson"
+            android:textColor="@color/light_text"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/lineSubTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lineTitle"
+            android:gravity="center_horizontal"
+            android:text="Main track"
+            android:textColor="@color/light_text"
+            android:visibility="gone" />
+    </LinearLayout>
+</LinearLayout>

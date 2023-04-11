@@ -93,6 +93,7 @@ public class Schedule implements Serializable {
 
 	private LinkedList<Schedule.Line> tents = new LinkedList<>();
 	protected HashMap<String,Schedule.Item> allItems = new HashMap<>();
+	protected HashMap<String,String> cIdMap = new HashMap<>();
 	private Collator trackSort;
 	private SortedMap<String,Track> tracks;
 
@@ -146,8 +147,6 @@ public class Schedule implements Serializable {
 			loadPentabarf(in);
 		} else if (head.contains("begin:vcalendar")) {
 			loadIcal(in);
-		} else if (head.contains("{")) {
-			loadJson(in);
 		} else {
 			Log.d("head", head);
 			throw new LoadException(getString(R.string.format_unknown));
@@ -433,156 +432,6 @@ public class Schedule implements Serializable {
 		}
 	}
 
-	/*Reading the JSON open event format data fetched from the API end point*/
-	private void loadJson(BufferedReader in) {
-
-		StringBuffer buffer = new StringBuffer();
-		DateTimeFormatter df = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss").withZone(inTZ);
-		HashMap<String, Schedule.Line> tentMap = new HashMap<String, Schedule.Line>();
-		Boolean hasMicrolocs = false;
-		Scanner s = new Scanner(in);
-		HashMap<String, String> locs = new HashMap<>();
-
-		while (s.hasNext()) {
-			buffer.append(s.nextLine());
-
-		}
-
-		String output = buffer.toString();
-		Schedule.Line line = null;
-
-		try {
-
-			JSONObject conference = new JSONObject(output);
-			int i;
-
-			//Using this title name so the user doesn't see URL when she clicks back
-			title = conference.getString("name");
-
-			if (conference.has("logo")) {
-				icon = conference.getString("logo");
-			}
-
-			links = new LinkedList<>();
-
-			//Adding website separately because it is not in social_links
-			if (conference.has("event_url")) {
-				Schedule.Link slink = new Link(conference.getString("event_url"), "Website");
-				links.addLast(slink);
-			}
-
-			//Adding ticket url separately because it is not in social_links
-			if (conference.has("ticket_url")) {
-				Schedule.Link slink = new Link(conference.getString("ticket_url"), "Ticket URL");
-				links.addLast(slink);
-			}
-
-			//Using social links of the event like facebook, google+, etc.
-			if (conference.has("social_links")) {
-				JSONArray linklist = conference.getJSONArray("social_links");
-				for (i = 0; i < linklist.length(); ++i) {
-					JSONObject link = linklist.getJSONObject(i);
-					Schedule.Link slink = new Link(link.getString("link"), link.getString("name"));
-					slink.setType(link.optString("type", null));
-					links.addLast(slink);
-				}
-			}
-
-
-			if (conference.has("microlocations")) {
-
-				/*Changing the flag after checking the organizer is using with microlocations
-				options enabled*/
-
-				hasMicrolocs = true;
-
-				//Getting microlocations to add latitude and longitude
-				JSONArray microlocations = conference.getJSONArray("microlocations");
-
-				for (i = 0; i < microlocations.length(); i++) {
-
-					JSONObject room = microlocations.getJSONObject(i);
-					locs.put(room.getString("name"), room.getString("longitude") + "," + room.getString("latitude"));
-				}
-			}
-
-
-			//The sessions are contained in the array present in an object
-			JSONArray events = conference.getJSONArray("sessions");
-
-			for (i = 0; i < events.length(); i++) {
-
-				JSONObject event = events.getJSONObject(i);
-				String uid = event.getString("id");
-				String title = event.getString("title");
-
-				/*Our date format is different and I changed getTimeInMillis() a bit to ignore "+08"
-				in second part to avoid error in integer parsing*/
-				String startTimeS = event.getString("start_time");
-				String endTimeS = event.getString("end_time");
-				ZonedDateTime startTime, endTime;
-
-				if (startTimeS.contains("+")) {
-					startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('+'));
-				}
-				startTimeS = startTimeS.substring(0, startTimeS.lastIndexOf('-'));
-
-				if (endTimeS.contains("+")) {
-					endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('+'));
-				}
-				endTimeS = endTimeS.substring(0, endTimeS.lastIndexOf('-'));
-
-				startTime = ZonedDateTime.from(df.parse(startTimeS));
-				endTime = ZonedDateTime.from(df.parse(endTimeS));
-
-				Schedule.Item item = new Schedule.Item(uid, title, startTime, endTime);
-				item.setDescription(event.getString("long_abstract"));
-
-				if (event.getString("signup_url") != "null") {
-					item.addLink(new Link(event.getString("signup_url")));
-				}
-
-				JSONObject microlocation = event.getJSONObject("microlocation");
-				String location = microlocation.getString("name");
-
-				if ((line = tentMap.get(location)) == null) {
-					line = new Schedule.Line(location);
-					tents.add(line);
-					tentMap.put(location, line);
-				}
-
-				//Getting value (latitude and longitude) from the map by key (name)
-
-				if (hasMicrolocs && line.getTitle()!=null && !line.getTitle().equals("")) {
-					String locString = locs.get(line.getTitle());
-					String latitude = locString.substring(0, locString.indexOf(','));
-					String longitude = locString.substring(locString.indexOf(',') + 1);
-
-					//Adding location details here
-					String latlon = null;
-					try {
-						latlon = ("geo:0,0?q=" + longitude + "," +
-								latitude + "(" +
-								URLEncoder.encode(line.getTitle(), "utf-8") + ")");
-					} catch (UnsupportedEncodingException e) {
-						e.printStackTrace();
-					}
-
-
-					if (latlon != null) {
-						line.setLocation(latlon);
-					}
-				}
-
-				line.addItem(item);
-			}
-
-		} catch (JSONException e) {
-			e.printStackTrace();
-			throw new LoadException("Parse error: " + e);
-		}
-	}
-
 	/** OOB metadata related to schedule but separately supplied by Giggity (it's non-standard) gets merged here.
 	  I should see whether I could get support for this kind of data into the Pentabarf format. */
 	protected void addMetadata(String md_json) {
@@ -680,6 +529,10 @@ public class Schedule implements Serializable {
 	
 	public Item getItem(String id) {
 		return allItems.get(id);
+	}
+
+	public String getCId(String id) {
+		return cIdMap.get(id);
 	}
 
 	public Collection<Track> getTracks() {
@@ -928,19 +781,19 @@ public class Schedule implements Serializable {
 		public void endDocument() throws SAXException {}
 
 		@Override
-		public void startPrefixMapping(String s, String s1) {}
+		public void startPrefixMapping(String s, String s1) throws SAXException {}
 
 		@Override
-		public void endPrefixMapping(String s) {}
+		public void endPrefixMapping(String s) throws SAXException {}
 
 		@Override
-		public void ignorableWhitespace(char[] chars, int i, int i1) {}
+		public void ignorableWhitespace(char[] chars, int i, int i1) throws SAXException {}
 
 		@Override
-		public void processingInstruction(String s, String s1) {}
+		public void processingInstruction(String s, String s1) throws SAXException {}
 
 		@Override
-		public void skippedEntity(String s) {}
+		public void skippedEntity(String s) throws SAXException {}
 	}
 
 	/* Pentabarf, the old conference organisation tool has a pretty excellent native XML format
@@ -970,15 +823,19 @@ public class Schedule implements Serializable {
 			// that may have tz awareness... (Used by several schedules yet for example not FOSDEM.
 			zdf = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 		}
-		
+
 		@Override
 		public void startElement(String uri, String localName, String qName,
 				Attributes atts) throws SAXException {
 			curString = "";
 			if (localName.equals("conference") || localName.equals("event")) {
 				propMap = new HashMap<String,String>();
-				propMap.put("id", atts.getValue("id"));
-				
+
+				if (atts.getValue("id") != null)
+					propMap.put("id", atts.getValue("id"));
+				if (atts.getValue("guid") != null)
+					propMap.put("guid", atts.getValue("guid"));
+
 				links = new LinkedList<>();
 				persons = new LinkedList<>();
 			} else if (localName.equals("day")) {
@@ -1008,7 +865,7 @@ public class Schedule implements Serializable {
 		public void characters(char[] ch, int start, int length) throws SAXException {
 			curString += String.copyValueOf(ch, start, length); 
 		}
-	
+		
 		@Override
 		public void endElement(String uri, String localName, String qName)
 				throws SAXException {
@@ -1026,13 +883,16 @@ public class Schedule implements Serializable {
 					inTZ = fTZ;
 				}
 			} else if (localName.equals("event")) {
-				String id, title, startTimeS, startZonedTimeS, durationS, s, desc, wl;
+				String id = null, guid = null;
+				String title, startTimeS, startZonedTimeS, durationS, s, desc, wl;
 				ZonedDateTime startTime, endTime;
 				Schedule.Item item;
 
 				startTimeS = propMap.get("start");
 				startZonedTimeS = propMap.get("date");
-				if ((id = propMap.get("id")) == null ||
+				id = propMap.get("id");
+				guid = propMap.get("guid");
+				if ((id == null && guid == null) ||
 				    (title = propMap.get("title")) == null ||
 				    (startTimeS == null && startZonedTimeS == null) ||
 				    (durationS = propMap.get("duration")) == null) {
@@ -1064,7 +924,25 @@ public class Schedule implements Serializable {
 				LocalTime rawTime = LocalTime.parse(durationS, tf);
 				endTime = startTime.plusHours(rawTime.getHour()).plusMinutes(rawTime.getMinute());
 
-				item = new Schedule.Item(id, title, startTime, endTime);
+				String cid = null;  // canonical ID. This file format has been, hm, evolving?
+				if (guid != null) {
+					cid = guid;
+					if (id != null) {
+						String prev = cIdMap.put(id, guid);
+						if (prev != null) {
+							Log.i("Schedule.loadPentabarf", "Schedule contains duplicate event id=" +
+									     id + " used by both guid=" + prev + " and guid=" + guid);
+						}
+					}
+				} else if (id != null) {
+					// FOSDEM still uses just these, as do a few others. :(
+					cid = id;
+					if (allItems.get(id) != null) {
+						Log.e("Schedule.loadPentabarf", "Schedule contains duplicate event id=" + id + ", and does NOT provide GUIDs for deduplication!");
+					}
+				}
+
+				item = new Schedule.Item(cid, title, startTime, endTime);
 				
 				if ((s = propMap.get("subtitle")) != null) {
 					if (!s.isEmpty())
@@ -1129,19 +1007,19 @@ public class Schedule implements Serializable {
 		public void endDocument() throws SAXException {}
 
 		@Override
-		public void startPrefixMapping(String s, String s1) {}
+		public void startPrefixMapping(String s, String s1) throws SAXException {}
 
 		@Override
-		public void endPrefixMapping(String s) {}
+		public void endPrefixMapping(String s) throws SAXException {}
 
 		@Override
-		public void ignorableWhitespace(char[] chars, int i, int i1) {}
+		public void ignorableWhitespace(char[] chars, int i, int i1) throws SAXException {}
 
 		@Override
-		public void processingInstruction(String s, String s1) {}
+		public void processingInstruction(String s, String s1) throws SAXException {}
 
 		@Override
-		public void skippedEntity(String s) {}
+		public void skippedEntity(String s) throws SAXException {}
 	}
 
 	public enum RoomStatus {

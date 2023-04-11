@@ -196,8 +196,8 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.getTracks(), hasSize(30));
 
 		assertThat(s.getLanguages(), hasSize(4));
-		assertThat(s.getByLanguage("German"), hasSize(543));
-		assertThat(s.getByLanguage("English"), hasSize(674));
+		assertThat(s.getByLanguage("German"), hasSize(551));
+		assertThat(s.getByLanguage("English"), hasSize(676));
 		// O_o
 		assertThat(s.getByLanguage("Abkhazian"), hasSize(1));
 		assertThat(s.getByLanguage("Czech"), hasSize(1));
@@ -206,7 +206,7 @@ public class ScheduleTest extends TestCase {
 
 		assertThat(s.getLinks(), hasSize(2));
 
-		Schedule.Item it = s.getItem("1230");
+		Schedule.Item it = s.getItem("017b6087-ac16-4968-8beb-051596720f24");  // id=1230
 		assertThat(it.getTitle(), is("Detox Seaweed Bibimbab"));
 		assertThat(it.getTrack().getTitle(), is("self organized sessions"));
 
@@ -222,6 +222,9 @@ public class ScheduleTest extends TestCase {
 		Schedule.Track track = room.getTrack();
 		assertThat(track.getTitle(), is("self organized sessions"));
 		assertThat(track.getLine(), nullValue());
+
+		assertThat(s.getCId("1230"), equalTo("017b6087-ac16-4968-8beb-051596720f24"));
+		assertThat(s.getCId("893"), equalTo("4c1d5810-e052-539d-ac78-a4ea395b24cc"));
 
 		if (tz_.equals("America/New_York"))
 			assertThat(s.getTzDiff(), equalTo(  6.0));

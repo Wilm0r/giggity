@@ -1,26 +1,34 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
+
+def generatedRes = 'build/genrule/res'
 
 android {
     compileSdkVersion 33
     defaultConfig {
         applicationId "net.gaast.giggity"
         minSdkVersion 26
-        targetSdkVersion 31
+        targetSdkVersion 33
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
-        buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
+        // buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
     buildTypes {
         release {
             minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-nomini.txt'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-nomini.txt'
         }
-    }
-    productFlavors {
     }
     lint {
         abortOnError false
+    }
+    sourceSets {
+        // build/generated/res/raw exists too but a menu.json there just got ignored?
+        // Specifying the genrule resource directory for build variants is a hack to hopefully
+        // get smooth fallback to a stale menu.json if needed - If you just list both generated
+        // and default under main, build will complain about duplicate menu.json file. :(
+        // Normally debug/release point at build/$variant/res but I definitely won't need that.
+        debug.res.srcDirs = [generatedRes]
+        release.res.srcDirs = [generatedRes]
+        main.res.srcDirs = ['src/main/res']
     }
     namespace 'net.gaast.giggity'
 }
@@ -39,20 +47,39 @@ dependencies {
     implementation  "io.noties.markwon:ext-strikethrough:$markwon_version"  // html seems to depend on this one? #shruggie
     implementation  "io.noties.markwon:linkify:$markwon_version"
 
-//    implementation "androidx.appcompat:appcompat:1.6.0"
-//    implementation "androidx.appcompat:appcompat-resources:1.6.0"
-
-    // Dark mode?
-//    implementation "com.google.android.material:material:1.4.0"
-
-    // So far, only for the Okapi.BM25 module. Any day now I should just rewrite that stupid file?
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest:2.2'
-    testImplementation 'org.json:json:20171018'
+    testImplementation 'org.json:json:20230227'
 }
 
 repositories {
     mavenCentral()
+}
+
+tasks.register('generateMenu') {
+    doLast {
+        def menuJson = new ByteArrayOutputStream()
+        mkdir "${generatedRes}/raw"
+        def res = exec {
+            workingDir = '..'
+            standardOutput = menuJson
+            commandLine = 'tools/merge.py'
+            args = ['-w', '60']
+            ignoreExitValue = true
+        }
+        if (res.getExitValue() == 0) {
+            new File(projectDir, "${generatedRes}/raw/menu.json").text = menuJson
+        } else {
+            logger.warn("WARNING: The menu merger did not run successfully! Will fall back to a stale menu.json file.")
+        }
+    }
+}
+
+// generate${buildType}Resources is dynamically created so you have to add this dependency dynamically, too..
+// https://stackoverflow.com/questions/32878383/gradle-how-to-run-custom-task-after-an-android-library-is-built
+tasks.whenTaskAdded {
+    theTask ->
+        if (theTask.name =~ /generate.*Resources/) {
+            theTask.dependsOn generateMenu
+        }
 }

@@ -13,12 +13,15 @@
         android:orientation="vertical"
         android:padding="4dp">
 
+        <!-- Roboto hardcoded because it's reasonably non-proportional, as opposed to some recent
+             modern Pixel fonts. Text picked because they're wide characters, in case phone lacks Roboto? -->
         <TextView
             android:id="@+id/time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="Roboto"
             android:minEms="5"
-            android:text="11:00–12:15"
+            android:text="09:00–09:50"
             android:textSize="16sp"/>
 
         <TextView
@@ -52,6 +55,6 @@
             android:id="@+id/room"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="But in that far away room"/>
+            android:text="But in that far away always crowded room"/>
     </LinearLayout>
 </LinearLayout>

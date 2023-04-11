@@ -1,0 +1,16 @@
+{
+	"version": 2023032800,
+	"url": "https://events.hackerspace.gent/en/newline2023/public/schedule.xml",
+	"title": "Newline 2023",
+	"start": "2023-03-31",
+	"end": "2023-04-02",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://newline.gent/",
+				"title": "Website"
+			}
+		]
+	}
+}

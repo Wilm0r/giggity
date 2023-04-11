@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -73,7 +73,7 @@ public class Reminder {
 				                          .setWhen(item.getStartTime().getTime())
 										  .setShowWhen(true)
 				                          .setVisibility(Notification.VISIBILITY_PUBLIC)
-				                          .setContentIntent(PendingIntent.getActivity(app, 0, evi, 0))
+				                          .setContentIntent(PendingIntent.getActivity(app, 0, evi, PendingIntent.FLAG_IMMUTABLE))
 				                          .setAutoCancel(true)
 				                          .setDefaults(Notification.DEFAULT_SOUND)
 				                          .setVibrate(((item.getStartTime().getDate() & 1) == 0) ? giggitygoo : mario)
@@ -82,19 +82,14 @@ public class Reminder {
 
 		String location = item.getLine().getLocation();
 		if (location != null) {
-			PendingIntent geoi = PendingIntent.getActivity(app, 0, new Intent(Intent.ACTION_VIEW, Uri.parse(location)), 0);
+			PendingIntent geoi = PendingIntent.getActivity(app, 0, new Intent(Intent.ACTION_VIEW, Uri.parse(location)), PendingIntent.FLAG_IMMUTABLE);
 			nb.addAction(new Notification.Action(R.drawable.ic_place_black_24dp, item.getLine().getTitle(), geoi));
 		} else {
 			Notification.BigTextStyle extra = new Notification.BigTextStyle();
 			extra.setSummaryText(item.getLine().getTitle());
 			nb.setStyle(extra);
 		}
-
-		if (Build.VERSION.SDK_INT >= 26) {
-			nb.setChannelId(Giggity.CHANNEL_ID);
-		}
-
-
+		nb.setChannelId(Giggity.CHANNEL_ID);
 		return nb.build();
 	}
 
@@ -116,11 +111,11 @@ public class Reminder {
 		Intent intent = new Intent(NotificationPoster.ACTION);
 		intent.putExtra("id", id);
 		intent.putExtra("notification", buildNotification(item));
-		PendingIntent ntfIntent = PendingIntent.getBroadcast(app, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent ntfIntent = PendingIntent.getBroadcast(app, id, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 		intent = new Intent(NotificationPoster.ACTION);
 		intent.putExtra("id", id);
-		PendingIntent endIntent = PendingIntent.getBroadcast(app, id | 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent endIntent = PendingIntent.getBroadcast(app, id | 1, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
 		boolean enabled = pref.getBoolean("reminder_enabled", true);
@@ -137,8 +132,10 @@ public class Reminder {
 				// https://github.com/Wilm0r/giggity/issues/147
 				// I don't really know what's going on there, nor all do I understand all the intricacies of this API.
 				// But apparently Samsung don't either. :-P I hope I've worked around that now while keeping this functionality reliable..
-				Toast.makeText(app, "Warning: Caught SecurityException while setting reminder. Please report on #147 on github.", Toast.LENGTH_LONG);
 				e.printStackTrace();
+				if (Looper.getMainLooper().getThread() == Thread.currentThread()) {
+					Toast.makeText(app, "Warning: Caught SecurityException while setting reminder. Please report on #147 on github.", Toast.LENGTH_LONG);
+				}
 			}
 		}
 	}

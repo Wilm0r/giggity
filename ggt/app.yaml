@@ -7,6 +7,12 @@ handlers:
   static_files: index.html
   upload: index.html
 
+- url: /nodatapolicy.*
+  secure: always
+  redirect_http_response_code: 301
+  static_files: nodatapolicy.html
+  upload: nodatapolicy.html
+
 - url: /.*
   secure: always
   redirect_http_response_code: 301

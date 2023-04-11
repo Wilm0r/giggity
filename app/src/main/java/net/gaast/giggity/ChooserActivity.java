@@ -33,7 +33,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.text.InputType;
 import android.transition.Explode;
 import android.util.Log;
@@ -65,6 +64,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.zip.DataFormatException;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
 	private Db.Connection db;
 
@@ -84,8 +85,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		//this.setTheme(android.R.style.Theme_Holo);
 
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		requestWindowFeature(Window.FEATURE_PROGRESS);
 		// Fancy shared-element animations when opening event dialogs.
 		requestWindowFeature(Window.FEATURE_CONTENT_TRANSITIONS);
 		//getWindow().setExitTransition(new ChangeImageTransform());
@@ -169,8 +168,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 								getResources().getString(R.string.refresh_failed),
 								Toast.LENGTH_SHORT).show();
 					}
-					setProgressBarIndeterminateVisibility(false);
-					setProgressBarVisibility(false);
 					refresher.setRefreshing(false);
 				}
 			};
@@ -186,9 +183,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					}
 				}
 			};
-
-			setProgressBarIndeterminateVisibility(true);
-			setProgressBarVisibility(true);
 
 			loader.start();
 		}
@@ -255,10 +249,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		lista = new ScheduleAdapter(db.getScheduleList());
 		list.setAdapter(lista);
-		
-		/* For some reason Honeycomb+ show the progress indicator by default if the feature is enabled? */
-		setProgressBarIndeterminateVisibility(false);
-		setProgressBarVisibility(false);
 	}
 
 	@Override

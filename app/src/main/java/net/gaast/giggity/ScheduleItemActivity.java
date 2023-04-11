@@ -1,11 +1,13 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.transition.Explode;
 import android.util.Log;
 import android.view.Window;
+import android.widget.Toast;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
@@ -63,7 +65,7 @@ public class ScheduleItemActivity extends Activity {
 			}
 		}
 
-		pager_ = new EventDialogPager(this, item, others);
+		pager_ = new EventDialogPager(this, item, others, getIntent().getStringExtra("search_query"));
 		//pager_.getHeader().setTransitionName("title");
 		setContentView(pager_);
 	}
@@ -73,5 +75,16 @@ public class ScheduleItemActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		Log.i("ScheduleItemActivity", "Configuration changed");
 		pager_.saveScroll();
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		if (grantResults.length != 1) {
+			return;
+		}
+		if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
+			Toast.makeText(this, "Note that event reminders won't show up if notifications aren't granted.", Toast.LENGTH_LONG).show();
+		}
+		// Nothing to do if it was granted: Alarms are already set, and this permission is only needed once those go off.
 	}
 }

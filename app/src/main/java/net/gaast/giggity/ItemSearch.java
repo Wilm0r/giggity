@@ -299,4 +299,6 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 	public boolean extendsActionBar() {
 		return true;
 	}
+
+	public String getQuery() { return query.lastQuery; }
 }

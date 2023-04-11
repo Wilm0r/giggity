@@ -33,8 +33,6 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.github.movies.OkapiBM25;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.json.JSONArray;
@@ -61,6 +59,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
+
+import static java.lang.Math.log;
 
 public class Db {
 	private Giggity app;
@@ -112,6 +112,10 @@ public class Db {
 			db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
 			           "hst_query VarChar(128), " +
 					   "hst_atime Integer)");
+
+			// Immediately populate from in-apk seed file. Otherwise new installs, in case of network
+			// issues, may just open up with a blank screen.
+			updateData(db, false);
 
 			oldDbVer = 0;
 		}
@@ -499,17 +503,29 @@ public class Db {
 			                "From schedule_item Where sci_sch_id = ?",
 			                new String[]{"" + schId});
 			while (q.moveToNext()) {
-				Schedule.Item item = sched.getItem(q.getString(1));
+				String id = q.getString(1);
+				Schedule.Item item = sched.getItem(id);
 				if (item == null) {
-					/* ZOMGWTF D: */
-					Log.e("DeoxideDb", "Db has info about missing schedule item " +
-					      q.getString(1) + " remind " + q.getInt(2) + " stars " + q.getInt(4) + " hidden " + q.getInt(3));
-					continue;
+					String cId = sched.getCId(id);
+					if (cId != null) {
+						Log.i("DeoxideDb", "Db has info for stale id=" + id + ", replacing with cId=" + cId);
+						sciIdMap.put(cId, (long) q.getInt(0));
+						item = sched.getItem(cId);
+						if (item == null) {
+							Log.e("DeoxideDb", "... except even that ID seems to be missing? That's probably a Giggity bug :(");
+							continue;
+						}
+					} else {
+						/* ZOMGWTF D: */
+						Log.e("DeoxideDb", "Db has info about missing schedule item id=" +
+								                   id + " remind=" + q.getInt(2) + " stars=" + q.getInt(4) + " hidden=" + q.getInt(3));
+						continue;
+					}
 				}
 
 				item.setRemind(q.getInt(2) != 0);
 				item.setHidden(q.getInt(3) != 0);
-				sciIdMap.put(q.getString(1), (long) q.getInt(0));
+				sciIdMap.put(id, (long) q.getInt(0));
 			}
 			q.close();
 		}
@@ -689,11 +705,11 @@ public class Db {
 				while (q.moveToNext()) {
 					// columns: 2=title, subtitle, description, speakers, track
 					Integer[] mi = toIntArray(q.getBlob(1));
-					double score = 8 * OkapiBM25.Companion.score(mi, 2) +
-					               4 * OkapiBM25.Companion.score(mi, 3) +
-					               1 * OkapiBM25.Companion.score(mi, 4) +
-					               4 * OkapiBM25.Companion.score(mi, 5) +
-					               2 * OkapiBM25.Companion.score(mi, 6);
+					double score = 8 * OkapiBM25Score(mi, 2) +
+					               4 * OkapiBM25Score(mi, 3) +
+					               1 * OkapiBM25Score(mi, 4) +
+					               4 * OkapiBM25Score(mi, 5) +
+					               2 * OkapiBM25Score(mi, 6);
 					if (q.getInt(2) > 0) {
 						// Bump starred events up to the top.
 						score += 1000;
@@ -775,6 +791,41 @@ public class Db {
 			SQLiteDatabase db = dbh.getWritableDatabase();
 			Log.d("forgetSearchQuery", query + " " + db.delete("search_history", "hst_query = ?", new String[]{query}));
 		}
+	}
+
+	// Not mine, this was originally Kotlin code from I think https://medium.com/android-news/offline-full-text-search-in-android-ios-b4dd5bed3acd
+	// and decompiled back into Java by me.
+	private static double OkapiBM25Score(Integer[] matchinfo, int column) {
+		double b = 0.75;
+		double k1 = 1.2;
+		int pOffset = 0;
+		int cOffset = 1;
+		int nOffset = 2;
+		int aOffset = 3;
+		int termCount = matchinfo[pOffset];
+		int colCount = matchinfo[cOffset];
+		int lOffset = aOffset + colCount;
+		int xOffset = lOffset + colCount;
+		double totalDocs = (double)matchinfo[nOffset];
+		double avgLength = (double)matchinfo[aOffset + column];
+		double docLength = (double)matchinfo[lOffset + column];
+		double score = 0.0;
+
+		for(int i = 0; i < termCount; ++i) {
+			int currentX = xOffset + 3 * (column + i * colCount);
+			double termFrequency = (double)matchinfo[currentX];
+			double docsWithTerm = (double)matchinfo[currentX + 2];
+			double p = totalDocs - docsWithTerm + 0.5;
+			double q = docsWithTerm + 0.5;
+			double idf = log(p) / log(q);
+			double r = termFrequency * (k1 + (double)1);
+			double s = b * (docLength / avgLength);
+			double t = termFrequency + k1 * ((double)1 - b + s);
+			double rightSide = r / t;
+			score += idf * rightSide;
+		}
+
+		return score;
 	}
 
 	static private Integer[] toIntArray(byte[] blob) {

@@ -1,36 +1,61 @@
 name: Menu
 
+# Now running on pull_request_target events instead of plain pull_request.
+# This means the action will always run in the context of my own repo, looking only at the *menu* portion of a PR.
+# I've done this to make the comment-pull-request stuff below work but maybe this is generally cleaner/better/securerer or something.
+# Also it was way too much work. :(
+# Some ideas taken from https://github.com/bugout-dev/locust/blob/1bebcc2cac67e90c1efb09b42c37e91cdae829f9/.github/workflows/locust.yaml
 on:
-  pull_request:
+  pull_request_target:
     paths:
-      - '.github/**'
       - 'menu/**'
-      - 'tools/**'
 
 # Skip push for now since I can't really figure out a suitable base ref?
+# If I ever fix that, then the ifs below should be updated
 
 jobs:
-  build:
-
+  validate:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: [3.9]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.9
       - name: Install packages
         run: sudo apt-get install ca-certificates
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install dulwich jsonschema pillow urllib3
+
+      - name: Fetch PR
+        id: fetch_pr
+        run: |
+          PR_URL=$(jq -r ".pull_request.head.repo.clone_url" "$GITHUB_EVENT_PATH")
+          PR_SHA=$(jq -r ".pull_request.head.ref" "$GITHUB_EVENT_PATH")
+          HEAD="$(mktemp -d)/head"
+          git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
+          echo "dst=${HEAD}" >> "$GITHUB_OUTPUT"
+
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --stderr --base ${{ github.event.pull_request.base.sha }}
+        run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}}/menu --summary_comment /tmp/menu-ci-comment.md
+
+      - name: "Update PR comment: Ready to go!"
+        if: ${{ success() }}
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: menu-ci
+          reactions: rocket
+          filePath: /tmp/menu-ci-comment.md
+
+      - name: "Update PR comment: Remaining issues"
+        if: ${{ failure() }}
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          comment_tag: menu-ci
+          filePath: /tmp/menu-ci-comment.md

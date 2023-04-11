@@ -1,0 +1,16 @@
+{
+    "version": 2023031600,
+    "url": "https://api.eventyay.com/v1/events/7cfe0771.ics?include_sessions",
+    "title": "FOSSASIA Summit 2023",
+    "start": "2023-04-13",
+    "end": "2023-04-15",
+    "timezone": "Asia/Singapore",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://summit.fossasia.org/",
+                "title": "Website"
+            }
+        ]
+    }
+}

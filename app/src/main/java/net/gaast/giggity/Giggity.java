@@ -19,9 +19,11 @@
 
 package net.gaast.giggity;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -31,6 +33,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -48,6 +52,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.TreeSet;
+
+import androidx.core.app.ActivityCompat;
 
 /* OK so I'm not using ISO8601 ... but at least it's not middle-endian. And there's no portable date
    range format which is my real problem. So just silence that lint. */
@@ -94,13 +100,11 @@ public class Giggity extends Application {
 			}
 		}, new IntentFilter(Intent.ACTION_TIMEZONE_CHANGED));
 
-		if (Build.VERSION.SDK_INT >= 26) {
-			int importance = NotificationManager.IMPORTANCE_HIGH;  // Make sound but don't pup up.
-			NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getString(R.string.notification_channel), importance);
-			channel.setDescription(getString(R.string.notification_channel_description));
-			NotificationManager notificationManager = getSystemService(NotificationManager.class);
-			notificationManager.createNotificationChannel(channel);
-		}
+		int importance = NotificationManager.IMPORTANCE_HIGH;  // Make sound but don't pup up.
+		NotificationChannel channel = new NotificationChannel(CHANNEL_ID, getString(R.string.notification_channel), importance);
+		channel.setDescription(getString(R.string.notification_channel_description));
+		NotificationManager notificationManager = getSystemService(NotificationManager.class);
+		notificationManager.createNotificationChannel(channel);
 
 		// Apparently needed now that I don't use android.util.Xml.parse anymore. (As it did not
 		// work in standalone tests.)
@@ -235,11 +239,73 @@ public class Giggity extends Application {
 		}
 	}
 
+	public static boolean checkReminderPermissions(Context ctx, boolean checked) {
+		boolean ret = true;
+		// Honestly don't bother translating this? If the user sabotages functionality they're trying to use...
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ctx);
+		if (!checked || !pref.getBoolean("reminder_enabled", true) || Build.VERSION.SDK_INT < 31) {
+			// If either no reminders are set, or the functionality is disabled, or we're on an "old" Android version, then don't worry. :)
+			return true;
+		}
+		if (Build.VERSION.SDK_INT >= 33) {
+			if (ctx.checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_DENIED) {
+				ret = false;
+				if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) ctx, Manifest.permission.POST_NOTIFICATIONS)) {
+					new AlertDialog.Builder(ctx)
+						.setMessage("Giggity seems to be missing permission for sending the event notifications you've requested.")
+						.setTitle("Missing notification permission")
+						.setNegativeButton("Disable notifications", (dialogInterface, i) -> {
+							SharedPreferences.Editor joe = pref.edit();
+							joe.putBoolean("reminder_enabled", false);
+							joe.commit();
+						})
+						.setPositiveButton("Grant", (dialogInterface, i) -> {
+							ActivityCompat.requestPermissions((Activity) ctx, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0x31337);
+						})
+						.setCancelable(false)
+						.show();
+				} else {
+					Log.d("perm", "ask?!");
+					ActivityCompat.requestPermissions((Activity) ctx, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 0x31337);
+				}
+			}
+		}
+		// From 33+ I'll rely on USE_EXACT_ALARM which is auto-granted but may trigger Play Store review. The UX for SCHEDULE_EXACT_ALARM is pretty meh.
+		// I'm willing to take that risk, Giggity's pretty much a calendaring app, and it uses exact alarms for no other purpose than timely pre-event notifications.
+		if (Build.VERSION.SDK_INT >= 31 && Build.VERSION.SDK_INT < 33) {
+			AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+			if (!am.canScheduleExactAlarms()) {
+				ret = false;
+				new AlertDialog.Builder(ctx)
+					.setMessage("Giggity seems to be missing the SCHEDULE_EXACT_ALARM permission, which prevents it from sending event notifications at the right time.")
+					.setTitle("Missing alarm permission")
+					.setNegativeButton("Disable notifications", (dialogInterface, i) -> {
+						SharedPreferences.Editor joe = pref.edit();
+						joe.putBoolean("reminder_enabled", false);
+						joe.commit();
+					})
+					.setPositiveButton("Grant", (dialogInterface, i) -> ctx.startActivity(new Intent(
+							android.provider.Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM,
+							Uri.parse("package:" + ctx.getPackageName()))))
+					.setCancelable(false)
+					.show();
+			}
+		}
+		return ret;
+	}
+
 	public static void zxingError(final Activity ctx) {
 		new AlertDialog.Builder(ctx)
-				.setMessage("This functionality depends on the (deprecated) ZXing Barcode scanner")
+				.setMessage("This (deprecated) functionality depends on the ZXing Barcode scanner and will go away soon. Try ggt.gaa.st deeplinks instead.")
 				.setTitle("Error")
 				.setNegativeButton("Never mind", null)
+				.setNeutralButton("ggt.gaa.st", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Wilm0r/giggity#deeplinking-into-giggity"));
+						ctx.startActivity(intent);
+					}
+				})
 				.setPositiveButton("Install", new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialogInterface, int i) {
