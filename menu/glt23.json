@@ -1,6 +1,6 @@
 
 {
-	"version": 2023021700,
+	"version": 2023041100,
 	"url": "https://pretalx.linuxtage.at/glt23/schedule.xml",
 	"title": "Grazer Linuxtage 2023",
 	"start": "2023-04-14",
@@ -23,8 +23,10 @@
 		{ "name": "HS i6", "latlon": [47.05821, 15.46083] },
 		{ "name": "HS i7", "latlon": [47.0581, 15.46081] },
 		{ "name": "HS i11", "latlon": [47.0587, 15.45914] },
+		{ "name": "HS i12", "latlon": [47.0587, 15.45914] },
+		{ "name": "HS i13", "latlon": [47.0587, 15.45914] },
 		{ "name": "HF01092", "latlon": [47.05899, 15.45968] },
 		{ "name": "SZ01070", "latlon": [47.05864, 15.4598] },
-		{ "name": "Seminarraum ISW", "latlon": [47.05791, 15.45987] }
+		{ "name": "Seminarraum ISW, MFEG210", "latlon": [47.05791, 15.45987] }
 	]
 }
