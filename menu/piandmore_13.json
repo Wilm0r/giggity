@@ -1,0 +1,18 @@
+{
+	"version": 2023041300,
+	"url": "https://piandmore.de/de/conference/pam13/schedule/download",
+	"title": "Pi and More 13", 
+	"start": "2023-04-22",
+	"end": "2023-04-22",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://cmd-ev.github.io/assets/piandmore-square.png",
+		"links": [
+			{
+				"url": "https://piandmore.de/de/conference/pam13/",
+				"title": "Website"
+			}
+		]
+	}
+}
