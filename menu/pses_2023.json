@@ -1,0 +1,21 @@
+{
+	"version": 2023041600,
+	"url": "https://programme.passageenseine.fr/index.ics",
+	"title": "PSES 2023",
+	"start": "2023-06-15",
+	"end": "2023-06-17",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://mamot.fr/system/accounts/avatars/000/212/345/original/bf5fc3bbd9175137.png",
+		"links": [
+			{
+				"url": "https://passageenseine.fr/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://programme.passageenseine.fr/",
+				"title": "Programme web"
+			}
+		]
+	}
+}
