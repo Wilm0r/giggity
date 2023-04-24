@@ -1,0 +1,23 @@
+{
+	"version": 2023042300,
+	"url": "https://23.thsf.net/thsf-2023/schedule/export/schedule.xml",
+	"title": "Toulouse Hacker Space Factory 2023",
+	"start": "2023-05-26",
+	"end": "2023-05-28",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.thsf.net/",
+				"title": "Site web"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Salle 1 Cinema",
+				"show_name": "Salle 1 Cinema",
+				"latlon": [43.63963, 1.45202]
+			}
+		]
+	}
+}
