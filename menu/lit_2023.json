@@ -1,0 +1,16 @@
+{
+	"version": 2022042500,
+	"url": "https://pretalx.luga.de/lit-2023/schedule/export/schedule.json",
+	"title": "Augsburger Linux-Infotag 2022",
+	"start": "2023-04-29",
+	"end": "2023-04-29",
+	"metadata": {
+		"icon": "https://pretalx.luga.de/media/lit-2023/img/LIT-Logo_bX4SlJF.png",
+		"links": [
+			{
+				"url": "https://www.luga.de/Aktionen/LIT-2023/",
+				"title": "Website"
+			}
+		]
+	}
+}
