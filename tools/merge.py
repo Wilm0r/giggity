@@ -84,9 +84,13 @@ def merge(all, first):
 		"version": 0,
 		"schedules": [],
 	}
+	seen = set()
 
 	sortkey = lambda kv: operator.itemgetter("start", "end", "title")(kv[1])
 	for fn, s in sorted(all.items(), key=sortkey):
+		if s["url"] in seen:
+			raise RuntimeError("Duplicate URL: %s" % s["url"])
+		seen.add(s["url"])
 		if s["start"] < first:
 			# Too long ago, don't include. Maybe write a purge script
 			# some day.
