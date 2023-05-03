@@ -274,7 +274,13 @@ elif new["version"] > todayver:
 
 changed = []
 base_entries = {e["url"]: e for e in base.get("schedules", [])}
+seen = set()
 for e in new["schedules"]:
+	if e["url"] in seen:
+		LOG.E("Duplicate URL, unable to diff: %r %s" %
+		      ([x["title"] for x in new["schedules"] if x["url"] == e["url"]], e["url"]))
+		continue
+	seen.add(e["url"])
 	if e["url"] in base_entries:
 		if e == base_entries[e["url"]]:
 			LOG.C("Unchanged: %s" % e["title"])
