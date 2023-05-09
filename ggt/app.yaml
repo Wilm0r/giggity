@@ -1,5 +1,8 @@
 runtime: python310
 
+inbound_services:
+- warmup
+
 handlers:
 - url: /
   secure: always
@@ -12,6 +15,10 @@ handlers:
   redirect_http_response_code: 301
   static_files: nodatapolicy.html
   upload: nodatapolicy.html
+
+- url: /_ah/warmup
+  secure: optional
+  script: auto
 
 - url: /.*
   secure: always
