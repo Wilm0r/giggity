@@ -1,5 +1,5 @@
 {
-	"version": 2023051501,
+	"version": 2023051502,
 	"url": "https://www.opensouthcode.org/conferences/opensouthcode2023/schedule.xml",
 	"title": "Opensouthcode 2023",
 	"start": "2023-06-09",
@@ -8,7 +8,7 @@
 	"metadata": {
 		"links": [
 			{
-				"url": "https://www.opensouthcode.org/",
+				"url": "https://www.opensouthcode.org/conferences/opensouthcode2023",
 				"title": "Website"
 			}
 		],
