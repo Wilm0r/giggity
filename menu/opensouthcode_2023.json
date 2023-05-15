@@ -1,9 +1,10 @@
 {
-	"version": 2023051500,
+	"version": 2023051501,
 	"url": "https://www.opensouthcode.org/conferences/opensouthcode2023/schedule.xml",
 	"title": "Opensouthcode 2023",
 	"start": "2023-06-09",
 	"end": "2023-06-10",
+	"timezone": "Europe/Madrid",
 	"metadata": {
 		"links": [
 			{
