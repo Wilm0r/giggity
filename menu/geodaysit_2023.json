@@ -1,0 +1,16 @@
+{
+        "version": 2023060901,
+        "url": "https://talks.osgeo.org/foss4g-it-2023/schedule/export/schedule.xml",
+        "title": "GEOdaysIT 2023",
+        "start": "2023-06-12",
+        "end": "2023-07-17",
+        "timezone": "Europe/Rome",
+        "metadata": {
+                "links": [
+                        {
+                                "url": "https://2023.geodaysit.it/",
+                                "title": "Website"
+                        }
+                ]
+        }
+}
