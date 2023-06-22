@@ -1,0 +1,28 @@
+{
+	"version": 2023062201,
+	"url": "https://2023.fossy.us/schedule/conference.json",
+	"title": "FOSSY 2023",
+	"start": "2023-07-13",
+	"end": "2023-07-16",
+	"timezone": "America/Los_Angeles",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.fossy.us/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2023.fossy.us/attend/health-and-safety/",
+				"title": "Health and Safety"
+			},
+			{
+				"url": "https://2023.fossy.us/travel/",
+				"title": "Travel and Lodging"
+			},
+			{
+				"url": "https://2023.fossy.us/attend/code-of-conduct/",
+				"title": "Code of Conduct"
+			}
+		]
+	}
+}
