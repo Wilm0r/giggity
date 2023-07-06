@@ -1,0 +1,24 @@
+{
+	"version": 2023070600,
+	"url": "https://cfp.fairydust.reisen/iger-2023/schedule.xml",
+	"title": "IGER 2023",
+	"start": "2023-07-20",
+	"end": "2023-07-23",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://fairydust.reisen/",
+				"title": "Website"
+			},
+			{
+				"url": "https://tickets.fairydust.reisen/iger-2023/",
+				"title": "Tickets"
+			},
+			{
+				"url": "https://md.fairydust.reisen/start",
+				"title": "Public Meta-Pad"
+			}
+		]
+	}
+}
