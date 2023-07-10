@@ -1,0 +1,77 @@
+{
+	"title": "Chaos Communication Camp 2023 - main rooms only",
+	"url": "https://pretalx.c3voc.de/camp2023/schedule/export/schedule.xml",
+	"start": "2023-08-15",
+	"end": "2023-08-19",
+	"refresh_interval": 1800,
+	"version": 2023080401,
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"title": "Infos",
+				"url": "https://events.ccc.de/camp/2023/infos/"
+			},
+			{
+				"title": "Map",
+				"url": "https://map.events.ccc.de/camp/2023/map/"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Marktplatz",
+				"show_name": "Marktplatz / Marketplace",
+				"latlon": [53.0316837, 13.3051801]
+			},
+			{
+				"name": "Bits & Bäume",
+				"show_name": "Bits & Bäume",
+				"latlon": [53.0324586, 13.3072812]
+			},
+			{
+				"name": "Bits&Bäume Workshops",
+				"show_name": "Bits & Bäume Workshops",
+				"latlon": [53.0324586, 13.3072812]
+			},
+			{
+				"name": "Digitalcourage",
+				"show_name": "Digitalcourage",
+				"latlon": [53.0300258, 13.3079585]
+			},
+			{
+				"name": "Hardware Hacking Village",
+				"show_name": "Hardware Hacking Village",
+				"latlon": [53.0326193, 13.3082896]
+			},
+			{
+				"name": "Milliways",
+				"show_name": "Milliways",
+				"latlon": [53.032495, 13.307791]
+			},
+			{
+				"name": "Milliways Workshop Dome",
+				"show_name": "Milliways Workshop Dome",
+				"latlon": [53.032495, 13.307791]
+			},
+			{
+				"name": "N:O:R:T:x",
+				"show_name": "N:O:R:T:x (Nerds der OberRheinischen Tiefebene und der xHain)",
+				"latlon": [53.030389, 13.30664]
+			},
+			{
+				"name": "Chill Lagune am Herzbergstich",
+				"show_name": "Chill Lagune am Herzbergstich",
+				"latlon": [53.0336406, 13.3053489]
+			},
+			{
+				"name": "Culture Club",
+				"show_name": "Culture Club",
+				"latlon": [53.0324702, 13.3044833]
+			}
+		]
+	}
+}
