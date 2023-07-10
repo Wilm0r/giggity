@@ -1,0 +1,30 @@
+{
+	"version": 2023071002,
+	"url": "https://cloud.bib.uni-mannheim.de/s/6RRW53Xqa5LND3i/download/oat23.xml",
+	"title": "Open-Access-Tage 2023",
+	"start": "2023-09-27",
+	"end": "2023-09-29",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"icon": "https://cloud.bib.uni-mannheim.de/s/R7Kge2WAcGt7G7N/download/oat23-transparent-bg4.png",
+		"links": [
+			{
+				"url": "https://open-access-tage.de/open-access-tage-2023-berlin",
+				"title": "Website"
+			},
+			{
+				"url": "https://open-access-tage.de/fileadmin/_processed_/0/9/xcsm_171206_Gesamtplan_farb_Abstimmung_fd463868fb.png.pagespeed.ic.MjDsHq91Og.png",
+				"title": "Map",
+				"type": "image/png"
+			},
+			{
+				"url": "https://open-access-tage.de/open-access-tage-2023-berlin/faq",
+				"title": "FAQ"
+			},
+			{
+				"url": "https://zenodo.org/communities/oat23/",
+				"title": "Poster + Folien"
+			}
+		]
+	}
+}
