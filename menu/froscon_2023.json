@@ -1,0 +1,26 @@
+{
+    "version": 2023071400,
+    "url": "https://programm.froscon.org/2023/schedule.xml",
+    "title": "FrOSCon 2023",
+    "start": "2023-08-05",
+    "end": "2023-08-06",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "icon": "https://froscon.org/icons/apple-touch-icon.png",
+        "links": [
+            {
+                "url": "https://froscon.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://froscon.org/en/program/project-rooms/",
+                "title": "Developer rooms"
+            },
+            {
+                "url": "https://media.ccc.de/b/conferences/froscon",
+                "title": "Recordings"
+            }
+        ]
+    }
+}
+
