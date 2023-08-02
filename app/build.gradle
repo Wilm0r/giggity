@@ -77,7 +77,7 @@ tasks.register('generateMenu') {
 
 // generate${buildType}Resources is dynamically created so you have to add this dependency dynamically, too..
 // https://stackoverflow.com/questions/32878383/gradle-how-to-run-custom-task-after-an-android-library-is-built
-tasks.whenTaskAdded {
+tasks.configureEach {
     theTask ->
         if (theTask.name =~ /generate.*Resources/) {
             theTask.dependsOn generateMenu
