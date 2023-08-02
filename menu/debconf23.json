@@ -1,0 +1,48 @@
+{
+    "version": 2023080100,
+    "url": "https://debconf23.debconf.org/schedule/pentabarf.xml",
+    "title": "DebConf 23",
+    "start": "2023-09-10",
+    "end": "2023-09-17",
+    "timezone": "Asia/Kolkata",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://debconf23.debconf.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://debconf23.debconf.org/about/coc/",
+                "title": "Code of Conduct"
+            },
+            {
+                "url": "https://debconf23.debconf.org/about/debcamp/",
+                "title": "DebCamp"
+            },
+            {
+                "url": "https://debconf23.debconf.org/about/accommodation/",
+                "title": "Accommodation"
+            },
+            {
+                "url": "https://debconf23.debconf.org/about/childcare/",
+                "title": "Child care"
+            },
+            {
+                "url": "https://debconf23.debconf.org/about/covid19/",
+                "title": "COVID-19"
+            },
+            {
+                "url": "https://wiki.debian.org/DebConf/23/Faq",
+                "title": "FAQ"
+            },
+            {
+                "url": "https://debconf23.debconf.org/about/venue/",
+                "title": "Venue"
+            },
+            {
+                "url": "https://debconf23.debconf.org/about/visas/",
+                "title": "Visas"
+            }
+        ]
+    }
+}
