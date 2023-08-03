@@ -122,6 +122,7 @@ public class Schedule implements Serializable {
 	protected boolean fullyLoaded;
 
 	public Schedule() {
+		// Was apparently needed to get case insensitive sorting? add19dcb8fb97a8611a147f316da80a962f073ee
 		trackSort = Collator.getInstance();
 		trackSort.setStrength(Collator.PRIMARY);
 		tracks = new TreeMap<>(trackSort);
@@ -184,6 +185,25 @@ public class Schedule implements Serializable {
 			}
 			day = dayEnd;
 			dayEnd = dayEnd.plusDays(1);
+		}
+
+		// Discard track info if there's just one, on all talks. (Bornhack)
+		if (getTracks().size() == 1 && getTracks().iterator().next().getItems().size() == allItems.size()) {
+			tracks.clear();
+			for (Item it : allItems.values()) {
+				it.track = null;
+			}
+		}
+
+		try {
+			String menu = new JSONObject()
+					               .put("url", url_)
+					               .put("title", getTitle())
+					               .put("start", day0List.getFirst().format(DateTimeFormatter.ISO_LOCAL_DATE))
+					               .put("end", day0List.getLast().format(DateTimeFormatter.ISO_LOCAL_DATE)).toString();
+			Log.i("giggity.Schedule", "successfully loaded, suggested menu JSON: " + menu);
+		} catch (JSONException e) {
+			// blah O_o
 		}
 	}
 
@@ -1112,7 +1132,7 @@ public class Schedule implements Serializable {
 			return roomStatus;
 		}
 
-		// Return Schedule.Line for this track, only if it's one and the same for all its items.
+		// Return Schedule.Track for this Line, only if it's one and the same for all its items.
 		public Track getTrack() {
 			Track ret = null;
 			for (Item it : getItems()) {
