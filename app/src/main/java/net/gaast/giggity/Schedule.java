@@ -188,7 +188,8 @@ public class Schedule implements Serializable {
 		}
 
 		// Discard track info if there's just one, on all talks. (Bornhack)
-		if (getTracks().size() == 1 && getTracks().iterator().next().getItems().size() == allItems.size()) {
+		if (getTracks() != null && getTracks().size() == 1 &&
+		    getTracks().iterator().next().getItems().size() == allItems.size()) {
 			tracks.clear();
 			for (Item it : allItems.values()) {
 				it.track = null;
