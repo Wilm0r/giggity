@@ -1,0 +1,69 @@
+{
+	"version": 2023080101,
+	"url": "https://pretalx.com/wm2023/schedule/export/schedule.xml",
+	"title": "Wikimania 2023",
+	"start": "2023-08-15",
+	"end": "2023-08-20",
+	"timezone": "UTC",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Wikimania",
+				"title": "Website"
+			},
+			{
+				"url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Wikimania_2023_Attendee_guide.pdf",
+				"title": "Attendee guide (PDF)",
+				"type": "application/pdf"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Related_events",
+				"title": "Related events"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Basic_workshops",
+				"title": "Basic workshops"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Expo_space",
+				"title": "Expo space"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Hackathon",
+				"title": "Hackathon"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Meetups",
+				"title": "Meetups"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Registration",
+				"title": "Registration"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Attendees",
+				"title": "Attendees"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Travel",
+				"title": "Travel guide"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Friendly_space_policy",
+				"title": "Friendly space policy"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Glossary",
+				"title": "Glossary"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Socialize",
+				"title": "Social media"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2023:Volunteer",
+				"title": "Volunteer"
+			}
+		]
+	}
+}
