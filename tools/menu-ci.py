@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # coding=utf-8
+# pylint: disable=consider-using-f-string, missing-function-docstring, no-else-return
 
 """
 Giggity menu.json verifier.
@@ -13,10 +14,16 @@ Sadly I'll need to duplicate some things from Giggity's Java code I guess...
 """
 
 import argparse
+import atexit
+import base64
 import datetime
+import gzip
 import json
 import os
 import re
+import select
+import shlex
+import subprocess
 import sys
 import time
 import zoneinfo
@@ -24,10 +31,14 @@ import zoneinfo
 import jsonschema
 import PIL.Image
 import urllib3
+import urllib.parse
 
 import email.utils
 
 import merge
+
+from typing import Callable, Generator, List, Optional
+
 
 class MenuError(Exception):
 	pass
@@ -40,17 +51,17 @@ class Log():
 		if fn is not None:
 			self.md = open(fn, "x")
 
-	def C(self, text):  # Console-only, just for progress updates.
+	def C(self, text: str):  # Console-only, just for progress updates.
 		print(text)
 
-	def I(self, text):  # INFO
+	def I(self, text: str):  # INFO
 		if self._colour:
 			print("\033[1m" + text + "\033[0m")
 		elif text:
 			print("* " + text)
 		if self.md: self.md.write(text + "\n")
 
-	def E(self, text):  # ERROR
+	def E(self, text: str):  # ERROR
 		self.errors += 1
 		if self._colour:
 			print("\033[91m" + text + "\033[0m")
@@ -64,6 +75,8 @@ SCHEMA = "tools/menu-schema.json"
 parser = argparse.ArgumentParser(
 	description="Validation of Giggity menu.json files based on JSON "
 	            "schema and some other details.")
+parser.add_argument(
+	"--adb", help="Pointer at adb binary for schedule file validation by (headless) emulator.")
 parser.add_argument(
 	"--all", "-a", action="store_true",
 	help="Validate all entries, not just the ones that changed.")
@@ -124,7 +137,7 @@ class HTTP():
 
 		self.hcache = {}
 
-	def fetch(self, url, img=False, head=False):
+	def fetch(self, url: str, img: bool=False, head: bool=False):
 		"""Simple URL fetcher, will return bytes or a parsed image depending
 		on what you ask for. Or an exception (returned, not raised :-P)."""
 
@@ -155,7 +168,7 @@ class HTTP():
 			error = str(e.reason)
 			return FetchError(error)
 
-	def cache_sensible(self, url):
+	def cache_sensible(self, url: str):
 		"""Check whether it ever returns 304s. Yeah sure, this is a race. I
 		don't care for a test that runs a few times a week at most."""
 		if url not in self.hcache:
@@ -174,7 +187,73 @@ class HTTP():
 http = HTTP()
 
 
-def validate_url(url):
+class ADB:
+	def __init__(self):
+		self.on = False
+		self._adb: subprocess.Popen = None
+		self._buf = b""
+		self._dev = ()
+		if args.adb:
+			self.on = True
+			for dev in self.call("devices").splitlines()[1:]:
+				# Insist on using only emulators to avoid accidentally erasing data on a real device!
+				if dev.startswith("emulator-"):
+					dev = dev.split()[0]
+					LOG.C("Connecting to adb emulator device %r" % dev)
+					self._dev = ("-s", dev)
+					break
+				else:
+					if dev:
+						LOG.I("Not an emulator: %s" % dev)
+
+			if not self._dev:
+				self.on = False
+				LOG.E("No Android emulator available?")
+				return
+			
+			self.call("logcat", "-c")
+			p = subprocess.Popen((args.adb,) + self._dev + ("logcat",), stdout=subprocess.PIPE)
+			os.set_blocking(p.stdout.fileno(), False)
+			self._adb = p
+			atexit.register(self._adb.kill)
+			self.on = True
+
+	def call(self, *cmd) -> Optional[str]:
+		if not self.on:
+			return None
+		p = subprocess.Popen((args.adb,) + self._dev + cmd, stdout=subprocess.PIPE, encoding="utf-8")
+		out, _ = p.communicate()
+		assert p.returncode == 0
+		return out
+
+	def lines(self, timeout) -> Generator[str, None, None]:
+		if not self._adb:
+			return
+		end = time.time() + timeout
+		while True:
+			t = min(timeout, end - time.time())
+			if t <= 0:
+				break
+			have, _, _ = select.select([self._adb.stdout], [], [], t)
+			if len(have) == 0:
+				break
+			self._buf += self._adb.stdout.read(4096)
+			while self._buf:
+				nl = self._buf.find(b"\n")
+				if nl >= 0:
+					ret: bytes
+					ret, self._buf = self._buf[0:nl], self._buf[nl+1:]
+					yield ret.decode("utf-8")
+				else:
+					break
+
+
+adb = ADB()
+adb.call("shell", "am", "force-stop", "net.gaast.giggity")
+# adb.call("shell", "pm", "clear", "net.gaast.giggity")
+
+
+def validate_url(url: str) -> List[str]:
 	if not url.startswith("http:"):
 		return []
 	https = re.sub("^http:", "https:", url)
@@ -302,6 +381,33 @@ for e in new["schedules"]:
 		for err in entry_issues:
 			LOG.E(err)
 		LOG.I("")
+	
+	if adb.on:
+		for _ in adb.lines(.1): pass  # Flush backlog
+		entry_url = base64.urlsafe_b64encode(gzip.compress(json.dumps(e).encode("utf-8"))).decode("ascii")
+		intent_url = "https://ggt.gaa.st#url=" + urllib.parse.quote(e["url"]) + "&json=" + entry_url
+		adb.call("shell", "am", "start", "-n", "net.gaast.giggity/.ScheduleViewActivity",
+		         "-a",  "android.intent.action.VIEW", "-d", shlex.quote(intent_url))
+		load_log = []
+		menu_entry = {}
+		for line in adb.lines(10):
+			MARKER = "giggity.Schedule: successfully loaded, suggested menu JSON:"
+			m = line.find(MARKER)
+			if m > 0:
+				menu_entry = json.loads(line[m+len(MARKER):])
+				break
+			else:
+				load_log.append(line)
+		if menu_entry:
+			for k, v in menu_entry.items():
+				rep = LOG.E
+				if k == "title":
+					rep = LOG.I
+				if e[k] != v:
+					rep("Entry mismatch: %s=%r in entry ≠ %r in schedule?" % (k, e[k], v))
+		else:
+			LOG.E("Schedule file doesn't seem to load in Giggity successfully. (See CI logs for details?)")
+			LOG.C("\n".join(load_log))  # Won't end up in markdown but should be in verbose logs.
 
 if changed and base:
 	if new["version"] <= base["version"]:
