@@ -1,0 +1,44 @@
+{
+	"version": 2023080901,
+	"url": "https://pretalx.com/pyconau-2023/schedule/export/schedule.xml",
+	"title": "PyCon AU 2023",
+	"start": "2023-08-18",
+	"end": "2023-08-20",
+	"timezone": "Australia/Adelaide",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.pycon.org.au/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2023.pycon.org.au/about/",
+				"title": "About"
+			},
+			{
+				"url": "https://2023.pycon.org.au/about/culture/",
+				"title": "Culture"
+			},
+			{
+				"url": "https://2023.pycon.org.au/attend/getting-around/",
+				"title": "Getting around"
+			},
+			{
+				"url": "https://2023.pycon.org.au/attend/food/",
+				"title": "Food"
+			},
+			{
+				"url": "https://2023.pycon.org.au/attend/bof/",
+				"title": "Birds of a Feather"
+			},
+			{
+				"url": "https://2023.pycon.org.au/attend/volunteer/",
+				"title": "Volunteer"
+			},
+			{
+				"url": "https://2023.pycon.org.au/safety/",
+				"title": "Safety"
+			}
+		]
+	}
+}
