@@ -61,6 +61,22 @@ This is likely a better option than scanning a QR now that good ad-free
 QR scanners appear to be rare. But where possible, consider just adding
 your event to the menu as explained in the next section.
 
+## Locating the XML/ICS file
+
+It is not always easy to locate a file usable for Giggity, sometimes organisers just publish a grid on a webpage, other times they just don't know there is an option in the CfP system to expose it. Knowing which software they used for the call for paper usually helps locating the file. A few platforms generate the web view on the fly by parsing the XML, and have the URL hardcoded in the HTML code. It is not forbidden to ask the organisers which platform they use, and if they have the file at hand.
+
+Some conferences just publish a link to the ICS and XML files somewhere on the schedule page, look for it.
+
+### Pretalx
+
+Pretalx exposes export formats in a drop-down menu on the schedule web page, in the top-right corner, right after the Version number. Use the last entry named "*XML (frab compatible)*".
+
+It is usually in the form: `https://<CFPHOST>/<CONFERENCE>/schedule/export/schedule.xml`
+
+### OSEM
+
+It usually is in the form: `https://<CFPHOST>/conferences/<CONFERENCE>/schedule.xml`
+
 ## Adding your event to the default menu
 
 To do this, construct a JSON file formatted like this in the [menu directory](menu):
