@@ -1,7 +1,7 @@
 # Giggity
 
 Giggity is an Android app that loads
-[Pentabarf](https://github.com/nevs/pentabarf)/[frab](https://github.com/frab/frab)/[wafer](https://github.com/CTPUG/wafer)/[Pretalx](https://github.com/pretalx/pretalx)
+[Pentabarf](https://github.com/nevs/pentabarf)/[frab](https://github.com/frab/frab)/[wafer](https://github.com/CTPUG/wafer)/[Pretalx](https://github.com/pretalx/pretalx)/[OSEM](https://github.com/openSUSE/osem)
 XML files (or if none are available, .ics) with schedules of conferences
 and other events, and displays them in various convenient formats.
 
