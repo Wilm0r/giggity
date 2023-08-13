@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # coding=utf-8
-# pylint: disable=consider-using-f-string, missing-function-docstring, no-else-return
+# (Honestly wondering whether to disable 99% OCD pylint instead.)
+# pylint: disable=consider-using-f-string, missing-function-docstring, no-else-break, no-else-return, no-else-raise
 
 """
 Giggity menu.json verifier.
 Does basic verification of menu.json changes. Partially just JSON (schema)
-validation, but also validation based on git diff.
+validation, but also more thorough entry validation based on git diff.
 
 Meant to be used with Github Actions for pull requests so I can stop
 reviewing those updates manually.
-
-Sadly I'll need to duplicate some things from Giggity's Java code I guess...
 """
 
 import argparse
@@ -37,7 +36,7 @@ import email.utils
 
 import merge
 
-from typing import Callable, Generator, List, Optional
+from typing import Generator, List, Optional
 
 
 class MenuError(Exception):
@@ -139,25 +138,26 @@ class HTTP():
 
 	def fetch(self, url: str, img: bool=False, head: bool=False):
 		"""Simple URL fetcher, will return bytes or a parsed image depending
-		on what you ask for. Or an exception (returned, not raised :-P)."""
+		on what you ask for. Or raise FetchError if anything went wrong."""
 
 		method = head and "HEAD" or "GET"
 		try:
 			LOG.C("Fetching %s" % url)
 			u = self.o.request(
-				method, url, redirect=False, preload_content=False)
+				method, url, redirect=False, preload_content=False, timeout=60, retries=False)
 			if 300 <= u.status < 400:
 				diff_protocol = ""
 				if not u.get_redirect_location().startswith(
+					# ... Wondering whether this is still true BTW.
 					url.split("//", 1)[0]):
 					diff_protocol = (" (Also, the Android HTTP "
 						"fetcher does not allow http<>https redirects.)")
-				return FetchError(
+				raise FetchError(
 					"URL redirected to %s, which is an unnecessary "
 					"slowdown.%s" %
 					(u.get_redirect_location(), diff_protocol))
 			elif u.status != 200:
-				return FetchError("%d %s" % (u.status, u.reason))
+				raise FetchError("HTTP %d %s" % (u.status, u.reason))
 			self.hcache[url] = {k.lower(): v for k, v in u.getheaders().iteritems()}
 			self.hcache[url]["_ts"] = time.time()
 			if not img:
@@ -165,8 +165,7 @@ class HTTP():
 			else:
 				return PIL.Image.open(u)
 		except urllib3.exceptions.HTTPError as e:
-			error = str(e.reason)
-			return FetchError(error)
+			raise FetchError(e.args[-1]) from e
 
 	def cache_sensible(self, url: str):
 		"""Check whether it ever returns 304s. Yeah sure, this is a race. I
@@ -257,10 +256,11 @@ def validate_url(url: str) -> List[str]:
 	if not url.startswith("http:"):
 		return []
 	https = re.sub("^http:", "https:", url)
-	if http.fetch(https):
+	try:
+		http.fetch(https)
 		return ["Use URL %s instead of non-TLS HTTP?" % https]
-	else:
-		return ["URL %s is insecure (but no TLS version available?)" % url]
+	except FetchError as err:
+		return ["URL %s is insecure (but no TLS version available? (%s))" % (url, err)]
 
 
 def validate_entry(e):
@@ -268,10 +268,11 @@ def validate_entry(e):
 	
 	# Forced to use GET not HEAD even though I don't need the data because for
 	# example the retarded CCC server refuses HEAD requests.
-	sf = http.fetch(e["url"])
-	ret += validate_url(e["url"])
-	if isinstance(sf, FetchError):
-		ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(sf)))
+	try:
+		http.fetch(e["url"])
+		ret += validate_url(e["url"])
+	except FetchError as err:
+		ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))
 
 	if e["end"] < e["start"]:
 		ret.append("Conference ends (%(end)s) before it starts (%(start)s)?" % e)
@@ -290,13 +291,14 @@ def validate_entry(e):
 	if md:
 		c3_by_slug = {}
 		if "c3nav_base" in md:
-			c3nav = http.fetch(md["c3nav_base"] + "/api/locations/?format=json")
-			ret += validate_url(md["c3nav_base"] + "/api/locations/?format=json")
-			if isinstance(c3nav, FetchError):
-				ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], str(c3nav)))
-			else:
+			try:
+				url = md["c3nav_base"] + "/api/locations/?format=json"
+				c3nav = http.fetch(url)
 				c3nav = json.loads(c3nav)
 				c3_by_slug = {v["slug"]: v for v in c3nav}
+				ret += validate_url(url)
+			except FetchError as err:
+				ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))
 
 		for room in md.get("rooms", []):
 			# Forgot why I wrote this check initially, it's now also in the schema already..
@@ -312,13 +314,11 @@ def validate_entry(e):
 				ret.append("Room name %r not a valid regular expression: %s" % (room.get("name"), err))
 	
 		if "icon" in md:
-			img = http.fetch(md["icon"], img=True)
-			ret += validate_url(md["icon"])
 			icon_errors = []
-			if isinstance(img, FetchError):
-				icon_errors.append(str(img))
-			else:
-				if 'A' not in img.mode:
+			try:
+				img = http.fetch(md["icon"], img=True)
+				ret += validate_url(md["icon"])
+				if "A" not in img.mode:
 					icon_errors.append("%s image has no alpha layer" % img.mode)
 				if img.width != img.height:
 					icon_errors.append("%d×%d image is not square" % (img.width, img.height))
@@ -326,6 +326,8 @@ def validate_entry(e):
 					icon_errors.append("%d×%d image is too small" % (img.width, img.height))
 				elif img.width > 512:
 					icon_errors.append("%d×%d image is too large" % (img.width, img.height))
+			except FetchError as err:
+				icon_errors.append(str(err))
 			if icon_errors:
 				ret.append("Icon for %s seems bad: %s" % (e["title"], ", ".join(icon_errors)))
 		
@@ -333,15 +335,12 @@ def validate_entry(e):
 			for link in md["links"]:
 				if link["url"].startswith("geo:"):
 					continue
-				d = http.fetch(link["url"])
-				ret += validate_url(link["url"])
-				if isinstance(d, FetchError):
-					ret.append("Link \"%s\" appears broken: %s" % (link["title"], str(d)))
+				try:
+					http.fetch(link["url"])
+					ret += validate_url(link["url"])
+				except FetchError as err:
+					ret.append("Link \"%s\" appears broken: %s" % (link["title"], err))
 
-	# Check schedule file, id for [xi]cal submissions
-	# Title match would be nice but that would require duplicating parsing :-(
-	# Maybe check URLs and types? Why not
-	# Hrmm, checks for 304/I-M-S support would be nice..
 	return ret
 
 maxver = max(e["version"] for e in new["schedules"])
