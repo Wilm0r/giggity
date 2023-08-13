@@ -1,0 +1,16 @@
+{
+	"version": 2023081301,
+	"url": "https://pretalx.com/kiwi-pycon-xii-2023/schedule/export/schedule.xml",
+	"title": "Kiwi PyCon XII 2023",
+	"start": "2023-09-15",
+	"end": "2023-09-17",
+	"timezone": "Pacific/Auckland",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://kiwipycon.nz/",
+				"title": "Website"
+			}
+		]
+	}
+}
