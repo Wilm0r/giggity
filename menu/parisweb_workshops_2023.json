@@ -1,0 +1,27 @@
+{
+	"version": 2023081400,
+	"url": "https://www.paris-web.fr/2023/ateliers-parisweb-2023.ics",
+	"title": "Paris Web 2023 - Ateliers",
+	"start": "2023-09-30",
+	"end": "2023-09-30",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.paris-web.fr/2023/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://inscriptions.paris-web.fr/",
+				"title": "Tarifs et inscription"
+			}
+		],
+		"rooms": [
+			{
+				"name": "IIM.*",
+				"show_name": "IIM Digital School",
+				"latlon": [48.89317, 2.22690]
+			}
+		]
+	}
+}
