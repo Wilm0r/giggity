@@ -1,0 +1,44 @@
+{
+	"version": 2023081601,
+	"title": "21. Kieler Open Source und Linux Tage",
+	"url": "https://kielux.de/content/calendars/KOLT23.ics",
+	"start": "2023-09-15",
+	"end": "2023-09-16",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+		"links": [
+			{
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"url": "https://kielux.de/programm/KOLT23",
+				"title": "Schedule and workshop registration"
+			},
+			{
+				"title": "Entertainment",
+				"url": "https://kielux.de/aktionen"
+			},
+			{
+				"title": "Exhibition",
+				"url": "https://kielux.de/aussteller"
+			}
+		],
+		"rooms": [
+			{
+				"name": "R012",
+				"latlon": [54.33497, 10.11928]
+			},
+			{
+				"name": "R007",
+				"latlon": [54.33547, 10.11951]
+			},
+			{
+				"name": "R114",
+				"latlon": [54.33510, 10.11944]
+			}
+		]
+	}
+}
