@@ -1,0 +1,36 @@
+{
+	"version": 2023081801,
+	"url": "https://pretalx.com/pyconuk-2023/schedule/export/schedule.xml",
+	"title": "PyCon UK 2023",
+	"start": "2023-09-22",
+	"end": "2023-09-25",
+	"timezone": "Europe/London",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.pyconuk.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2023.pyconuk.org/code-of-conduct/",
+				"title": "Code of Conduct"
+			},
+			{
+				"url": "https://2023.pyconuk.org/inclusion/",
+				"title": "Inclusion, diversity and accessibility"
+			},
+			{
+				"url": "https://2023.pyconuk.org/sprints/",
+				"title": "Sprints"
+			},
+			{
+				"url": "https://2023.pyconuk.org/venue/",
+				"title": "Venue"
+			},
+			{
+				"url": "https://2023.pyconuk.org/faq/",
+				"title": "FAQ"
+			}
+		]
+	}
+}
