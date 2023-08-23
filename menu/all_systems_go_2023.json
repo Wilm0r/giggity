@@ -1,0 +1,24 @@
+{
+	"version": 2023081901,
+	"url": "https://cfp.all-systems-go.io/all-systems-go-2023/schedule/export/schedule.xml",
+	"title": "All Systems Go! 2023",
+	"start": "2023-09-13",
+	"end": "2023-09-14",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://all-systems-go.io/",
+				"title": "Website"
+			},
+			{
+				"url": "https://all-systems-go.io/code-of-conduct/",
+				"title": "Code of conduct"
+			},
+			{
+				"url": "https://ti.to/all-systems-go/all-systems-go-2023",
+				"title": "Tickets"
+			}
+		]
+	}
+}
