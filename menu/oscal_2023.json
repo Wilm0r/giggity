@@ -1,0 +1,36 @@
+{
+	"version": 2023082901,
+	"url": "https://cfp.openlabs.cc/oscal2023/schedule/export/schedule.xml",
+	"title": "OSCAL 2023 (Open Source Conference Albania)",
+	"start": "2023-09-02",
+	"end": "2023-09-03",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://oscal.openlabs.cc/",
+				"title": "Website"
+			},
+			{
+				"url": "https://oscal.openlabs.cc/coc/",
+				"title": "Code of conduct"
+			},
+			{
+				"url": "https://oscal.openlabs.cc/about/",
+				"title": "About"
+			},
+			{
+				"url": "https://oscal.openlabs.cc/venue/",
+				"title": "Venue"
+			},
+			{
+				"url": "https://oscal.openlabs.cc/about-tirana/",
+				"title": "Attending"
+			},
+			{
+				"url": "https://oscal.openlabs.cc/volunteers/",
+				"title": "Volunteers"
+			}
+		]
+	}
+}
