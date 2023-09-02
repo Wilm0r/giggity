@@ -238,7 +238,12 @@ public class ScheduleViewActivity extends Activity {
 						url = URLDecoder.decode(param.substring(4), "utf-8");
 					} else if (param.startsWith("json=")) {
 						String jsonb64 = URLDecoder.decode(param.substring(5), "utf-8");
-						byte[] json = Base64.decode(jsonb64, Base64.URL_SAFE);
+						byte[] json;
+						try {
+							json = Base64.decode(jsonb64, Base64.URL_SAFE);
+						} catch (IllegalArgumentException e) {
+							json = new byte[0];
+						}
 						url = app.getDb().refreshSingleSchedule(json);
 						if (url == null) {
 							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT).show();
