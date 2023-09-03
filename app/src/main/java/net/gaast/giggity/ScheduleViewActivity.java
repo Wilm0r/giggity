@@ -38,6 +38,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -61,7 +62,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.time.ZonedDateTime;
@@ -70,7 +76,10 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import androidx.core.content.FileProvider;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
@@ -273,9 +282,9 @@ public class ScheduleViewActivity extends Activity {
 		} else {
 			Fetcher.Source fs;
 			if (getIntent().getBooleanExtra("PREFER_ONLINE", false))
-				fs = Fetcher.Source.ONLINE_CACHE;
+				fs = Fetcher.Source.DEFAULT;
 			else
-				fs = Fetcher.Source.CACHE_ONLINE;
+				fs = Fetcher.Source.CACHE;
 
 			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			drawerToggle.setDrawerIndicatorEnabled(false);  // Shows a not functioning back button. :<
@@ -459,7 +468,7 @@ public class ScheduleViewActivity extends Activity {
 			}
 		});
 		try {
-			app.fetch(url, Fetcher.Source.CACHE);
+			app.fetch(url, Fetcher.Source.CACHE_ONLY);
 		} catch (IOException e) {
 			// No cached copy available apparently so hide that option.
 			prog.findViewById(R.id.load_cached).setVisibility(View.GONE);
@@ -468,7 +477,7 @@ public class ScheduleViewActivity extends Activity {
 			@Override
 			public void fallBack() {
 				viewerContainer.removeView((View) prog);
-				loadScheduleAsync(url, Fetcher.Source.CACHE);
+				loadScheduleAsync(url, Fetcher.Source.CACHE_ONLY);
 			}
 		});
 		viewerContainer.addView((View) prog, new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -653,7 +662,7 @@ public class ScheduleViewActivity extends Activity {
 				item.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						openLink(link, true);
+						openLink(link);
 						drawerLayout.closeDrawers();
 					}
 				});
@@ -700,18 +709,36 @@ public class ScheduleViewActivity extends Activity {
 	/** Open a link object, either just through the browser or by downloading locally and using a
 	 * dedicated viewer.
 	 * @param link Link object - if type is set we'll try to download and use a viewer, unless:
-	 * @param allowDownload is set. This also used to avoid infinite loops in case of bugs.
 	 */
-	private void openLink(final Schedule.Link link, boolean allowDownload) {
-		if (link.getType() != null) {
-			Fetcher f = null;
-			try {
-				f = new Fetcher(app, link.getUrl(), Fetcher.Source.CACHE, link.getType());
-			} catch (IOException e) {
-				// Failure is ~expected so don't make a fuss about it at this stage. :-)
-			}
-			if (f != null) {
-				Uri cached = f.cacheUri();
+	private void openLink(final Schedule.Link link) {
+		if (link.getType() != null && viewLink(link)) {
+			return;
+		}
+
+		/* If type was not set, or if neither of the two inner ifs were true (do we have the file,
+		   or, are we allowed to download it?), fall back to browser. */
+		Uri uri = Uri.parse(link.getUrl());
+		Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+		browser.addCategory(Intent.CATEGORY_BROWSABLE);
+		startActivity(browser);
+	}
+
+	/** Download and view linked content instead of opening in a browser. */
+	private boolean viewLink(final Schedule.Link link) {
+		File dir = new File(app.getCacheDir(), "view");  // R.paths.view
+		Matcher m = Pattern.compile("[a-z]+$").matcher(link.getType());
+		String ext = "";
+		if (m.find() && !m.group().isEmpty()) {
+			ext = "." + m.group();
+		}
+		File fn = new File(dir, FilenameUtils.getBaseName(link.getUrl()) + ext);
+
+		final LoadProgressDialog prog = new LoadProgressDialog(this);
+		prog.setMessage(getResources().getString(R.string.loading_image));
+		prog.setDone(new LoadProgressDoneInterface() {
+			@Override
+			public void done() {
+				Uri cached = FileProvider.getUriForFile(app, "net.gaast.giggity.paths", fn);
 				try {
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
@@ -723,55 +750,45 @@ public class ScheduleViewActivity extends Activity {
 					new AlertDialog.Builder(ScheduleViewActivity.this)
 							.setTitle(R.string.loading_error)
 							.setMessage(getString(R.string.no_viewer_error) + " " +
-									link.getType() + ": " + e.getMessage())
+										link.getType() + ": " + e.getMessage())
 							.show();
 				}
-				return;
-			} else if (allowDownload) {
-				final LoadProgressDialog prog = new LoadProgressDialog(this);
-				prog.setMessage(getResources().getString(R.string.loading_image));
-				prog.setDone(new LoadProgressDoneInterface() {
-					@Override
-					public void done() {
-						/* Try again, avoiding infinite-looping on this download just in case. */
-						openLink(link, false);
-					}
-				});
-				prog.show();
-
-				Thread loader = new Thread() {
-					@Override
-					public void run() {
-						try {
-							Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.ONLINE, link.getType());
-							f.setProgressHandler(prog.getUpdater());
-
-							/* Just slurp the entire file into a bogus buffer, what we need is the
-							   file in ExternalCacheDir */
-							byte[] buf = new byte[1024];
-							//noinspection StatementWithEmptyBody
-							while (f.getStream().read(buf) != -1) {}
-							f.keep();
-
-							/* Will trigger the done() above back in the main thread. */
-							prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
-						} catch (IOException e) {
-							e.printStackTrace();
-							prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
-						}
-					}
-				};
-				loader.start();
-				return;
 			}
-		}
+		});
+		prog.show();
 
-		/* If type was not set, or if neither of the two inner ifs were true (do we have the file,
-		   or, are we allowed to download it?), fall back to browser. */
-		Uri uri = Uri.parse(link.getUrl());
-		Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-		browser.addCategory(Intent.CATEGORY_BROWSABLE);
-		startActivity(browser);
+		Thread loader = new Thread() {
+			@Override
+			public void run() {
+				dir.mkdirs();
+				for (File del : dir.listFiles()) {
+					// These are already copies from cache :( at least don't keep stale ones..
+					del.delete();
+				}
+				try {
+					Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.DEFAULT, link.getType());
+					f.setProgressHandler(prog.getUpdater());
+
+					try {
+						OutputStream copy = new FileOutputStream(fn);
+						FileUtils.copy(f.getStream(), copy);
+						copy.close();
+					} catch (IOException e) {
+						// TODO(http)
+						throw new RuntimeException(e);
+					}
+					f.keep();
+
+					/* Will trigger the done() above back in the main thread. */
+					prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
+				} catch (IOException e) {
+					e.printStackTrace();
+					prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
+				}
+			}
+		};
+		loader.start();
+		return true;
 	}
 
 	public void redrawSchedule() {

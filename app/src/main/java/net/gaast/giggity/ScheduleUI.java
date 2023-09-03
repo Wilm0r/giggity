@@ -1,7 +1,6 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -17,8 +16,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import org.json.JSONArray;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,15 +63,12 @@ public class ScheduleUI extends Schedule {
 		try {
 			f = ctx.fetch(url, source);
 			f.setProgressHandler(ret.progressHandler);
-			Log.d("Fetcher", "source=" + f.getSource());
-			if (f.getSource() == Fetcher.Source.CACHE) {
+			if (f.fromCache()) {
+				// Disable the "load from cache" button since we're doing that already. */
 				ret.progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.FROM_CACHE);
 			}
 			ret.loadSchedule(f.getReader(), url);
 		} catch (LoadException | IOException e) {
-			if (f != null)
-				f.cancel();
-
 			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
 			throw new LoadException("Network I/O problem: " + e);
@@ -122,7 +116,7 @@ public class ScheduleUI extends Schedule {
 		}
 
 		try {
-			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE);
+			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE_ONLY);
 			return f.getStream();
 		} catch (IOException e) {
 			// This probably means it's not in cache. :-( So we'll fetch it in the background and
@@ -134,15 +128,12 @@ public class ScheduleUI extends Schedule {
 			public void run() {
 				Fetcher f;
 				try {
-					f = new Fetcher(app, getIconUrl(), Fetcher.Source.ONLINE);
+					f = new Fetcher(app, getIconUrl(), Fetcher.Source.DEFAULT);
 				} catch (IOException e) {
 					Log.e("getIconStream", "Fetch error: " + e);
 					return;
 				}
-				if (BitmapFactory.decodeStream(f.getStream()) != null) {
-					/* Throw-away decode seems to have worked so instruct Fetcher to keep cached. */
-					f.keep();
-				}
+				f.keep();
 			}
 		};
 		iconFetcher.start();
@@ -173,7 +164,7 @@ public class ScheduleUI extends Schedule {
 	/* Returns true if any of the statuses has changed. */
 	public boolean updateRoomStatus() {
 		try {
-			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.ONLINE_NOCACHE);
+			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.DEFAULT);
 			return updateRoomStatus(f.slurp());
 		} catch (IOException e) {
 			Log.d("updateRoomStatus", "Fetch setup failure");

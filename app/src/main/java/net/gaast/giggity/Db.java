@@ -372,7 +372,7 @@ public class Db {
 				json = sw.toString();
 			} else {
 				f = app.fetch(getSeedUrl(),
-				              source == SeedSource.ONLINE ? Fetcher.Source.ONLINE : Fetcher.Source.CACHE);
+				              source == SeedSource.ONLINE ? Fetcher.Source.DEFAULT : Fetcher.Source.CACHE);
 				json = f.slurp();
 			}
 		} catch (IOException e) {
@@ -390,8 +390,6 @@ public class Db {
 		} catch (JSONException e) {
 			Log.e("DeoxideDb.loadSeed", "Parse Error");
 			e.printStackTrace();
-			if (f != null)
-				f.cancel();
 			return null;
 		}
 	}

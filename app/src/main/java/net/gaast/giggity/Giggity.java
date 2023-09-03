@@ -109,6 +109,8 @@ public class Giggity extends Application {
 		// Apparently needed now that I don't use android.util.Xml.parse anymore. (As it did not
 		// work in standalone tests.)
 		System.setProperty("org.xml.sax.driver","org.xmlpull.v1.sax2.Driver");
+
+		Fetcher.init(this);
 	}
 	
 	public Db.Connection getDb() {
