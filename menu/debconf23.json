@@ -1,15 +1,30 @@
 {
-    "version": 2023080100,
+    "version": 2023090301,
     "url": "https://debconf23.debconf.org/schedule/pentabarf.xml",
     "title": "DebConf 23",
     "start": "2023-09-10",
     "end": "2023-09-17",
     "timezone": "Asia/Kolkata",
     "metadata": {
+        "icon": "https://debconf23.debconf.org/static/img/favicon/favicon-128-rgba.png",
         "links": [
             {
                 "url": "https://debconf23.debconf.org/",
                 "title": "Website"
+            },
+            {
+                "title": "Wiki",
+                "url": "https://wiki.debian.org/DebConf/23"
+            },
+            {
+                "title": "Venues Map",
+                "type": "application/pdf",
+                "url": "https://debconf23.debconf.org/static/img/dc23-venue-map.pdf"
+            },
+            {
+                "title": "Amenities Map",
+                "type": "application/pdf",
+                "url": "https://debconf23.debconf.org/static/img/dc23-amenities-map.pdf"
             },
             {
                 "url": "https://debconf23.debconf.org/about/coc/",
@@ -42,6 +57,16 @@
             {
                 "url": "https://debconf23.debconf.org/about/visas/",
                 "title": "Visas"
+            }
+        ],
+        "rooms": [
+            {
+              "name": "Anamudi",
+              "latlon": [10.00888, 76.36152]
+            },
+            {
+              "name": "(Ponmudi|Kuthiran)",
+              "latlon": [10.00715, 76.36249]
             }
         ]
     }
