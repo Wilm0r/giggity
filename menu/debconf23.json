@@ -1,12 +1,12 @@
 {
-    "version": 2023090300,
+    "version": 2023090301,
     "url": "https://debconf23.debconf.org/schedule/pentabarf.xml",
     "title": "DebConf 23",
     "start": "2023-09-10",
     "end": "2023-09-17",
     "timezone": "Asia/Kolkata",
     "metadata": {
-        "icon": "https://debconf23.debconf.org/static/img/favicon/favicon-128.png",
+        "icon": "https://debconf23.debconf.org/static/img/favicon/favicon-128-rgba.png",
         "links": [
             {
                 "url": "https://debconf23.debconf.org/",
