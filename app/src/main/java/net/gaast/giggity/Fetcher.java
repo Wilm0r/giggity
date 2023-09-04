@@ -17,6 +17,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -210,12 +211,8 @@ public class Fetcher {
 	// should no longer be used after that.
 	public BufferedReader getReader() {
 		if (inReader == null) {
-			try {
-				inReader = new BufferedReader(new InputStreamReader(inStream, "utf-8"));
-				inStream = null;
-			} catch (UnsupportedEncodingException e) {
-				// "lol".
-			}
+			inReader = new BufferedReader(new InputStreamReader(inStream, StandardCharsets.UTF_8));
+			inStream = null;
 		}
 		return inReader;
 	}
@@ -267,7 +264,7 @@ public class Fetcher {
 		}
 		
 		@Override
-		public int read(byte b[], int off, int len) throws IOException {
+		public int read(byte[] b, int off, int len) throws IOException {
 			int ret = in.read(b, off, len);
 			if (!waiting) {
 				offset += ret;
@@ -281,7 +278,7 @@ public class Fetcher {
 		}
 		
 		@Override
-		public int read(byte b[]) throws IOException {
+		public int read(byte[] b) throws IOException {
 			return read(b, 0, b.length);
 		}
 		

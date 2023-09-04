@@ -48,6 +48,7 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
@@ -241,7 +242,7 @@ public class Schedule implements Serializable {
 			/* md5, sha1... small diff I guess? (No clue how this evolved!) */
 			MessageDigest md5 = MessageDigest.getInstance("SHA-1");
 			md5.update(url.getBytes());
-			byte raw[] = md5.digest();
+			byte[] raw = md5.digest();
 			for (int i = 0; i < raw.length; i ++)
 				ret += String.format("%02x", raw[i]);
 		} catch (NoSuchAlgorithmException e) {
@@ -409,7 +410,7 @@ public class Schedule implements Serializable {
 					/* Line continuation. Get the rest before we process anything. */
 					continue;
 				} else if (line.contains(":")) {
-					String split[] = line.split(":", 2);
+					String[] split = line.split(":", 2);
 					String key, value;
 					key = split[0].toLowerCase();
 					value = split[1];
@@ -427,7 +428,7 @@ public class Schedule implements Serializable {
 								key = bit.toLowerCase();
 								continue;
 							}
-							String kv[] = bit.split("=", 2);
+							String[] kv = bit.split("=", 2);
 							if (kv.length == 2) {
 								at.addAttribute("", kv[0].toLowerCase(), kv[0].toLowerCase(), "", kv[1]);
 							}
@@ -1048,7 +1049,7 @@ public class Schedule implements Serializable {
 		OK,
 		FULL,  // Options from here will be rendered in red. Modify EventDialog if that's no longer okay.
 		EVACUATE,
-	};
+	}
 
 	public class ItemList {
 		protected String title;
@@ -1201,7 +1202,7 @@ public class Schedule implements Serializable {
 			try {
 				MessageDigest md5 = MessageDigest.getInstance("MD5");
 				md5.update(getUrl().getBytes());
-				byte raw[] = md5.digest();
+				byte[] raw = md5.digest();
 				return ByteBuffer.wrap(raw, 0, 4).getInt();
 			} catch (NoSuchAlgorithmException e) {  // WTF no
 				e.printStackTrace();
@@ -1559,11 +1560,9 @@ public class Schedule implements Serializable {
 			byte[] urlb = new byte[len];
 			if (rd.read(urlb, 0, len) != len)
 				throw new DataFormatException("Ran out of data while reading URL");
-			try {
-				url = new String(urlb, "utf-8");
-				Log.d("Selections.url", url);
-			} catch (UnsupportedEncodingException e) {}
-			
+			url = new String(urlb, StandardCharsets.UTF_8);
+			Log.d("Selections.url", url);
+
 			while (rd.available() > 4) {
 				int type = rd.read();
 				
@@ -1582,9 +1581,7 @@ public class Schedule implements Serializable {
 					byte[] idb = new byte[len];
 					rd.read(idb, 0, len);
 					String id;
-					try {
-						id = new String(idb, "utf-8");
-					} catch (UnsupportedEncodingException e) {continue;}
+					id = new String(idb, StandardCharsets.UTF_8);
 					selections.put(id, type);
 					Log.d("Selections.id", id);
 				}
@@ -1595,7 +1592,7 @@ public class Schedule implements Serializable {
 		 * using QR codes. The format is pretty simple, see the comments. It's zlib-compressed to
 		 * hopefully keep it small enough for a QR rendered on a phone. */
 		public byte[] export() {
-			LinkedList<String> sels[] = (LinkedList<String>[]) new LinkedList[4];
+			LinkedList<String>[] sels = (LinkedList<String>[]) new LinkedList[4];
 			int i;
 			
 			for (i = 0; i < 4; i ++)
@@ -1609,7 +1606,7 @@ public class Schedule implements Serializable {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			try {
 				/* Length of URL, 16 bits network order */
-				byte[] urlb = url.getBytes("utf-8");
+				byte[] urlb = url.getBytes(StandardCharsets.UTF_8);
 				out.write(urlb.length >> 8);
 				out.write(urlb.length & 0xff);
 				out.write(urlb);
@@ -1623,7 +1620,7 @@ public class Schedule implements Serializable {
 					out.write(sels[i].size() >> 8);
 					out.write(sels[i].size() & 0xff);
 					for (String item : sels[i]) {
-						byte[] id = item.getBytes("utf-8");
+						byte[] id = item.getBytes(StandardCharsets.UTF_8);
 						if (id.length > 255) {
 							/* Way too long. Forget it. :-/ */
 							out.write(0);

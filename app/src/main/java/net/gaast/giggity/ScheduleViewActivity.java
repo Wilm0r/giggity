@@ -37,6 +37,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.FileUtils;
 import android.os.Handler;
@@ -94,7 +95,7 @@ public class ScheduleViewActivity extends Activity {
 	// There are two orders: One in arrays which is in order of invention for cfg compatibility.
 	// The order in the nav drawer UI XML is the one that matters to the user.
 	// TODO: Figure out whether I can stop needing this one :<
-	private final static int VIEWS[] = {
+	private final static int[] VIEWS = {
 		R.id.block_schedule,
 		R.id.my_events,
 		R.id.now_next,
@@ -271,7 +272,7 @@ public class ScheduleViewActivity extends Activity {
 		   because we may have to reload schedule data? */
 		// TODO: Use parsed.
 		if (url.contains("#")) {
-			String parts[] = url.split("#", 2);
+			String[] parts = url.split("#", 2);
 			url = parts[0];
 			showEventId = parts[1];
 		}
@@ -609,13 +610,13 @@ public class ScheduleViewActivity extends Activity {
 
 		// Notifications were already scheduled at load time but that was before extra metadata (like c3nav)
 		// was loaded. Kick off a refresh now.
-		if (app.checkReminderPermissions(this, !app.getRemindItems().isEmpty())) {
+		if (Giggity.checkReminderPermissions(this, !app.getRemindItems().isEmpty())) {
 			app.updateRemind();
 		}
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		if (grantResults.length != 1) {
 			return;
 		}
@@ -771,7 +772,15 @@ public class ScheduleViewActivity extends Activity {
 
 					try {
 						OutputStream copy = new FileOutputStream(fn);
-						FileUtils.copy(f.getStream(), copy);
+						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q /* 29 */) {
+							FileUtils.copy(f.getStream(), copy);
+						} else {
+							byte[] yo = new byte[4096];
+							int st;
+							while ((st = f.getStream().read(yo)) != -1) {
+								copy.write(yo, 0, st);
+							}
+						}
 						copy.close();
 					} catch (IOException e) {
 						// TODO(http)
@@ -965,7 +974,7 @@ public class ScheduleViewActivity extends Activity {
 			return;
 		}
 
-		CharSequence dayList[] = new CharSequence[days.size()];
+		CharSequence[] dayList = new CharSequence[days.size()];
 		for (int i = 0; i < days.size(); i ++) {
 			dayList[i] = dateFormat.format(days.get(i));
 		}

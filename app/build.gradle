@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 def generatedRes = 'build/genrule/res'
 
 android {
-    compileSdkVersion 33
+    compileSdk 33
     defaultConfig {
         applicationId "net.gaast.giggity"
         minSdkVersion 26
@@ -39,7 +39,7 @@ dependencies {
     // implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
     // implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     // implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'commons-io:commons-io:2.3'
+    implementation 'commons-io:commons-io:2.4'
 
     final def markwon_version = "4.6.2"
     implementation  "io.noties.markwon:core:$markwon_version"

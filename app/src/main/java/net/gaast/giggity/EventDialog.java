@@ -242,7 +242,7 @@ public class EventDialog extends FrameLayout {
 		cb_.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				((Giggity) app_).checkReminderPermissions(ctx, isChecked);
+				Giggity.checkReminderPermissions(ctx, isChecked);
 				item_.setRemind(isChecked);
 				try {
 					ScheduleViewActivity sva = (ScheduleViewActivity) getContext();

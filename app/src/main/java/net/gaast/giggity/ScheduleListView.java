@@ -75,10 +75,13 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		inflate(ctx, R.layout.schedule_item, bla);
 		TextView bliep = bla.findViewById(R.id.time);
 		CharSequence timeText = bliep.getText();
-		MeasuredText mt = new MeasuredText.Builder(timeText.toString().toCharArray())  // O_o
-				                  .appendStyleRun(bliep.getPaint(), timeText.length(), false)
-				                  .build();
-		int greyWidth = (int) mt.getWidth(0, timeText.length()) + app.dp2px(10);
+		int greyWidth = app.dp2px(102);
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q /* 29 */) {
+			MeasuredText mt = new MeasuredText.Builder(timeText.toString().toCharArray())  // O_o
+					                  .appendStyleRun(bliep.getPaint(), timeText.length(), false)
+					                  .build();
+			greyWidth = (int) mt.getWidth(0, timeText.length()) + app.dp2px(10);
+		}
 
 		// Grey background for the time(+date) column on the left, but continuous so drawn here.
 		Bitmap bmp = Bitmap.createBitmap(greyWidth, 1, Bitmap.Config.ARGB_8888);
