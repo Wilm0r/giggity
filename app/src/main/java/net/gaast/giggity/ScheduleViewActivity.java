@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -582,11 +581,6 @@ public class ScheduleViewActivity extends Activity {
 			// where the user wants to go now instead of wherever they last were, so overwrite that.
 			sched.getDb().setDay(day);
 		}
-		if (getIntent().hasExtra("SELECTIONS")) {
-			Schedule.Selections sel = (Schedule.Selections) getIntent().getSerializableExtra("SELECTIONS");
-			Dialog dia = new ScheduleUI.ImportSelections(this, sched, sel);
-			dia.show();
-		}
 		if (curView == R.id.tracks && sched.getTracks() == null) {
 			curView = R.id.timetable;
 		}
@@ -1025,9 +1019,6 @@ public class ScheduleViewActivity extends Activity {
 				break;
 			case R.id.show_hidden:
 				toggleShowHidden();
-				break;
-			case R.id.export_selections:
-				ScheduleUI.exportSelections(ScheduleViewActivity.this, sched);
 				break;
 			case R.id.home_shortcut:
 				addHomeShortcut();

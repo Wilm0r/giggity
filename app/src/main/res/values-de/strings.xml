@@ -44,7 +44,6 @@
 	<string name="home_shortcut">Verknüpfung auf dem Startbildschirm</string>
 	<string name="import_selections">Ausgewählte importieren</string>
 	<string name="no_selections">Nichts ausgewählt zum Exportieren</string>
-	<string name="qr_tip">Bitte verwenden Sie die QR-Scan-Taste im Hauptmenü Ihres anderen Geräts, um diesen zu importieren</string>
 	<string name="schedule_empty">Das Programm scheint leer zu sein</string>
 	<string name="format_unknown">Dateiformat nicht erkannt</string>
 	<string name="no_network">Keine Netzwerkverbindung verfügbar</string>
@@ -85,7 +84,6 @@
 	<string name="chooser_later">Kommende Veranstaltungen</string>
 	<string name="chooser_past">Bisherige Veranstaltungen</string>
 	<string name="add_dialog">Hinzufügen...</string>
-	<string name="qr_scan">Scan QR-Code</string>
 	<string name="enter_url">URL eingeben</string>
 
 	<!-- Reminder -->

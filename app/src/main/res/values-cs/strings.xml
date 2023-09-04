@@ -44,7 +44,6 @@
 	<string name="home_shortcut">Přidat odkaz na domovskou obrazovku</string>
 	<string name="import_selections">Importovat výběr</string>
 	<string name="no_selections">Žádný výběr k exportování</string>
-	<string name="qr_tip">K importování použijte tlačítko Naskenovat QR v hlavním menu na druhém zařízení</string>
 	<string name="schedule_empty">Program se jeví jako prázdný</string>
 	<string name="format_unknown">Formát souboru nebyl rozpoznám</string>
 	<string name="no_json_data">Nepovedlo se načíst JSON data z URL</string>
@@ -90,7 +89,6 @@
 	<string name="chooser_later">Naplánované</string>
 	<string name="chooser_past">Proběhlé</string>
 	<string name="add_dialog">Přidat...</string>
-	<string name="qr_scan">Naskenovat QR</string>
 	<string name="enter_url">Vložte URL programu</string>
 	<string name="refresh_failed">Aktualizace menu selhala.</string>
 

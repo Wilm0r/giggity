@@ -44,7 +44,6 @@
 	<string name="home_shortcut">Raccourci sur l\'accueil</string>
 	<string name="import_selections">Importer les sélections</string>
 	<string name="no_selections">Aucune sélection à exporter</string>
-	<string name="qr_tip">Utilisez le bouton scan QR du menu principal sur votre autre appareil pour importer ceci</string>
 	<string name="schedule_empty">Le programme semble vide</string>
 	<string name="format_unknown">Format de fichier non reconnu</string>
 	<string name="no_network">Aucune connexion réseau</string>
@@ -85,7 +84,6 @@
 	<string name="chooser_later">Évènements à venir</string>
 	<string name="chooser_past">Évènements précédents</string>
 	<string name="add_dialog">Ajout...</string>
-	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Saisissez l\'URL du programme</string>
 
 	<!-- Reminder -->

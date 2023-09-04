@@ -20,13 +20,8 @@
 package net.gaast.giggity;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.Log;
-import android.widget.CheckBox;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,14 +36,11 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
@@ -72,15 +64,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
-import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.html.HtmlPlugin;
@@ -1481,176 +1469,6 @@ public class Schedule implements Serializable {
 
 		public void setType(String type) {
 			this.type = type;
-		}
-	}
-
-	public Selections getSelections() {
-		boolean empty = true;
-		Selections ret = new Selections(this);
-		
-		for (Item item : allItems.values()) {
-			int t = 0;
-			if (item.getRemind())
-				t += 1;
-			if (item.isHidden())
-				t += 2;
-			if (t > 0)
-				empty = false;
-			ret.selections.put(item.getId(), t);
-		}
-		
-		/* Don't generate anything if there is nothing worth exporting. */
-		if (empty)
-			return null;
-		
-		return ret;
-	}
-	
-	public void setSelections(Selections sel, CheckBox[] cbs) {
-		if (!cbs[ScheduleUI.ImportSelections.KEEP_REMIND].isChecked()) {
-			for (Item item : allItems.values()) {
-				item.setRemind(false);
-			}
-		}
-		if (!cbs[ScheduleUI.ImportSelections.KEEP_HIDDEN].isChecked()) {
-			for (Item item : allItems.values()) {
-				item.setHidden(false);
-			}
-		}
-		if (cbs[ScheduleUI.ImportSelections.IMPORT_REMIND].isChecked()) {
-			for (String id : sel.selections.keySet()) {
-				if ((sel.selections.get(id) & 1) > 0) {
-					Item item = allItems.get(id);
-					if (item != null)
-						item.setRemind(true);
-				}
-			}
-		}
-		if (cbs[ScheduleUI.ImportSelections.IMPORT_REMIND].isChecked()) {
-			for (String id : sel.selections.keySet()) {
-				if ((sel.selections.get(id) & 2) > 0) {
-					Item item = allItems.get(id);
-					if (item != null)
-						item.setHidden(true);
-				}
-			}
-		}
-	}
-	
-	static public class Selections implements Serializable {
-		public String url;
-		public HashMap<String,Integer> selections = new HashMap<>();
-		
-		public Selections(Schedule sched) {
-			url = sched.getUrl();
-		}
-		
-		public Selections(byte[] in) throws DataFormatException {
-			if (in == null || in[0] != 0x01)
-				throw new DataFormatException("Magic number missing");
-			
-			Inflater unc = new Inflater(); 
-			unc.setInput(in, 1, in.length - 1);
-			byte[] orig = new byte[in.length * 10];
-			int len = unc.inflate(orig);
-			
-			ByteArrayInputStream rd = new ByteArrayInputStream(orig, 0, len);
-			
-			len = rd.read() * 0x100 + rd.read();
-			byte[] urlb = new byte[len];
-			if (rd.read(urlb, 0, len) != len)
-				throw new DataFormatException("Ran out of data while reading URL");
-			url = new String(urlb, StandardCharsets.UTF_8);
-			Log.d("Selections.url", url);
-
-			while (rd.available() > 4) {
-				int type = rd.read();
-				
-				if (type > 0x03) {
-					Log.w("Schedule.Selections", "Discarding unknown bits in type: " + type);
-					type &= 0x03;
-				}
-				Log.d("Selections.type", "" + type);
-				
-				int i, n = rd.read() * 0x100 + rd.read();
-				for (i = 0; i < n; i ++) {
-					len = rd.read();
-					if (len == -1 || rd.available() < len)
-						throw new DataFormatException("Ran out of data while reading ID");
-					
-					byte[] idb = new byte[len];
-					rd.read(idb, 0, len);
-					String id;
-					id = new String(idb, StandardCharsets.UTF_8);
-					selections.put(id, type);
-					Log.d("Selections.id", id);
-				}
-			}
-		}
-		
-		/* Export all selections/deletions/etc in a byte array. Should export this to other devices
-		 * using QR codes. The format is pretty simple, see the comments. It's zlib-compressed to
-		 * hopefully keep it small enough for a QR rendered on a phone. */
-		public byte[] export() {
-			LinkedList<String>[] sels = (LinkedList<String>[]) new LinkedList[4];
-			int i;
-			
-			for (i = 0; i < 4; i ++)
-				sels[i] = new LinkedList<String>();
-			
-			for (String id : selections.keySet()) {
-				int t = selections.get(id);
-				sels[t].add(id);
-			}
-			
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try {
-				/* Length of URL, 16 bits network order */
-				byte[] urlb = url.getBytes(StandardCharsets.UTF_8);
-				out.write(urlb.length >> 8);
-				out.write(urlb.length & 0xff);
-				out.write(urlb);
-				for (i = 1; i < 4; i ++) {
-					if (sels[i].size() == 0)
-						continue;
-					
-					/* Type. Bitfield. 1 == remember, 2 == hide */
-					out.write(i);
-					/* Number of items, 16 bits network order */
-					out.write(sels[i].size() >> 8);
-					out.write(sels[i].size() & 0xff);
-					for (String item : sels[i]) {
-						byte[] id = item.getBytes(StandardCharsets.UTF_8);
-						if (id.length > 255) {
-							/* Way too long. Forget it. :-/ */
-							out.write(0);
-							Log.e("Schedule.getSelections", "Ridiculously long item id: " + item);
-						} else {
-							out.write(id.length);
-							out.write(id);
-						}
-					}
-				}
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-			
-			/* UGH. Raw arrays in Java. :-( "I just want to compress 200 bytes of data..." */
-			Deflater z = new Deflater(Deflater.BEST_COMPRESSION);
-			z.setInput(out.toByteArray());
-			z.finish();
-			byte[] ret1 = new byte[out.size() * 2 + 100];
-			byte[] ret2 = new byte[z.deflate(ret1) + 1];
-			/* "Version" number. Keep it outside the compressed bit because zlib doesn't have magic numbers.
-			 * I'll use this instead. I mostly need it to separate scanned URL QR codes from this binary data
-			 * so one byte like this is enough. */
-			ret2[0] = 0x01;
-			for (i = 0; i < ret2.length - 1; i ++)
-				ret2[i+1] = ret1[i];
-			
-			return ret2;
 		}
 	}
 }

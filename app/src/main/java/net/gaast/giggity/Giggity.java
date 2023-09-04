@@ -30,7 +30,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -293,31 +292,6 @@ public class Giggity extends Application {
 			}
 		}
 		return ret;
-	}
-
-	public static void zxingError(final Activity ctx) {
-		new AlertDialog.Builder(ctx)
-				.setMessage("This (deprecated) functionality depends on the ZXing Barcode scanner and will go away soon. Try ggt.gaa.st deeplinks instead.")
-				.setTitle("Error")
-				.setNegativeButton("Never mind", null)
-				.setNeutralButton("ggt.gaa.st", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Wilm0r/giggity#deeplinking-into-giggity"));
-						ctx.startActivity(intent);
-					}
-				})
-				.setPositiveButton("Install", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						// Deeplink into fdroid only since for whatever tedious stupid reason the app
-						// is visible but not installable on the Play Store anymore. But Giggity and
-						// FDroid have a pretty strong overlap in users so I guess we're ok. :-)
-						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://f-droid.org/en/packages/com.google.zxing.client.android/"));
-						ctx.startActivity(intent);
-					}
-				})
-				.show();
 	}
 
 	public static void copy(InputStream in, OutputStream out) throws IOException {
