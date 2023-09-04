@@ -307,7 +307,8 @@ public class ScheduleViewActivity extends Activity {
 		super.onDestroy();
 	}
 
-	/* Progress dialog for schedule/data load. Could consider putting it into Fetcher. */
+	/* Progress dialog for data loads. For historical reasons (b5ffc48634c08d1fbe13285bbee8cf236a940757)
+	 * this is separate from LoadProgressView (used for loading the schedule itself). Maybe clean that up some day.. :-/ */
 	private class LoadProgressDialog extends ProgressDialog implements LoadProgress {
 		private Handler updater;
 		private LoadProgressDoneInterface done;
@@ -369,6 +370,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 	}
 
+	/* This is the one used for loading the schedule, with that "I'm impatient switch to cache" button. */
 	private class LoadProgressView extends FrameLayout implements LoadProgress {
 		ProgressBar prog;
 		private Handler updater;
@@ -732,6 +734,7 @@ public class ScheduleViewActivity extends Activity {
 		if (m.find() && !m.group().isEmpty()) {
 			ext = "." + m.group();
 		}
+		// At least some (old) Samsung phones seem to use filename extension over the MIME type we pass.
 		File fn = new File(dir, FilenameUtils.getBaseName(link.getUrl()) + ext);
 
 		final LoadProgressDialog prog = new LoadProgressDialog(this);
@@ -767,20 +770,12 @@ public class ScheduleViewActivity extends Activity {
 					del.delete();
 				}
 				try {
-					Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.DEFAULT, link.getType());
+					Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.CACHE_1D, link.getType());
 					f.setProgressHandler(prog.getUpdater());
 
 					try {
 						OutputStream copy = new FileOutputStream(fn);
-						if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q /* 29 */) {
-							FileUtils.copy(f.getStream(), copy);
-						} else {
-							byte[] yo = new byte[4096];
-							int st;
-							while ((st = f.getStream().read(yo)) != -1) {
-								copy.write(yo, 0, st);
-							}
-						}
+						Giggity.copy(f.getStream(), copy);
 						copy.close();
 					} catch (IOException e) {
 						// TODO(http)

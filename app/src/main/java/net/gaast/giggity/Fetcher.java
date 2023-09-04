@@ -39,7 +39,8 @@ public class Fetcher {
 	public enum Source {
 		DEFAULT,           /* Check online (304 -> cache, and fail if we're offline). */
 		CACHE_ONLY,        /* Get from cache or fail. */
-		CACHE,             /* Get from cache, allow fetch if not available. */
+		CACHE,             /* Get from cache, allow fetch if not available. (Will fetch ~yearly actually) */
+		CACHE_1D,          /* Get from cache but refresh once a day. */
 		CACHE_IF_OFFLINE,  /* Check online if we're not offline, otherwise use cache. */
 	}
 
@@ -106,7 +107,9 @@ public class Fetcher {
 		}
 		switch (source) {
 			case DEFAULT:
-				dlc.addRequestProperty("Cache-Control", "max-age=0");
+				// TODO: This shouldn't really be default, but maybe add a REFRESH option to ignore
+				// server expiry/max-age and reload now?
+				// dlc.addRequestProperty("Cache-Control", "max-age=0");
 				break;
 			case CACHE_ONLY:
 				dlc.addRequestProperty("Cache-Control", "only-if-cached");
@@ -114,7 +117,12 @@ public class Fetcher {
 				dlc.addRequestProperty("Cache-Control", "max-stale=" + (3650 * 24 * 60 * 60));
 				break;
 			case CACHE:
+				// Add 1y to whatever the server said. Practically rely on cache forever.
 				dlc.addRequestProperty("Cache-Control", "max-stale=" + (365 * 24 * 60 * 60));  // 1y
+				break;
+			case CACHE_1D:
+				// Rely on cache with daily refreshes, regardless of what the server said.
+				dlc.addRequestProperty("Cache-Control", "max-age=" + (24 * 60 * 60));  // 1d
 				break;
 		}
 

@@ -37,6 +37,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.FileUtils;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -44,6 +45,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -319,5 +322,18 @@ public class Giggity extends Application {
 					}
 				})
 				.show();
+	}
+
+	public static void copy(InputStream in, OutputStream out) throws IOException {
+		// Delete this again once support for API <29 is dropped.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q /* 29 */) {
+			FileUtils.copy(in, out);
+		} else {
+			byte[] yo = new byte[4096];
+			int st;
+			while ((st = in.read(yo)) != -1) {
+				out.write(yo, 0, st);
+			}
+		}
 	}
 }
