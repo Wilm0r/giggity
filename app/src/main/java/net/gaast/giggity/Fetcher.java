@@ -14,13 +14,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.zip.GZIPInputStream;
 
 /** Caching HTTP fetcher. */
@@ -37,10 +34,11 @@ public class Fetcher {
 	static HttpResponseCache cache;
 
 	public enum Source {
+		REFRESH,           /* Ctrl-R, y'know */
 		DEFAULT,           /* Check online (304 -> cache, and fail if we're offline). */
-		CACHE_ONLY,        /* Get from cache or fail. */
-		CACHE,             /* Get from cache, allow fetch if not available. (Will fetch ~yearly actually) */
 		CACHE_1D,          /* Get from cache but refresh once a day. */
+		CACHE,             /* Get from cache, allow fetch if not available. (Will fetch ~yearly actually) */
+		CACHE_ONLY,        /* Get from cache or fail. */
 		CACHE_IF_OFFLINE,  /* Check online if we're not offline, otherwise use cache. */
 	}
 
@@ -68,13 +66,8 @@ public class Fetcher {
 		return true;
 	}
 
-	public Fetcher(Giggity app_, String url, Source sourcePref) throws IOException {
-		this(app_, url, sourcePref, null);
-	}
-
-	public Fetcher(Giggity app_, String url, Source source, String type_) throws IOException {
+	public Fetcher(Giggity app_, String url, Source source) throws IOException {
 		app = app_;
-		type = type_; // TODO(http) die
 
 		Log.d("Fetcher", "Creating fetcher for " + url + " source=" + source);
 
@@ -107,22 +100,24 @@ public class Fetcher {
 		}
 		switch (source) {
 			case DEFAULT:
-				// TODO: This shouldn't really be default, but maybe add a REFRESH option to ignore
-				// server expiry/max-age and reload now?
-				// dlc.addRequestProperty("Cache-Control", "max-age=0");
+				// No special headers needed, that's what default is about.. :)
 				break;
-			case CACHE_ONLY:
-				dlc.addRequestProperty("Cache-Control", "only-if-cached");
-				// 10y (though apparently I could just omit the argument?)
-				dlc.addRequestProperty("Cache-Control", "max-stale=" + (3650 * 24 * 60 * 60));
+			case REFRESH:
+				dlc.addRequestProperty("Cache-Control", "max-age=0");
+				break;
+			case CACHE_1D:
+				// Rely on cache with daily refreshes, regardless of what the server said.
+				// (Would be nice to still trust the server if it returned a higher max-age but how?)
+				dlc.addRequestProperty("Cache-Control", "max-age=" + (24 * 60 * 60));  // 1d
 				break;
 			case CACHE:
 				// Add 1y to whatever the server said. Practically rely on cache forever.
 				dlc.addRequestProperty("Cache-Control", "max-stale=" + (365 * 24 * 60 * 60));  // 1y
 				break;
-			case CACHE_1D:
-				// Rely on cache with daily refreshes, regardless of what the server said.
-				dlc.addRequestProperty("Cache-Control", "max-age=" + (24 * 60 * 60));  // 1d
+			case CACHE_ONLY:
+				dlc.addRequestProperty("Cache-Control", "only-if-cached");
+				// 10y (though apparently I could just omit the argument?)
+				dlc.addRequestProperty("Cache-Control", "max-stale=" + (3650 * 24 * 60 * 60));
 				break;
 		}
 
@@ -181,26 +176,6 @@ public class Fetcher {
 //		if (source == Source.CACHE)
 //			return FileProvider.getUriForFile(app, "net.gaast.giggity.paths", fn);
 		return null;
-	}
-
-	private File fixMe_cacheFile(String url, boolean tmp) {
-		// Need this for export
-		String fn = Schedule.hashify(url);
-		/* Filenames start to matter a bit: Using external viewers for navdrawer links for example.
-		   Samsung's gallery is picky about filename extensions even when we're already passing a
-		   MIME-type. So if we have a type, use it to add a filename extension (letters only). */
-		if (type != null) {
-			Matcher m = Pattern.compile("[a-z]+$").matcher(type);
-			if (m.find() && !m.group().isEmpty()) {
-				fn += "." + m.group();
-			}
-		}
-		if (tmp) {
-			fn = "." + fn + ".tmp";
-		}
-		File downloads = new File(app.getCacheDir(), "downloads");
-		downloads.mkdirs();
-		return new File(downloads, fn);
 	}
 
 	public void setProgressHandler(Handler handler) {

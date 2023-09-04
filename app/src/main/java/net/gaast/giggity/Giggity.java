@@ -185,10 +185,6 @@ public class Giggity extends Application {
 		return new Fetcher(this, url, source);
 	}
 
-	public Fetcher fetch(String url, Fetcher.Source source, String type) throws IOException {
-		return new Fetcher(this, url, source, type);
-	}
-
 	// TODO: IIRC there's a localised version for this already? Though honestly I prefer mine since
 	// it avoids doing atrocious middle-endian dates which is factually a good thing.
 	public static String dateRange(Date start, Date end) {
@@ -275,8 +271,8 @@ public class Giggity extends Application {
 				}
 			}
 		}
-		// From 33+ I'll rely on USE_EXACT_ALARM which is auto-granted but may trigger Play Store review. The UX for SCHEDULE_EXACT_ALARM is pretty meh.
-		// I'm willing to take that risk, Giggity's pretty much a calendaring app, and it uses exact alarms for no other purpose than timely pre-event notifications.
+		// From 33+ I'll rely on USE_EXACT_ALARM which is auto-granted after Play Store review (granted Apr 2023 or so).
+		// So we just need to keep supporting SCHEDULE_EXACT_ALARM for this narrow range of API versions.
 		if (Build.VERSION.SDK_INT >= 31 && Build.VERSION.SDK_INT < 33) {
 			AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 			if (!am.canScheduleExactAlarms()) {

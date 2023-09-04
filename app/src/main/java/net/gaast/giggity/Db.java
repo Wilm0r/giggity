@@ -372,7 +372,7 @@ public class Db {
 				json = sw.toString();
 			} else {
 				f = app.fetch(getSeedUrl(),
-				              source == SeedSource.ONLINE ? Fetcher.Source.DEFAULT : Fetcher.Source.CACHE);
+				              source == SeedSource.ONLINE ? Fetcher.Source.REFRESH : Fetcher.Source.CACHE);
 				json = f.slurp();
 			}
 		} catch (IOException e) {

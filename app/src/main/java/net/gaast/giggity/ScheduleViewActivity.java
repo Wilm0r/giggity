@@ -37,9 +37,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.FileUtils;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
@@ -770,7 +768,7 @@ public class ScheduleViewActivity extends Activity {
 					del.delete();
 				}
 				try {
-					Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.CACHE_1D, link.getType());
+					Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.CACHE_1D);
 					f.setProgressHandler(prog.getUpdater());
 
 					try {
