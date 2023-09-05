@@ -3,7 +3,6 @@ package net.gaast.giggity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.http.HttpResponseCache;
 import android.os.Handler;
 import android.os.Looper;
@@ -123,6 +122,7 @@ public class Fetcher {
 
 		String status = dlc.getResponseCode() + " " + dlc.getResponseMessage();
 		Log.d("Fetcher", "HTTP status " + status);
+		// Log.d("Fetcher", "Req " + cache.getRequestCount() + " Net " + cache.getNetworkCount() + " Hit " + cache.getHitCount());
 		String loc = dlc.getHeaderField("Location");
 		if (loc != null) {
 			Log.d("http-location", loc);

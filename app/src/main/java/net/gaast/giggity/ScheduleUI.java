@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
+import org.apache.commons.io.output.NullOutputStream;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZoneId;
@@ -120,6 +122,9 @@ public class ScheduleUI extends Schedule {
 				Fetcher f;
 				try {
 					f = new Fetcher(app, getIconUrl(), Fetcher.Source.DEFAULT);
+					// Just feed it to /dev/null so that next time we can CACHE_ONLY fetch it.
+					// It won't get cached without completing this bogus read!
+					Giggity.copy(f.getStream(), new NullOutputStream());
 				} catch (IOException e) {
 					Log.e("getIconStream", "Fetch error: " + e);
 					return;
