@@ -39,7 +39,8 @@
 	<string name="use_cached_version">Uit cache laden</string>
 	<string name="loading_image">Bestand wordt geladen...</string>
 	<string name="loading_error">Laadfout</string>
-	<string name="no_viewer_error">Geen lezer geïnstalleerd voor bestandtype</string>
+	<string name="no_viewer_error">Geen lezer geïnstalleerd voor bestandstype</string>
+	<string name="open_link_with_browser_instead">In browser openen</string>
 	<string name="export_selections">Selecties exporteren</string>
 	<string name="import_selections">Selecties importeren</string>
 	<string name="no_selections">Geen exporteerbare data</string>

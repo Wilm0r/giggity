@@ -121,7 +121,8 @@ public class Fetcher {
 				break;
 		}
 
-		Log.d("Fetcher", "HTTP status " + dlc.getHeaderField(0));
+		String status = dlc.getResponseCode() + " " + dlc.getResponseMessage();
+		Log.d("Fetcher", "HTTP status " + status);
 		String loc = dlc.getHeaderField("Location");
 		if (loc != null) {
 			Log.d("http-location", loc);
@@ -156,26 +157,8 @@ public class Fetcher {
 				inStream = new GZIPInputStream(inStream);
 			}
 		} else {
-			throw new IOException("Download error: HTTP " + dlc.getHeaderField(0));
+			throw new IOException("Download error: HTTP " + status);
 		}
-
-//		if (inStream == null && fn.canRead()) {
-//			/* We have no download stream and should use the cached copy (i.e. we're offline). */
-//			flen = fn.length();
-//			inStream = new ProgressStream(new FileInputStream(fn));
-//			dlc = null;
-//			if (source != Source.ONLINE)
-//				source = Source.CACHE;
-//		} else if (inStream == null) {
-//			throw new IOException(app.getString(R.string.no_network_or_cached));
-//		}
-	}
-
-	// Generate an (exportable) content:// URL to cached copy of this URL, if possible. Otherwise, null.
-	public Uri cacheUri() {
-//		if (source == Source.CACHE)
-//			return FileProvider.getUriForFile(app, "net.gaast.giggity.paths", fn);
-		return null;
 	}
 
 	public void setProgressHandler(Handler handler) {

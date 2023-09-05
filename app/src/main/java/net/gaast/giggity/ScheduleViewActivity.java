@@ -657,7 +657,11 @@ public class ScheduleViewActivity extends Activity {
 				item.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						openLink(link);
+						if (link.getType() != null) {
+							viewLink(link);
+ 						} else {
+							openLink(link);
+						}
 						drawerLayout.closeDrawers();
 					}
 				});
@@ -701,24 +705,16 @@ public class ScheduleViewActivity extends Activity {
 		}
 	}
 
-	/** Open a link object, either just through the browser or by downloading locally and using a
-	 * dedicated viewer.
-	 * @param link Link object - if type is set we'll try to download and use a viewer, unless:
-	 */
-	private void openLink(final Schedule.Link link) {
-		if (link.getType() != null && viewLink(link)) {
-			return;
-		}
 
-		/* If type was not set, or if neither of the two inner ifs were true (do we have the file,
-		   or, are we allowed to download it?), fall back to browser. */
+	/** Open a link object through a browser intent. Meant mostly for website links. */
+	private void openLink(final Schedule.Link link) {
 		Uri uri = Uri.parse(link.getUrl());
 		Intent browser = new Intent(Intent.ACTION_VIEW, uri);
 		browser.addCategory(Intent.CATEGORY_BROWSABLE);
 		startActivity(browser);
 	}
 
-	/** Download and view linked content instead of opening in a browser. */
+	/** Download (and cache) and view linked content locally instead of opening in a browser. */
 	private boolean viewLink(final Schedule.Link link) {
 		File dir = new File(app.getCacheDir(), "view");  // R.paths.view
 		Matcher m = Pattern.compile("[a-z]+$").matcher(link.getType());
@@ -747,6 +743,12 @@ public class ScheduleViewActivity extends Activity {
 							.setTitle(R.string.loading_error)
 							.setMessage(getString(R.string.no_viewer_error) + " " +
 										link.getType() + ": " + e.getMessage())
+							.setPositiveButton(R.string.open_link_with_browser_instead, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									openLink(link);
+								}
+							})
 							.show();
 				}
 			}
@@ -770,7 +772,6 @@ public class ScheduleViewActivity extends Activity {
 						Giggity.copy(f.getStream(), copy);
 						copy.close();
 					} catch (IOException e) {
-						// TODO(http)
 						throw new RuntimeException(e);
 					}
 					f.keep();

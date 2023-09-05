@@ -40,6 +40,7 @@
 	<string name="loading_image">Loading image data...</string>
 	<string name="loading_error">Load error</string>
 	<string name="no_viewer_error">No viewer installed for filetype</string>
+	<string name="open_link_with_browser_instead">Open in browser</string>
 	<string name="export_selections">Export selections</string>
 	<string name="home_shortcut">Home shortcut</string>
 	<string name="import_selections">Import selections</string>
