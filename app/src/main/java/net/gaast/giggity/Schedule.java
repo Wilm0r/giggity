@@ -914,7 +914,8 @@ public class Schedule implements Serializable {
 				try {
 					if (startZonedTimeS != null) {
 						// All internal timestamps must be the tz-native times, in the conf's zone
-						startTime = ZonedDateTime.parse(startZonedTimeS, zdf);
+						// ... though sometimes they're not, soo .... force it to inTZ now!
+						startTime = ZonedDateTime.parse(startZonedTimeS, zdf).withZoneSameInstant(inTZ);
 					}
 				} catch (DateTimeParseException e){
 					startZonedTimeS = null;
