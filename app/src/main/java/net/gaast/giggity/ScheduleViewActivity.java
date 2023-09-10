@@ -777,10 +777,14 @@ public class ScheduleViewActivity extends Activity {
 					f.keep();
 
 					/* Will trigger the done() above back in the main thread. */
-					prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
+					}
 				} catch (IOException e) {
 					e.printStackTrace();
-					prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
+					}
 				}
 			}
 		};
