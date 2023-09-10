@@ -1,6 +1,19 @@
 # Actually don't want this obfuscation horseshit, I just want to trim
 # off most of the Android support library.
 -dontobfuscate
+# Also, I can't find a way to allow optimisation without corrupting line numbers.
+# mapping.txt isn't a solution since it'll only work with my builds downloaded from Play Store,
+# stacktraces from F-Droid users will remain useless.
+-dontoptimize
+# Thankfully shrinking is the more effective part.
+# No minify: >800K (as of 2023-09-10)
+# Add shrinking: ~400K
+# Add optimisation: ~300K
+
+# None of this actually worked, probably because it doesn't control OPTIMISATION, only shrinking?
+#-keepattributes *Annotation*,SourceFile,LineNumberTable
+#-keep class net.gaast.giggity.*
+#-keep class net.gaast.giggity.**
 
 # Accidentally had Play Services linked in when I ended up adding this.
 #-dontwarn com.google.android.gms.common.**
