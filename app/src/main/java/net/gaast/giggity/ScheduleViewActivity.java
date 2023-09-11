@@ -83,6 +83,7 @@ import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 public class ScheduleViewActivity extends Activity {
 	protected ScheduleUI sched;
@@ -128,6 +129,12 @@ public class ScheduleViewActivity extends Activity {
 	private String showEventId;
 
 	private BroadcastReceiver tzClose;
+
+	static CountingIdlingResource idler;
+
+	public static void setIdler(CountingIdlingResource idler) {
+		ScheduleViewActivity.idler = idler;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -312,6 +319,9 @@ public class ScheduleViewActivity extends Activity {
 
 		public LoadProgressDialog(Context ctx) {
 			super(ctx);
+			if (idler != null) {
+				idler.increment();
+			}
 
 			setMessage(getResources().getString(R.string.loading_schedule));
 			setIndeterminate(true);
@@ -326,6 +336,9 @@ public class ScheduleViewActivity extends Activity {
 					if (msg.what == DONE) {
 						if (done != null) {
 							done.done();
+						}
+						if (idler != null) {
+							idler.decrement();
 						}
 						dismiss();
 					} else if (msg.what > 0 ) {
@@ -376,6 +389,9 @@ public class ScheduleViewActivity extends Activity {
 
 		public LoadProgressView() {
 			super(ScheduleViewActivity.this);
+			if (idler != null) {
+				idler.increment();
+			}
 			inflate(ScheduleViewActivity.this, R.layout.schedule_load_progress, this);
 
 			prog = findViewById(R.id.progressBar);
@@ -387,6 +403,9 @@ public class ScheduleViewActivity extends Activity {
 					if (msg.what == DONE) {
 						if (done != null) {
 							done.done();
+						}
+						if (idler != null) {
+							idler.decrement();
 						}
 					} else if (msg.what == FROM_CACHE) {
 						// Fetcher reports we're already reading from cache anyway.

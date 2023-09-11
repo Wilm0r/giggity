@@ -8,6 +8,7 @@ android {
         applicationId "net.gaast.giggity"
         minSdkVersion 26
         targetSdkVersion 33
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         // Thought I was going to use this for something but forgot. And it may break reproducible builds?
         // buildConfigField "long", "TIMESTAMP", System.currentTimeMillis() + "L"
     }
@@ -50,6 +51,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.json:json:20230227'
+
+    final def espresso_version = "3.6.0-alpha01"
+    implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
+    androidTestImplementation 'androidx.test.ext:junit:1.2.0-alpha01'
 }
 
 repositories {
