@@ -1,0 +1,16 @@
+{
+	"version": 2023091399,
+	"url": "https://talks.datenspuren.de/ds23/schedule.xml",
+	"title": "Datenspuren 2023",
+	"start": "2023-09-15",
+	"end": "2023-09-17",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://datenspuren.de/2023/",
+				"title": "Website"
+			}
+		]
+	}
+}
