@@ -1,0 +1,34 @@
+{
+	"version": 2023091301,
+	"url": "https://cloud.fabrico.fr/remote.php/dav/public-calendars/6f4PgiJAtX39xD53/?export",
+	"title": "EuroBSDCon 2023",
+	"start": "2023-09-14",
+	"end": "2023-09-17",
+	"timezone": "Europe/Lisbon",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.eurobsdcon.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2023.eurobsdcon.org/venue/",
+				"title": "Venue"
+			},
+			{
+				"url": "https://2023.eurobsdcon.org/registration-and-pricing/",
+				"title": "Registration"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Auditorio",
+				"latlon": [40.20738, -8.42401]
+			},
+			{
+				"name": "Quimica.*",
+				"latlon": [40.20738, -8.42359]
+			}
+		]
+	}
+}
