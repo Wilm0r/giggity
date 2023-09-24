@@ -72,9 +72,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 	private ScheduleAdapter lista;
 	private Handler seedRefreshMenu;
 
-	private final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
-	private final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
-
 	private SharedPreferences pref;
 
 	@Override
