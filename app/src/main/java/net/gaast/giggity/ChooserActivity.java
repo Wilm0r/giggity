@@ -96,9 +96,10 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		db = app.getDb();
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 
-		refreshSeed(false);
-
 		list = new ListView(this);
+		updateList();  // To make sure there's always something on screen.
+		refreshSeed(false);  // Possibly find new data then refresh, asynchronously.
+
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
@@ -155,8 +156,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 						p.putLong("last_menu_seed_ts", System.currentTimeMillis());
 						p.commit();
 
-						lista = new ScheduleAdapter(db.getScheduleList());
-						list.setAdapter(lista);
+						updateList();
 					} else {
 						// TODO: Error never gets reported because the built-in file fallback should just work.
 						Toast.makeText(ChooserActivity.this,
@@ -235,7 +235,10 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		/* Do this part in onResume so we automatically re-sort the list (and
 		 * pick up new items) when returning to the chooser. */
 		super.onResume();
+		updateList();
+	}
 
+	private void updateList() {
 		lista = new ScheduleAdapter(db.getScheduleList());
 		list.setAdapter(lista);
 	}
