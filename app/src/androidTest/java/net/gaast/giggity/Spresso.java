@@ -1,5 +1,6 @@
 package net.gaast.giggity;
 
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -26,18 +27,26 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
+import static androidx.test.espresso.action.ViewActions.swipeDown;
+import static androidx.test.espresso.action.ViewActions.swipeLeft;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
-import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.anyOf;
 import static org.hamcrest.Matchers.anything;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.startsWith;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
@@ -47,108 +56,134 @@ public class Spresso {
 	public ActivityScenarioRule<ChooserActivity> mActivityScenarioRule =
 			new ActivityScenarioRule<>(ChooserActivity.class);
 
+	public static Matcher scheduleByTitle(Matcher nameMatcher){
+		return new TypeSafeMatcher<Db.DbSchedule>(){
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("DbSchedule matching title ").appendDescriptionOf(nameMatcher);
+			}
+
+			@Override
+			public boolean matchesSafely(Db.DbSchedule sch) {
+				return nameMatcher.matches(sch.getTitle());
+			}
+		};
+	}
+
+	public static Matcher scheduleItemByTitle(Matcher nameMatcher){
+		return new TypeSafeMatcher<Schedule.Item>(){
+			@Override
+			public void describeTo(Description description) {
+				description.appendText("Schedule.Item matching title ").appendDescriptionOf(nameMatcher);
+			}
+
+			@Override
+			public boolean matchesSafely(Schedule.Item sci) {
+				return nameMatcher.matches(sci.getTitle());
+			}
+		};
+	}
 	@Test
 	public void basicNav() {
 		CountingIdlingResource loaders = new CountingIdlingResource("loaders");
 		ScheduleViewActivity.setIdler(loaders);
 		Espresso.registerIdlingResources(loaders);
 
-//		DataInteraction relativeLayout = onData(anything())
-//				                                 .inAdapterView(childAtPosition(
-//						                                 withClassName(is("androidx.swiperefreshlayout.widget.SwipeRefreshLayout")),
-//						                                 0))
-//				                                 .atPosition(1);
-		ViewInteraction relativeLayout = onView(withText("DebConf 23"));
-		relativeLayout.perform(click());
+		// Load schedule.
+		onData(scheduleByTitle(containsString("DebConf 23"))).perform(click());
 
-		onView(withId(R.id.drawerLayout))
-				.perform(DrawerActions.open());
 
-		ViewInteraction textView = onView(
-				allOf(withId(R.id.timetable), withText(R.string.timetable)));
-		textView.perform(click());
+		// Start with the first day.
+		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
+		onView(withId(R.id.scrollView)).perform(swipeUp());
+		onView(allOf(withText(R.string.change_day))).perform(click());
+		onView(allOf(withClassName(endsWith("CheckedTextView")), withText(containsString("10")))).perform(click());
 
-		DataInteraction scheduleItemView = onData(anything())
-				                                   .inAdapterView(childAtPosition(
-						                                   withClassName(is("net.gaast.giggity.TimeTable")),
-						                                   1))
-				                                   .atPosition(4);
-		scheduleItemView.perform(click());
+		// Timetable view.
+		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
+		onView(withId(R.id.scrollView)).perform(swipeDown());
+		onView(allOf(withId(R.id.timetable), withText(R.string.timetable))).perform(click());
+
+		onData(scheduleItemByTitle(startsWith("Using FOSS to fight"))).inAdapterView(withClassName(is("net.gaast.giggity.ScheduleListView"))).perform(click());
+		pressBack();
+
+		onData(scheduleItemByTitle(startsWith("Forming a SSH Cluster"))).inAdapterView(withClassName(is("net.gaast.giggity.ScheduleListView"))).perform(click());
+		ViewInteraction dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("Forming a SSH Cluster")))));
+		dialog.perform(click());  // .... I kind of don't understand but this click is ... load-bearing?
+
+		ViewInteraction remind = onView(allOf(isDescendantOfA(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("Forming a SSH Cluster"))))), withText(R.string.remind_me), withClassName(is("android.widget.CheckBox"))));
+		remind.perform(click());
 
 		pressBack();
 
-		DataInteraction scheduleItemView2 = onData(anything())
-				                                    .inAdapterView(childAtPosition(
-						                                    withClassName(is("net.gaast.giggity.TimeTable")),
-						                                    1))
-				                                    .atPosition(11);
-		scheduleItemView2.perform(click());
 
-		ViewInteraction dialog = onView(
-				allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(is("Forming a SSH Cluster using old smartphones (Mobian and other  OSes) - Sustainable Computing")))));
-		dialog.perform(click());
+		// 12th Sep
+		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
+		onView(withId(R.id.scrollView)).perform(swipeUp());
+		onView(allOf(withText(R.string.change_day))).perform(click());
+		onView(allOf(withClassName(endsWith("CheckedTextView")), withText(containsString("12")))).perform(click());
 
-		ViewInteraction checkBox = onView(
-				allOf(isDescendantOfA(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(is("Forming a SSH Cluster using old smartphones (Mobian and other  OSes) - Sustainable Computing"))))), withText(R.string.remind_me), withClassName(is("android.widget.CheckBox"))));
-		checkBox.perform(click());
+		onData(scheduleItemByTitle(startsWith("Face-to-face Debian"))).inAdapterView(withClassName(is("net.gaast.giggity.ScheduleListView"))).perform(click());
+		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("Face-to-face Debian")))));
+		dialog.perform(click());  // .... I kind of don't understand but this click is ... load-bearing?
 
-		checkBox.perform(click());
+		remind = onView(allOf(isDescendantOfA(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("Face-to-face Debian"))))), withText(R.string.remind_me), withClassName(is("android.widget.CheckBox"))));
+		remind.perform(click());
 
 		pressBack();
 
-		onView(withId(R.id.drawerLayout))
-				.perform(DrawerActions.open());
+		onData(scheduleItemByTitle(startsWith("/usr-merge"))).inAdapterView(withClassName(is("net.gaast.giggity.ScheduleListView"))).perform(click());
+		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("/usr-merge")))));
+		dialog.perform(click());  // .... I kind of don't understand but this click is ... load-bearing?
 
-		ViewInteraction textView2 = onView(
-				allOf(withId(R.id.my_events), withText(R.string.my_events)));
-		textView2.perform(click());
+		remind = onView(allOf(isDescendantOfA(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("/usr-merge"))))), withText(R.string.remind_me), withClassName(is("android.widget.CheckBox"))));
+		remind.perform(click());
 
-		onView(withId(R.id.drawerLayout))
-				.perform(DrawerActions.open());
+		pressBack();
 
-		ViewInteraction textView3 = onView(
-				allOf(withId(R.id.search), withText(R.string.search)));
-		textView3.perform(click());
+
+		// Search query
+		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
+		onView(withId(R.id.scrollView)).perform(swipeDown());
+		onView(allOf(withId(R.id.search), withText(R.string.search))).perform(click());
 
 		ViewInteraction searchQuery = onView(
 				allOf(withClassName(is("net.gaast.giggity.ItemSearch$SearchQuery")),
 						isDisplayed()));
 		searchQuery.perform(replaceText("linux"), closeSoftKeyboard());
 
-		DataInteraction scheduleItemView3 = onData(anything())
-				                                    .inAdapterView(childAtPosition(
-						                                    withClassName(is("net.gaast.giggity.ItemSearch")),
-						                                    3))
-				                                    .atPosition(4);
-		scheduleItemView3.perform(click());
+		onData(scheduleItemByTitle(startsWith("What's new in the"))).inAdapterView(withClassName(is("net.gaast.giggity.ScheduleListView"))).perform(click());
+		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("What's new in the")))));
+		dialog.perform(click());  // .... I kind of don't understand but this click is ... load-bearing?
 
-//		checkBox = onView(
-//				allOf(isDisplayed(), withText(R.string.remind_me), withClassName(is("android.widget.CheckBox"))));
-//		checkBox.perform(click());
+		remind = onView(allOf(isDescendantOfA(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("What's new in the"))))), withText(R.string.remind_me), withClassName(is("android.widget.CheckBox"))));
+		remind.perform(click());
 
 		pressBack();
 
-		onView(withId(R.id.drawerLayout))
-				.perform(DrawerActions.open());
+		// My events, see what we selected so far?
+		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
+		onView(withId(R.id.scrollView)).perform(swipeDown());
+		onView(allOf(withId(R.id.my_events), withText(R.string.my_events))).perform(click());
 
-		ViewInteraction textView4 = onView(
-				allOf(withId(R.id.my_events), withText(R.string.my_events
-						),
-						childAtPosition(
-								allOf(withId(R.id.menu),
-										childAtPosition(
-												withId(R.id.scrollView),
-												0)),
-								5)));
-		textView4.perform(click());
-
-		ViewInteraction listView = onView(
-				allOf(withParent(allOf(withId(R.id.viewerContainer),
-								withParent(withId(R.id.bigScreen)))),
-						isDisplayed()));
-		listView.check(matches(isDisplayed()));
+		// TODO: Check why MyItemsView exists but Timetable is just ScheduleListView... Is it because of the odd little carousel thing at the top?
+		onData(scheduleItemByTitle(startsWith("/usr-merge"))).inAdapterView(withClassName(is("net.gaast.giggity.MyItemsView"))).perform(click());
+		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("/usr-merge")))));
+		dialog.check(matches(isDisplayed()));
+		dialog.perform(click(), swipeLeft());
+		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("What's new in the")))));
+		dialog.check(matches(isDisplayed()));
+		dialog.perform(click(), swipeLeft());
+		// Verify that we indeed swiped to the next talk, the one initially tapped on is not visible.
+		// (But due to how the swipe view works, it's indeed still in the view hierarchy somewhere.)
+		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("/usr-merge")))));
+		dialog.check(matches(not(isDisplayed())));
+		// The second swipe should've been a no-op, we should still be showing the same talk.
+		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("What's new in the")))));
+		dialog.check(matches(isDisplayed()));
 	}
 
+	// Probably delete this, was included by the recorder but I'm not actually using it anymore.
 	private static Matcher<View> childAtPosition(
 			final Matcher<View> parentMatcher, final int position) {
 

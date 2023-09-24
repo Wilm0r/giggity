@@ -1,137 +1,56 @@
 {
-	"version": 2022010600,
+	"version": 2023092401,
 	"schedules": [
 		{
-			"version": 2021012000,
-			"url": "https://in2021.mini.debconf.org/schedule/pentabarf.xml",
-			"title": "MiniDebConf India 2021",
-			"start": "2021-01-23",
-			"end": "2021-01-24",
+			"version": 2022081800,
+			"url": "https://events.hackerspace.gent/en/newline2022/public/schedule.xml",
+			"title": "Newline 2022",
+			"start": "2022-09-02",
+			"end": "2022-09-04",
+			"timezone": "Europe/Brussels",
 			"metadata": {
-				"icon": "https://in2021.mini.debconf.org/static/img/logo.8224b7f40c56.png",
 				"links": [
 					{
-						"url": "https://in2021.mini.debconf.org/",
+						"url": "https://hackerspace.gent/landing/newline.php",
 						"title": "Website"
 					}
 				]
 			}
 		},
 		{
-			"version": 2021091100,
-			"url": "https://fosdem.org/2021/schedule/xml",
-			"title": "FOSDEM 2021",
-			"start": "2021-02-06",
-			"end": "2021-02-07",
-			"timezone": "Europe/Brussels",
+			"version": 2022082701,
+			"title": "Kielux Linux Presentation Day",
+			"url": "https://kielux.de/content/calendars/LPD22.ics",
+			"start": "2022-09-15",
+			"end": "2022-09-15",
+			"timezone": "Europe/Berlin",
 			"refresh_interval": 1800,
 			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
 				"links": [
 					{
-						"url": "https://fosdem.org/2021/",
+						"url": "https://kielux.de",
 						"title": "Website"
 					},
 					{
-						"url": "https://volunteers.fosdem.org/faq/",
-						"title": "Volunteer"
-					},
-					{
-						"url": "https://fosdem.org/2021/stands/",
-						"title": "Stands"
+						"url": "https://kielux.de/programm/LPD22",
+						"title": "Schedule"
 					}
 				],
-				"icon": "https://archive.fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png"
-			}
-		},
-		{
-			"start": "2021-03-13",
-			"end": "2021-03-21",
-			"version": 2021031100,
-			"url": "https://api.eventyay.com/v1/events/fa96ae2c.ics?include_sessions",
-			"title": "FOSSASIA Summit 2021",
-			"metadata": {
-				"icon": "https://pbs.twimg.com/profile_images/1141238022/fossasia-cubelogo_200x200.jpg",
-				"links": [
+				"rooms": [
 					{
-						"url": "https://summit.fossasia.org/",
-						"title": "Website"
+						"name": "R012",
+						"latlon": [54.33497, 10.11928]
 					}
 				]
 			}
 		},
 		{
-			"start": "2021-03-20",
-			"end": "2021-03-21",
-			"version": 2021031000,
-			"url": "https://libreplanet.org/2021/lp2021-schedule.ics",
-			"title": "LibrePlanet 2021",
-			"metadata": {
-				"icon": "https://libreplanet.org/2021/assets/img/logo.png",
-				"links": [
-					{
-						"url": "https://libreplanet.org/2021/",
-						"title": "Website"
-					},
-					{
-						"url": "https://libreplanet.org/2021/live/",
-						"title": "Livestream"
-					}
-				]
-			}
-		},
-		{
-			"version": 2021070100,
-			"url": "https://sotm.osmz.ru/2021.xml",
-			"title": "State of the Map 2021",
-			"start": "2021-07-09",
-			"end": "2021-07-11",
-			"metadata": {
-				"icon": "https://2021.stateofthemap.org/img/sotm_2021-logo-small.png",
-				"links": [
-					{
-						"url": "https://2021.stateofthemap.org/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2021071800,
-			"url": "https://framadrive.org/s/fPHajTWPGLwMrfF/download/Tracim.ics",
-			"title": "Entrée Libre #2",
-			"start": "2021-07-28",
-			"end": "2021-07-31",
-			"metadata": {
-				"links": [
-					{
-						"url": "https://entreelibre.frama.site/",
-						"title": "Site Web"
-					}
-				]
-			}
-		},
-		{
-			"version": 2021081000,
-			"url": "https://debconf21.debconf.org/schedule/pentabarf.xml",
-			"title": "DebConf 21",
-			"start": "2021-08-24",
-			"end": "2021-08-28",
-			"metadata": {
-				"icon": "https://debconf21.debconf.org/static/img/favicon/favicon-196.3b67242f2574.png",
-				"links": [
-					{
-						"url": "https://debconf21.debconf.org/",
-						"title": "Website"
-					}
-				]
-			}
-		},
-		{
-			"version": 2021091100,
-			"url": "https://kielux.de/content/calendars/LPD21.ics",
-			"title": "Kieler Linux Presentation Day 2021.2",
-			"start": "2021-09-16",
-			"end": "2021-09-16",
+			"version": 2022082701,
+			"title": "20. Kieler Open Source und Linux Tage",
+			"url": "https://kielux.de/content/calendars/KOLT22.ics",
+			"start": "2022-09-16",
+			"end": "2022-09-17",
 			"timezone": "Europe/Berlin",
 			"refresh_interval": 1800,
 			"metadata": {
@@ -142,72 +61,146 @@
 						"title": "Website"
 					},
 					{
-						"url": "https://kielux.de/programm/LPD21",
-						"title": "Schedule"
-					},
-					{
-						"url": "https://kielux.de/archiv",
-						"title": "News"
-					}
-				]
-			}
-		},
-		{
-			"version": 2021091100,
-			"url": "https://kielux.de/content/calendars/KOLT21.ics",
-			"title": "19. Kieler Open Source und Linux Tage Online",
-			"start": "2021-09-17",
-			"end": "2021-09-18",
-			"timezone": "Europe/Berlin",
-			"refresh_interval": 1800,
-			"metadata": {
-				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
-				"links": [
-					{
-						"url": "https://kielux.de",
-						"title": "Website"
-					},
-					{
-						"url": "https://kielux.de/programm/KOLT21",
+						"url": "https://kielux.de/programm/KOLT22",
 						"title": "Schedule and workshop registration"
 					},
 					{
-						"url": "https://kielux.de/archiv",
-						"title": "News"
+						"title": "Entertainment",
+						"url": "https://kielux.de/aktionen"
+					},
+					{
+						"title": "Exhibition",
+						"url": "https://kielux.de/aussteller"
+					}
+				],
+				"rooms": [
+					{
+						"name": "R012",
+						"latlon": [54.33497, 10.11928]
+					},
+					{
+						"name": "R007",
+						"latlon": [54.33547, 10.11951]
+					},
+					{
+						"name": "R114",
+						"latlon": [54.3351, 10.11944]
 					}
 				]
 			}
 		},
 		{
-			"version": 2021091700,
-			"url": "https://talks.datenspuren.de/ds21/schedule.xml",
-			"title": "Datenspuren 2021",
-			"start": "2021-09-17",
-			"end": "2021-09-19",
+			"version": 2022090201,
+			"url": "https://cloud.bib.uni-mannheim.de/s/f35r5JMRZywZBoa/download/oat22.xml",
+			"title": "Open-Access-Tage 2022",
+			"start": "2022-09-19",
+			"end": "2022-09-21",
+			"timezone": "Europe/Berlin",
 			"metadata": {
-				"icon": "https://www.c3d2.de/images/news/datenspuren-2021.png",
+				"icon": "https://cloud.bib.uni-mannheim.de/s/aCFfyztnYjJMC5y/download/oat22-icon.png",
 				"links": [
 					{
-						"url": "https://datenspuren.de/2021/",
+						"url": "https://open-access-tage.de/open-access-tage-2022-bern",
+						"title": "Website"
+					},
+					{
+						"url": "https://cloud.bib.uni-mannheim.de/s/anJxSLffPYPNDCq/download/OAT%20Plan%20Gurten.png",
+						"title": "Map",
+						"type": "image/png"
+					},
+					{
+						"url": "https://zenodo.org/communities/oat22/",
+						"title": "Poster + Folien"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Kulturschür",
+						"latlon": [46.91895, 7.43811]
+					},
+					{
+						"name": "Pavillon",
+						"latlon": [46.91961, 7.439]
+					},
+					{
+						"name": "Gurtenbahn Talstation",
+						"latlon": [46.92777, 7.44602]
+					},
+					{
+						"name": "Ussicht/Wytsicht",
+						"latlon": [46.91985, 7.43792]
+					},
+					{
+						"name": "Sibe",
+						"latlon": [46.91985, 7.43792]
+					},
+					{
+						"name": "Gewölbekeller",
+						"latlon": [46.91985, 7.43792]
+					},
+					{
+						"name": "Eis, Zwöi, Vier, Sächs",
+						"latlon": [46.91985, 7.43792]
+					}
+				]
+			}
+		},
+		{
+			"version": 2022091818,
+			"url": "https://www.linuxday.at/vortraege/2022/calendar.ics",
+			"title": "LinuxDay.at Vortraege",
+			"id": "LinuxDay.at Vortraege",
+			"start": "2022-09-24",
+			"end": "2022-09-24",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxday.at/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://www.linuxday.at/aussteller/2022",
+						"title": "Aussteller"
+					},
+					{
+						"url": "https://www.linuxday.at/vortraege/2022",
+						"title": "Vorträge"
+					},
+					{
+						"url": "https://www.linuxday.at/ort.html",
+						"title": "Wie komme ich zur HTL-Dornbirn"
+					}
+				]
+			}
+		},
+		{
+			"version": 2022092701,
+			"url": "https://charlas.2022.es.pycon.org/pycones2022/schedule/export/schedule.xcal",
+			"title": "PyCon Es 2022",
+			"start": "2022-09-30",
+			"end": "2022-10-02",
+			"timezone": "Europe/Madrid",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2022.es.pycon.org/",
 						"title": "Website"
 					}
 				]
 			}
 		},
 		{
-			"version": 2021091100,
-			"url": "https://www.paris-web.fr/2021/conferences-parisweb-2021.ics",
-			"title": "Paris Web 2021",
-			"id": "Conférences Paris Web 2021",
-			"speakermatch": " — (.*)",
-			"start": "2021-10-07",
-			"end": "2021-10-08",
+			"version": 2022100100,
+			"url": "https://www.paris-web.fr/2022/conferences-parisweb-2022.ics",
+			"title": "Paris Web 2022",
+			"start": "2022-10-06",
+			"end": "2022-10-08",
 			"timezone": "Europe/Paris",
 			"metadata": {
-				"icon": "https://mamot.fr/system/accounts/avatars/000/053/194/original/692e51a45b72717a.png",
 				"links": [
 					{
-						"url": "https://www.paris-web.fr/2021/",
+						"url": "https://www.paris-web.fr/2022/",
 						"title": "Site Web"
 					},
 					{
@@ -218,88 +211,199 @@
 			}
 		},
 		{
-			"version": 2021092700,
-			"url": "https://schedule.matomocamp.org/matomocamp-2021/schedule/export/schedule.xml",
-			"title": "MatomoCamp 2021",
-			"start": "2021-11-04",
-			"end": "2021-11-05",
-			"timezone": "Europe/Berlin",
+			"version": 2022100801,
+			"url": "https://dev.btcwiki.nl/btcams2022/processed/latest_penta_v0.xml",
+			"title": "Bitcoin Amsterdam 2022",
+			"start": "2022-10-12",
+			"end": "2022-10-14",
+			"timezone": "Europe/Brussels",
+			"refresh_interval": 1800,
 			"metadata": {
-				"icon": "https://matomocamp.org/wp-content/uploads/2021/09/LogoOnly256.png",
 				"links": [
 					{
-						"url": "https://matomocamp.org/",
+						"url": "https://b.tc/conference/amsterdam/",
 						"title": "Website"
+					},
+					{
+						"url": "https://dev.btcwiki.nl/btcams2022/processed/map.png",
+						"title": "Map",
+						"type": "image/png"
+					}
+				],
+				"icon": "https://dev.btcwiki.nl/btcams2022/processed/btcams.png"
+			}
+		},
+		{
+			"version": 2022101200,
+			"url": "https://afup.org/event/forumphp2022/planning.ics",
+			"title": "Forum PHP 2022",
+			"start": "2022-10-13",
+			"end": "2022-10-14",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"icon": "https://event.afup.org/wp-content/uploads/cropped-afup-02-192x192.png",
+				"links": [
+					{
+						"url": "https://event.afup.org/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://afup.org/event/forumphp2022/tickets",
+						"title": "Tarifs et inscription"
+					},
+					{
+						"url": "https://event.afup.org/forum-php-2022/infos-pratiques-forumphp2022/",
+						"title": "Infos pratiques & FAQ"
 					}
 				]
 			}
 		},
 		{
-			"version": 2021092200,
-			"url": "https://www.sfscon.it/?calendar=2021&format=xml",
-			"title": "SFScon 2021",
-			"start": "2021-11-12",
-			"end": "2021-11-13",
-			"timezone": "Europe/Rome",
+			"version": 2022101100,
+			"url": "https://pretalx.com/nixcon-2022/schedule/export/schedule.xml",
+			"title": "NixCon 2022",
+			"start": "2022-10-20",
+			"end": "2022-10-22",
+			"timezone": "Europe/Paris",
 			"metadata": {
+				"links": [
+					{
+						"url": "https://2022.nixcon.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://tickets.nixcon.org/2022/",
+						"title": "Tickets"
+					},
+					{
+						"url": "https://discourse.nixos.org/t/nixcon-2022-sponsorship-opportunities/20603",
+						"title": "Sponsor"
+					}
+				]
+			}
+		},
+		{
+			"version": 2022101400,
+			"url": "https://www.postgresql.eu/events/pgconfeu2022/schedule.xml",
+			"title": "PGConf.EU 2022",
+			"start": "2022-10-25",
+			"end": "2022-10-28",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2022.pgconf.eu/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2022.pgconf.eu/venue/",
+						"title": "Venue"
+					},
+					{
+						"url": "https://2022.pgconf.eu/code-of-conduct/",
+						"title": "Code of Conduct"
+					}
+				]
+			}
+		},
+		{
+			"version": 2022110400,
+			"url": "https://www.sfscon.it/?calendar=2022&format=xml",
+			"title": "SFScon 2022",
+			"start": "2022-11-11",
+			"end": "2022-11-12",
+			"timezone": "Europe/Brussels",
+			"metadata": {
+				"icon": "https://www.sfscon.it/wp-content/uploads/2020/10/cropped-cropped-sfsconnew-180x180.png",
 				"links": [
 					{
 						"url": "https://www.sfscon.it/",
 						"title": "Website"
 					},
 					{
-						"url": "https://www.sfscon.it/speakers/",
-						"title": "Speakers"
-					},
-					{
-						"url": "https://www.sfscon.it/call4volunteers/",
-						"title": "Volunteer"
-					}
-				],
-				"icon": "https://www.sfscon.it/wp-content/uploads/2020/10/cropped-cropped-sfsconnew-180x180.png"
-			}
-		},
-		{
-			"version": 2021122701,
-			"url": "https://static.rc3.world/schedule/everything.xml",
-			"title": "rC3: NOWHERE - 2021",
-			"start": "2021-12-27",
-			"end": "2021-12-30",
-			"timezone": "Europe/Berlin",
-			"refresh_interval": 1800,
-			"metadata": {
-				"links": [
-					{
-						"title": "Links",
-						"url": "https://links.rc3.world/"
-					},
-					{
-						"title": "Live-streams",
-						"url": "https://streaming.media.ccc.de/rc3/"
-					},
-					{
-						"title": "rC3 World",
-						"url": "https://rc3.world/2021/"
-					},
-					{
-						"title": "Weblog",
-						"url": "https://events.ccc.de/"
+						"url": "https://cloud.opendatahub.com/index.php/s/k9E3CEmeZcjN9Tq",
+						"title": "Attendee Guide",
+						"type": "application/pdf"
 					}
 				]
 			}
 		},
 		{
-			"version": 2022010600,
-			"url": "https://fosdem.org/2022/schedule/xml",
-			"title": "FOSDEM 2022",
-			"start": "2022-02-05",
-			"end": "2022-02-06",
-			"timezone": "Europe/Brussels",
-			"refresh_interval": 1800,
+			"version": 2022102500,
+			"url": "https://cfp.capitoledulibre.org/cdl-2022/schedule/export/schedule.xml",
+			"title": "Capitole du Libre 2022",
+			"start": "2022-11-19",
+			"end": "2022-11-20",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"icon": "https://framapiaf.s3.framasoft.org/framapiaf/accounts/avatars/000/063/765/original/c5fa7c6864ab5ba2.png",
+				"links": [
+					{
+						"url": "https://capitoledulibre.org/",
+						"title": "Site web"
+					}
+				],
+				"rooms": [
+					{
+						"name": "A.*",
+						"latlon": [43.60248, 1.45464]
+					},
+					{
+						"name": "B.*",
+						"latlon": [43.60247, 1.45566]
+					},
+					{
+						"name": "C.*",
+						"latlon": [43.60214, 1.45462]
+					},
+					{
+						"name": "Foyer.*",
+						"latlon": [43.60207, 1.45591]
+					}
+				]
+			}
+		},
+		{
+			"version": 2022121100,
+			"url": "https://pretalx.c3voc.de/hip-berlin-2022/schedule/export/schedule.xml",
+			"title": "///Hacking in Parallel – Berlin/// 2022",
+			"start": "2022-12-27",
+			"end": "2022-12-30",
+			"timezone": "Europe/Berlin",
 			"metadata": {
 				"links": [
 					{
-						"url": "https://fosdem.org/2022/",
+						"url": "https://hip-berlin.de/",
+						"title": "Website"
+					},
+					{
+						"url": "https://pretix.hip-berlin.de/hip2022/hip2022/",
+						"title": "Tickets"
+					},
+					{
+						"url": "https://wiki.hip-berlin.de/index.php?title=Main_Page",
+						"title": "Wiki"
+					},
+					{
+						"url": "https://engelsystem.hip-berlin.de/angeltypes?action=about",
+						"title": "Angel Center"
+					}
+				]
+			}
+		},
+		{
+			"version": 2022122000,
+			"url": "https://fosdem.org/2023/schedule/xml",
+			"title": "FOSDEM 2023",
+			"start": "2023-02-04",
+			"end": "2023-02-05",
+			"timezone": "Europe/Brussels",
+			"refresh_interval": 1800,
+			"metadata": {
+				"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
+				"links": [
+					{
+						"url": "https://fosdem.org/2023/",
 						"title": "Website"
 					},
 					{
@@ -307,11 +411,1476 @@
 						"title": "Volunteer"
 					},
 					{
-						"url": "https://fosdem.org/2022/stands/",
+						"url": "https://fosdem.org/2023/practical/transportation/",
+						"title": "Transportation"
+					},
+					{
+						"url": "https://fosdem.org/2023/stands/",
 						"title": "Stands"
 					}
 				],
-				"icon": "https://archive.fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png"
+				"icon": "https://archive.fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png",
+				"c3nav_base": "https://nav.fosdem.org",
+				"rooms": [
+					{
+						"name": "AW1\\.121",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1121"
+					},
+					{
+						"name": "AW1\\.125",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1125"
+					},
+					{
+						"name": "H\\.1301\\ \\(Cornil\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1301"
+					},
+					{
+						"name": "H\\.1302\\ \\(Depage\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1302"
+					},
+					{
+						"name": "H\\.1308\\ \\(Rolin\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1308"
+					},
+					{
+						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1309"
+					},
+					{
+						"name": "H\\.2213",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2213"
+					},
+					{
+						"name": "H\\.2214",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2214"
+					},
+					{
+						"name": "H\\.2215\\ \\(Ferrer\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2215"
+					},
+					{
+						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k1105"
+					},
+					{
+						"name": "K\\.3\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3201"
+					},
+					{
+						"name": "K\\.3\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3401"
+					},
+					{
+						"name": "K\\.4\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4201"
+					},
+					{
+						"name": "K\\.4\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4401"
+					},
+					{
+						"name": "K\\.4\\.601",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4601"
+					},
+					{
+						"name": "UA2\\.114\\ \\(Baudoux\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2114"
+					},
+					{
+						"name": "UA2\\.118\\ \\(Henriot\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2118"
+					},
+					{
+						"name": "UA2\\.220\\ \\(Guillissen\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2220"
+					},
+					{
+						"name": "UB2\\.147",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2147"
+					},
+					{
+						"name": "UB4.*",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176]
+					},
+					{
+						"name": "UD2\\.119",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2119"
+					},
+					{
+						"name": "UD2\\.120\\ \\(Chavanne\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2120"
+					},
+					{
+						"name": "UD2\\.208\\ \\(Decroly\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2208"
+					},
+					{
+						"name": "UD2\\.218A",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2218a"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023021100,
+			"url": "https://pretalx.hackerhotel.nl/hackerhotel-2023/schedule.xml",
+			"title": "HackerHotel 2023",
+			"start": "2023-02-10",
+			"end": "2023-02-12",
+			"timezone": "Europe/Amsterdam",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://hackerhotel.nl/",
+						"title": "Website"
+					},
+					{
+						"url": "https://mapcomplete.osm.be/indoors?z=18&lat=52.22072&lon=5.721302&language=en",
+						"title": "Map"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023013001,
+			"url": "https://pretalx.lebib.org/universit-d-hiver-2022/schedule/export/schedule.xml",
+			"title": "Université d'hiver de l'Interhack 2023",
+			"start": "2023-02-23",
+			"end": "2023-02-26",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://pretalx.lebib.org/universit-d-hiver-2022/",
+						"title": "Site web"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023031500,
+			"url": "https://libreplanet.org/2023/lp2023-schedule.ics",
+			"title": "LibrePlanet 2023",
+			"start": "2023-03-18",
+			"end": "2023-03-19",
+			"timezone": "America/New_York",
+			"metadata": {
+				"icon": "https://libreplanet.org/2023/assets/img/logo-small.png",
+				"links": [
+					{
+						"url": "https://libreplanet.org/2023/",
+						"title": "Website"
+					},
+					{
+						"url": "https://libreplanet.org/2023/live/",
+						"title": "Live Stream"
+					},
+					{
+						"url": "https://libreplanet.org/2023/safe-space-policy/",
+						"title": "Safe Space Policy"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023022200,
+			"url": "https://www.postgresql.eu/events/pgdayparis2023/schedule.xml",
+			"title": "pgDay Paris 2023",
+			"start": "2023-03-22",
+			"end": "2023-03-23",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.pgday.paris/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.pgday.paris/registration/",
+						"title": "Registration"
+					},
+					{
+						"url": "https://2023.pgday.paris/venue/",
+						"title": "Venue"
+					}
+				],
+				"icon": "https://files.mastodon.social/accounts/avatars/000/194/494/original/9f75283c634daf2b.png"
+			}
+		},
+		{
+			"version": 2023032800,
+			"url": "https://events.hackerspace.gent/en/newline2023/public/schedule.xml",
+			"title": "Newline 2023",
+			"start": "2023-03-31",
+			"end": "2023-04-02",
+			"timezone": "Europe/Brussels",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://newline.gent/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023032500,
+			"url": "https://pretalx.jdll.org/jdll2023/schedule.xml",
+			"title": "Journées du Logiciel Libre 2023",
+			"start": "2023-04-01",
+			"end": "2023-04-02",
+			"timezone": "Europe/Brussels",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.jdll.org/",
+						"title": "Site web"
+					},
+					{
+						"url": "https://www.jdll.org/contact-and-informations",
+						"title": "Informations pratiques"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023040500,
+			"url": "https://cfp.eh20.easterhegg.eu/eh20/schedule.xml",
+			"title": "Easterhegg 20",
+			"start": "2023-04-07",
+			"end": "2023-04-10",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://eh20.easterhegg.eu/",
+						"title": "Website"
+					},
+					{
+						"url": "https://presale.eh20.easterhegg.eu/",
+						"title": "Tickets"
+					},
+					{
+						"url": "https://engel.eh20.easterhegg.eu/login",
+						"title": "Angel Center"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023031600,
+			"url": "https://api.eventyay.com/v1/events/7cfe0771.ics?include_sessions",
+			"title": "FOSSASIA Summit 2023",
+			"start": "2023-04-13",
+			"end": "2023-04-15",
+			"timezone": "Asia/Singapore",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://summit.fossasia.org/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023041100,
+			"url": "https://pretalx.linuxtage.at/glt23/schedule.xml",
+			"title": "Grazer Linuxtage 2023",
+			"start": "2023-04-14",
+			"end": "2023-04-15",
+			"timezone": "Europe/Vienna",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxtage.at/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.linuxtage.at/stay/",
+						"title": "Where to stay in Graz"
+					},
+					{
+						"url": "https://www.linuxtage.at/participate/",
+						"title": "Volunteer"
+					}
+				],
+				"icon": "https://www.linuxtage.at/img/logo/tux_kopf_200.png"
+			},
+			"rooms": [
+				{
+					"name": "HS i1",
+					"latlon": [47.05821, 15.4591]
+				},
+				{
+					"name": "HS i2",
+					"latlon": [47.05904, 15.45969]
+				},
+				{
+					"name": "HS i3",
+					"latlon": [47.05821, 15.46083]
+				},
+				{
+					"name": "HS i4",
+					"latlon": [47.05813, 15.46068]
+				},
+				{
+					"name": "HS i5",
+					"latlon": [47.05813, 15.46068]
+				},
+				{
+					"name": "HS i6",
+					"latlon": [47.05821, 15.46083]
+				},
+				{
+					"name": "HS i7",
+					"latlon": [47.0581, 15.46081]
+				},
+				{
+					"name": "HS i11",
+					"latlon": [47.0587, 15.45914]
+				},
+				{
+					"name": "HS i12",
+					"latlon": [47.0587, 15.45914]
+				},
+				{
+					"name": "HS i13",
+					"latlon": [47.0587, 15.45914]
+				},
+				{
+					"name": "HF01092",
+					"latlon": [47.05899, 15.45968]
+				},
+				{
+					"name": "SZ01070",
+					"latlon": [47.05864, 15.4598]
+				},
+				{
+					"name": "Seminarraum ISW, MFEG210",
+					"latlon": [47.05791, 15.45987]
+				}
+			]
+		},
+		{
+			"version": 2023041300,
+			"url": "https://piandmore.de/de/conference/pam13/schedule/download",
+			"title": "Pi and More 13",
+			"start": "2023-04-22",
+			"end": "2023-04-22",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://cmd-ev.github.io/assets/piandmore-square.png",
+				"links": [
+					{
+						"url": "https://piandmore.de/de/conference/pam13/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023042600,
+			"url": "https://pretalx.luga.de/lit-2023/schedule/export/schedule.xml",
+			"title": "Augsburger Linux-Infotag 2023",
+			"start": "2023-04-29",
+			"end": "2023-04-29",
+			"timezone": "Europe/Brussels",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.luga.de/static/LIT-2023/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023022401,
+			"url": "https://cloud.bib.uni-mannheim.de/s/3NdTDTKfDmz9pqy/download/bibliocon23.xml",
+			"title": "BiblioCon 2023",
+			"start": "2023-05-23",
+			"end": "2023-05-26",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.bibliocon.de/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://2023.bibliocon.de/informationen-von-a-z/",
+						"title": "Informationen von A-Z"
+					},
+					{
+						"url": "https://2023.bibliocon.de/wp-content/uploads/2020/02/HCC.pdf",
+						"title": "Lageplan Hannover Congress Centrum (PDF)",
+						"type": "application/pdf"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023042300,
+			"url": "https://23.thsf.net/thsf-2023/schedule/export/schedule.xml",
+			"title": "Toulouse Hacker Space Factory 2023",
+			"start": "2023-05-26",
+			"end": "2023-05-28",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.thsf.net/",
+						"title": "Site web"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Salle 1 Cinema",
+						"show_name": "Salle 1 Cinema",
+						"latlon": [43.63963, 1.45202]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023060100,
+			"url": "https://cfp.gulas.ch/gpn21/schedule/export/schedule.xml",
+			"title": "21. Gulaschprogrammiernacht",
+			"start": "2023-06-08",
+			"end": "2023-06-11",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://entropia.de/GPN21",
+						"title": "Website"
+					},
+					{
+						"url": "https://entropia.de/GPN21:FAQ",
+						"title": "FAQ"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023051502,
+			"url": "https://www.opensouthcode.org/conferences/opensouthcode2023/schedule.xml",
+			"title": "Opensouthcode 2023",
+			"start": "2023-06-09",
+			"end": "2023-06-10",
+			"timezone": "Europe/Madrid",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.opensouthcode.org/conferences/opensouthcode2023",
+						"title": "Website"
+					}
+				],
+				"icon": "https://www.opensouthcode.org/logo1.png"
+			}
+		},
+		{
+			"version": 2023060901,
+			"url": "https://talks.osgeo.org/foss4g-it-2023/schedule/export/schedule.xml",
+			"title": "GEOdaysIT 2023",
+			"start": "2023-06-12",
+			"end": "2023-07-17",
+			"timezone": "Europe/Rome",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.geodaysit.it/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023041600,
+			"url": "https://programme.passageenseine.fr/index.ics",
+			"title": "PSES 2023",
+			"start": "2023-06-15",
+			"end": "2023-06-17",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"icon": "https://mamot.fr/system/accounts/avatars/000/212/345/original/bf5fc3bbd9175137.png",
+				"links": [
+					{
+						"url": "https://passageenseine.fr/",
+						"title": "Site web"
+					},
+					{
+						"url": "https://programme.passageenseine.fr/",
+						"title": "Programme web"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023040522,
+			"url": "https://dcnc-eu.github.io/lineup/cloudland23.ics",
+			"title": "CloudLand 2023 - Das Cloud Native(s) Festival",
+			"start": "2023-06-20",
+			"end": "2023-06-23",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"icon": "https://dcnc-eu.github.io/lineup/cloudland23.png",
+				"links": [
+					{
+						"url": "https://www.cloudland.org/de/home/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023062200,
+			"url": "https://talks.osgeo.org/foss4g-2023/schedule/export/schedule.xml",
+			"title": "FOSS4G 2023",
+			"start": "2023-06-28",
+			"end": "2023-06-30",
+			"timezone": "Europe/Belgrade",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.foss4g.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.foss4g.org/attending/accomodation/",
+						"title": "Accommodation"
+					},
+					{
+						"url": "https://2023.foss4g.org/code-of-conduct/",
+						"title": "Code of Conduct"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023061100,
+			"url": "https://cfp.pass-the-salt.org/pts2023/schedule/export/schedule.xml",
+			"title": "Pass the SALT 2023",
+			"start": "2023-07-03",
+			"end": "2023-07-05",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.pass-the-salt.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.pass-the-salt.org/practical/",
+						"title": "Practical & safety"
+					},
+					{
+						"url": "https://2023.pass-the-salt.org/code-of-conduct/",
+						"title": "Code of Conduct"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Amphitheater",
+						"latlon": [50.60776, 3.13637]
+					},
+					{
+						"name": "Workshop room",
+						"latlon": [50.60776, 3.13637]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023070501,
+			"url": "https://edwardbetts.com/fossy_2023/schedule.xml",
+			"title": "FOSSY 2023 (use this one!)",
+			"start": "2023-07-13",
+			"end": "2023-07-16",
+			"timezone": "America/Los_Angeles",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.fossy.us/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.fossy.us/attend/health-and-safety/",
+						"title": "Health and Safety"
+					},
+					{
+						"url": "https://2023.fossy.us/travel/",
+						"title": "Travel and Lodging"
+					},
+					{
+						"url": "https://2023.fossy.us/attend/code-of-conduct/",
+						"title": "Code of Conduct"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023070600,
+			"url": "https://talks.hackover.de/ho-2023/schedule.xml",
+			"title": "Hackover 2023",
+			"start": "2023-07-14",
+			"end": "2023-07-16",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://hackover.de/",
+						"title": "Website"
+					},
+					{
+						"url": "https://tickets.hackover.de/ho23/",
+						"title": "Tickets"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023070600,
+			"url": "https://cfp.fairydust.reisen/iger-2023/schedule.xml",
+			"title": "IGER 2023",
+			"start": "2023-07-20",
+			"end": "2023-07-23",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://fairydust.reisen/",
+						"title": "Website"
+					},
+					{
+						"url": "https://tickets.fairydust.reisen/iger-2023/",
+						"title": "Tickets"
+					},
+					{
+						"url": "https://md.fairydust.reisen/start",
+						"title": "Public Meta-Pad"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023051918,
+			"url": "https://bornhack.dk/bornhack-2023/program/frab.xml",
+			"title": "BornHack 2023",
+			"start": "2023-08-02",
+			"end": "2023-08-09",
+			"timezone": "Europe/Copenhagen",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://bornhack.dk/bornhack-2023/",
+						"title": "Website"
+					},
+					{
+						"url": "https://bornhack.dk/bornhack-2023/info/",
+						"title": "Info"
+					},
+					{
+						"url": "https://bornhack.dk/news/",
+						"title": "News"
+					},
+					{
+						"url": "https://bornhack.dk/bornhack-2023/facilities/",
+						"title": "Facilities"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023071400,
+			"url": "https://programm.froscon.org/2023/schedule.xml",
+			"title": "FrOSCon 2023",
+			"start": "2023-08-05",
+			"end": "2023-08-06",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"icon": "https://froscon.org/icons/apple-touch-icon.png",
+				"links": [
+					{
+						"url": "https://froscon.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://froscon.org/en/program/project-rooms/",
+						"title": "Developer rooms"
+					},
+					{
+						"url": "https://media.ccc.de/b/conferences/froscon",
+						"title": "Recordings"
+					}
+				]
+			}
+		},
+		{
+			"title": "Chaos Communication Camp 2023 - main rooms only",
+			"url": "https://pretalx.c3voc.de/camp2023/schedule/export/schedule.xml",
+			"start": "2023-08-15",
+			"end": "2023-08-19",
+			"refresh_interval": 1800,
+			"version": 2023080401,
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"title": "Infos",
+						"url": "https://events.ccc.de/camp/2023/infos/"
+					},
+					{
+						"title": "Map",
+						"url": "https://map.events.ccc.de/camp/2023/map/"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Marktplatz",
+						"show_name": "Marktplatz / Marketplace",
+						"latlon": [53.0316837, 13.3051801]
+					},
+					{
+						"name": "Bits & Bäume",
+						"show_name": "Bits & Bäume",
+						"latlon": [53.0324586, 13.3072812]
+					},
+					{
+						"name": "Bits&Bäume Workshops",
+						"show_name": "Bits & Bäume Workshops",
+						"latlon": [53.0324586, 13.3072812]
+					},
+					{
+						"name": "Digitalcourage",
+						"show_name": "Digitalcourage",
+						"latlon": [53.0300258, 13.3079585]
+					},
+					{
+						"name": "Hardware Hacking Village",
+						"show_name": "Hardware Hacking Village",
+						"latlon": [53.0326193, 13.3082896]
+					},
+					{
+						"name": "Milliways",
+						"show_name": "Milliways",
+						"latlon": [53.032495, 13.307791]
+					},
+					{
+						"name": "Milliways Workshop Dome",
+						"show_name": "Milliways Workshop Dome",
+						"latlon": [53.032495, 13.307791]
+					},
+					{
+						"name": "N:O:R:T:x",
+						"show_name": "N:O:R:T:x (Nerds der OberRheinischen Tiefebene und der xHain)",
+						"latlon": [53.030389, 13.30664]
+					},
+					{
+						"name": "Chill Lagune am Herzbergstich",
+						"show_name": "Chill Lagune am Herzbergstich",
+						"latlon": [53.0336406, 13.3053489]
+					},
+					{
+						"name": "Culture Club",
+						"show_name": "Culture Club",
+						"latlon": [53.0324702, 13.3044833]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023080101,
+			"url": "https://pretalx.com/wm2023/schedule/export/schedule.xml",
+			"title": "Wikimania 2023",
+			"start": "2023-08-15",
+			"end": "2023-08-20",
+			"timezone": "UTC",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Wikimania",
+						"title": "Website"
+					},
+					{
+						"url": "https://upload.wikimedia.org/wikipedia/commons/d/d5/Wikimania_2023_Attendee_guide.pdf",
+						"title": "Attendee guide (PDF)",
+						"type": "application/pdf"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Related_events",
+						"title": "Related events"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Basic_workshops",
+						"title": "Basic workshops"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Expo_space",
+						"title": "Expo space"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Hackathon",
+						"title": "Hackathon"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Meetups",
+						"title": "Meetups"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Registration",
+						"title": "Registration"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Attendees",
+						"title": "Attendees"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Travel",
+						"title": "Travel guide"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Friendly_space_policy",
+						"title": "Friendly space policy"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Glossary",
+						"title": "Glossary"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Socialize",
+						"title": "Social media"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/2023:Volunteer",
+						"title": "Volunteer"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023080901,
+			"url": "https://pretalx.com/pyconau-2023/schedule/export/schedule.xml",
+			"title": "PyCon AU 2023",
+			"start": "2023-08-18",
+			"end": "2023-08-20",
+			"timezone": "Australia/Adelaide",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.pycon.org.au/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.pycon.org.au/about/",
+						"title": "About"
+					},
+					{
+						"url": "https://2023.pycon.org.au/about/culture/",
+						"title": "Culture"
+					},
+					{
+						"url": "https://2023.pycon.org.au/attend/getting-around/",
+						"title": "Getting around"
+					},
+					{
+						"url": "https://2023.pycon.org.au/attend/food/",
+						"title": "Food"
+					},
+					{
+						"url": "https://2023.pycon.org.au/attend/bof/",
+						"title": "Birds of a Feather"
+					},
+					{
+						"url": "https://2023.pycon.org.au/attend/volunteer/",
+						"title": "Volunteer"
+					},
+					{
+						"url": "https://2023.pycon.org.au/safety/",
+						"title": "Safety"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023082901,
+			"url": "https://cfp.openlabs.cc/oscal2023/schedule/export/schedule.xml",
+			"title": "OSCAL 2023 (Open Source Conference Albania)",
+			"start": "2023-09-02",
+			"end": "2023-09-03",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://oscal.openlabs.cc/",
+						"title": "Website"
+					},
+					{
+						"url": "https://oscal.openlabs.cc/coc/",
+						"title": "Code of conduct"
+					},
+					{
+						"url": "https://oscal.openlabs.cc/about/",
+						"title": "About"
+					},
+					{
+						"url": "https://oscal.openlabs.cc/venue/",
+						"title": "Venue"
+					},
+					{
+						"url": "https://oscal.openlabs.cc/about-tirana/",
+						"title": "Attending"
+					},
+					{
+						"url": "https://oscal.openlabs.cc/volunteers/",
+						"title": "Volunteers"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023082500,
+			"url": "https://events.gnuradio.org/event/21/event.ics?scope=contribution",
+			"title": "GNU Radio Conference 2023",
+			"start": "2023-09-05",
+			"end": "2023-09-09",
+			"timezone": "America/Phoenix",
+			"metadata": {
+				"icon": "https://www.gnuradio.org/giggity-grcon23-logo.png",
+				"links": [
+					{
+						"url": "https://events.gnuradio.org/event/21/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.gnuradio.org",
+						"title": "Project Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023090301,
+			"url": "https://debconf23.debconf.org/schedule/pentabarf.xml",
+			"title": "DebConf 23",
+			"start": "2023-09-10",
+			"end": "2023-09-17",
+			"timezone": "Asia/Kolkata",
+			"metadata": {
+				"icon": "https://debconf23.debconf.org/static/img/favicon/favicon-128-rgba.png",
+				"links": [
+					{
+						"url": "https://debconf23.debconf.org/",
+						"title": "Website"
+					},
+					{
+						"title": "Wiki",
+						"url": "https://wiki.debian.org/DebConf/23"
+					},
+					{
+						"title": "Venues Map",
+						"type": "application/pdf",
+						"url": "https://debconf23.debconf.org/static/img/dc23-venue-map.pdf"
+					},
+					{
+						"title": "Amenities Map",
+						"type": "application/pdf",
+						"url": "https://debconf23.debconf.org/static/img/dc23-amenities-map.pdf"
+					},
+					{
+						"url": "https://debconf23.debconf.org/about/coc/",
+						"title": "Code of Conduct"
+					},
+					{
+						"url": "https://debconf23.debconf.org/about/debcamp/",
+						"title": "DebCamp"
+					},
+					{
+						"url": "https://debconf23.debconf.org/about/accommodation/",
+						"title": "Accommodation"
+					},
+					{
+						"url": "https://debconf23.debconf.org/about/childcare/",
+						"title": "Child care"
+					},
+					{
+						"url": "https://debconf23.debconf.org/about/covid19/",
+						"title": "COVID-19"
+					},
+					{
+						"url": "https://wiki.debian.org/DebConf/23/Faq",
+						"title": "FAQ"
+					},
+					{
+						"url": "https://debconf23.debconf.org/about/venue/",
+						"title": "Venue"
+					},
+					{
+						"url": "https://debconf23.debconf.org/about/visas/",
+						"title": "Visas"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Anamudi",
+						"latlon": [10.00888, 76.36152]
+					},
+					{
+						"name": "(Ponmudi|Kuthiran)",
+						"latlon": [10.00715, 76.36249]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023081901,
+			"url": "https://cfp.all-systems-go.io/all-systems-go-2023/schedule/export/schedule.xml",
+			"title": "All Systems Go! 2023",
+			"start": "2023-09-13",
+			"end": "2023-09-14",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://all-systems-go.io/",
+						"title": "Website"
+					},
+					{
+						"url": "https://all-systems-go.io/code-of-conduct/",
+						"title": "Code of conduct"
+					},
+					{
+						"url": "https://ti.to/all-systems-go/all-systems-go-2023",
+						"title": "Tickets"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023081601,
+			"title": "Kielux Linux Presentation Day",
+			"url": "https://kielux.de/content/calendars/LPD23.ics",
+			"start": "2023-09-14",
+			"end": "2023-09-14",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+				"links": [
+					{
+						"url": "https://kielux.de",
+						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/LPD23",
+						"title": "Schedule"
+					}
+				],
+				"rooms": [
+					{
+						"name": "R114",
+						"latlon": [54.3351, 10.11944]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023091301,
+			"url": "https://cloud.fabrico.fr/remote.php/dav/public-calendars/6f4PgiJAtX39xD53/?export",
+			"title": "EuroBSDCon 2023",
+			"start": "2023-09-14",
+			"end": "2023-09-17",
+			"timezone": "Europe/Lisbon",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.eurobsdcon.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.eurobsdcon.org/venue/",
+						"title": "Venue"
+					},
+					{
+						"url": "https://2023.eurobsdcon.org/registration-and-pricing/",
+						"title": "Registration"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Auditorio",
+						"latlon": [40.20738, -8.42401]
+					},
+					{
+						"name": "Quimica.*",
+						"latlon": [40.20738, -8.42359]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023081601,
+			"title": "21. Kieler Open Source und Linux Tage",
+			"url": "https://kielux.de/content/calendars/KOLT23.ics",
+			"start": "2023-09-15",
+			"end": "2023-09-16",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+				"links": [
+					{
+						"url": "https://kielux.de",
+						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/KOLT23",
+						"title": "Schedule and workshop registration"
+					},
+					{
+						"title": "Entertainment",
+						"url": "https://kielux.de/aktionen"
+					},
+					{
+						"title": "Exhibition",
+						"url": "https://kielux.de/aussteller"
+					}
+				],
+				"rooms": [
+					{
+						"name": "R012",
+						"latlon": [54.33497, 10.11928]
+					},
+					{
+						"name": "R007",
+						"latlon": [54.33547, 10.11951]
+					},
+					{
+						"name": "R114",
+						"latlon": [54.3351, 10.11944]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023091399,
+			"url": "https://talks.datenspuren.de/ds23/schedule.xml",
+			"title": "Datenspuren 2023",
+			"start": "2023-09-15",
+			"end": "2023-09-17",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://datenspuren.de/2023/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023081301,
+			"url": "https://pretalx.com/kiwi-pycon-xii-2023/schedule/export/schedule.xml",
+			"title": "Kiwi PyCon XII 2023",
+			"start": "2023-09-15",
+			"end": "2023-09-17",
+			"timezone": "Pacific/Auckland",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://kiwipycon.nz/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023081801,
+			"url": "https://pretalx.com/pyconuk-2023/schedule/export/schedule.xml",
+			"title": "PyCon UK 2023",
+			"start": "2023-09-22",
+			"end": "2023-09-25",
+			"timezone": "Europe/London",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.pyconuk.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.pyconuk.org/code-of-conduct/",
+						"title": "Code of Conduct"
+					},
+					{
+						"url": "https://2023.pyconuk.org/inclusion/",
+						"title": "Inclusion, diversity and accessibility"
+					},
+					{
+						"url": "https://2023.pyconuk.org/sprints/",
+						"title": "Sprints"
+					},
+					{
+						"url": "https://2023.pyconuk.org/venue/",
+						"title": "Venue"
+					},
+					{
+						"url": "https://2023.pyconuk.org/faq/",
+						"title": "FAQ"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023090801,
+			"url": "https://cloud.bib.uni-mannheim.de/s/6RRW53Xqa5LND3i/download/oat23.xml",
+			"title": "Open-Access-Tage 2023",
+			"start": "2023-09-27",
+			"end": "2023-09-29",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"icon": "https://cloud.bib.uni-mannheim.de/s/R7Kge2WAcGt7G7N/download/oat23-transparent-bg4.png",
+				"links": [
+					{
+						"url": "https://open-access-tage.de/open-access-tage-2023-berlin",
+						"title": "Website"
+					},
+					{
+						"url": "https://open-access-tage.de/fileadmin/_processed_/4/d/xcsm_171206_Gesamtplan_farb_Abstimmung2_1a6eaac0f5.png.pagespeed.ic.1GtU0KXV5q.png",
+						"title": "Map",
+						"type": "image/png"
+					},
+					{
+						"url": "https://open-access-tage.de/open-access-tage-2023-berlin/faq",
+						"title": "FAQ"
+					},
+					{
+						"url": "https://zenodo.org/communities/oat23/",
+						"title": "Poster + Folien"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023081400,
+			"url": "https://www.paris-web.fr/2023/conferences-parisweb-2023.ics",
+			"title": "Paris Web 2023 - Conférences",
+			"start": "2023-09-28",
+			"end": "2023-09-29",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.paris-web.fr/2023/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://inscriptions.paris-web.fr/",
+						"title": "Tarifs et inscription"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Auditorium",
+						"show_name": "Auditorium - Institut Pasteur",
+						"latlon": [48.84207, 2.31022]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023090423,
+			"url": "https://www.linuxday.at/vortraege/2023/calendar.ics",
+			"title": "LinuxDay.at Vortraege",
+			"id": "LinuxDay.at Vortraege",
+			"start": "2023-09-30",
+			"end": "2023-09-30",
+			"timezone": "Europe/Vienna",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxday.at/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://www.linuxday.at/aussteller/2023",
+						"title": "Aussteller"
+					},
+					{
+						"url": "https://www.linuxday.at/vortraege/2023",
+						"title": "Vorträge"
+					},
+					{
+						"url": "https://www.linuxday.at/ort.html",
+						"title": "Wie komme ich zur HTL-Dornbirn"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023081400,
+			"url": "https://www.paris-web.fr/2023/ateliers-parisweb-2023.ics",
+			"title": "Paris Web 2023 - Ateliers",
+			"start": "2023-09-30",
+			"end": "2023-09-30",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.paris-web.fr/2023/",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://inscriptions.paris-web.fr/",
+						"title": "Tarifs et inscription"
+					}
+				],
+				"rooms": [
+					{
+						"name": "IIM.*",
+						"show_name": "IIM Digital School",
+						"latlon": [48.89317, 2.2269]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023090601,
+			"url": "https://pretalx.com/hack-lu-2023/schedule/export/schedule.xml",
+			"title": "hack.lu 2023",
+			"start": "2023-10-16",
+			"end": "2023-10-19",
+			"timezone": "Europe/Luxembourg",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2023.hack.lu/",
+						"title": "Website"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Hollenfels",
+						"latlon": [49.63964, 6.15409]
+					},
+					{
+						"name": "Salle Europe",
+						"latlon": [49.63964, 6.15409]
+					},
+					{
+						"name": "Schengen 1 and 2",
+						"latlon": [49.63964, 6.15409]
+					}
+				]
+			}
+		},
+		{
+			"version": 2023092401,
+			"url": "https://talks.osgeo.org/foss4g-sotm-oceania-2023/schedule/export/schedule.xml",
+			"title": "FOSS4G SOTM Oceania 2023",
+			"start": "2023-10-16",
+			"end": "2023-10-20",
+			"timezone": "Pacific/Auckland",
+			"metadata": {
+				"icon": "https://2023.foss4g-oceania.org/fav-icon/apple-touch-icon.png",
+				"links": [
+					{
+						"url": "https://2023.foss4g-oceania.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2023.foss4g-oceania.org/#/code-of-conduct",
+						"title": "Code of conduct"
+					},
+					{
+						"url": "https://2023.foss4g-oceania.org/#/attend/our-conference-venue",
+						"title": "Venue"
+					},
+					{
+						"url": "https://2023.foss4g-oceania.org/#/attend/Accommodation",
+						"title": "Accommodation"
+					},
+					{
+						"url": "https://2023.foss4g-oceania.org/#/program/workshops",
+						"title": "Workshops"
+					},
+					{
+						"url": "https://2023.foss4g-oceania.org/#/program/community-day",
+						"title": "Community day"
+					},
+					{
+						"url": "https://2023.foss4g-oceania.org/#/program/social-events",
+						"title": "Social events"
+					}
+				]
+			}
+		},
+		{
+			"version": 2023091101,
+			"url": "https://cfp.packaging-con.org/2023/schedule/export/schedule.xml",
+			"title": "PackagingCon 2023",
+			"start": "2023-10-26",
+			"end": "2023-10-28",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://packaging-con.org/",
+						"title": "Website"
+					}
+				]
 			}
 		}
 	]
