@@ -1,0 +1,41 @@
+{
+    "version": 2023092401,
+    "url": "https://talks.osgeo.org/foss4g-sotm-oceania-2023/schedule/export/schedule.xml",
+    "title": "FOSS4G SOTM Oceania 2023",
+    "start": "2023-10-16",
+    "end": "2023-10-20",
+    "timezone": "Pacific/Auckland",
+    "metadata": {
+        "icon": "https://2023.foss4g-oceania.org/fav-icon/apple-touch-icon.png",
+        "links": [
+            {
+                "url": "https://2023.foss4g-oceania.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://2023.foss4g-oceania.org/#/code-of-conduct",
+                "title": "Code of conduct"
+            },
+            {
+                "url": "https://2023.foss4g-oceania.org/#/attend/our-conference-venue",
+                "title": "Venue"
+            },
+            {
+                "url": "https://2023.foss4g-oceania.org/#/attend/Accommodation",
+                "title": "Accommodation"
+            },
+            {
+                "url": "https://2023.foss4g-oceania.org/#/program/workshops",
+                "title": "Workshops"
+            },
+            {
+                "url": "https://2023.foss4g-oceania.org/#/program/community-day",
+                "title": "Community day"
+            },
+            {
+                "url": "https://2023.foss4g-oceania.org/#/program/social-events",
+                "title": "Social events"
+            }
+        ]
+    }
+}
