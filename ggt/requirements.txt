@@ -2,4 +2,4 @@ dulwich==0.19.13
 Flask==2.3.2
 google-cloud-storage==1.23.0
 jsonschema==2.6.0
-urllib3==1.26.5
+urllib3==1.26.17
