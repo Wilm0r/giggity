@@ -1,0 +1,36 @@
+{
+    "version": 2023093000,
+    "url": "https://postgresql.us/events/pgconfnyc2023/schedule.xml",
+    "title": "PGConf NYC 2023",
+    "start": "2023-10-03",
+    "end": "2023-10-05",
+    "timezone": "America/New_York",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://2023.pgconf.nyc/",
+                "title": "Website"
+            },
+            {
+                "url": "https://2023.pgconf.nyc/venue/",
+                "title": "Venue"
+            },
+            {
+                "url": "https://2023.pgconf.nyc/tickets/",
+                "title": "Tickets"
+            },
+            {
+                "url": "https://2023.pgconf.nyc/about/",
+                "title": "About"
+            },
+            {
+                "url": "https://2023.pgconf.nyc/inclusion/",
+                "title": "Inclusion"
+            },
+            {
+                "url": "https://2023.pgconf.nyc/policies/",
+                "title": "Policies"
+            }
+        ]
+    }
+}
