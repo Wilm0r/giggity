@@ -1,0 +1,52 @@
+{
+    "version": 2023100600,
+    "url": "https://pretalx.linuxdays.cz/linuxdays-2023/schedule/export/schedule.xml",
+    "start": "2023-10-07",
+    "end": "2023-10-08",
+    "timezone": "Europe/Prague",
+    "title": "LinuxDays 2023",
+    "metadata": {
+        "icon": "https://www.linuxdays.cz/2023/obrazky/icon.png",
+        "links": [
+            {
+                "title": "Website",
+                "url": "https://www.linuxdays.cz/2023/"
+            },
+            {
+                "title": "Map",
+                "type": "image/png",
+                "url": "https://www.linuxdays.cz/2023/obrazky/plan23.png"
+            }
+        ],
+        "rooms": [
+            {
+                "latlon": [
+                    50.105249,
+                    14.390095
+                ],
+                "name": "105"
+            },
+            {
+                "latlon": [
+                    50.105382,
+                    14.389836
+                ],
+                "name": "155"
+            },
+            {
+                "latlon": [
+                    50.105138,
+                    14.390298
+                ],
+                "name": "107"
+            },
+            {
+                "latlon": [
+                    50.105047,
+                    14.390432
+                ],
+                "name": "111"
+            }
+        ]
+    }
+}
