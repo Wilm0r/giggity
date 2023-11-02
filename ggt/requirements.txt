@@ -1,4 +1,4 @@
-dulwich==0.19.13
-Flask==2.3.2
-google-cloud-storage==1.23.0
-jsonschema==2.6.0
+dulwich==0.21.6
+Flask==2.3.3
+google-cloud-storage==2.13.0
+jsonschema==4.10.3

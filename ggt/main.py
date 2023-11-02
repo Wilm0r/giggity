@@ -41,15 +41,19 @@ def git_pull(path, local_path="/tmp/giggity.git"):
 		porcelain.pull(local_path, path)
 		return local_path
 	except dulwich.errors.NotGitRepository:
-		t = tempfile.mkdtemp(prefix=local_path)
-		repo = porcelain.clone(path, bare=True, target=t, checkout=False)
-		try:
-			os.rename(t, local_path)
-			return local_path
-		except OSError:
-			# Guess there may have been a race. All we know
-			# is the one we just created should work.
-			return t
+		pass
+		# Expected first time, run stuff below instead.
+		# (But doing so within this block causes weird error reporting.)
+
+	t = tempfile.mkdtemp(prefix=local_path)
+	repo = porcelain.clone(path, bare=True, target=t, checkout=False)
+	try:
+		os.rename(t, local_path)
+		return local_path
+	except OSError:
+		# Guess there may have been a race. All we know
+		# is the one we just created should work.
+		return t
 
 
 # json_get (shortcut to dig through json nested dicts..)
