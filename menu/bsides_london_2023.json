@@ -1,0 +1,36 @@
+{
+    "version": 2023110601,
+    "url": "https://pretalx.com/bsides-london-2023/schedule/export/schedule.xml",
+    "title": "Bsides London 2023",
+    "start": "2023-12-09",
+    "end": "2023-12-09",
+    "timezone": "Europe/London",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://www.securitybsides.org.uk/",
+                "title": "Website"
+            },
+            {
+                "url": "https://www.securitybsides.org.uk/code.html",
+                "title": "Code of conduct"
+            },
+            {
+                "url": "https://www.securitybsides.org.uk/sponsors.html",
+                "title": "Sponsors"
+            },
+            {
+                "url": "https://www.securitybsides.org.uk/challenges.html",
+                "title": "Challenges"
+            },
+            {
+                "url": "https://pretalx.com/bsides-london-2023/speaker/",
+                "title": "Speakers"
+            },
+            {
+                "url": "https://www.flickr.com/photos/bsideslondon/",
+                "title": "flickr"
+            }
+        ]
+    }
+}
