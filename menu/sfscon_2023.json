@@ -1,5 +1,5 @@
 {
-	"version": 2023110898,
+	"version": 2023111010,
 	"url": "https://www.sfscon.it/?calendar=2023&format=xml",
 	"title": "SFSCON 2023",
 	"start": "2023-11-10",
@@ -13,7 +13,7 @@
 				"title": "Website"
 			},
 			{
-				"url": "https://cloud.opendatahub.com/index.php/s/a7Gx22y45fHwJRS",
+				"url": "https://cloud.opendatahub.com/index.php/s/a7Gx22y45fHwJRS/download/2023%20SFSCON%20attendee%20guide.pdf",
 				"title": "Attendee Guide",
 				"type": "application/pdf"
 			}
