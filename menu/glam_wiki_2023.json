@@ -1,0 +1,21 @@
+{
+    "version": 2023111201,
+    "url": "https://edwardbetts.com/glam_wiki_2023/schedule.xml",
+    "title": "GLAM Wiki 2023",
+    "start": "2023-11-16",
+    "end": "2023-11-18",
+    "timezone": "America/Montevideo",
+    "metadata": {
+        "icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/GLAMWikiConfColorLogo01.png/480px-GLAMWikiConfColorLogo01.png",
+        "links": [
+            {
+                "url": "https://meta.wikimedia.org/wiki/GLAM_Wiki_2023",
+                "title": "Website"
+            },
+            {
+                "url": "https://wikimania.wikimedia.org/wiki/2023:Friendly_space_policy",
+                "title": "Friendly space policy"
+            }
+        ]
+    }
+}
