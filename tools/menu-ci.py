@@ -332,6 +332,8 @@ def validate_entry(e):
 				ret.append("Icon for %s seems bad: %s" % (e["title"], ", ".join(icon_errors)))
 		
 		if "links" in md:
+			if len(md["links"]) > 4:
+				ret.append("%d links exceeds the recommended maximum of 4 to ensure the nav drawer fits on most screens with no scrolling")
 			for link in md["links"]:
 				if link["url"].startswith("geo:"):
 					continue
