@@ -1,0 +1,20 @@
+{
+    "version": 2023116201,
+    "url": "https://pretalx.com/pyladiescon-2023/schedule/export/schedule.xml",
+    "title": "PyLadiesCon 2023",
+    "start": "2023-12-01",
+    "end": "2023-12-03",
+    "timezone": "UTC",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://conference.pyladies.com/",
+                "title": "Website"
+            },
+            {
+                "url": "https://conference.pyladies.com/about.html#coc",
+                "title": "Code of conduct"
+            }
+        ]
+    }
+}
