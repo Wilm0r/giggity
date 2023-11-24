@@ -36,7 +36,7 @@ import email.utils
 
 import merge
 
-from typing import Generator, List, Optional
+from typing import Dict, Generator, List, Optional, Set
 
 
 class MenuError(Exception):
@@ -169,7 +169,8 @@ class HTTP():
 
 	def cache_sensible(self, url: str):
 		"""Check whether it ever returns 304s. Yeah sure, this is a race. I
-		don't care for a test that runs a few times a week at most."""
+		don't care for a test that runs a few times a week at most. With
+		Giggity's better caching (ETag support) I should improve/delete this."""
 		if url not in self.hcache:
 			return None
 		if "last-modified" in self.hcache[url]:
@@ -333,7 +334,7 @@ def validate_entry(e):
 		
 		if "links" in md:
 			if len(md["links"]) > 4:
-				ret.append("%d links exceeds the recommended maximum of 4 to ensure the nav drawer fits on most screens with no scrolling")
+				ret.append("%d links exceeds the recommended maximum of 4 to ensure the nav drawer fits on most screens with no scrolling" % len(md["links"]))
 			for link in md["links"]:
 				if link["url"].startswith("geo:"):
 					continue
@@ -353,25 +354,35 @@ elif new["version"] > todayver:
 	LOG.E("File version (%d) number must be ≤ %d" % (new["version"], todayver))
 
 changed = []
-base_entries = {e["url"]: e for e in base.get("schedules", [])}
-seen = set()
+base_entries: Dict[str, Dict] = {e["id"]: e for e in base.get("schedules", [])}
+seen_urls: Set[str] = set()
+seen_ids: Set[str] = set()
 for e in new["schedules"]:
-	if e["url"] in seen:
+	url: str = e["url"]
+	if url in seen_urls:
 		LOG.E("Duplicate URL, unable to diff: %r %s" %
-		      ([x["title"] for x in new["schedules"] if x["url"] == e["url"]], e["url"]))
+		      ([x["title"] for x in new["schedules"] if x["url"] == url], url))
 		continue
-	seen.add(e["url"])
-	if e["url"] in base_entries:
-		if e == base_entries[e["url"]]:
+	seen_urls.add(url)
+	eid: str = e["id"]
+	if eid in seen_ids:
+		# Really mustn't happen BTW since this is derived from unique filename?
+		LOG.E("Duplicate ID, unable to diff: %r %s" %
+		      ([x["title"] for x in new["schedules"] if x["id"] == eid], eid))
+		continue
+	seen_ids.add(eid)
+
+	if eid in base_entries:
+		if e == base_entries[eid]:
 			LOG.C("Unchanged: %s" % e["title"])
-			base_entries.pop(e["url"])
+			base_entries.pop(eid)
 			if not args.all:
 				continue
 		else:
 			LOG.I("Changed: %s" % e["title"])
-			if e["version"] <= base_entries[e["url"]]["version"]:
+			if e["version"] <= base_entries[eid]["version"]:
 				LOG.E("Version number for %r must be updated" % e["title"])
-			base_entries.pop(e["url"])
+			base_entries.pop(eid)
 			changed.append(e)
 	else:
 		LOG.I("New: %s" % e["title"])
@@ -386,7 +397,7 @@ for e in new["schedules"]:
 	if adb.on:
 		for _ in adb.lines(.1): pass  # Flush backlog
 		entry_url = base64.urlsafe_b64encode(gzip.compress(json.dumps(e).encode("utf-8"))).decode("ascii")
-		intent_url = "https://ggt.gaa.st#url=" + urllib.parse.quote(e["url"]) + "&json=" + entry_url
+		intent_url = "https://ggt.gaa.st#url=" + urllib.parse.quote(url) + "&json=" + entry_url
 		adb.call("shell", "am", "start", "-n", "net.gaast.giggity/.ScheduleViewActivity",
 		         "-a",  "android.intent.action.VIEW", "-d", shlex.quote(intent_url))
 		load_log = []
