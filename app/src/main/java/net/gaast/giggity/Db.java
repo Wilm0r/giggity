@@ -43,10 +43,10 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.AbstractList;
@@ -365,7 +365,7 @@ public class Db {
 		Fetcher f = null;
 		try {
 			if (source == SeedSource.BUILT_IN) {
-				InputStreamReader inr = new InputStreamReader(app.getResources().openRawResource(R.raw.menu), "UTF-8");
+				InputStreamReader inr = new InputStreamReader(app.getResources().openRawResource(R.raw.menu), StandardCharsets.UTF_8);
 				StringWriter sw = new StringWriter();
 				IOUtils.copy(inr, sw);
 				inr.close();
@@ -574,12 +574,7 @@ public class Db {
 
 		public String refreshSingleSchedule(byte[] blob) {
 			String jsons;
-			try {
-				jsons = new String(blob, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				Log.d("Db.refreshSingle", "Not Unicode? " + e.toString());
-				jsons = null;
-			}
+			jsons = new String(blob, StandardCharsets.UTF_8);
 			if (jsons == null || !jsons.matches("(?s)^\\s*\\{.*")) {
 				ByteArrayInputStream stream = new ByteArrayInputStream(blob);
 				try {

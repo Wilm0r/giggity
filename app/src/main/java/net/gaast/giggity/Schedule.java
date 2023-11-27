@@ -38,9 +38,9 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
@@ -491,14 +491,9 @@ public class Schedule implements Serializable {
 								name = room.getTitle();
 							}
 							JSONArray latlon = jroom.getJSONArray("latlon");
-							try {
-								room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
-										latlon.optDouble(1, 0) + "(" +
-										URLEncoder.encode(name, "utf-8") + ")");
-							} catch (UnsupportedEncodingException e) {
-								// I'm a useless language! (Have I mentioned yet how if a machine
-								// doesn't do utf-8 then it should maybe not be on the Internet?)
-							}
+							room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
+									latlon.optDouble(1, 0) + "(" +
+									URLEncoder.encode(name, StandardCharsets.UTF_8) + ")");
 						}
 					}
 				}
