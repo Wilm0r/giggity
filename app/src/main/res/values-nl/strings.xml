@@ -10,10 +10,7 @@
 	<string name="default_view">Standaard weergave</string>
 	<string name="font_size">Lettergrootte blokkenschema</string>
 
-	<string name="block_schedule_style">Stijl</string>
 	<string name="block_schedule">Blokkenschema</string>
-	<string name="block_schedule_element_size_sub">Blok- en lettergrootte</string>
-	<string name="block_schedule_element_size">Blokgrootte</string>
 
 	<string name="reminder">Herinneringen</string>
 	<string name="reminder_enabled">Notificaties</string>
@@ -41,9 +38,6 @@
 	<string name="loading_error">Laadfout</string>
 	<string name="no_viewer_error">Geen lezer geïnstalleerd voor bestandstype</string>
 	<string name="open_link_with_browser_instead">In browser openen</string>
-	<string name="export_selections">Selecties exporteren</string>
-	<string name="import_selections">Selecties importeren</string>
-	<string name="no_selections">Geen exporteerbare data</string>
 	<string name="schedule_empty">Programma lijkt (nog) leeg</string>
 	<string name="format_unknown">Onbekend bestandsformaat</string>
 	<string name="no_network">Geen netwerkverbinding beschikbaar</string>
@@ -93,7 +87,6 @@
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'om\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'om\' HH:mm</string>
-	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Binnenkort</string>
 	<string name="widg_no_upcoming">Niks op komst :-(</string>
 	<string name="home_shortcut">Aan thuisscherm toevoegen</string>

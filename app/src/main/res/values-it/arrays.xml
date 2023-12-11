@@ -5,10 +5,4 @@
 		<item>3 righe</item>
 		<item>2 righe</item>
 	</string-array>
-	<string-array name="import_selections_options">
-	    <item>Mantieni i promemoria esistenti</item>
-		<item>Mantieni elementi cancellati</item>
-		<item>Importa nuovi promemoria</item>
-		<item>Impora elementi cancellati</item>
-	</string-array>
 </resources>

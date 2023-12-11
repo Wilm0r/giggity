@@ -101,7 +101,7 @@
               "2016-08-21"
             ]
           },
-          "title": {
+          "timezone": {
             "$id": "/properties/schedules/items/properties/timezone",
             "type": "string",
             "title": "POSIX timezone identifier where the event is held",

@@ -10,10 +10,7 @@
 	<string name="default_view">Standardansicht</string>
 	<string name="font_size">Schriftgröße bei der Programmübersicht</string>
 
-	<string name="block_schedule_style">Stil</string>
 	<string name="block_schedule">Programmübersicht</string>
-	<string name="block_schedule_element_size_sub">Größe der Zeitabschnitte</string>
-	<string name="block_schedule_element_size">Abschnittsgröße</string>
 
 	<string name="reminder">Veranstaltungserinnerungen</string>
 	<string name="reminder_enabled_sub_on">An markierte Veranstaltungen erinnern</string>
@@ -40,10 +37,7 @@
 	<string name="loading_image">Lade Bild...</string>
 	<string name="loading_error">Fehler beim Laden</string>
 	<string name="no_viewer_error">Kein Anzeigeprogramm für den Dateityp installiert</string>
-	<string name="export_selections">Ausgewählte exportieren</string>
 	<string name="home_shortcut">Verknüpfung auf dem Startbildschirm</string>
-	<string name="import_selections">Ausgewählte importieren</string>
-	<string name="no_selections">Nichts ausgewählt zum Exportieren</string>
 	<string name="schedule_empty">Das Programm scheint leer zu sein</string>
 	<string name="format_unknown">Dateiformat nicht erkannt</string>
 	<string name="no_network">Keine Netzwerkverbindung verfügbar</string>
@@ -91,6 +85,5 @@
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'um\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'um\' HH:mm</string>
-	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Demnächst</string>
 </resources>
