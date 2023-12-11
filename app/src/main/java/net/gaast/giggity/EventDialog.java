@@ -161,8 +161,8 @@ public class EventDialog extends FrameLayout {
 			v.setVisibility(View.GONE);
 		}
 		
-		Spannable desc = new SpannableString(item.getDescriptionSpanned(ctx));
-		if (searchQuery != null && !searchQuery.isEmpty()) {
+		Spannable desc = item.getDescriptionSpanned(ctx);
+		if (desc != null && searchQuery != null && !searchQuery.isEmpty()) {
 			String raw = desc.toString().toLowerCase();
 			Matcher m = Pattern.compile("(\"([^\"]*)\"|'([^']*)'|(\\S+))").matcher(searchQuery.toLowerCase());
 			while (m.find()) {

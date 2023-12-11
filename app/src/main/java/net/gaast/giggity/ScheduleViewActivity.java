@@ -66,6 +66,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
@@ -247,22 +248,27 @@ public class ScheduleViewActivity extends Activity {
 			// style arguments but not when that syntax is used after the #. (Using # instead of
 			// ? to avoid the data hitting the server, should the query fall through.)
 			for (String param : parsed.getEncodedFragment().split("&")) {
-				if (param.startsWith("url=")) {
-					url = URLDecoder.decode(param.substring(4), StandardCharsets.UTF_8);
-				} else if (param.startsWith("json=")) {
-					String jsonb64 = URLDecoder.decode(param.substring(5), StandardCharsets.UTF_8);
-					byte[] json;
-					try {
-						json = Base64.decode(jsonb64, Base64.URL_SAFE);
-					} catch (IllegalArgumentException e) {
-						json = new byte[0];
+				try {
+					if (param.startsWith("url=")) {
+						url = URLDecoder.decode(param.substring(4), "utf-8");
+					} else if (param.startsWith("json=")) {
+						String jsonb64 = null;
+							jsonb64 = URLDecoder.decode(param.substring(5), "utf-8");
+						byte[] json;
+						try {
+							json = Base64.decode(jsonb64, Base64.URL_SAFE);
+						} catch (IllegalArgumentException e) {
+							json = new byte[0];
+						}
+						url = app.getDb().refreshSingleSchedule(json);
+						if (url == null) {
+							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT).show();
+							finish();
+							return;
+						}
 					}
-					url = app.getDb().refreshSingleSchedule(json);
-					if (url == null) {
-						Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT).show();
-						finish();
-						return;
-					}
+				} catch (UnsupportedEncodingException e) {
+					// TODO: Once I'm on API 33+ I can use StandardCharsets.UTF_8 here again.
 				}
 			}
 			parsed = Uri.parse(url);

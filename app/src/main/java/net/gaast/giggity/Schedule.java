@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.content.Context;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.Log;
 
@@ -38,6 +39,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Serializable;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -493,7 +495,7 @@ public class Schedule implements Serializable {
 							JSONArray latlon = jroom.getJSONArray("latlon");
 							room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
 									latlon.optDouble(1, 0) + "(" +
-									URLEncoder.encode(name, StandardCharsets.UTF_8) + ")");
+									URLEncoder.encode(name, "utf-8") + ")");
 						}
 					}
 				}
@@ -504,6 +506,8 @@ public class Schedule implements Serializable {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return;
+		} catch (UnsupportedEncodingException e) {
+			// TODO: Once I'm on API 33+ I can use StandardCharsets.UTF_8 here again.
 		}
 	}
 
@@ -1305,7 +1309,7 @@ public class Schedule implements Serializable {
 			return language;
 		}
 
-		public Spanned getDescriptionSpanned(Context ctx) {
+		public SpannableString getDescriptionSpanned(Context ctx) {
 			if (description == null) {
 				return null;
 			}
@@ -1320,7 +1324,7 @@ public class Schedule implements Serializable {
 					description = description.replaceAll("(?is)(\\s*</?p>\\s*)+", "<p><p>").trim();
 					description = description.replaceAll("(?i)(<[^/p][^>]+>)(<p>)+", "$1");
 					final Markwon mw = Markwon.builder(ctx).usePlugin(HtmlPlugin.create()).build();
-					return mw.toMarkdown(description);
+					return new SpannableString(mw.toMarkdown(description));
 				}
 				// Seen in the FOSDEM schedule: Markdown-ish but with paragraphs marked with both
 				// whitespace and <p> tags. Well let's make it markdown then...
@@ -1329,7 +1333,7 @@ public class Schedule implements Serializable {
 
 			final Markwon mw = Markwon.builder(ctx)
 					                   .usePlugin(LinkifyPlugin.create()).build();
-			return mw.toMarkdown(description);
+			return new SpannableString(mw.toMarkdown(description));
 		}
 
 		public AbstractList<String> getSpeakers() {
