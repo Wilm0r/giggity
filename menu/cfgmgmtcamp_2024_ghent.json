@@ -1,0 +1,20 @@
+{
+	"version": 2024011600,
+	"url": "https://cfp.cfgmgmtcamp.org/2024/schedule/export/schedule.xml",
+	"title": "Config Management Camp 2024 Ghent",
+	"start": "2024-02-05",
+	"end": "2024-02-07",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://cfgmgmtcamp.eu/ghent2024/",
+				"title": "Website"
+			},
+			{
+				"url": "https://cfgmgmtcamp.eu/ghent2024/codeofconduct/",
+				"title": "Code of conduct"
+			}
+		]
+	}
+}
