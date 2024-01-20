@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="530" android:versionName="2.1.2">
+	android:versionCode="531" android:versionName="2.1.3">
 	<!-- TODO: Convert versionCode back to hex when fdroid supports it! Except ... now Android SDK itself seems to reject it. *fliptable* -->
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.INTERNET"/>
