@@ -30,13 +30,13 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.FileUtils;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -44,6 +44,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -109,6 +111,8 @@ public class Giggity extends Application {
 		// Apparently needed now that I don't use android.util.Xml.parse anymore. (As it did not
 		// work in standalone tests.)
 		System.setProperty("org.xml.sax.driver","org.xmlpull.v1.sax2.Driver");
+
+		Fetcher.init(this);
 	}
 	
 	public Db.Connection getDb() {
@@ -178,10 +182,6 @@ public class Giggity extends Application {
 	/* TODO: Are these wrappers really that useful? */
 	public Fetcher fetch(String url, Fetcher.Source source) throws IOException {
 		return new Fetcher(this, url, source);
-	}
-
-	public Fetcher fetch(String url, Fetcher.Source source, String type) throws IOException {
-		return new Fetcher(this, url, source, type);
 	}
 
 	// TODO: IIRC there's a localised version for this already? Though honestly I prefer mine since
@@ -270,8 +270,8 @@ public class Giggity extends Application {
 				}
 			}
 		}
-		// From 33+ I'll rely on USE_EXACT_ALARM which is auto-granted but may trigger Play Store review. The UX for SCHEDULE_EXACT_ALARM is pretty meh.
-		// I'm willing to take that risk, Giggity's pretty much a calendaring app, and it uses exact alarms for no other purpose than timely pre-event notifications.
+		// From 33+ I'll rely on USE_EXACT_ALARM which is auto-granted after Play Store review (granted Apr 2023 or so).
+		// So we just need to keep supporting SCHEDULE_EXACT_ALARM for this narrow range of API versions.
 		if (Build.VERSION.SDK_INT >= 31 && Build.VERSION.SDK_INT < 33) {
 			AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 			if (!am.canScheduleExactAlarms()) {
@@ -294,28 +294,16 @@ public class Giggity extends Application {
 		return ret;
 	}
 
-	public static void zxingError(final Activity ctx) {
-		new AlertDialog.Builder(ctx)
-				.setMessage("This (deprecated) functionality depends on the ZXing Barcode scanner and will go away soon. Try ggt.gaa.st deeplinks instead.")
-				.setTitle("Error")
-				.setNegativeButton("Never mind", null)
-				.setNeutralButton("ggt.gaa.st", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Wilm0r/giggity#deeplinking-into-giggity"));
-						ctx.startActivity(intent);
-					}
-				})
-				.setPositiveButton("Install", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						// Deeplink into fdroid only since for whatever tedious stupid reason the app
-						// is visible but not installable on the Play Store anymore. But Giggity and
-						// FDroid have a pretty strong overlap in users so I guess we're ok. :-)
-						Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://f-droid.org/en/packages/com.google.zxing.client.android/"));
-						ctx.startActivity(intent);
-					}
-				})
-				.show();
+	public static void copy(InputStream in, OutputStream out) throws IOException {
+		// Delete this again once support for API <29 is dropped.
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q /* 29 */) {
+			FileUtils.copy(in, out);
+		} else {
+			byte[] yo = new byte[4096];
+			int st;
+			while ((st = in.read(yo)) != -1) {
+				out.write(yo, 0, st);
+			}
+		}
 	}
 }

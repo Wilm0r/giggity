@@ -10,10 +10,7 @@
 	<string name="default_view">Default view</string>
 	<string name="font_size">Block schedule font size</string>
 
-	<string name="block_schedule_style">Style</string>
 	<string name="block_schedule">Block schedule</string>
-	<string name="block_schedule_element_size_sub">Size of a block schedule block</string>
-	<string name="block_schedule_element_size">Block size</string>
 
 	<string name="reminder">Event reminders</string>
 	<string name="reminder_enabled_sub_on">Notifications before my events start</string>
@@ -40,11 +37,8 @@
 	<string name="loading_image">Loading image data...</string>
 	<string name="loading_error">Load error</string>
 	<string name="no_viewer_error">No viewer installed for filetype</string>
-	<string name="export_selections">Export selections</string>
+	<string name="open_link_with_browser_instead">Open in browser</string>
 	<string name="home_shortcut">Home shortcut</string>
-	<string name="import_selections">Import selections</string>
-	<string name="no_selections">No selections to be exported</string>
-	<string name="qr_tip">Please use the QR scan button in the main menu on your other device to import this</string>
 	<string name="schedule_empty">Schedule appears to be empty</string>
 	<string name="format_unknown">File format not recognised</string>
 	<string name="no_json_data">Could not extract JSON data from URL</string>
@@ -91,7 +85,6 @@
 	<string name="chooser_later">Later</string>
 	<string name="chooser_past">Over</string>
 	<string name="add_dialog">Add...</string>
-	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Enter schedule URL</string>
 	<string name="refresh_failed">Menu refresh unsuccessful.</string>
 
@@ -102,7 +95,6 @@
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'at\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'at\' HH:mm</string>
-	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Coming soon</string>
 	<string name="widg_no_upcoming">No upcoming events :-(</string>
 	<string name="reminder_enabled_sub_off">Notifications suppressed</string>

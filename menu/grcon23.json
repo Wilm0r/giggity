@@ -1,0 +1,21 @@
+{
+  "version": 2023082500,
+  "url": "https://events.gnuradio.org/event/21/event.ics?scope=contribution",
+  "title": "GNU Radio Conference 2023",
+  "start": "2023-09-05",
+  "end": "2023-09-09",
+  "timezone": "America/Phoenix",
+  "metadata": {
+    "icon": "https://www.gnuradio.org/giggity-grcon23-logo.png",
+    "links": [
+      {
+        "url": "https://events.gnuradio.org/event/21/",
+        "title": "Website"
+      },
+      {
+        "url": "https://www.gnuradio.org",
+        "title": "Project Website"
+      }
+    ]
+  }
+}

@@ -1,0 +1,24 @@
+{
+	"version": 2023062200,
+	"url": "https://talks.osgeo.org/foss4g-2023/schedule/export/schedule.xml",
+	"title": "FOSS4G 2023",
+	"start": "2023-06-28",
+	"end": "2023-06-30",
+	"timezone": "Europe/Belgrade",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.foss4g.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2023.foss4g.org/attending/accomodation/",
+				"title": "Accommodation"
+			},
+			{
+				"url": "https://2023.foss4g.org/code-of-conduct/",
+				"title": "Code of Conduct"
+			}
+		]
+	}
+}

@@ -1,0 +1,30 @@
+{
+	"version": 2023090601,
+	"url": "https://pretalx.com/hack-lu-2023/schedule/export/schedule.xml",
+	"title": "hack.lu 2023",
+	"start": "2023-10-16",
+	"end": "2023-10-19",
+	"timezone": "Europe/Luxembourg",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2023.hack.lu/",
+				"title": "Website"
+			}
+		],
+		"rooms": [
+			{
+			  "name": "Hollenfels",
+			  "latlon": [49.63964, 6.15409]
+			},
+			{
+			  "name": "Salle Europe",
+			  "latlon": [49.63964, 6.15409]
+			},
+			{
+			  "name": "Schengen 1 and 2",
+			  "latlon": [49.63964, 6.15409]
+			}
+		]
+	}
+}

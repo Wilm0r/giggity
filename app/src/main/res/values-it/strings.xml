@@ -10,10 +10,7 @@
 	<string name="default_view">Vista predefinita</string>
 	<string name="font_size">Dimensione font programma a blocchi</string>
 
-	<string name="block_schedule_style">Stile</string>
 	<string name="block_schedule">Programma a blocchi</string>
-	<string name="block_schedule_element_size_sub">Dimensione del blocco nel programma a blocchi</string>
-	<string name="block_schedule_element_size">Dimensione blocco</string>
 
 	<string name="reminder">Promemoria eventi</string>
 	<string name="reminder_enabled_sub_on">Ricordami gli eventi segnati</string>
@@ -39,11 +36,7 @@
 	<string name="loading_image">Caricamento immagine...</string>
 	<string name="loading_error">Errore di caricamento</string>
 	<string name="no_viewer_error">Nessun programma installato per visualizzare il file</string>
-	<string name="export_selections">Esporta selezioni</string>
 	<string name="home_shortcut">Crea shortcut</string>
-	<string name="import_selections">Importa selezioni</string>
-	<string name="no_selections">Nessuna selezione da esportare</string>
-	<string name="qr_tip">Usa il tasto per leggere il QR nel menu principale sull\'altro dispositivo per importare questo elemento</string>
 	<string name="schedule_empty">Il programma sembra essere vuoto</string>
 	<string name="format_unknown">Formato del file non riconosciuto</string>
 	<string name="no_json_data">Estrazione dati JSON da URL fallita</string>
@@ -89,7 +82,6 @@
 	<string name="chooser_later">Eventi in arrivo</string>
 	<string name="chooser_past">Eventi precedenti</string>
 	<string name="add_dialog">Aggiungi...</string>
-	<string name="qr_scan">Leggi QR</string>
 	<string name="enter_url">Inserisci URL del programma</string>
 	<string name="refresh_failed">Caricamento del menu fallito.</string>
 
@@ -100,7 +92,6 @@
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'alle\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'alle\' HH:mm</string>
-	<string name="widg_in_room">in</string>
 	<string name="widg_soon">Prossimamente</string>
 	<string name="widg_no_upcoming">Nessun evento in vista :-(</string>
 	<string name="reminder_enabled_sub_off">Non ricordarmi gli eventi segnati</string>

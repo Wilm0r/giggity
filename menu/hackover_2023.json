@@ -1,0 +1,20 @@
+{
+	"version": 2023070600,
+	"url": "https://talks.hackover.de/ho-2023/schedule.xml",
+	"title": "Hackover 2023",
+	"start": "2023-07-14",
+	"end": "2023-07-16",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackover.de/",
+				"title": "Website"
+			},
+			{
+				"url": "https://tickets.hackover.de/ho23/",
+				"title": "Tickets"
+			}
+		]
+	}
+}

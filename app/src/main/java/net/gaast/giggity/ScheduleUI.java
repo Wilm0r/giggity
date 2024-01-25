@@ -1,9 +1,5 @@
 package net.gaast.giggity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,17 +8,11 @@ import android.net.Uri;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import org.json.JSONArray;
+import org.apache.commons.io.output.NullOutputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.time.ZoneId;
 import java.util.AbstractList;
 import java.util.Collection;
@@ -66,15 +56,12 @@ public class ScheduleUI extends Schedule {
 		try {
 			f = ctx.fetch(url, source);
 			f.setProgressHandler(ret.progressHandler);
-			Log.d("Fetcher", "source=" + f.getSource());
-			if (f.getSource() == Fetcher.Source.CACHE) {
+			if (f.fromCache()) {
+				// Disable the "load from cache" button since we're doing that already. */
 				ret.progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.FROM_CACHE);
 			}
 			ret.loadSchedule(f.getReader(), url);
 		} catch (LoadException | IOException e) {
-			if (f != null)
-				f.cancel();
-
 			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
 			e.printStackTrace();
 			throw new LoadException("Network I/O problem: " + e);
@@ -122,7 +109,7 @@ public class ScheduleUI extends Schedule {
 		}
 
 		try {
-			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE);
+			Fetcher f = new Fetcher(app, getIconUrl(), Fetcher.Source.CACHE_ONLY);
 			return f.getStream();
 		} catch (IOException e) {
 			// This probably means it's not in cache. :-( So we'll fetch it in the background and
@@ -134,15 +121,15 @@ public class ScheduleUI extends Schedule {
 			public void run() {
 				Fetcher f;
 				try {
-					f = new Fetcher(app, getIconUrl(), Fetcher.Source.ONLINE);
+					f = new Fetcher(app, getIconUrl(), Fetcher.Source.DEFAULT);
+					// Just feed it to /dev/null so that next time we can CACHE_ONLY fetch it.
+					// It won't get cached without completing this bogus read!
+					Giggity.copy(f.getStream(), new NullOutputStream());
 				} catch (IOException e) {
 					Log.e("getIconStream", "Fetch error: " + e);
 					return;
 				}
-				if (BitmapFactory.decodeStream(f.getStream()) != null) {
-					/* Throw-away decode seems to have worked so instruct Fetcher to keep cached. */
-					f.keep();
-				}
+				f.keep();
 			}
 		};
 		iconFetcher.start();
@@ -173,7 +160,7 @@ public class ScheduleUI extends Schedule {
 	/* Returns true if any of the statuses has changed. */
 	public boolean updateRoomStatus() {
 		try {
-			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.ONLINE_NOCACHE);
+			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.DEFAULT);
 			return updateRoomStatus(f.slurp());
 		} catch (IOException e) {
 			Log.d("updateRoomStatus", "Fetch setup failure");
@@ -205,85 +192,6 @@ public class ScheduleUI extends Schedule {
 			ret.add(allItems.get(id));
 		}
 		return ret;
-	}
-
-
-	// Bunch of static utility/UI functions/etc that I originally created this class for.
-	static public void exportSelections(Activity ctx, Schedule sched) {
-		Schedule.Selections sel = sched.getSelections();
-		
-		if (sel == null) {
-			Toast.makeText(ctx, R.string.no_selections, Toast.LENGTH_SHORT).show();
-			return;
-		}
-		
-		byte[] binsel = sel.export();
-		Intent intent = new Intent("com.google.zxing.client.android.ENCODE");
-		intent.putExtra("ENCODE_TYPE", "TEXT_TYPE");
-		intent.putExtra("ENCODE_SHOW_CONTENTS", false);
-		try {
-			intent.putExtra("ENCODE_DATA", new String(binsel, "iso8859-1"));
-		} catch (UnsupportedEncodingException e) {
-			/* Fuck off, Java. */
-		}
-		try {
-			ctx.startActivity(intent);
-			Toast.makeText(ctx, R.string.qr_tip, Toast.LENGTH_LONG).show();
-		} catch (ActivityNotFoundException | SecurityException e) {
-			Giggity.zxingError(ctx);
-		}
-
-	}
-	
-	static public class ImportSelections extends Dialog implements OnClickListener {
-		Context ctx;
-		LinearLayout opts;
-		CheckBox[] cbs;
-		Schedule mine;
-		Schedule.Selections other;
-		
-		static final int KEEP_REMIND = 0;
-		static final int KEEP_HIDDEN = 1;
-		static final int IMPORT_REMIND = 2;
-		static final int IMPORT_HIDDEN = 3;
-		
-		public ImportSelections(Context ctx_, Schedule mine_, Schedule.Selections other_) {
-			super(ctx_);
-			ctx = ctx_;
-			mine = mine_;
-			other = other_;
-			
-			setTitle(R.string.import_selections);
-			setCanceledOnTouchOutside(false);
-			
-			opts = new LinearLayout(ctx);
-			opts.setOrientation(LinearLayout.VERTICAL);
-			
-			cbs = new CheckBox[4];
-			int i;
-			String[] choices = ctx.getResources().getStringArray(R.array.import_selections_options);
-			for (i = 0; i < 4; i ++) {
-				cbs[i] = new CheckBox(ctx);
-				cbs[i].setChecked(i != IMPORT_HIDDEN);
-				cbs[i].setText(choices[i]);
-				opts.addView(cbs[i]);
-			}
-			
-			Button ok = new Button(ctx);
-			ok.setText(R.string.ok);
-			ok.setOnClickListener(this);
-			opts.addView(ok);
-			
-			setContentView(opts);
-		}
-
-		@Override
-		public void onClick(View v) {
-			mine.setSelections(other, cbs);
-			ScheduleViewActivity act = (ScheduleViewActivity) ctx;
-			act.redrawSchedule();
-			dismiss();
-		}
 	}
 
 	/** Click-listener to open geo: URL belonging to a room. */

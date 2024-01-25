@@ -10,10 +10,7 @@
 	<string name="default_view">Výchozí pohled</string>
 	<string name="font_size">Velikost písma blokového programu</string>
 
-	<string name="block_schedule_style">Styl</string>
 	<string name="block_schedule">Blokový program</string>
-	<string name="block_schedule_element_size_sub">Velikost bloku v blokovém programu</string>
-	<string name="block_schedule_element_size">Velikost bloku</string>
 
 	<string name="reminder">Připomínky eventů</string>
 	<string name="reminder_enabled_sub_on">Zobrazit připomínku před začátkem eventu</string>
@@ -40,11 +37,7 @@
 	<string name="loading_image">Načítání obrázků...</string>
 	<string name="loading_error">Chyba při načítání</string>
 	<string name="no_viewer_error">Není nainstalován prohlížeč pro tento typ souboru</string>
-	<string name="export_selections">Exportovat výběr</string>
 	<string name="home_shortcut">Přidat odkaz na domovskou obrazovku</string>
-	<string name="import_selections">Importovat výběr</string>
-	<string name="no_selections">Žádný výběr k exportování</string>
-	<string name="qr_tip">K importování použijte tlačítko Naskenovat QR v hlavním menu na druhém zařízení</string>
 	<string name="schedule_empty">Program se jeví jako prázdný</string>
 	<string name="format_unknown">Formát souboru nebyl rozpoznám</string>
 	<string name="no_json_data">Nepovedlo se načíst JSON data z URL</string>
@@ -90,7 +83,6 @@
 	<string name="chooser_later">Naplánované</string>
 	<string name="chooser_past">Proběhlé</string>
 	<string name="add_dialog">Přidat...</string>
-	<string name="qr_scan">Naskenovat QR</string>
 	<string name="enter_url">Vložte URL programu</string>
 	<string name="refresh_failed">Aktualizace menu selhala.</string>
 
@@ -101,7 +93,6 @@
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'v\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'v\' HH:mm</string>
-	<string name="widg_in_room">v</string>
 	<string name="widg_soon">Již brzy</string>
 	<string name="widg_no_upcoming">Žádný nadcházející event :-(</string>
 	<string name="reminder_enabled_sub_off">Připomínky vypnuty</string>

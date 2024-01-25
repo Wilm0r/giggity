@@ -5,10 +5,4 @@
 		<item>3 řádky</item>
 		<item>2 řádky</item>
 	</string-array>
-	<string-array name="import_selections_options">
-		<item>Zachovat stávající připomínky</item>
-		<item>Zachovat výmazy</item>
-		<item>Importovat nové připomínky</item>
-		<item>Importovat výmazy</item>
-	</string-array>
 </resources>

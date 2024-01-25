@@ -78,7 +78,7 @@ public class ScheduleItemActivity extends Activity {
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		if (grantResults.length != 1) {
 			return;
 		}

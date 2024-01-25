@@ -23,6 +23,16 @@
         "$id": "/properties/schedules/items",
         "type": "object",
         "properties": {
+          "id": {
+            "$id": "/properties/schedules/items/properties/id",
+            "type": "string",
+            "title": "Schedule ID",
+            "description": "Immutable and unique identifier for this event/schedule, derived from original filename",
+            "pattern": "^[a-z0-9-_]{4,32}$",
+            "examples": [
+              "fosdem_2003"
+            ]
+          },
           "version": {
             "$id": "/properties/schedules/items/properties/version",
             "type": "integer",
@@ -91,7 +101,7 @@
               "2016-08-21"
             ]
           },
-          "title": {
+          "timezone": {
             "$id": "/properties/schedules/items/properties/timezone",
             "type": "string",
             "title": "POSIX timezone identifier where the event is held",
@@ -245,6 +255,7 @@
           }
         },
         "required": [
+          "id",
           "version",
           "url",
           "title",

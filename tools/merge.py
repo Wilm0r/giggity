@@ -1,10 +1,12 @@
 #!/usr/bin/env python3
 
 import argparse
+import copy
 import datetime
 import json
 import operator
 import os
+import pathlib
 import re
 import sys
 
@@ -37,7 +39,7 @@ def load_locally(path):
 	return all
 
 def load_git(path, revision):
-	# Thanks to Jelmer Vernooij for spelling this one out for me :-D
+	# Thanks to Jelmer Vernooĳ for spelling this one out for me :-D
 	repo = Repo(path)
 	rev = revision.encode("ascii")
 	for r in repo.get_walker():
@@ -49,7 +51,7 @@ def load_git(path, revision):
 	for name, mode, object_id in menu.iteritems():
 		text = str(repo[object_id].data, "utf-8")
 		check_indents(text, name)
-		all[name] = json.loads(text)
+		all[name.decode("utf-8")] = json.loads(text)
 	
 	return all
 
@@ -92,6 +94,18 @@ def merge(all, first):
 			# some day.
 			print("Too old, skipped: %s" % fn, file=sys.stderr)
 			continue
+		s = copy.deepcopy(s)
+		if "id" in s:
+			if s["version"] <= 2023090423:
+				# Most recent file with this issue. Fix it quietly.
+				# Honestly no idea how these appeared, it was never in the spec yet ~15 files have it!
+				del s["id"]
+			else:
+				raise SyntaxError(f"{fn}: \"id\" attribute not allowed in input files")
+		s = {
+			"id": pathlib.PurePath(fn).stem,  # .stem = basename without extension
+			**s,
+		}
 		out["version"] = max(out["version"], s["version"])
 		out["schedules"].append(s)
 

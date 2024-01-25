@@ -130,11 +130,6 @@
 					android:text="@string/home_shortcut"/>
 
 				<TextView
-					android:id="@+id/export_selections"
-					style="@style/BurgerMenuItem"
-					android:text="@string/export_selections"/>
-
-                <TextView
                     android:id="@+id/settings"
                     style="@style/BurgerMenuItem"
                     android:text="@string/settings"/>

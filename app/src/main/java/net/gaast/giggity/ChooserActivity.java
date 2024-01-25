@@ -22,7 +22,6 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,7 +61,6 @@ import net.gaast.giggity.Db.DbSchedule;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.zip.DataFormatException;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -73,9 +71,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 	private ListView list;
 	private ScheduleAdapter lista;
 	private Handler seedRefreshMenu;
-
-	private final String BARCODE_SCANNER = "com.google.zxing.client.android.SCAN";
-	private final String BARCODE_ENCODE = "com.google.zxing.client.android.ENCODE";
 
 	private SharedPreferences pref;
 
@@ -101,15 +96,16 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		db = app.getDb();
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 
-		refreshSeed(false);
-
 		list = new ListView(this);
+		updateList();  // To make sure there's always something on screen.
+		refreshSeed(false);  // Possibly find new data then refresh, asynchronously.
+
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 			DbSchedule item = (DbSchedule) lista.getItem(position);
 			if (item != null) {
-				openSchedule(item.getUrl(), item.refreshNow(), null, view);
+				openSchedule(item.getUrl(), item.refreshNow(), view);
 			}
 			}
 		});
@@ -160,8 +156,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 						p.putLong("last_menu_seed_ts", System.currentTimeMillis());
 						p.commit();
 
-						lista = new ScheduleAdapter(db.getScheduleList());
-						list.setAdapter(lista);
+						updateList();
 					} else {
 						// TODO: Error never gets reported because the built-in file fallback should just work.
 						Toast.makeText(ChooserActivity.this,
@@ -209,34 +204,28 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		} else if (item.getItemId() == 0) {
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched.getUrl(), true, null, null);
+			openSchedule(sched.getUrl(), true, null);
 		} else if (item.getItemId() == 3) {
 			/* Unhide. */
 			sched.flushHidden();
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched.getUrl(), sched.refreshNow(), null, null);
+			openSchedule(sched.getUrl(), sched.refreshNow(), null);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
 			db.removeSchedule(sched.getUrl());
 			onResume();
 		} else {
-			/* Show URL; try a QR code but fall back to a dialog if the app is not installed. */
-			try {
-				Intent intent = new Intent(BARCODE_ENCODE);
-				intent.putExtra("ENCODE_TYPE", "TEXT_TYPE");
-				intent.putExtra("ENCODE_DATA", sched.getUrl());
-				startActivity(intent);
-			} catch (ActivityNotFoundException e) {
-				TextView selectableUrl = new TextView(this);
-				selectableUrl.setText(sched.getUrl());
-				selectableUrl.setTextIsSelectable(true);
-				app.setPadding(selectableUrl, 16, 8, 8, 16);
-				new AlertDialog.Builder(ChooserActivity.this)
-						.setTitle(sched.getTitle())
-						.setView(selectableUrl)
-						.show();
-			}
+			// Long ago this used to show a QR through a ZXing app intent, but that thing is dead,
+			// and meh I'm not going to integrate a QR jar just for this kind of functionality. :(
+			TextView selectableUrl = new TextView(this);
+			selectableUrl.setText(sched.getUrl());
+			selectableUrl.setTextIsSelectable(true);
+			app.setPadding(selectableUrl, 16, 8, 8, 16);
+			new AlertDialog.Builder(ChooserActivity.this)
+					.setTitle(sched.getTitle())
+					.setView(selectableUrl)
+					.show();
 		}
 		return false;
 	}
@@ -246,7 +235,10 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		/* Do this part in onResume so we automatically re-sort the list (and
 		 * pick up new items) when returning to the chooser. */
 		super.onResume();
+		updateList();
+	}
 
+	private void updateList() {
 		lista = new ScheduleAdapter(db.getScheduleList());
 		list.setAdapter(lista);
 	}
@@ -257,14 +249,12 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		seedRefreshMenu = null;
 	}
 
-	private void openSchedule(String url, boolean prefOnline, Schedule.Selections sel, View animationOrigin) {
+	private void openSchedule(String url, boolean prefOnline, View animationOrigin) {
 		if (!url.contains("://"))
-			url = "http://" + url;
+			url = "https://" + url;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
 				this, ScheduleViewActivity.class);
 		intent.putExtra("PREFER_ONLINE", prefOnline);
-		if (sel != null)
-			intent.putExtra("SELECTIONS", sel);
 
 		ActivityOptions options = null;
 		if (animationOrigin != null) {
@@ -272,50 +262,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		               this, animationOrigin, "title");
 		}
 		startActivity(intent, options != null ? options.toBundle() : null);
-	}
-
-	/* DEPRECATED, not by my choice but by ZXing team's choice.. :<
-
-	   Process barcode scan results. This can be a few things:
-
-	   * zlib-compressed binary blob containing selection data exported by another Giggity
-	     (keeping this code around for just that feature since I have no replacement yet)
-	   * Plain URL, in which case just handle it
-	 */
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-		if (requestCode == 0) {
-			if (resultCode == RESULT_OK) {
-				String url = intent.getStringExtra("SCAN_RESULT");
-				if (url == null) {
-					// Shouldn't happen unless the scanner is broken. Anyway, this code goes away soon.
-					return;
-				}
-				Schedule.Selections sel = null;
-				if (intent.hasExtra("SCAN_RESULT_BYTE_SEGMENTS_0")) {
-					byte[] bin = intent.getByteArrayExtra("SCAN_RESULT_BYTE_SEGMENTS_0");
-					if (intent.hasExtra("SCAN_RESULT_BYTE_SEGMENTS_1") &&
-					    !url.startsWith("http")) {
-						/* Helpful warning if what we scanned may not be a simple URL but not encoded
-						   properly. */
-						Toast.makeText(this, "Your QR generator seems to have used multiple segments, " +
-						               "this corrupts binary data!", Toast.LENGTH_LONG).show();
-					}
-
-					/* Or 2? */
-					try {
-						sel = new Schedule.Selections(bin);
-						url = sel.url;
-					} catch (DataFormatException e) {
-						sel = null;
-					}
-				}
-
-				/* Nope, just a plain URL then hopefully.. Or something corrupted that will generate
-				   a spectacular error message. \o/ */
-				openSchedule(url, false, sel, null);
-			}
-		}
 	}
 
 	@Override
@@ -361,7 +307,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		d.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				openSchedule(urlBox.getText().toString(), false, null, null);
+				openSchedule(urlBox.getText().toString(), false, null);
 			}
 		});
 		/* Apparently the "Go"/"Done" button still just simulates an ENTER keypress. Neat!...
@@ -371,24 +317,10 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
 				if (event.getAction() == KeyEvent.ACTION_DOWN &&
 						keyCode == KeyEvent.KEYCODE_ENTER) {
-					openSchedule(urlBox.getText().toString(), false, null, null);
+					openSchedule(urlBox.getText().toString(), false, null);
 					return true;
 				} else {
 					return false;
-				}
-			}
-		});
-
-		d.setNeutralButton(R.string.qr_scan, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				try {
-					Intent intent = new Intent(BARCODE_SCANNER);
-					intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-					startActivityForResult(intent, 0);
-				} catch (ActivityNotFoundException | SecurityException e) {
-					Giggity.zxingError(ChooserActivity.this);
 				}
 			}
 		});

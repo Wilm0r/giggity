@@ -10,10 +10,7 @@
 	<string name="default_view">Vue par défaut</string>
 	<string name="font_size">Taille de police pour la grille</string>
 
-	<string name="block_schedule_style">Style</string>
 	<string name="block_schedule">Grille</string>
-	<string name="block_schedule_element_size_sub">Taille d\'un bloc de la grille</string>
-	<string name="block_schedule_element_size">Taille de bloc</string>
 
 	<string name="reminder">Rappel d\'évènements</string>
 	<string name="reminder_enabled_sub_on">Me rappeler les évènements sélectionnés</string>
@@ -40,11 +37,7 @@
 	<string name="loading_image">Chargement des images...</string>
 	<string name="loading_error">Erreur de chargement</string>
 	<string name="no_viewer_error">Aucune application ne prend en charge ce type de fichier</string>
-	<string name="export_selections">Exporter les sélections</string>
 	<string name="home_shortcut">Raccourci sur l\'accueil</string>
-	<string name="import_selections">Importer les sélections</string>
-	<string name="no_selections">Aucune sélection à exporter</string>
-	<string name="qr_tip">Utilisez le bouton scan QR du menu principal sur votre autre appareil pour importer ceci</string>
 	<string name="schedule_empty">Le programme semble vide</string>
 	<string name="format_unknown">Format de fichier non reconnu</string>
 	<string name="no_network">Aucune connexion réseau</string>
@@ -85,7 +78,6 @@
 	<string name="chooser_later">Évènements à venir</string>
 	<string name="chooser_past">Évènements précédents</string>
 	<string name="add_dialog">Ajout...</string>
-	<string name="qr_scan">Scan QR</string>
 	<string name="enter_url">Saisissez l\'URL du programme</string>
 
 	<!-- Reminder -->
@@ -93,7 +85,6 @@
 	<!--  Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'à\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'à\' HH:mm</string>
-	<string name="widg_in_room">dans</string>
 	<string name="widg_soon">Bientôt</string>
 	<string name="widg_no_upcoming">Aucun évènement à venir :-(</string>
 </resources>

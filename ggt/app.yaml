@@ -1,4 +1,4 @@
-runtime: python310
+runtime: python311
 
 inbound_services:
 - warmup
@@ -10,15 +10,20 @@ handlers:
   static_files: index.html
   upload: index.html
 
+- url: /_ah/warmup
+  secure: optional
+  script: auto
+
 - url: /nodatapolicy.*
   secure: always
   redirect_http_response_code: 301
   static_files: nodatapolicy.html
   upload: nodatapolicy.html
 
-- url: /_ah/warmup
+- url: /.well-known/assetlinks.json
   secure: optional
-  script: auto
+  static_files: assetlinks.json
+  upload: assetlinks.json
 
 - url: /.*
   secure: always

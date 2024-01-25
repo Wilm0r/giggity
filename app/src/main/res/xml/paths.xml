@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
 	<cache-path path="downloads/" name="downloads" />
+	<cache-path path="view/" name="view" />
 </paths>

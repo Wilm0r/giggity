@@ -1,0 +1,48 @@
+{
+    "version": 2023092901,
+    "url": "https://pretalx.com/wikidatacon2023/schedule/export/schedule.xml",
+    "title": "WikidataCon 2023",
+    "start": "2023-10-28",
+    "end": "2023-10-30",
+    "timezone": "Asia/Taipei",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://www.wikidata.org/wiki/Wikidata:WikidataCon_2023",
+                "title": "Website"
+            },
+            {
+                "url": "https://pretalx.com/wikidatacon2023/speaker/",
+                "title": "Speakers"
+            },
+            {
+                "url": "https://foundation.wikimedia.org/wiki/Policy:Universal_Code_of_Conduct",
+                "title": "Code of conduct"
+            },
+            {
+                "url": "https://www.wikidata.org/wiki/Wikidata:WikidataCon_2023/Attend_online",
+                "title": "Attend online"
+            },
+            {
+                "url": "https://www.wikidata.org/wiki/Wikidata:WikidataCon_2023/Attend_in_Taipei",
+                "title": "Attend in Taipei"
+            },
+            {
+                "url": "https://www.wikidata.org/wiki/Wikidata:Eleventh_Birthday/Events",
+                "title": "Distributed events"
+            },
+            {
+                "url": "https://www.wikidata.org/wiki/Wikidata:WikidataCon_2023/Contribute",
+                "title": "Contribute"
+            },
+            {
+                "url": "https://www.wikidata.org/wiki/Wikidata:WikidataCon_2023/Documentation",
+                "title": "Documentation"
+            },
+            {
+                "url": "https://www.wikidata.org/wiki/Wikidata_talk:WikidataCon_2023",
+                "title": "Discussions"
+            }
+        ]
+    }
+}

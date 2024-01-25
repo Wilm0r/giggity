@@ -1,0 +1,83 @@
+{
+	"title": "37c3 - main rooms only",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events.ccc.de/congress/2023/infos/startpage.html",
+				"title": "Website"
+			},
+			{
+				"url": "https://events.ccc.de/congress/2023/hub/en/wiki/start/",
+				"title": "Wiki"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		],
+		"c3nav_base": "https://37c3.c3nav.de",
+		"rooms": [
+			{
+				"name": "Kidspace.*",
+				"show_name": "Kidspace - Workshopraum in Saal B",
+				"c3nav_slug": "hall-b"
+			},
+			{
+				"name": "Lounge",
+				"show_name": "Lounge",
+				"c3nav_slug": "lounge-main"
+			},
+			{
+				"name": "Saal 1",
+				"show_name": "Saal 1",
+				"c3nav_slug": "hall-1"
+			},
+			{
+				"name": "Saal D",
+				"show_name": "Saal D",
+				"c3nav_slug": "sos-d"
+			},
+			{
+				"name": "Saal E",
+				"show_name": "Saal E",
+				"c3nav_slug": "sos-e"
+			},
+			{
+				"name": "Saal Granville",
+				"show_name": "Saal Granville",
+				"c3nav_slug": "hg"
+			},
+			{
+				"name": "Saal Zuse",
+				"show_name": "Saal Zuse",
+				"c3nav_slug": "hz"
+			},
+			{
+				"name": "Sendezentrum Stage.*",
+				"show_name": "Sendezentrum Stage (Saal F)",
+				"c3nav_slug": "sendezentrum-dlf"
+			},
+			{
+				"name": "Stage H",
+				"show_name": "Stage H",
+				"c3nav_slug": "sos-h"
+			},
+			{
+				"name": "Stage Y",
+				"show_name": "Stage Y",
+				"c3nav_slug": "sos-y"
+			},
+			{
+				"name": "Stonewall IO",
+				"show_name": "Stonewall IO",
+				"c3nav_slug": "stonewall-io"
+			}
+		]
+	},
+	"url": "https://fahrplan.events.ccc.de/congress/2023/fahrplan/schedule.xml",
+	"start": "2023-12-27",
+	"end": "2023-12-30",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"version": 2023122701
+}

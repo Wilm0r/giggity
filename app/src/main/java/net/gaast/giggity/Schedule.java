@@ -20,13 +20,9 @@
 package net.gaast.giggity;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.util.Log;
-import android.widget.CheckBox;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,13 +37,12 @@ import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
@@ -71,15 +66,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
-import java.util.Scanner;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.zip.DataFormatException;
-import java.util.zip.Deflater;
-import java.util.zip.Inflater;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.html.HtmlPlugin;
@@ -122,6 +113,7 @@ public class Schedule implements Serializable {
 	protected boolean fullyLoaded;
 
 	public Schedule() {
+		// Was apparently needed to get case insensitive sorting? add19dcb8fb97a8611a147f316da80a962f073ee
 		trackSort = Collator.getInstance();
 		trackSort.setStrength(Collator.PRIMARY);
 		tracks = new TreeMap<>(trackSort);
@@ -185,6 +177,26 @@ public class Schedule implements Serializable {
 			day = dayEnd;
 			dayEnd = dayEnd.plusDays(1);
 		}
+
+		// Discard track info if there's just one, on all talks. (Bornhack)
+		if (getTracks() != null && getTracks().size() == 1 &&
+		    getTracks().iterator().next().getItems().size() == allItems.size()) {
+			tracks.clear();
+			for (Item it : allItems.values()) {
+				it.track = null;
+			}
+		}
+
+		try {
+			String menu = new JSONObject()
+					               .put("url", url_)
+					               .put("title", getTitle())
+					               .put("start", day0List.getFirst().format(DateTimeFormatter.ISO_LOCAL_DATE))
+					               .put("end", day0List.getLast().format(DateTimeFormatter.ISO_LOCAL_DATE)).toString();
+			Log.i("giggity.Schedule", "successfully loaded, suggested menu JSON: " + menu);
+		} catch (JSONException e) {
+			// blah O_o
+		}
 	}
 
 	public String getString(int id) {
@@ -220,7 +232,7 @@ public class Schedule implements Serializable {
 			/* md5, sha1... small diff I guess? (No clue how this evolved!) */
 			MessageDigest md5 = MessageDigest.getInstance("SHA-1");
 			md5.update(url.getBytes());
-			byte raw[] = md5.digest();
+			byte[] raw = md5.digest();
 			for (int i = 0; i < raw.length; i ++)
 				ret += String.format("%02x", raw[i]);
 		} catch (NoSuchAlgorithmException e) {
@@ -388,7 +400,7 @@ public class Schedule implements Serializable {
 					/* Line continuation. Get the rest before we process anything. */
 					continue;
 				} else if (line.contains(":")) {
-					String split[] = line.split(":", 2);
+					String[] split = line.split(":", 2);
 					String key, value;
 					key = split[0].toLowerCase();
 					value = split[1];
@@ -406,7 +418,7 @@ public class Schedule implements Serializable {
 								key = bit.toLowerCase();
 								continue;
 							}
-							String kv[] = bit.split("=", 2);
+							String[] kv = bit.split("=", 2);
 							if (kv.length == 2) {
 								at.addAttribute("", kv[0].toLowerCase(), kv[0].toLowerCase(), "", kv[1]);
 							}
@@ -481,14 +493,9 @@ public class Schedule implements Serializable {
 								name = room.getTitle();
 							}
 							JSONArray latlon = jroom.getJSONArray("latlon");
-							try {
-								room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
-										latlon.optDouble(1, 0) + "(" +
-										URLEncoder.encode(name, "utf-8") + ")");
-							} catch (UnsupportedEncodingException e) {
-								// I'm a useless language! (Have I mentioned yet how if a machine
-								// doesn't do utf-8 then it should maybe not be on the Internet?)
-							}
+							room.location = ("geo:0,0?q=" + latlon.optDouble(0, 0) + "," +
+									latlon.optDouble(1, 0) + "(" +
+									URLEncoder.encode(name, "utf-8") + ")");
 						}
 					}
 				}
@@ -499,6 +506,8 @@ public class Schedule implements Serializable {
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return;
+		} catch (UnsupportedEncodingException e) {
+			// TODO: Once I'm on API 33+ I can use StandardCharsets.UTF_8 here again.
 		}
 	}
 
@@ -904,7 +913,8 @@ public class Schedule implements Serializable {
 				try {
 					if (startZonedTimeS != null) {
 						// All internal timestamps must be the tz-native times, in the conf's zone
-						startTime = ZonedDateTime.parse(startZonedTimeS, zdf);
+						// ... though sometimes they're not, soo .... force it to inTZ now!
+						startTime = ZonedDateTime.parse(startZonedTimeS, zdf).withZoneSameInstant(inTZ);
 					}
 				} catch (DateTimeParseException e){
 					startZonedTimeS = null;
@@ -1027,7 +1037,7 @@ public class Schedule implements Serializable {
 		OK,
 		FULL,  // Options from here will be rendered in red. Modify EventDialog if that's no longer okay.
 		EVACUATE,
-	};
+	}
 
 	public class ItemList {
 		protected String title;
@@ -1112,7 +1122,7 @@ public class Schedule implements Serializable {
 			return roomStatus;
 		}
 
-		// Return Schedule.Line for this track, only if it's one and the same for all its items.
+		// Return Schedule.Track for this Line, only if it's one and the same for all its items.
 		public Track getTrack() {
 			Track ret = null;
 			for (Item it : getItems()) {
@@ -1180,7 +1190,7 @@ public class Schedule implements Serializable {
 			try {
 				MessageDigest md5 = MessageDigest.getInstance("MD5");
 				md5.update(getUrl().getBytes());
-				byte raw[] = md5.digest();
+				byte[] raw = md5.digest();
 				return ByteBuffer.wrap(raw, 0, 4).getInt();
 			} catch (NoSuchAlgorithmException e) {  // WTF no
 				e.printStackTrace();
@@ -1299,7 +1309,7 @@ public class Schedule implements Serializable {
 			return language;
 		}
 
-		public Spanned getDescriptionSpanned(Context ctx) {
+		public SpannableString getDescriptionSpanned(Context ctx) {
 			if (description == null) {
 				return null;
 			}
@@ -1314,7 +1324,7 @@ public class Schedule implements Serializable {
 					description = description.replaceAll("(?is)(\\s*</?p>\\s*)+", "<p><p>").trim();
 					description = description.replaceAll("(?i)(<[^/p][^>]+>)(<p>)+", "$1");
 					final Markwon mw = Markwon.builder(ctx).usePlugin(HtmlPlugin.create()).build();
-					return mw.toMarkdown(description);
+					return new SpannableString(mw.toMarkdown(description));
 				}
 				// Seen in the FOSDEM schedule: Markdown-ish but with paragraphs marked with both
 				// whitespace and <p> tags. Well let's make it markdown then...
@@ -1323,7 +1333,7 @@ public class Schedule implements Serializable {
 
 			final Markwon mw = Markwon.builder(ctx)
 					                   .usePlugin(LinkifyPlugin.create()).build();
-			return mw.toMarkdown(description);
+			return new SpannableString(mw.toMarkdown(description));
 		}
 
 		public AbstractList<String> getSpeakers() {
@@ -1459,180 +1469,6 @@ public class Schedule implements Serializable {
 
 		public void setType(String type) {
 			this.type = type;
-		}
-	}
-
-	public Selections getSelections() {
-		boolean empty = true;
-		Selections ret = new Selections(this);
-		
-		for (Item item : allItems.values()) {
-			int t = 0;
-			if (item.getRemind())
-				t += 1;
-			if (item.isHidden())
-				t += 2;
-			if (t > 0)
-				empty = false;
-			ret.selections.put(item.getId(), t);
-		}
-		
-		/* Don't generate anything if there is nothing worth exporting. */
-		if (empty)
-			return null;
-		
-		return ret;
-	}
-	
-	public void setSelections(Selections sel, CheckBox[] cbs) {
-		if (!cbs[ScheduleUI.ImportSelections.KEEP_REMIND].isChecked()) {
-			for (Item item : allItems.values()) {
-				item.setRemind(false);
-			}
-		}
-		if (!cbs[ScheduleUI.ImportSelections.KEEP_HIDDEN].isChecked()) {
-			for (Item item : allItems.values()) {
-				item.setHidden(false);
-			}
-		}
-		if (cbs[ScheduleUI.ImportSelections.IMPORT_REMIND].isChecked()) {
-			for (String id : sel.selections.keySet()) {
-				if ((sel.selections.get(id) & 1) > 0) {
-					Item item = allItems.get(id);
-					if (item != null)
-						item.setRemind(true);
-				}
-			}
-		}
-		if (cbs[ScheduleUI.ImportSelections.IMPORT_REMIND].isChecked()) {
-			for (String id : sel.selections.keySet()) {
-				if ((sel.selections.get(id) & 2) > 0) {
-					Item item = allItems.get(id);
-					if (item != null)
-						item.setHidden(true);
-				}
-			}
-		}
-	}
-	
-	static public class Selections implements Serializable {
-		public String url;
-		public HashMap<String,Integer> selections = new HashMap<>();
-		
-		public Selections(Schedule sched) {
-			url = sched.getUrl();
-		}
-		
-		public Selections(byte[] in) throws DataFormatException {
-			if (in == null || in[0] != 0x01)
-				throw new DataFormatException("Magic number missing");
-			
-			Inflater unc = new Inflater(); 
-			unc.setInput(in, 1, in.length - 1);
-			byte[] orig = new byte[in.length * 10];
-			int len = unc.inflate(orig);
-			
-			ByteArrayInputStream rd = new ByteArrayInputStream(orig, 0, len);
-			
-			len = rd.read() * 0x100 + rd.read();
-			byte[] urlb = new byte[len];
-			if (rd.read(urlb, 0, len) != len)
-				throw new DataFormatException("Ran out of data while reading URL");
-			try {
-				url = new String(urlb, "utf-8");
-				Log.d("Selections.url", url);
-			} catch (UnsupportedEncodingException e) {}
-			
-			while (rd.available() > 4) {
-				int type = rd.read();
-				
-				if (type > 0x03) {
-					Log.w("Schedule.Selections", "Discarding unknown bits in type: " + type);
-					type &= 0x03;
-				}
-				Log.d("Selections.type", "" + type);
-				
-				int i, n = rd.read() * 0x100 + rd.read();
-				for (i = 0; i < n; i ++) {
-					len = rd.read();
-					if (len == -1 || rd.available() < len)
-						throw new DataFormatException("Ran out of data while reading ID");
-					
-					byte[] idb = new byte[len];
-					rd.read(idb, 0, len);
-					String id;
-					try {
-						id = new String(idb, "utf-8");
-					} catch (UnsupportedEncodingException e) {continue;}
-					selections.put(id, type);
-					Log.d("Selections.id", id);
-				}
-			}
-		}
-		
-		/* Export all selections/deletions/etc in a byte array. Should export this to other devices
-		 * using QR codes. The format is pretty simple, see the comments. It's zlib-compressed to
-		 * hopefully keep it small enough for a QR rendered on a phone. */
-		public byte[] export() {
-			LinkedList<String> sels[] = (LinkedList<String>[]) new LinkedList[4];
-			int i;
-			
-			for (i = 0; i < 4; i ++)
-				sels[i] = new LinkedList<String>();
-			
-			for (String id : selections.keySet()) {
-				int t = selections.get(id);
-				sels[t].add(id);
-			}
-			
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try {
-				/* Length of URL, 16 bits network order */
-				byte[] urlb = url.getBytes("utf-8");
-				out.write(urlb.length >> 8);
-				out.write(urlb.length & 0xff);
-				out.write(urlb);
-				for (i = 1; i < 4; i ++) {
-					if (sels[i].size() == 0)
-						continue;
-					
-					/* Type. Bitfield. 1 == remember, 2 == hide */
-					out.write(i);
-					/* Number of items, 16 bits network order */
-					out.write(sels[i].size() >> 8);
-					out.write(sels[i].size() & 0xff);
-					for (String item : sels[i]) {
-						byte[] id = item.getBytes("utf-8");
-						if (id.length > 255) {
-							/* Way too long. Forget it. :-/ */
-							out.write(0);
-							Log.e("Schedule.getSelections", "Ridiculously long item id: " + item);
-						} else {
-							out.write(id.length);
-							out.write(id);
-						}
-					}
-				}
-				out.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				return null;
-			}
-			
-			/* UGH. Raw arrays in Java. :-( "I just want to compress 200 bytes of data..." */
-			Deflater z = new Deflater(Deflater.BEST_COMPRESSION);
-			z.setInput(out.toByteArray());
-			z.finish();
-			byte[] ret1 = new byte[out.size() * 2 + 100];
-			byte[] ret2 = new byte[z.deflate(ret1) + 1];
-			/* "Version" number. Keep it outside the compressed bit because zlib doesn't have magic numbers.
-			 * I'll use this instead. I mostly need it to separate scanned URL QR codes from this binary data
-			 * so one byte like this is enough. */
-			ret2[0] = 0x01;
-			for (i = 0; i < ret2.length - 1; i ++)
-				ret2[i+1] = ret1[i];
-			
-			return ret2;
 		}
 	}
 }

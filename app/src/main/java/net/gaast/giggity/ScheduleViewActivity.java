@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityOptions;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
@@ -61,21 +60,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.commons.io.FilenameUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import androidx.core.content.FileProvider;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 public class ScheduleViewActivity extends Activity {
 	protected ScheduleUI sched;
@@ -85,7 +94,7 @@ public class ScheduleViewActivity extends Activity {
 	// There are two orders: One in arrays which is in order of invention for cfg compatibility.
 	// The order in the nav drawer UI XML is the one that matters to the user.
 	// TODO: Figure out whether I can stop needing this one :<
-	private final static int VIEWS[] = {
+	private final static int[] VIEWS = {
 		R.id.block_schedule,
 		R.id.my_events,
 		R.id.now_next,
@@ -121,6 +130,12 @@ public class ScheduleViewActivity extends Activity {
 	private String showEventId;
 
 	private BroadcastReceiver tzClose;
+
+	static CountingIdlingResource idler;
+
+	public static void setIdler(CountingIdlingResource idler) {
+		ScheduleViewActivity.idler = idler;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -229,16 +244,22 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (parsed.getHost().equals("ggt.gaa.st") && parsed.getEncodedFragment() != null) {
-			try {
-				// Boo. Is there really no library to do this? Uri (instead of URL) supports CGI-
-				// style arguments but not when that syntax is used after the #. (Using # instead of
-				// ? to avoid the data hitting the server, should the query fall through.)
-				for (String param : parsed.getEncodedFragment().split("&")) {
+			// Boo. Is there really no library to do this? Uri (instead of URL) supports CGI-
+			// style arguments but not when that syntax is used after the #. (Using # instead of
+			// ? to avoid the data hitting the server, should the query fall through.)
+			for (String param : parsed.getEncodedFragment().split("&")) {
+				try {
 					if (param.startsWith("url=")) {
 						url = URLDecoder.decode(param.substring(4), "utf-8");
 					} else if (param.startsWith("json=")) {
-						String jsonb64 = URLDecoder.decode(param.substring(5), "utf-8");
-						byte[] json = Base64.decode(jsonb64, Base64.URL_SAFE);
+						String jsonb64 = null;
+							jsonb64 = URLDecoder.decode(param.substring(5), "utf-8");
+						byte[] json;
+						try {
+							json = Base64.decode(jsonb64, Base64.URL_SAFE);
+						} catch (IllegalArgumentException e) {
+							json = new byte[0];
+						}
 						url = app.getDb().refreshSingleSchedule(json);
 						if (url == null) {
 							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT).show();
@@ -246,18 +267,18 @@ public class ScheduleViewActivity extends Activity {
 							return;
 						}
 					}
+				} catch (UnsupportedEncodingException e) {
+					// TODO: Once I'm on API 33+ I can use StandardCharsets.UTF_8 here again.
 				}
-				parsed = Uri.parse(url);
-			} catch (UnsupportedEncodingException e) {
-				// IT'S UTF-8 DO YOU NOT SPEAK IT? WHAT YEAR IS IT?
 			}
+			parsed = Uri.parse(url);
 		}
 
 		/* I think reminders come in via this activity (instead of straight to itemview)
 		   because we may have to reload schedule data? */
 		// TODO: Use parsed.
 		if (url.contains("#")) {
-			String parts[] = url.split("#", 2);
+			String[] parts = url.split("#", 2);
 			url = parts[0];
 			showEventId = parts[1];
 		}
@@ -268,9 +289,9 @@ public class ScheduleViewActivity extends Activity {
 		} else {
 			Fetcher.Source fs;
 			if (getIntent().getBooleanExtra("PREFER_ONLINE", false))
-				fs = Fetcher.Source.ONLINE_CACHE;
+				fs = Fetcher.Source.DEFAULT;
 			else
-				fs = Fetcher.Source.CACHE_ONLINE;
+				fs = Fetcher.Source.CACHE;
 
 			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			drawerToggle.setDrawerIndicatorEnabled(false);  // Shows a not functioning back button. :<
@@ -292,13 +313,17 @@ public class ScheduleViewActivity extends Activity {
 		super.onDestroy();
 	}
 
-	/* Progress dialog for schedule/data load. Could consider putting it into Fetcher. */
+	/* Progress dialog for data loads. For historical reasons (b5ffc48634c08d1fbe13285bbee8cf236a940757)
+	 * this is separate from LoadProgressView (used for loading the schedule itself). Maybe clean that up some day.. :-/ */
 	private class LoadProgressDialog extends ProgressDialog implements LoadProgress {
 		private Handler updater;
 		private LoadProgressDoneInterface done;
 
 		public LoadProgressDialog(Context ctx) {
 			super(ctx);
+			if (idler != null) {
+				idler.increment();
+			}
 
 			setMessage(getResources().getString(R.string.loading_schedule));
 			setIndeterminate(true);
@@ -313,6 +338,9 @@ public class ScheduleViewActivity extends Activity {
 					if (msg.what == DONE) {
 						if (done != null) {
 							done.done();
+						}
+						if (idler != null) {
+							idler.decrement();
 						}
 						dismiss();
 					} else if (msg.what > 0 ) {
@@ -354,6 +382,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 	}
 
+	/* This is the one used for loading the schedule, with that "I'm impatient switch to cache" button. */
 	private class LoadProgressView extends FrameLayout implements LoadProgress {
 		ProgressBar prog;
 		private Handler updater;
@@ -362,6 +391,9 @@ public class ScheduleViewActivity extends Activity {
 
 		public LoadProgressView() {
 			super(ScheduleViewActivity.this);
+			if (idler != null) {
+				idler.increment();
+			}
 			inflate(ScheduleViewActivity.this, R.layout.schedule_load_progress, this);
 
 			prog = findViewById(R.id.progressBar);
@@ -373,6 +405,9 @@ public class ScheduleViewActivity extends Activity {
 					if (msg.what == DONE) {
 						if (done != null) {
 							done.done();
+						}
+						if (idler != null) {
+							idler.decrement();
 						}
 					} else if (msg.what == FROM_CACHE) {
 						// Fetcher reports we're already reading from cache anyway.
@@ -454,7 +489,7 @@ public class ScheduleViewActivity extends Activity {
 			}
 		});
 		try {
-			app.fetch(url, Fetcher.Source.CACHE);
+			app.fetch(url, Fetcher.Source.CACHE_ONLY);
 		} catch (IOException e) {
 			// No cached copy available apparently so hide that option.
 			prog.findViewById(R.id.load_cached).setVisibility(View.GONE);
@@ -463,7 +498,7 @@ public class ScheduleViewActivity extends Activity {
 			@Override
 			public void fallBack() {
 				viewerContainer.removeView((View) prog);
-				loadScheduleAsync(url, Fetcher.Source.CACHE);
+				loadScheduleAsync(url, Fetcher.Source.CACHE_ONLY);
 			}
 		});
 		viewerContainer.addView((View) prog, new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -567,11 +602,6 @@ public class ScheduleViewActivity extends Activity {
 			// where the user wants to go now instead of wherever they last were, so overwrite that.
 			sched.getDb().setDay(day);
 		}
-		if (getIntent().hasExtra("SELECTIONS")) {
-			Schedule.Selections sel = (Schedule.Selections) getIntent().getSerializableExtra("SELECTIONS");
-			Dialog dia = new ScheduleUI.ImportSelections(this, sched, sel);
-			dia.show();
-		}
 		if (curView == R.id.tracks && sched.getTracks() == null) {
 			curView = R.id.timetable;
 		}
@@ -595,13 +625,13 @@ public class ScheduleViewActivity extends Activity {
 
 		// Notifications were already scheduled at load time but that was before extra metadata (like c3nav)
 		// was loaded. Kick off a refresh now.
-		if (app.checkReminderPermissions(this, !app.getRemindItems().isEmpty())) {
+		if (Giggity.checkReminderPermissions(this, !app.getRemindItems().isEmpty())) {
 			app.updateRemind();
 		}
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		if (grantResults.length != 1) {
 			return;
 		}
@@ -648,7 +678,11 @@ public class ScheduleViewActivity extends Activity {
 				item.setOnClickListener(new View.OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						openLink(link, true);
+						if (link.getType() != null) {
+							viewLink(link);
+ 						} else {
+							openLink(link);
+						}
 						drawerLayout.closeDrawers();
 					}
 				});
@@ -692,21 +726,32 @@ public class ScheduleViewActivity extends Activity {
 		}
 	}
 
-	/** Open a link object, either just through the browser or by downloading locally and using a
-	 * dedicated viewer.
-	 * @param link Link object - if type is set we'll try to download and use a viewer, unless:
-	 * @param allowDownload is set. This also used to avoid infinite loops in case of bugs.
-	 */
-	private void openLink(final Schedule.Link link, boolean allowDownload) {
-		if (link.getType() != null) {
-			Fetcher f = null;
-			try {
-				f = new Fetcher(app, link.getUrl(), Fetcher.Source.CACHE, link.getType());
-			} catch (IOException e) {
-				// Failure is ~expected so don't make a fuss about it at this stage. :-)
-			}
-			if (f != null) {
-				Uri cached = f.cacheUri();
+
+	/** Open a link object through a browser intent. Meant mostly for website links. */
+	private void openLink(final Schedule.Link link) {
+		Uri uri = Uri.parse(link.getUrl());
+		Intent browser = new Intent(Intent.ACTION_VIEW, uri);
+		browser.addCategory(Intent.CATEGORY_BROWSABLE);
+		startActivity(browser);
+	}
+
+	/** Download (and cache) and view linked content locally instead of opening in a browser. */
+	private boolean viewLink(final Schedule.Link link) {
+		File dir = new File(app.getCacheDir(), "view");  // R.paths.view
+		Matcher m = Pattern.compile("[a-z]+$").matcher(link.getType());
+		String ext = "";
+		if (m.find() && !m.group().isEmpty()) {
+			ext = "." + m.group();
+		}
+		// At least some (old) Samsung phones seem to use filename extension over the MIME type we pass.
+		File fn = new File(dir, FilenameUtils.getBaseName(link.getUrl()) + ext);
+
+		final LoadProgressDialog prog = new LoadProgressDialog(this);
+		prog.setMessage(getResources().getString(R.string.loading_image));
+		prog.setDone(new LoadProgressDoneInterface() {
+			@Override
+			public void done() {
+				Uri cached = FileProvider.getUriForFile(app, "net.gaast.giggity.paths", fn);
 				try {
 					Intent intent = new Intent();
 					intent.setAction(Intent.ACTION_VIEW);
@@ -718,55 +763,54 @@ public class ScheduleViewActivity extends Activity {
 					new AlertDialog.Builder(ScheduleViewActivity.this)
 							.setTitle(R.string.loading_error)
 							.setMessage(getString(R.string.no_viewer_error) + " " +
-									link.getType() + ": " + e.getMessage())
+										link.getType() + ": " + e.getMessage())
+							.setPositiveButton(R.string.open_link_with_browser_instead, new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog, int which) {
+									openLink(link);
+								}
+							})
 							.show();
 				}
-				return;
-			} else if (allowDownload) {
-				final LoadProgressDialog prog = new LoadProgressDialog(this);
-				prog.setMessage(getResources().getString(R.string.loading_image));
-				prog.setDone(new LoadProgressDoneInterface() {
-					@Override
-					public void done() {
-						/* Try again, avoiding infinite-looping on this download just in case. */
-						openLink(link, false);
-					}
-				});
-				prog.show();
-
-				Thread loader = new Thread() {
-					@Override
-					public void run() {
-						try {
-							Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.ONLINE, link.getType());
-							f.setProgressHandler(prog.getUpdater());
-
-							/* Just slurp the entire file into a bogus buffer, what we need is the
-							   file in ExternalCacheDir */
-							byte[] buf = new byte[1024];
-							//noinspection StatementWithEmptyBody
-							while (f.getStream().read(buf) != -1) {}
-							f.keep();
-
-							/* Will trigger the done() above back in the main thread. */
-							prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
-						} catch (IOException e) {
-							e.printStackTrace();
-							prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
-						}
-					}
-				};
-				loader.start();
-				return;
 			}
-		}
+		});
+		prog.show();
 
-		/* If type was not set, or if neither of the two inner ifs were true (do we have the file,
-		   or, are we allowed to download it?), fall back to browser. */
-		Uri uri = Uri.parse(link.getUrl());
-		Intent browser = new Intent(Intent.ACTION_VIEW, uri);
-		browser.addCategory(Intent.CATEGORY_BROWSABLE);
-		startActivity(browser);
+		Thread loader = new Thread() {
+			@Override
+			public void run() {
+				dir.mkdirs();
+				for (File del : dir.listFiles()) {
+					// These are already copies from cache :( at least don't keep stale ones..
+					del.delete();
+				}
+				try {
+					Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.CACHE_1D);
+					f.setProgressHandler(prog.getUpdater());
+
+					try {
+						OutputStream copy = new FileOutputStream(fn);
+						Giggity.copy(f.getStream(), copy);
+						copy.close();
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+					f.keep();
+
+					/* Will trigger the done() above back in the main thread. */
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendEmptyMessage(LoadProgress.DONE);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+					if (prog.getUpdater() != null) {
+						prog.getUpdater().sendMessage(Message.obtain(prog.getUpdater(), 0, e));
+					}
+				}
+			}
+		};
+		loader.start();
+		return true;
 	}
 
 	public void redrawSchedule() {
@@ -943,7 +987,7 @@ public class ScheduleViewActivity extends Activity {
 			return;
 		}
 
-		CharSequence dayList[] = new CharSequence[days.size()];
+		CharSequence[] dayList = new CharSequence[days.size()];
 		for (int i = 0; i < days.size(); i ++) {
 			dayList[i] = dateFormat.format(days.get(i));
 		}
@@ -1001,9 +1045,6 @@ public class ScheduleViewActivity extends Activity {
 				break;
 			case R.id.show_hidden:
 				toggleShowHidden();
-				break;
-			case R.id.export_selections:
-				ScheduleUI.exportSelections(ScheduleViewActivity.this, sched);
 				break;
 			case R.id.home_shortcut:
 				addHomeShortcut();

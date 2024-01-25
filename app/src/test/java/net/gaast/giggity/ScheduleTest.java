@@ -4,9 +4,6 @@ import android.util.Log;
 
 import junit.framework.TestCase;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
 import org.apache.commons.io.IOUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +21,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
 
 @RunWith(Parameterized.class)
 public class ScheduleTest extends TestCase {
@@ -302,5 +302,30 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.setDay(3).getDayOfWeek(), is(DayOfWeek.FRIDAY));
 		assertThat(s.getTents(), hasSize(5));
 		assertThat(s.setDay(-1), nullValue());
+	}
+
+	@Test
+	public void testDebconf23() {
+		// This conference is in a local timezone but has timestamps in UTC, which I had not seen
+		// before and caused a pretty awkward day split (06:00 UTC which is 11:30 local time).
+		load("debconf23.xml");
+		assertThat(s.getDays(), hasSize(8));
+		for (int d = 0; d < 8; ++d) {
+			s.setDay(d);
+			Schedule.Item first = null, last = null;
+			for (Schedule.Line room : s.getTents()) {
+				if (!room.getTitle().equals("Elsewhere")) {
+					continue;
+				}
+				for (Schedule.Item it : room.getItems()) {
+					if (first == null) {
+						first = it;
+					}
+					last = it;
+				}
+			}
+			assertThat(first.getTitle(), equalTo("Breakfast"));
+			assertThat(last.getTitle(), equalTo("Dinner"));
+		}
 	}
 }

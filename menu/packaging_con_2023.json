@@ -1,0 +1,16 @@
+{
+    "version": 2023091101,
+    "url": "https://cfp.packaging-con.org/2023/schedule/export/schedule.xml",
+    "title": "PackagingCon 2023",
+    "start": "2023-10-26",
+    "end": "2023-10-28",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://packaging-con.org/",
+                "title": "Website"
+            }
+        ]
+    }
+}

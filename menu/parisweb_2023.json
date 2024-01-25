@@ -1,0 +1,27 @@
+{
+	"version": 2023081400,
+	"url": "https://www.paris-web.fr/2023/conferences-parisweb-2023.ics",
+	"title": "Paris Web 2023 - Conférences",
+	"start": "2023-09-28",
+	"end": "2023-09-29",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.paris-web.fr/2023/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://inscriptions.paris-web.fr/",
+				"title": "Tarifs et inscription"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Auditorium",
+				"show_name": "Auditorium - Institut Pasteur",
+				"latlon": [48.84207, 2.31022]
+			}
+		]
+	}
+}

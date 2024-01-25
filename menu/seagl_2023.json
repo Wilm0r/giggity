@@ -1,0 +1,22 @@
+{
+	"version": 2023110100,
+	"url": "https://osem.seagl.org/conferences/seagl2023/schedule.xml",
+	"title": "SeaGL 2023",
+	"start": "2023-11-03",
+	"end": "2023-11-04",
+	"timezone": "US/Pacific",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://seagl.org/",
+				"title": "Website"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Room .*",
+				"latlon": [47.65538, -122.30547]
+			}
+		]
+	}
+}
