@@ -1,6 +1,6 @@
 
 {
-	"version": 2023053000,
+	"version": 2024012500,
 	"url": "https://pretalx.linuxtage.at/glt24/schedule.xml",
 	"title": "Grazer Linuxtage 2024",
 	"start": "2024-04-05",
@@ -9,7 +9,8 @@
 	"metadata": {
 		"links": [
 			{ "url": "https://www.linuxtage.at/", "title": "Website" },
-			{ "url": "https://www.linuxtage.at/stay/", "title": "Where to stay in Graz" },
+			{ "url": "https://www.linuxtage.at/stay/", "title": "Where to stay in Graz" },},
+			{ "url": "https://www.linuxtage.at/faq/", "title": "Frequently asked questions" },
 			{ "url": "https://www.linuxtage.at/participate/", "title": "Volunteer" }
 		],
 		"icon": "https://www.linuxtage.at/img/logo/tux_kopf_200.png"
