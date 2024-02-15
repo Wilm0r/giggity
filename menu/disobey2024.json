@@ -1,0 +1,16 @@
+{
+	"version": 2024021513,
+	"url": "https://disobey.fi/2024/inc/schedule.xml",
+	"title": "Disobey 2024",
+	"start": "2024-02-16",
+	"end": "2024-02-17",
+	"timezone": "Europe/Helsinki",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://disobey.fi/2024/",
+				"title": "Website"
+			}
+		]
+	}
+}
