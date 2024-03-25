@@ -34,6 +34,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.AttributesImpl;
+import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.BufferedReader;
@@ -638,7 +639,7 @@ public class Schedule implements Serializable {
 		// example reminders, etc.
 	}
 
-	private class XcalParser implements ContentHandler {
+	private class XcalParser extends DefaultHandler {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> eventData;
 		private HashMap<String,Attributes> eventDataAttr;
@@ -779,30 +780,6 @@ public class Schedule implements Serializable {
 				eventData.put(localName, curString);
 			}
 		}
-
-		@Override
-		public void setDocumentLocator(Locator locator) {}
-
-		@Override
-		public void startDocument() throws SAXException {}
-
-		@Override
-		public void endDocument() throws SAXException {}
-
-		@Override
-		public void startPrefixMapping(String s, String s1) throws SAXException {}
-
-		@Override
-		public void endPrefixMapping(String s) throws SAXException {}
-
-		@Override
-		public void ignorableWhitespace(char[] chars, int i, int i1) throws SAXException {}
-
-		@Override
-		public void processingInstruction(String s, String s1) throws SAXException {}
-
-		@Override
-		public void skippedEntity(String s) throws SAXException {}
 	}
 
 	/* Pentabarf, the old conference organisation tool has a pretty excellent native XML format
@@ -810,7 +787,7 @@ public class Schedule implements Serializable {
 	   It's not really maintained anymore though, a recent fork called Frab is more maintained and
 	   Giggity can read its XML exports just as well https://github.com/frab/frab
 	 */
-	private class PentabarfParser implements ContentHandler {
+	private class PentabarfParser extends DefaultHandler {
 		private Schedule.Line curTent;
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> propMap;
@@ -1006,30 +983,6 @@ public class Schedule implements Serializable {
 				propMap.put(localName, curString);
 			}
 		}
-
-		@Override
-		public void setDocumentLocator(Locator locator) {}
-
-		@Override
-		public void startDocument() throws SAXException {}
-
-		@Override
-		public void endDocument() throws SAXException {}
-
-		@Override
-		public void startPrefixMapping(String s, String s1) throws SAXException {}
-
-		@Override
-		public void endPrefixMapping(String s) throws SAXException {}
-
-		@Override
-		public void ignorableWhitespace(char[] chars, int i, int i1) throws SAXException {}
-
-		@Override
-		public void processingInstruction(String s, String s1) throws SAXException {}
-
-		@Override
-		public void skippedEntity(String s) throws SAXException {}
 	}
 
 	public enum RoomStatus {
