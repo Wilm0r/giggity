@@ -1,0 +1,21 @@
+{
+	"version": 2024041400,
+	"url": "https://programme.passageenseine.fr/index.ics",
+	"title": "Pas Sage en Seine 2024",
+	"start": "2024-05-30",
+	"end": "2024-06-02",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://mamot.fr/system/accounts/avatars/000/212/345/original/bf5fc3bbd9175137.png",
+		"links": [
+			{
+				"url": "https://passageenseine.fr/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://programme.passageenseine.fr/",
+				"title": "Programme web"
+			}
+		]
+	}
+}
