@@ -1,0 +1,16 @@
+{
+	"version": 2024041300,
+	"url": "https://pretalx.luga.de/lit-2024/schedule/export/schedule.xml",
+	"title": "Augsburger Linux-Infotag 2024",
+	"start": "2024-04-20",
+	"end": "2024-04-20",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.luga.de/static/LIT-2024/",
+				"title": "Website"
+			}
+		]
+	}
+}
