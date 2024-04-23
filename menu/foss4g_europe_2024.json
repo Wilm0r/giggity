@@ -1,0 +1,16 @@
+{
+	"version": 2024040400,
+	"url": "https://talks.osgeo.org/foss4g-europe-2024/schedule/export/schedule.xml",
+	"title": "FOSS4G Europe 2024",
+	"start": "2024-07-03",
+	"end": "2024-07-05",
+	"timezone": "Europe/Tallinn",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2024.europe.foss4g.org/",
+				"title": "Website"
+			}
+		]
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"version": 2024030700,
+	"url": "https://pretalx.com/fossgis2024/schedule/export/schedule.xml",
+	"title": "FOSSGIS-Konferenz 2024",
+	"start": "2024-03-20",
+	"end": "2024-03-23",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.fossgis-konferenz.de/2024/",
+				"title": "Website"
+			}
+		]
+	}
+}
