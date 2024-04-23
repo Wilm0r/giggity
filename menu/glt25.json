@@ -1,0 +1,33 @@
+
+{
+	"version": 2024042300,
+	"url": "https://pretalx.linuxtage.at/glt25/schedule.xml",
+	"title": "Grazer Linuxtage 2025",
+	"start": "2025-04-25",
+	"end": "2025-04-26",
+	"timezone": "Europe/Vienna",
+	"metadata": {
+		"links": [
+			{ "url": "https://www.linuxtage.at/", "title": "Website" },
+			{ "url": "https://www.linuxtage.at/stay/", "title": "Where to stay in Graz" },
+			{ "url": "https://www.linuxtage.at/faq/", "title": "Frequently asked questions" },
+			{ "url": "https://www.linuxtage.at/participate/", "title": "Volunteer" }
+		],
+		"icon": "https://www.linuxtage.at/img/logo/tux_kopf_200.png"
+	},
+	"rooms": [
+		{ "name": "HS i1", "latlon": [47.05821, 15.4591] },
+		{ "name": "HS i2", "latlon": [47.05904, 15.45969] },
+		{ "name": "HS i3", "latlon": [47.05821, 15.46083] },
+		{ "name": "HS i4", "latlon": [47.05813, 15.46068] },
+		{ "name": "HS i5", "latlon": [47.05813, 15.46068] },
+		{ "name": "HS i6", "latlon": [47.05821, 15.46083] },
+		{ "name": "HS i7", "latlon": [47.0581, 15.46081] },
+		{ "name": "HS i11", "latlon": [47.0587, 15.45914] },
+		{ "name": "HS i12", "latlon": [47.0587, 15.45914] },
+		{ "name": "HS i13", "latlon": [47.0587, 15.45914] },
+		{ "name": "HF01092", "latlon": [47.05899, 15.45968] },
+		{ "name": "SZ01070", "latlon": [47.05864, 15.4598] },
+		{ "name": "Seminarraum ISW, MFEG210", "latlon": [47.05791, 15.45987] }
+	]
+}
