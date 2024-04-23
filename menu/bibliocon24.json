@@ -1,0 +1,20 @@
+{
+	"version": 2024030401,
+	"url": "https://cloud.bib.uni-mannheim.de/s/3r6Ziz4tsn2oN9g/download/bibliocon24.xml",
+	"title": "BiblioCon 2024",
+	"start": "2024-06-04",
+	"end": "2024-06-07",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2024.bibliocon.de/",
+				"title": "Webseite"
+			},
+			{
+				"url": "https://2024.bibliocon.de/informationen-von-a-z/",
+				"title": "Informationen von A-Z"
+			}
+		]
+	}
+}

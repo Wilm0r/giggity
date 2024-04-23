@@ -1,0 +1,20 @@
+{
+	"version": 2024041900,
+	"url": "https://pretalx.jdll.org/jdll2024/schedule.xml",
+	"title": "Journées du Logiciel Libre 2024",
+	"start": "2024-05-25",
+	"end": "2024-05-26",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.jdll.org/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://www.jdll.org/contact-and-informations",
+				"title": "Informations pratiques"
+			}
+		]
+	}
+}
