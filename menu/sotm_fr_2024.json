@@ -1,0 +1,24 @@
+{
+    "version": 2024042700,
+    "url": "https://pretalx.com/sotm-fr-2024/schedule.xml",
+    "title": "State of the Map France 2024",
+    "start": "2024-06-28",
+    "end": "2024-06-30",
+    "timezone": "Europe/Paris",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://sotm2024.openstreetmap.fr/",
+                "title": "Site web"
+            },
+            {
+                "url": "https://forum.openstreetmap.fr/",
+                "title": "Forum"
+            },
+            {
+                "url": "https://peertube.openstreetmap.fr/c/sotm_fr_2024/videos",
+                "title": "Replays"
+            }
+        ]
+    }
+}
