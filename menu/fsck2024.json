@@ -1,0 +1,23 @@
+
+{
+	"version": 2024042100,
+	"url": "https://cfp.ctbk.de/fsck-2024/schedule.xml",
+	"title": "FSCK 2024",
+	"start": "2024-05-03",
+	"end": "2024-05-05",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{ "url": "https://events.ctbk.de/fsck-2024/", "title": "Website" },
+			{ "url": "https://events.ctbk.de/fsck-2024/hotels", "title": "Where to stay in Backnang" },
+			{ "url": "https://engel.ctbk.de/login", "title": "Volunteer" }
+		],
+		"icon": "https://events.ctbk.de/fsck-2024/_media/favicon.ico"
+	},
+	"rooms": [
+		{ "name": "Cube", "latlon": [47.05821, 15.4591] },
+		{ "name": "Theater 4", "latlon": [47.05904, 15.45969] },
+		{ "name": "Theater 5", "latlon": [47.05821, 15.46083] },
+		{ "name": "Hallway", "latlon": [47.05813, 15.46068] }
+	]
+}
