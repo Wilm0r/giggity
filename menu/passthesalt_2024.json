@@ -1,0 +1,34 @@
+{
+	"version": 2024050200,
+	"url": "https://cfp.pass-the-salt.org/pts2024/schedule/export/schedule.xml",
+	"title": "Pass the SALT 2024",
+	"start": "2024-07-03",
+	"end": "2024-07-05",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2024.pass-the-salt.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2024.pass-the-salt.org/practical/",
+				"title": "Practical & safety"
+			},
+			{
+				"url": "https://2024.pass-the-salt.org/code-of-conduct/",
+				"title": "Code of Conduct"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Amphitheater",
+				"latlon": [50.60776, 3.13637]
+			},
+			{
+				"name": "Workshop room",
+				"latlon": [50.60776, 3.13637]
+			}
+		]
+	}
+}
