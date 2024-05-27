@@ -1,0 +1,20 @@
+{
+  "version": 2024052700,
+  "url": "https://cfp.gulas.ch/gpn22/schedule/export/schedule.xml",
+  "title": "22. Gulaschprogrammiernacht",
+  "start": "2024-05-30",
+  "end": "2024-06-02",
+  "timezone": "Europe/Berlin",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://entropia.de/GPN22",
+        "title": "Website"
+      },
+      {
+        "url": "https://entropia.de/GPN22:FAQ",
+        "title": "FAQ"
+      }
+    ]
+  }
+}
