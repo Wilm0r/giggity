@@ -1,0 +1,24 @@
+{
+	"version": 2024052701,
+	"url": "https://submit.geopython.net/geopython-2024/schedule/export/schedule.xml",
+	"title": "GeoPython 2024",
+	"start": "2024-05-27",
+	"end": "2024-05-29",
+	"timezone": "Europe/Zurich",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2024.geopython.net/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2024.geopython.net/coc",
+				"title": "Code of conduct"
+			},
+			{
+				"url": "https://2024.geopython.net/tickets",
+				"title": "Tickets"
+			}
+		]
+	}
+}
