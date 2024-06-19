@@ -32,7 +32,7 @@
 			},
 			{
 				"name": "Room .*|Destination.*|GEOCAT.*|LAStools.*|QField.*|Vanemuise 46",
-        "show_name": "Vanemuise 46",
+				"show_name": "Vanemuise 46",
 				"latlon": [58.37347, 26.71616]
 			},
 			{
