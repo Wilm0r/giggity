@@ -1,0 +1,28 @@
+{
+	"version": 2024071016,
+	"url": "https://bornhack.dk/bornhack-2024/program/frab.xml",
+	"title": "BornHack 2024",
+	"start": "2024-07-17",
+	"end": "2024-07-23",
+	"timezone": "Europe/Copenhagen",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://bornhack.dk/bornhack-2024/",
+				"title": "Website"
+			},
+			{
+			"url": "https://bornhack.dk/bornhack-2024/info/",
+				"title": "Info"
+			},
+			{
+				"url": "https://bornhack.dk/news/",
+				"title": "News"
+			},
+			{
+				"url": "https://bornhack.dk/bornhack-2024/facilities/",
+				"title": "Facilities"
+			}
+		]
+	}
+}
