@@ -1,0 +1,29 @@
+{
+    "version": 2024071701,
+    "url": "https://debconf24.debconf.org/schedule/pentabarf.xml",
+    "title": "DebConf 24",
+    "start": "2024-07-28",
+    "end": "2024-08-04",
+    "timezone": "Asia/Seoul",
+    "metadata": {
+        "icon": "https://debconf24.debconf.org/static/img/favicon/favicon-128.png",
+        "links": [
+            {
+                "url": "https://debconf24.debconf.org/",
+                "title": "Website"
+            },
+            {
+                "title": "Wiki",
+                "url": "https://wiki.debian.org/DebConf/24"
+            },
+            {
+                "url": "https://debconf24.debconf.org/about/coc/",
+                "title": "Code of Conduct"
+            },
+            {
+                "url": "https://debconf24.debconf.org/about/debcamp/",
+                "title": "DebCamp"
+            }
+        ]
+    }
+}
