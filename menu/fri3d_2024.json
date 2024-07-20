@@ -1,0 +1,16 @@
+{
+	"version": 2024071802,
+	"url": "https://content.fri3d.be/fri3dcamp2024/schedule/export/schedule.xml",
+	"title": "Fri3d Camp 2024",
+	"start": "2024-08-16",
+	"end": "2024-08-18",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://fri3d.be/",
+				"title": "Website"
+			}
+		]
+	}
+}
