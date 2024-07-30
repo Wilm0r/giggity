@@ -1,0 +1,21 @@
+{
+    "title": "Håck ma's Castle",
+    "metadata": {
+        "links": [
+            {
+                "title": "Website",
+                "url": "https://hack-mas.at/"
+            },
+            {
+                "title": "Openki",
+                "url": "https://sessions.hack-mas.at/"
+            }
+        ]
+    },
+    "url": "https://sessions.hack-mas.at/schedule.xml",
+    "timezone": "Europe/Vienna",
+    "start": "2024-08-29",
+    "end": "2019-08-31",
+    "refresh_interval": 1800,
+    "version": 20240730
+}
