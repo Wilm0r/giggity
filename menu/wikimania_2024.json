@@ -1,0 +1,48 @@
+{
+	"version": 2023080101,
+	"url": "https://wikimania.eventyay.com/2024/schedule/export/schedule.xml",
+	"title": "Wikimania 2024",
+	"start": "2024-08-07",
+	"end": "2024-08-10",
+	"timezone": "Europe/Warsaw",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2024:Wikimania",
+				"title": "Website"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Venue",
+				"title": "Venue"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Meetups",
+				"title": "Meetups"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Trust_and_Safety",
+				"title": "Trust and Safety"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Program/Hackathon",
+				"title": "Hackathon"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Program/WikiWomen_Summit",
+				"title": "WikiWomen Summit"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Program/Common(s)_cause",
+				"title": "Common(s) cause"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Program/GLAM_Global_meetup",
+				"title": "GLAM Global meetup"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Program/Digital_Safety_Clinic",
+				"title": "Digital Safety Clinic"
+			}
+		]
+	}
+}
