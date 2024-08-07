@@ -1,0 +1,16 @@
+{
+	"version": 2024080701,
+	"url": "https://wikimania.eventyay.com/2024/schedule/export/schedule.xml",
+	"title": "Wikimania 2024",
+	"start": "2024-08-07",
+	"end": "2024-08-10",
+	"timezone": "Europe/Warsaw",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2024:Wikimania",
+				"title": "Website"
+			}
+		]
+	}
+}
