@@ -1,0 +1,28 @@
+{
+	"version": 2024080700,
+	"url": "https://wikimania.eventyay.com/2024/schedule/export/schedule.xml",
+	"title": "Wikimania 2024",
+	"start": "2024-08-07",
+	"end": "2024-08-10",
+	"timezone": "Europe/Warsaw",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/2024:Wikimania",
+				"title": "Website"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Venue",
+				"title": "Venue"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Meetups",
+				"title": "Meetups"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2024:Trust_and_Safety",
+				"title": "Trust and Safety"
+			}
+	        ]
+	}
+}
