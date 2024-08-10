@@ -1,0 +1,25 @@
+{
+    "version": 2024081000,
+    "url": "https://programm.froscon.org/2024/schedule.xml",
+    "title": "FrOSCon 2024",
+    "start": "2024-08-17",
+    "end": "2024-08-18",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "icon": "https://froscon.org/icons/apple-touch-icon.png",
+        "links": [
+            {
+                "url": "https://froscon.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://froscon.org/en/program/project-rooms/",
+                "title": "Project rooms"
+            },
+            {
+                "url": "https://media.ccc.de/b/conferences/froscon",
+                "title": "Recordings"
+            }
+        ]
+    }
+}
