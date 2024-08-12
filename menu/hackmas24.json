@@ -16,6 +16,6 @@
     "timezone": "Europe/Vienna",
     "start": "2024-08-29",
     "end": "2024-09-01",
-    "refresh_interval": 1800,
+    "refresh_interval": 86400,
     "version": 2024081200
 }
