@@ -12,7 +12,7 @@
             }
         ]
     },
-    "url": "https://sessions.hack-mas.at/schedule.xml",
+    "url": "https://sessions.hack-mas.at/api/0/xml/schedule?after=2024-08-28&limit=999",
     "timezone": "Europe/Vienna",
     "start": "2024-08-29",
     "end": "2024-09-01",
