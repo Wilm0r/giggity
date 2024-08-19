@@ -1,0 +1,28 @@
+{
+	"version": 2024082001,
+	"title": "Kielux Linux Presentation Day",
+	"url": "https://kielux.de/content/calendars/LPD24.ics",
+	"start": "2024-09-19",
+	"end": "2023-09-19",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+		"links": [
+			{
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"url": "https://kielux.de/programm/LPD23",
+				"title": "Schedule"
+			}
+		],
+		"rooms": [
+			{
+				"name": "R114",
+				"latlon": [54.33510, 10.11944]
+			}
+		]
+	}
+}
