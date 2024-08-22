@@ -1,0 +1,17 @@
+{
+        "version": 2024082201,
+        "url": "https://sotm.osmz.ru/sotm2024.xml",
+        "title": "State of the Map 2024",
+        "start": "2024-09-06",
+        "end": "2024-09-08",
+        "timezone": "Africa/Nairobi",
+        "metadata": {
+                "icon": "https://textual.ru/sotm2024_icon.png",
+                "links": [
+                        {
+                                "url": "https://2024.stateofthemap.org/",
+                                "title": "Website"
+                        }
+                ]
+        }
+}

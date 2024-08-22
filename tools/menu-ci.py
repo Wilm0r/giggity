@@ -158,7 +158,7 @@ class HTTP():
 					(u.get_redirect_location(), diff_protocol))
 			elif u.status != 200:
 				raise FetchError("HTTP %d %s" % (u.status, u.reason))
-			self.hcache[url] = {k.lower(): v for k, v in u.getheaders().iteritems()}
+			self.hcache[url] = {k.lower(): v for k, v in u.headers.iteritems()}
 			self.hcache[url]["_ts"] = time.time()
 			if not img:
 				return u.read()
