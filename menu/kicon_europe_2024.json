@@ -1,0 +1,16 @@
+{
+	"title": "KiCon Europe 2024",
+	"url": "https://pretalx.kicad.org/kicon-europe-2024/schedule/export/schedule.xml",
+	"start": "2024-09-19",
+	"end": "2024-09-20",
+	"version": 2024083001,
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"title": "Website",
+				"url": "https://kicon.kicad.org/europe2024/"
+			}
+		]
+	}
+}
