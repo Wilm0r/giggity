@@ -1,0 +1,16 @@
+{
+  "version": 2024090300,
+  "url": "https://fossunited.org/files/calendar.ics",
+  "title": "IndiaFOSS 2024",
+  "start": "2024-09-07",
+  "end": "2024-09-08",
+  "timezone": "Asia/Kolkata",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://fossunited.org/indiafoss/2024",
+        "title": "Website"
+      }
+    ]
+  }
+}
