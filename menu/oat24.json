@@ -1,5 +1,5 @@
 {
-	"version": 2024072201,
+	"version": 2024090701,
 	"url": "https://cloud.bib.uni-mannheim.de/s/FHRYTcQpBizLAHx/download/oat24.xml",
 	"title": "Open-Access-Tage 2024",
 	"start": "2024-09-10",
@@ -10,6 +10,15 @@
 			{
 				"url": "https://open-access-tage.de/open-access-tage-2024-koeln",
 				"title": "Website"
+			},
+			{
+				"url": "https://open-access-tage.de/fileadmin/oat/oat24/Lageplan_OAT_Koeln.pdf",
+				"title": "Lageplan",
+				"type": "application/pdf"
+			},
+			{
+				"url": "https://open-access-tage.de/open-access-tage-2024-koeln/koeln/faq",
+				"title": "FAQ"
 			},
 			{
 				"url": "https://zenodo.org/communities/oat24/records",
