@@ -1,0 +1,20 @@
+{
+  "version": 2024091299,
+  "url": "https://ics.moca.camp/schedule.ics",
+  "title": "MOCA - Metro Olografix Camp",
+  "start": "2024-09-13",
+  "end": "2024-09-15",
+  "timezone": "Europe/Rome",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://moca.camp",
+        "title": "Website"
+      },
+      {
+         "url": "https://www.olografix.org",
+         "title": "The association behind the event"
+      }
+    ]
+  }
+}
