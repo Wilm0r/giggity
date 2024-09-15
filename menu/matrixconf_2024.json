@@ -1,0 +1,25 @@
+{
+  "version": 2024091600,
+  "url": "https://cfp.matrix.org/matrixconf2024/schedule/export/schedule.xml",
+  "title": "Matrix Conference 2024",
+  "start": "2024-09-20",
+  "end": "2024-09-22",
+  "timezone": "Europe/Berlin",
+  "metadata": {
+    "icon": "https://2024.matrix.org/assets/matrix-conference-opengraph.png",
+    "links": [
+      {
+        "url": "https://2024.matrix.org",
+        "title": "Website"
+      },
+      {
+        "url": "https://2024.matrix.org/attend/#getting-there",
+        "title": "Venue and Travel"
+      },
+      {
+        "url": "https://2024.matrix.org/attend/#health-and-safety",
+        "title": "Health and Safety"
+      }
+    ]
+  }
+}
