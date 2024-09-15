@@ -77,6 +77,10 @@ It is usually in the form: `https://<CFPHOST>/<CONFERENCE>/schedule/export/sched
 
 It usually is in the form: `https://<CFPHOST>/conferences/<CONFERENCE>/schedule.xml`
 
+### Indico
+
+It usually is in the form: `https://<CFPHOST>/event/<CONFERENCE>/event.ics?detail=contributions`
+
 ## Adding your event to the default menu
 
 To do this, construct a JSON file formatted like this in the [menu directory](menu):
