@@ -1,0 +1,20 @@
+{
+	"version": 2024091701,
+	"url": "https://www.pycon.fr/2024/fr/calendar.ics",
+	"title": "PyConFR 2024",
+	"start": "2024-10-31",
+	"end": "2024-11-03",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.pycon.fr/2024/fr/",
+				"title": "Site Web"
+			},
+			{
+				"title": "Inscription",
+				"url": "https://www.pycon.fr/2024/fr/schedule.html#register"
+			}
+		]
+	}
+}
