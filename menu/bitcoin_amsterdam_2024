@@ -1,0 +1,23 @@
+{
+	"version": 2024100101,
+	"url": "https://dev.bitcoinwiki.nl/btcams2024/processed/latest_penta_v0.xml",
+	"title": "Bitcoin Amsterdam 2024",
+	"start": "2024-10-09",
+	"end": "2024-10-10",
+	"timezone": "Europe/Brussels",
+	"refresh_interval": 1800,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://b.tc/conference/amsterdam/",
+				"title": "Website"
+			},
+			{
+				"url": "https://dev.bitcoinwiki.nl/btcams2023/processed/map.jpg",
+				"title": "Map",
+				"type": "image/jpeg"
+			}		
+		],
+		"icon": "https://dev.bitcoinwiki.nl/btcams2023/processed/btcams.png"
+	}
+}
