@@ -1,0 +1,29 @@
+{
+	"version": 2024100300,
+	"url": "https://talks.mrmcd.net/2024/schedule/export/schedule.xml",
+	"title": "MRMCD 2024",
+	"start": "2024-10-03",
+	"end": "2024-10-06",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"icon": "https://wiki.mrmcd.net/w/images/4/48/Mrmcd24_avatar.png",
+		"links": [
+			{
+				"url": "https://2024.mrmcd.net",
+				"title": "Website"
+			},
+			{
+				"url": "https://tickets.mrmcd.net/mrmcd/2024/",
+				"title": "Tickets"
+			},
+			{
+				"url": "https://engel.mrmcd.net",
+				"title": "Engelsystem / Matrosensystem"
+			},
+			{
+				"url": "https://wiki.mrmcd.net/wiki",
+				"title": "Wiki"
+			}
+		]
+	}
+}
