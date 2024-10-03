@@ -17,11 +17,11 @@
 				"title": "Tickets"
 			},
 			{
-				"url": "https://engel.mrmcd.net",
+				"url": "https://engel.mrmcd.net/login",
 				"title": "Engelsystem / Matrosensystem"
 			},
 			{
-				"url": "https://wiki.mrmcd.net/wiki",
+				"url": "https://wiki.mrmcd.net/wiki/Main_Page",
 				"title": "Wiki"
 			}
 		]
