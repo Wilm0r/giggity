@@ -1,0 +1,16 @@
+{
+	"version": 2024100401,
+	"url": "https://pretalx.com/pycones-2024/schedule/export/schedule.xml",
+	"title": "PyConES 2024",
+	"start": "2022-10-04",
+	"end": "2022-10-06",
+	"timezone": "Europe/Madrid",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2024.es.pycon.org/",
+				"title": "Website"
+			}
+		]
+	}
+}
