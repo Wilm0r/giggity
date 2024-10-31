@@ -5,6 +5,7 @@
 	"start": "2024-11-02",
 	"end": "2024-11-08",
 	"timezone": "Europe/Dublin",
+	"refresh_interval": 1800,
 	"metadata": {
 		"links": [
 			{
