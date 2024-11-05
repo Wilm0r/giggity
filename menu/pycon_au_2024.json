@@ -1,42 +1,34 @@
 {
-	"version": 2023080901,
-	"url": "https://pretalx.com/pyconau-2023/schedule/export/schedule.xml",
-	"title": "PyCon AU 2023",
-	"start": "2023-08-18",
-	"end": "2023-08-20",
-	"timezone": "Australia/Adelaide",
+	"version": 2024110501,
+	"url": "https://pretalx.com/pycon-au-2024/schedule/export/schedule.xml",
+	"title": "PyCon AU 2024",
+	"start": "2024-11-21",
+	"end": "2024-11-26",
+	"timezone": "Australia/Melbourne",
 	"metadata": {
 		"links": [
 			{
-				"url": "https://2023.pycon.org.au/",
+				"url": "https://2024.pycon.org.au/",
 				"title": "Website"
 			},
 			{
-				"url": "https://2023.pycon.org.au/about/",
+				"url": "https://2024.pycon.org.au/about/",
 				"title": "About"
 			},
 			{
-				"url": "https://2023.pycon.org.au/about/culture/",
+				"url": "https://2024.pycon.org.au/about/culture/",
 				"title": "Culture"
 			},
 			{
-				"url": "https://2023.pycon.org.au/attend/getting-around/",
+				"url": "https://2024.pycon.org.au/attend/travel/",
 				"title": "Getting around"
 			},
 			{
-				"url": "https://2023.pycon.org.au/attend/food/",
-				"title": "Food"
-			},
-			{
-				"url": "https://2023.pycon.org.au/attend/bof/",
-				"title": "Birds of a Feather"
-			},
-			{
-				"url": "https://2023.pycon.org.au/attend/volunteer/",
+				"url": "https://2024.pycon.org.au/attend/volunteer/",
 				"title": "Volunteer"
 			},
 			{
-				"url": "https://2023.pycon.org.au/safety/",
+				"url": "https://2024.pycon.org.au/safety/",
 				"title": "Safety"
 			}
 		]
