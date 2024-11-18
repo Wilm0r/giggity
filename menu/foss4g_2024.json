@@ -1,0 +1,25 @@
+{
+	"version": 2024111500,
+	"url": "https://sotm.osmz.ru/f2024.xml",
+	"title": "FOSS4G 2024",
+	"start": "2024-12-02",
+	"end": "2024-12-06",
+	"timezone": "America/Belem",
+	"metadata": {
+		"icon": "https://textual.ru/foss4g_2024.png",
+		"links": [
+			{
+				"url": "https://2024.foss4g.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2024.foss4g.org/en/map/",
+				"title": "Map"
+			},
+			{
+				"url": "https://2024.foss4g.org/en/code-of-conduct/",
+				"title": "Code of Conduct"
+			}
+		]
+	}
+}
