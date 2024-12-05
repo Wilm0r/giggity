@@ -1,0 +1,24 @@
+{
+	"start": "2025-01-20",
+	"end": "2025-01-22",
+	"version": 2024120501,
+	"url": "https://2025.everythingopen.au/schedule/conference.ics",
+	"title": "Everything Open 2025",
+	"metadata": {
+		"icon": "https://2025.everythingopen.au/media/img/card/eo2025-badge.06cfdbb4.png",
+		"links": [
+			{
+				"url": "https://2025.everythingopen.au",
+				"title": "Website"
+			},
+			{
+				"url": "https://2025.everythingopen.au/about/location/",
+				"title": "Location"
+			},
+			{
+				"url": "https://2025.everythingopen.au/schedule/",
+				"title": "Online schedule"
+			}
+		]
+	}
+}
