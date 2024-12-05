@@ -4,6 +4,7 @@
 	"version": 2024120501,
 	"url": "https://2025.everythingopen.au/schedule/conference.ics",
 	"title": "Everything Open 2025",
+	"timezone": "Australia/Adelaide",
 	"metadata": {
 		"icon": "https://2025.everythingopen.au/media/img/card/eo2025-badge.06cfdbb4.png",
 		"links": [
