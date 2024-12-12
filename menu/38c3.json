@@ -20,5 +20,6 @@
 	"start": "2024-12-27",
 	"end": "2024-12-30",
 	"timezone": "Europe/Berlin",
-	"version": 2024121200
+	"refresh_interval": 1800,
+	"version": 2024121201
 }
