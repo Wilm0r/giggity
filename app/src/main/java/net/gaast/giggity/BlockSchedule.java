@@ -264,6 +264,10 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		TentHeight *= scaleY;
 		HourWidth = Math.max(60, Math.min(HourWidth, 1000));
 		TentHeight = Math.max(30, Math.min(TentHeight, 400));
+		if (HourWidth / TentHeight < 2) {
+			HourWidth = TentHeight * 2;
+		}
+		Log.d("ratio:", "" + ((float) HourWidth / (float) TentHeight));
 
 		draw();
 		

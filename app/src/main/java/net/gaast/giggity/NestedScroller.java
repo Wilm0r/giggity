@@ -131,12 +131,14 @@ public class NestedScroller extends HorizontalScrollView {
 					scaleX = Math.abs(x0 - x1) / distStartX;
 					scaleY = Math.abs(y0 - y1) / distStartY;
 
-					/* Crappy multitouch support can result in really high/low numbers.
-					 * ×10 seems unlikely already IMHO, so just don't resize in that axis. */
-					if (scaleX > 10 || scaleX < 0.1)
-						scaleX = 1;
-					if (scaleY > 10 || scaleY < 0.1)
-						scaleY = 1;
+					// https://github.com/Wilm0r/giggity/issues/370
+					// Previously this code would reset scale factors to 1 if they were <.1 or >10,
+					// but probably this approach here is better. It'll take more dedication now to
+					// sabotage one's BlockSchedule.
+					// BlockSchedule itself will additionally prevent an overly narrow HW/TH ratio
+					// in the onResizeEvent handler.
+					scaleX = (float) Math.max(.4, Math.min(4, scaleX));
+					scaleY = (float) Math.max(.4, Math.min(4, scaleY));
 
 					try {
 						c.setScaleX(scaleX);
@@ -248,5 +250,6 @@ public class NestedScroller extends HorizontalScrollView {
 	public interface Listener {
 		void onScrollEvent(NestedScroller src, int scrollX, int scrollY);
 		void onResizeEvent(NestedScroller src, float scaleX, float scaleY, int scrollX, int scrollY);
+
 	}
 }
