@@ -34,7 +34,13 @@ public class Reminder {
 
 		Log.d("reminder", "onCreate");
 		IntentFilter filter = new IntentFilter(NotificationPoster.ACTION);
-		app.registerReceiver(poster, filter);
+		if (android.os.Build.VERSION.SDK_INT >= 33) {
+			// Not documented very clearly, but alarm-delivered intents count as external, so not
+			// exporting breaks notifications!
+			app.registerReceiver(poster, filter, Context.RECEIVER_EXPORTED);
+		} else {
+			app.registerReceiver(poster, filter);
+		}
 	}
 
 	public static class NotificationPoster extends BroadcastReceiver {
