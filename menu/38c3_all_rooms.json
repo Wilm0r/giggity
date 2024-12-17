@@ -2,6 +2,7 @@
 	"title": "38C3 - all rooms",
 	"metadata": {
 		"links": [
+            {
 				"url": "https://events.ccc.de/congress/2024/infos/startpage.html",
 				"title": "Website"
 			},
@@ -20,5 +21,5 @@
 	"end": "2024-12-30",
 	"timezone": "Europe/Berlin",
 	"refresh_interval": 1800,
-	"version": 2024121701
+	"version": 2024121702
 }
