@@ -1,8 +1,7 @@
 {
-	"title": "38C3",
+	"title": "38C3 - all rooms",
 	"metadata": {
 		"links": [
-			{
 				"url": "https://events.ccc.de/congress/2024/infos/startpage.html",
 				"title": "Website"
 			},
@@ -16,10 +15,10 @@
 			}
 		]
 	},
-	"url": "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.xml",
+	"url": "https://api.events.ccc.de/congress/2024/schedule.xml",
 	"start": "2024-12-27",
 	"end": "2024-12-30",
 	"timezone": "Europe/Berlin",
 	"refresh_interval": 1800,
-	"version": 2024121201
+	"version": 2024121701
 }
