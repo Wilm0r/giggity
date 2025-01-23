@@ -1,0 +1,16 @@
+{
+	"version": 2025012300,
+	"url": "https://pretalx.com/fossgis2025/schedule/export/schedule.xml",
+	"title": "FOSSGIS-Konferenz 2025",
+	"start": "2025-03-26",
+	"end": "2025-03-29",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.fossgis-konferenz.de/2025/",
+				"title": "Website"
+			}
+		]
+	}
+}
