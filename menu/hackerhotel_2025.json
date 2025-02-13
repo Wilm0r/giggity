@@ -1,0 +1,20 @@
+{
+	"version": 2025021300,
+	"url": "https://pretalx.hackerhotel.nl/2025/schedule.xml",
+	"title": "HackerHotel 2025",
+	"start": "2024-02-14",
+	"end": "2024-02-16",
+	"timezone": "Europe/Amsterdam",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackerhotel.nl/",
+				"title": "Website"
+			},
+			{
+				"url": "https://mapcomplete.org/indoors?z=18.9&lat=52.220624480776905&lon=5.721273808942783&language=en",
+				"title": "Map"
+			}
+		]
+	}
+}
