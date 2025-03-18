@@ -10,7 +10,7 @@
 			{ "url": "https://www.linuxtage.at/", "title": "Website" },
 			{ "url": "https://www.linuxtage.at/stay/", "title": "Where to stay in Graz" },
 			{ "url": "https://www.linuxtage.at/faq/", "title": "Frequently asked questions" },
-			{ "url": "https://www.linuxtage.at/participate/", "title": "Volunteer" }
+			{ "url": "https://www.linuxtage.at/help/", "title": "Volunteer" }
 		],
 		"icon": "https://www.linuxtage.at/img/logo/tux_kopf_200.png"
 	},
