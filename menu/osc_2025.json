@@ -1,0 +1,16 @@
+{
+  "version": 2025031201,
+  "url": "https://events.opensuse.org/conferences/oSC25/schedule.xml",
+  "title": "openSUSE Conference 2025",
+  "start": "2025-06-26",
+  "end": "2025-06-28",
+  "timezone": "Europe/Berlin",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://events.opensuse.org/conferences/oSC25/",
+        "title": "Website"
+      }
+    ]
+  }
+}
