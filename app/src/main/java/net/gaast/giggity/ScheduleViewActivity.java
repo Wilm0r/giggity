@@ -34,8 +34,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Insets;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,6 +52,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -57,6 +60,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -68,7 +72,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
@@ -78,6 +81,7 @@ import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
@@ -124,6 +128,7 @@ public class ScheduleViewActivity extends Activity {
 	private RelativeLayout viewerContainer;
 	private EventDialogPager eventDialogView;
 	private DayButtonsHider days;
+	private Insets viewerPadding = null;
 
 	private SharedPreferences pref;
 
@@ -296,6 +301,29 @@ public class ScheduleViewActivity extends Activity {
 			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			drawerToggle.setDrawerIndicatorEnabled(false);  // Shows a not functioning back button. :<
 			loadScheduleAsync(url, fs);
+		}
+
+		if (Build.VERSION.SDK_INT >= 30) {
+			bigScreen.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+				@NonNull
+				@Override
+				public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
+					Insets r = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+					// Handle the top (status bar etc) here at the activity level already, other
+					// stuff like the notch is up to the specific viewer. /o\
+					bigScreen.setPadding(0, r.top, 0, 0);
+					drawer.setPadding(r.left, r.top, 0, 0);
+					// bottom padding *within* the scrollview's content.
+					ScrollView drawerScroll = drawer.findViewById(R.id.drawerScroll);
+					drawerScroll.setPadding(0, 0, 0, r.bottom);
+					drawerScroll.setClipToPadding(false);
+					if (viewer != null) {
+						viewer.setPadding(r.left, 0, r.right, r.bottom);
+						viewerPadding = r;
+					}
+					return insets;
+				}
+			});
 		}
 	}
 
@@ -883,6 +911,10 @@ public class ScheduleViewActivity extends Activity {
 		if (viewer != null)
 			viewerContainer.removeView((View) viewer);
 		viewer = (ScheduleViewer) viewer_;
+		if (Build.VERSION.SDK_INT >= 30 && viewerPadding != null) {
+			// top padding is only passed to drawer and other outer bits.
+			viewer.setPadding(viewerPadding.left, 0, viewerPadding.right, 0);
+		}
 		viewerContainer.addView((View) viewer, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 3));
 		viewer.onShow();
 

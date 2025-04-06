@@ -1,13 +1,19 @@
 package net.gaast.giggity;
 
 import android.content.Context;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
+import android.graphics.Insets;
+import android.os.Build;
+import android.view.DisplayCutout;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowInsets;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 public class EventDialogPager extends ViewPager {
 	private Schedule.Item item_;
@@ -15,6 +21,7 @@ public class EventDialogPager extends ViewPager {
 	private int item_index_ = -1;
 	private OnClickListener title_click_;
 	private String searchQuery_;
+	private Insets padding_ = null;
 
 	public EventDialogPager(Context ctx, Schedule.Item item, AbstractList<Schedule.Item> items, String searchQuery) {
 		super(ctx);
@@ -44,6 +51,33 @@ public class EventDialogPager extends ViewPager {
 
 		setAdapter(new Adapter());
 		setCurrentItem(item_index_);
+
+		if (Build.VERSION.SDK_INT >= 30) {
+			setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+				@NonNull
+				@Override
+				public WindowInsets onApplyWindowInsets(@NonNull View _, @NonNull WindowInsets insets) {
+					DisplayCutout cut = null;
+					Insets r = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+					padding_ = r;
+					for (int i = 0; i < getChildCount(); ++i) {
+						ViewGroup v = (ViewGroup) getChildAt(i);
+						if (v != null) {
+							applyPadding((EventDialog) v);
+						}
+					}
+					setClipToPadding(false);
+
+					return insets;
+				}
+			});
+		}
+	}
+
+	private void applyPadding(EventDialog d) {
+		if (Build.VERSION.SDK_INT >= 30 && padding_ != null) {
+			d.setPadding(padding_.left, padding_.top, padding_.right, padding_.bottom);
+		}
 	}
 
 	public void setTitleClick(OnClickListener title_click) {
@@ -54,11 +88,6 @@ public class EventDialogPager extends ViewPager {
 		return items_.get(getCurrentItem());
 	}
 
-	public View getHeader() {
-		ViewGroup v = (ViewGroup) getAdapter().instantiateItem(this, item_index_);
-		return v.findViewById(R.id.header);
-	}
-
 	private class Adapter extends PagerAdapter {
 		@Override
 		public int getCount() {
@@ -67,10 +96,12 @@ public class EventDialogPager extends ViewPager {
 
 		@Override
 		public Object instantiateItem(ViewGroup parent, int position) {
-			EventDialog d = new EventDialog(getContext(), items_.get(position), searchQuery_);
+			Schedule.Item item = items_.get(position);
+			EventDialog d = new EventDialog(getContext(), item, searchQuery_);
 			if (title_click_ != null) {
 				d.setTitleClick(title_click_);
 			}
+			applyPadding(d);
 			parent.addView(d);
 			return d;
 		}

@@ -29,7 +29,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
@@ -51,6 +50,7 @@ import android.widget.TextView;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -292,6 +292,22 @@ public class EventDialog extends FrameLayout {
 				sv.scrollTo(0, (int) (ratio * (inner.getHeight() - sv.getHeight())));
 			}
 		}, 500);
+	}
+
+	@Override
+	public void setPadding(int left, int top, int right, int bottom) {
+		LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		ViewGroup base = (ViewGroup) inflater.inflate(R.layout.event_dialog, null);
+		for (int id : List.of(R.id.header, R.id.subHeader, R.id.descriptionBox, R.id.bottomBox)) {
+			View sv = findViewById(id);
+			View basev = base.findViewById(id);
+			// Apply left/right padding internally so that dialog background colours go edge to edge.
+			sv.setPadding(basev.getPaddingLeft() + left,
+			              basev.getPaddingTop(),
+			              basev.getPaddingRight() + right,
+			              basev.getPaddingBottom());
+		}
+		super.setPadding(0, top, 0, bottom);
 	}
 
 	/* The old Giggity-native format supported image buttons. Not doing that anymore, or if I do

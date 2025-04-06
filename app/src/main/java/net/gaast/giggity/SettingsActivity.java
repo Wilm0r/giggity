@@ -19,15 +19,37 @@
 
 package net.gaast.giggity;
 
+import android.graphics.Insets;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.util.Log;
+import android.view.DisplayCutout;
+import android.view.View;
+import android.view.WindowInsets;
+
+import androidx.annotation.NonNull;
 
 public class SettingsActivity extends PreferenceActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.preferences);
+
+		if (Build.VERSION.SDK_INT >= 30) {
+			getListView().setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+				@NonNull
+				@Override
+				public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
+					DisplayCutout cut = null;
+					Insets r = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+					getListView().setPadding(r.left, r.top, r.right, r.bottom);
+					getListView().setClipToPadding(false);
+
+					return insets;
+				}
+			});
+		}
 	}
 	
 	@Override 

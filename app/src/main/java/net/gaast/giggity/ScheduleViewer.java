@@ -33,4 +33,6 @@ public interface ScheduleViewer {
 
 	/* Currently used by TimeTable only to blend the room tabs with the action bar. */
 	boolean extendsActionBar();
+
+	public void setPadding(int left, int top, int right, int bottom);
 }
