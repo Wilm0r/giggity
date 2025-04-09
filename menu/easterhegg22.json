@@ -1,0 +1,16 @@
+{
+	"version": 2025042500,
+	"url": "https://cfp.eh22.easterhegg.eu/eh22/schedule/export/schedule.xml",
+	"title": "Easterhegg 2025",
+	"start": "2025-04-18",
+	"end": "2025-04-21",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://eh22.easterhegg.eu/",
+				"title": "Website"
+			}
+		]
+	}
+}
