@@ -36,9 +36,6 @@ coincidental. ;-)
 <a href="https://f-droid.org/app/net.gaast.giggity">
 <img src="https://f-droid.org/badge/get-it-on.png" height="64" alt="F-Droid">
 </a>
-<a href="https://play.google.com/store/apps/details?id=net.gaast.giggity">
-<img src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="64" alt="Play Store">
-</a>
 
 ## Deeplinking into Giggity
 
