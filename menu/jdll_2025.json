@@ -1,0 +1,62 @@
+{
+	"version": 2025042500,
+	"url": "https://pretalx.jdll.org/jdll2025/schedule/export/schedule.xml",
+	"title": "Journées du Logiciel Libre 2025",
+	"start": "2025-05-24",
+	"end": "2025-05-25",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://jdll.org/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://jdll.org/contact-and-informations",
+				"title": "Informations pratiques"
+			}
+		],
+		"rooms": [
+			{
+				"name": ".* - D1\\..*",
+				"latlon": [45.733088, 4.833740]
+			},
+			{
+				"name": ".* - D2\\..*",
+				"latlon": [45.733567, 4.834548]
+			},
+			{
+				"name": ".* - Amphi Descartes\\..*",
+				"latlon": [45.733567, 4.834548]
+			},
+			{
+				"name": ".* - D3\\..*",
+				"latlon": [45.733453, 4.834054]
+			},
+			{
+				"name": ".* - D4\\..*",
+				"latlon": [45.733721, 4.833754]
+			},
+			{
+				"name": ".* - D5\\..*",
+				"latlon": [45.734550, 4.833271]
+			},
+			{
+				"name": ".* - D6\\..*",
+				"latlon": [45.734123, 4.832233]
+			},
+			{
+				"name": ".* - D7\\..*",
+				"latlon": [45.733543, 4.832209]
+			},
+			{
+				"name": "Cafétéria",
+				"latlon": [45.733543, 4.832209]
+			},
+			{
+				"name": ".* - D8\\..*",
+				"latlon": [45.732410, 4.831973]
+			}
+		]
+	}
+}
