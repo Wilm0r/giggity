@@ -1,0 +1,68 @@
+{
+  "version": 2025042800,
+  "url": "https://sotm.osmz.ru/fe2025.xml",
+  "title": "FOSS4G Europe 2025",
+  "start": "2025-07-14",
+  "end": "2025-07-18",
+  "timezone": "Europe/Belgrade",
+  "metadata": {
+    "icon": "https://textual.ru/mostar2025.png",
+    "links": [
+      {
+        "url": "https://2025.europe.foss4g.org/",
+        "title": "Website"
+      },
+      {
+        "url": "https://wiki.osgeo.org/wiki/FOSS4G-Europe-2025/BirdsOfAFeather",
+        "title": "Birds of a Feather"
+      },
+      {
+        "url": "https://wiki.osgeo.org/wiki/FOSS4G-Europe-2025/CommunitySprint",
+        "title": "Community Sprint"
+      },
+      {
+        "url": "https://2025.europe.foss4g.org/sponsors/",
+        "title": "Sponsors"
+      }
+    ],
+    "rooms": [
+      {
+        "name": "PA..|PL..",
+        "show_name": "Faculty of Humanities and Social Sciences",
+        "latlon": [43.344169, 17.797409]
+      },
+      {
+        "name": "KOS",
+        "show_name": "Hrvatski dom Herceg Stjepan Kosača",
+        "latlon": [43.342265, 17.802576]
+      },
+      {
+        "name": "EL11",
+        "show_name": "Faculty of Economics",
+        "latlon": [43.344195, 17.796311]
+      },
+      {
+        "name": "SA0.",
+        "show_name": "Socratus Amphitheatre",
+        "latlon": [43.344128, 17.796726]
+      },
+      {
+        "name": "CA01",
+        "show_name": "Faculty of Civil Engineering",
+        "latlon": [43.346437, 17.796721]
+      },
+      {
+        "name": "Restaurant Del Rio",
+        "latlon": [43.348588, 17.810125]
+      },
+      {
+        "name": "Charlie Bar & Snack",
+        "latlon": [43.344045, 17.79499]
+      },
+      {
+        "name": "Pavarotti Music Centre",
+        "latlon": [43.334823, 17.817494]
+      }
+    ]
+  }
+}
