@@ -1,0 +1,24 @@
+{
+	"version": 2025042601,
+	"url": "https://cfp.kntkt.de/kontakt-2025/schedule.xml",
+	"title": "kontakt - Das Kulturfestival 2025",
+	"start": "2025-05-22",
+	"end": "2025-05-25",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://kontakt-bamberg.de/",
+				"title": "Website"
+			},
+			{
+				"url": "https://helfen.kntkt.de/",
+				"title": "Mitmachen"
+			},
+			{
+				"url": "https://kontakt-bamberg.de/mithelfen-2",
+				"title": "Aufbau"
+			}
+		]
+	}
+}
