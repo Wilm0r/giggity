@@ -1,0 +1,38 @@
+{
+	"version": 2025050500,
+	"url": "https://cfp.pass-the-salt.org/pts2025/schedule/export/schedule.xml",
+	"title": "Pass the SALT 2025",
+	"start": "2025-07-01",
+	"end": "2025-07-03",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2025.pass-the-salt.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://pretix.eu/passthesalt/2025/",
+				"title": "Free Ticket"
+			},
+			{
+				"url": "https://2025.pass-the-salt.org/practical/",
+				"title": "Practical & safety"
+			},
+			{
+				"url": "https://2025.pass-the-salt.org/code-of-conduct/",
+				"title": "Code of Conduct"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Amphitheater .*",
+				"latlon": [50.631036, 3.045595]
+			},
+			{
+				"name": "Room LW.*",
+				"latlon": [50.631036, 3.045595]
+			}
+		]
+	}
+}
