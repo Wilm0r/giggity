@@ -1,16 +1,12 @@
 {
 	"version": 2025130500,
 	"url": "https://cfp.hackerspace.gent/newline-2025/schedule/export/schedule.xml",
-	"title": "Newline 2025",  // preferably have it match the title in your Pentabarf
+	"title": "Newline 2025",
 	"start": "2025-05-23",
 	"end": "2025-05-25",
 	"timezone": "Europe/Brussels",
-	// To be used only if your event tends to make last-minute changes, and allowed only if the
-	// server hosting your Pentabarf file sends HTTP 304s when no changes are made:
 	"refresh_interval": 1800,
 	"metadata": {
-		// Must have an alpha layer, be square and not too large. Will be used for
-		// notifications and home shortcut.
 		"icon": "https://hackerspace.gent/i/0x20i.png",
 		"links": [
 			{
