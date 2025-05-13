@@ -1,5 +1,5 @@
 {
-	"version": 2025130500,
+	"version": 2025051300,
 	"url": "https://cfp.hackerspace.gent/newline-2025/schedule/export/schedule.xml",
 	"title": "Newline 2025",
 	"start": "2025-05-23",
@@ -7,7 +7,7 @@
 	"timezone": "Europe/Brussels",
 	"refresh_interval": 1800,
 	"metadata": {
-		"icon": "https://hackerspace.gent/i/0x20i.png",
+		"icon": "https://docs.hackerspace.gent/assets/logo.png",
 		"links": [
 			{
 				"url": "https://newline.gent/",
