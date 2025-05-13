@@ -11,7 +11,7 @@
 	"metadata": {
 		// Must have an alpha layer, be square and not too large. Will be used for
 		// notifications and home shortcut.
-		"icon": "https://www.conference.org/logo.png",
+		"icon": "https://hackerspace.gent/i/0x20i.png",
 		"links": [
 			{
 				"url": "https://newline.gent/",
