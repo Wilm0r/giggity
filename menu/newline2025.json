@@ -1,0 +1,23 @@
+{
+	"version": 2025051604,
+	"url": "https://cfp.hackerspace.gent/newline-2025/schedule/export/schedule.xml",
+	"title": "Newline 2025",
+	"start": "2025-05-23",
+	"end": "2025-05-25",
+	"timezone": "Europe/Brussels",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://newline.gent/hsg_logo_transp.png",
+		"links": [
+			{
+				"url": "https://newline.gent/",
+				"title": "Website"
+			},
+			{
+				"url": "https://newline.gent/img/map%20with%20arrows.jpg",
+				"title": "Map",
+				"type": "image/png"
+			}
+		]
+	}
+}
