@@ -10,8 +10,3 @@ dependencies = [
     "pillow>=11.2.1",
     "urllib3>=2.4.0",
 ]
-
-[tool.uv.workspace]
-members = [
-    "tools",
-]

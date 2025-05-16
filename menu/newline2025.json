@@ -7,7 +7,6 @@
 	"timezone": "Europe/Brussels",
 	"refresh_interval": 1800,
 	"metadata": {
-		"icon": "https://docs.hackerspace.gent/assets/logo.png",
 		"links": [
 			{
 				"url": "https://newline.gent/",
