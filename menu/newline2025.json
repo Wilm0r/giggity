@@ -7,6 +7,7 @@
 	"timezone": "Europe/Brussels",
 	"refresh_interval": 1800,
 	"metadata": {
+        "icon": "https://newline.gent/hsg_logo_transp.png",
 		"links": [
 			{
 				"url": "https://newline.gent/",
