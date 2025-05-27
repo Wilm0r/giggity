@@ -1,0 +1,21 @@
+{
+    "version": 2025052799,
+    "url": "https://cfp.tuebix.org/tuebix-2025/schedule/export/schedule.xml",
+    "title": "Tübix 2025",
+    "start": "2025-07-05",
+    "end": "2025-07-05",
+    "timezone": "Europe/Berlin",
+    "refresh_interval": 1800,
+    "metadata": {
+        "links": [
+            {
+                "url": "https://www.tuebix.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://www.tuebix.org/anfahrt/",
+                "title": "Anfahrt"
+            }
+        ]
+    }
+}
