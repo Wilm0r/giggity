@@ -5,7 +5,8 @@
 	"start": "2025-06-12",
 	"end": "2025-06-14",
 	"timezone": "Europe/Prague",
-	"metadata": {
+	"metadata": {	
+		"icon": "https://www.devconf.info/favicon-32x32.png",
 		"links": [
 			{
 				"url": "https://www.devconf.cz/",
