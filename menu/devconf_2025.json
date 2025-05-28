@@ -6,6 +6,7 @@
 	"end": "2025-06-14",
 	"timezone": "Europe/Prague",
 	"metadata": {
+		"icon": "https://raw.githubusercontent.com/devconfcz/devconfcz/refs/heads/master/logo/devconf-cz/devconf-cz-inverse.png",
 		"links": [
 			{
 				"url": "https://www.devconf.cz/",
