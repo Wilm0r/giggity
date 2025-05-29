@@ -1,0 +1,70 @@
+{
+	"version": 2025052200,
+	"url": "https://pretalx.devconf.info/devconf-cz-2025/schedule/export/schedule.xml",
+	"title": "Devconf 2025",
+	"start": "2025-06-12",
+	"end": "2025-06-14",
+	"timezone": "Europe/Prague",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.devconf.cz/",
+				"title": "Website"
+			},
+			{
+				"url": "https://www.devconf.cz/cz/#about",
+				"title": "About"
+			},
+			{
+				"url": "https://www.devconf.cz/cz/faq/",
+				"title": "FAQ"
+			}
+		],
+		"rooms": [
+			{
+				"name": "D105",
+				"latlon": [49.2058703, 16.5912400]
+			},
+			{
+				"name": "D0206",
+				"latlon": [49.2060192, 16.5914814]
+			},
+			{
+				"name": "D0207",
+				"latlon": [49.2060192, 16.5914814]
+			},
+			{
+				"name": "E112",
+				"latlon": [49.2055881, 16.5915886]
+			},
+			{
+				"name": "E104",
+				"latlon": [49.2055181, 16.5919239]
+			},
+			{
+				"name": "E105", 
+				"latlon": [49.2055181, 16.5919239]
+			},
+			{
+				"name": "A112",
+				"latlon": [49.2064889, 16.5922028]
+			},
+			{
+				"name": "A113", 
+				"latlon": [49.2064889, 16.5922028]
+			},
+			{
+				"name": "A218", 
+				"latlon": [49.2064889, 16.5922028]
+			},
+			{
+				"name": "C228",
+				"latlon": [49.2069778, 16.5916261]
+			},
+			{
+				"name": "C236",
+				"latlon": [49.2069778, 16.5916261]
+			}
+		]
+	}
+}
