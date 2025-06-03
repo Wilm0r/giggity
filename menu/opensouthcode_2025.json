@@ -1,0 +1,17 @@
+{
+	"version": 2025060301,
+	"url": "https://www.opensouthcode.org/conferences/opensouthcode2025/schedule.xml",
+	"title": "OpenSouthCode 2025",
+	"start": "2025-06-20",
+	"end": "2025-06-21",
+	"timezone": "Europe/Madrid",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.opensouthcode.org/conferences/opensouthcode2025",
+				"title": "Website"
+			}
+		],
+		"icon": "https://www.opensouthcode.org/logo1.png"
+	}
+}
