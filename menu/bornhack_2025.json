@@ -1,0 +1,28 @@
+{
+	"version": 2025071612,
+	"url": "https://bornhack.dk/bornhack-2025/program/frab.xml",
+	"title": "BornHack 2025",
+	"start": "2025-07-16",
+	"end": "2025-07-23",
+	"timezone": "Europe/Copenhagen",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://bornhack.dk/bornhack-2025/",
+				"title": "Website"
+			},
+			{
+				"url": "https://bornhack.dk/bornhack-2025/info/",
+				"title": "Info"
+			},
+			{
+				"url": "https://bornhack.dk/bornhack-2025/map/",
+				"title": "Map"
+			},
+			{
+				"url": "https://bornhack.dk/bornhack-2025/facilities/",
+				"title": "Facilities"
+			}
+		]
+	}
+}
