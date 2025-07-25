@@ -1,0 +1,17 @@
+{
+	"version": 2025072518,
+	"url": "https://cfp.why2025.org/why2025/schedule/export/schedule.xml",
+	"title": "WHY2025",
+	"start": "2025-08-08",
+	"end": "2025-08-12",
+	"timezone": "Europe/Brussels",
+	"refresh_interval": 1800,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://why2025.org/",
+				"title": "Website"
+			}
+		]
+	}
+}
