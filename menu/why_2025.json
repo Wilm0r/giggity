@@ -1,6 +1,6 @@
 {
-	"version": 2025072518,
-	"url": "https://cfp.why2025.org/why2025/schedule/export/schedule.xml",
+	"version": 2025073019,
+	"url": "https://program.why2025.org/why2025/schedule/export/schedule.xml",
 	"title": "WHY2025",
 	"start": "2025-08-08",
 	"end": "2025-08-12",
@@ -11,6 +11,14 @@
 			{
 				"url": "https://why2025.org/",
 				"title": "Website"
+			},
+			{
+				"url": "https://map.why2025.org/",
+				"title": "Map"
+			},
+			{
+				"url": "https://wiki.why2025.org/Welcome",
+				"title": "Wiki"
 			}
 		]
 	}
