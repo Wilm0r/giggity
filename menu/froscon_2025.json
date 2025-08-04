@@ -1,0 +1,25 @@
+{
+    "version": 2025080399,
+    "url": "https://programm.froscon.org/2025/schedule.xml",
+    "title": "FrOSCon 2025",
+    "start": "2025-08-16",
+    "end": "2025-08-17",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "icon": "https://froscon.org/icons/apple-touch-icon.png",
+        "links": [
+            {
+                "url": "https://froscon.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://froscon.org/en/program/project-rooms/",
+                "title": "Project rooms"
+            },
+            {
+                "url": "https://media.ccc.de/b/conferences/froscon",
+                "title": "Recordings"
+            }
+        ]
+    }
+}
