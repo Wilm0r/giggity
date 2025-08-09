@@ -1,5 +1,5 @@
 {
-	"version": 2025073019,
+	"version": 2025080900,
 	"url": "https://program.why2025.org/why2025/schedule/export/schedule.xml",
 	"title": "WHY2025",
 	"start": "2025-08-08",
@@ -20,6 +20,100 @@
 				"url": "https://wiki.why2025.org/Welcome",
 				"title": "Wiki"
 			}
+		],
+		"rooms": [
+			{
+				"name": "Aid to Ukraine",
+				"latlon": [
+					52.690513,
+					4.743703
+				]
+			},
+			{
+				"name": "Andromeda",
+				"latlon": [
+					52.693176,
+					4.746093
+				]
+			},
+			{
+				"name": "Brachium",
+				"latlon": [
+					52.6908,
+					4.745329
+				]
+			},
+			{
+				"name": "Cassiopeia",
+				"latlon": [
+					52.691958,
+					4.749002
+				]
+			},
+			{
+				"name": "Delphinus",
+				"latlon": [
+					52.693746,
+					4.748425
+				]
+			},
+			{
+				"name": "Infodesk",
+				"latlon": [
+					52.692157,
+					4.746455
+				]
+			},
+			{
+				"name": "Karaoke Bar",
+				"latlon": [
+					52.69263,
+					4.745393
+				]
+			},
+			{
+				"name": "Milliways",
+				"latlon": [
+					52.69126,
+					4.747173
+				]
+			},
+			{
+				"name": "Party Stage",
+				"latlon": [
+					52.690474,
+					4.74414
+				]
+			},
+			{
+				"name": "Serendiep",
+				"latlon": [
+					52.68857,
+					4.733084
+				]
+			},
+			{
+				"name": "Workshop Euclid",
+				"latlon": [
+					52.693474,
+					4.747889
+				]
+			},
+			{
+				"name": "Workshop Giotto",
+				"latlon": [
+					52.693216,
+					4.746775
+				]
+			},
+			{
+				"name": "Xyberfoort",
+				"latlon": [
+					52.691842,
+					4.747604
+				]
+			}
 		]
 	}
 }
+		
