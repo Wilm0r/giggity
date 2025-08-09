@@ -1,0 +1,29 @@
+{
+	"version": 2025080500,
+	"url": "https://wikimedia.eventyay.com/talk/wikimania2025/schedule/export/schedule.xml",
+	"title": "Wikimania 2025",
+	"start": "2025-08-06",
+	"end": "2025-08-09",
+	"timezone": "Africa/Nairobi",
+	"metadata": {
+		"icon": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Wikimania_2025_Social_Media_Profile_Image.png/190px-Wikimania_2025_Social_Media_Profile_Image.png",
+		"links": [
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Wikimania",
+				"title": "Website"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Venue",
+				"title": "Venue"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Meetups",
+				"title": "Meetups"
+			},
+			{
+				"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Trust_and_Safety",
+				"title": "Trust and Safety"
+			}
+		]
+	}
+}
