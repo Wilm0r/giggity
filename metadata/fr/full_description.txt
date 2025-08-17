@@ -1,0 +1,6 @@
+Giggity charge les fichiers XML xcal/Pentabarf/frab (qui contiennent les horaires des conférences/festivals/autres événements) et vous permet de les parcourir dans différents formats pratiques.
+
+Présélectionné pour de nombreux événements dont FOSDEM, CCC, FrOSCon, etc.
+
+Giggity vous permet d'organiser votre visite - sélectionnez les conférences à rappeler (avec des avertissements en cas de conflits) ou cachez les sujets qui vous intéressent moins.
+Les horaires sont affichés dans le format de votre choix - horaires en bloc, horaires simples, ou un écran clair "maintenant et suivant" le jour même.

@@ -1,0 +1,6 @@
+Giggity lädt xcal/Pentabarf/frab XML-Dateien (die Zeitpläne von Konferenzen/Festivals/anderen Veranstaltungen enthalten) und lässt Sie diese in verschiedenen praktischen Formaten durchsuchen.
+
+Vorprogrammiert mit vielen Veranstaltungen, einschließlich FOSDEM, CCC, FrOSCon, etc.
+
+Mit Giggity können Sie Ihren Besuch organisieren - wählen Sie Vorträge aus, an die Sie erinnert werden möchten (mit Warnungen bei Konflikten) oder blenden Sie Themen aus, die Sie weniger interessieren.
+Die Zeitpläne werden in jedem beliebigen Format angezeigt - Blockzeitpläne, einfache Zeitpläne oder ein klarer Jetzt-und-Nächster-Bildschirm am Tag selbst.

@@ -1,0 +1,6 @@
+Giggity carga archivos XML xcal/Pentabarf/frab (que contienen programas de conferencias/festivales/otros eventos) y permite consultarlos en varios formatos.
+
+Preconfigurado con muchos eventos como FOSDEM, CCC, FrOSCon, etc.
+
+Giggity le permite organizar su visita: seleccione las charlas que desea que se le recuerden (con avisos en caso de conflicto) u oculte los temas que menos le interesen.
+Los horarios se muestran en el formato que prefieras: horarios por bloques, horarios sencillos o una clara pantalla de "ahora y después" el mismo día.

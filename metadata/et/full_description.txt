@@ -1,0 +1,6 @@
+Giggity laadib xcal/Pentabarf/frab XML-faile (mis sisaldavad konverentside/festivalide/muude ürituste ajakavasid) ja võimaldab neid sirvida erinevates mugavates formaatides.
+
+Eelseadistatud paljude üritustega, sealhulgas FOSDEM, CCC, FrOSCon jne.
+
+Giggity võimaldab teil oma külastust korraldada - valige loengud, millest teile meelde tuletatakse (hoiatustega konfliktide korral), või varjake teemad, mis teid vähem huvitavad.
+Ajakavad kuvatakse mis tahes vormis - plokkide kaupa, tavalise ajakava või selge "nüüd ja edaspidi" ekraanil päeval endal.
