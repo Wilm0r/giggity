@@ -1,0 +1,18 @@
+name: Fastlane
+
+on:
+  pull_request:
+    paths:
+      - 'metadata/**'
+  push:
+    paths:
+      - 'metadata/**'
+
+jobs:
+  # required to run on Linux because this is a docker container action
+  runs-on: ubuntu-latest
+  steps:
+    - uses: actions/checkout@v3
+    - uses: ashutoshgngwr/validate-fastlane-supply-metadata@v2
+      with:
+        fastlaneDir: ./metadata
