@@ -3,4 +3,4 @@ Giggity laadt xcal/Pentabarf/frab XML-bestanden (die schema's bevatten van confe
 Voorbereid met vele evenementen, waaronder FOSDEM, CCC, FrOSCon, enz.
 
 Giggity laat je je bezoek organiseren - selecteer lezingen waaraan je herinnerd wilt worden (met waarschuwingen in geval van conflicten) of verberg de onderwerpen waarin je minder geïnteresseerd bent.
-Schema's worden getoond in het formaat dat jij wilt - blokschema's, gewone tijdschema's of een duidelijk nu-en-nu-scherm op de dag zelf.
+Schema's worden getoond in het formaat dat jij wilt - blokschema's, gewone tijdschema's of een duidelijk nu-en-straks scherm op de dag zelf.
