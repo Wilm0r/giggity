@@ -1,0 +1,16 @@
+{
+	"version": 2025081500,
+	"title": "Open Source Summit Europe 2025",
+	"url": "https://osseu2025.sched.com/all.ics",
+	"start": "2025-08-25",
+	"end": "2025-08-27",
+	"timezone": "Europe/Amsterdam",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events.linuxfoundation.org/open-source-summit-europe/",
+				"title": "OSSEU Website"
+			}
+		]
+	}
+}
