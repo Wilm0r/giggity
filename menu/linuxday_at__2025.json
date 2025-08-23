@@ -1,0 +1,28 @@
+{
+  "version": 2025081720,
+  "url": "https://www.linuxday.at/vortraege/2025/calendar.ics",
+  "title": "LinuxDay.at Vortraege",
+  "start": "2025-09-27",
+  "end": "2025-09-27",
+  "timezone": "Europe/Vienna",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://www.linuxday.at/",
+        "title": "Webseite"
+      },
+      {
+         "url": "https://www.linuxday.at/aussteller/2025",
+         "title": "Aussteller"
+      },
+      {
+         "url": "https://www.linuxday.at/vortraege/2025",
+         "title": "Vorträge"
+      },
+      {
+         "url": "https://www.linuxday.at/ort.html",
+         "title": "Wie komme ich zur HTL-Dornbirn"
+      }    
+    ]
+  }
+}
