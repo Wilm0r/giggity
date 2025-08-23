@@ -1,0 +1,28 @@
+{
+	"version": 2025082300,
+	"url": "https://talks.datenspuren.de/ds25/schedule/export/schedule.xml",
+	"title": "Datenspuren 2025",
+	"start": "2025-09-19",
+	"end": "2025-09-21",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://datenspuren.de/2025/",
+				"title": "Datenspuren Website"
+			},
+			{
+				"url": "https://c3d2.social/@datenspuren",
+				"title": "Mastodon"
+			},
+			{
+				"url": "https://matrix.to/#/#datenspuren:c3d2.de",
+				"title": "Matrix chat"
+			},
+			{
+				"url": "https://engel.datenspuren.de/login",
+				"title": "Engelsystem"
+			}
+		]
+	}
+}
