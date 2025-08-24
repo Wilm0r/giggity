@@ -1,0 +1,16 @@
+{
+    "version": 2025082401,
+    "url": "https://conf.kde.org/event/9/event.ics?scope=contribution",
+    "title": "Akademy 2025",
+    "start": "2025-09-06",
+    "end": "2025-09-11",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://akademy.kde.org/2025/",
+                "title": "Website"
+            }
+        ]
+    }
+}
