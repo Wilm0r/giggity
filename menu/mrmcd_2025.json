@@ -1,0 +1,28 @@
+{
+	"version": 2025090201,
+	"url": "https://talks.mrmcd.net/2025/schedule/export/schedule.xml",
+	"title": "MRMCD 2025",
+	"start": "2025-09-12",
+	"end": "2025-09-14",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2025.mrmcd.net",
+				"title": "Website"
+			},
+			{
+				"url": "https://tickets.mrmcd.net/mrmcd/2025/",
+				"title": "Tickets"
+			},
+			{
+				"url": "https://engel.mrmcd.net/login",
+				"title": "Engelsystem / Matrosensystem"
+			},
+			{
+				"url": "https://wiki.mrmcd.net/wiki/Main_Page",
+				"title": "Wiki"
+			}
+		]
+	}
+}
