@@ -1,0 +1,21 @@
+{
+  "version": 2025090200,
+  "url": "https://events.gnuradio.org/event/26/event.ics?scope=contribution",
+  "title": "GNU Radio Conference 2025",
+  "start": "2025-09-08",
+  "end": "2025-09-12",
+  "timezone": "America/Los_Angeles",
+  "metadata": {
+    "icon": "https://www.gnuradio.org/giggity-grcon25-logo.png",
+    "links": [
+      {
+        "url": "https://events.gnuradio.org/event/26/",
+        "title": "Website"
+      },
+      {
+        "url": "https://www.gnuradio.org",
+        "title": "Project Website"
+      }
+    ]
+  }
+}
