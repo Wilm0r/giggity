@@ -1,0 +1,20 @@
+{
+	"version": 2025090300,
+	"url": "https://i.sigio.nl/camerajapan.xml",
+	"title": "Camera Japan Filmfestival 2025 (Rotterdam Edition)",
+	"start": "2025-09-24",
+	"end": "2025-09-28",
+	"timezone": "Europe/Amsterdam",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://camerajapan.nl/rotterdam/",
+				"title": "Website"
+			},
+			{
+				"url": "PDF Schedule (source)",
+				"title": "https://camerajapan.nl/wp-content/uploads/2025/08/CAMERA-JAPAN-Blokkenschema-2025-Rdam.pdf"
+			}
+		]
+	}
+}
