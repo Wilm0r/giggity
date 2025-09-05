@@ -43,19 +43,21 @@ jobs:
 
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}}/menu --summary_comment /tmp/menu-ci-comment.md
+        run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}}/menu --summary_comment /tmp/menu-ci-comment.md --pr_title /tmp/menu-ci-title.json
 
       - name: "Update PR comment: Ready to go!"
         if: ${{ success() }}
-        uses: thollander/actions-comment-pull-request@v2
+        uses: Wilm0r/actions-comment-retitle-pull-request
         with:
           comment_tag: menu-ci
           reactions: rocket
-          filePath: /tmp/menu-ci-comment.md
+          title-path: /tmp/menu-ci-title.json
+          file-path: /tmp/menu-ci-comment.md
 
       - name: "Update PR comment: Remaining issues"
         if: ${{ failure() }}
-        uses: thollander/actions-comment-pull-request@v2
+        uses: Wilm0r/actions-comment-retitle-pull-request
         with:
           comment_tag: menu-ci
-          filePath: /tmp/menu-ci-comment.md
+          title-path: /tmp/menu-ci-title.json
+          file-path: /tmp/menu-ci-comment.md
