@@ -47,7 +47,7 @@ jobs:
 
       - name: "Update PR comment: Ready to go!"
         if: ${{ success() }}
-        uses: Wilm0r/actions-comment-retitle-pull-request@v4
+        uses: Wilm0r/actions-comment-retitle-pull-request@main
         with:
           comment_tag: menu-ci
           reactions: rocket
@@ -56,7 +56,7 @@ jobs:
 
       - name: "Update PR comment: Remaining issues"
         if: ${{ failure() }}
-        uses: Wilm0r/actions-comment-retitle-pull-request@v4
+        uses: Wilm0r/actions-comment-retitle-pull-request@main
         with:
           comment_tag: menu-ci
           title-path: /tmp/menu-ci-title.json
