@@ -49,7 +49,7 @@ jobs:
         if: ${{ success() }}
         uses: Wilm0r/actions-comment-retitle-pull-request@main
         with:
-          comment_tag: menu-ci
+          comment-tag: menu-ci
           reactions: rocket
           title-path: /tmp/menu-ci-title.json
           file-path: /tmp/menu-ci-comment.md
@@ -58,6 +58,6 @@ jobs:
         if: ${{ failure() }}
         uses: Wilm0r/actions-comment-retitle-pull-request@main
         with:
-          comment_tag: menu-ci
+          comment-tag: menu-ci
           title-path: /tmp/menu-ci-title.json
           file-path: /tmp/menu-ci-comment.md
