@@ -1,0 +1,20 @@
+{
+	"version": 2025040300,
+	"url": "https://www.rpll.fr/?page=programme.ics&id_article=187",
+	"title": "Rencontres Professionnelles du Logiciel Libre 2025",
+	"start": "2025-05-15",
+	"end": "2025-05-15",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.rpll.fr/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://www.rpll.fr/inscription-visiteurs-2025",
+				"title": "Billetterie"
+			}
+		]
+	}
+}
