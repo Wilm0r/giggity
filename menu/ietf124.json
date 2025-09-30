@@ -1,0 +1,17 @@
+{
+	"version": 2025093001,
+	"url": "https://datatracker.ietf.org/meeting/124/agenda.ics",
+	"title": "IETF 124 Montreal",
+	"start": "2025-11-01",
+	"end": "2025-11-07",
+	"timezone": "America/Montreal",
+	"refresh_interval": 86400,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.ietf.org/meeting/124/",
+				"title": "Website"
+			}
+		]
+	}
+}
