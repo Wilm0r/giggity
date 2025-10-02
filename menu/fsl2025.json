@@ -5,7 +5,6 @@
 	"start": "2025-10-03",
 	"end": "2025-10-05",
 	"timezone": "Europe/Lisbon",
-	"refresh_interval": 1800,
 	"metadata": {
 		"icon": "https://festa.softwarelivre.eu/identidade/fsl-logos/logo_cores.png",
 		"links": [
@@ -14,7 +13,7 @@
 				"title": "Website"
 			},
 			{
-				"url": "https://festa2025.softwarelivre.eu/info",
+				"url": "https://festa2025.softwarelivre.eu/info/",
 				"title": "Info"
 			}
 		]
