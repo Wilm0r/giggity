@@ -1,0 +1,47 @@
+{
+	"version": 2025092901,
+	"url": "https://pretalx.com/pycones-2025/schedule/export/schedule.xml",
+	"title": "PyConES 2025",
+	"start": "2025-10-17",
+	"end": "2025-10-19",
+	"timezone": "Europe/Madrid",
+	"metadata": {
+		"icon": "https://cdn.pretix.cloud/1/pub/thumbs/676e0dc32e6ad70a0bacc495bc4018ff.192x192c.0b93a7ff7c731d.png",
+		"links": [
+			{
+				"url": "https://2025.es.pycon.org",
+				"title": "Website"
+			},
+			{
+				"url": "https://2025.es.pycon.org/tickets.html",
+				"title": "Tickets"
+			},
+			{
+				"url": "https://2025.es.pycon.org/pages/upo.html",
+				"title": "Venue"
+			},
+			{
+				"url": "https://2025.es.pycon.org/keynoters.html",
+				"title": "Speakers"
+			}
+		],
+		"rooms": [
+			{
+				"name": "E45",
+				"latlon": [37.35649290598196, -5.943393556508959]
+			},
+			{
+				"name": "Paraninfo Bloomberg",
+				"latlon": [37.35412032121821, -5.93788092183513]
+			},
+			{
+				"name": "E4",
+				"latlon": [37.35474695046674, -5.9369887286734775]
+			},
+			{
+				"name": "E5",
+				"latlon": [37.35517130363255, -5.938121457170051]
+			}
+		]
+	}
+}
