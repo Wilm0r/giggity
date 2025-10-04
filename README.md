@@ -36,9 +36,6 @@ coincidental. ;-)
 <a href="https://f-droid.org/app/net.gaast.giggity">
 <img src="https://f-droid.org/badge/get-it-on.png" height="64" alt="F-Droid">
 </a>
-<a href="https://play.google.com/store/apps/details?id=net.gaast.giggity">
-<img src="https://play.google.com/intl/en_gb/badges/images/generic/en_badge_web_generic.png" height="64" alt="Play Store">
-</a>
 
 ## Deeplinking into Giggity
 
@@ -76,6 +73,10 @@ It is usually in the form: `https://<CFPHOST>/<CONFERENCE>/schedule/export/sched
 ### OSEM
 
 It usually is in the form: `https://<CFPHOST>/conferences/<CONFERENCE>/schedule.xml`
+
+### Indico
+
+It usually is in the form: `https://<CFPHOST>/event/<CONFERENCE>/event.ics?detail=contributions`
 
 ## Adding your event to the default menu
 

@@ -20,7 +20,6 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
-import android.util.ArrayMap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -39,7 +38,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 
 /* Wrapper around ScheduleListView that adds the improvised tabs with room names below action bar. */
 public class TimeTable extends LinearLayout implements ScheduleViewer {
@@ -146,6 +144,11 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 				scrolling = scrollState != OnScrollListener.SCROLL_STATE_IDLE;
 			}
 		});
+	}
+
+	@Override
+	public void setPadding(int left, int top, int right, int bottom) {
+		scroller.setPadding(left, top, right, bottom);
 	}
 
 	private void flatten() {

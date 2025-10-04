@@ -1,0 +1,29 @@
+{
+	"version": 2025092300,
+	"url": "https://talks.osgeo.org/foss4g-2025/schedule/export/schedule.xml",
+	"title": "FOSS4G 2025",
+	"start": "2025-11-17",
+	"end": "2025-11-23",
+	"timezone": "Pacific/Auckland",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2025.foss4g.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2025.foss4g.org/attend/accomodation",
+				"title": "Accommodation"
+			},
+			{
+				"url": "https://ti.to/osgeo-oceania/foss4g-2025",
+				"title": "Registration"
+			},
+
+			{
+				"url": "https://2025.foss4g.org/attend/code-of-conduct",
+				"title": "Code of Conduct"
+			}
+		]
+	}
+}

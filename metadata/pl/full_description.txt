@@ -1,0 +1,6 @@
+Giggity ładuje pliki XML xcal/Pentabarf/frab (zawierające harmonogramy konferencji/festiwali/innych wydarzeń) i pozwala przeglądać je w różnych wygodnych formatach.
+
+Zawiera wiele wydarzeń, w tym FOSDEM, CCC, FrOSCon itp.
+
+Giggity pozwala zorganizować wizytę - wybrać prelekcje, o których chcesz pamiętać (z ostrzeżeniami w przypadku konfliktów) lub ukryć tematy, którymi jesteś mniej zainteresowany.
+Harmonogramy są wyświetlane w dowolnym formacie - harmonogramy blokowe, zwykłe harmonogramy lub przejrzysty ekran teraz i następnego dnia.

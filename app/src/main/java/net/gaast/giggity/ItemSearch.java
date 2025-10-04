@@ -3,7 +3,6 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -84,6 +83,11 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		addView(resultList, lp);
 
 		new UpdateIndexTask().execute(true);
+	}
+
+	@Override
+	public void setPadding(int left, int top, int right, int bottom) {
+		resultList.setPadding(left, top, right, bottom);
 	}
 
 	// TODO: Use SearchView here maybe?

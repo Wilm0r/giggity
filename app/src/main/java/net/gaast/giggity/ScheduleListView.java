@@ -26,11 +26,11 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.text.MeasuredText;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -71,30 +71,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			}
 		});
 
-		ViewGroup bla = new LinearLayout(ctx);
-		inflate(ctx, R.layout.schedule_item, bla);
-		TextView bliep = bla.findViewById(R.id.time);
-		CharSequence timeText = bliep.getText();
-		int greyWidth = app.dp2px(102);
-		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q /* 29 */) {
-			MeasuredText mt = new MeasuredText.Builder(timeText.toString().toCharArray())  // O_o
-					                  .appendStyleRun(bliep.getPaint(), timeText.length(), false)
-					                  .build();
-			greyWidth = (int) mt.getWidth(0, timeText.length()) + app.dp2px(10);
-		}
-
-		// Grey background for the time(+date) column on the left, but continuous so drawn here.
-		Bitmap bmp = Bitmap.createBitmap(greyWidth, 1, Bitmap.Config.ARGB_8888);
-		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
-		for (int x = 0; x < bmp.getWidth() - 1; x++) {
-			bmp.setPixel(x, 0, getResources().getColor(R.color.time_back));
-		}
-		// Leave the last pixel transparent since that one gets repeated all the way to the right?
-
-		BitmapDrawable bg = new BitmapDrawable(bmp);
-		bg.setTileModeY(Shader.TileMode.REPEAT);
-		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
-		setBackgroundDrawable(bg);
+		setPadding(0, 0, 0, 0);
 
 		setDivider(new ColorDrawable(getResources().getColor(R.color.time_back)));
 		setDividerHeight(app.dp2px(1));
@@ -154,6 +131,40 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			itemListFlags |= ScheduleItemView.MULTI_ROOM;
 		else
 			itemListFlags &= ~ScheduleItemView.MULTI_ROOM;
+	}
+
+	@Override
+	public void setPadding(int left, int top, int right, int bottom) {
+		Log.i("pad", "5 " + top);
+		super.setPadding(left, top, right, bottom);
+		setClipToPadding(false);
+
+		/* draw the grey time column background wide enough to cover the left padding */
+		ViewGroup bla = new LinearLayout(ctx);
+		inflate(ctx, R.layout.schedule_item, bla);
+		TextView bliep = bla.findViewById(R.id.time);
+		CharSequence timeText = bliep.getText();
+		int greyWidth = app.dp2px(102);
+		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q /* 29 */) {
+			MeasuredText mt = new MeasuredText.Builder(timeText.toString().toCharArray())  // O_o
+			                  .appendStyleRun(bliep.getPaint(), timeText.length(), false)
+			                  .build();
+			greyWidth = (int) mt.getWidth(0, timeText.length()) + app.dp2px(10);
+		}
+		greyWidth += left;
+
+		// Grey background for the time(+date) column on the left, but continuous so drawn here.
+		Bitmap bmp = Bitmap.createBitmap(greyWidth, 1, Bitmap.Config.ARGB_8888);
+		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
+		for (int x = 0; x < bmp.getWidth() - 1; x++) {
+			bmp.setPixel(x, 0, getResources().getColor(R.color.time_back));
+		}
+		// Leave the last pixel transparent since that one gets repeated all the way to the right?
+
+		BitmapDrawable bg = new BitmapDrawable(bmp);
+		bg.setTileModeY(Shader.TileMode.REPEAT);
+		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
+		setBackgroundDrawable(bg);
 	}
 
 	@Override
@@ -277,9 +288,8 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				setOnClickListener(ScheduleUI.locationClickListener(getContext(), line));
 
 				// No clue when I stopped adding this view but I guess it can indeed stay away?
-				ImageView iv = new ImageView(ctx);
-				iv.setImageResource(R.drawable.ic_place_black_24dp);
-				iv.setId(2);
+//				ImageView iv = new ImageView(ctx);
+//				iv.setImageResource(R.drawable.ic_place_black_24dp);
 			}
 		}
 	}

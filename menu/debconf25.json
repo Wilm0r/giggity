@@ -1,0 +1,33 @@
+{
+    "version": 2025070302,
+    "url": "https://debconf25.debconf.org/schedule/pentabarf.xml",
+    "title": "DebConf 25",
+    "start": "2025-07-14",
+    "end": "2025-07-20",
+    "timezone": "Europe/Paris",
+    "metadata": {
+        "icon": "https://debconf25.debconf.org/static/img/logo-medium.d4e8d313ad22.png",
+        "links": [
+            {
+                "url": "https://debconf25.debconf.org/",
+                "title": "Website"
+            },
+            {
+                "title": "Wiki",
+                "url": "https://wiki.debian.org/DebConf/25"
+            },
+            {
+                "url": "https://debconf25.debconf.org/about/coc/",
+                "title": "Code of Conduct"
+            },
+            {
+                "url": "https://debconf25.debconf.org/about/debcamp/",
+                "title": "DebCamp"
+            },
+            {
+                "url": "https://debconf25.debconf.org/static/img/venue-map.be22d283ecb3.pdf",
+                "title": "Map"
+            }
+        ]
+    }
+}

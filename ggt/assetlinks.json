@@ -6,8 +6,11 @@
     "target": {
       "namespace": "android_app",
       "package_name": "net.gaast.giggity",
+      "_comment": "Dev/debug key, prod key for my Play Store uploads, then F-Droid, see https://f-droid.org/docs/Release_Channels_and_Signing_Keys/",
       "sha256_cert_fingerprints": [
-        "99:A5:DE:A0:63:C4:27:9F:42:09:3A:3B:97:92:94:DD:04:86:1F:7D:C8:68:77:8B:CB:36:2B:A5:EB:CF:E4:7F"
+        "CD:BF:4B:79:23:0E:C6:0E:47:FF:C9:5A:61:5E:82:09:5C:6D:6C:9B:FA:AD:EB:64:CE:46:42:0E:72:D3:AD:EB",
+        "99:A5:DE:A0:63:C4:27:9F:42:09:3A:3B:97:92:94:DD:04:86:1F:7D:C8:68:77:8B:CB:36:2B:A5:EB:CF:E4:7F",
+        "43:23:8d:51:2c:1e:5e:b2:d6:56:9f:4a:3a:fb:f5:52:34:18:b8:2e:0a:3e:d1:55:27:70:ab:b9:a9:c9:cc:ab"
       ]
     }
   }

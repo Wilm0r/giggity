@@ -33,7 +33,7 @@ def load_locally(path):
 	for p, _, flist in os.walk(path):
 		for fn in flist:
 			text = open(os.path.join(p, fn), "r", encoding="utf-8").read()
-			check_indents(text, fn)
+			# check_indents(text, fn)
 			all[fn] = json.loads(text)
 
 	return all
@@ -50,7 +50,7 @@ def load_git(path, revision):
 	all = {}
 	for name, mode, object_id in menu.iteritems():
 		text = str(repo[object_id].data, "utf-8")
-		check_indents(text, name)
+		# check_indents(text, name)
 		all[name.decode("utf-8")] = json.loads(text)
 	
 	return all

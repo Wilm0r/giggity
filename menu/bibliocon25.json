@@ -1,0 +1,20 @@
+{
+	"version": 2025030601,
+	"url": "https://cloud.bib.uni-mannheim.de/public.php/dav/files/MRwnBF84RfdJw55/",
+	"title": "Bibliothekskongress 2025",
+	"start": "2025-06-24",
+	"end": "2025-06-27",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2025.bid-kongress.de/",
+				"title": "Webseite"
+			},
+			{
+				"url": "https://2025.bid-kongress.de/der-kongress/informationen-von-a-z/",
+				"title": "Informationen von A-Z"
+			}
+		]
+	}
+}

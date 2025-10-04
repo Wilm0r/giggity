@@ -1,0 +1,6 @@
+Giggity načítá soubory XML xcal/Pentabarf/frab (které obsahují rozvrhy konferencí/festivalů/jiných akcí) a umožňuje je prohlížet v různých pohodlných formátech.
+
+Přednastaveno mnoho událostí včetně FOSDEM, CCC, FrOSCon atd.
+
+Giggity vám umožní organizovat si návštěvu - vyberte si přednášky, které vám budou připomínány (s upozorněním v případě konfliktů), nebo skryjte témata, která vás zajímají méně.
+Rozvrhy se zobrazují v libovolném formátu - blokové rozvrhy, prosté rozvrhy nebo přehledná obrazovka "teď a potom" v samotný den.

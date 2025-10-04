@@ -89,6 +89,9 @@ parser.add_argument(
 parser.add_argument(
 	"--summary_comment", default=None,
 	help="Filename (must not yet exist) to write markdown-formatted comment to. (For Github Action handler.)")
+parser.add_argument(
+	"--pr_title", default=None,
+	help="Filename (must not yet exist) to write PR title update info to. (For Github Action handler.)")
 args = parser.parse_args()
 
 if args.stderr:
@@ -178,6 +181,9 @@ class HTTP():
 		else:
 			ims = email.utils.formatdate(self.hcache[url]["_ts"], localtime=False, usegmt=True)
 		headers = {"If-Modified-Since": ims}
+		if "etag" in self.hcache[url]:
+			etag = self.hcache[url]["etag"].removeprefix("W/").removeprefix("\"").removesuffix("\"")
+			headers["If-None-Match"] = etag
 		# GET not HEAD because the CCC webserver is fucking retarded.
 		u = self.o.request(
 			"GET", url, headers=headers, redirect=False, preload_content=False)
@@ -354,6 +360,7 @@ elif new["version"] > todayver:
 	LOG.E("File version (%d) number must be ≤ %d" % (new["version"], todayver))
 
 changed = []
+pr_title = []
 base_entries: Dict[str, Dict] = {e["id"]: e for e in base.get("schedules", [])}
 seen_urls: Set[str] = set()
 seen_ids: Set[str] = set()
@@ -388,6 +395,11 @@ for e in new["schedules"]:
 		LOG.I("New: %s" % e["title"])
 		changed.append(e)
 	
+	pr_title.append({
+		"tag": e["start"],
+		"prefix": "[%s] " % e["start"],
+	})
+
 	entry_issues = validate_entry(e)
 	if entry_issues:
 		for err in entry_issues:
@@ -436,6 +448,9 @@ for e in changed:
 
 for e in base_entries.values():
 	LOG.I("Removed: %s" % e["title"])
+
+if args.pr_title and len(pr_title) == 1:
+	open(args.pr_title, "x").write(json.dumps(pr_title[0]))
 
 if LOG.errors:
 	LOG.E("File validation failed! :-( Please correct the issues listed above.")

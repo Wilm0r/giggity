@@ -1,0 +1,30 @@
+{
+	"version": 2025092801,
+	"url": "https://www.pycon.fr/2025/fr/calendar.ics",
+	"title": "PyConFR 2025",
+	"start": "2025-10-30",
+	"end": "2025-11-02",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.pycon.fr/2025/fr/",
+				"title": "Site Web"
+			},
+			{
+				"title": "Inscription",
+				"url": "https://www.pycon.fr/2025/fr/schedule.html#register"
+			}
+		],
+		"rooms": [
+			{
+				"name": "B.*",
+				"latlon": [45.76845, 4.80609]
+			},
+			{
+				"name": "C.*",
+				"latlon": [45.76845, 4.80609]
+			}
+		]
+	}
+}

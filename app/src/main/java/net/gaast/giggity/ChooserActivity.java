@@ -26,8 +26,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Insets;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -37,6 +39,7 @@ import android.transition.Explode;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.DisplayCutout;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +47,7 @@ import android.view.View;
 import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowInsets;
 import android.widget.AdapterView;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.AdapterView.OnItemClickListener;
@@ -62,6 +66,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Date;
 
+import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
@@ -97,6 +102,20 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 
 		list = new ListView(this);
+		if (Build.VERSION.SDK_INT >= 30) {
+			list.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
+				@NonNull
+				@Override
+				public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
+					DisplayCutout cut = null;
+					Insets r = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+					list.setPadding(r.left, r.top, r.right, r.bottom);
+					list.setClipToPadding(false);
+
+					return insets;
+				}
+			});
+		}
 		updateList();  // To make sure there's always something on screen.
 		refreshSeed(false);  // Possibly find new data then refresh, asynchronously.
 
@@ -136,8 +155,10 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 		LinearLayout cont = new LinearLayout(this);
 		cont.setOrientation(LinearLayout.VERTICAL);
+//		cont.setFitsSystemWindows(true);
 		cont.addView(refresher, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1));
 
+		cont.setBackgroundResource(R.color.primary_dark);
 		setContentView(cont);
 	}
 
@@ -330,7 +351,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				dialog.cancel();
 			}
 		});
-
 		d.show();
 	}
 

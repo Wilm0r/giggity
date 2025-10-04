@@ -66,6 +66,7 @@ public class ScheduleItemActivity extends Activity {
 		}
 
 		pager_ = new EventDialogPager(this, item, others, getIntent().getStringExtra("search_query"));
+		pager_.setBackgroundResource(R.color.primary_dark);
 		//pager_.getHeader().setTransitionName("title");
 		setContentView(pager_);
 	}

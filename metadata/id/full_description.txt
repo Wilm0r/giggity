@@ -1,0 +1,6 @@
+Giggity memuat file XML xcal/Pentabarf/frab (yang berisi jadwal konferensi/festival/acara lainnya) dan memungkinkan Anda menelusurinya dalam berbagai format yang nyaman.
+
+Telah diawali dengan banyak acara termasuk FOSDEM, CCC, FrOSCon, dll.
+
+Giggity memungkinkan Anda mengatur kunjungan Anda - pilih pembicaraan yang ingin diingatkan (dengan peringatan jika terjadi konflik) atau sembunyikan topik yang kurang Anda minati.
+Jadwal ditampilkan dalam format apa pun yang Anda suka - jadwal blok, jadwal biasa, atau layar sekarang dan selanjutnya yang jelas pada hari itu sendiri.

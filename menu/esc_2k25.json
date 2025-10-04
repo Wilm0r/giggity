@@ -1,0 +1,28 @@
+{
+	"version": 2025082600,
+	"url": "https://pretalx.endsummer.camp/2K25/schedule/export/schedule.xml",
+	"title": "End Summer Camp {21}",
+	"start": "2025-09-02",
+	"end": "2025-09-07",
+	"timezone": "Europe/Rome",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://endsummer.camp/",
+				"title": "End Summer Camp website"
+			},
+			{
+				"url": "https://t.me/endsummercamp",
+				"title": "Telegram chat"
+			},
+			{
+				"url": "https://t.me/esc_annunci",
+				"title": "Telegram announcement channels"
+			},
+      		{
+				"url": "https://www.endsummercamp.org/index.php/Main_Page",
+				"title": "Historical wiki"
+			}
+		]
+	}
+}

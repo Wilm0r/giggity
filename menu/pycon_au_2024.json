@@ -1,0 +1,28 @@
+{
+	"version": 2024110501,
+	"url": "https://pretalx.com/pycon-au-2024/schedule/export/schedule.xml",
+	"title": "PyCon AU 2024",
+	"start": "2024-11-22",
+	"end": "2024-11-26",
+	"timezone": "Australia/Melbourne",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2024.pycon.org.au/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2024.pycon.org.au/about/culture/",
+				"title": "Culture"
+			},
+			{
+				"url": "https://2024.pycon.org.au/attend/travel/",
+				"title": "Getting around"
+			},
+			{
+				"url": "https://2024.pycon.org.au/safety/",
+				"title": "Safety"
+			}
+		]
+	}
+}

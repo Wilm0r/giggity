@@ -1,0 +1,28 @@
+{
+	"version": 2025021700,
+	"url": "https://cfp.zam.haus/wicmp-2025/schedule.xml",
+	"title": "Wintergalaktische Club-Mate Party 2025",
+	"start": "2025-02-28",
+	"end": "2025-03-02",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://w.icmp.camp/10/",
+				"title": "Website"
+			},
+			{
+				"url": "https://cfp.zam.haus/wicmp-2025/schedule/",
+				"title": "Fahrplan"
+			},
+			{
+				"url": "https://ticketing.zam.haus/bnb/wicmp10addon/",
+				"title": "Workshops und Hackertours"
+			},
+			{
+				"url": "https://poc.w.icmp.camp",
+				"title": "POC"
+			}
+		]
+	}
+}

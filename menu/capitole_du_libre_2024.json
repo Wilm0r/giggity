@@ -1,0 +1,39 @@
+{
+	"version": 2024110300,
+	"url": "https://cfp.capitoledulibre.org/cdl-2024/schedule/export/schedule.xml",
+	"title": "Capitole du Libre 2024",
+	"start": "2024-11-16",
+	"end": "2024-11-17",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://stockage.framapiaf.org/framapiaf/accounts/avatars/000/063/765/original/c5fa7c6864ab5ba2.png",
+		"links": [
+			{
+				"url": "https://capitoledulibre.org/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://tickets.capitoledulibre.org/cdl/2024/",
+				"title": "Inscription gratuite obligatoire"
+			}
+		],
+		"rooms": [
+			{
+				"name": "A.*",
+				"latlon": [43.60248, 1.45464]
+			},
+			{
+				"name": "B.*",
+				"latlon": [43.60247, 1.45566]
+			},
+			{
+				"name": "C.*",
+				"latlon": [43.60214, 1.45462]
+			},
+			{
+				"name": "Foyer.*",
+				"latlon": [43.60207, 1.45591]
+			}
+		]
+	}
+}

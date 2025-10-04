@@ -5,10 +5,12 @@ on:
     paths-ignore:
       - 'tools/**'
       - 'menu/**'
+      - 'metadata/**'
   pull_request:
     paths-ignore:
       - 'tools/**'
       - 'menu/**'
+      - 'metadata/**'
 
 jobs:
   build:

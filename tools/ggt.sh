@@ -13,4 +13,4 @@ if [ -z "$url" ]; then
 	exit 1
 fi
 
-echo https://ggt.gaa.st#url="${url}"\&json="$(cat "$json" | jq -Mc "" | gzip -9 | base64 -w0 | tr +/ -_)"
+echo https://ggt.gaa.st#url="${url}"\&json="$(cat "$json" | jq -Mc "." | gzip -9 | base64 -w0 | tr +/ -_)"

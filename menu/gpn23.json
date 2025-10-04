@@ -1,0 +1,20 @@
+{
+  "version": 2025060800,
+  "url": "https://cfp.gulas.ch/gpn23/schedule/export/schedule.xml",
+  "title": "23. Gulaschprogrammiernacht",
+  "start": "2025-06-19",
+  "end": "2025-06-22",
+  "timezone": "Europe/Berlin",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://entropia.de/GPN23",
+        "title": "Website"
+      },
+      {
+        "url": "https://entropia.de/GPN23:FAQ",
+        "title": "FAQ"
+      }
+    ]
+  }
+}

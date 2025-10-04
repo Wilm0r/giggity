@@ -1,0 +1,28 @@
+{
+	"version": 2025091001,
+	"url": "https://pretalx.com/pycon-au-2025/schedule/export/schedule.xml",
+	"title": "PyCon AU 2025",
+	"start": "2025-09-12",
+	"end": "2025-09-16",
+	"timezone": "Australia/Melbourne",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2025.pycon.org.au/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2025.pycon.org.au/about/culture/",
+				"title": "Culture"
+			},
+			{
+				"url": "https://2025.pycon.org.au/attend/travel/",
+				"title": "Getting around"
+			},
+			{
+				"url": "https://2025.pycon.org.au/safety/",
+				"title": "Safety"
+			}
+		]
+	}
+}

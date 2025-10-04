@@ -1,0 +1,16 @@
+{
+	"version": 2025062900,
+	"url": "https://talks.hackover.de/ho25/schedule/export/schedule.xml",
+	"title": "Hackover 2025",
+	"start": "2025-07-04",
+	"end": "2025-07-06",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackover.de/",
+				"title": "Website"
+			}
+		]
+	}
+}

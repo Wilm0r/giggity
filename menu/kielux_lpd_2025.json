@@ -1,0 +1,28 @@
+{
+	"version": 2025081401,
+	"title": "Kielux Linux Presentation Day 2025",
+	"url": "https://kielux.de/content/calendars/LPD25.ics",
+	"start": "2025-09-18",
+	"end": "2025-09-18",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"metadata": {
+		"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+		"links": [
+			{
+				"url": "https://kielux.de",
+				"title": "Website"
+			},
+			{
+				"url": "https://kielux.de/programm/LPD24",
+				"title": "Schedule"
+			}
+		],
+		"rooms": [
+			{
+				"name": "R114",
+				"latlon": [54.33510, 10.11944]
+			}
+		]
+	}
+}

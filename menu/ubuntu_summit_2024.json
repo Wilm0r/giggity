@@ -1,0 +1,16 @@
+{
+	"version": 2024100900,
+	"url": "https://events.canonical.com/event/51/event.ics?detail=contributions",
+	"title": "Ubuntu Summit 2024",
+	"start": "2024-10-25",
+	"end": "2024-10-27",
+	"timezone": "Europe/Amsterdam",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://ubuntu.com/summit",
+				"title": "Website"
+			}
+		]
+	}
+}

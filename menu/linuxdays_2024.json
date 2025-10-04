@@ -1,0 +1,52 @@
+{
+    "version": 2024101000,
+    "url": "https://pretalx.linuxdays.cz/linuxdays-2024/schedule/export/schedule.xml",
+    "start": "2024-10-12",
+    "end": "2024-10-13",
+    "timezone": "Europe/Prague",
+    "title": "LinuxDays 2024",
+    "metadata": {
+        "icon": "https://www.linuxdays.cz/2024/obrazky/icon.png",
+        "links": [
+            {
+                "title": "Website",
+                "url": "https://www.linuxdays.cz/2024/"
+            },
+            {
+                "title": "Map",
+                "type": "image/png",
+                "url": "https://www.linuxdays.cz/2024/obrazky/plan24.png"
+            }
+        ],
+        "rooms": [
+            {
+                "latlon": [
+                    50.105249,
+                    14.390095
+                ],
+                "name": "105"
+            },
+            {
+                "latlon": [
+                    50.105382,
+                    14.389836
+                ],
+                "name": "155"
+            },
+            {
+                "latlon": [
+                    50.105138,
+                    14.390298
+                ],
+                "name": "107"
+            },
+            {
+                "latlon": [
+                    50.105047,
+                    14.390432
+                ],
+                "name": "111"
+            }
+        ]
+    }
+}

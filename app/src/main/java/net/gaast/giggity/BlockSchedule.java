@@ -127,6 +127,8 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 
 		end = Calendar.getInstance();
 		end.setTime(sched.getLastTime());
+		// Some slack needed for edge-to-edge, should remain mostly invisible.
+		end.add(Calendar.HOUR_OF_DAY, 2);
 
 		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
 		Bitmap bmp = Bitmap.createBitmap(HourWidth, TentHeight, Bitmap.Config.ARGB_8888);
@@ -246,7 +248,13 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		
 		setBackgroundColor(c.background);
 	}
-	
+
+	@Override
+	public void setPadding(int left, int top, int right, int bottom) {
+		schedCont.setPadding(0, 0, right, 0);
+		schedCont.setClipToPadding(false);
+	}
+
 	/* If the user scrolls one view, keep the others in sync. */
 	@Override
 	public void onScrollEvent(NestedScroller src, int x, int y) {
@@ -264,6 +272,10 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		TentHeight *= scaleY;
 		HourWidth = Math.max(60, Math.min(HourWidth, 1000));
 		TentHeight = Math.max(30, Math.min(TentHeight, 400));
+		if (HourWidth / TentHeight < 2) {
+			HourWidth = TentHeight * 2;
+		}
+		Log.d("ratio:", "" + ((float) HourWidth / (float) TentHeight));
 
 		draw();
 		

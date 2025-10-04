@@ -1,4 +1,4 @@
-runtime: python311
+runtime: python313
 
 inbound_services:
 - warmup
@@ -29,3 +29,6 @@ handlers:
   secure: always
   redirect_http_response_code: 301
   script: auto
+
+automatic_scaling:
+  max_instances: 3

@@ -1,0 +1,6 @@
+Giggity, xcal/Pentabarf/frab XML dosyalarını (konferans/festival/diğer etkinliklerin programlarını içeren) yükler ve bunlara çeşitli uygun formatlarda göz atmanızı sağlar.
+
+FOSDEM, CCC, FrOSCon vb. dahil olmak üzere birçok etkinlikle önceden belirlenmiştir.
+
+Giggity ziyaretinizi organize etmenizi sağlar - hatırlatılacak konuşmaları seçin (çakışma durumunda uyarılarla birlikte) veya daha az ilgilendiğiniz konuları gizleyin.
+Programlar istediğiniz formatta gösterilir - blok programlar, düz zaman çizelgeleri veya günün kendisinde net bir şimdi ve sonraki ekran.

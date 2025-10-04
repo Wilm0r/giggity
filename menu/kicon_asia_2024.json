@@ -1,0 +1,16 @@
+{
+	"title": "KiCon Asia 2024",
+	"url": "https://pretalx.kicad.org/kicon-asia-2024/schedule/export/schedule.xml",
+	"start": "2024-11-15",
+	"end": "2024-11-16",
+	"version": 2024111401,
+	"timezone": "Asia/Shanghai",
+	"metadata": {
+		"links": [
+			{
+				"title": "Website",
+				"url": "https://kicon.kicad.org/asia2024/en/"
+			}
+		]
+	}
+}

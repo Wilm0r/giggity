@@ -1,0 +1,26 @@
+{
+	"version": 2025080301,
+	"url": "https://schedule.hope.net/hope16/schedule/export/schedule.xml",
+	"title": "HOPE 2025",
+	"start": "2025-08-15",
+	"end": "2025-08-17",
+	"timezone": "America/New_York",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://xvi.hope.net/",
+				"title": "Website"
+			}
+		],
+		"rooms": [
+			{
+				"name": ".* Tobin .*",
+				"latlon": [40.723401, -73.794351]
+			},
+			{
+				"name": "Marillac .*",
+				"latlon": [40.722994, -73.794935]
+			}
+		]
+	}
+}

@@ -1,6 +1,7 @@
 package net.gaast.giggity;
 
-import android.util.Log;
+import android.Manifest;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -12,7 +13,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
@@ -27,7 +27,6 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
@@ -37,11 +36,9 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
-import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.anyOf;
-import static org.hamcrest.Matchers.anything;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
@@ -56,7 +53,7 @@ public class Spresso {
 	public ActivityScenarioRule<ChooserActivity> mActivityScenarioRule =
 			new ActivityScenarioRule<>(ChooserActivity.class);
 
-	public static Matcher scheduleByTitle(Matcher nameMatcher){
+	private static Matcher scheduleByTitle(Matcher nameMatcher){
 		return new TypeSafeMatcher<Db.DbSchedule>(){
 			@Override
 			public void describeTo(Description description) {
@@ -70,7 +67,7 @@ public class Spresso {
 		};
 	}
 
-	public static Matcher scheduleItemByTitle(Matcher nameMatcher){
+	private static Matcher scheduleItemByTitle(Matcher nameMatcher){
 		return new TypeSafeMatcher<Schedule.Item>(){
 			@Override
 			public void describeTo(Description description) {
@@ -83,11 +80,22 @@ public class Spresso {
 			}
 		};
 	}
+
 	@Test
-	public void basicNav() {
+	public void testBasicNav() {
+		if (Build.VERSION.SDK_INT >= 30) {
+			// (Weirdly docs claim API version 23 should already support this, yet my API 26 VM does not..)
+			try {
+				getInstrumentation().getUiAutomation().grantRuntimePermission(
+				BuildConfig.APPLICATION_ID, Manifest.permission.POST_NOTIFICATIONS);
+			} catch (SecurityException e) {
+			}  // If we can't get it we probably don't yet need it?
+		}
+
 		CountingIdlingResource loaders = new CountingIdlingResource("loaders");
 		ScheduleViewActivity.setIdler(loaders);
 		Espresso.registerIdlingResources(loaders);
+
 
 		// Load schedule.
 		onData(scheduleByTitle(containsString("DebConf 23"))).perform(click());
@@ -95,13 +103,13 @@ public class Spresso {
 
 		// Start with the first day.
 		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
-		onView(withId(R.id.scrollView)).perform(swipeUp());
+		onView(withId(R.id.drawerScroll)).perform(swipeUp());
 		onView(allOf(withText(R.string.change_day))).perform(click());
 		onView(allOf(withClassName(endsWith("CheckedTextView")), withText(containsString("10")))).perform(click());
 
 		// Timetable view.
 		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
-		onView(withId(R.id.scrollView)).perform(swipeDown());
+		onView(withId(R.id.drawerScroll)).perform(swipeDown());
 		onView(allOf(withId(R.id.timetable), withText(R.string.timetable))).perform(click());
 
 		onData(scheduleItemByTitle(startsWith("Using FOSS to fight"))).inAdapterView(withClassName(is("net.gaast.giggity.ScheduleListView"))).perform(click());
@@ -119,7 +127,7 @@ public class Spresso {
 
 		// 12th Sep
 		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
-		onView(withId(R.id.scrollView)).perform(swipeUp());
+		onView(withId(R.id.drawerScroll)).perform(swipeUp());
 		onView(allOf(withText(R.string.change_day))).perform(click());
 		onView(allOf(withClassName(endsWith("CheckedTextView")), withText(containsString("12")))).perform(click());
 
@@ -144,7 +152,7 @@ public class Spresso {
 
 		// Search query
 		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
-		onView(withId(R.id.scrollView)).perform(swipeDown());
+		onView(withId(R.id.drawerScroll)).perform(swipeDown());
 		onView(allOf(withId(R.id.search), withText(R.string.search))).perform(click());
 
 		ViewInteraction searchQuery = onView(
@@ -163,7 +171,7 @@ public class Spresso {
 
 		// My events, see what we selected so far?
 		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
-		onView(withId(R.id.scrollView)).perform(swipeDown());
+		onView(withId(R.id.drawerScroll)).perform(swipeDown());
 		onView(allOf(withId(R.id.my_events), withText(R.string.my_events))).perform(click());
 
 		// TODO: Check why MyItemsView exists but Timetable is just ScheduleListView... Is it because of the odd little carousel thing at the top?

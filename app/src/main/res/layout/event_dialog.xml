@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@color/background_material_light"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/header"
@@ -188,12 +189,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alertBox"
+                    android:textIsSelectable="true"
                     tools:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would've thought that this one would take even longer than going from 0.7 to 1.0 (which only took three years)?
 
         There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the Duke Nukem Forever in the BitlBee community. Looks like we won!
 
-        This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it's waaaay late to release a BitlBee 2 at this point, let's go for 3.0 immediately. :-)"
-                    android:textIsSelectable="true" />
+        This all seems enough to bump the major version number. Since, looking at the timing of previous versions, it's waaaay late to release a BitlBee 2 at this point, let's go for 3.0 immediately. :-)" />
 
                 <!-- oops, this one seems lost, does it still work? Or, should I keep the icon links at all? -->
                 <LinearLayout

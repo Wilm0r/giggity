@@ -1,5 +1,8 @@
 /app/build
 __pycache__
+.mypy_cache/
+.python-version
+uv.lock
 
 # from https://raw.githubusercontent.com/github/gitignore/master/Android.gitignore as of 2024-07-04
 # Gradle files
