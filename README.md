@@ -44,19 +44,18 @@ itself as a reader for these file formats with Android.
 
 If you however want to add deeplinks on your website, prompting Android
 phones to open your schedule file directly in Giggity, you can use
-ggt.gaa.st URLs formatted like this:
+ggt.gaa.st URLs formatted for example like this:
 
 ```
-https://ggt.gaa.st/#url=https://fosdem.org/2019/schedule/xml
+https://ggt.gaa.st/#url=https://fosdem.org/2025/schedule/xml
 ```
 
-Starting with Giggity 2.0, you can also include your JSON metadata in these
-URLs if you have any. Use [this script](tools/ggt.sh) to generate the
-right (and backward compatible) URL.
+You can also include your JSON metadata (see below) in these URLs. Use
+[this script](tools/ggt.sh) to generate the right (and backward compatible)
+URL, which you could include on your event website, in QR codes on-site, etc.
 
-This is likely a better option than scanning a QR now that good ad-free
-QR scanners appear to be rare. But where possible, consider just adding
-your event to the menu as explained in the next section.
+Phones that don't have Giggity installed yet will load a simple page with
+download instructions instead, see https://ggt.gaa.st.
 
 ## Locating the XML/ICS file
 
@@ -162,4 +161,4 @@ on your phone.
 
 To get your entry added to Giggity, just add it to the [menu directory](menu) and
 send a pull request. To save time, run `tools/menu-ci.py` for sanity checking. 
-(Same check is run automatically through Travis-CI.)
+(Same check is run automatically through github CI.)

@@ -201,21 +201,22 @@ class ADB:
 		self._dev = ()
 		if args.adb:
 			self.on = True
-			for dev in self.call("devices").splitlines()[1:]:
-				# Insist on using only emulators to avoid accidentally erasing data on a real device!
-				if dev.startswith("emulator-"):
-					dev = dev.split()[0]
-					LOG.C("Connecting to adb emulator device %r" % dev)
-					self._dev = ("-s", dev)
-					break
-				else:
-					if dev:
-						LOG.I("Not an emulator: %s" % dev)
+			if not os.getenv("ANDROID_SERIAL"):
+				for dev in self.call("devices").splitlines()[1:]:
+					# Insist on using only emulators to avoid accidentally erasing data on a real device!
+					if dev.startswith("emulator-"):
+						dev = dev.split()[0]
+						LOG.C("Connecting to adb emulator device %r" % dev)
+						self._dev = ("-s", dev)
+						break
+					else:
+						if dev:
+							LOG.I("Not an emulator: %s" % dev)
 
-			if not self._dev:
-				self.on = False
-				LOG.E("No Android emulator available?")
-				return
+				if not self._dev:
+					self.on = False
+					LOG.E("No Android emulator available?")
+					return
 			
 			self.call("logcat", "-c")
 			p = subprocess.Popen((args.adb,) + self._dev + ("logcat",), stdout=subprocess.PIPE)

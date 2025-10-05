@@ -16,6 +16,9 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    env:
+      # adb variable (alternative to -s flag).
+      ANDROID_SERIAL: localhost:5555
 
     steps:
       - uses: actions/checkout@v4
@@ -32,6 +35,11 @@ jobs:
           python -m pip install --upgrade pip
           pip install dulwich jsonschema pillow urllib3
 
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+        with:
+          packages: 'platform-tools'
+
       - name: Fetch PR
         id: fetch_pr
         run: |
@@ -41,9 +49,25 @@ jobs:
           git clone --reference "${PWD}" -b "${PR_SHA}" "${PR_URL}" "${HEAD}"
           echo "dst=${HEAD}" >> "$GITHUB_OUTPUT"
 
+      - name: Setup ADB/SSH keys
+        run: |
+          mkdir .android .ssh
+          echo ${{ secrets.ADB }} | base64 -d | gunzip > .android/adbkey
+          echo ${{ secrets.SSH }} | base64 -d | gunzip > .ssh/id_rsa
+          chmod 0600 .ssh/id_rsa
+
+      - name: Connect to Android emulator
+        id: adb
+        run: |
+          if ssh -4fNL 5555:localhost:5555 fiona.gaast.net && adb connect "${ANDROID_SERIAL}"; then
+            echo "flag=--adb $(which adb)" >> "$GITHUB_OUTPUT"
+          else
+            echo "flag=" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Run menu JSON checker
         id: main
-        run: tools/menu-ci.py --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}}/menu --summary_comment /tmp/menu-ci-comment.md --pr_title /tmp/menu-ci-title.json
+        run: tools/menu-ci.py ${{steps.adb.outputs.flag}} --stderr --load-new-from ${{steps.fetch_pr.outputs.dst}}/menu --summary_comment /tmp/menu-ci-comment.md --pr_title /tmp/menu-ci-title.json
 
       - name: "Update PR comment: Ready to go!"
         if: ${{ success() }}
