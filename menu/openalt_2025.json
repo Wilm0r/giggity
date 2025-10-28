@@ -1,0 +1,17 @@
+{
+	"version": 2025102700,
+	"url": "https://talks.openalt.cz/openalt-2025/schedule/export/schedule.xml",
+	"title": "OpenALT 2025",
+	"start": "2025-11-01",
+	"end": "2025-11-02",
+	"timezone": "Europe/Prague",
+	"metadata": {
+		"icon": "https://gitlab.com/uploads/-/system/project/avatar/45099900/logo_konference-150.png",
+		"links": [
+			{
+				"url": "https://www.openalt.cz/2025/",
+				"title": "Website"
+			}
+		]
+	}
+}
