@@ -1,5 +1,5 @@
 {
-	"version": 2025100400,
+	"version": 2025100500,
 	"url": "https://www.sfscon.it/?calendar=2025&format=xml",
 	"title": "SFSCON 2025",
 	"start": "2025-11-07",
@@ -11,6 +11,18 @@
 			{
 				"url": "https://www.sfscon.it/",
 				"title": "Website"
+			},
+			{
+				"url": "https://www.sfscon.it/side-events/",
+				"title": "Side Events"
+			},
+			{
+				"url": "https://www.sfscon.it/attendee-guide/",
+				"title": "Attendee's Guide"
+			},
+			{
+				"url": "https://www.sfscon.it/venue/",
+				"title": "Venue"
 			}
 		]
 	}
