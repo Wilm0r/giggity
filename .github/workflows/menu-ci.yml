@@ -52,6 +52,7 @@ jobs:
       - name: Setup ADB/SSH keys
         run: |
           mkdir .android .ssh
+          echo "fiona.gaast.net ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILCDZbzoD2Ypv0EOOjJYC8nKLhn6JZaZuxtsyQy/1Rrf" > .ssh/known_hosts
           echo ${{ secrets.ADB }} | base64 -d | gunzip > .android/adbkey
           echo ${{ secrets.SSH }} | base64 -d | gunzip > .ssh/id_rsa
           chmod 0600 .ssh/id_rsa
