@@ -63,7 +63,7 @@ jobs:
       - name: Connect to Android emulator
         id: adb
         run: |
-          if ssh -4fNL 5555:localhost:5555 giggity-adb@fiona.gaast.net && adb connect "${ANDROID_SERIAL}"; then
+          if ssh -v4fNL 5555:localhost:5555 giggity-adb@fiona.gaast.net && adb connect "${ANDROID_SERIAL}"; then
             echo "flag=--adb $(which adb)" >> "$GITHUB_OUTPUT"
           else
             echo "flag=" >> "$GITHUB_OUTPUT"
