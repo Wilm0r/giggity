@@ -1,0 +1,17 @@
+{
+    "version": 2025103100,
+    "url": "https://sotm.osmz.ru/sotmeu25.xml",
+    "title": "State of the Map Europe 2025",
+    "start": "2025-11-14",
+    "end": "2025-11-15",
+    "timezone": "Europe/London",
+    "refresh_interval": 7200,
+    "metadata": {
+        "links": [
+            {
+                "url": "https://2025.stateofthemap.eu/",
+                "title": "Website"
+            }
+        ]
+    }
+}
