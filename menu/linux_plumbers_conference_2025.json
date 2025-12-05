@@ -1,0 +1,16 @@
+{
+  "version": 2025120301,
+  "url": "https://lpc.events/event/19/event.ics?detail=contributions",
+  "title": "Linux Plumbers Conference 2025",
+  "start": "2025-12-11",
+  "end": "2025-12-13",
+  "timezone": "Asia/Tokyo",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://lpc.events/event/19/",
+        "title": "Website"
+      }
+    ]
+  }
+}
