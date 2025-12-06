@@ -1,0 +1,25 @@
+{
+	"title": "39C3 - merged",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://events.ccc.de/congress/2025/infos/startpage.html",
+				"title": "Website"
+			},
+			{
+				"url": "https://events.ccc.de/congress/2025/hub/en/index",
+				"title": "Wiki"
+			},
+			{
+				"title": "Weblog",
+				"url": "https://events.ccc.de/"
+			}
+		]
+	},
+	"url": "https://fahrplan.events.ccc.de/congress/2025/fahrplan/schedules/schedule.xml",
+	"start": "2025-12-27",
+	"end": "2025-12-30",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 1800,
+	"version": 2025120501
+}
