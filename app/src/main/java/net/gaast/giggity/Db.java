@@ -65,7 +65,7 @@ import static java.lang.Math.log;
 public class Db {
 	private Giggity app;
 	private Helper dbh;
-	private static final int dbVersion = 19;
+	private static final int dbVersion = 20;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -91,6 +91,7 @@ public class Db {
 			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
 			                                  "sch_title VarChar(128), " +
 			                                  "sch_url VarChar(256), " +
+			                                  "sch_hidden Boolean, " +
 			                                  "sch_atime Integer, " +
 			                                  "sch_rtime Integer, " +
 			                                  "sch_itime Integer, " +
@@ -197,6 +198,14 @@ public class Db {
 			if (oldVersion < 19) {
 				try {
 					db.execSQL("Alter Table schedule Add Column sch_timezone VarChar(128)");
+				} catch (SQLiteException e) {
+					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+					e.printStackTrace();
+				}
+			}
+			if (oldVersion < 20) {
+				try {
+					db.execSQL("Alter Table schedule Add Column sch_hidden Boolean");
 				} catch (SQLiteException e) {
 					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
 					e.printStackTrace();
@@ -460,6 +469,7 @@ public class Db {
 		private long schId;
 		
 		private int day;
+		private String title;
 		private String metadata;
 		
 		public void setSchedule(Schedule sched_, String url, boolean fresh) {
@@ -476,14 +486,15 @@ public class Db {
 				row.put("sch_rtime", new Date().getTime() / 1000);
 
 			SQLiteDatabase db = dbh.getWritableDatabase();
-			q = db.rawQuery("Select sch_id, sch_day, sch_metadata From schedule Where sch_url = ?",
+			q = db.rawQuery("Select sch_id, sch_day, sch_title, sch_metadata From schedule Where sch_url = ?",
 			                new String[]{sched.getUrl()});
 
 			if (q.moveToNext()) {
-				/* Pick up additional data from the database. TODO: Pick up title (can't feed it back yet.) */
+				/* Pick up additional data from the database. */
 				schId = q.getLong(0);
 				day = (int) q.getLong(1);
-				metadata = q.getString(2);
+				title = q.getString(2);
+				metadata = q.getString(3);
 
 				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 			} else if (q.getCount() == 0) {
@@ -623,6 +634,8 @@ public class Db {
 				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
 			}
 		}
+
+		public String getTitle() { return title; }
 
 		public String getMetadata() {
 			return metadata;
@@ -834,24 +847,26 @@ public class Db {
 	public class DbSchedule {
 		private int id;
 		private String url, title;
+		private boolean hidden;
 		private Date start, end;
 		private String timezone;
 		private int refresh_interval;  // Number of seconds before checking server for new schedule info.
 		private Date atime;  // Access time, set by setSchedule above, used as sorting key in Chooser.
 		private Date rtime;  // Refresh time, last time Fetcher claimed the server sent new data.
-		private Date itime;  // Index time, last time it was added to the FTS index.
+//		private Date itime;  // Index time, last time it was added to the FTS index.
 
 		public DbSchedule(Cursor q) {
 			id = q.getInt(q.getColumnIndexOrThrow("sch_id"));
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
 			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
+			hidden = q.getInt(q.getColumnIndexOrThrow("sch_hidden")) > 0;
 			start = new Date(q.getLong(q.getColumnIndexOrThrow("sch_start")) * 1000);
 			refresh_interval = q.getInt(q.getColumnIndexOrThrow("sch_refresh_interval"));
 			end = new Date(q.getLong(q.getColumnIndexOrThrow("sch_end")) * 1000);
 			timezone = q.getString(q.getColumnIndexOrThrow("sch_timezone"));
 			atime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_atime")) * 1000);
 			rtime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_rtime")) * 1000);
-			itime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_itime")) * 1000);
+//			itime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_itime")) * 1000);
 		}
 		
 		public String getUrl() {
@@ -864,7 +879,11 @@ public class Db {
 			else
 				return url;
 		}
-		
+
+		public boolean getHidden() {
+			return hidden;
+		}
+
 		public Date getStart() {
 			return start;
 		}

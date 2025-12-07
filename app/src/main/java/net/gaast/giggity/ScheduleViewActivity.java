@@ -134,6 +134,7 @@ public class ScheduleViewActivity extends Activity {
 
 	private SharedPreferences pref;
 
+	private String title = "";
 	private String showEventId;
 
 	private BroadcastReceiver tzClose;
@@ -666,7 +667,7 @@ public class ScheduleViewActivity extends Activity {
 		if (icon == null) {
 			icon = ((BitmapDrawable)getResources().getDrawable(R.drawable.deoxide_icon)).getBitmap();
 		}
-		d = new ActivityManager.TaskDescription(sched.getTitle(), icon, getResources().getColor(R.color.primary));
+		d = new ActivityManager.TaskDescription(title, icon, getResources().getColor(R.color.primary));
 		this.setTaskDescription(d);
 
 		// Notifications were already scheduled at load time but that was before extra metadata (like c3nav)
@@ -864,16 +865,21 @@ public class ScheduleViewActivity extends Activity {
 			Log.e("finishNavDrawer", "Called before critical was loaded?");
 			return;
 		}
-
+		title = sched.getDb().getTitle();
+		if (title == null || title.isEmpty() || title.startsWith("https://")) {
+			// Especially .ics files have useless titles so only use them if the one from Giggity's
+			// menu is empty or bad.
+			title = sched.getTitle();
+		}
 		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
 		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.search && sched.getDays().size() > 1) {
 			ZonedDateTime d = sched.setDay(sched.getDb().getDay());
 			if (d != null) {
-				setTitle(sched.getDayFormat().format(d) + ", " + sched.getTitle());
+				setTitle(sched.getDayFormat().format(d) + ", " + title);
 			}
 		} else {
 			sched.setDay(-1);
-			setTitle(sched.getTitle());
+			setTitle(title);
 		}
 
 		if (curView == R.id.timetable) {
@@ -1122,7 +1128,7 @@ public class ScheduleViewActivity extends Activity {
 
 		ShortcutInfoCompat.Builder sb = new ShortcutInfoCompat.Builder(this, sched.getUrl());
 		sb.setIntent(shortcut);
-		sb.setShortLabel(sched.getTitle());
+		sb.setShortLabel(title);
 
 		Bitmap bmp = null;
 		if (with_icon) {
