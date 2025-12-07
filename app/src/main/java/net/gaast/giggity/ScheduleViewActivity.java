@@ -45,6 +45,7 @@ import android.preference.PreferenceManager;
 import android.transition.Explode;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -86,6 +87,7 @@ import androidx.core.content.FileProvider;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
+import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
 import androidx.test.espresso.idling.CountingIdlingResource;
@@ -145,6 +147,9 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (Build.VERSION.SDK_INT >= 30) {
+			WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+		}
 		app = (Giggity) getApplication();
 
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
@@ -309,6 +314,8 @@ public class ScheduleViewActivity extends Activity {
 				@Override
 				public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
 					Insets r = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
+					LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+					ViewGroup base = (ViewGroup) inflater.inflate(R.layout.schedule_view_activity, null);
 					// Handle the top (status bar etc) here at the activity level already, other
 					// stuff like the notch is up to the specific viewer. /o\
 					bigScreen.setPadding(0, r.top, 0, 0);
@@ -317,6 +324,16 @@ public class ScheduleViewActivity extends Activity {
 					ScrollView drawerScroll = drawer.findViewById(R.id.drawerScroll);
 					drawerScroll.setPadding(0, 0, 0, r.bottom);
 					drawerScroll.setClipToPadding(false);
+
+					// Need to dig up the original element here, since this handler can run many
+					// times in a row for example when the user rotates the screen, don't want to
+					// keep adding more and more padding every time.
+					View basev = base.findViewById(R.id.dayButtons);
+					v = findViewById(R.id.dayButtons);
+					v.setPadding(basev.getPaddingLeft(), basev.getPaddingTop(),
+					             Math.max(basev.getPaddingRight(), r.right),
+					             Math.max(basev.getPaddingBottom(), r.bottom));
+
 					if (viewer != null) {
 						viewer.setPadding(r.left, 0, r.right, r.bottom);
 						viewerPadding = r;

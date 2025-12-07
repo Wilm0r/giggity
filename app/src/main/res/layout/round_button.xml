@@ -4,7 +4,7 @@
         android:layout_height="48dp"
         android:layout_margin="8dp"
         android:background="@drawable/round_button"
-        android:elevation="8dp"
+        android:elevation="3dp"
         android:text="?"
         android:textColor="@color/light_text"
         android:textSize="24sp"
