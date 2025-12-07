@@ -32,6 +32,9 @@ android {
         main.res.srcDirs = ['src/main/res']
     }
     namespace 'net.gaast.giggity'
+    buildFeatures {
+        buildConfig true
+    }
 }
 dependencies {
     implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
