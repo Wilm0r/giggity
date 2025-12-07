@@ -82,6 +82,16 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		// IIRC stuff below was another (abandoned and not terribly useful) attempt at enabling
+		// edge-to-edge UI on older devices.
+//		if (Build.VERSION.SDK_INT >= 30) {
+//			WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+//			WindowInsetsControllerCompat windowInsetsController =
+//					ViewCompat.getWindowInsetsController(getWindow().getDecorView());
+//			if (windowInsetsController != null) {
+//				windowInsetsController.setAppearanceLightNavigationBars(false);
+//			}
+//		}
 
 		//this.setTheme(android.R.style.Theme_Holo);
 
