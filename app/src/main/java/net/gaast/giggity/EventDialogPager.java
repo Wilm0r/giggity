@@ -56,7 +56,7 @@ public class EventDialogPager extends ViewPager {
 			setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
 				@NonNull
 				@Override
-				public WindowInsets onApplyWindowInsets(@NonNull View _, @NonNull WindowInsets insets) {
+				public WindowInsets onApplyWindowInsets(@NonNull View meh, @NonNull WindowInsets insets) {
 					DisplayCutout cut = null;
 					Insets r = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
 					padding_ = r;

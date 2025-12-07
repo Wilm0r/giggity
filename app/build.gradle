@@ -35,12 +35,13 @@ android {
 }
 dependencies {
     implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'
+    implementation 'androidx.core:core:1.5.0'
     // Hmpf, the above is needed for just ActionBarDrawerToggle and makes the following three unnecessary?
-    // That one's deprecated though so at some point I can split again:
+    // That one's deprecated though so at some point I can split again? But not as long as it triples my APK size.
     // implementation 'androidx.drawerlayout:drawerlayout:1.0.0'
     // implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.0.0'
     // implementation 'androidx.viewpager:viewpager:1.0.0'
-    implementation 'commons-io:commons-io:2.4'
+    implementation 'commons-io:commons-io:2.16.1'
 
     final def markwon_version = "4.6.2"
     implementation  "io.noties.markwon:core:$markwon_version"
@@ -48,15 +49,15 @@ dependencies {
     implementation  "io.noties.markwon:ext-strikethrough:$markwon_version"  // html seems to depend on this one? #shruggie
     implementation  "io.noties.markwon:linkify:$markwon_version"
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.json:json:20230227'
 
-    final def espresso_version = "3.6.0-alpha01"
+    final def espresso_version = "3.6.1"
     implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
-    androidTestImplementation 'androidx.test.ext:junit:1.2.0-alpha01'
+    androidTestImplementation 'androidx.test.ext:junit:1.2.1'
 }
 
 repositories {

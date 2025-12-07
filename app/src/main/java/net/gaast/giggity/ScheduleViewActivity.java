@@ -147,9 +147,10 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (Build.VERSION.SDK_INT >= 30) {
-			WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
-		}
+//		if (Build.VERSION.SDK_INT >= 30) {
+//			// (I forgot what this was for, IIRC as part of edge-to-edge on older devices, unsuccessfully?
+//			WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
+//		}
 		app = (Giggity) getApplication();
 
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
