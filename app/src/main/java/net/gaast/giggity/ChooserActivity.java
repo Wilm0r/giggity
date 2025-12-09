@@ -341,27 +341,29 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				openSchedule(urlBox.getText().toString(), false, null);
 			}
 		});
-		/* Apparently the "Go"/"Done" button still just simulates an ENTER keypress. Neat!...
-		   http://stackoverflow.com/questions/5677563/listener-for-done-button-on-edittext */
-		urlBox.setOnKeyListener(new View.OnKeyListener() {
-			@Override
-			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (event.getAction() == KeyEvent.ACTION_DOWN &&
-						keyCode == KeyEvent.KEYCODE_ENTER) {
-					openSchedule(urlBox.getText().toString(), false, null);
-					return true;
-				} else {
-					return false;
-				}
-			}
-		});
 		d.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();
 			}
 		});
-		d.show();
+		AlertDialog built = d.show();
+		/* Apparently the "Go"/"Done" button still just simulates an ENTER keypress. Neat!...
+		   http://stackoverflow.com/questions/5677563/listener-for-done-button-on-edittext
+		   This is an event handler on the inner textbox. Since it needs a reference to the
+		   built dialog we can only set it up now. */
+		urlBox.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (event.getAction() == KeyEvent.ACTION_DOWN &&
+						keyCode == KeyEvent.KEYCODE_ENTER) {
+					built.getButton(DialogInterface.BUTTON_POSITIVE).performClick();
+					return true;
+				} else {
+					return false;
+				}
+			}
+		});
 	}
 
 	private class ScheduleAdapter extends BaseAdapter {
