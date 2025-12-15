@@ -561,6 +561,11 @@ public class ScheduleViewActivity extends Activity {
 				} catch (Schedule.LateException e) {
 					Log.d("LateException", "" + prog.getUpdater());
 					// Hrm, we lost the race. TODO: Figure out what, but for now do nothing.
+				} catch (Schedule.RedirectException e) {
+					Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(e.getUrl()),
+							ScheduleViewActivity.this, ScheduleViewActivity.class);
+					startActivity(intent);
+					finish();  // To not keep this redirecting activity in the stack.
 				} catch (Throwable t) {
 					t.printStackTrace();
 					if (prog.getUpdater() != null) {

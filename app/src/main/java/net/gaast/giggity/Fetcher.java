@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 /** Caching HTTP fetcher. */
@@ -165,6 +166,17 @@ public class Fetcher {
 		progressHandler = handler;
 	}
 
+	public String getContentType() {
+		if (dlc != null) {
+			String s = dlc.getContentType();
+			if (s != null) {
+				s = s.replace(";.*", "").trim().toLowerCase();
+			}
+			return s;
+		}
+		return null;
+	}
+
 	// Export InputStream.
 	public InputStream getStream() {
 		if (inStream == null) {
@@ -191,10 +203,7 @@ public class Fetcher {
 
 		// Just to ensure inReader exists.
 		getReader();
-		while ((n = inReader.read(buf, 0, buf.length)) > 0)
-			ret += new String(buf, 0, n);
-
-		return ret;
+		return inReader.lines().collect(Collectors.joining());
 	}
 
 	public boolean fromCache() {

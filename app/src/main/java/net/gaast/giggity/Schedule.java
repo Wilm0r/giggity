@@ -72,6 +72,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.html.HtmlPlugin;
@@ -141,8 +142,7 @@ public class Schedule implements Serializable {
 		} else if (head.contains("begin:vcalendar")) {
 			loadIcal(in);
 		} else {
-			Log.d("head", head);
-			throw new LoadException(getString(R.string.format_unknown));
+			throw new FormatException();
 		}
 
 		Log.d("load", "Schedule has " + languages.size() + " languages");
@@ -225,6 +225,22 @@ public class Schedule implements Serializable {
 		public LateException() {
 			super("LoadException. This thread has lost the race.");
 		}
+	}
+
+	static public class FormatException extends LoadException {
+		public FormatException() {
+			super("format?");
+		}
+	}
+
+	static public class RedirectException extends LoadException {
+		private String url;
+		public RedirectException(String url) {
+			super("RedirectException. Webpage gave us a schedule link: " + url);
+			this.url = url;
+		}
+
+		public String getUrl() { return url; }
 	}
 
 	public static String hashify(String url) {

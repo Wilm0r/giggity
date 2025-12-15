@@ -11,12 +11,24 @@ import android.view.View;
 
 import org.apache.commons.io.output.NullOutputStream;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZoneId;
 import java.util.AbstractList;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
+
+import androidx.annotation.NonNull;
+import io.noties.markwon.Markwon;
+import io.noties.markwon.MarkwonVisitor;
+import io.noties.markwon.html.HtmlPlugin;
+import io.noties.markwon.html.HtmlTag;
+import io.noties.markwon.html.MarkwonHtmlRenderer;
+import io.noties.markwon.html.TagHandler;
 
 public class ScheduleUI extends Schedule {
 	/* Schedule subclass which should carry, among other things, elements that depend on Android.
@@ -39,7 +51,6 @@ public class ScheduleUI extends Schedule {
 
 		if (ret.progressHandler == null) {
 			// TODO: Test this uncommon codepath to ensure noop handlers are noop and not crashop.
-			// (Can't test this now because it looks like reminders are kinda broken... :< )
 			ret.progressHandler = new Handler();
 		}
 
@@ -61,10 +72,38 @@ public class ScheduleUI extends Schedule {
 				ret.progressHandler.sendEmptyMessage(ScheduleViewActivity.LoadProgress.FROM_CACHE);
 			}
 			ret.loadSchedule(f.getReader(), url);
-		} catch (LoadException | IOException e) {
-			Log.e("Schedule.loadSchedule", "Exception while downloading schedule: " + e);
+		} catch (FormatException e ) {
+			final ScheduleLinkFinder finder = new ScheduleLinkFinder();
+			final Markwon markwon = Markwon.builder(ctx)
+					.usePlugin(HtmlPlugin.create(new HtmlPlugin.HtmlConfigure() {
+						@Override
+						public void configureHtml(@NonNull HtmlPlugin plugin) {
+							plugin.addHandler(finder);
+						}
+					}))
+					.build();
+
+			try {
+				// Don't need the returned output at all, just have it call the handler above.
+				// While it would be fun if I could abort load/parse as soon as we have the link
+				// we're looking for (throw exception right from tag handler?), I don't think
+				// Markwon can do streamed parsing?
+				markwon.toMarkdown(f.slurp());
+			} catch (IOException ex) {
+				// Meh any meaningful error will have happened earlier during the fetch already.
+				// Stick to "invalid file format" outcome.
+				e.printStackTrace();
+			}
+			if (finder.getLink() != null) {
+				throw new RedirectException(finder.getLink());
+			}
+			throw new LoadException(ctx.getString(R.string.format_unknown));
+		} catch (IOException e) {
 			e.printStackTrace();
 			throw new LoadException("Network I/O problem: " + e);
+		} catch (LoadException e) {
+			e.printStackTrace();
+			throw e;
 		}
 		f.keep();
 
@@ -87,6 +126,24 @@ public class ScheduleUI extends Schedule {
 		ret.fullyLoaded = true;
 
 		return ret;
+	}
+
+	private static class ScheduleLinkFinder extends TagHandler {
+		String res = null;
+
+		@NonNull @Override
+		public Collection<String> supportedTags() {
+			return new ArrayList<String>(Arrays.asList("link"));
+		}
+
+		@Override
+		public void handle(@NonNull MarkwonVisitor visitor, @NonNull MarkwonHtmlRenderer renderer, @NonNull HtmlTag tag) {
+			if (tag.attributes().getOrDefault("type", "").equals("application/vnd.c3voc.schedule+xml")) {
+				res = tag.attributes().get("href");
+			}
+		}
+
+		public String getLink() { return res; }
 	}
 
 	public String getString(int id) {
