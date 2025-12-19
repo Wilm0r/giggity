@@ -182,7 +182,7 @@ class HTTP():
 			ims = email.utils.formatdate(self.hcache[url]["_ts"], localtime=False, usegmt=True)
 		headers = {"If-Modified-Since": ims}
 		if "etag" in self.hcache[url]:
-			etag = self.hcache[url]["etag"].removeprefix("W/").removeprefix("\"").removesuffix("\"")
+			etag = self.hcache[url]["etag"].removeprefix("W/")
 			headers["If-None-Match"] = etag
 		# GET not HEAD because the CCC webserver is fucking retarded.
 		u = self.o.request(
