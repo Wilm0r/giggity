@@ -319,17 +319,20 @@ public class Db {
 			sched.start.setHours(6);
 			sched.end.setHours(18);
 		} else {
-			/* For different days, pretend the even't from noon to noon. In both cases, we'll have exact times
+			/* For different days, pretend the event's from noon to noon. In both cases, we'll have exact times
 			 * once we load the schedule for the first time. */
 			sched.start.setHours(12);
 			sched.end.setHours(12);
 		}
 
 		Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
+//		Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ? Or sch_id_s = ?",
+//				new String[]{sched.url, sched.id});
 
 		ContentValues row = new ContentValues();
 		if (q.getCount() == 0) {
 			/* Only needed when creating a brand new entry (don't overwrite atime otherwise!) */
+			// row.put("sch_id_s", sched.id);
 			row.put("sch_url", sched.url);
 			row.put("sch_atime", sched.start.getTime() / 1000);
 		}
@@ -374,6 +377,7 @@ public class Db {
 		Fetcher f = null;
 		try {
 			if (source == SeedSource.BUILT_IN) {
+				// See generateMenu task in app/build.gradle.
 				InputStreamReader inr = new InputStreamReader(app.getResources().openRawResource(R.raw.menu), StandardCharsets.UTF_8);
 				StringWriter sw = new StringWriter();
 				IOUtils.copy(inr, sw);
@@ -424,7 +428,7 @@ public class Db {
 		}
 		
 		private static class Schedule {
-			String url, title;
+			String id, url, title;
 			int refresh_interval;
 			Date start, end;
 			String timezone;
@@ -434,6 +438,7 @@ public class Db {
 			String metadata;
 			
 			public Schedule(JSONObject jso) throws JSONException {
+				id = jso.optString("id", "");  // Was optional for a while.
 				url = jso.getString("url");
 				title = jso.getString("title");
 				refresh_interval = jso.optInt("refresh_interval", 86400);
@@ -457,7 +462,7 @@ public class Db {
 			}
 
 			public String toString() {
-				return "SCHEDULE(url=" + url + ", title=" + title + ")";
+				return "SCHEDULE(id=" + id + ", url=" + url + ", title=" + title + ")";
 			}
 		}
 	}
@@ -480,6 +485,7 @@ public class Db {
 
 			row = new ContentValues();
 			row.put("sch_atime", new Date().getTime() / 1000);
+			row.put("sch_hidden", false);  // Instead of adding an unhide option, just unhide if the user opens it again.
 			row.put("sch_start", sched.getFirstTime().getTime() / 1000);
 			row.put("sch_end", sched.getLastTime().getTime() / 1000);
 			if (fresh)
@@ -649,6 +655,14 @@ public class Db {
 				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
 			}
 			q.close();
+		}
+
+		public void hideSchedule(String url) {
+			SQLiteDatabase db = dbh.getWritableDatabase();
+			ContentValues row = new ContentValues();
+			row.put("sch_hidden", true);
+			int x = db.update("schedule", row, "sch_url = ?", new String[]{url});
+			Log.d("update", ""+x + row + schId);
 		}
 
 		public void resetIndex(Collection<Schedule.Item> items) {
@@ -907,7 +921,7 @@ public class Db {
 			return now.getTime() > (rtime.getTime() + interval * 1000);
 		}
 
-		public void flushHidden() {
+		public void flushHiddenItems() {
 			Connection db = getConnection();
 			db.flushHidden(id);
 		}

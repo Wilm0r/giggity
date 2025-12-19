@@ -142,17 +142,15 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		list.setOnCreateContextMenuListener(new OnCreateContextMenuListener() {
 			@Override
 			public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
-			AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
-			DbSchedule sched = (DbSchedule) lista.getItem((int) mi.id);
-			if (sched != null) {
-				menu.setHeaderTitle(sched.getTitle());
-				menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
-				menu.add(ContextMenu.NONE, 3, 0, R.string.unhide);
-				// Don't support this for now. With tedious versioning of menu.json removed, I can't
-				// be bothered to try to preserve these deletions. (Who does this anyway?)
-				// menu.add(ContextMenu.NONE, 1, 0, R.string.remove);
-				menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
-			}
+				AdapterContextMenuInfo mi = (AdapterContextMenuInfo) menuInfo;
+				DbSchedule sched = (DbSchedule) lista.getItem((int) mi.id);
+				if (sched != null) {
+					menu.setHeaderTitle(sched.getTitle());
+					menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
+					menu.add(ContextMenu.NONE, 3, 0, R.string.unhide);
+					menu.add(ContextMenu.NONE, 1, 0, R.string.hide);
+					menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
+				}
 			}
 		});
 		list.setBackgroundResource(R.color.light);
@@ -238,13 +236,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			openSchedule(sched.getUrl(), true, null);
 		} else if (item.getItemId() == 3) {
 			/* Unhide. */
-			sched.flushHidden();
+			sched.flushHiddenItems();
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
 			openSchedule(sched.getUrl(), sched.refreshNow(), null);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
-			db.removeSchedule(sched.getUrl());
+			db.hideSchedule(sched.getUrl());
 			onResume();
 		} else {
 			// Long ago this used to show a QR through a ZXing app intent, but that thing is dead,
@@ -370,12 +368,15 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		ArrayList<Element> list;
 
 		public ScheduleAdapter(AbstractList<DbSchedule> scheds) {
-			ArrayList<Element> now, later, past;
+			ArrayList<Element> now, later, past, hidden;
 			now = new ArrayList<>();
 			later = new ArrayList<>();
 			past = new ArrayList<>();
+			hidden = new ArrayList<>();
 			for (DbSchedule sched : scheds) {
-				if (sched.getStart().after(new Date())) {
+				if (sched.getHidden()) {
+					hidden.add(new Element(sched));
+				} else if (sched.getStart().after(new Date())) {
 					later.add(new Element(sched));
 				} else if (sched.getEnd().before(new Date())) {
 					Element e = new Element(sched);
@@ -392,6 +393,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			addAll(now, R.string.chooser_now);
 			addAll(later, R.string.chooser_later);
 			addAll(past, R.string.chooser_past);
+			addAll(hidden, R.string.chooser_hidden);
 		}
 
 		private void addAll(ArrayList<Element> bunch, int title) {

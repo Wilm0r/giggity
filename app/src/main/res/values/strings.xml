@@ -79,11 +79,12 @@
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>
 	<string name="unhide">Recover hidden items</string>
-	<string name="remove">Remove</string>
+	<string name="hide">Hide</string>
 	<string name="show_url">Show URL...</string>
 	<string name="chooser_now">Now</string>
 	<string name="chooser_later">Later</string>
 	<string name="chooser_past">Over</string>
+	<string name="chooser_hidden">Hidden</string>
 	<string name="add_dialog">Add...</string>
 	<string name="enter_url">Enter schedule URL</string>
 	<string name="refresh_failed">Menu refresh unsuccessful.</string>

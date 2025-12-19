@@ -71,11 +71,12 @@
 	<!-- ChooserActivity -->
 	<string name="refresh">Verversen</string>
 	<string name="unhide">Verborgen items herstellen</string>
-	<string name="remove">Verwijderen</string>
+	<string name="hide">Verbergen</string>
 	<string name="show_url">URL weergeven...</string>
 	<string name="chooser_now">Nu</string>
 	<string name="chooser_later">Later</string>
 	<string name="chooser_past">Afgelopen</string>
+	<string name="chooser_hidden">Verborgen</string>
 	<string name="add_dialog">Toevoegen...</string>
 	<string name="enter_url">Voer programma URL in</string>
 	<string name="refresh_failed">Kon menu niet verversen.</string>
