@@ -260,12 +260,15 @@ public class ScheduleViewActivity extends Activity {
 			// style arguments but not when that syntax is used after the #. (Using # instead of
 			// ? to avoid the data hitting the server, should the query fall through.)
 			for (String param : parsed.getEncodedFragment().split("&")) {
+				String[] p = param.split("=", 2);
 				try {
-					if (param.startsWith("url=")) {
-						url = URLDecoder.decode(param.substring(4), "utf-8");
-					} else if (param.startsWith("json=")) {
+					if (p.length != 2) {
+						continue;
+					} else if (p[0].equals("url")) {
+						url = URLDecoder.decode(p[1], "utf-8");
+					} else if (p[0].equals("json")) {
 						String jsonb64 = null;
-							jsonb64 = URLDecoder.decode(param.substring(5), "utf-8");
+							jsonb64 = URLDecoder.decode(p[1], "utf-8");
 						byte[] json;
 						try {
 							json = Base64.decode(jsonb64, Base64.URL_SAFE);

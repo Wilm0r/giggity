@@ -438,7 +438,7 @@ public class Db {
 			String metadata;
 			
 			public Schedule(JSONObject jso) throws JSONException {
-				id = jso.optString("id", "");  // Was optional for a while.
+				id = jso.optString("id", null);  // Was optional for a while.
 				url = jso.getString("url");
 				title = jso.getString("title");
 				refresh_interval = jso.optInt("refresh_interval", 86400);
@@ -619,7 +619,6 @@ public class Db {
 				return null;
 			}
 			Log.d("Db.refreshSingle", "Found something that parsed like my json: " + parsed);
-			removeSchedule(parsed.url);
 			app.flushSchedule(parsed.url);
 			updateSchedule(dbh.getWritableDatabase(), parsed);
 			return parsed.url;
@@ -653,6 +652,7 @@ public class Db {
 			while (q.moveToNext()) {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + q.getInt(0)});
 				db.delete("schedule_item", "sci_sch_id = ?", new String[]{"" + q.getInt(0)});
+				db.delete("item_search", "sch_id = ?", new String[]{"" + q.getInt(0)});
 			}
 			q.close();
 		}
