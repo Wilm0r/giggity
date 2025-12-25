@@ -706,7 +706,8 @@ public class ScheduleViewActivity extends Activity {
 
 		ArrayList<ZonedDateTime> days = sched.getDays();
 		TextView dr = (TextView) drawerLayout.findViewById(R.id.drawer_date_range);
-		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
+		// TODO: Switch back to getFirst/getLast when fully on Java 21 (API 35?)
+		dr.setText(Giggity.dateRange(days.get(0), days.get(days.size()-1)));
 
 		double offset = sched.getTzDiff();
 		if (offset != 0) {

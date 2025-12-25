@@ -187,8 +187,8 @@ public class Schedule implements Serializable {
 			String menu = new JSONObject()
 					               .put("url", url_)
 					               .put("title", getTitle())
-					               .put("start", day0List.getFirst().format(DateTimeFormatter.ISO_LOCAL_DATE))
-					               .put("end", day0List.getLast().format(DateTimeFormatter.ISO_LOCAL_DATE)).toString();
+					               .put("start", day0List.get(0).format(DateTimeFormatter.ISO_LOCAL_DATE))
+					               .put("end", day0List.get(day0List.size()-1).format(DateTimeFormatter.ISO_LOCAL_DATE)).toString();
 			Log.i("giggity.Schedule", "successfully loaded, suggested menu JSON: " + menu);
 		} catch (JSONException e) {
 			// blah O_o
@@ -474,7 +474,7 @@ public class Schedule implements Serializable {
 					JSONObject link = linklist.getJSONObject(i);
 					Schedule.Link slink = new Link(link.getString("url"), link.getString("title"));
 					slink.setType(link.optString("type", null));
-					links.addLast(slink);
+					links.add(slink);
 				}
 			}
 			if (md.has("rooms")) {
@@ -987,8 +987,10 @@ public class Schedule implements Serializable {
 				persons.add(curString);
 			} else if (localName.equals("link")) {
 				String title = curString.trim();
+				// <link href="https://xxxxx/">yyyyy</link>
+				//                             ^^^^^
 				if (!links.isEmpty() && !title.isEmpty()) {
-					links.getLast().setTitle(title);
+					links.get(links.size()-1).setTitle(title);
 				}
 			} else if (propMap != null) {
 				propMap.put(localName, curString);
