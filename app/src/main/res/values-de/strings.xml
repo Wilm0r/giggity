@@ -72,7 +72,6 @@
 	<!-- ChooserActivity -->
 	<string name="refresh">Aktualisieren</string>
 	<string name="unhide">Wiederherstellen von versteckten Einträgen</string>
-	<string name="remove">Entfernen</string>
 	<string name="show_url">URL anzeigen...</string>
 	<string name="chooser_now">Aktuelle Veranstaltungen</string>
 	<string name="chooser_later">Kommende Veranstaltungen</string>

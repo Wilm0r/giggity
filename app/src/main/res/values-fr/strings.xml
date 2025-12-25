@@ -72,7 +72,6 @@
 	<!-- ChooserActivity -->
 	<string name="refresh">Mettre à jour</string>
 	<string name="unhide">Montrer les éléments cachés</string>
-	<string name="remove">Supprimer</string>
 	<string name="show_url">Montrer l\'URL...</string>
 	<string name="chooser_now">Évènements actuels</string>
 	<string name="chooser_later">Évènements à venir</string>

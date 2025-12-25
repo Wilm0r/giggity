@@ -77,7 +77,6 @@
 	<!-- ChooserActivity -->
 	<string name="refresh">Aktualizovat</string>
 	<string name="unhide">Odkrýt skryté položky</string>
-	<string name="remove">Odstranit</string>
 	<string name="show_url">Zobrazit URL...</string>
 	<string name="chooser_now">Probíhající</string>
 	<string name="chooser_later">Naplánované</string>

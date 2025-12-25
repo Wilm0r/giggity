@@ -76,7 +76,6 @@
 	<!-- ChooserActivity -->
 	<string name="refresh">Ricarica</string>
 	<string name="unhide">Recupera elementi nascosti</string>
-	<string name="remove">Rimuovi</string>
 	<string name="show_url">Mostra URL...</string>
 	<string name="chooser_now">Eventi in corso</string>
 	<string name="chooser_later">Eventi in arrivo</string>
