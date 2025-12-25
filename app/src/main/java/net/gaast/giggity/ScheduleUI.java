@@ -11,7 +11,6 @@ import android.view.View;
 
 import org.apache.commons.io.output.NullOutputStream;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZoneId;
@@ -19,8 +18,6 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import io.noties.markwon.Markwon;
@@ -242,7 +239,7 @@ public class ScheduleUI extends Schedule {
 		if (ids == null) {
 			return null;
 		}
-		LinkedList<Item> ret = new LinkedList<Item>();
+		ArrayList<Item> ret = new ArrayList<Item>();
 		Log.d("searchItems", "" + ids.size() + " items");
 		for (String id : ids) {
 //			Log.d("searchItems", "id=" + id + " " + allItems.containsKey(id));

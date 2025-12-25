@@ -78,7 +78,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -87,7 +86,6 @@ import androidx.core.content.FileProvider;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
-import androidx.core.view.WindowCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.legacy.app.ActionBarDrawerToggle;
 import androidx.test.espresso.idling.CountingIdlingResource;
@@ -706,7 +704,7 @@ public class ScheduleViewActivity extends Activity {
 			return;
 		}
 
-		LinkedList<ZonedDateTime> days = sched.getDays();
+		ArrayList<ZonedDateTime> days = sched.getDays();
 		TextView dr = (TextView) drawerLayout.findViewById(R.id.drawer_date_range);
 		dr.setText(Giggity.dateRange(days.getFirst(), days.getLast()));
 
@@ -1041,7 +1039,7 @@ public class ScheduleViewActivity extends Activity {
 
 	public void showDayDialog() {
 		DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("EE d MMMM");
-		LinkedList<ZonedDateTime> days = sched.getDays();
+		ArrayList<ZonedDateTime> days = sched.getDays();
 
 		if (days.size() == 2) {
 			/* If there are only two days, don't bother showing the dialog, even

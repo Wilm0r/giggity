@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.LinkedList;
 
 @SuppressLint("SimpleDateFormat")
 public class BlockSchedule extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
@@ -108,7 +107,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		
 		int x, y;
 		Calendar base, cal, end;
-		LinkedList<Schedule.Line> tents;
+		ArrayList<Schedule.Line> tents;
 
 		String fontSetting = pref.getString("font_size", "medium");
 		if (fontSetting.equals("small")) {
@@ -183,8 +182,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		});
 
 		y = 0;
-		// TODO: ArrayList?
-		tents = new LinkedList<>(sched.getTents());
+		tents = new ArrayList<>(sched.getTents());
 		for (Schedule.Line tent : tents) {
 			int posx, h, w;
 

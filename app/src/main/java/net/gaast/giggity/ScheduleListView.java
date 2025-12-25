@@ -38,6 +38,7 @@ import android.widget.TextView;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class ScheduleListView extends ListView implements ScheduleViewer {
 	ArrayList<?> list;
@@ -56,7 +57,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 			@Override
 			public void onItemClick(AdapterView<?> l, View v, int position, long id) {
 				// Find all other Item entries before and after the current one. Ugly. :-(
-				ArrayList<Schedule.Item> others = new ArrayList<Schedule.Item>();
+				AbstractList<Schedule.Item> others = new LinkedList<Schedule.Item>();
 				for (int i = position; i >= 0 && list.get(i).getClass() == Schedule.Item.class; --i) {
 					others.add(0, (Schedule.Item) list.get(i));
 				}

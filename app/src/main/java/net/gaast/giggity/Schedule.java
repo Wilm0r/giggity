@@ -21,7 +21,6 @@ package net.gaast.giggity;
 
 import android.content.Context;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -30,7 +29,6 @@ import org.json.JSONObject;
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.AttributesImpl;
@@ -43,7 +41,6 @@ import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
@@ -65,14 +62,12 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import io.noties.markwon.Markwon;
 import io.noties.markwon.html.HtmlPlugin;
@@ -84,7 +79,7 @@ public class Schedule implements Serializable {
 	private String url;
 	private String title;
 
-	private LinkedList<Schedule.Line> tents = new LinkedList<>();
+	private ArrayList<Schedule.Line> tents = new ArrayList<>();
 	protected HashMap<String,Schedule.Item> allItems = new HashMap<>();
 	protected HashMap<String,String> cIdMap = new HashMap<>();
 	private Collator trackSort;
@@ -95,9 +90,9 @@ public class Schedule implements Serializable {
 	private int curDayNum;
 	private ZonedDateTime curDay, curDayEnd;          // null if curDayNum = -1
 	// For internal use, *exact* hour boundaries (day-before for some day change + tz offset combs)
-	private LinkedList<ZonedDateTime> dayList = new LinkedList<>();
+	private ArrayList<ZonedDateTime> dayList = new ArrayList<>();
 	// For external use, dates only
-	private LinkedList<ZonedDateTime> day0List = new LinkedList<>();
+	private ArrayList<ZonedDateTime> day0List = new ArrayList<>();
 	private boolean showHidden;  // So hidden items are shown but with a different colour.
 
 	private ZoneId inTZ = ZoneId.systemDefault();   // TZ-less/UTC times to be interpreted as/converted to this.
@@ -109,7 +104,7 @@ public class Schedule implements Serializable {
 	/* Misc. data not in the schedule file but from Giggity's menu.json. Though it'd certainly be
 	 * nice if some file formats could start supplying this info themselves. */
 	private String icon;
-	private LinkedList<Link> links;
+	private ArrayList<Link> links;
 	protected String roomStatusUrl;
 
 	protected boolean fullyLoaded;
@@ -162,7 +157,7 @@ public class Schedule implements Serializable {
 
 		ZonedDateTime dayEnd = day.plusDays(1);
 
-		dayList = new LinkedList<>();
+		dayList = new ArrayList<>();
 		while (day.isBefore(lastTime)) {
 			/* Some schedules have empty days in between. :-/ Skip those. */
 			for (Schedule.Item item : allItems.values()) {
@@ -258,7 +253,7 @@ public class Schedule implements Serializable {
 		return ret;
 	}
 	
-	public LinkedList<ZonedDateTime> getDays() {
+	public ArrayList<ZonedDateTime> getDays() {
 		return day0List;
 	}
 	
@@ -473,7 +468,7 @@ public class Schedule implements Serializable {
 				icon = md.getString("icon");
 			}
 			if (md.has("links")) {
-				links = new LinkedList<>();
+				links = new ArrayList<>();
 				JSONArray linklist = md.getJSONArray("links");
 				for (int i = 0; i < linklist.length(); ++i) {
 					JSONObject link = linklist.getJSONObject(i);
@@ -589,7 +584,7 @@ public class Schedule implements Serializable {
 		return null;
 	}
 
-	public LinkedList<Link> getLinks() {
+	public ArrayList<Link> getLinks() {
 		return links;
 	}
 
@@ -808,8 +803,8 @@ public class Schedule implements Serializable {
 		private HashMap<String,Schedule.Line> tentMap;
 		private HashMap<String,String> propMap;
 		private String curString;
-		private LinkedList<String> persons;
-		private LinkedList<Link> links;
+		private ArrayList<String> persons;
+		private ArrayList<Link> links;
 		private LocalDate curDay;
 
 		private DateTimeFormatter df, tf, zdf;
@@ -838,8 +833,8 @@ public class Schedule implements Serializable {
 				if (atts.getValue("guid") != null)
 					propMap.put("guid", atts.getValue("guid"));
 
-				links = new LinkedList<>();
-				persons = new LinkedList<>();
+				links = new ArrayList<>();
+				persons = new ArrayList<>();
 			} else if (localName.equals("day")) {
 				curDay = LocalDate.parse(atts.getValue("date"), df);
 				// TODO: PARSE ERROR?
@@ -1136,8 +1131,8 @@ public class Schedule implements Serializable {
 		private Track track;
 		private String description;
 		private ZonedDateTime startTime, endTime;
-		private LinkedList<Schedule.Link> links;
-		private LinkedList<String> speakers;
+		private ArrayList<Schedule.Link> links;
+		private ArrayList<String> speakers;
 		private String language;
 		private String webLink;
 		
@@ -1186,7 +1181,7 @@ public class Schedule implements Serializable {
 
 		public void addLink(Schedule.Link link) {
 			if (links == null) {
-				links = new LinkedList<Schedule.Link>();
+				links = new ArrayList<Schedule.Link>();
 			}
 			for (Schedule.Link l : links)
 				if (l.getUrl().equals(link.getUrl()))
@@ -1197,7 +1192,7 @@ public class Schedule implements Serializable {
 		
 		public void addSpeaker(String name) {
 			if (speakers == null) {
-				speakers = new LinkedList<String>();
+				speakers = new ArrayList<String>();
 			}
 			speakers.add(name);
 		}
@@ -1317,7 +1312,7 @@ public class Schedule implements Serializable {
 			return line;
 		}
 		
-		public LinkedList<Schedule.Link> getLinks() {
+		public ArrayList<Schedule.Link> getLinks() {
 			return links;
 		}
 
