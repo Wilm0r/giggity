@@ -365,6 +365,7 @@ pr_title = []
 base_entries: Dict[str, Dict] = {e["id"]: e for e in base.get("schedules", [])}
 seen_urls: Set[str] = set()
 seen_ids: Set[str] = set()
+base_url_id: Dict[str, str] = {e["url"]: e["id"] for e in base.get("schedules", [])}
 for e in new["schedules"]:
 	url: str = e["url"]
 	if url in seen_urls:
@@ -379,6 +380,8 @@ for e in new["schedules"]:
 		      ([x["title"] for x in new["schedules"] if x["id"] == eid], eid))
 		continue
 	seen_ids.add(eid)
+	if base_url_id.get(url, eid) != eid:
+		LOG.E("ID changes (renames) are not allowed. (URL %s, ID %s→%s)" % (url, base_url_id[url], eid))
 
 	if eid in base_entries:
 		if e == base_entries[eid]:
