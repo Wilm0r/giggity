@@ -273,7 +273,7 @@ public class ScheduleViewActivity extends Activity {
 						} catch (IllegalArgumentException e) {
 							json = new byte[0];
 						}
-						url = app.getDb().refreshSingleSchedule(json);
+						url = app.getDb().updateRawSchedule(json);
 						if (url == null) {
 							Toast.makeText(this, R.string.no_json_data, Toast.LENGTH_SHORT).show();
 							finish();

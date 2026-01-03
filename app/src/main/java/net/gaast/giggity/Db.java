@@ -55,7 +55,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 import java.util.zip.GZIPInputStream;
@@ -302,7 +303,7 @@ public class Db {
 		}
 		
 		for (Seed.Schedule sched : seed.schedules) {
-			updateSchedule(db, sched);
+			updateSingleSchedule(db, sched);
 		}
 		
 		if (newver != version) {
@@ -313,7 +314,7 @@ public class Db {
 		return true;
 	}
 
-	private void updateSchedule(SQLiteDatabase db, Seed.Schedule sched) {
+	private void updateSingleSchedule(SQLiteDatabase db, Seed.Schedule sched) {
 		if (sched.start.equals(sched.end)) {
 			/* If it's one day only, avoid having start == end. Pretend it's from 6:00 'til 18:00 or something. */
 			sched.start.setHours(6);
@@ -325,33 +326,72 @@ public class Db {
 			sched.end.setHours(12);
 		}
 
-		Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{sched.url});
-//		Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ? Or sch_id_s = ?",
-//				new String[]{sched.url, sched.id});
+		db.beginTransaction();
+		Cursor q = db.rawQuery("Select sch_id, sch_id_s From schedule " +
+		                       "Where sch_url = ? Or (sch_id_s = ? And sch_id_s Is Not Null)",
+		                       new String[]{sched.url, sched.id});
 
 		ContentValues row = new ContentValues();
 		if (q.getCount() == 0) {
-			/* Only needed when creating a brand new entry (don't overwrite atime otherwise!) */
-			// row.put("sch_id_s", sched.id);
-			row.put("sch_url", sched.url);
+			/* Only needed when creating a brand new entry. String-id must never change. */
+			row.put("sch_id_s", sched.id);
+			/* And atime is updated on actual accesses only, which isn't this codepath. */
 			row.put("sch_atime", sched.start.getTime() / 1000);
+		} else {
+			q.moveToNext();
+			if (q.getCount() > 1) {
+				// TODO: :<
+			}
+			// Never change sch_id_s from a non-null value.
+			if (q.getString(1) == null) {
+				row.put("sch_id_s", sched.id);
+			} else if (q.getString(1) != null && !q.getString(1).equals(sched.id)) {
+				// TODO: :<
+			}
+
 		}
 		if (q.getCount() == 0 || oldDbVer < 8) {
 			/* This bit also needed if the database version was ridiculously ancient (unlikely) */
 			row.put("sch_start", sched.start.getTime() / 1000);
 			row.put("sch_end", sched.end.getTime() / 1000);
 		}
+		row.put("sch_url", sched.url);
 		row.put("sch_refresh_interval", sched.refresh_interval);
 		row.put("sch_title", sched.title);
 		row.put("sch_metadata", sched.metadata);
 		row.put("sch_timezone", sched.timezone);
 
-		if (q.moveToNext()) {
-			db.update("schedule", row, "sch_id = ?", new String[]{q.getString(0)});
-		} else {
+		if (q.getCount() == 0) {
 			db.insert("schedule", null, row);
+		} else {
+			db.update("schedule", row, "sch_id = " + q.getInt(0), null);
+			if (q.getCount() > 1) {
+				// Did we somehow end up with dupes?
+				// Let's consolidate..
+				// This really should be a separate function?
+				int keep = q.getInt(0);
+				ContentValues r = new ContentValues();
+				r.put("sci_sch_id", keep);
+				while (q.moveToNext()) {
+					int other = q.getInt(0);
+					db.update("schedule_item", r, "sci_sch_id = " + other, null);
+					db.delete("schedule", "sch_id = " + other, null);
+					db.delete("item_search", "sch_id = " + other, null);
+				}
+				Cursor dq = db.rawQuery("Select sci_id, sci_id_s From schedule_item Where sci_sch_id = " + keep, null);
+				HashSet<String> seen = new HashSet<>();
+				while (dq.moveToNext()) {
+					if (seen.contains(dq.getString(1))) {
+						db.delete("schedule_item", "sci_id = " + dq.getInt(0), null);
+					}
+					seen.add(dq.getString(1));
+				}
+				dq.close();
+			}
 		}
 		q.close();
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 
 	private enum SeedSource {
@@ -413,12 +453,12 @@ public class Db {
 	 * I need. */
 	private static class Seed {
 		int version;
-		LinkedList<Seed.Schedule> schedules;
+		List<Schedule> schedules;
 		
 		public Seed(JSONObject jso) throws JSONException {
 			version = jso.getInt("version");
 			
-			schedules = new LinkedList<Seed.Schedule>();
+			schedules = new ArrayList<Seed.Schedule>();
 			JSONArray scheds = jso.getJSONArray("schedules");
 			int i;
 			for (i = 0; i < scheds.length(); i ++) {
@@ -589,7 +629,9 @@ public class Db {
 			return updateData(dbh.getWritableDatabase(), true);
 		}
 
-		public String refreshSingleSchedule(byte[] blob) {
+		// Adds/update a schedule to the database from raw (possibly gzipped) JSON data
+		// from for example a ggt.gaa.st URL. Somewhat "untrusted" data.
+		public String updateRawSchedule(byte[] blob) {
 			String jsons;
 			jsons = new String(blob, StandardCharsets.UTF_8);
 			if (jsons == null || !jsons.matches("(?s)^\\s*\\{.*")) {
@@ -599,7 +641,7 @@ public class Db {
 					GZIPInputStream gz = new GZIPInputStream(stream);
 					ByteArrayOutputStream plain = new ByteArrayOutputStream();
 					IOUtils.copy(gz, plain);
-					return refreshSingleSchedule(plain.toByteArray());
+					return updateRawSchedule(plain.toByteArray());
 				} catch (IOException e) {
 					Log.d("gunzip", e.toString());
 					return null;
@@ -615,12 +657,15 @@ public class Db {
 					Log.d("Db.refreshSingle", "Object didn't even contain a URL?");
 					return null;
 				}
+				// Seems better to accept id's only from the main seed file and stick to URLs as
+				// primary key only for external input?
+				parsed.id = null;
 			} catch (JSONException e) {
 				return null;
 			}
 			Log.d("Db.refreshSingle", "Found something that parsed like my json: " + parsed);
 			app.flushSchedule(parsed.url);
-			updateSchedule(dbh.getWritableDatabase(), parsed);
+			updateSingleSchedule(dbh.getWritableDatabase(), parsed);
 			return parsed.url;
 		}
 		
