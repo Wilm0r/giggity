@@ -353,11 +353,15 @@ public class Db extends SQLiteOpenHelper {
 			row.put("sch_atime", sched.start.getTime() / 1000);
 		} else {
 			q.moveToNext();
-			// Never change sch_id_s from a non-null value.
 			if (q.getString(1) == null) {
+				// Might be updating an old database from when sch_id_s wasn't populated. Easy fix.
 				row.put("sch_id_s", sched.id);
-			} else if (q.getString(1) != null && !q.getString(1).equals(sched.id)) {
-				// TODO: :<
+			} else if (q.getString(1) != null && sched.id != null && !q.getString(1).equals(sched.id)) {
+				// I hate this case the most (and I don't know whether it can happen at all TBH):
+				// Database contained a matching URL but with a different sch_id_s. Since sch_id_s
+				// can only come from the menu I supply myself, not from user input, it should be
+				// stable? Anyway if if does change ... well, I guess update the database?
+				row.put("sch_id_s", sched.id);
 			}
 
 		}
