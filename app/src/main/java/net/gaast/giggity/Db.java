@@ -63,219 +63,216 @@ import java.util.zip.GZIPInputStream;
 
 import static java.lang.Math.log;
 
-public class Db {
+public class Db extends SQLiteOpenHelper {
+	// Definitely the worst part of Giggity, and in early days the most common source of crashes.
+	// This class is instantiated once at startup time and does all the usual stuff done by an
+	// OpenHelper. A "Connection" (weirdly named, yep) subclass is used for every db r/w operation.
 	private Giggity app;
-	private Helper dbh;
 	private static final int dbVersion = 20;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
 	public Db(Application app_) {
+		super(app_, "giggity", null, dbVersion);
 		app = (Giggity) app_;
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
-		dbh = new Helper(app_, "giggity", null, dbVersion);
 	}
 	
 	public Connection getConnection() {
 		return new Connection();
 	}
 	
-	private class Helper extends SQLiteOpenHelper {
-		public Helper(Context context, String name, CursorFactory factory,
-				int version) {
-			super(context, name, factory, version);
+	@Override
+	public void onCreate(SQLiteDatabase db) {
+		Log.i("DeoxideDb", "Creating new database");
+		db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
+										  "sch_title VarChar(128), " +
+										  "sch_url VarChar(256), " +
+										  "sch_hidden Boolean, " +
+										  "sch_atime Integer, " +
+										  "sch_rtime Integer, " +
+										  "sch_itime Integer, " +
+										  "sch_refresh_interval Integer, " +
+										  "sch_start Integer, " +
+										  "sch_end Integer, " +
+										  "sch_timezone VarChar(128), " +
+										  "sch_id_s VarChar(128), " +
+										  "sch_metadata VarChar(10240), " +
+										  "sch_day Integer)");
+		db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
+											   "sci_sch_id Integer Not Null, " +
+											   "sci_id_s VarChar(128), " +
+											   "sci_remind Boolean, " +
+											   "sci_hidden Boolean, " +
+											   "sci_stars Integer(2) Null)");
+		db.execSQL("Create Virtual Table item_search Using FTS4" +
+				   "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+		db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
+				   "hst_query VarChar(128), " +
+				   "hst_atime Integer)");
+
+		// Immediately populate from in-apk seed file. Otherwise new installs, in case of network
+		// issues, may just open up with a blank screen.
+		updateData(db, false);
+
+		oldDbVer = 0;
+	}
+
+	@Override
+	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		Log.i("DeoxideDb", "Upgrading from database version " + oldVersion + " to " + newVersion);
+
+		if (oldVersion < 8) {
+			/* Version 8 adds start/end time columns to the db. */
+			try {
+				db.execSQL("Alter Table schedule Add Column sch_start Integer");
+				db.execSQL("Alter Table schedule Add Column sch_end Integer");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
+			}
 		}
-	
-		@Override
-		public void onCreate(SQLiteDatabase db) {
-			Log.i("DeoxideDb", "Creating new database");
-			db.execSQL("Create Table schedule (sch_id Integer Primary Key AutoIncrement Not Null, " +
-			                                  "sch_title VarChar(128), " +
-			                                  "sch_url VarChar(256), " +
-			                                  "sch_hidden Boolean, " +
-			                                  "sch_atime Integer, " +
-			                                  "sch_rtime Integer, " +
-			                                  "sch_itime Integer, " +
-			                                  "sch_refresh_interval Integer, " +
-			                                  "sch_start Integer, " +
-			                                  "sch_end Integer, " +
-			                                  "sch_timezone VarChar(128), " +
-			                                  "sch_id_s VarChar(128), " +
-			                                  "sch_metadata VarChar(10240), " +
-			                                  "sch_day Integer)");
-			db.execSQL("Create Table schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, " +
-			                                       "sci_sch_id Integer Not Null, " +
-			                                       "sci_id_s VarChar(128), " +
-			                                       "sci_remind Boolean, " +
-			                                       "sci_hidden Boolean, " +
-			                                       "sci_stars Integer(2) Null)");
-			db.execSQL("Create Virtual Table item_search Using FTS4" +
-			           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
-			db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
-			           "hst_query VarChar(128), " +
-					   "hst_atime Integer)");
-
-			// Immediately populate from in-apk seed file. Otherwise new installs, in case of network
-			// issues, may just open up with a blank screen.
-			updateData(db, false);
-
-			oldDbVer = 0;
+		if (oldVersion < 11) {
+			/* Version 10 adds rtime column. */
+			try {
+				db.execSQL("Alter Table schedule Add Column sch_rtime Integer");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
+			}
 		}
-	
-		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.i("DeoxideDb", "Upgrading from database version " + oldVersion + " to " + newVersion);
-
-			if (oldVersion < 8) {
-				/* Version 8 adds start/end time columns to the db. */
-				try {
-					db.execSQL("Alter Table schedule Add Column sch_start Integer");
-					db.execSQL("Alter Table schedule Add Column sch_end Integer");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
+		if (oldVersion < 12) {
+			/* Version 12 adds hidden column. */
+			try {
+				db.execSQL("Alter Table schedule_item Add Column sci_hidden Boolean");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
 			}
-			if (oldVersion < 11) {
-				/* Version 10 adds rtime column. */
-				try {
-					db.execSQL("Alter Table schedule Add Column sch_rtime Integer");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
+		}
+		if (oldVersion < 13) {
+			/* Version 13 adds big metadata field. */
+			try {
+				db.execSQL("Alter Table schedule Add Column sch_metadata VarChar(10240)");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
 			}
-			if (oldVersion < 12) {
-				/* Version 12 adds hidden column. */
-				try {
-					db.execSQL("Alter Table schedule_item Add Column sci_hidden Boolean");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
+		}
+		if (oldVersion < 15) {
+			/* Version 14 added FTS, 15 adds the itime field to avoid needless reindexing. */
+			try {
+				db.execSQL("Alter Table schedule Add Column sch_itime Integer");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
 			}
-			if (oldVersion < 13) {
-				/* Version 13 adds big metadata field. */
-				try {
-					db.execSQL("Alter Table schedule Add Column sch_metadata VarChar(10240)");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
+		}
+		if (oldVersion < 16) {
+			/* ItemSearch history stored in database. */
+			try {
+				db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
+						   "hst_query VarChar(128), " +
+						   "hst_atime Integer)");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe table already exists?");
+				e.printStackTrace();
 			}
-			if (oldVersion < 15) {
-				/* Version 14 added FTS, 15 adds the itime field to avoid needless reindexing. */
-				try {
-					db.execSQL("Alter Table schedule Add Column sch_itime Integer");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
+		}
+		if (oldVersion < 17) {
+			/* This is a little more work so "shell out". */
+			mergeDuplicateUrls(db);
+		}
+		if (oldVersion < 18) {
+			/* Version 18 uses menu.json refresh_interval instead of 1d default. */
+			try {
+				db.execSQL("Alter Table schedule Add Column sch_refresh_interval Integer");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
 			}
-			if (oldVersion < 16) {
-				/* ItemSearch history stored in database. */
-				try {
-					db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
-							   "hst_query VarChar(128), " +
-							   "hst_atime Integer)");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe table already exists?");
-					e.printStackTrace();
-				}
+		}
+		if (oldVersion < 19) {
+			try {
+				db.execSQL("Alter Table schedule Add Column sch_timezone VarChar(128)");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
 			}
-			if (oldVersion < 17) {
-				/* This is a little more work so "shell out". */
-				mergeDuplicateUrls(db);
-			}
-			if (oldVersion < 18) {
-				/* Version 18 uses menu.json refresh_interval instead of 1d default. */
-				try {
-					db.execSQL("Alter Table schedule Add Column sch_refresh_interval Integer");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
-			}
-			if (oldVersion < 19) {
-				try {
-					db.execSQL("Alter Table schedule Add Column sch_timezone VarChar(128)");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
-			}
-			if (oldVersion < 20) {
-				try {
-					db.execSQL("Alter Table schedule Add Column sch_hidden Boolean");
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
-					e.printStackTrace();
-				}
-			}
-
-			if (oldVersion < 18) {
-				/* Full-text search! FTS4 doesn't exactly do Alter Table anyway so don't try. */
-				try {
-					db.execSQL("Drop Table If Exists item_search");
-					db.execSQL("Create Virtual Table item_search Using FTS4" +
-							           "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
-
-					// We've just recreated the search index table, so flush all indexing timestamps
-					// that have now become lies.
-					ContentValues row = new ContentValues();
-					row.put("sch_itime", 0);
-					db.update("schedule", row, "", null);
-				} catch (SQLiteException e) {
-					Log.e("DeoxideDb", "SQLite error, maybe FTS support is missing?");
-					e.printStackTrace();
-				}
-			}
-
-			// Don't think the Math.min is necessary (anymore). I wrote this possibly >10y ago
-			// assuming maybe that this function gets called multiple times?
-			oldDbVer = Math.min(oldDbVer, oldVersion);
-			Log.d("deoxideDb", "Schema updated " + oldDbVer + "→" + dbVersion);
-			if (oldDbVer < dbVersion && newVersion == dbVersion) {
-				updateData(db, false);
+		}
+		if (oldVersion < 20) {
+			try {
+				db.execSQL("Alter Table schedule Add Column sch_hidden Boolean");
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe column already exists?");
+				e.printStackTrace();
 			}
 		}
 
-		private void mergeDuplicateUrls(SQLiteDatabase db) {
-			// https://github.com/Wilm0r/giggity/issues/134
-			// That string ID should never have been and may have resulted in duplicate entries
-			// in some folks' databases. Clean that up now and try to do so nicely
-			// (preserving selections).
-			Cursor q = db.rawQuery("Select sch_id, sch_url From schedule", null);
-			HashMap<String, Integer> urlId = new HashMap<>();  // URL → db ID
-			HashMap<Integer, Integer> idId = new HashMap<>();  // dupe id → preserve ID
-			while (q.moveToNext()) {
-				if (urlId.containsKey(q.getString(1))) {
-					idId.put(q.getInt(0), urlId.get(q.getString(1)));
-				} else {
-					urlId.put(q.getString(1), q.getInt(0));
-				}
-			}
-			q.close();  // WTF isn't this a garbage-collected language?
-			// Update sci_sch_id refs
-			for (Map.Entry e : idId.entrySet()) {
+		if (oldVersion < 18) {
+			/* Full-text search! FTS4 doesn't exactly do Alter Table anyway so don't try. */
+			try {
+				db.execSQL("Drop Table If Exists item_search");
+				db.execSQL("Create Virtual Table item_search Using FTS4" +
+								   "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+
+				// We've just recreated the search index table, so flush all indexing timestamps
+				// that have now become lies.
 				ContentValues row = new ContentValues();
-				row.put("sci_sch_id", (Integer) e.getValue());
-				db.update("schedule_item", row, "sci_sch_id = ?", new String[]{""+(Integer)e.getKey()});
-			}
-			// Remove the extra schedule table row
-			for (Map.Entry e : idId.entrySet()) {
-				db.delete("schedule", "sch_id = ?", new String[]{"" + e.getKey()});
+				row.put("sch_itime", 0);
+				db.update("schedule", row, "", null);
+			} catch (SQLiteException e) {
+				Log.e("DeoxideDb", "SQLite error, maybe FTS support is missing?");
+				e.printStackTrace();
 			}
 		}
 
-		@Override
-		public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			// Bogus implementation which I only intend to use during testing.
+		// Don't think the Math.min is necessary (anymore). I wrote this possibly >10y ago
+		// assuming maybe that this function gets called multiple times?
+		oldDbVer = Math.min(oldDbVer, oldVersion);
+		Log.d("deoxideDb", "Schema updated " + oldDbVer + "→" + dbVersion);
+		if (oldDbVer < dbVersion && newVersion == dbVersion) {
+			updateData(db, false);
 		}
 	}
-	
+
+	@Override
+	public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		// Bogus implementation which I only intend to use during testing.
+	}
+
+	private void mergeDuplicateUrls(SQLiteDatabase db) {
+		// https://github.com/Wilm0r/giggity/issues/134
+		// That string ID should never have been and may have resulted in duplicate entries
+		// in some folks' databases. Clean that up now and try to do so nicely
+		// (preserving selections).
+		Cursor q = db.rawQuery("Select sch_id, sch_url From schedule", null);
+		HashMap<String, Integer> urlId = new HashMap<>();  // URL → db ID
+		HashMap<Integer, Integer> idId = new HashMap<>();  // dupe id → preserve ID
+		while (q.moveToNext()) {
+			if (urlId.containsKey(q.getString(1))) {
+				idId.put(q.getInt(0), urlId.get(q.getString(1)));
+			} else {
+				urlId.put(q.getString(1), q.getInt(0));
+			}
+		}
+		q.close();  // WTF isn't this a garbage-collected language?
+		// Update sci_sch_id refs
+		for (Map.Entry e : idId.entrySet()) {
+			ContentValues row = new ContentValues();
+			row.put("sci_sch_id", (Integer) e.getValue());
+			db.update("schedule_item", row, "sci_sch_id = ?", new String[]{""+(Integer)e.getKey()});
+		}
+		// Remove the extra schedule table row
+		for (Map.Entry e : idId.entrySet()) {
+			db.delete("schedule", "sch_id = ?", new String[]{"" + e.getKey()});
+		}
+	}
+
+	// SQLiteOpenHelper overrides (plus 1 helper function) end here.
+
 	/* For ease of use, seed the main menu with some known schedules. */
-	public boolean updateData(SQLiteDatabase db, boolean online) {
+	private boolean updateData(SQLiteDatabase db, boolean online) {
 		Seed seed = loadSeed(online ? SeedSource.ONLINE : SeedSource.CACHED);
 		Seed localSeed = loadSeed(SeedSource.BUILT_IN);
 		/* Pick the best one. localSeed *can* be newer than the cached one. Should not
@@ -327,6 +324,7 @@ public class Db {
 		}
 
 		db.beginTransaction();
+		// TODDO: sched.id null causes trouble.
 		Cursor q = db.rawQuery("Select sch_id, sch_id_s From schedule " +
 		                       "Where sch_url = ? Or (sch_id_s = ? And sch_id_s Is Not Null)",
 		                       new String[]{sched.url, sched.id});
@@ -508,6 +506,9 @@ public class Db {
 	}
 	
 	public class Connection {
+		// This is the public API, and instances of this class are more short-lived.
+		// Still, every method has its own even shorter-lived database connection. The database
+		// is never actually open otherwise.
 		private Schedule sched;
 
 		private IdMap sciIdMap = new IdMap();
@@ -516,7 +517,9 @@ public class Db {
 		private int day;
 		private String title;
 		private String metadata;
-		
+
+		// "Loads" all state for a specific schedule. Most functions in this class are schedule-
+		// specific and must not be called without first loading a schedule.
 		public void setSchedule(Schedule sched_, String url, boolean fresh) {
 			ContentValues row;
 			Cursor q;
@@ -531,7 +534,7 @@ public class Db {
 			if (fresh)
 				row.put("sch_rtime", new Date().getTime() / 1000);
 
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = getWritableDatabase();
 			q = db.rawQuery("Select sch_id, sch_day, sch_title, sch_metadata From schedule Where sch_url = ?",
 			                new String[]{sched.getUrl()});
 
@@ -593,7 +596,7 @@ public class Db {
 			Log.d("DeoxideDb", "Saving item " + item.getTitle() + " remind " + row.getAsString("sci_remind") +
 			                   " hidden " + row.getAsString("sci_hidden"));
 
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = getWritableDatabase();
 			Long sciId = sciIdMap.get(item.getId());
 			db.update("schedule_item", row, "sci_id = " + sciId, null);
 		}
@@ -602,7 +605,7 @@ public class Db {
 			ArrayList<DbSchedule> ret = new ArrayList<DbSchedule>();
 			Cursor q;
 
-			SQLiteDatabase db = dbh.getReadableDatabase();
+			SQLiteDatabase db = getReadableDatabase();
 			q = db.rawQuery("Select * From schedule Order By sch_atime == sch_start, sch_atime Desc", null);
 			while (q.moveToNext()) {
 				ret.add(new DbSchedule(q));
@@ -616,7 +619,7 @@ public class Db {
 			DbSchedule ret = null;
 			Cursor q;
 
-			SQLiteDatabase db = dbh.getReadableDatabase();
+			SQLiteDatabase db = getReadableDatabase();
 			q = db.rawQuery("Select * From schedule Where sch_url = ?", new String[]{url});
 			if (q.moveToNext()) {
 				ret = new DbSchedule(q);
@@ -626,7 +629,7 @@ public class Db {
 		}
 
 		public boolean refreshScheduleList() {
-			return updateData(dbh.getWritableDatabase(), true);
+			return updateData(getWritableDatabase(), true);
 		}
 
 		// Adds/update a schedule to the database from raw (possibly gzipped) JSON data
@@ -665,7 +668,7 @@ public class Db {
 			}
 			Log.d("Db.refreshSingle", "Found something that parsed like my json: " + parsed);
 			app.flushSchedule(parsed.url);
-			updateSingleSchedule(dbh.getWritableDatabase(), parsed);
+			updateSingleSchedule(getWritableDatabase(), parsed);
 			return parsed.url;
 		}
 		
@@ -678,7 +681,7 @@ public class Db {
 			ContentValues row;
 
 			if (day >= 0) {
-				SQLiteDatabase db = dbh.getWritableDatabase();
+				SQLiteDatabase db = getWritableDatabase();
 				row = new ContentValues();
 				row.put("sch_day", day);
 				db.update("schedule", row, "sch_id = ?", new String[]{"" + schId});
@@ -692,7 +695,7 @@ public class Db {
 		}
 
 		public void removeSchedule(String url) {
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = getWritableDatabase();
 			Cursor q = db.rawQuery("Select sch_id From schedule Where sch_url = ?", new String[]{url});
 			while (q.moveToNext()) {
 				db.delete("schedule", "sch_id = ?", new String[]{"" + q.getInt(0)});
@@ -703,7 +706,7 @@ public class Db {
 		}
 
 		public void hideSchedule(String url) {
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = getWritableDatabase();
 			ContentValues row = new ContentValues();
 			row.put("sch_hidden", true);
 			int x = db.update("schedule", row, "sch_url = ?", new String[]{url});
@@ -711,7 +714,7 @@ public class Db {
 		}
 
 		public void resetIndex(Collection<Schedule.Item> items) {
-			SQLiteDatabase db = dbh.getReadableDatabase();
+			SQLiteDatabase db = getReadableDatabase();
 			Cursor q = db.rawQuery("Select sch_id from schedule Where sch_id = " + schId +
 			                       " And (sch_itime <= sch_rtime Or sch_itime Is Null)",
 			null, null);
@@ -721,7 +724,7 @@ public class Db {
 			}
 			q.close();
 
-			db = dbh.getWritableDatabase();
+			db = getWritableDatabase();
 			// schId needs to be passed as an int. Even though docs sound like everything's a string
 			// in FTS tables, this one's most definitely not and if you try to select for it as one
 			// you'll delete nothing and end up with lots of duplicate results.
@@ -761,7 +764,7 @@ public class Db {
 					}
 				}
 			});
-			SQLiteDatabase db = dbh.getReadableDatabase();
+			SQLiteDatabase db = getReadableDatabase();
 			try {
 				Cursor q = db.rawQuery("Select item_search.sci_id_s, matchinfo(item_search, \"pcnalx\"), sci_remind, sci_hidden " +
 				                       " From item_search Left Join schedule_item On (sci_sch_id = sch_id" +
@@ -794,7 +797,7 @@ public class Db {
 		}
 
 		private void flushHidden(int id) {
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = getWritableDatabase();
 			db.execSQL("Update schedule_item Set sci_hidden = 0 Where sci_sch_id = ?", new String[] {"" + id});
 		}
 
@@ -806,7 +809,7 @@ public class Db {
 				if ((sciId = super.get(key)) != null) {
 					return sciId;
 				} else {
-					SQLiteDatabase db = dbh.getWritableDatabase();
+					SQLiteDatabase db = getWritableDatabase();
 					Cursor q = db.rawQuery("Select sci_id From schedule_item" +
 					                       " Where sci_sch_id = " + schId + " And sci_id_s = ?",
 					                       new String[]{key});
@@ -828,8 +831,9 @@ public class Db {
 			}
 		}
 
+		// These last few are intentionally *not* schedule-specific.
 		public void addSearchQuery(String query) {
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = getWritableDatabase();
 			ContentValues row = new ContentValues();
 			row.put("hst_query", query);
 			row.put("hst_atime", new Date().getTime() / 1000);
@@ -843,7 +847,7 @@ public class Db {
 
 		public AbstractList<String> getSearchHistory() {
 			ArrayList<String> ret = new ArrayList<>();
-			SQLiteDatabase db = dbh.getReadableDatabase();
+			SQLiteDatabase db = getReadableDatabase();
 			Cursor q = db.rawQuery("Select hst_query From search_history Order By hst_atime Desc", null);
 			while (q.moveToNext()) {
 				ret.add(q.getString(0));
@@ -853,7 +857,7 @@ public class Db {
 		}
 
 		public void forgetSearchQuery(String query) {
-			SQLiteDatabase db = dbh.getWritableDatabase();
+			SQLiteDatabase db = getWritableDatabase();
 			Log.d("forgetSearchQuery", query + " " + db.delete("search_history", "hst_query = ?", new String[]{query}));
 		}
 	}
