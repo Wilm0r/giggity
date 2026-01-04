@@ -62,7 +62,7 @@ public class ScheduleUI extends Schedule {
 		Fetcher f = null;
 
 		try {
-			f = ctx.fetch(url, source);
+			f = new Fetcher(ctx, url, source);
 			f.setProgressHandler(ret.progressHandler);
 			if (f.fromCache()) {
 				// Disable the "load from cache" button since we're doing that already. */
@@ -213,8 +213,7 @@ public class ScheduleUI extends Schedule {
 
 	/* Returns true if any of the statuses has changed. */
 	public boolean updateRoomStatus() {
-		try {
-			Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.DEFAULT);
+		try (Fetcher f = new Fetcher(app, roomStatusUrl, Fetcher.Source.DEFAULT)) {
 			return updateRoomStatus(f.slurp());
 		} catch (IOException e) {
 			Log.d("updateRoomStatus", "Fetch setup failure");

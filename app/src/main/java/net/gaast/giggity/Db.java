@@ -428,9 +428,10 @@ public class Db extends SQLiteOpenHelper {
 				inr.close();
 				json = sw.toString();
 			} else {
-				f = app.fetch(getSeedUrl(),
-				              source == SeedSource.ONLINE ? Fetcher.Source.REFRESH : Fetcher.Source.CACHE);
+				f = new Fetcher(app, getSeedUrl(),
+				                source == SeedSource.ONLINE ? Fetcher.Source.REFRESH : Fetcher.Source.CACHE);
 				json = f.slurp();
+				// TODO: Clean up?
 			}
 		} catch (IOException e) {
 			Log.e("DeoxideDb.loadSeed", "IO Error");

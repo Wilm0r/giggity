@@ -179,11 +179,6 @@ public class Giggity extends Application {
 		view.setPadding(dp2px(left), dp2px(top), dp2px(right), dp2px(bottom));
 	}
 
-	/* TODO: Are these wrappers really that useful? */
-	public Fetcher fetch(String url, Fetcher.Source source) throws IOException {
-		return new Fetcher(this, url, source);
-	}
-
 	// TODO: IIRC there's a localised version for this already? Though honestly I prefer mine since
 	// it avoids doing atrocious middle-endian dates which is factually a good thing.
 	public static String dateRange(Date start, Date end) {

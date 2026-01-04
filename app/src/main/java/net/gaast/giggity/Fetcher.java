@@ -16,12 +16,13 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.zip.GZIPInputStream;
 
 /** Caching HTTP fetcher. */
-public class Fetcher {
+public class Fetcher implements AutoCloseable {
 	private Giggity app;
 	private HttpURLConnection dlc;
 	private Handler progressHandler;
@@ -76,6 +77,7 @@ public class Fetcher {
 		// Probably not quite as relevant now as when I first wrote Giggity.. Docs recommend to use
 		// a listener instead but meh, don't care much + suddenly reloading when connectivity comes
 		// back would be annoying UX as well, not worth it.
+		// --- I don't even seem to be using CACHE_IF_OFFLINE anymore by now?
 		boolean online = (network == null) || !network.isConnected();
 
 		URL dl = new URL(url);
@@ -121,6 +123,7 @@ public class Fetcher {
 				break;
 		}
 
+		// Request building ends here as we first try to access response fields.
 		String status = dlc.getResponseCode() + " " + dlc.getResponseMessage();
 		Log.d("Fetcher", "HTTP status " + status);
 		// Log.d("Fetcher", "Req " + cache.getRequestCount() + " Net " + cache.getNetworkCount() + " Hit " + cache.getHitCount());
@@ -160,6 +163,17 @@ public class Fetcher {
 		} else {
 			throw new IOException("Download error: HTTP " + status);
 		}
+	}
+
+	@Override
+	public void close() throws IOException {
+		// Mildly curious whether this function *might* lead to an unsent query unnecessarily
+		// getting sent if cleaning up a never-finished query. Sadly I don't think there's a way
+		// to check/prevent this AFAICT.
+		if (dlc != null && dlc.getInputStream() != null) {
+			dlc.getInputStream().close();
+		}
+		dlc = null;
 	}
 
 	public void setProgressHandler(Handler handler) {

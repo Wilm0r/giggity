@@ -537,7 +537,7 @@ public class ScheduleViewActivity extends Activity {
 			}
 		});
 		try {
-			app.fetch(url, Fetcher.Source.CACHE_ONLY);
+			new Fetcher(app, url, Fetcher.Source.CACHE_ONLY).close();
 		} catch (IOException e) {
 			// No cached copy available apparently so hide that option.
 			prog.findViewById(R.id.load_cached).setVisibility(View.GONE);
@@ -838,8 +838,7 @@ public class ScheduleViewActivity extends Activity {
 					// These are already copies from cache :( at least don't keep stale ones..
 					del.delete();
 				}
-				try {
-					Fetcher f = app.fetch(link.getUrl(), Fetcher.Source.CACHE_1D);
+				try (Fetcher f = new Fetcher(app, link.getUrl(), Fetcher.Source.CACHE_1D)) {
 					f.setProgressHandler(prog.getUpdater());
 
 					try {
