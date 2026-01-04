@@ -1,0 +1,2098 @@
+{
+	"version": 2025120501,
+	"schedules": [
+		{
+			"id": "38c3_main_rooms_only",
+			"title": "38C3 - main rooms only",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2024/infos/startpage.html",
+						"title": "Website"
+					},
+					{
+						"url": "https://events.ccc.de/congress/2024/hub/en/wiki/start/",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://fahrplan.events.ccc.de/congress/2024/fahrplan/schedule/export/schedule.xml",
+			"start": "2024-12-27",
+			"end": "2024-12-30",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"version": 2024122201
+		},
+		{
+			"id": "38c3_merged",
+			"title": "38C3 - merged",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2024/infos/startpage.html",
+						"title": "Website"
+					},
+					{
+						"url": "https://events.ccc.de/congress/2024/hub/en/wiki/start/",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://api.events.ccc.de/congress/2024/schedule.xml",
+			"start": "2024-12-27",
+			"end": "2024-12-30",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"version": 2024121702
+		},
+		{
+			"id": "everything_open_2025",
+			"start": "2025-01-20",
+			"end": "2025-01-22",
+			"version": 2024120501,
+			"url": "https://2025.everythingopen.au/schedule/conference.ics",
+			"title": "Everything Open 2025",
+			"timezone": "Australia/Adelaide",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2025.everythingopen.au",
+						"title": "Website"
+					},
+					{
+						"url": "https://2025.everythingopen.au/about/location/",
+						"title": "Location"
+					},
+					{
+						"url": "https://2025.everythingopen.au/schedule/",
+						"title": "Online schedule"
+					}
+				]
+			}
+		},
+		{
+			"id": "fosdem_2025",
+			"version": 2025010800,
+			"url": "https://fosdem.org/2025/schedule/xml",
+			"title": "FOSDEM 2025",
+			"start": "2025-02-01",
+			"end": "2025-02-02",
+			"timezone": "Europe/Brussels",
+			"refresh_interval": 1800,
+			"metadata": {
+				"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
+				"links": [
+					{
+						"url": "https://fosdem.org/2025/",
+						"title": "Website"
+					},
+					{
+						"url": "https://volunteers.fosdem.org/faq/",
+						"title": "Volunteer"
+					},
+					{
+						"url": "https://fosdem.org/2025/practical/transportation/",
+						"title": "Transportation"
+					},
+					{
+						"url": "https://fosdem.org/2025/stands/",
+						"title": "Stands"
+					}
+				],
+				"icon": "https://archive.fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png",
+				"c3nav_base": "https://nav.fosdem.org",
+				"rooms": [
+					{
+						"name": "Janson",
+						"c3nav_slug": "janson"
+					},
+					{
+						"name": "AW1\\.120",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1120"
+					},
+					{
+						"name": "AW1\\.126",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1126"
+					},
+					{
+						"name": "H\\.1301\\ \\(Cornil\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1301"
+					},
+					{
+						"name": "H\\.1302\\ \\(Depage\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1302"
+					},
+					{
+						"name": "H\\.1308\\ \\(Rolin\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1308"
+					},
+					{
+						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1309"
+					},
+					{
+						"name": "H\\.2213",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2213"
+					},
+					{
+						"name": "H\\.2214",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2214"
+					},
+					{
+						"name": "H\\.2215\\ \\(Ferrer\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2215"
+					},
+					{
+						"name": "J\\.1\\.106",
+						"c3nav_slug": "j1106"
+					},
+					{
+						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k1105"
+					},
+					{
+						"name": "K\\.3\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3201"
+					},
+					{
+						"name": "K\\.3\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3401"
+					},
+					{
+						"name": "K\\.4\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4201"
+					},
+					{
+						"name": "K\\.4\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4401"
+					},
+					{
+						"name": "K\\.4\\.601",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4601"
+					},
+					{
+						"name": "UA2\\.114\\ \\(Baudoux\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2114"
+					},
+					{
+						"name": "UA2\\.118\\ \\(Henriot\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2118"
+					},
+					{
+						"name": "UA2\\.220\\ \\(Guillissen\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2220"
+					},
+					{
+						"name": "UB2\\.147",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2147"
+					},
+					{
+						"name": "UB2\\.252A \\(Lameere\\)",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2252a"
+					},
+					{
+						"name": "UB4\\.132",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub4132"
+					},
+					{
+						"name": "UB5\\.132",
+						"c3nav_slug": "ub5132"
+					},
+					{
+						"name": "UB5\\.230",
+						"c3nav_slug": "ub5230"
+					},
+					{
+						"name": "UD2\\.119",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2119"
+					},
+					{
+						"name": "UD2\\.120\\ \\(Chavanne\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2120"
+					},
+					{
+						"name": "UD2\\.208\\ \\(Decroly\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2208"
+					},
+					{
+						"name": "UD2\\.218A",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2218a"
+					}
+				]
+			}
+		},
+		{
+			"id": "hackerhotel_2025",
+			"version": 2025021300,
+			"url": "https://pretalx.hackerhotel.nl/2025/schedule.xml",
+			"title": "HackerHotel 2025",
+			"start": "2025-02-14",
+			"end": "2025-02-16",
+			"timezone": "Europe/Amsterdam",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://hackerhotel.nl/",
+						"title": "Website"
+					},
+					{
+						"url": "https://mapcomplete.org/indoors?z=18.9&lat=52.220624480776905&lon=5.721273808942783&language=en",
+						"title": "Map"
+					}
+				]
+			}
+		},
+		{
+			"id": "wicmp_2025",
+			"version": 2025021700,
+			"url": "https://cfp.zam.haus/wicmp-2025/schedule.xml",
+			"title": "Wintergalaktische Club-Mate Party 2025",
+			"start": "2025-02-28",
+			"end": "2025-03-02",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://w.icmp.camp/10/",
+						"title": "Website"
+					},
+					{
+						"url": "https://cfp.zam.haus/wicmp-2025/schedule/",
+						"title": "Fahrplan"
+					},
+					{
+						"url": "https://ticketing.zam.haus/bnb/wicmp10addon/",
+						"title": "Workshops und Hackertours"
+					},
+					{
+						"url": "https://poc.w.icmp.camp",
+						"title": "POC"
+					}
+				]
+			}
+		},
+		{
+			"id": "fossgis_2025",
+			"version": 2025012300,
+			"url": "https://pretalx.com/fossgis2025/schedule/export/schedule.xml",
+			"title": "FOSSGIS-Konferenz 2025",
+			"start": "2025-03-26",
+			"end": "2025-03-29",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.fossgis-konferenz.de/2025/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "easterhegg22",
+			"version": 2025040900,
+			"url": "https://cfp.eh22.easterhegg.eu/eh22/schedule/export/schedule.xml",
+			"title": "Easterhegg 2025",
+			"start": "2025-04-18",
+			"end": "2025-04-21",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://eh22.easterhegg.eu/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "glt25",
+			"version": 2025031802,
+			"url": "https://pretalx.linuxtage.at/glt25/schedule.xml",
+			"title": "Grazer Linuxtage 2025",
+			"start": "2025-04-25",
+			"end": "2025-04-26",
+			"timezone": "Europe/Vienna",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxtage.at/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.linuxtage.at/stay/",
+						"title": "Where to stay in Graz"
+					},
+					{
+						"url": "https://www.linuxtage.at/faq/",
+						"title": "Frequently asked questions"
+					},
+					{
+						"url": "https://www.linuxtage.at/help/",
+						"title": "Volunteer"
+					}
+				],
+				"icon": "https://www.linuxtage.at/img/logo/tux_kopf_200.png"
+			},
+			"rooms": [
+				{
+					"name": "HS i1",
+					"latlon": [47.05821, 15.4591]
+				},
+				{
+					"name": "HS i2",
+					"latlon": [47.05904, 15.45969]
+				},
+				{
+					"name": "HS i3",
+					"latlon": [47.05821, 15.46083]
+				},
+				{
+					"name": "HS i4",
+					"latlon": [47.05813, 15.46068]
+				},
+				{
+					"name": "HS i5",
+					"latlon": [47.05813, 15.46068]
+				},
+				{
+					"name": "HS i6",
+					"latlon": [47.05821, 15.46083]
+				},
+				{
+					"name": "HS i7",
+					"latlon": [47.0581, 15.46081]
+				},
+				{
+					"name": "HS i11",
+					"latlon": [47.0587, 15.45914]
+				},
+				{
+					"name": "HS i12",
+					"latlon": [47.0587, 15.45914]
+				},
+				{
+					"name": "HS i13",
+					"latlon": [47.0587, 15.45914]
+				},
+				{
+					"name": "HF01092",
+					"latlon": [47.05899, 15.45968]
+				},
+				{
+					"name": "SZ01070",
+					"latlon": [47.05864, 15.4598]
+				},
+				{
+					"name": "Seminarraum ISW, MFEG210",
+					"latlon": [47.05791, 15.45987]
+				},
+				{
+					"name": "IEM Cube",
+					"latlon": [47.057125, 15.460078]
+				}
+			]
+		},
+		{
+			"id": "fsck2025",
+			"version": 2025050300,
+			"url": "https://cfp.ctbk.de/fsck-2025/schedule.xml",
+			"title": "FSCK 2025",
+			"start": "2025-05-09",
+			"end": "2025-05-11",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://wiki.ctbk.de/FSCK2025",
+						"title": "Website"
+					},
+					{
+						"url": "https://wiki.ctbk.de/FSCK2025/Hotels",
+						"title": "Where to stay"
+					},
+					{
+						"url": "https://engel.ctbk.de/login",
+						"title": "Volunteer"
+					}
+				],
+				"icon": "https://wiki.ctbk.de/images/a/a5/FSCK_Logo_400.png?20250428112748"
+			},
+			"rooms": [
+				{
+					"name": "Cube",
+					"latlon": [47.05821, 15.4591]
+				},
+				{
+					"name": "Theater 4",
+					"latlon": [47.05904, 15.45969]
+				},
+				{
+					"name": "Theater 5",
+					"latlon": [47.05821, 15.46083]
+				},
+				{
+					"name": "Hallway",
+					"latlon": [47.05813, 15.46068]
+				}
+			]
+		},
+		{
+			"id": "kontaktdaskulturfestival2025",
+			"version": 2025042601,
+			"url": "https://cfp.kntkt.de/kontakt-2025/schedule.xml",
+			"title": "kontakt - Das Kulturfestival 2025",
+			"start": "2025-05-22",
+			"end": "2025-05-25",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://kontakt-bamberg.de/",
+						"title": "Website"
+					},
+					{
+						"url": "https://helfen.kntkt.de/",
+						"title": "Mitmachen"
+					},
+					{
+						"url": "https://kontakt-bamberg.de/mithelfen-2",
+						"title": "Aufbau"
+					}
+				]
+			}
+		},
+		{
+			"id": "newline2025",
+			"version": 2025051604,
+			"url": "https://cfp.hackerspace.gent/newline-2025/schedule/export/schedule.xml",
+			"title": "Newline 2025",
+			"start": "2025-05-23",
+			"end": "2025-05-25",
+			"timezone": "Europe/Brussels",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://newline.gent/hsg_logo_transp.png",
+				"links": [
+					{
+						"url": "https://newline.gent/",
+						"title": "Website"
+					},
+					{
+						"url": "https://newline.gent/img/map%20with%20arrows.jpg",
+						"title": "Map",
+						"type": "image/png"
+					}
+				]
+			}
+		},
+		{
+			"id": "jdll_2025",
+			"version": 2025042500,
+			"url": "https://pretalx.jdll.org/jdll2025/schedule/export/schedule.xml",
+			"title": "Journées du Logiciel Libre 2025",
+			"start": "2025-05-24",
+			"end": "2025-05-25",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://jdll.org/",
+						"title": "Site web"
+					},
+					{
+						"url": "https://jdll.org/contact-and-informations",
+						"title": "Informations pratiques"
+					}
+				],
+				"rooms": [
+					{
+						"name": ".* - D1\\..*",
+						"latlon": [45.733088, 4.83374]
+					},
+					{
+						"name": ".* - D2\\..*",
+						"latlon": [45.733567, 4.834548]
+					},
+					{
+						"name": ".* - Amphi Descartes\\..*",
+						"latlon": [45.733567, 4.834548]
+					},
+					{
+						"name": ".* - D3\\..*",
+						"latlon": [45.733453, 4.834054]
+					},
+					{
+						"name": ".* - D4\\..*",
+						"latlon": [45.733721, 4.833754]
+					},
+					{
+						"name": ".* - D5\\..*",
+						"latlon": [45.73455, 4.833271]
+					},
+					{
+						"name": ".* - D6\\..*",
+						"latlon": [45.734123, 4.832233]
+					},
+					{
+						"name": ".* - D7\\..*",
+						"latlon": [45.733543, 4.832209]
+					},
+					{
+						"name": "Cafétéria",
+						"latlon": [45.733543, 4.832209]
+					},
+					{
+						"name": ".* - D8\\..*",
+						"latlon": [45.73241, 4.831973]
+					}
+				]
+			}
+		},
+		{
+			"id": "sstic_2025",
+			"version": 2025040300,
+			"url": "https://www.sstic.org/2025/programme.ics",
+			"title": "Symposium sur la sécurité des technologies de l'information et des communications 2025",
+			"start": "2025-06-04",
+			"end": "2025-06-05",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.sstic.org/2025/news/",
+						"title": "Site web"
+					}
+				]
+			}
+		},
+		{
+			"id": "devconf_2025",
+			"version": 2025052200,
+			"url": "https://pretalx.devconf.info/devconf-cz-2025/schedule/export/schedule.xml",
+			"title": "Devconf 2025",
+			"start": "2025-06-12",
+			"end": "2025-06-14",
+			"timezone": "Europe/Prague",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.devconf.cz/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.devconf.cz/cz/#about",
+						"title": "About"
+					},
+					{
+						"url": "https://www.devconf.cz/cz/faq/",
+						"title": "FAQ"
+					}
+				],
+				"rooms": [
+					{
+						"name": "D105",
+						"latlon": [49.2058703, 16.59124]
+					},
+					{
+						"name": "D0206",
+						"latlon": [49.2060192, 16.5914814]
+					},
+					{
+						"name": "D0207",
+						"latlon": [49.2060192, 16.5914814]
+					},
+					{
+						"name": "E112",
+						"latlon": [49.2055881, 16.5915886]
+					},
+					{
+						"name": "E104",
+						"latlon": [49.2055181, 16.5919239]
+					},
+					{
+						"name": "E105",
+						"latlon": [49.2055181, 16.5919239]
+					},
+					{
+						"name": "A112",
+						"latlon": [49.2064889, 16.5922028]
+					},
+					{
+						"name": "A113",
+						"latlon": [49.2064889, 16.5922028]
+					},
+					{
+						"name": "A218",
+						"latlon": [49.2064889, 16.5922028]
+					},
+					{
+						"name": "C228",
+						"latlon": [49.2069778, 16.5916261]
+					},
+					{
+						"name": "C236",
+						"latlon": [49.2069778, 16.5916261]
+					}
+				]
+			}
+		},
+		{
+			"id": "sotm_fr_2025",
+			"version": 2025050200,
+			"url": "https://pretalx.com/sotm-fr-2025/schedule.xml",
+			"title": "State of the Map France 2025",
+			"start": "2025-06-13",
+			"end": "2025-06-15",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://sotm2025.openstreetmap.fr/",
+						"title": "Site web"
+					},
+					{
+						"url": "https://forum.openstreetmap.fr/",
+						"title": "Forum"
+					},
+					{
+						"url": "https://peertube.openstreetmap.fr/c/sotm_fr_2025/videos",
+						"title": "Replays"
+					}
+				]
+			}
+		},
+		{
+			"id": "gpn23",
+			"version": 2025060800,
+			"url": "https://cfp.gulas.ch/gpn23/schedule/export/schedule.xml",
+			"title": "23. Gulaschprogrammiernacht",
+			"start": "2025-06-19",
+			"end": "2025-06-22",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://entropia.de/GPN23",
+						"title": "Website"
+					},
+					{
+						"url": "https://entropia.de/GPN23:FAQ",
+						"title": "FAQ"
+					}
+				]
+			}
+		},
+		{
+			"id": "opensouthcode_2025",
+			"version": 2025060301,
+			"url": "https://www.opensouthcode.org/conferences/opensouthcode2025/schedule.xml",
+			"title": "OpenSouthCode 2025",
+			"start": "2025-06-20",
+			"end": "2025-06-21",
+			"timezone": "Europe/Madrid",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.opensouthcode.org/conferences/opensouthcode2025",
+						"title": "Website"
+					}
+				],
+				"icon": "https://www.opensouthcode.org/logo1.png"
+			}
+		},
+		{
+			"id": "bibliocon25",
+			"version": 2025030601,
+			"url": "https://cloud.bib.uni-mannheim.de/public.php/dav/files/MRwnBF84RfdJw55/",
+			"title": "Bibliothekskongress 2025",
+			"start": "2025-06-24",
+			"end": "2025-06-27",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2025.bid-kongress.de/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://2025.bid-kongress.de/der-kongress/informationen-von-a-z/",
+						"title": "Informationen von A-Z"
+					}
+				]
+			}
+		},
+		{
+			"id": "osc_2025",
+			"version": 2025031201,
+			"url": "https://events.opensuse.org/conferences/oSC25/schedule.xml",
+			"title": "openSUSE Conference 2025",
+			"start": "2025-06-26",
+			"end": "2025-06-28",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.opensuse.org/conferences/oSC25/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "passthesalt_2025",
+			"version": 2025050500,
+			"url": "https://cfp.pass-the-salt.org/pts2025/schedule/export/schedule.xml",
+			"title": "Pass the SALT 2025",
+			"start": "2025-07-01",
+			"end": "2025-07-03",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2025.pass-the-salt.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://pretix.eu/passthesalt/2025/",
+						"title": "Free Ticket"
+					},
+					{
+						"url": "https://2025.pass-the-salt.org/practical/",
+						"title": "Practical & safety"
+					},
+					{
+						"url": "https://2025.pass-the-salt.org/code-of-conduct/",
+						"title": "Code of Conduct"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Amphitheater .*",
+						"latlon": [50.631036, 3.045595]
+					},
+					{
+						"name": "Room LW.*",
+						"latlon": [50.631036, 3.045595]
+					}
+				]
+			}
+		},
+		{
+			"id": "hackover_2025",
+			"version": 2025062900,
+			"url": "https://talks.hackover.de/ho25/schedule/export/schedule.xml",
+			"title": "Hackover 2025",
+			"start": "2025-07-04",
+			"end": "2025-07-06",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://hackover.de/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "tuebix_2025",
+			"version": 2025052799,
+			"url": "https://cfp.tuebix.org/tuebix-2025/schedule/export/schedule.xml",
+			"title": "Tübix 2025",
+			"start": "2025-07-05",
+			"end": "2025-07-05",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.tuebix.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.tuebix.org/anfahrt/",
+						"title": "Anfahrt"
+					}
+				]
+			}
+		},
+		{
+			"id": "foss4g_europe_2025",
+			"version": 2025042800,
+			"url": "https://sotm.osmz.ru/fe2025.xml",
+			"title": "FOSS4G Europe 2025",
+			"start": "2025-07-14",
+			"end": "2025-07-18",
+			"timezone": "Europe/Belgrade",
+			"metadata": {
+				"icon": "https://textual.ru/mostar2025.png",
+				"links": [
+					{
+						"url": "https://2025.europe.foss4g.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://wiki.osgeo.org/wiki/FOSS4G-Europe-2025/BirdsOfAFeather",
+						"title": "Birds of a Feather"
+					},
+					{
+						"url": "https://wiki.osgeo.org/wiki/FOSS4G-Europe-2025/CommunitySprint",
+						"title": "Community Sprint"
+					},
+					{
+						"url": "https://2025.europe.foss4g.org/sponsors/",
+						"title": "Sponsors"
+					}
+				],
+				"rooms": [
+					{
+						"name": "PA..|PL..",
+						"show_name": "Faculty of Humanities and Social Sciences",
+						"latlon": [43.344169, 17.797409]
+					},
+					{
+						"name": "KOS",
+						"show_name": "Hrvatski dom Herceg Stjepan Kosača",
+						"latlon": [43.342265, 17.802576]
+					},
+					{
+						"name": "EL11",
+						"show_name": "Faculty of Economics",
+						"latlon": [43.344195, 17.796311]
+					},
+					{
+						"name": "SA0.",
+						"show_name": "Socratus Amphitheatre",
+						"latlon": [43.344128, 17.796726]
+					},
+					{
+						"name": "CA01",
+						"show_name": "Faculty of Civil Engineering",
+						"latlon": [43.346437, 17.796721]
+					},
+					{
+						"name": "Restaurant Del Rio",
+						"latlon": [43.348588, 17.810125]
+					},
+					{
+						"name": "Charlie Bar & Snack",
+						"latlon": [43.344045, 17.79499]
+					},
+					{
+						"name": "Pavarotti Music Centre",
+						"latlon": [43.334823, 17.817494]
+					}
+				]
+			}
+		},
+		{
+			"id": "debconf25",
+			"version": 2025070302,
+			"url": "https://debconf25.debconf.org/schedule/pentabarf.xml",
+			"title": "DebConf 25",
+			"start": "2025-07-14",
+			"end": "2025-07-20",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"icon": "https://debconf25.debconf.org/static/img/logo-medium.d4e8d313ad22.png",
+				"links": [
+					{
+						"url": "https://debconf25.debconf.org/",
+						"title": "Website"
+					},
+					{
+						"title": "Wiki",
+						"url": "https://wiki.debian.org/DebConf/25"
+					},
+					{
+						"url": "https://debconf25.debconf.org/about/coc/",
+						"title": "Code of Conduct"
+					},
+					{
+						"url": "https://debconf25.debconf.org/about/debcamp/",
+						"title": "DebCamp"
+					},
+					{
+						"url": "https://debconf25.debconf.org/static/img/venue-map.be22d283ecb3.pdf",
+						"title": "Map"
+					}
+				]
+			}
+		},
+		{
+			"id": "bornhack_2025",
+			"version": 2025071612,
+			"url": "https://bornhack.dk/bornhack-2025/program/frab.xml",
+			"title": "BornHack 2025",
+			"start": "2025-07-16",
+			"end": "2025-07-23",
+			"timezone": "Europe/Copenhagen",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://bornhack.dk/bornhack-2025/",
+						"title": "Website"
+					},
+					{
+						"url": "https://bornhack.dk/bornhack-2025/info/",
+						"title": "Info"
+					},
+					{
+						"url": "https://bornhack.dk/bornhack-2025/map/",
+						"title": "Map"
+					},
+					{
+						"url": "https://bornhack.dk/bornhack-2025/facilities/",
+						"title": "Facilities"
+					}
+				]
+			}
+		},
+		{
+			"id": "tdf4_2025",
+			"title": "4. Tage der Digitalen Freiheit Tübingen",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://tdf.cttue.de/",
+						"title": "Website"
+					}
+				]
+			},
+			"url": "https://cfp.cttue.de/tdf4/schedule/export/schedule.xml",
+			"start": "2025-07-26",
+			"end": "2025-07-27",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"version": 2025071600
+		},
+		{
+			"id": "wikimania_2025",
+			"version": 2025080500,
+			"url": "https://wikimedia.eventyay.com/talk/wikimania2025/schedule/export/schedule.xml",
+			"title": "Wikimania 2025",
+			"start": "2025-08-06",
+			"end": "2025-08-09",
+			"timezone": "Africa/Nairobi",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Wikimania",
+						"title": "Website"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Venue",
+						"title": "Venue"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Meetups",
+						"title": "Meetups"
+					},
+					{
+						"url": "https://wikimania.wikimedia.org/wiki/Special:MyLanguage/2025:Trust_and_Safety",
+						"title": "Trust and Safety"
+					}
+				]
+			}
+		},
+		{
+			"id": "why_2025",
+			"version": 2025080901,
+			"url": "https://program.why2025.org/why2025/schedule/export/schedule.xml",
+			"title": "WHY2025",
+			"start": "2025-08-08",
+			"end": "2025-08-12",
+			"timezone": "Europe/Brussels",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://wiki.why2025.org/images/thumb/e/e2/WHY2025_logo_black.png/300px-WHY2025_logo_black.png",
+				"links": [
+					{
+						"url": "https://why2025.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://map.why2025.org/",
+						"title": "Map"
+					},
+					{
+						"url": "https://wiki.why2025.org/Welcome",
+						"title": "Wiki"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Aid to Ukraine",
+						"latlon": [52.690513, 4.743703]
+					},
+					{
+						"name": "Andromeda",
+						"latlon": [52.693176, 4.746093]
+					},
+					{
+						"name": "Brachium",
+						"latlon": [52.6908, 4.745329]
+					},
+					{
+						"name": "Cassiopeia",
+						"latlon": [52.691958, 4.749002]
+					},
+					{
+						"name": "Delphinus",
+						"latlon": [52.693746, 4.748425]
+					},
+					{
+						"name": "Infodesk",
+						"latlon": [52.692157, 4.746455]
+					},
+					{
+						"name": "Karaoke Bar",
+						"latlon": [52.69263, 4.745393]
+					},
+					{
+						"name": "Milliways",
+						"latlon": [52.69126, 4.747173]
+					},
+					{
+						"name": "Party Stage",
+						"latlon": [52.690474, 4.74414]
+					},
+					{
+						"name": "Serendiep",
+						"latlon": [52.68857, 4.733084]
+					},
+					{
+						"name": "Workshop Euclid",
+						"latlon": [52.693474, 4.747889]
+					},
+					{
+						"name": "Workshop Giotto",
+						"latlon": [52.693216, 4.746775]
+					},
+					{
+						"name": "Xyberfoort",
+						"latlon": [52.691842, 4.747604]
+					}
+				]
+			}
+		},
+		{
+			"id": "hope_2025",
+			"version": 2025080301,
+			"url": "https://schedule.hope.net/hope16/schedule/export/schedule.xml",
+			"title": "HOPE 2025",
+			"start": "2025-08-15",
+			"end": "2025-08-17",
+			"timezone": "America/New_York",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://xvi.hope.net/",
+						"title": "Website"
+					}
+				],
+				"rooms": [
+					{
+						"name": ".* Tobin .*",
+						"latlon": [40.723401, -73.794351]
+					},
+					{
+						"name": "Marillac .*",
+						"latlon": [40.722994, -73.794935]
+					}
+				]
+			}
+		},
+		{
+			"id": "froscon_2025",
+			"version": 2025080399,
+			"url": "https://programm.froscon.org/2025/schedule.xml",
+			"title": "FrOSCon 2025",
+			"start": "2025-08-16",
+			"end": "2025-08-17",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"icon": "https://froscon.org/icons/apple-touch-icon.png",
+				"links": [
+					{
+						"url": "https://froscon.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://froscon.org/en/program/project-rooms/",
+						"title": "Project rooms"
+					},
+					{
+						"url": "https://media.ccc.de/b/conferences/froscon",
+						"title": "Recordings"
+					}
+				]
+			}
+		},
+		{
+			"id": "oss_eu_2025",
+			"version": 2025081500,
+			"title": "Open Source Summit Europe 2025",
+			"url": "https://osseu2025.sched.com/all.ics",
+			"start": "2025-08-25",
+			"end": "2025-08-27",
+			"timezone": "Europe/Amsterdam",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.linuxfoundation.org/open-source-summit-europe/",
+						"title": "OSSEU Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "esc_2k25",
+			"version": 2025082600,
+			"url": "https://pretalx.endsummer.camp/2K25/schedule/export/schedule.xml",
+			"title": "End Summer Camp {21}",
+			"start": "2025-09-02",
+			"end": "2025-09-07",
+			"timezone": "Europe/Rome",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://endsummer.camp/",
+						"title": "End Summer Camp website"
+					},
+					{
+						"url": "https://t.me/endsummercamp",
+						"title": "Telegram chat"
+					},
+					{
+						"url": "https://t.me/esc_annunci",
+						"title": "Telegram announcement channels"
+					},
+					{
+						"url": "https://www.endsummercamp.org/index.php/Main_Page",
+						"title": "Historical wiki"
+					}
+				]
+			}
+		},
+		{
+			"id": "akademy_2025",
+			"version": 2025082401,
+			"url": "https://conf.kde.org/event/9/event.ics?scope=contribution",
+			"title": "Akademy 2025",
+			"start": "2025-09-06",
+			"end": "2025-09-11",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://akademy.kde.org/2025/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "grcon25",
+			"version": 2025090200,
+			"url": "https://events.gnuradio.org/event/26/event.ics?scope=contribution",
+			"title": "GNU Radio Conference 2025",
+			"start": "2025-09-08",
+			"end": "2025-09-12",
+			"timezone": "America/Los_Angeles",
+			"metadata": {
+				"icon": "https://www.gnuradio.org/giggity-grcon25-logo.png",
+				"links": [
+					{
+						"url": "https://events.gnuradio.org/event/26/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.gnuradio.org",
+						"title": "Project Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "mrmcd_2025",
+			"version": 2025090201,
+			"url": "https://talks.mrmcd.net/2025/schedule/export/schedule.xml",
+			"title": "MRMCD 2025",
+			"start": "2025-09-12",
+			"end": "2025-09-14",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2025.mrmcd.net",
+						"title": "Website"
+					},
+					{
+						"url": "https://tickets.mrmcd.net/mrmcd/2025/",
+						"title": "Tickets"
+					},
+					{
+						"url": "https://engel.mrmcd.net/login",
+						"title": "Engelsystem / Matrosensystem"
+					},
+					{
+						"url": "https://wiki.mrmcd.net/wiki/Main_Page",
+						"title": "Wiki"
+					}
+				]
+			}
+		},
+		{
+			"id": "pycon_au_2025",
+			"version": 2025091001,
+			"url": "https://pretalx.com/pycon-au-2025/schedule/export/schedule.xml",
+			"title": "PyCon AU 2025",
+			"start": "2025-09-12",
+			"end": "2025-09-16",
+			"timezone": "Australia/Melbourne",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2025.pycon.org.au/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2025.pycon.org.au/about/culture/",
+						"title": "Culture"
+					},
+					{
+						"url": "https://2025.pycon.org.au/attend/travel/",
+						"title": "Getting around"
+					},
+					{
+						"url": "https://2025.pycon.org.au/safety/",
+						"title": "Safety"
+					}
+				]
+			}
+		},
+		{
+			"id": "oat25",
+			"version": 2025070201,
+			"url": "https://cloud.bib.uni-mannheim.de/public.php/dav/files/n4nEx2CxY4MXkr9/",
+			"title": "Open-Access-Tage 2025",
+			"start": "2025-09-17",
+			"end": "2025-09-19",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://open-access-tage.de/open-access-tage-2025-konstanz",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "kielux_lpd_2025",
+			"version": 2025081401,
+			"title": "Kielux Linux Presentation Day 2025",
+			"url": "https://kielux.de/content/calendars/LPD25.ics",
+			"start": "2025-09-18",
+			"end": "2025-09-18",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+				"links": [
+					{
+						"url": "https://kielux.de",
+						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/LPD24",
+						"title": "Schedule"
+					}
+				],
+				"rooms": [
+					{
+						"name": "R114",
+						"latlon": [54.3351, 10.11944]
+					}
+				]
+			}
+		},
+		{
+			"id": "kielux_2025",
+			"version": 2025081401,
+			"title": "23. Kieler Open Source und Linux Tage",
+			"url": "https://kielux.de/content/calendars/KOLT25.ics",
+			"start": "2025-09-19",
+			"end": "2025-09-20",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"metadata": {
+				"icon": "https://kielux.de/static/images/kielux_tux_square.png",
+				"links": [
+					{
+						"url": "https://kielux.de",
+						"title": "Website"
+					},
+					{
+						"url": "https://kielux.de/programm/KOLT25",
+						"title": "Schedule and workshop registration"
+					},
+					{
+						"title": "Entertainment",
+						"url": "https://kielux.de/aktionen"
+					},
+					{
+						"title": "Exhibition",
+						"url": "https://kielux.de/aussteller"
+					}
+				],
+				"rooms": [
+					{
+						"name": "R012",
+						"latlon": [54.33497, 10.11928]
+					},
+					{
+						"name": "R007",
+						"latlon": [54.33547, 10.11951]
+					},
+					{
+						"name": "R114",
+						"latlon": [54.3351, 10.11944]
+					},
+					{
+						"name": "TuxLab",
+						"latlon": [54.33441, 10.11897]
+					}
+				]
+			}
+		},
+		{
+			"id": "datenspuren_2025",
+			"version": 2025082300,
+			"url": "https://talks.datenspuren.de/ds25/schedule/export/schedule.xml",
+			"title": "Datenspuren 2025",
+			"start": "2025-09-19",
+			"end": "2025-09-21",
+			"timezone": "Europe/Berlin",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://datenspuren.de/2025/",
+						"title": "Datenspuren Website"
+					},
+					{
+						"url": "https://c3d2.social/@datenspuren",
+						"title": "Mastodon"
+					},
+					{
+						"url": "https://matrix.to/#/#datenspuren:c3d2.de",
+						"title": "Matrix chat"
+					},
+					{
+						"url": "https://engel.datenspuren.de/login",
+						"title": "Engelsystem"
+					}
+				]
+			}
+		},
+		{
+			"id": "parisweb_2025",
+			"version": 2025051300,
+			"url": "https://www.paris-web.fr/2025/conferences-paris-web-2025.ics",
+			"title": "Paris Web 2025 - Conférences",
+			"start": "2025-09-25",
+			"end": "2025-09-26",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.paris-web.fr/2025",
+						"title": "Site Web"
+					},
+					{
+						"url": "https://inscriptions.paris-web.fr/",
+						"title": "Tarifs et inscription"
+					}
+				],
+				"rooms": [
+					{
+						"name": "Auditorium",
+						"show_name": "Auditorium - Institut Pasteur",
+						"latlon": [48.84207, 2.31022]
+					}
+				]
+			}
+		},
+		{
+			"id": "linuxday_at__2025",
+			"version": 2025081720,
+			"url": "https://www.linuxday.at/vortraege/2025/calendar.ics",
+			"title": "LinuxDay.at Vortraege",
+			"start": "2025-09-27",
+			"end": "2025-09-27",
+			"timezone": "Europe/Vienna",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.linuxday.at/",
+						"title": "Webseite"
+					},
+					{
+						"url": "https://www.linuxday.at/aussteller/2025",
+						"title": "Aussteller"
+					},
+					{
+						"url": "https://www.linuxday.at/vortraege/2025",
+						"title": "Vorträge"
+					},
+					{
+						"url": "https://www.linuxday.at/ort.html",
+						"title": "Wie komme ich zur HTL-Dornbirn"
+					}
+				]
+			}
+		},
+		{
+			"id": "fsl2025",
+			"version": 2025100201,
+			"url": "https://festa2025.softwarelivre.eu/fsl2025/schedule/xml",
+			"title": "Festa do Software Livre 2025",
+			"start": "2025-10-03",
+			"end": "2025-10-05",
+			"timezone": "Europe/Lisbon",
+			"metadata": {
+				"icon": "https://festa2025.softwarelivre.eu/images/logo_512.png",
+				"links": [
+					{
+						"url": "https://festa2025.softwarelivre.eu",
+						"title": "Website"
+					},
+					{
+						"url": "https://festa2025.softwarelivre.eu/info/",
+						"title": "Info"
+					}
+				]
+			}
+		},
+		{
+			"id": "linuxdays_2025",
+			"version": 2025091400,
+			"url": "https://pretalx.linuxdays.cz/linuxdays-2025/schedule/export/schedule.xml",
+			"start": "2025-10-04",
+			"end": "2025-10-05",
+			"timezone": "Europe/Prague",
+			"title": "LinuxDays 2025",
+			"metadata": {
+				"icon": "https://www.linuxdays.cz/2025/obrazky/icon.png",
+				"links": [
+					{
+						"title": "Website",
+						"url": "https://www.linuxdays.cz/2025/"
+					},
+					{
+						"title": "Map",
+						"type": "image/png",
+						"url": "https://www.linuxdays.cz/2025/obrazky/plan24.png"
+					}
+				],
+				"rooms": [
+					{
+						"latlon": [50.105249, 14.390095],
+						"name": "105"
+					},
+					{
+						"latlon": [50.105382, 14.389836],
+						"name": "155"
+					},
+					{
+						"latlon": [50.105138, 14.390298],
+						"name": "107"
+					},
+					{
+						"latlon": [50.105047, 14.390432],
+						"name": "111"
+					}
+				]
+			}
+		},
+		{
+			"id": "pycon_es_2025",
+			"version": 2025092901,
+			"url": "https://pretalx.com/pycones-2025/schedule/export/schedule.xml",
+			"title": "PyConES 2025",
+			"start": "2025-10-17",
+			"end": "2025-10-19",
+			"timezone": "Europe/Madrid",
+			"metadata": {
+				"icon": "https://cdn.pretix.cloud/1/pub/thumbs/676e0dc32e6ad70a0bacc495bc4018ff.192x192c.0b93a7ff7c731d.png",
+				"links": [
+					{
+						"url": "https://2025.es.pycon.org",
+						"title": "Website"
+					},
+					{
+						"url": "https://2025.es.pycon.org/tickets.html",
+						"title": "Tickets"
+					},
+					{
+						"url": "https://2025.es.pycon.org/pages/upo.html",
+						"title": "Venue"
+					},
+					{
+						"url": "https://2025.es.pycon.org/keynoters.html",
+						"title": "Speakers"
+					}
+				],
+				"rooms": [
+					{
+						"name": "E45",
+						"latlon": [37.35649290598196, -5.943393556508959]
+					},
+					{
+						"name": "Paraninfo Bloomberg",
+						"latlon": [37.35412032121821, -5.93788092183513]
+					},
+					{
+						"name": "E4",
+						"latlon": [37.35474695046674, -5.9369887286734775]
+					},
+					{
+						"name": "E5",
+						"latlon": [37.35517130363255, -5.938121457170051]
+					}
+				]
+			}
+		},
+		{
+			"id": "pycon_fr_2025",
+			"version": 2025092801,
+			"url": "https://www.pycon.fr/2025/fr/calendar.ics",
+			"title": "PyConFR 2025",
+			"start": "2025-10-30",
+			"end": "2025-11-02",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.pycon.fr/2025/fr/",
+						"title": "Site Web"
+					},
+					{
+						"title": "Inscription",
+						"url": "https://www.pycon.fr/2025/fr/schedule.html#register"
+					}
+				],
+				"rooms": [
+					{
+						"name": "B.*",
+						"latlon": [45.76845, 4.80609]
+					},
+					{
+						"name": "C.*",
+						"latlon": [45.76845, 4.80609]
+					}
+				]
+			}
+		},
+		{
+			"id": "openalt_2025",
+			"version": 2025103000,
+			"url": "https://talks.openalt.cz/openalt-2025/schedule/export/schedule.xml",
+			"title": "OpenAlt 2025",
+			"start": "2025-11-01",
+			"end": "2025-11-02",
+			"timezone": "Europe/Prague",
+			"metadata": {
+				"icon": "https://gitlab.com/uploads/-/system/project/avatar/45099900/logo_konference-150.png",
+				"links": [
+					{
+						"url": "https://www.openalt.cz/2025/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "ietf124",
+			"version": 2025093001,
+			"url": "https://datatracker.ietf.org/meeting/124/agenda.ics",
+			"title": "IETF 124 Montreal",
+			"start": "2025-11-01",
+			"end": "2025-11-07",
+			"timezone": "America/Montreal",
+			"refresh_interval": 86400,
+			"metadata": {
+				"links": [
+					{
+						"url": "https://www.ietf.org/meeting/124/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "sfscon_2025",
+			"version": 2025100500,
+			"url": "https://www.sfscon.it/?calendar=2025&format=xml",
+			"title": "SFSCON 2025",
+			"start": "2025-11-07",
+			"end": "2025-11-08",
+			"timezone": "Europe/Brussels",
+			"metadata": {
+				"icon": "https://www.sfscon.it/wp-content/uploads/2020/10/cropped-cropped-sfsconnew-180x180.png",
+				"links": [
+					{
+						"url": "https://www.sfscon.it/",
+						"title": "Website"
+					},
+					{
+						"url": "https://www.sfscon.it/side-events/",
+						"title": "Side Events"
+					},
+					{
+						"url": "https://www.sfscon.it/attendee-guide/",
+						"title": "Attendee's Guide"
+					},
+					{
+						"url": "https://www.sfscon.it/venue/",
+						"title": "Venue"
+					}
+				]
+			}
+		},
+		{
+			"id": "sotm_eu_2025",
+			"version": 2025103100,
+			"url": "https://sotm.osmz.ru/sotmeu25.xml",
+			"title": "State of the Map Europe 2025",
+			"start": "2025-11-14",
+			"end": "2025-11-15",
+			"timezone": "Europe/London",
+			"refresh_interval": 7200,
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2025.stateofthemap.eu/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "capitole_du_libre_2025",
+			"version": 2025102700,
+			"url": "https://cfp.capitoledulibre.org/cdl-2025/schedule/export/schedule.xml",
+			"title": "Capitole du Libre 2025",
+			"start": "2025-11-15",
+			"end": "2025-11-16",
+			"timezone": "Europe/Paris",
+			"metadata": {
+				"icon": "https://stockage.framapiaf.org/framapiaf/accounts/avatars/000/063/765/original/c5fa7c6864ab5ba2.png",
+				"links": [
+					{
+						"url": "https://capitoledulibre.org/",
+						"title": "Site web"
+					},
+					{
+						"url": "https://tickets.capitoledulibre.org/cdl/2025/",
+						"title": "Inscription gratuite obligatoire"
+					}
+				],
+				"rooms": [
+					{
+						"name": "A.*",
+						"latlon": [43.60248, 1.45464]
+					},
+					{
+						"name": "B.*",
+						"latlon": [43.60247, 1.45566]
+					},
+					{
+						"name": "C.*",
+						"latlon": [43.60214, 1.45462]
+					},
+					{
+						"name": "Foyer.*",
+						"latlon": [43.60207, 1.45591]
+					}
+				]
+			}
+		},
+		{
+			"id": "foss4g_2025",
+			"version": 2025092300,
+			"url": "https://talks.osgeo.org/foss4g-2025/schedule/export/schedule.xml",
+			"title": "FOSS4G 2025",
+			"start": "2025-11-17",
+			"end": "2025-11-23",
+			"timezone": "Pacific/Auckland",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://2025.foss4g.org/",
+						"title": "Website"
+					},
+					{
+						"url": "https://2025.foss4g.org/attend/accomodation",
+						"title": "Accommodation"
+					},
+					{
+						"url": "https://ti.to/osgeo-oceania/foss4g-2025",
+						"title": "Registration"
+					},
+					{
+						"url": "https://2025.foss4g.org/attend/code-of-conduct",
+						"title": "Code of Conduct"
+					}
+				]
+			}
+		},
+		{
+			"id": "oss_japan_2025",
+			"version": 2025112800,
+			"title": "Open Source Summit Japan 2025",
+			"url": "https://ossjapan2025.sched.com/all.ics",
+			"start": "2025-12-08",
+			"end": "2025-12-10",
+			"timezone": "Asia/Tokyo",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.linuxfoundation.org/open-source-summit-japan/",
+						"title": "OSS Japan Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "linux_plumbers_conference_2025",
+			"version": 2025120301,
+			"url": "https://lpc.events/event/19/event.ics?detail=contributions",
+			"title": "Linux Plumbers Conference 2025",
+			"start": "2025-12-11",
+			"end": "2025-12-13",
+			"timezone": "Asia/Tokyo",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://lpc.events/event/19/",
+						"title": "Website"
+					}
+				]
+			}
+		},
+		{
+			"id": "39c3_main_rooms_only",
+			"title": "39C3 - main rooms only",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2025/infos/startpage.html",
+						"title": "Website"
+					},
+					{
+						"url": "https://events.ccc.de/congress/2025/hub/en/index",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://fahrplan.events.ccc.de/congress/2025/fahrplan/schedules/fahrplan.xml",
+			"start": "2025-12-27",
+			"end": "2025-12-30",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"version": 2025120501
+		},
+		{
+			"id": "39c3_merged",
+			"title": "39C3 - merged",
+			"metadata": {
+				"links": [
+					{
+						"url": "https://events.ccc.de/congress/2025/infos/startpage.html",
+						"title": "Website"
+					},
+					{
+						"url": "https://events.ccc.de/congress/2025/hub/en/index",
+						"title": "Wiki"
+					},
+					{
+						"title": "Weblog",
+						"url": "https://events.ccc.de/"
+					}
+				]
+			},
+			"url": "https://fahrplan.events.ccc.de/congress/2025/fahrplan/schedules/schedule.xml",
+			"start": "2025-12-27",
+			"end": "2025-12-30",
+			"timezone": "Europe/Berlin",
+			"refresh_interval": 1800,
+			"version": 2025120501
+		},
+		{
+			"id": "fosdem_2026",
+			"version": 2025092900,
+			"url": "https://fosdem.org/2026/schedule/xml",
+			"title": "FOSDEM 2026",
+			"start": "2026-01-31",
+			"end": "2026-02-01",
+			"timezone": "Europe/Brussels",
+			"refresh_interval": 1800,
+			"metadata": {
+				"fosdemRoomStatus": "https://api.fosdem.org/roomstatus/v1/listrooms",
+				"links": [
+					{
+						"url": "https://fosdem.org/2026/",
+						"title": "Website"
+					},
+					{
+						"url": "https://volunteers.fosdem.org/faq/",
+						"title": "Volunteer"
+					},
+					{
+						"url": "https://fosdem.org/2026/practical/transportation/",
+						"title": "Transportation"
+					},
+					{
+						"url": "https://fosdem.org/2026/stands/",
+						"title": "Stands"
+					}
+				],
+				"icon": "https://archive.fosdem.org/2018/assets/style/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png",
+				"c3nav_base": "https://nav.fosdem.org",
+				"rooms": [
+					{
+						"name": "Janson",
+						"c3nav_slug": "janson"
+					},
+					{
+						"name": "AW1\\.120",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1120"
+					},
+					{
+						"name": "AW1\\.126",
+						"show_name": "AW building",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "aw1126"
+					},
+					{
+						"name": "H\\.1301\\ \\(Cornil\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1301"
+					},
+					{
+						"name": "H\\.1302\\ \\(Depage\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1302"
+					},
+					{
+						"name": "H\\.1308\\ \\(Rolin\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1308"
+					},
+					{
+						"name": "H\\.1309\\ \\(Van\\ Rijn\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h1309"
+					},
+					{
+						"name": "H\\.2213",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2213"
+					},
+					{
+						"name": "H\\.2214",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2214"
+					},
+					{
+						"name": "H\\.2215\\ \\(Ferrer\\)",
+						"show_name": "H.*",
+						"latlon": [50.8127773, 4.3799053],
+						"c3nav_slug": "h2215"
+					},
+					{
+						"name": "J\\.1\\.106",
+						"c3nav_slug": "j1106"
+					},
+					{
+						"name": "K\\.1\\.105\\ \\(La\\ Fontaine\\)",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k1105"
+					},
+					{
+						"name": "K\\.3\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3201"
+					},
+					{
+						"name": "K\\.3\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k3401"
+					},
+					{
+						"name": "K\\.4\\.201",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4201"
+					},
+					{
+						"name": "K\\.4\\.401",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4401"
+					},
+					{
+						"name": "K\\.4\\.601",
+						"show_name": "K building",
+						"latlon": [50.8146969, 4.3817676],
+						"c3nav_slug": "k4601"
+					},
+					{
+						"name": "UA2\\.114\\ \\(Baudoux\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2114"
+					},
+					{
+						"name": "UA2\\.118\\ \\(Henriot\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2118"
+					},
+					{
+						"name": "UA2\\.220\\ \\(Guillissen\\)",
+						"show_name": "UA wing",
+						"latlon": [50.811683, 4.3826425],
+						"c3nav_slug": "ua2220"
+					},
+					{
+						"name": "UB2\\.147",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2147"
+					},
+					{
+						"name": "UB2\\.252A \\(Lameere\\)",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub2252a"
+					},
+					{
+						"name": "UB4\\.132",
+						"show_name": "UB wing",
+						"latlon": [50.8120565, 4.382176],
+						"c3nav_slug": "ub4132"
+					},
+					{
+						"name": "UB5\\.132",
+						"c3nav_slug": "ub5132"
+					},
+					{
+						"name": "UB5\\.230",
+						"c3nav_slug": "ub5230"
+					},
+					{
+						"name": "UD2\\.119",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2119"
+					},
+					{
+						"name": "UD2\\.120\\ \\(Chavanne\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2120"
+					},
+					{
+						"name": "UD2\\.208\\ \\(Decroly\\)",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2208"
+					},
+					{
+						"name": "UD2\\.218A",
+						"show_name": "UD wing",
+						"latlon": [50.812691, 4.3818835],
+						"c3nav_slug": "ud2218a"
+					}
+				]
+			}
+		}
+	]
+}

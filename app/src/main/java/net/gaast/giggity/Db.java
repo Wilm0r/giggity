@@ -76,12 +76,22 @@ public class Db extends SQLiteOpenHelper {
 		super(app_, "giggity", null, dbVersion);
 		app = (Giggity) app_;
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
+		this.testSeed = null;
 	}
-	
-	public Connection getConnection() {
-		return new Connection();
+
+	// TEST USE ONLY
+	public Db(Application app_, String name, String testSeed) {
+		super(app_, name, null, dbVersion);
+		try {
+			Class.forName("androidx.test.ext.junit.runners.AndroidJUnit4");
+		} catch (ClassNotFoundException e) {
+			throw new RuntimeException("Method to be used by tests only.");
+		}
+		app = (Giggity) app_;
+		pref = PreferenceManager.getDefaultSharedPreferences(app);
+		this.testSeed = testSeed;
 	}
-	
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		Log.i("DeoxideDb", "Creating new database");
@@ -408,6 +418,7 @@ public class Db extends SQLiteOpenHelper {
 	private final String PROD_SEED_URL = "https://ggt.gaa.st/menu.json";
 	// Old location, manually updated, sometimes useful during development.
 	private final String DEBUG_SEED_URL = "https://wilmer.gaa.st/deoxide/menu.json";
+	private final String testSeed;  // File contents, not a URL.
 
 	private String getSeedUrl() {
 		return BuildConfig.DEBUG ? DEBUG_SEED_URL : PROD_SEED_URL;
@@ -420,7 +431,9 @@ public class Db extends SQLiteOpenHelper {
 		JSONObject jso;
 		Fetcher f = null;
 		try {
-			if (source == SeedSource.BUILT_IN) {
+			if (testSeed != null) {
+				json = testSeed;
+			} else if (source == SeedSource.BUILT_IN) {
 				// See generateMenu task in app/build.gradle.
 				InputStreamReader inr = new InputStreamReader(app.getResources().openRawResource(R.raw.menu), StandardCharsets.UTF_8);
 				StringWriter sw = new StringWriter();
@@ -471,7 +484,9 @@ public class Db extends SQLiteOpenHelper {
 				schedules.add(new Schedule(sched));
 			}
 		}
-		
+
+		// This thing exists as does DbSchedule, this is not confusing aaat allll.
+		// The difference is that that one's public while Seed* all is not.
 		private static class Schedule {
 			String id, url, title;
 			int refresh_interval;
@@ -511,7 +526,11 @@ public class Db extends SQLiteOpenHelper {
 			}
 		}
 	}
-	
+
+	public Connection getConnection() {
+		return new Connection();
+	}
+
 	public class Connection {
 		// This is the public API, and instances of this class are more short-lived.
 		// Still, every method has its own even shorter-lived database connection. The database
@@ -918,7 +937,7 @@ public class Db extends SQLiteOpenHelper {
 
 	public class DbSchedule {
 		private int id;
-		private String url, title;
+		private String idS, url, title;
 		private boolean hidden;
 		private Date start, end;
 		private String timezone;
@@ -929,6 +948,7 @@ public class Db extends SQLiteOpenHelper {
 
 		public DbSchedule(Cursor q) {
 			id = q.getInt(q.getColumnIndexOrThrow("sch_id"));
+			idS = q.getString(q.getColumnIndexOrThrow("sch_id_s"));
 			url = q.getString(q.getColumnIndexOrThrow("sch_url"));
 			title = q.getString(q.getColumnIndexOrThrow("sch_title"));
 			hidden = q.getInt(q.getColumnIndexOrThrow("sch_hidden")) > 0;
@@ -940,7 +960,12 @@ public class Db extends SQLiteOpenHelper {
 			rtime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_rtime")) * 1000);
 //			itime = new Date(q.getLong(q.getColumnIndexOrThrow("sch_itime")) * 1000);
 		}
-		
+
+		public boolean hasId() {
+			// Really just added this for testing purposes.
+			return idS != null && !idS.isEmpty();
+		}
+
 		public String getUrl() {
 			return url;
 		}
