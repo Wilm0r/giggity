@@ -13,6 +13,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.nio.charset.StandardCharsets;
+
+import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
@@ -91,6 +94,16 @@ public class Spresso {
 			} catch (SecurityException e) {
 			}  // If we can't get it we probably don't yet need it?
 		}
+
+		// I wrote this test in '23 when this schedule was near the top of the list. Of course by
+		// now it isn't in the list anymore at all by default, so add it.
+		Giggity context = ApplicationProvider.getApplicationContext();
+		context.getDb().updateRawSchedule("{\"id\": \"debconf23\", \"version\": 2023090301, \"url\": \"https://debconf23.debconf.org/schedule/pentabarf.xml\", \"title\": \"DebConf 23\", \"start\": \"2023-09-10\", \"end\": \"2023-09-17\", \"timezone\": \"Asia/Kolkata\", \"metadata\": {\"icon\": \"https://debconf23.debconf.org/static/img/favicon/favicon-128-rgba.png\", \"links\": [{\"url\": \"https://debconf23.debconf.org/\", \"title\": \"Website\"}, {\"title\": \"Wiki\", \"url\": \"https://wiki.debian.org/DebConf/23\"}, {\"title\": \"Venues Map\", \"type\": \"application/pdf\", \"url\": \"https://debconf23.debconf.org/static/img/dc23-venue-map.pdf\"}, {\"title\": \"Amenities Map\", \"type\": \"application/pdf\", \"url\": \"https://debconf23.debconf.org/static/img/dc23-amenities-map.pdf\"}, {\"url\": \"https://debconf23.debconf.org/about/coc/\", \"title\": \"Code of Conduct\"}, {\"url\": \"https://debconf23.debconf.org/about/debcamp/\", \"title\": \"DebCamp\"}, {\"url\": \"https://debconf23.debconf.org/about/accommodation/\", \"title\": \"Accommodation\"}, {\"url\": \"https://debconf23.debconf.org/about/childcare/\", \"title\": \"Child care\"}, {\"url\": \"https://debconf23.debconf.org/about/covid19/\", \"title\": \"COVID-19\"}, {\"url\": \"https://wiki.debian.org/DebConf/23/Faq\", \"title\": \"FAQ\"}, {\"url\": \"https://debconf23.debconf.org/about/venue/\", \"title\": \"Venue\"}, {\"url\": \"https://debconf23.debconf.org/about/visas/\", \"title\": \"Visas\"}], \"rooms\": [{\"name\": \"Anamudi\", \"latlon\": [10.00888, 76.36152]}, {\"name\": \"(Ponmudi|Kuthiran)\", \"latlon\": [10.00715, 76.36249]}]}}".getBytes(StandardCharsets.UTF_8));
+
+		// Cheeky hack: Swipe down an extra time so that hopefully by the time that's done at least
+		// the first refresh will have completed. (Real fix would be to add an idler to Chooser?)
+		onView(withClassName(containsString("SwipeRefreshLayout"))).perform(swipeDown());
+		onView(withClassName(containsString("SwipeRefreshLayout"))).perform(swipeDown());
 
 		CountingIdlingResource loaders = new CountingIdlingResource("loaders");
 		ScheduleViewActivity.setIdler(loaders);
