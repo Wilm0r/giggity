@@ -7,9 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.util.Log;
-
-import junit.framework.TestCase;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
@@ -17,13 +14,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
@@ -41,16 +35,23 @@ public class DbTest {
 
 		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(app);
 		SharedPreferences.Editor p = pref.edit();
+		// This tracks the most recently loaded seed version number, which shouldn't carry across
+		// test runs. (Though also I think this seed version concept should just go away..)
 		p.remove("last_menu_seed_version");
 		p.commit();
 	}
 
+	private void loadDb(int id) throws IOException {
+		// Regenerating files:
+		// rm -f *.sqlite; for f in *.sql; do sqlite3 ${f/./bin.}ite < $f; done
+		try (OutputStream out = new FileOutputStream(app.getDatabasePath("dut").getPath())) {
+			IOUtils.copy(me.getResources().openRawResource(id), out);
+		}
+	}
+
 	@Test
 	public void testUpgradeEmptyDb18() throws IOException {
-		OutputStream out = new FileOutputStream(app.getDatabasePath("dut").getPath());
-		IOUtils.copy(me.getResources().openRawResource(net.gaast.giggity.test.R.raw.db18bin),
-		             out);
-		out.close();
+		loadDb(net.gaast.giggity.test.R.raw.db18bin);
 
 		Db db = new Db(app, "dut", null);
 		Db.Connection c = db.getConnection();
@@ -60,9 +61,7 @@ public class DbTest {
 
 	@Test
 	public void testUpgradePopulatedApk531() throws IOException {
-		OutputStream out = new FileOutputStream(app.getDatabasePath("dut").getPath());
-		IOUtils.copy(me.getResources().openRawResource(net.gaast.giggity.test.R.raw.apk531bin), out);
-		out.close();
+		loadDb(net.gaast.giggity.test.R.raw.apk531bin);
 
 		String seed = IOUtils.toString(me.getResources().openRawResource(net.gaast.giggity.test.R.raw.menu531), StandardCharsets.UTF_8);
 
@@ -82,9 +81,7 @@ public class DbTest {
 	@Test
 	public void testDataUpdatesOnly() throws IOException {
 		// Well OK it's data only right now but some day I'll update the schema gain I guess. :)
-		OutputStream out = new FileOutputStream(app.getDatabasePath("dut").getPath());
-		IOUtils.copy(me.getResources().openRawResource(net.gaast.giggity.test.R.raw.dataonlybin), out);
-		out.close();
+		loadDb(net.gaast.giggity.test.R.raw.dataonlybin);
 
 		String seed = IOUtils.toString(me.getResources().openRawResource(net.gaast.giggity.test.R.raw.menu2026), StandardCharsets.UTF_8);
 
@@ -120,9 +117,7 @@ public class DbTest {
 
 	@Test
 	public void testDedupe() throws IOException {
-		OutputStream out = new FileOutputStream(app.getDatabasePath("dut").getPath());
-		IOUtils.copy(me.getResources().openRawResource(net.gaast.giggity.test.R.raw.fosdemdedupebin), out);
-		out.close();
+		loadDb(net.gaast.giggity.test.R.raw.fosdemdedupebin);
 
 		String seed = IOUtils.toString(me.getResources().openRawResource(net.gaast.giggity.test.R.raw.menu2026), StandardCharsets.UTF_8);
 

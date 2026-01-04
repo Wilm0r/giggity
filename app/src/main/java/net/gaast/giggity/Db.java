@@ -79,7 +79,7 @@ public class Db extends SQLiteOpenHelper {
 		this.testSeed = null;
 	}
 
-	// TEST USE ONLY
+	/** Test helper constructor. Can load alternate database and hardcoded menu seed. */
 	public Db(Application app_, String name, String testSeed) {
 		super(app_, name, null, dbVersion);
 		try {
@@ -353,9 +353,6 @@ public class Db extends SQLiteOpenHelper {
 			row.put("sch_atime", sched.start.getTime() / 1000);
 		} else {
 			q.moveToNext();
-			if (q.getCount() > 1) {
-				// TODO: :<
-			}
 			// Never change sch_id_s from a non-null value.
 			if (q.getString(1) == null) {
 				row.put("sch_id_s", sched.id);
