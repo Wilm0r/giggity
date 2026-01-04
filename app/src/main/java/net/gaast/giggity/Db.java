@@ -324,10 +324,16 @@ public class Db extends SQLiteOpenHelper {
 		}
 
 		db.beginTransaction();
-		// TODDO: sched.id null causes trouble.
-		Cursor q = db.rawQuery("Select sch_id, sch_id_s From schedule " +
-		                       "Where sch_url = ? Or (sch_id_s = ? And sch_id_s Is Not Null)",
-		                       new String[]{sched.url, sched.id});
+		Cursor q;
+		if (sched.id != null) {
+			q = db.rawQuery("Select sch_id, sch_id_s From schedule " + 
+			                "Where sch_url = ? Or (sch_id_s = ? And sch_id_s Is Not Null)",
+			                new String[]{sched.url, sched.id});
+		} else {
+			// Crappy API forces me to write a separate query for when sched.id is null.
+			q = db.rawQuery("Select sch_id, sch_id_s From schedule " + 
+			                "Where sch_url = ?", new String[]{sched.url});
+		}
 
 		ContentValues row = new ContentValues();
 		if (q.getCount() == 0) {
@@ -672,6 +678,8 @@ public class Db extends SQLiteOpenHelper {
 			return parsed.url;
 		}
 		
+		// This is just for remembering the day you were browsing in between Giggity restarts.
+		// Not otherwise affecting Db in any way, that's all just in Schedule.
 		public int getDay() {
 			return day;
 		}
