@@ -1,0 +1,20 @@
+{
+	"version": 2026010701,
+	"url": "https://cfp.cfgmgmtcamp.org/ghent2026/schedule/export/schedule.xml",
+	"title": "Config Management Camp 2026 Ghent",
+	"start": "2026-02-02",
+	"end": "2026-02-04",
+	"timezone": "Europe/Brussels",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://cfgmgmtcamp.org/ghent2026/",
+				"title": "Website"
+			},
+			{
+				"url": "https://cfgmgmtcamp.org/ghent2026/codeofconduct/",
+				"title": "Code of conduct"
+			}
+		]
+	}
+}
