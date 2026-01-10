@@ -1,0 +1,16 @@
+{
+	"version": 2026010900,
+	"url": "https://pretalx.com/fossgis2026/schedule/export/schedule.xml",
+	"title": "FOSSGIS-Konferenz 2026",
+	"start": "2026-03-24",
+	"end": "2026-03-28",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.fossgis-konferenz.de/2026/",
+				"title": "Website"
+			}
+		]
+	}
+}
