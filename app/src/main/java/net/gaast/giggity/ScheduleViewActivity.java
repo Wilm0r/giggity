@@ -287,7 +287,10 @@ public class ScheduleViewActivity extends Activity {
 				}
 			}
 			parsed = Uri.parse(url);
-		} else {
+		} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU /* 33 */) {
+			// Niche feature: Update URL in intent to a working deeplink.
+			// Recent Android versions seem to show this in the "running apps" screen, and the
+			// raw schedule file URL just isn't as useful.
 			String wrapped = "https://ggt.gaa.st/#url=" + URLEncoder.encode(url, StandardCharsets.UTF_8);
 			Intent in = getIntent();
 			in.setData(Uri.parse(wrapped));
