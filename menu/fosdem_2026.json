@@ -1,5 +1,5 @@
 {
-	"version": 2025092900,
+	"version": 2026011000,
 	"url": "https://fosdem.org/2026/schedule/xml",
 	"title": "FOSDEM 2026",
 	"start": "2026-01-31",
@@ -14,7 +14,7 @@
 				"title": "Website"
 			},
 			{
-				"url": "https://volunteers.fosdem.org/faq/",
+				"url": "https://doc.volunteers.fosdem.org/",
 				"title": "Volunteer"
 			},
 			{
