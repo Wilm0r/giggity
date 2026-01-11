@@ -46,7 +46,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 @SuppressLint("SimpleDateFormat")
-public class BlockSchedule extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
+public class BlockScheduleVertical extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
 	Giggity app;
 	Schedule sched;
 	Activity ctx;
@@ -78,8 +78,8 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 	private int TentSize = 48;
 	private final float fontSizeSmall = 12;
 	private float fontSize = 14; // scaled/configurable
-	
-	BlockSchedule(Activity ctx_, Schedule sched_) {
+
+	BlockScheduleVertical(Activity ctx_, Schedule sched_) {
 		super(ctx_);
 		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
