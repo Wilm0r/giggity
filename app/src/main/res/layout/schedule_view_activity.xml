@@ -26,6 +26,10 @@
 				android:padding="16dp">
 
 				<include
+					android:id="@+id/transpose"
+					layout="@layout/round_button"/>
+
+				<include
 					android:id="@+id/dayNext"
 					layout="@layout/round_button"/>
 

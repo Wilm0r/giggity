@@ -73,6 +73,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
@@ -285,6 +287,11 @@ public class ScheduleViewActivity extends Activity {
 				}
 			}
 			parsed = Uri.parse(url);
+		} else {
+			String wrapped = "https://ggt.gaa.st/#url=" + URLEncoder.encode(url, StandardCharsets.UTF_8);
+			Intent in = getIntent();
+			in.setData(Uri.parse(wrapped));
+			setIntent(in);
 		}
 
 		/* I think reminders come in via this activity (instead of straight to itemview)
@@ -1189,6 +1196,8 @@ public class ScheduleViewActivity extends Activity {
 			dayPrev = viewerContainer.findViewById(R.id.dayPrev);
 			dayPrev.setImageResource(R.drawable.ic_arrow_back_white_32dp);
 
+			ImageButton transpose = viewerContainer.findViewById(R.id.transpose);
+			transpose.setImageResource(R.drawable.pivot_table_chart_40px);
 			dayPrev.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {
