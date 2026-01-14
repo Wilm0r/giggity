@@ -39,6 +39,10 @@
     <color name="blocks_clockfg">#EEFFFFFF</color>
     <color name="blocks_clockfg_now">#EEFFFFFF</color>
 
+	<!-- same colours like tentbg below in bright theme, different in dark. -->
+	<color name="blocks_mainbg_0">#FFd3dbdf</color>
+	<color name="blocks_mainbg_1">#FFe1e7ea</color>
+
     <color name="blocks_tentbg_0">#FFd3dbdf</color>
     <color name="blocks_tentbg_1">#FFe1e7ea</color>
     <color name="blocks_tentfg">#FF000000</color>

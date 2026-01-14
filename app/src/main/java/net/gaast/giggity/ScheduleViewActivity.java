@@ -911,6 +911,7 @@ public class ScheduleViewActivity extends Activity {
 		} else {
 			curView = R.id.block_schedule; /* Just in case curView is set to something weird. */
 			setScheduleView(new BlockSchedule(this, sched));
+//			setScheduleView(new BlockScheduleVertical(this, sched));
 		}
 
 		/* User tapped on a reminder? */

@@ -50,7 +50,10 @@
     <color name="blocks_clockfg">#EEFFFFFF</color>
     <color name="blocks_clockfg_now">#EEFFFFFF</color>
 
-    <color name="blocks_tentbg_0">#FF282828</color>
-    <color name="blocks_tentbg_1">#FF303030</color>
+	<color name="blocks_mainbg_0">#FF050505</color>
+	<color name="blocks_mainbg_1">#FF0c0c0c</color>
+
+	<color name="blocks_tentbg_0">@color/primary</color>
+    <color name="blocks_tentbg_1">@color/primary_dark</color>
     <color name="blocks_tentfg">#FFEEEEEE</color>
 </resources>

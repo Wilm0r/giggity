@@ -27,9 +27,7 @@ import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Gravity;
-
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -103,6 +101,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 	private void draw() {
 		removeAllViews();
 
+		// TODO: See if I can make this slightly less sticky (when user rotates back, changes day with more columns again, etc.)
 		TentSize = Math.max(TentSize, (Resources.getSystem().getDisplayMetrics().widthPixels - HeaderSize) / sched.getTents().size());
 		
 		int x, y;
@@ -133,12 +132,12 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 
 		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
 		Bitmap bmp = Bitmap.createBitmap(TentSize * 2, HourSize, Bitmap.Config.ARGB_8888);
-		for (x = 0; x < TentSize * 2; x++) {
-			for (y = 0; y < HourSize; y++) {
-				if (x < TentSize && y < HourSize / 2) {
-					bmp.setPixel(x, y, c.tentbg[0]);
-				} else if (!(x > TentSize && y > HourSize / 2)) {
-					bmp.setPixel(x, y, c.tentbg[1]);
+		for (y = 0; y < TentSize * 2; y++) {
+			for (x = 0; x < HourSize; x++) {
+				if (y < TentSize && x < HourSize / 2) {
+					bmp.setPixel(y, x, c.mainbg[0]);
+				} else if (!(y > TentSize && x > HourSize / 2)) {
+					bmp.setPixel(y, x, c.mainbg[1]);
 				}
 			}
 		}
@@ -166,17 +165,19 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 
 		TextView pad = new TextView(ctx);
 		pad.setGravity(Gravity.CENTER_HORIZONTAL);
-//		pad.setHeight(HourHeight);
+		pad.setHeight(HeaderSize);
+		pad.setTextSize(fontSizeSmall);
 		pad.setWidth(HeaderSize);
 		pad.setBackgroundColor(c.clockbg[1]);
+		pad.setPadding(0, 0, 0, 0);
 		tentHeaders.addView(pad);
 
-		y = 0;
+		x = 0;
 		int initScroll = HourSize * 4;
 		int bottomY = 0;
 		tents = new ArrayList<>(sched.getTents());
 		for (Schedule.Line tent : tents) {
-			int posx, h, w;
+			int posy, w, h;
 
 			/* Tent name on the first column. */
 			TextView head = new TextView(ctx);
@@ -186,39 +187,37 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			head.setText(tent.getTitle());
 			head.setMaxLines(2);
 			head.setTextSize(fontSizeSmall);
-			head.setBackgroundColor(c.tentbg[y&1]);
-			head.setTextColor(c.tentfg[y&1]);
+			head.setBackgroundColor(c.tentbg[x&1]);
+			head.setTextColor(c.tentfg[x&1]);
 			tentHeaders.addView(head); //, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 			cal = Calendar.getInstance();
 			cal.setTime(base.getTime());
-			cal.add(Calendar.MINUTE, -15);
+//			cal.add(Calendar.MINUTE, -15);
 
-			x = 0;  // for alternating between background colours, not for positioning
-			h = TentSize;
+			y = 0;  // for alternating between background colours, not for positioning
+			w = TentSize;
 			
 			for (Schedule.Item gig : tent.getItems()) {
-				posx = (int) ((gig.getStartTime().getTime() -
+				posy = (int) ((gig.getStartTime().getTime() -
 				               cal.getTime().getTime()) *
 						HourSize / 3600000);
-				w    = (int) ((gig.getEndTime().getTime() -
+				h    = (int) ((gig.getEndTime().getTime() -
 				               cal.getTime().getTime()) *
-						HourSize / 3600000) - posx + 1;
+						HourSize / 3600000) - posy + 1;
 
-				initScroll = Math.min(initScroll, posx);
-				bottomY = Math.max(bottomY, posx + w);
+				initScroll = Math.min(initScroll, posy);
+				bottomY = Math.max(bottomY, posy + h);
 
 				Element cell = new Element(ctx);
 				cell.setItem(gig);
-				cell.setWidth(w);
-				cell.setBackgroundColor(c.itembg[((y+x)&1)]);
-				cell.setTextColor(c.itemfg[((y+x)&1)]);
-				x ++;
-				cell.setText(gig.getTitle());
-				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(h - 1, w, y * h, posx);
+				cell.setBackgroundColor(c.itembg[((x+y)&1)]);
+				cell.setTextColor(c.itemfg[((x+y)&1)]);
+				y ++;
+				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w - 1, h - 2, x * w, posy);
 				schedCont.addView(cell, lp);
 			}
-			y ++;
+			x ++;
 		}
 
 		schedCont.setMinimumHeight(bottomY + HourSize / 2);
@@ -282,37 +281,45 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		schedContScr.setInitialXY(scrollX, scrollY);
 	}
 
-	protected class Element extends TextView {
+	protected class Element extends LinearLayout {
 		private int bgcolor;
 		private Schedule.Item item;
+		private TextView inner;
 
 		public Element(Activity ctx) {
 			super(ctx);
-			setGravity(Gravity.CENTER_HORIZONTAL);
-			setHeight(TentSize);
+			inner = new TextView(ctx);
+			inner.setGravity(Gravity.CENTER_HORIZONTAL);
+
+			addView(inner, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+			setPadding(2, 2, 2, 2);
+			inner.setHeight(TentSize - 4);
 			// This was here but seems no-op? setTextColor(0xFFFFFFFF);
-			setPadding(0, 0, 0, 0);
-			setTextSize(fontSize);
+//			setPadding(0, 0, 0, 0);
+			inner.setTextSize(fontSize);
 		}
-		
+
 		public void setItem(Schedule.Item item_) {
 			item = item_;
+			inner.setText(item.getTitle());
 			setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-					sva.showItem(item, new ArrayList<>(item.getLine().getItems()), false, Element.this);
+					sva.showItem(item, new ArrayList<>(item.getLine().getItems()), false, BlockScheduleVertical.Element.this);
 				}
 			});
 		}
-		
+
+		@Override
 		public void setBackgroundColor(int color) {
 			bgcolor = color;
 			if (item != null && item.getRemind()) {
 				super.setBackgroundColor(c.itembg[3]);
 			} else {
-				super.setBackgroundColor(bgcolor);
+				super.setBackgroundColor(bgcolor + 0x0f0f0f);
 			}
+			inner.setBackgroundColor(bgcolor);
 			if (item != null && item.isHidden()) {
 				setAlpha(.25F);
 			} else if (item != null && sched.isToday() && item.getEndTime().before(new Date())) {
@@ -320,6 +327,14 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			} else {
 				setAlpha(1F);
 			}
+		}
+
+		public void setWidth(int width) {
+			inner.setWidth(width - 4 );
+		}
+
+		public void setTextColor(int colour) {
+			inner.setTextColor(colour);
 		}
 
 		public void setBackgroundColor() {
@@ -359,6 +374,11 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 				cell.setRotation(-90);
 				cell.setText(df.format(cal.getTime()));
 				cell.setGravity(Gravity.RIGHT);
+				// Yes you won't believe just how painful vertical elements are in the Android
+				// composer. Measuring etc. is done *before* rotation so if you set the dimensions
+				// to anything other than exactly square, very weird stuff will happen. While there
+				// are some examples out there to fix this, none worked (and none claimed to be
+				// great). So what do I do?
 				cell.setHeight(HourSize / 2);
 				cell.setWidth(HourSize / 2);
 				cell.setTextSize(fontSizeSmall);
@@ -373,6 +393,8 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			
 			update();
 
+			// Well, I just build the whole thing with squares and then at the end I crop it using
+			// an intermediate view. Is that allowed? ;)
 			LinearLayout shrink = new LinearLayout(ctx);
 			shrink.addView(child_, new ViewGroup.LayoutParams(HeaderSize, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -424,6 +446,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		public int[] clockfg;
 		public int[] itembg;
 		public int[] itemfg;
+		public int[] mainbg;
 		public int[] tentbg;
 		public int[] tentfg;
 		
@@ -451,6 +474,10 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 					r.getColor(R.color.blocks_itemfg),
 					r.getColor(R.color.blocks_itemfg_selected),
 					r.getColor(R.color.blocks_itemfg_selected),
+			};
+			mainbg = new int[]{
+					r.getColor(R.color.blocks_mainbg_0),
+					r.getColor(R.color.blocks_mainbg_1),
 			};
 			tentbg = new int[]{
 					r.getColor(R.color.blocks_tentbg_0),
