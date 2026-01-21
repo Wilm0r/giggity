@@ -26,7 +26,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.text.MeasuredText;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -136,17 +135,17 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 
 	@Override
 	public void setPadding(int left, int top, int right, int bottom) {
-		Log.i("pad", "5 " + top);
 		super.setPadding(left, top, right, bottom);
 		setClipToPadding(false);
 
 		/* draw the grey time column background wide enough to cover the left padding */
-		ViewGroup bla = new LinearLayout(ctx);
-		inflate(ctx, R.layout.schedule_item, bla);
-		TextView bliep = bla.findViewById(R.id.time);
-		CharSequence timeText = bliep.getText();
-		int greyWidth = app.dp2px(102);
+		int greyWidth = app.dp2px(102);  // fallback
 		if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q /* 29 */) {
+			/* More precision if possible. */
+			ViewGroup bla = new LinearLayout(ctx);
+			inflate(ctx, R.layout.schedule_item, bla);
+			TextView bliep = bla.findViewById(R.id.time);
+			CharSequence timeText = bliep.getText();
 			MeasuredText mt = new MeasuredText.Builder(timeText.toString().toCharArray())  // O_o
 			                  .appendStyleRun(bliep.getPaint(), timeText.length(), false)
 			                  .build();

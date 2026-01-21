@@ -156,9 +156,10 @@ public class DbTest {
 
 		// Check that the duplicate entries (hello undefined behaviour!) are really gone.
 		try (SQLiteDatabase rawdb = SQLiteDatabase.openDatabase(app.getDatabasePath("dut").getPath(), null, SQLiteDatabase.OPEN_READONLY)) {
-			try (Cursor q = rawdb.rawQuery("Select Count(*) From schedule_item", null)) {
+			try (Cursor q = rawdb.rawQuery("Select sci_sch_id, Count(*) From schedule_item Group By sci_sch_id", null)) {
 				q.moveToFirst();
-				Assert.assertEquals(7, q.getInt(0));
+				Assert.assertEquals(7, q.getInt(1));
+				Assert.assertFalse(q.moveToNext());
 			}
 			try (Cursor q = rawdb.rawQuery("Select Count(*) From schedule Where sch_id_s = \"fosdem_2026\" And sch_title = \"FOSDEM 2026\"", null)) {
 				q.moveToFirst();
