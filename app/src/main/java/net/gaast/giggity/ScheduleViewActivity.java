@@ -110,6 +110,7 @@ public class ScheduleViewActivity extends Activity {
 	};
 
 	private int curView;
+	private boolean vertical = false;
 	private boolean tabletView;  // EventDialog integrated instead of invoking a separate activity
 	private boolean showHidden;
 
@@ -910,8 +911,11 @@ public class ScheduleViewActivity extends Activity {
 			setScheduleView(new ItemSearch(this, sched));
 		} else {
 			curView = R.id.block_schedule; /* Just in case curView is set to something weird. */
-			setScheduleView(new BlockSchedule(this, sched));
-//			setScheduleView(new BlockScheduleVertical(this, sched));
+			if (vertical) {
+				setScheduleView(new BlockScheduleVertical(this, sched));
+			} else {
+				setScheduleView(new BlockSchedule(this, sched));
+			}
 		}
 
 		/* User tapped on a reminder? */
@@ -1202,6 +1206,14 @@ public class ScheduleViewActivity extends Activity {
 
 			ImageButton transpose = viewerContainer.findViewById(R.id.transpose);
 			transpose.setImageResource(R.drawable.pivot_table_chart_40px);
+			transpose.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					vertical = !vertical;
+					redrawSchedule();
+				}
+			});
+
 			dayPrev.setOnClickListener(new Button.OnClickListener() {
 				@Override
 				public void onClick(View v) {

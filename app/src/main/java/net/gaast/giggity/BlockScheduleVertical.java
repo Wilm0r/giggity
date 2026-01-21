@@ -149,6 +149,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 
 		tentHeaders = new LinearLayout(ctx);
 		tentHeaders.setOrientation(LinearLayout.HORIZONTAL);
+		tentHeaders.setBackgroundColor(c.tentbg[1]);
 		tentHeadersScr = new HorizontalScrollView(ctx);
 		tentHeadersScr.addView(tentHeaders);
 		tentHeadersScr.setHorizontalScrollBarEnabled(false);
@@ -170,7 +171,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		pad.setWidth(HeaderSize);
 		pad.setBackgroundColor(c.clockbg[1]);
 		pad.setPadding(0, 0, 0, 0);
-		tentHeaders.addView(pad);
+		tentHeaders.addView(pad, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 		x = 0;
 		int initScroll = HourSize * 4;
