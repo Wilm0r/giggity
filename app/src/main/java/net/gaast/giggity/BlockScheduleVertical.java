@@ -39,6 +39,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -132,13 +133,16 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 
 		/* Simple background pattern with halfhour/tent grid. */
 		Bitmap bmp = Bitmap.createBitmap(TentSize * 2, HourSize, Bitmap.Config.ARGB_8888);
-		for (y = 0; y < TentSize * 2; y++) {
-			for (x = 0; x < HourSize; x++) {
-				if (y < TentSize && x < HourSize / 2) {
-					bmp.setPixel(y, x, c.mainbg[0]);
-				} else if (!(y > TentSize && x > HourSize / 2)) {
-					bmp.setPixel(y, x, c.mainbg[1]);
-				}
+		int[] bg0 = new int[TentSize];
+		Arrays.fill(bg0, c.mainbg[0]);
+		int[] bg1 = new int[TentSize];
+		Arrays.fill(bg1, c.mainbg[1]);
+		for (y = 0; y < HourSize; y++) {
+			if (y < HourSize / 2) {
+				bmp.setPixels(bg0, 0, TentSize, 0, y, TentSize, 1);
+				bmp.setPixels(bg1, 0, TentSize, TentSize, y, TentSize, 1);
+			} else {
+				bmp.setPixels(bg1, 0, TentSize, 0, y, TentSize, 1);
 			}
 		}
 		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
