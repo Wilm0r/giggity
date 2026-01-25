@@ -130,7 +130,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		// Some slack needed for edge-to-edge, should remain mostly invisible.
 		end.add(Calendar.HOUR_OF_DAY, 2);
 
-		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
+		/* Simple background pattern with halfhour/tent grid. */
 		Bitmap bmp = Bitmap.createBitmap(TentSize * 2, HourSize, Bitmap.Config.ARGB_8888);
 		for (y = 0; y < TentSize * 2; y++) {
 			for (x = 0; x < HourSize; x++) {
@@ -142,10 +142,9 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			}
 		}
 		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
-		BitmapDrawable bg = new BitmapDrawable(bmp);
+		BitmapDrawable bg = new BitmapDrawable(getResources(), bmp);
 		bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
-		schedCont.setBackgroundDrawable(bg);
+		schedCont.setBackground(bg);
 
 		tentHeaders = new LinearLayout(ctx);
 		tentHeaders.setOrientation(LinearLayout.HORIZONTAL);
@@ -268,9 +267,6 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		TentSize *= scaleX;
 		HourSize = Math.max(60, Math.min(HourSize, 1000));
 		TentSize = Math.max(30, Math.min(TentSize, 400));
-		if (HourSize / TentSize < 2) {
-			HourSize = TentSize * 2;
-		}
 
 		draw();
 		
@@ -307,7 +303,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 				@Override
 				public void onClick(View v) {
 					ScheduleViewActivity sva = (ScheduleViewActivity) ctx;
-					sva.showItem(item, new ArrayList<>(item.getLine().getItems()), false, BlockScheduleVertical.Element.this);
+					sva.showItem(item, new ArrayList<>(item.getLine().getItems()), false, Element.this);
 				}
 			});
 		}
@@ -315,12 +311,12 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		@Override
 		public void setBackgroundColor(int color) {
 			bgcolor = color;
+			super.setBackgroundColor(bgcolor + 0x0f0f0f);
 			if (item != null && item.getRemind()) {
-				super.setBackgroundColor(c.itembg[3]);
+				inner.setBackgroundColor(c.itembg[3]);
 			} else {
-				super.setBackgroundColor(bgcolor + 0x0f0f0f);
+				inner.setBackgroundColor(bgcolor);
 			}
-			inner.setBackgroundColor(bgcolor);
 			if (item != null && item.isHidden()) {
 				setAlpha(.25F);
 			} else if (item != null && sched.isToday() && item.getEndTime().before(new Date())) {
@@ -379,7 +375,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 				// composer. Measuring etc. is done *before* rotation so if you set the dimensions
 				// to anything other than exactly square, very weird stuff will happen. While there
 				// are some examples out there to fix this, none worked (and none claimed to be
-				// great). So what do I do?
+				// great). So what do I do? Build and measure the elements as a square first! ...
 				cell.setHeight(HourSize / 2);
 				cell.setWidth(HourSize / 2);
 				cell.setTextSize(fontSizeSmall);
@@ -394,8 +390,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			
 			update();
 
-			// Well, I just build the whole thing with squares and then at the end I crop it using
-			// an intermediate view. Is that allowed? ;)
+			// ... then at the end I crop it using an intermediate view. Is that allowed? ;)
 			LinearLayout shrink = new LinearLayout(ctx);
 			shrink.addView(child_, new ViewGroup.LayoutParams(HeaderSize, ViewGroup.LayoutParams.WRAP_CONTENT));
 
@@ -410,11 +405,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			for (i = 0; i < child_.getChildCount(); i ++) {
 				TextView cell = (TextView) child_.getChildAt(i);
 				long diff = System.currentTimeMillis() - cal.getTimeInMillis();
-				/* 2018-01-22: Switching this to nearest-time instead of most-recent-time and
-				   I now wonder why I did not do it that way initially...
-				   So, now after 16:15, 16:30 will be rendered as the current half-hour, instead of
-				   still 16:00, which matches how stuff below is rendered (~aligned to the ":") */
-				if (diff >= -900000 && diff < 900000) {
+				if (diff >= 0 && diff < 1800000) {
 					cell.setBackgroundColor(c.clockbg[2]);
 					cell.setTextColor(c.clockfg[1]);
 				} else {
@@ -509,7 +500,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 
 	@Override
 	public void onShow() {
-		app.showKeyboard(getContext(), null);
+		app.showKeyboard(false, schedCont);
 	}
 
 	@Override

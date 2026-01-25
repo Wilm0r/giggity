@@ -179,7 +179,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 
 	@Override
 	public void onShow() {
-		app.showKeyboard(getContext(), null);
+		app.showKeyboard(false, this);
 	}
 
 	private class EventAdapter extends BaseAdapter {

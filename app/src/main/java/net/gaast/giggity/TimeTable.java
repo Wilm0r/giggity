@@ -258,7 +258,7 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 
 	@Override
 	public void onShow() {
-		app.showKeyboard(getContext(), null);
+		app.showKeyboard(false, this);
 	}
 
 	@Override

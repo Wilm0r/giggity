@@ -276,7 +276,7 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 		if (query.getText().toString().isEmpty() ||
 		    (resultList != null && resultList.list.size() <= 2)) {
 			query.requestFocus();
-			app.showKeyboard(getContext(), query);
+			app.showKeyboard(true, query);
 		} else {
 			// If there's something in the query field already then let them browse other results
 			// first. Unless there barely were any. :)

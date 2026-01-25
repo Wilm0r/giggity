@@ -101,6 +101,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		draw();
 	}
 
+	// Yep I know AbsoluteLayout has been deprecated since almost the beginning, but how else to do this one?
 	@SuppressWarnings("deprecation")
 	private void draw() {
 		removeAllViews();
@@ -159,10 +160,9 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			}
 		}
 		bmp.setDensity(getResources().getDisplayMetrics().densityDpi);
-		BitmapDrawable bg = new BitmapDrawable(bmp);
+		BitmapDrawable bg = new BitmapDrawable(getResources(), bmp);
 		bg.setTileModeXY(Shader.TileMode.REPEAT, Shader.TileMode.REPEAT);
-		bg.setTargetDensity(getResources().getDisplayMetrics().densityDpi);
-		schedCont.setBackgroundDrawable(bg);
+		schedCont.setBackground(bg);
 
 		topClock = new Clock(ctx, base, end);
 		addView(topClock);
@@ -214,11 +214,9 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 				
 				Element cell = new Element(ctx);
 				cell.setItem(gig);
-				cell.setWidth(w);
 				cell.setBackgroundColor(c.itembg[((y+x)&1)]);
 				cell.setTextColor(c.itemfg[((y+x)&1)]);
 				x ++;
-				cell.setText(gig.getTitle());
 				AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(w, h - 1, posx, y * h);
 				schedCont.addView(cell, lp);
 			}
@@ -285,21 +283,27 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		schedContScr.setInitialXY(scrollX, scrollY);
 	}
 
-	protected class Element extends TextView {
+	protected class Element extends LinearLayout {
 		private int bgcolor;
 		private Schedule.Item item;
+		private TextView inner;
 
 		public Element(Activity ctx) {
 			super(ctx);
-			setGravity(Gravity.CENTER_HORIZONTAL);
-			setHeight(TentHeight);
+			inner = new TextView(ctx);
+			inner.setGravity(Gravity.CENTER_HORIZONTAL);
+
+			addView(inner, new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+			setPadding(2, 2, 2, 2);
+			inner.setHeight(TentHeight - 4);
 			// This was here but seems no-op? setTextColor(0xFFFFFFFF);
-			setPadding(0, 0, 0, 0);
-			setTextSize(fontSize);
+//			setPadding(0, 0, 0, 0);
+			inner.setTextSize(fontSize);
 		}
-		
+
 		public void setItem(Schedule.Item item_) {
 			item = item_;
+			inner.setText(item.getTitle());
 			setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -308,13 +312,15 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 				}
 			});
 		}
-		
+
+		@Override
 		public void setBackgroundColor(int color) {
 			bgcolor = color;
+			super.setBackgroundColor(bgcolor + 0x0f0f0f);
 			if (item != null && item.getRemind()) {
-				super.setBackgroundColor(c.itembg[3]);
+				inner.setBackgroundColor(c.itembg[3]);
 			} else {
-				super.setBackgroundColor(bgcolor);
+				inner.setBackgroundColor(bgcolor);
 			}
 			if (item != null && item.isHidden()) {
 				setAlpha(.25F);
@@ -323,6 +329,14 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			} else {
 				setAlpha(1F);
 			}
+		}
+
+		public void setWidth(int width) {
+			inner.setWidth(width - 4 );
+		}
+
+		public void setTextColor(int colour) {
+			inner.setTextColor(colour);
 		}
 
 		public void setBackgroundColor() {
@@ -485,7 +499,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 
 	@Override
 	public void onShow() {
-		app.showKeyboard(getContext(), null);
+		app.showKeyboard(false, schedCont);
 	}
 
 	@Override
@@ -495,6 +509,6 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 
 	@Override
 	public boolean extendsActionBar() {
-		return false;
+		return true;
 	}
 }

@@ -1171,8 +1171,7 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void onScroll() {
-		if (sched.getDays().size() > 1)
-			days.show();
+		days.show();
 	}
 
 	/* Ugly convenience function to be used by schedule viewers to indicate
@@ -1192,7 +1191,7 @@ public class ScheduleViewActivity extends Activity {
 	// rest is just part of the XML layout.
 	private class DayButtonsHider {
 		private ViewGroup dayButtons;
-		private ImageButton dayPrev, dayNext;
+		private ImageButton dayPrev, dayNext, transpose;
 		private Handler h;
 		private Runnable hideEv;
 
@@ -1204,7 +1203,7 @@ public class ScheduleViewActivity extends Activity {
 			dayPrev = viewerContainer.findViewById(R.id.dayPrev);
 			dayPrev.setImageResource(R.drawable.ic_arrow_back_white_32dp);
 
-			ImageButton transpose = viewerContainer.findViewById(R.id.transpose);
+			transpose = viewerContainer.findViewById(R.id.transpose);
 			transpose.setImageResource(R.drawable.pivot_table_chart_40px);
 			transpose.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -1239,11 +1238,18 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		public void show() {
-			if (sched == null || viewer == null || sched.getDays().size() <= 1 || viewer.multiDay())
+			if (sched == null || viewer == null)
 				return;
-			if (sched.getDays().size() == 2) {
+			if (sched.getDays().size() <= 1 || viewer.multiDay()) {
 				dayPrev.setVisibility(View.GONE);
+				dayNext.setVisibility(View.GONE);
+			} else if (sched.getDays().size() == 2) {
+				dayPrev.setVisibility(View.GONE);
+				dayNext.setVisibility(View.VISIBLE);
 				dayNext.setImageResource(R.drawable.ic_calendar_24px);
+			} else {
+				dayPrev.setVisibility(View.VISIBLE);
+				dayNext.setVisibility(View.VISIBLE);
 			}
 
 			/* Z ordering in RelativeLayouts seems to be most-recently-added,
@@ -1253,7 +1259,9 @@ public class ScheduleViewActivity extends Activity {
 				dayButtons.setVisibility(View.VISIBLE);
 				dayButtons.setAnimation(AnimationUtils.loadAnimation(ScheduleViewActivity.this, android.R.anim.fade_in));
 			}
-			
+
+			transpose.setVisibility(curView == R.id.block_schedule ? View.VISIBLE : View.GONE);
+
 			/* Set a timer if we're now fading in the buttons, or reset it if
 			 * they're already on screen. */
 			h.removeCallbacks(hideEv);

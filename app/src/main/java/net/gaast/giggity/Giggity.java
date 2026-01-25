@@ -222,15 +222,13 @@ public class Giggity extends Application {
 		return full.startsWith(prefix);
 	}
 
-	public void showKeyboard(Context ctx, View rx) {
+	public void showKeyboard(boolean show, View rx) {
+		Context ctx = rx.getContext();
 		InputMethodManager imm = (InputMethodManager) ctx.getSystemService(Context.INPUT_METHOD_SERVICE);
-		if (rx != null) {
+		if (show) {
 			imm.showSoftInput(rx, InputMethodManager.SHOW_IMPLICIT);
 		} else {
-			Activity a = (Activity) ctx;
-			// TODO: Fecker isn't hiding anything. Some examples use getCurrentFocus().getWindowToken()
-			// but at this stage no element has focus yet so that means null.getWindowToken() → kaboom
-			imm.hideSoftInputFromWindow(new View(a).getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
+			imm.hideSoftInputFromWindow(rx.getWindowToken(), InputMethodManager.HIDE_IMPLICIT_ONLY);
 		}
 	}
 
