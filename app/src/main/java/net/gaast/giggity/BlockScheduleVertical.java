@@ -104,8 +104,10 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 	private void draw() {
 		removeAllViews();
 
-		// TODO: See if I can make this slightly less sticky (when user rotates back, changes day with more columns again, etc.)
-		TentSize = Math.max(TentSize, (Resources.getSystem().getDisplayMetrics().widthPixels - HeaderSize) / sched.getTents().size());
+		pref = PreferenceManager.getDefaultSharedPreferences(app);
+		// Re-fetching the setting to try to make this a little less sticky when columns are for
+		// example temporarily extra wide (rotated screen, day with fewer tents?).
+		TentSize = Math.max(pref.getInt("block_schedule_tent_height", TentSize), (Resources.getSystem().getDisplayMetrics().widthPixels - HeaderSize) / sched.getTents().size());
 		
 		int x, y;
 		Calendar base, cal, end;
