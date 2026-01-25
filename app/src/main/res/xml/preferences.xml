@@ -26,6 +26,12 @@
 					android:summary="%s"
 					android:defaultValue="medium" />
 
+	<CheckBoxPreference android:key="block_schedule_vertical"
+		android:title="@string/block_schedule_vertical"
+		android:summaryOff="@string/block_schedule_vertical_no"
+		android:summaryOn="@string/block_schedule_vertical_yes"
+		android:defaultValue="false" />
+
 
 	<PreferenceCategory android:title="@string/reminder">
 	

@@ -46,6 +46,9 @@ import java.util.GregorianCalendar;
 
 @SuppressLint("SimpleDateFormat")
 public class BlockScheduleVertical extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
+	/* This is a vertical (i.e. time goes down instead of to the right) version of BlockSchedule.
+	 * You'd think that these classes should be related but there's not THAT much reuse potential,
+	 * other than the "Element" subclass and the colours, so for now I'm not going to bother. */
 	Giggity app;
 	Schedule sched;
 	Activity ctx;
@@ -56,8 +59,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 	 * following widgets: */
 	
 	Clock leftClock;
-//	Clock bottomClock;
-	
+
 	/* mainTable is the middle part of the screen */
 	LinearLayout mainTable;
 	/* Separate this to keep them on screen when scrolling */

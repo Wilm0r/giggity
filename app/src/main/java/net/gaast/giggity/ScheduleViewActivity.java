@@ -158,6 +158,7 @@ public class ScheduleViewActivity extends Activity {
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		curView = getResources().getIdentifier(pref.getString("default_view", "net.gaast.giggity:id/block_schedule"), null, null);
 		showHidden = pref.getBoolean("show_hidden", false);
+		vertical = pref.getBoolean("block_schedule_vertical", false);
 
 		/* Consider making this a setting, some may find their tablet too small. */
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
@@ -632,6 +633,11 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	protected void onResume() {
 		if (redraw) {
+			// The only time this one is set is when we're about to go to settings. Pick up whatever
+			// might have changed.
+			pref = PreferenceManager.getDefaultSharedPreferences(app);
+			showHidden = pref.getBoolean("show_hidden", false);
+			vertical = pref.getBoolean("block_schedule_vertical", false);
 			redrawSchedule();
 			redraw = false;
 		} else {
@@ -1209,6 +1215,9 @@ public class ScheduleViewActivity extends Activity {
 				@Override
 				public void onClick(View v) {
 					vertical = !vertical;
+					SharedPreferences.Editor ed = pref.edit();
+					ed.putBoolean("block_schedule_vertical", vertical);
+					ed.apply();
 					redrawSchedule();
 				}
 			});

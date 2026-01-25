@@ -11,6 +11,9 @@
 	<string name="font_size">Lettergrootte blokkenschema</string>
 
 	<string name="block_schedule">Blokkenschema</string>
+	<string name="block_schedule_vertical">Verticaal blokkenschema</string>
+	<string name="block_schedule_vertical_yes">Tijd loopt naar beneden</string>
+	<string name="block_schedule_vertical_no">Tijd loopt naar rechts</string>
 
 	<string name="reminder">Herinneringen</string>
 	<string name="reminder_enabled">Notificaties</string>
