@@ -1,0 +1,17 @@
+{
+	"version": 2026012600,
+	"url": "https://pretalx.opencamp.sk/bratislava-opencamp-2026/schedule/export/schedule.xml",
+	"title": "Bratislava OpenCamp",
+	"start": "2026-04-25",
+	"end": "2026-04-25",
+	"timezone": "Europe/Bratislava",
+	"metadata": {
+		"icon": "https://opencamp.sk/wp-content/uploads/2024/10/cropped-cropped-opencamp_logo-32x32.jpg",
+		"links": [
+			{
+				"url": "https://opencamp.sk/",
+				"title": "Website"
+			}
+		]
+	}
+}
