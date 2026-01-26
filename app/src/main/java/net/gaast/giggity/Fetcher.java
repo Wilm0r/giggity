@@ -45,7 +45,9 @@ public class Fetcher implements AutoCloseable {
 
 	public static boolean init(Context ctx) {
 		File dir = new File(ctx.getCacheDir(), "downloads");
-		if (dir.exists() && dir.isDirectory()) {
+		// Fixing a possible nullptr deref here but probably I can just delete this, the old
+		// built in cache was replaced I think years ago?
+		if (dir.exists() && dir.isDirectory() && dir.listFiles() != null) {
 			Log.i("Fetcher", "Deleting old-style Fetcher cache");
 			for (File f : dir.listFiles()) {
 				if (!f.delete()) {
@@ -170,8 +172,15 @@ public class Fetcher implements AutoCloseable {
 		// Mildly curious whether this function *might* lead to an unsent query unnecessarily
 		// getting sent if cleaning up a never-finished query. Sadly I don't think there's a way
 		// to check/prevent this AFAICT.
-		if (dlc != null && dlc.getInputStream() != null) {
-			dlc.getInputStream().close();
+		if (inStream != null) {
+			inStream.close();
+		} else if (inReader != null) {
+			inReader.close();
+		} else if (dlc != null) {
+			inStream = dlc.getInputStream();
+			if (inStream != null) {
+				inStream.close();
+			}
 		}
 		dlc = null;
 	}

@@ -851,9 +851,11 @@ public class ScheduleViewActivity extends Activity {
 			@Override
 			public void run() {
 				dir.mkdirs();
-				for (File del : dir.listFiles()) {
-					// These are already copies from cache :( at least don't keep stale ones..
-					del.delete();
+				if (dir.listFiles() != null) {
+					for (File del : dir.listFiles()) {
+						// These are already copies from cache :( at least don't keep stale ones..
+						del.delete();
+					}
 				}
 				try (Fetcher f = new Fetcher(app, link.getUrl(), Fetcher.Source.CACHE_1D)) {
 					f.setProgressHandler(prog.getUpdater());

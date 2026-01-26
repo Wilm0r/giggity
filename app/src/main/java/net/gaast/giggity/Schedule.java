@@ -238,21 +238,6 @@ public class Schedule implements Serializable {
 		public String getUrl() { return url; }
 	}
 
-	public static String hashify(String url) {
-		String ret = "";
-		try {
-			/* md5, sha1... small diff I guess? (No clue how this evolved!) */
-			MessageDigest md5 = MessageDigest.getInstance("SHA-1");
-			md5.update(url.getBytes());
-			byte[] raw = md5.digest();
-			for (int i = 0; i < raw.length; i ++)
-				ret += String.format("%02x", raw[i]);
-		} catch (NoSuchAlgorithmException e) {
-			// WTF mate
-		}
-		return ret;
-	}
-	
 	public ArrayList<ZonedDateTime> getDays() {
 		return day0List;
 	}
@@ -381,6 +366,7 @@ public class Schedule implements Serializable {
 	private void loadXml(BufferedReader in, ContentHandler parser) {
 		try {
 			XMLReader reader = XMLReaderFactory.createXMLReader();
+			reader.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 			reader.setContentHandler(parser);
 			reader.parse(new InputSource(in));
 			in.close();
@@ -1153,6 +1139,8 @@ public class Schedule implements Serializable {
 		public int hashCode() {
 			// No clue what the default version does but the numbers seem too low to me.
 			// I'm using this for notification + alarm IDs now so use all 32 bits.
+			// Or at least I once was, not clear whether I still do, and whether to care about the
+			// antiquated hash algorithm?
 			try {
 				MessageDigest md5 = MessageDigest.getInstance("MD5");
 				md5.update(getUrl().getBytes());
