@@ -1,0 +1,21 @@
+{
+	"version": 2026012700,
+	"url": "https://pretalx.com/alposs-2026/schedule/export/schedule.xml",
+	"title": "AlpOSS 2026",
+	"start": "2026-02-17",
+	"end": "2026-02-17",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://alposs.fr/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://pretix.ow2.org/alposs-2026/",
+				"title": "Inscription"
+			}
+		],
+		"icon": "https://m.g3l.org/system/cache/accounts/avatars/111/500/183/778/458/511/original/e08300d957c17186.png"
+	}
+}
