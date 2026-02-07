@@ -276,12 +276,12 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		HourSize = Math.max(60, Math.min(HourSize, 1000));
 		TentSize = Math.max(30, Math.min(TentSize, 400));
 
-		draw();
-		
 		SharedPreferences.Editor ed = pref.edit();
 		ed.putInt("block_schedule_hour_width", HourSize);
 		ed.putInt("block_schedule_tent_height", TentSize);
 		ed.apply();
+
+		draw();
 
 		schedContScr.setInitialXY(scrollX, scrollY);
 	}

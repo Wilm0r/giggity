@@ -223,6 +223,8 @@ public class Schedule implements Serializable {
 	}
 
 	static public class FormatException extends LoadException {
+		// Special cased this one so that the loader UI can read the file and see if it's HTML with
+		// a schedule reference that we should follow. See https://github.com/Wilm0r/giggity/issues/336
 		public FormatException() {
 			super("format?");
 		}

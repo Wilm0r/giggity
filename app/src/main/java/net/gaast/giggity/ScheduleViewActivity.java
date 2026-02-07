@@ -1042,6 +1042,7 @@ public class ScheduleViewActivity extends Activity {
 		super.onConfigurationChanged(newConfig);
 		Log.i("BlockScheduleActivity", "Configuration changed");
 		updateOrientation(newConfig.orientation);
+		redrawSchedule();
 	}
 
 	@Override
