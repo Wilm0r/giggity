@@ -31,6 +31,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AbsoluteLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -43,6 +44,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TreeSet;
 
 @SuppressLint("SimpleDateFormat")
 public class BlockScheduleVertical extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
@@ -227,6 +229,29 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			}
 			x ++;
 		}
+
+		// If *some* of the room names are long and 2-line, add padding to the ones that are not.
+		// This really just ensures that the cells (thus background colours) are all the same size.
+		tentHeaders.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				TreeSet<Integer> heights = new TreeSet<>();
+				for (int i = 1; i < tentHeaders.getChildCount(); ++i) {
+					heights.add(tentHeaders.getChildAt(i).getHeight());
+				}
+				if (heights.size() > 1) {
+					for (int i = 1; i < tentHeaders.getChildCount(); ++i) {
+						TextView v = (TextView) tentHeaders.getChildAt(i);
+						if (v.getHeight() < heights.last()) {
+							v.setText("\n" + v.getText());
+							v.setMinLines(2);
+						}
+					}
+				}
+				// And avoid getting stuck in a loop of course.
+				tentHeaders.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+			}
+		});
 
 		schedCont.setMinimumHeight(bottomY + HourSize / 2);
 
