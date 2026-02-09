@@ -19,6 +19,8 @@
 
 package net.gaast.giggity;
 
+import android.os.Bundle;
+
 public interface ScheduleViewer {
 	/* These two maybe should've just been the same. */
 	/* Called every minute to update clock/marking of currently happening events. */
@@ -27,6 +29,9 @@ public interface ScheduleViewer {
 	void refreshItems();
 	/* For UI stuff where the constructor would be too early to do it (showing keyboard for example) */
 	void onShow();
+	/* Same like the Activity handler. */
+	void onSaveInstanceState (Bundle outState);
+	void restoreState(Bundle inState);
 
 	/* Allow date switching. Does not apply to now&next for example. */
 	boolean multiDay();

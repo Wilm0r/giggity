@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -534,6 +535,17 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 	@Override
 	public void onShow() {
 		app.showKeyboard(false, schedCont);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt("scrollX", schedContScr.getScrollX());
+		outState.putInt("scrollY", schedContScr.getVscrollY());
+	}
+
+	@Override
+	public void restoreState(Bundle inState) {
+		schedContScr.setInitialXY(inState.getInt("scrollX", 0), inState.getInt("scrollY", 0));
 	}
 
 	@Override

@@ -105,7 +105,7 @@ public class NestedScroller extends HorizontalScrollView {
 
 		public boolean onTouchEventInt(MotionEvent event) {
 			/*
-			Log.d("nsmove1", "x0 " + event.getX(0) + " sx " + NestedScroller.this.getScrollX());
+			Log.d("nsmove1", "x0 " + event.getX(0) + " sx " + getScrollX());
 			Log.d("nsmove1", "y0 " + event.getY(0) + " sy " + getScrollY());
 			*/
 
@@ -113,10 +113,10 @@ public class NestedScroller extends HorizontalScrollView {
 			super.onTouchEvent(event);
 
 			float x0, y0, x1 = 0, y1 = 0;
-			x0 = event.getX(0) + NestedScroller.this.getScrollX();
+			x0 = event.getX(0) + getScrollX();
 			y0 = event.getY(0) + getScrollY();
 			if (event.getPointerCount() > 1) {
-				x1 = event.getX(1) + NestedScroller.this.getScrollX();
+				x1 = event.getX(1) + getScrollX();
 				y1 = event.getY(1) + getScrollY();
 			}
 
@@ -124,7 +124,7 @@ public class NestedScroller extends HorizontalScrollView {
 			if (event.getAction() == MotionEvent.ACTION_MOVE) {
 				if (event.getPointerCount() > 1 && (flags_ & PINCH_TO_ZOOM) > 0) {
 					/*
-					Log.d("nspinch", "x0 " + x0 + " x1 " + x1 + " sx " + NestedScroller.this.getScrollX() + " piv " + c.getPivotX() + " " + pivotX);
+					Log.d("nspinch", "x0 " + x0 + " x1 " + x1 + " sx " + getScrollX() + " piv " + c.getPivotX() + " " + pivotX);
 					Log.d("nspinch", "y0 " + y0 + " y1 " + y1 + " sy " +                this.getScrollY() + " piv " + c.getPivotY() + " " + pivotY);
 					*/
 
@@ -159,7 +159,7 @@ public class NestedScroller extends HorizontalScrollView {
 			} else if (event.getAction() == MotionEvent.ACTION_UP){
 				if (scaleX != 1.0 || scaleY != 1.0) {
 					float newx, newy;
-					newx = Math.max(0, NestedScroller.this.getScrollX() - pivotX + pivotX * scaleX);
+					newx = Math.max(0, getScrollX() - pivotX + pivotX * scaleX);
 					newy = Math.max(0, getScrollY() - pivotY + pivotY * scaleY);
 					listener.onResizeEvent(NestedScroller.this, scaleX, scaleY, (int) newx, (int) newy);
 				}
@@ -172,7 +172,7 @@ public class NestedScroller extends HorizontalScrollView {
 		@Override
 		public void onScrollChanged() {
 			if (listener != null)
-				listener.onScrollEvent(NestedScroller.this, NestedScroller.this.getScrollX(), getScrollY());
+				listener.onScrollEvent(NestedScroller.this, getScrollX(), getScrollY());
 		}
 	}
 
@@ -226,8 +226,20 @@ public class NestedScroller extends HorizontalScrollView {
 		return true;
 	}
 
+	// Weird name because getScrollY is final for I guess good reasons. :(
+	// Note that I have *NO* idea anymore why this class calls its own getScrollY, how did that ever work?
+	// The joy of 10y old hairy code that has mostly just worked...
+	public int getVscrollY() {
+		return vscroll.getScrollY();
+	}
+
 	// Convenience function - scrollTo won't work until after layout time.
 	public void setInitialXY(int x, int y) {
+		if (initialX == -1) {
+			// OK maybe we were called late, in which case let's just scroll directly.
+			setScrollX(x);
+			vscroll.setScrollY(y);
+		}
 		initialX = x;
 		initialY = y;
 	}
@@ -242,8 +254,16 @@ public class NestedScroller extends HorizontalScrollView {
 		isCallingBack = icb;
 		if (initialX > 0 || initialY > 0) {
 			Log.d("NestedScroller", "initial: " + initialX + "," + initialY);
-			scrollTo(initialX, initialY);
-			initialX = initialY = 0;
+			post(new Runnable() {
+				@Override
+				public void run() {
+					scrollTo(initialX, initialY);
+					initialX = initialY = -1;
+				}
+			});
+		} else {
+			Log.d("NestedScroller", "no initial: " + initialX + "," + initialY);
+			initialX = initialY = -1;
 		}
 	}
 

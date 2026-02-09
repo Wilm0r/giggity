@@ -3,6 +3,7 @@ package net.gaast.giggity;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -282,6 +283,24 @@ public class ItemSearch extends LinearLayout implements ScheduleViewer {
 			// first. Unless there barely were any. :)
 			query.clearFocus();
 		}
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putString("query", query.getText().toString());
+		resultList.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void restoreState(Bundle inState) {
+		query.setText(inState.getString("query"));
+		query.setSelection(query.getText().length());
+		resultList.post(new Runnable() {
+			@Override
+			public void run() {
+				resultList.restoreState(inState);
+			}
+		});
 	}
 
 	@Override

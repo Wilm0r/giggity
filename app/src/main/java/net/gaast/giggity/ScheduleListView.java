@@ -26,8 +26,10 @@ import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.text.MeasuredText;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
@@ -180,6 +182,29 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 	@Override
 	public void onShow() {
 		app.showKeyboard(false, this);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt("scroll", getFirstVisiblePosition());
+	}
+
+	@Override
+	public void restoreState(Bundle inState) {
+		post(new Runnable() {
+			@Override
+			public void run() {
+				setSelection(inState.getInt("scroll", 0));
+			}
+		});
+		setSelection(inState.getInt("scroll", 0));
+		getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+			@Override
+			public void onGlobalLayout() {
+				getViewTreeObserver().removeOnGlobalLayoutListener(this);
+				smoothScrollToPosition(inState.getInt("scroll", 0));
+			}
+		});
 	}
 
 	private class EventAdapter extends BaseAdapter {

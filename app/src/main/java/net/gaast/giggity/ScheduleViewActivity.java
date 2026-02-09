@@ -160,6 +160,10 @@ public class ScheduleViewActivity extends Activity {
 		showHidden = pref.getBoolean("show_hidden", false);
 		vertical = pref.getBoolean("block_schedule_vertical", false);
 
+		if (savedInstanceState != null) {
+			curView = savedInstanceState.getInt("curView", curView);
+		}
+
 		/* Consider making this a setting, some may find their tablet too small. */
 		int screen = getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
 		tabletView = (screen >= Configuration.SCREENLAYOUT_SIZE_LARGE);
@@ -310,7 +314,7 @@ public class ScheduleViewActivity extends Activity {
 
 		if (app.hasSchedule(url)) {
 			sched = app.getCachedSchedule(url);
-			onScheduleLoaded();
+			onScheduleLoaded(savedInstanceState);
 		} else {
 			Fetcher.Source fs;
 			if (getIntent().getBooleanExtra("PREFER_ONLINE", false))
@@ -660,7 +664,19 @@ public class ScheduleViewActivity extends Activity {
 		timer.removeCallbacks(updateRoomStatus);
 	}
 
+	@Override
+	protected void onSaveInstanceState (Bundle outState) {
+		outState.putInt("curView", curView);
+		if (viewer != null) {
+			viewer.onSaveInstanceState(outState);
+		}
+	}
+
 	private void onScheduleLoaded() {
+		onScheduleLoaded(null);
+	}
+
+	private void onScheduleLoaded(Bundle savedInstanceState) {
 		drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
 		drawerToggle.setDrawerIndicatorEnabled(true);
 		invalidateOptionsMenu();
@@ -675,7 +691,7 @@ public class ScheduleViewActivity extends Activity {
 		if (curView == R.id.tracks && sched.getTracks() == null) {
 			curView = R.id.timetable;
 		}
-		redrawSchedule();
+		redrawSchedule(savedInstanceState);
 		finishNavDrawer();
 		updateNavDrawer();
 		/* I think onResume() can get called before schedule is loaded in which
@@ -886,6 +902,10 @@ public class ScheduleViewActivity extends Activity {
 	}
 
 	public void redrawSchedule() {
+		redrawSchedule(null);
+	}
+
+	public void redrawSchedule(Bundle savedInstanceState) {
 		if (sched == null) {
 			Log.e("finishNavDrawer", "Called before critical was loaded?");
 			return;
@@ -907,24 +927,34 @@ public class ScheduleViewActivity extends Activity {
 			setTitle(title);
 		}
 
+		ScheduleViewer next;
 		if (curView == R.id.timetable) {
-			setScheduleView(new TimeTable(this, (Collection) sched.getTents()));
+			next = new TimeTable(this, (Collection) sched.getTents());
 		} else if (curView == R.id.now_next) {
-			setScheduleView(new NowNext(this, sched));
+			next = new NowNext(this, sched);
 		} else if (curView == R.id.my_events) {
-			setScheduleView(new MyItemsView(this, sched));
+			next = new MyItemsView(this, sched);
 		} else if (curView == R.id.tracks && sched.getTracks() != null) {
-			setScheduleView(new TimeTable(this, (Collection) sched.getTracks()));
+			next = new TimeTable(this, (Collection) sched.getTracks());
 		} else if (curView == R.id.search) {
-			setScheduleView(new ItemSearch(this, sched));
+			next = new ItemSearch(this, sched);
 		} else {
 			curView = R.id.block_schedule; /* Just in case curView is set to something weird. */
 			if (vertical) {
-				setScheduleView(new BlockScheduleVertical(this, sched));
+				next = new BlockScheduleVertical(this, sched);
 			} else {
-				setScheduleView(new BlockSchedule(this, sched));
+				next = new BlockSchedule(this, sched);
 			}
 		}
+		if (savedInstanceState != null) {
+			((View)next).post(new Runnable() {
+				@Override
+				public void run() {
+					next.restoreState(savedInstanceState);
+				}
+			});
+		}
+		setScheduleView(next);
 
 		/* User tapped on a reminder? */
 		if (showEventId != null) {
@@ -960,10 +990,10 @@ public class ScheduleViewActivity extends Activity {
 			bigScreen.setOrientation(LinearLayout.HORIZONTAL);
 	}
 
-	public void setScheduleView(View viewer_) {
+	public void setScheduleView(ScheduleViewer viewer_) {
 		if (viewer != null)
 			viewerContainer.removeView((View) viewer);
-		viewer = (ScheduleViewer) viewer_;
+		viewer = viewer_;
 		if (Build.VERSION.SDK_INT >= 30 && viewerPadding != null) {
 			// top padding is only passed to drawer and other outer bits.
 			viewer.setPadding(viewerPadding.left, 0, viewerPadding.right, 0);

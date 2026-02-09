@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Shader;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Gravity;
@@ -500,6 +501,17 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 	@Override
 	public void onShow() {
 		app.showKeyboard(false, schedCont);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		outState.putInt("scrollX", schedContScr.getScrollX());
+		outState.putInt("scrollY", schedContScr.getVscrollY());
+	}
+
+	@Override
+	public void restoreState(Bundle inState) {
+		schedContScr.setInitialXY(inState.getInt("scrollX", 0), inState.getInt("scrollY", 0));
 	}
 
 	@Override

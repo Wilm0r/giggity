@@ -20,6 +20,7 @@
 package net.gaast.giggity;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -259,6 +260,16 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 	@Override
 	public void onShow() {
 		app.showKeyboard(false, this);
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		scroller.onSaveInstanceState(outState);
+	}
+
+	@Override
+	public void restoreState(Bundle inState) {
+		scroller.restoreState(inState);
 	}
 
 	@Override
