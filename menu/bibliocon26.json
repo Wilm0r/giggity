@@ -1,0 +1,25 @@
+{
+	"version": 2026022301,
+	"url": "https://cloud.bib.uni-mannheim.de/public.php/dav/files/b3drjRXYRPe2EQY/",
+	"title": "BiblioCon 2026",
+	"start": "2026-05-19",
+	"end": "2026-05-22",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2026.bibliocon.de/",
+				"title": "Webseite"
+			},
+			{
+				"url": "https://2026.bibliocon.de/informationen-von-a-z/",
+				"title": "Informationen von A-Z"
+			},
+			{
+				"url": "https://www.estrel.com/files/downloads/allgemein/Grundrissplan_ESTREL_Gesamt_mit-Legende-A3-01-26.pdf",
+				"title": "Grundrissplan ESTREL(PDF)",
+				"type": "application/pdf"
+			}
+		]
+	}
+}
