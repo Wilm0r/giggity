@@ -128,7 +128,16 @@ public class EventDialog extends FrameLayout {
 		t = root.findViewById(R.id.speaker);
 		if (item_.getSpeakers() != null) {
 			t.setText(TextUtils.join(", ", item_.getSpeakers()));
-			
+			final TextView tv = t;
+			tv.setFocusableInTouchMode(false);  // Without this, the first tap is ignored..
+			tv.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					tv.setSingleLine(false);
+					tv.setMaxLines(10);
+				}
+			});
+
 			if (item_.getSpeakers().size() > 1) {
 				t = root.findViewById(R.id.headSpeaker);
 				t.setText(R.string.speakers);
