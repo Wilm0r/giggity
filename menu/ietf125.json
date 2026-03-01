@@ -1,0 +1,17 @@
+{
+	"version": 2026022501,
+	"url": "https://datatracker.ietf.org/meeting/125/agenda.ics",
+	"title": "IETF 125 Shenzhen",
+	"start": "2026-03-14",
+	"end": "2026-03-20",
+	"timezone": "Asia/Shanghai",
+	"refresh_interval": 86400,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.ietf.org/meeting/125/",
+				"title": "Website"
+			}
+		]
+	}
+}
