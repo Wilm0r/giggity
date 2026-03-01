@@ -27,14 +27,18 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.text.method.ArrowKeyMovementMethod;
 import android.text.method.LinkMovementMethod;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -364,28 +368,22 @@ public class EventDialog extends FrameLayout {
 				ctx_, item_.getStartTime().getTime(), item_.getEndTime().getTime(),
 				DateUtils.FORMAT_24HOUR | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
 
-			String text = item_.getSchedule().getTitle() + ": " + item_.getTitle() + "\n" +
-			              item_.getLine().getTitle() + ", " + time + "\n";
-			if (item_.getSpeakers() != null && item_.getSpeakers().size() > 0) {
-				text += TextUtils.join(", ", item_.getSpeakers()) + "\n";
-			}
+			SpannableString title = new SpannableString(item_.getSchedule().getTitle() + ": " + item_.getTitle());
+			SpannableStringBuilder w = new SpannableStringBuilder();
+			w.append(item_.getSchedule().getTitle() + ": " + item_.getTitle(), new StyleSpan(Typeface.BOLD), 0);
+			w.append("\n");
+			w.append(item_.getLine().getTitle() + ", " + time + "\n");
 			if (item_.getWebLink() != null) {
-				text += item_.getWebLink() + "\n";
+				w.append(item_.getWebLink() + "\n");
 			}
-			text += "\n" + item_.getDescriptionStripped();
+			w.append("\n");
+			w.append(item_.getDescriptionStripped().strip() + "\n");
+			if (item_.getSpeakers() != null && item_.getSpeakers().size() > 0) {
+				w.append(TextUtils.join(", ", item_.getSpeakers()) + "\n");
+			}
+			t.putExtra(android.content.Intent.EXTRA_TEXT, w);
 
-			t.putExtra(android.content.Intent.EXTRA_TEXT, text);
-
-			ctx_.startActivity(Intent.createChooser(t, "Share via"));
-
-
-			/* Hrmm, I thought I saw formatted stuff getting exported once, guess not?
-			t.setType("text/html");
-			t.putExtra(android.content.Intent.EXTRA_TEXT,
-				"<h2>" + escapeHtml(item_.getSchedule().getTitle() + ": " + escapeHtml(item_.getTitle())) + "</h2>" +
-				"<p>" + escapeHtml(item_.getLine().getTitle()) + ", " + time + "</p>" +
-				"<p>" + item_.getDescription() + "</p>");
-			*/
+			ctx_.startActivity(Intent.createChooser(t, null));
 		}
 	}
 
