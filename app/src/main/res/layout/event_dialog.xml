@@ -181,6 +181,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="Conflicts bla"
+	                    android:textColor="@color/event_dialog_text"
                         android:textIsSelectable="true"/>
                 </LinearLayout>
 
@@ -190,6 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/alertBox"
                     android:textIsSelectable="true"
+	                android:textColor="@color/event_dialog_text"
                     tools:text="Because Lorem Ipsum is boring and predictable:  Finally, the next major release is there! Almost five years after the last major release, it was about time. Who would've thought that this one would take even longer than going from 0.7 to 1.0 (which only took three years)?
 
         There are so many changes in this version, including some very old major requests like a complete core rewrite, OTR encryption, a significant upgrade of the MSN protocol module, optional support for libpurple, file transfers.. The last one used to be the Duke Nukem Forever in the BitlBee community. Looks like we won!

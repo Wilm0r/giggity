@@ -33,6 +33,7 @@
     <color name="light_text">#EEFFFFFF</color> <!-- on material/blue backgrounds -->
     <color name="light_text_on_white">#EECCCCCC</color> <!-- on material/blue backgrounds -->
     <color name="dark_text">#FFDDDDDD</color> <!-- darker than default, for titles, etc -->
+	<color name="event_dialog_text">#ffdddddd</color>
 
     <color name="light_back">#FF121212</color>
     <color name="background_material_light">#ff121212</color>
