@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- General / Application -->
 	<string name="app_name">Giggity</string>
-	<string name="search_hint">Programma doorzoeken</string>
-
 	<string name="ok">OK</string>
 	<string name="cancel">Annuleren</string>
-
-	<!--  Settings -->
+	<!-- SettingsActivity -->
+	<string name="settings">Instellingen</string>
 	<string name="default_view">Standaard weergave</string>
 	<string name="font_size">Lettergrootte blokkenschema</string>
-
-	<string name="block_schedule">Blokkenschema</string>
 	<string name="block_schedule_vertical">Verticaal blokkenschema</string>
 	<string name="block_schedule_vertical_yes">Tijd loopt naar beneden</string>
 	<string name="block_schedule_vertical_no">Tijd loopt naar rechts</string>
-
+	<string name="block_schedule">Blokkenschema</string>
+	<!-- Reminder / Notification Logic -->
 	<string name="reminder">Herinneringen</string>
 	<string name="reminder_enabled">Notificaties</string>
 	<string name="reminder_enabled_sub_on">Waarschuw als een gemarkeerd item begint</string>
 	<string name="reminder_enabled_sub_off">Geen waarschuwing als een gemarkeerd item begint</string>
 	<string name="reminder_period">Minuten voor aanvang</string>
-	
+	<string name="notification_channel">Herrineringen</string>
+	<string name="notification_channel_description">Notificatie voordat een gemarkeerd item begint</string>
 	<!-- EventDialog -->
 	<string name="speaker">Spreker:</string>
 	<string name="speakers">Sprekers:</string>
@@ -33,7 +32,6 @@
 	<string name="hide_room">...gehele zaal</string>
 	<string name="hide_track">...gehele track</string>
 	<string name="hide_lang">...alles in het %s</string>
-
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Programma wordt geladen...</string>
 	<string name="use_cached_version">Uit cache laden</string>
@@ -41,15 +39,14 @@
 	<string name="loading_error">Laadfout</string>
 	<string name="no_viewer_error">Geen lezer geïnstalleerd voor bestandstype</string>
 	<string name="open_link_with_browser_instead">In browser openen</string>
+	<string name="home_shortcut">Aan thuisscherm toevoegen</string>
 	<string name="schedule_empty">Programma lijkt (nog) leeg</string>
 	<string name="format_unknown">Onbekend bestandsformaat</string>
 	<string name="no_network">Geen netwerkverbinding beschikbaar</string>
 	<string name="no_network_or_cached">Geen netwerkverbinding of cache kopie beschikbaar</string>
-
-	<!-- Menu -->
+	<!-- Main Menu & Navigation Drawer -->
 	<string name="drw_tz_offset">Tijdzone verschil:</string>
 	<string name="drw_tz_is_yours">Tijden naar lokaal omgerekend</string>
-	<string name="settings">Instellingen</string>
 	<string name="change_day">Andere dag</string>
 	<string name="show_hidden">Verborgen items tonen</string>
 	<string name="timetable">Tijdschema</string>
@@ -57,43 +54,33 @@
 	<string name="now_next">Nu en straks</string>
 	<string name="my_events">Mijn items</string>
 	<string name="search">Zoeken</string>
-	
-	<!-- NowNext -->
+	<!-- NowNextView -->
 	<string name="no_events_today">Niks op het programma vandaag.</string>
 	<string name="now">Nu</string>
 	<string name="next">Straks</string>
-	
 	<!-- MyItemsView -->
 	<string name="coming_up">Nog te gaan</string>
 	<string name="seen_so_far">Voorbij</string>
 	<string name="none_marked">Nog niks gemarkeerd.</string>
-
-	<!-- SearchActivity -->
+	<!-- ItemSearchActivity -->
+	<string name="search_hint">Programma doorzoeken</string>
+	<string name="type_query_prompt">Voer zoekopdracht in</string>
 	<string name="search_results">Resultaten voor \"%1$s\" in %2$s</string>
-
+	<string name="search_results_empty">Deze zoekopdracht geeft geen resultaten.</string>
 	<!-- ChooserActivity -->
 	<string name="refresh">Verversen</string>
+	<string name="refresh_failed">Kon menu niet verversen.</string>
 	<string name="unhide">Verborgen items herstellen</string>
 	<string name="hide">Verbergen</string>
-	<string name="show_url">URL weergeven...</string>
 	<string name="chooser_now">Nu</string>
 	<string name="chooser_later">Later</string>
 	<string name="chooser_past">Afgelopen</string>
 	<string name="chooser_hidden">Verborgen</string>
 	<string name="add_dialog">Toevoegen...</string>
 	<string name="enter_url">Voer programma URL in</string>
-	<string name="refresh_failed">Kon menu niet verversen.</string>
-
-	<!-- Reminder -->
-	<string name="notification_channel">Herrineringen</string>
-	<string name="notification_channel_description">Notificatie voordat een gemarkeerd item begint</string>
-
-	<!--  Widget -->
+	<!-- Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'om\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'om\' HH:mm</string>
 	<string name="widg_soon">Binnenkort</string>
 	<string name="widg_no_upcoming">Niks op komst :-(</string>
-	<string name="home_shortcut">Aan thuisscherm toevoegen</string>
-	<string name="type_query_prompt">Voer zoekopdracht in</string>
-	<string name="search_results_empty">Deze zoekopdracht geeft geen resultaten.</string>
 </resources>

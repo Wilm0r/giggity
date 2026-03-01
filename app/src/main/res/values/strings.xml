@@ -1,38 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- General / Application -->
 	<string name="app_name">Giggity</string>
-	<string name="search_hint">Search events</string>
-
 	<string name="ok">OK</string>
 	<string name="cancel">Cancel</string>
 
-	<!--  Settings -->
+	<!-- SettingsActivity -->
+	<string name="settings">Settings</string>
 	<string name="default_view">Default view</string>
 	<string name="font_size">Block schedule font size</string>
 	<string name="block_schedule_vertical">Vertical block schedule</string>
 	<string name="block_schedule_vertical_yes">Time goes downward</string>
 	<string name="block_schedule_vertical_no">Time goes to the right</string>
-
 	<string name="block_schedule">Block schedule</string>
 
+	<!-- Reminder / Notification Logic -->
 	<string name="reminder">Event reminders</string>
-	<string name="reminder_enabled_sub_on">Notifications before my events start</string>
 	<string name="reminder_enabled">Enable notifications</string>
+	<string name="reminder_enabled_sub_on">Notifications before my events start</string>
+	<string name="reminder_enabled_sub_off">Notifications suppressed</string>
 	<string name="reminder_period">Minutes before event</string>
-	
+	<string name="notification_channel">Reminders</string>
+	<string name="notification_channel_description">Notification ahead of a selected event starting</string>
+
 	<!-- EventDialog -->
 	<string name="speaker">Speaker:</string>
 	<string name="speakers">Speakers:</string>
 	<string name="track">Track:</string>
 	<string name="remind_me">Remind me</string>
 	<string name="overlap">Overlaps with</string>
+	<string name="links_header">Links:</string>
 	<string name="hide_what">Hide...</string>
 	<string name="unhide_what">Unhide...</string>
 	<string name="hide_item">...this item</string>
 	<string name="hide_room">...entire room</string>
 	<string name="hide_track">...entire track</string>
 	<string name="hide_lang">...all in %s</string>
-	<string name="links_header">Links:</string>
 
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Loading schedule data...</string>
@@ -48,9 +51,9 @@
 	<string name="no_network">No network connection available</string>
 	<string name="no_network_or_cached">No network connection or cached copy available</string>
 
-	<!-- Menu -->
+	<!-- Main Menu & Navigation Drawer -->
 	<string name="drw_tz_offset">Timezone offset:</string>
-	<string name="settings">Settings</string>
+	<string name="drw_tz_is_yours">Times shown are local to you</string>
 	<string name="change_day">Change day</string>
 	<string name="show_hidden">Show hidden items</string>
 	<string name="timetable">Timetable</string>
@@ -58,49 +61,41 @@
 	<string name="now_next">Now and next</string>
 	<string name="my_events">My events</string>
 	<string name="search">Search</string>
-	<!-- navdrawer (toggler) -->
 	<string name="navdrawer_on">Show drawer</string>
 	<string name="navdrawer_off">Hide drawer</string>
 
-	<!-- NowNext -->
+	<!-- NowNextView -->
 	<string name="no_events_today">No events today.</string>
 	<string name="now">Now</string>
 	<string name="next">Next</string>
-	
+
 	<!-- MyItemsView -->
 	<string name="coming_up">Coming up</string>
 	<string name="seen_so_far">Seen so far</string>
 	<string name="none_marked">No items marked yet.</string>
 
-	<!-- SearchActivity (deprecated) -->
-	<string name="search_results">Results for \"%1$s\" in %2$s</string>
-
-	<!-- IteamSearchActivity -->
+	<!-- ItemSearchActivity -->
+	<string name="search_hint">Search events</string>
 	<string name="type_query_prompt">Type your search query</string>
+	<string name="search_results">Results for \"%1$s\" in %2$s</string>
 	<string name="search_results_empty">Your search query did not match any events.</string>
 
 	<!-- ChooserActivity -->
 	<string name="refresh">Refresh</string>
+	<string name="refresh_failed">Menu refresh unsuccessful.</string>
 	<string name="unhide">Recover hidden items</string>
 	<string name="hide">Hide</string>
-	<string name="show_url">Show URL...</string>
+	<string name="share_selections">Share selections</string>
 	<string name="chooser_now">Now</string>
 	<string name="chooser_later">Later</string>
 	<string name="chooser_past">Over</string>
 	<string name="chooser_hidden">Hidden</string>
 	<string name="add_dialog">Add...</string>
 	<string name="enter_url">Enter schedule URL</string>
-	<string name="refresh_failed">Menu refresh unsuccessful.</string>
 
-	<!-- Reminder -->
-	<string name="notification_channel">Reminders</string>
-	<string name="notification_channel_description">Notification ahead of a selected event starting</string>
-
-	<!--  Widget -->
+	<!-- Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'at\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'at\' HH:mm</string>
 	<string name="widg_soon">Coming soon</string>
 	<string name="widg_no_upcoming">No upcoming events :-(</string>
-	<string name="reminder_enabled_sub_off">Notifications suppressed</string>
-	<string name="drw_tz_is_yours">Times shown are local to you</string>
 </resources>

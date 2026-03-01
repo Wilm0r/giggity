@@ -1,37 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- General / Application -->
 	<string name="app_name">Giggity</string>
-	<string name="search_hint">Rechercher des évènements</string>
-
 	<string name="ok">OK</string>
 	<string name="cancel">Annuler</string>
-
-	<!--  Settings -->
+	<!-- SettingsActivity -->
+	<string name="settings">Paramètres</string>
 	<string name="default_view">Vue par défaut</string>
 	<string name="font_size">Taille de police pour la grille</string>
-
 	<string name="block_schedule">Grille</string>
-
+	<!-- Reminder / Notification Logic -->
 	<string name="reminder">Rappel d\'évènements</string>
+	<string name="reminder_enabled">Activer les rappels</string>
 	<string name="reminder_enabled_sub_on">Me rappeler les évènements sélectionnés</string>
 	<string name="reminder_enabled_sub_off">Ne pas me rappeler les évènements sélectionnés</string>
-	<string name="reminder_enabled">Activer les rappels</string>
 	<string name="reminder_period">Minutes avant l\'évènement</string>
-	
 	<!-- EventDialog -->
 	<string name="speaker">Conférencier :</string>
 	<string name="speakers">Conférenciers :</string>
 	<string name="track">Thème :</string>
 	<string name="remind_me">Rappel</string>
 	<string name="overlap">En conflit avec</string>
+	<string name="links_header">Liens :</string>
 	<string name="hide_what">Cacher...</string>
 	<string name="unhide_what">Montrer...</string>
 	<string name="hide_item">...cet élément</string>
 	<string name="hide_room">...salle entière</string>
 	<string name="hide_track">...thème entier</string>
 	<string name="hide_lang">...tout dans %s</string>
-	<string name="links_header">Liens :</string>
-
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Chargement du programme...</string>
 	<string name="loading_image">Chargement des images...</string>
@@ -42,9 +38,7 @@
 	<string name="format_unknown">Format de fichier non reconnu</string>
 	<string name="no_network">Aucune connexion réseau</string>
 	<string name="no_network_or_cached">Aucune connexion réseau ni copie en cache disponible</string>
-
-	<!-- Menu -->
-	<string name="settings">Paramètres</string>
+	<!-- Main Menu & Navigation Drawer -->
 	<string name="change_day">Changer de jour</string>
 	<string name="show_hidden">Monter les éléments cachés</string>
 	<string name="timetable">Horaires</string>
@@ -52,36 +46,28 @@
 	<string name="now_next">À venir</string>
 	<string name="my_events">Sélection</string>
 	<string name="search">Recherche</string>
-	<!-- navdrawer (toggler) -->
 	<string name="navdrawer_on">Montrer le menu</string>
 	<string name="navdrawer_off">Cacher le menu</string>
-
-	<!-- NowNext -->
+	<!-- NowNextView -->
 	<string name="no_events_today">Aucun évènement ce jour.</string>
 	<string name="now">Maintenant</string>
 	<string name="next">À suivre</string>
-	
 	<!-- MyItemsView -->
 	<string name="coming_up">À venir</string>
 	<string name="seen_so_far">Déjà vu</string>
 	<string name="none_marked">Aucun élément sélectionné.</string>
-
-	<!-- SearchActivity -->
+	<!-- ItemSearchActivity -->
+	<string name="search_hint">Rechercher des évènements</string>
 	<string name="search_results">Résultats pour « %1$s » dans %2$s</string>
-
 	<!-- ChooserActivity -->
 	<string name="refresh">Mettre à jour</string>
 	<string name="unhide">Montrer les éléments cachés</string>
-	<string name="show_url">Montrer l\'URL...</string>
 	<string name="chooser_now">Évènements actuels</string>
 	<string name="chooser_later">Évènements à venir</string>
 	<string name="chooser_past">Évènements précédents</string>
 	<string name="add_dialog">Ajout...</string>
 	<string name="enter_url">Saisissez l\'URL du programme</string>
-
-	<!-- Reminder -->
-
-	<!--  Widget -->
+	<!-- Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'à\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'à\' HH:mm</string>
 	<string name="widg_soon">Bientôt</string>

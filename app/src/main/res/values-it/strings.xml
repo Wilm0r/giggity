@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+	<!-- General / Application -->
 	<string name="app_name">Giggity</string>
-	<string name="search_hint">Cerca eventi</string>
-
 	<string name="ok">OK</string>
 	<string name="cancel">Annulla</string>
-
-	<!--  Settings -->
+	<!-- SettingsActivity -->
+	<string name="settings">Impostazioni</string>
 	<string name="default_view">Vista predefinita</string>
 	<string name="font_size">Dimensione font programma a blocchi</string>
-
 	<string name="block_schedule">Programma a blocchi</string>
-
+	<!-- Reminder / Notification Logic -->
 	<string name="reminder">Promemoria eventi</string>
-	<string name="reminder_enabled_sub_on">Ricordami gli eventi segnati</string>
 	<string name="reminder_enabled">Abilita promemoria</string>
+	<string name="reminder_enabled_sub_on">Ricordami gli eventi segnati</string>
+	<string name="reminder_enabled_sub_off">Non ricordarmi gli eventi segnati</string>
 	<string name="reminder_period">Minuti prima di un evento</string>
-	
+	<string name="notification_channel">Promemoria</string>
+	<string name="notification_channel_description">Notifiche prima di un evento selezionato</string>
 	<!-- EventDialog -->
 	<string name="speaker">Relatore:</string>
 	<string name="speakers">Relatori:</string>
 	<string name="track">Tema:</string>
 	<string name="remind_me">Ricordami</string>
 	<string name="overlap">Eventi sovrapposti</string>
+	<string name="links_header">Links:</string>
 	<string name="hide_what">Nascondi...</string>
 	<string name="unhide_what">Mostra...</string>
 	<string name="hide_item">...questo elemento</string>
 	<string name="hide_room">...tutta la stanza</string>
 	<string name="hide_track">...tutto il tema</string>
-	<string name="links_header">Links:</string>
-
 	<!-- ScheduleViewActivity -->
 	<string name="loading_schedule">Caricamento del programma...</string>
 	<string name="use_cached_version">Usa versione in cache</string>
@@ -42,9 +41,7 @@
 	<string name="no_json_data">Estrazione dati JSON da URL fallita</string>
 	<string name="no_network">Connessione di rete non disponibile</string>
 	<string name="no_network_or_cached">Connessione di rete e copia cache non disponibili</string>
-
-	<!-- Menu -->
-	<string name="settings">Impostazioni</string>
+	<!-- Main Menu & Navigation Drawer -->
 	<string name="change_day">Cambia giorno</string>
 	<string name="show_hidden">Mostra elementi nascosti</string>
 	<string name="timetable">Orario</string>
@@ -52,46 +49,33 @@
 	<string name="now_next">Adesso e dopo</string>
 	<string name="my_events">I miei eventi</string>
 	<string name="search">Cerca</string>
-	<!-- navdrawer (toggler) -->
 	<string name="navdrawer_on">Mostra cassetto</string>
 	<string name="navdrawer_off">Nascondi cassetto</string>
-
-	<!-- NowNext -->
+	<!-- NowNextView -->
 	<string name="no_events_today">Nessun evento oggi.</string>
 	<string name="now">Adesso:</string>
 	<string name="next">Prossimo</string>
-	
 	<!-- MyItemsView -->
 	<string name="coming_up">Prossimi</string>
 	<string name="seen_so_far">Visti finora</string>
 	<string name="none_marked">Nessun elemento segnato.</string>
-	
-	<!-- SearchActivity (deprecated) -->
-	<string name="search_results">Risultati per \"%1$s\" in %2$s</string>
-	
 	<!-- ItemSearchActivity -->
+	<string name="search_hint">Cerca eventi</string>
 	<string name="type_query_prompt">Digita la tua query di ricerca</string>
+	<string name="search_results">Risultati per \"%1$s\" in %2$s</string>
 	<string name="search_results_empty">Nessun risultato per la tua query di ricerca</string>
-	
 	<!-- ChooserActivity -->
 	<string name="refresh">Ricarica</string>
+	<string name="refresh_failed">Caricamento del menu fallito.</string>
 	<string name="unhide">Recupera elementi nascosti</string>
-	<string name="show_url">Mostra URL...</string>
 	<string name="chooser_now">Eventi in corso</string>
 	<string name="chooser_later">Eventi in arrivo</string>
 	<string name="chooser_past">Eventi precedenti</string>
 	<string name="add_dialog">Aggiungi...</string>
 	<string name="enter_url">Inserisci URL del programma</string>
-	<string name="refresh_failed">Caricamento del menu fallito.</string>
-
-	<!-- Reminder -->
-	<string name="notification_channel">Promemoria</string>
-	<string name="notification_channel_description">Notifiche prima di un evento selezionato</string>
-
-	<!--  Widget -->
+	<!-- Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'alle\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'alle\' HH:mm</string>
 	<string name="widg_soon">Prossimamente</string>
 	<string name="widg_no_upcoming">Nessun evento in vista :-(</string>
-	<string name="reminder_enabled_sub_off">Non ricordarmi gli eventi segnati</string>
 </resources>
