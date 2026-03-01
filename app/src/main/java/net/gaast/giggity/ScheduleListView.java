@@ -27,6 +27,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.text.MeasuredText;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -39,6 +40,7 @@ import android.widget.TextView;
 
 import java.util.AbstractList;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class ScheduleListView extends ListView implements ScheduleViewer {
@@ -209,6 +211,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 
 	private class EventAdapter extends BaseAdapter {
 		AbstractList<?> items;
+		HashMap<Integer, View> viewCache = new HashMap<>();
 		
 		public EventAdapter(AbstractList<?> items_) {
 			items = items_;
@@ -263,7 +266,7 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 				return new ScheduleLineView(ctx, (Schedule.Line) items.get(position));
 			} else if (items.get(position).getClass() == Schedule.Track.class) {
 				return new ScheduleTrackView(ctx, (Schedule.Track) items.get(position));
-			} else {
+			} else if (items.get(position).getClass() == String.class) {
 				String text = (String) items.get(position);
 				if (text.trim().isEmpty()) {
 					/* Still abusing whitespace-only strings for spacing. */
@@ -282,6 +285,15 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 					tv.setText(text.trim());
 					return ret;
 				}
+			} else {
+				if (viewCache.containsKey(position)) {
+					return viewCache.get(position);
+				}
+				LinearLayout ret = new LinearLayout(ctx);
+				ret.addView((View) items.get(position), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+				ret.setGravity(Gravity.CENTER_HORIZONTAL);
+				viewCache.put(position, ret);
+				return ret;
 			}
 		}
 	}

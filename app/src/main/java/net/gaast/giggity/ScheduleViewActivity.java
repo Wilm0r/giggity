@@ -939,7 +939,9 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		ScheduleViewer next;
-		if (curView == R.id.timetable) {
+		if (getIntent().getDataString().contains("&see=")) {
+			next = new ImportView(this, sched, getIntent().getDataString());
+		} else if (curView == R.id.timetable) {
 			next = new TimeTable(this, (Collection) sched.getTents());
 		} else if (curView == R.id.now_next) {
 			next = new NowNext(this, sched);
