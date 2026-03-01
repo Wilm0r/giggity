@@ -1143,6 +1143,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		onOptionsItemSelectedInt(item.getItemId());
+		drawerLayout.closeDrawers();
 
 		return super.onOptionsItemSelected(item);
 	}
