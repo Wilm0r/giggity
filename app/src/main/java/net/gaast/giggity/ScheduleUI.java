@@ -6,18 +6,25 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Handler;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 
 import org.apache.commons.io.output.NullOutputStream;
+import org.json.JSONArray;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.zip.GZIPOutputStream;
 
 import androidx.annotation.NonNull;
 import io.noties.markwon.Markwon;
@@ -257,5 +264,42 @@ public class ScheduleUI extends Schedule {
 				ctx.startActivity(geoi);
 			}
 		};
+	}
+
+	public String exportLink() {
+		String ret = null;
+		try {
+			ret = new String("https://ggt.gaa.st/#url=" + URLEncoder.encode(getUrl(), "utf-8"));
+		} catch (UnsupportedEncodingException e) {
+			// TODO: Replace with StandardCharsets.UTF_8 when I can because this shit is dumb.
+		}
+		JSONArray see = new JSONArray(), del = new JSONArray();
+		for (Item it : allItems.values()) {
+			if (it.getRemind()) {
+				see.put(it.getId());
+			}
+			if (it.isHidden()) {
+				del.put(it.getId());
+			}
+		}
+		if (see.length() > 0) {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try (GZIPOutputStream gz = new GZIPOutputStream(out)) {
+				gz.write(see.toString().getBytes(StandardCharsets.UTF_8));
+			} catch (IOException e) {
+				// It's a string you muppet
+			}
+			ret += "&see=" + Base64.encodeToString(out.toByteArray(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
+		}
+		if (del.length() > 0) {
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			try (GZIPOutputStream gz = new GZIPOutputStream(out)) {
+				gz.write(del.toString().getBytes(StandardCharsets.UTF_8));
+			} catch (IOException e) {
+				// It's a string you muppet
+			}
+			ret += "&del=" + Base64.encodeToString(out.toByteArray(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
+		}
+		return ret;
 	}
 }

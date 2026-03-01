@@ -714,6 +714,17 @@ public class ScheduleViewActivity extends Activity {
 		if (Giggity.checkReminderPermissions(this, !app.getRemindItems().isEmpty())) {
 			app.updateRemind();
 		}
+
+		if (getIntent().getBooleanExtra("EXPORT_SELECTIONS", false)) {
+			Intent t = new Intent(android.content.Intent.ACTION_SEND);
+			t.setType("text/plain");
+			t.putExtra(Intent.EXTRA_TITLE, sched.getTitle());
+			t.putExtra(Intent.EXTRA_TEXT, sched.exportLink());
+			startActivity(Intent.createChooser(t, null));
+			// Leave this activity again after triggering the chooser. We're only relying on SVA to
+			// make sure the schedule + selections are loaded.
+			finish();
+		}
 	}
 
 	@Override

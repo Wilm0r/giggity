@@ -79,6 +79,9 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 
 	private SharedPreferences pref;
 
+	private final int PREFER_ONLINE = 1;
+	private final int EXPORT_SELECTIONS = 2;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -134,7 +137,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 			DbSchedule item = (DbSchedule) lista.getItem(position);
 			if (item != null) {
-				openSchedule(item.getUrl(), item.refreshNow(), view);
+				openSchedule(item.getUrl(), item.refreshNow() ? PREFER_ONLINE : 0, view);
 			}
 			}
 		});
@@ -149,7 +152,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					menu.add(ContextMenu.NONE, 0, 0, R.string.refresh);
 					menu.add(ContextMenu.NONE, 3, 0, R.string.unhide);
 					menu.add(ContextMenu.NONE, 1, 0, R.string.hide);
-					menu.add(ContextMenu.NONE, 2, 0, R.string.show_url);
+					menu.add(ContextMenu.NONE, 2, 0, R.string.share_selections);
 				}
 			}
 		});
@@ -233,28 +236,19 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		} else if (item.getItemId() == 0) {
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched.getUrl(), true, null);
+			openSchedule(sched.getUrl(), PREFER_ONLINE, null);
 		} else if (item.getItemId() == 3) {
 			/* Unhide. */
 			sched.flushHiddenItems();
 			/* Refresh. */
 			app.flushSchedule(sched.getUrl());
-			openSchedule(sched.getUrl(), sched.refreshNow(), null);
+			openSchedule(sched.getUrl(), sched.refreshNow() ? PREFER_ONLINE : 0, null);
 		} else if (item.getItemId() == 1) {
 			/* Delete. */
 			db.hideSchedule(sched.getUrl());
 			onResume();
 		} else {
-			// Long ago this used to show a QR through a ZXing app intent, but that thing is dead,
-			// and meh I'm not going to integrate a QR jar just for this kind of functionality. :(
-			TextView selectableUrl = new TextView(this);
-			selectableUrl.setText(sched.getUrl());
-			selectableUrl.setTextIsSelectable(true);
-			app.setPadding(selectableUrl, 16, 8, 8, 16);
-			new AlertDialog.Builder(ChooserActivity.this)
-					.setTitle(sched.getTitle())
-					.setView(selectableUrl)
-					.show();
+			openSchedule(sched.getUrl(), EXPORT_SELECTIONS, null);
 		}
 		return false;
 	}
@@ -278,12 +272,13 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		seedRefreshMenu = null;
 	}
 
-	private void openSchedule(String url, boolean prefOnline, View animationOrigin) {
+	private void openSchedule(String url, int flags, View animationOrigin) {
 		if (!url.contains("://"))
 			url = "https://" + url;
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url),
 				this, ScheduleViewActivity.class);
-		intent.putExtra("PREFER_ONLINE", prefOnline);
+		intent.putExtra("PREFER_ONLINE", (flags & PREFER_ONLINE) > 0);
+		intent.putExtra("EXPORT_SELECTIONS", (flags & EXPORT_SELECTIONS) > 0);
 
 		ActivityOptions options = null;
 		if (animationOrigin != null) {
@@ -336,7 +331,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		d.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				openSchedule(urlBox.getText().toString(), false, null);
+				openSchedule(urlBox.getText().toString(), 0, null);
 			}
 		});
 		d.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
