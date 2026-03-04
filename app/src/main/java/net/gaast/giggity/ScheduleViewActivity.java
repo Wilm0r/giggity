@@ -66,6 +66,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FilenameUtils;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -107,6 +108,7 @@ public class ScheduleViewActivity extends Activity {
 		R.id.search,
 		R.id.timetable,
 		R.id.tracks,
+		R.id.imports,
 	};
 
 	private int curView;
@@ -162,6 +164,8 @@ public class ScheduleViewActivity extends Activity {
 
 		if (savedInstanceState != null) {
 			curView = savedInstanceState.getInt("curView", curView);
+		} else if (getIntent().getDataString().contains("&see=") || getIntent().getDataString().contains("&del=")) {
+			curView = R.id.imports;
 		}
 
 		/* Consider making this a setting, some may find their tablet too small. */
@@ -795,8 +799,11 @@ public class ScheduleViewActivity extends Activity {
 			return;
 		}
 		/* Show currently selected view */
-		for (int v : VIEWS) {
-			navDrawerItemState((TextView) drawerLayout.findViewById(v), curView == v);
+		for (int i : VIEWS) {
+			TextView v = (TextView) drawerLayout.findViewById(i);
+			if (v != null) {
+				navDrawerItemState(v, curView == i);
+			}
 		}
 
 		if (sched == null) {
@@ -939,9 +946,7 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		ScheduleViewer next;
-		if (getIntent().getDataString().contains("&see=")) {
-			next = new ImportView(this, sched, getIntent().getDataString());
-		} else if (curView == R.id.timetable) {
+		if (curView == R.id.timetable) {
 			next = new TimeTable(this, (Collection) sched.getTents());
 		} else if (curView == R.id.now_next) {
 			next = new NowNext(this, sched);
@@ -951,6 +956,8 @@ public class ScheduleViewActivity extends Activity {
 			next = new TimeTable(this, (Collection) sched.getTracks());
 		} else if (curView == R.id.search) {
 			next = new ItemSearch(this, sched);
+		} else if (curView == R.id.imports) {
+			next = new ImportView(this, sched, getIntent().getDataString());
 		} else {
 			curView = R.id.block_schedule; /* Just in case curView is set to something weird. */
 			if (vertical) {

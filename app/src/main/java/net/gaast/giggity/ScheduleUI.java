@@ -24,7 +24,7 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.zip.GZIPOutputStream;
+import java.util.zip.DeflaterOutputStream;
 
 import androidx.annotation.NonNull;
 import io.noties.markwon.Markwon;
@@ -276,15 +276,25 @@ public class ScheduleUI extends Schedule {
 		JSONArray see = new JSONArray(), del = new JSONArray();
 		for (Item it : allItems.values()) {
 			if (it.getRemind()) {
-				see.put(it.getId());
+				String id = it.getId();
+				if (id.matches("^[1-9]+[0-9]*$")) {
+					see.put(Integer.parseInt(id));
+				} else {
+					see.put(id);
+				}
 			}
 			if (it.isHidden()) {
-				del.put(it.getId());
+				String id = it.getId();
+				if (id.matches("^[1-9]+[0-9]*$")) {
+					del.put(Integer.parseInt(id));
+				} else {
+					del.put(id);
+				}
 			}
 		}
 		if (see.length() > 0) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try (GZIPOutputStream gz = new GZIPOutputStream(out)) {
+			try (DeflaterOutputStream gz = new DeflaterOutputStream(out)) {
 				gz.write(see.toString().getBytes(StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				// It's a string you muppet
@@ -293,7 +303,7 @@ public class ScheduleUI extends Schedule {
 		}
 		if (del.length() > 0) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try (GZIPOutputStream gz = new GZIPOutputStream(out)) {
+			try (DeflaterOutputStream gz = new DeflaterOutputStream(out)) {
 				gz.write(del.toString().getBytes(StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				// It's a string you muppet

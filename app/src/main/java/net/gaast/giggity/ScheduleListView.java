@@ -290,6 +290,9 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 					return viewCache.get(position);
 				}
 				LinearLayout ret = new LinearLayout(ctx);
+				TextView pad = new TextView(ctx);
+				pad.setWidth(app.dp2px(102));
+				ret.addView(pad);
 				ret.addView((View) items.get(position), new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 				ret.setGravity(Gravity.CENTER_HORIZONTAL);
 				viewCache.put(position, ret);

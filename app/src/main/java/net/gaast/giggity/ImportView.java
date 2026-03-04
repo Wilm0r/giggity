@@ -19,7 +19,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.zip.GZIPInputStream;
+import java.util.zip.DeflaterInputStream;
 
 import androidx.annotation.NonNull;
 
@@ -33,8 +33,11 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 	private final Set<String> toHide = new HashSet<>();
 
 	// Left to do in next commits: Fix SVA which currently has defunct viewer choosers when handling
-	// an import, fix centering of the buttons, fix headings, and ... hope I didn't forget anything?
+	// an import, fix centering of the buttons, DONE
+	//
+	// fix headings, and ... hope I didn't forget anything?
 	// Also, see what to do with huge # of deletions. Huge URLs are a bigger concern than UI maybe..
+	// Try to get out the short IDs again which for almost every conf *are* unique.
 
 	public ImportView(Context ctx, Schedule sched, String url) {
 		super(ctx);
@@ -60,12 +63,17 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 		try {
 			byte[] compressed = Base64.decode(param, Base64.URL_SAFE | Base64.NO_PADDING);
 			ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
-			GZIPInputStream gis = new GZIPInputStream(bis);
+			DeflaterInputStream gis = new DeflaterInputStream(bis);
 			String jsonString = IOUtils.toString(gis, StandardCharsets.UTF_8);
 
 			// 3. Parse JSON Array
 			JSONArray array = new JSONArray(jsonString);
 			for (int i = 0; i < array.length(); i++) {
+				try {
+					ids.add(Integer.toString(array.getInt(i)));
+				} catch (JSONException e) {
+					ids.add(array.getString(i));
+				}
 				ids.add(array.optString(i, ""));
 			}
 		} catch (IOException | JSONException e) {
