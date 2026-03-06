@@ -93,6 +93,15 @@
 	<string name="add_dialog">Add...</string>
 	<string name="enter_url">Enter schedule URL</string>
 
+	<!-- ImportView -->
+	<string name="reminders">Reminders</string>
+	<string name="hidden">Hidden</string>
+	<string name="import_all">Import all</string>
+	<string name="no_items_to_show">No items to show.</string>
+	<string name="overwrite_or_merge_question">Do you want to overwrite your selections/deletions with these, or do you want to merge them?</string>
+	<string name="overwrite">Overwrite</string>
+	<string name="merge">Merge</string>
+
 	<!-- Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'at\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'at\' HH:mm</string>

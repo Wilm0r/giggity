@@ -78,6 +78,16 @@
 	<string name="chooser_hidden">Verborgen</string>
 	<string name="add_dialog">Toevoegen...</string>
 	<string name="enter_url">Voer programma URL in</string>
+
+	<!-- ImportView -->
+	<string name="reminders">Onthouden</string>
+	<string name="hidden">Verbergen</string>
+	<string name="import_all">Alles importeren</string>
+	<string name="no_items_to_show">Niks om te laten zien.</string>
+	<string name="overwrite_or_merge_question">Wil je je eigen selecties hiermee overschrijven, of samenvoegen?</string>
+	<string name="overwrite">Overschrijven</string>
+	<string name="merge">Samenvoegen</string>
+
 	<!-- Widget -->
 	<string name="widg_longdate">EEEE d MMMM \'om\' HH:mm</string>
 	<string name="widg_shortdate">EEEE \'om\' HH:mm</string>

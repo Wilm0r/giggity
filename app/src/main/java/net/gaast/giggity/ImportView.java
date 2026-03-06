@@ -32,10 +32,7 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 	private final Set<String> toSee = new HashSet<>();
 	private final Set<String> toHide = new HashSet<>();
 
-	// Left to do in next commits: Fix SVA which currently has defunct viewer choosers when handling
-	// an import, fix centering of the buttons, DONE
-	//
-	// fix headings, and ... hope I didn't forget anything?
+	// and ... hope I didn't forget anything?
 	// Also, see what to do with huge # of deletions. Huge URLs are a bigger concern than UI maybe..
 	// Try to get out the short IDs again which for almost every conf *are* unique.
 
@@ -102,14 +99,14 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 		}
 
 		if (coming.size() > 0) {
-			fullList.add(getResources().getString(R.string.coming_up));
+			fullList.add(ctx.getString(R.string.reminders));
 			fullList.addAll(coming);
 			Button importButton = getButton(toSee);
 			fullList.add(importButton);
 		}
 
 		if (hiding.size() > 0) {
-			String header = (coming.size() > 0 ? "\n" : "") + getResources().getString(R.string.hide);
+			String header = (coming.size() > 0 ? "\n" : "") + ctx.getString(R.string.hidden);
 			fullList.add(header);
 			fullList.addAll(hiding);
 			Button importButton = getButton(toHide);
@@ -117,7 +114,7 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 		}
 
 		if (fullList.isEmpty()) {
-			fullList.add(getResources().getString(R.string.search_results_empty));
+			fullList.add(ctx.getString(R.string.no_items_to_show));
 		}
 
 		fullList.add("\n");  // Cheeky edge-to-edge workaround.
@@ -129,12 +126,12 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 	@NonNull
 	private Button getButton(Set<String> which) {
 		Button importButton = new Button(ctx);
-		importButton.setText("Import all");
+		importButton.setText(R.string.import_all);
 		importButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				AlertDialog.Builder dib = new AlertDialog.Builder(ctx);
-				dib.setMessage("Do you want to overwrite your selections/deletions with these, or do you want to merge them?");
+				dib.setMessage(R.string.overwrite_or_merge_question);
 				DialogInterface.OnClickListener l = new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int btn) {
@@ -145,9 +142,9 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 						}
 					}
 				};
-				dib.setNegativeButton("Overwrite", l);
+				dib.setNegativeButton(R.string.overwrite, l);
 				dib.setNeutralButton(R.string.cancel, null);  // Nothing to do then. (Same result as tapping outside the dialog.)
-				dib.setPositiveButton("Merge", l);
+				dib.setPositiveButton(R.string.merge, l);
 				dib.create().show();
 			}
 		});
