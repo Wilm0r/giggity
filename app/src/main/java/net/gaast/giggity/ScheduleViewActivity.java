@@ -66,7 +66,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.apache.commons.io.FilenameUtils;
-import org.w3c.dom.Text;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -935,7 +934,7 @@ public class ScheduleViewActivity extends Activity {
 			title = sched.getTitle();
 		}
 		/* TODO: Use viewer.multiDay() here. Chicken-egg makes that impossible ATM. */
-		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.search && sched.getDays().size() > 1) {
+		if (curView != R.id.now_next && curView != R.id.my_events && curView != R.id.search && curView != R.id.imports && sched.getDays().size() > 1) {
 			ZonedDateTime d = sched.setDay(sched.getDb().getDay());
 			if (d != null) {
 				setTitle(sched.getDayFormat().format(d) + ", " + title);
@@ -1057,7 +1056,7 @@ public class ScheduleViewActivity extends Activity {
 			if (others != null) {
 				ArrayList<String> ids = new ArrayList<>();
 				for (Schedule.Item o : others) {
-					ids.add(o.getId());
+					ids.add(o.getGuid());
 				}
 				intent.putExtra("search_query", searchQuery);
 				intent.putExtra("others", ids.toArray(new String[others.size()]));

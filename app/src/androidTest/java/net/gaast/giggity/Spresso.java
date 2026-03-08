@@ -8,7 +8,10 @@ import android.view.ViewParent;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +23,8 @@ import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.idling.CountingIdlingResource;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.intent.matcher.IntentMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
@@ -29,7 +34,9 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
+import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
@@ -82,6 +89,16 @@ public class Spresso {
 				return nameMatcher.matches(sci.getTitle());
 			}
 		};
+	}
+
+	@Before
+	public void setUp() {
+		Intents.init();
+	}
+
+	@After
+	public void tearDown() {
+		Intents.release();
 	}
 
 	@Test
@@ -202,6 +219,20 @@ public class Spresso {
 		// The second swipe should've been a no-op, we should still be showing the same talk.
 		dialog = onView(allOf(withClassName(is("net.gaast.giggity.EventDialog")), hasDescendant(withText(startsWith("What's new in the")))));
 		dialog.check(matches(isDisplayed()));
+
+		pressBack();
+		pressBack();
+		onData(scheduleByTitle(containsString("DebConf 23"))).perform(longClick());
+		onView(allOf(withText(R.string.share_selections))).perform(click());
+//		onData(scheduleByTitle(containsString("FOSDEM 2026"))).perform(scrollTo());
+
+		// No worky so far: Wanted to match 1 intents. Actually matched 0 intents.
+		// Timing issue maybe?
+//		Intents.intended(allOf(
+//				IntentMatchers.hasAction(android.content.Intent.ACTION_SEND),
+////				IntentMatchers.hasExtra(android.content.Intent.EXTRA_TEXT, Matchers.containsInRelativeOrder("ggt.gaa.st",  "&see=")),
+//				not(IntentMatchers.isInternal())
+//		));
 	}
 
 	// Probably delete this, was included by the recorder but I'm not actually using it anymore.

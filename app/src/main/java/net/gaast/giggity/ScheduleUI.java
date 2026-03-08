@@ -24,6 +24,8 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.zip.DeflaterOutputStream;
 
 import androidx.annotation.NonNull;
@@ -237,7 +239,7 @@ public class ScheduleUI extends Schedule {
 	}
 
 	public void initSearch() {
-		db.resetIndex(allItems.values());
+		db.resetIndex(allItems);
 	}
 
 	public AbstractList<Item> searchItems(String q_) {
@@ -249,7 +251,7 @@ public class ScheduleUI extends Schedule {
 		Log.d("searchItems", "" + ids.size() + " items");
 		for (String id : ids) {
 //			Log.d("searchItems", "id=" + id + " " + allItems.containsKey(id));
-			ret.add(allItems.get(id));
+			ret.add(itemsById.get(id));
 		}
 		return ret;
 	}
@@ -274,7 +276,7 @@ public class ScheduleUI extends Schedule {
 			// TODO: Replace with StandardCharsets.UTF_8 when I can because this shit is dumb.
 		}
 		JSONArray see = new JSONArray(), del = new JSONArray();
-		for (Item it : allItems.values()) {
+		for (Item it : allItems) {
 			if (it.getRemind()) {
 				String id = it.getId();
 				if (id.matches("^[1-9]+[0-9]*$")) {
@@ -311,5 +313,27 @@ public class ScheduleUI extends Schedule {
 			ret += "&del=" + Base64.encodeToString(out.toByteArray(), Base64.URL_SAFE | Base64.NO_PADDING | Base64.NO_WRAP);
 		}
 		return ret;
+	}
+
+	public void importReminders(Set<String> which, boolean overwrite) {
+		for (Schedule.Item item : allItems) {
+			if (which.contains(item.getGuid()) || which.contains(item.getId())) {
+				item.setRemind(true);
+			} else if (overwrite) {
+				item.setRemind(false);
+			}
+		}
+		commit();
+	}
+
+	public void importDeletions(Set<String> which, boolean overwrite) {
+		for (Schedule.Item item : allItems) {
+			if (which.contains(item.getGuid()) || which.contains(item.getId())) {
+				item.setHidden(true);
+			} else if (overwrite) {
+				item.setHidden(false);
+			}
+		}
+		commit();
 	}
 }

@@ -80,8 +80,8 @@ public class Schedule implements Serializable {
 	private String title;
 
 	private ArrayList<Schedule.Line> tents = new ArrayList<>();
-	protected HashMap<String,Schedule.Item> allItems = new HashMap<>();
-	protected HashMap<String,String> cIdMap = new HashMap<>();
+	protected HashMap<String,Schedule.Item> itemsById = new HashMap<>();
+	protected HashSet<Schedule.Item> allItems = new HashSet<>();
 	private Collator trackSort;
 	private SortedMap<String,Track> tracks;
 
@@ -145,7 +145,7 @@ public class Schedule implements Serializable {
 		if (title == null)
 			title = url;
 
-		if (allItems.size() == 0) {
+		if (itemsById.size() == 0) {
 			throw new LoadException(getString(R.string.schedule_empty));
 		}
 
@@ -160,7 +160,7 @@ public class Schedule implements Serializable {
 		dayList = new ArrayList<>();
 		while (day.isBefore(lastTime)) {
 			/* Some schedules have empty days in between. :-/ Skip those. */
-			for (Schedule.Item item : allItems.values()) {
+			for (Schedule.Item item : allItems) {
 				if (item.startTime.compareTo(day) >= 0 &&
 				    item.endTime.compareTo(dayEnd) <= 0) {
 					// Exact start time of day (could be "yesterday")
@@ -178,7 +178,7 @@ public class Schedule implements Serializable {
 		if (getTracks() != null && getTracks().size() == 1 &&
 		    getTracks().iterator().next().getItems().size() == allItems.size()) {
 			tracks.clear();
-			for (Item it : allItems.values()) {
+			for (Item it : allItems) {
 				it.track = null;
 			}
 		}
@@ -279,7 +279,7 @@ public class Schedule implements Serializable {
 			curDayEnd = curDay.plusDays(1);
 
 			dayFirstTime = dayLastTime = null;
-			for (Schedule.Item item : allItems.values()) {
+			for (Schedule.Item item : allItems) {
 				if (item.startTime.compareTo(curDay) >= 0 &&
 						item.endTime.compareTo(curDayEnd) <= 0) {
 					if (dayFirstTime == null || item.startTime.isBefore(dayFirstTime))
@@ -513,7 +513,7 @@ public class Schedule implements Serializable {
 
 	public void commit() {
 		Log.d("Schedule", "Saving all changes to the database");
-		for (Schedule.Item item : allItems.values()) {
+		for (Schedule.Item item : allItems) {
 			item.commit();
 		}
 	}
@@ -537,11 +537,7 @@ public class Schedule implements Serializable {
 	}
 	
 	public Item getItem(String id) {
-		return allItems.get(id);
-	}
-
-	public String getCId(String id) {
-		return cIdMap.get(id);
+		return itemsById.get(id);
 	}
 
 	public Collection<Track> getTracks() {
@@ -560,7 +556,7 @@ public class Schedule implements Serializable {
 
 	public ArrayList<Item> getByLanguage(String language) {
 		ArrayList<Item> ret = new ArrayList<>();
-		for (Item item : allItems.values()) {
+		for (Item item : allItems) {
 			if (item.getLanguage() != null && item.getLanguage().equals(language)) {
 				ret.add(item);
 			}
@@ -750,7 +746,7 @@ public class Schedule implements Serializable {
 					return;
 				}
 
-				item = new Schedule.Item(uid, name, startTime, endTime);
+				item = new Schedule.Item(uid, uid, name, startTime, endTime);
 				
 				if ((s = eventData.get("description")) != null) {
 					item.setDescription(s);
@@ -910,26 +906,12 @@ public class Schedule implements Serializable {
 				LocalTime rawTime = LocalTime.parse(durationS, tf);
 				endTime = startTime.plusHours(rawTime.getHour()).plusMinutes(rawTime.getMinute());
 
-				String cid = null;  // canonical ID. This file format has been, hm, evolving?
-				if (guid != null) {
-					cid = guid;
-					if (id != null) {
-						String prev = cIdMap.put(id, guid);
-						if (prev != null) {
-							Log.i("Schedule.loadPentabarf", "Schedule contains duplicate event id=" +
-									     id + " used by both guid=" + prev + " and guid=" + guid);
-						}
-					}
-				} else if (id != null) {
-					// FOSDEM still uses just these, as do a few others. :(
-					cid = id;
-					if (allItems.get(id) != null) {
-						Log.e("Schedule.loadPentabarf", "Schedule contains duplicate event id=" + id + ", and does NOT provide GUIDs for deduplication!");
-					}
+				if (guid != null && guid.equals(id)) {
+					id = null;
 				}
 
-				item = new Schedule.Item(cid, title, startTime, endTime);
-				
+				item = new Schedule.Item(guid, id, title, startTime, endTime);
+
 				if ((s = propMap.get("subtitle")) != null) {
 					if (!s.isEmpty())
 						item.setSubtitle(s);
@@ -1045,8 +1027,21 @@ public class Schedule implements Serializable {
 			item.setLine(this);
 			super.addItem(item);
 
-			/* The rest really should be in the caller, but there are several callsites, one per parser. TODO. */
-			allItems.put(item.getId(), item);
+			if (item.guid != null) {
+				Item prev = itemsById.put(item.guid, item);
+				if (prev != null) {
+					Log.i("Schedule.loadPentabarf", "Schedule contains duplicate event guid=" +
+							item.guid + " used by both " + prev.getTitle() + ", and by " + item.getTitle());
+				}
+			}
+			if (item.id != null) {
+				Item prev = itemsById.put(item.id, item);
+				if (prev != null) {
+					Log.i("Schedule.loadPentabarf", "Schedule contains duplicate event id=" +
+							item.id + " used by both guid=" + prev.getGuid() + " and guid=" + item.guid);
+				}
+			}
+			allItems.add(item);
 
 			if (firstTime == null || item.startTime.isBefore(firstTime))
 				firstTime = item.startTime;
@@ -1115,7 +1110,7 @@ public class Schedule implements Serializable {
 	}
 	
 	public class Item implements Comparable<Item>, Serializable {
-		private String id;
+		private String guid, id;
 		private Line line;
 		private String title, subtitle;
 		private Track track;
@@ -1130,7 +1125,8 @@ public class Schedule implements Serializable {
 		private boolean hidden;
 		private boolean newData;
 
-		Item(String id_, String title_, ZonedDateTime startTime_, ZonedDateTime endTime_) {
+		Item(String guid_, String id_, String title_, ZonedDateTime startTime_, ZonedDateTime endTime_) {
+			guid = guid_;
 			id = id_;
 			title = title_;
 			startTime = startTime_;
@@ -1197,12 +1193,30 @@ public class Schedule implements Serializable {
 			}
 		}
 		
-		public String getId() {
-			return id;
+		// Use this one most of the time, especially for internal use.
+		public String getGuid() {
+			if (guid != null) {
+				return guid;
+			} else {
+				return id;
+			}
 		}
-		
+
+		// This one for when a shorter ID is useful, for example in exported URLs etc.
+		public String getId() {
+			if (id != null) {
+				return id;
+			} else {
+				return guid;
+			}
+		}
+
+		public boolean hasId(String id) {
+			return id.equals(this.guid) || id.equals(this.id);
+		}
+
 		public String getUrl() {
-			return (getSchedule().getUrl() + "#" + getId()); 
+			return (getSchedule().getUrl() + "#" + getGuid());
 		}
 
 		public String getWebLink() {

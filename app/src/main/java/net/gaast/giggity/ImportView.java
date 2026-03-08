@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.zip.DeflaterInputStream;
+import java.util.zip.InflaterInputStream;
 
 import androidx.annotation.NonNull;
 
@@ -39,8 +39,7 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 	public ImportView(Context ctx, Schedule sched, String url) {
 		super(ctx);
 		this.sched = sched;
-		// TODO: Is it OK to do these things here? It's not how I used to do it..
-		sched.setDay(-1);
+		// Override user preference this one time, in case some imported deletions already match ours.
 		sched.setShowHidden(true);
 
 		parseExportLink(url);
@@ -48,7 +47,7 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 	}
 
 	private void parseExportLink(String url) {
-		Uri uri = Uri.parse(url.replace("#", "?"));
+		Uri uri = Uri.parse(url.replaceFirst("#", "?"));
 		toSee.addAll(decodeParam(uri.getQueryParameter("see")));
 		toHide.addAll(decodeParam(uri.getQueryParameter("del")));
 	}
@@ -60,7 +59,7 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 		try {
 			byte[] compressed = Base64.decode(param, Base64.URL_SAFE | Base64.NO_PADDING);
 			ByteArrayInputStream bis = new ByteArrayInputStream(compressed);
-			DeflaterInputStream gis = new DeflaterInputStream(bis);
+			InflaterInputStream gis = new InflaterInputStream(bis);
 			String jsonString = IOUtils.toString(gis, StandardCharsets.UTF_8);
 
 			// 3. Parse JSON Array
@@ -89,10 +88,10 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 
 		for (Schedule.Line tent : sched.getTents()) {
 			for (Schedule.Item item : tent.getItems()) {
-				if (toSee.contains(item.getId())) {
+				if (toSee.contains(item.getGuid()) || toSee.contains(item.getId())) {
 					coming.add(item);
 				}
-				if (toHide.contains(item.getId())) {
+				if (toHide.contains(item.getGuid()) || toHide.contains(item.getId())) {
 					hiding.add(item);
 				}
 			}
@@ -135,10 +134,12 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 				DialogInterface.OnClickListener l = new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int btn) {
-						if (btn == DialogInterface.BUTTON_NEGATIVE) {
-							applyImport(which, true);
-						} else if (btn == DialogInterface.BUTTON_POSITIVE) {
-							applyImport(which, false);
+						if (btn == DialogInterface.BUTTON_NEUTRAL) {
+							//
+						} else if (which == toSee) {
+							((ScheduleUI)sched).importReminders(which, btn == DialogInterface.BUTTON_NEGATIVE);
+						} else if (which == toHide) {
+							((ScheduleUI)sched).importDeletions(which, btn == DialogInterface.BUTTON_NEGATIVE);
 						}
 					}
 				};
@@ -154,32 +155,5 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 	@Override
 	public boolean multiDay() {
 		return true;
-	}
-
-	public void applyImport(Set<String> which, boolean overwrite) {
-		if (which == toSee) {
-			for (Schedule.Line tent : sched.getTents()) {
-				for (Schedule.Item item : tent.getItems()) {
-					if (toSee.contains(item.getId())) {
-						item.setRemind(true);
-					} else if (overwrite) {
-						item.setRemind(false);
-					}
-				}
-			}
-		} else if (which == toHide) {
-			for (Schedule.Line tent : sched.getTents()) {
-				for (Schedule.Item item : tent.getItems()) {
-					if (toHide.contains(item.getId())) {
-						item.setHidden(true);
-					} else if (overwrite) {
-						item.setHidden(false);
-					}
-				}
-			}
-		} else {
-			throw new Error("Java is weird");
-		}
-		sched.commit();
 	}
 }

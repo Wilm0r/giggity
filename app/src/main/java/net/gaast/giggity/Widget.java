@@ -40,7 +40,7 @@ public class Widget extends AppWidgetProvider {
 		for (Schedule.Item item : app.getRemindItems()) {
 			if (show_item != null) {
 				if (item.getSchedule() == show_item.getSchedule()) {
-					others.add(item.getId());
+					others.add(item.getGuid());
 				}
 			} else if (item.getStartTime().after(new Date())) {
 				Format df;
@@ -53,7 +53,7 @@ public class Widget extends AppWidgetProvider {
 					df = new SimpleDateFormat(ctx.getResources().getString(R.string.widg_shortdate));
 
 				show_item = item;
-				others.add(item.getId());
+				others.add(item.getGuid());
 				time = df.format(item.getStartTime());
 				title = item.getTitle();
 				room = item.getLine().getTitle();

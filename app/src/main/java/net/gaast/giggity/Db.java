@@ -21,12 +21,10 @@ package net.gaast.giggity;
 
 import android.app.Application;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
@@ -591,26 +589,16 @@ public class Db extends SQLiteOpenHelper {
 				String id = q.getString(1);
 				Schedule.Item item = sched.getItem(id);
 				if (item == null) {
-					String cId = sched.getCId(id);
-					if (cId != null) {
-						Log.i("DeoxideDb", "Db has info for stale id=" + id + ", replacing with cId=" + cId);
-						sciIdMap.put(cId, (long) q.getInt(0));
-						item = sched.getItem(cId);
-						if (item == null) {
-							Log.e("DeoxideDb", "... except even that ID seems to be missing? That's probably a Giggity bug :(");
-							continue;
-						}
-					} else {
-						/* ZOMGWTF D: */
-						Log.e("DeoxideDb", "Db has info about missing schedule item id=" +
-								                   id + " remind=" + q.getInt(2) + " stars=" + q.getInt(4) + " hidden=" + q.getInt(3));
-						continue;
-					}
+					/* ZOMGWTF D: */
+					Log.e("DeoxideDb", "Db has info about missing schedule item id=" +
+											   id + " remind=" + q.getInt(2) + " stars=" + q.getInt(4) + " hidden=" + q.getInt(3));
+					continue;
 				}
 
 				item.setRemind(q.getInt(2) != 0);
 				item.setHidden(q.getInt(3) != 0);
-				sciIdMap.put(id, (long) q.getInt(0));
+				sciIdMap.put(item.getGuid(), (long) q.getInt(0));
+				sciIdMap.put(item.getId(), (long) q.getInt(0));
 			}
 			q.close();
 		}
@@ -624,7 +612,7 @@ public class Db extends SQLiteOpenHelper {
 			                   " hidden " + row.getAsString("sci_hidden"));
 
 			SQLiteDatabase db = getWritableDatabase();
-			Long sciId = sciIdMap.get(item.getId());
+			Long sciId = sciIdMap.get(item.getGuid());
 			db.update("schedule_item", row, "sci_id = " + sciId, null);
 		}
 
@@ -762,7 +750,7 @@ public class Db extends SQLiteOpenHelper {
 			for (Schedule.Item item : items) {
 				row.clear();
 				row.put("sch_id", schId);
-				row.put("sci_id_s", item.getId());
+				row.put("sci_id_s", item.getGuid());
 				row.put("title", item.getTitle());
 				row.put("subtitle", item.getSubtitle());
 				row.put("description", item.getDescriptionStripped());

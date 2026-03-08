@@ -67,7 +67,7 @@ public class Reminder {
 		ArrayList<String> others = new ArrayList<>();
 		for (Schedule.Item it : app.getRemindItems()) {
 			if (it.getSchedule() == item.getSchedule()) {
-				others.add(it.getId());
+				others.add(it.getGuid());
 			}
 		}
 		evi.putExtra("others", others.toArray(new String[others.size()]));

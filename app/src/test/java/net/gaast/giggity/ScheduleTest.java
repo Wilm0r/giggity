@@ -196,8 +196,12 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.getTracks(), hasSize(30));
 
 		assertThat(s.getLanguages(), hasSize(4));
-		assertThat(s.getByLanguage("German"), hasSize(551));
-		assertThat(s.getByLanguage("English"), hasSize(676));
+		// Turns out there are 3 duplicate GUIDs in this schedule BTW, for example
+		// 4f5c1cc5-ad99-52dc-89cd-699eae66bcb8 and bf48fa55-92a1-5481-a14a-f77cc0d4fccb
+		// Depending on how one iterates over the schedule they might or might not all
+		// show up, but getByLanguage() really will find them all.
+		assertThat(s.getByLanguage("German"), hasSize(553));
+		assertThat(s.getByLanguage("English"), hasSize(677));
 		// O_o
 		assertThat(s.getByLanguage("Abkhazian"), hasSize(1));
 		assertThat(s.getByLanguage("Czech"), hasSize(1));
@@ -223,8 +227,10 @@ public class ScheduleTest extends TestCase {
 		assertThat(track.getTitle(), is("self organized sessions"));
 		assertThat(track.getLine(), nullValue());
 
-		assertThat(s.getCId("1230"), equalTo("017b6087-ac16-4968-8beb-051596720f24"));
-		assertThat(s.getCId("893"), equalTo("4c1d5810-e052-539d-ac78-a4ea395b24cc"));
+		assertThat(s.getItem("1230").getGuid(), equalTo("017b6087-ac16-4968-8beb-051596720f24"));
+		assertThat(s.getItem("893").getGuid(), equalTo("4c1d5810-e052-539d-ac78-a4ea395b24cc"));
+		assertThat(s.getItem("017b6087-ac16-4968-8beb-051596720f24").getId(), equalTo("1230"));
+		assertThat(s.getItem("4c1d5810-e052-539d-ac78-a4ea395b24cc").getId(), equalTo("893"));
 
 		if (tz_.equals("America/New_York"))
 			assertThat(s.getTzDiff(), equalTo(  6.0));
