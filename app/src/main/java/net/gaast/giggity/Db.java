@@ -66,7 +66,7 @@ public class Db extends SQLiteOpenHelper {
 	// This class is instantiated once at startup time and does all the usual stuff done by an
 	// OpenHelper. A "Connection" (weirdly named, yep) subclass is used for every db r/w operation.
 	private Giggity app;
-	private static final int dbVersion = 20;
+	private static final int dbVersion = 21;
 	private int oldDbVer = dbVersion;
 	private SharedPreferences pref;
 
@@ -114,7 +114,7 @@ public class Db extends SQLiteOpenHelper {
 											   "sci_hidden Boolean, " +
 											   "sci_stars Integer(2) Null)");
 		db.execSQL("Create Virtual Table item_search Using FTS4" +
-				   "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+				   "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track, tokenize=unicode61)");
 		db.execSQL("Create Table search_history (hst_id Integer Primary Key AutoIncrement Not Null, " +
 				   "hst_query VarChar(128), " +
 				   "hst_atime Integer)");
@@ -217,12 +217,11 @@ public class Db extends SQLiteOpenHelper {
 			}
 		}
 
-		if (oldVersion < 18) {
-			/* Full-text search! FTS4 doesn't exactly do Alter Table anyway so don't try. */
+		if (oldVersion < 21) {
 			try {
 				db.execSQL("Drop Table If Exists item_search");
 				db.execSQL("Create Virtual Table item_search Using FTS4" +
-								   "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)");
+								   "(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track, tokenize=unicode61)");
 
 				// We've just recreated the search index table, so flush all indexing timestamps
 				// that have now become lies.
