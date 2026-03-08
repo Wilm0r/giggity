@@ -1,11 +1,10 @@
 package net.gaast.giggity;
 
-import android.Manifest;
-import android.os.Build;
+import android.app.Activity;
+import android.app.Instrumentation;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.widget.LinearLayout;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -21,16 +20,14 @@ import org.junit.runner.RunWith;
 import java.nio.charset.StandardCharsets;
 
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.idling.CountingIdlingResource;
-import androidx.test.espresso.intent.Intents;
-import androidx.test.espresso.intent.matcher.IntentMatchers;
-import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -39,12 +36,12 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.longClick;
 import static androidx.test.espresso.action.ViewActions.replaceText;
-import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intending;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -52,7 +49,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParentIndex;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
-import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
@@ -65,8 +61,12 @@ import static org.hamcrest.Matchers.startsWith;
 public class Spresso {
 
 	@Rule
-	public ActivityScenarioRule<ChooserActivity> mActivityScenarioRule =
-			new ActivityScenarioRule<>(ChooserActivity.class);
+	public IntentsTestRule<ChooserActivity> mActivityRule = new IntentsTestRule<>(
+			ChooserActivity.class);
+
+	@Rule
+	public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(
+			"android.permission.POST_NOTIFICATIONS");
 
 	private static Matcher scheduleByTitle(Matcher nameMatcher){
 		return new TypeSafeMatcher<Db.DbSchedule>(){
@@ -98,21 +98,11 @@ public class Spresso {
 
 	@Before
 	public void setUp() {
-		Intents.init();
-
-		if (Build.VERSION.SDK_INT >= 30) {
-			// (Weirdly docs claim API version 23 should already support this, yet my API 26 VM does not..)
-			try {
-				getInstrumentation().getUiAutomation().grantRuntimePermission(
-				BuildConfig.APPLICATION_ID, Manifest.permission.POST_NOTIFICATIONS);
-			} catch (SecurityException e) {
-			}  // If we can't get it we probably don't yet need it?
-		}
+		intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
 	}
 
 	@After
 	public void tearDown() {
-		Intents.release();
 	}
 
 	@Test
@@ -236,7 +226,7 @@ public class Spresso {
 //		Intents.intended(allOf(
 //				IntentMatchers.hasAction(android.content.Intent.ACTION_SEND),
 ////				IntentMatchers.hasExtra(android.content.Intent.EXTRA_TEXT, Matchers.containsInRelativeOrder("ggt.gaa.st",  "&see=")),
-//				not(IntentMatchers.isInternal())
+//				not(isInternal())
 //		));
 	}
 

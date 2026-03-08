@@ -56,7 +56,7 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest:2.2'
     testImplementation 'org.json:json:20230227'
 
-    final def espresso_version = "3.6.1"
+    final def espresso_version = "3.7.0"
     implementation "androidx.test.espresso:espresso-idling-resource:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$espresso_version"
