@@ -5,12 +5,14 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.widget.LinearLayout;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -19,6 +21,7 @@ import org.junit.runner.RunWith;
 import java.nio.charset.StandardCharsets;
 
 import androidx.test.core.app.ApplicationProvider;
+import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
@@ -40,12 +43,14 @@ import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withParentIndex;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.Matchers.allOf;
@@ -94,6 +99,15 @@ public class Spresso {
 	@Before
 	public void setUp() {
 		Intents.init();
+
+		if (Build.VERSION.SDK_INT >= 30) {
+			// (Weirdly docs claim API version 23 should already support this, yet my API 26 VM does not..)
+			try {
+				getInstrumentation().getUiAutomation().grantRuntimePermission(
+				BuildConfig.APPLICATION_ID, Manifest.permission.POST_NOTIFICATIONS);
+			} catch (SecurityException e) {
+			}  // If we can't get it we probably don't yet need it?
+		}
 	}
 
 	@After
@@ -103,15 +117,6 @@ public class Spresso {
 
 	@Test
 	public void testBasicNav() {
-		if (Build.VERSION.SDK_INT >= 30) {
-			// (Weirdly docs claim API version 23 should already support this, yet my API 26 VM does not..)
-			try {
-				getInstrumentation().getUiAutomation().grantRuntimePermission(
-				BuildConfig.APPLICATION_ID, Manifest.permission.POST_NOTIFICATIONS);
-			} catch (SecurityException e) {
-			}  // If we can't get it we probably don't yet need it?
-		}
-
 		// I wrote this test in '23 when this schedule was near the top of the list. Of course by
 		// now it isn't in the list anymore at all by default, so add it.
 		Giggity context = ApplicationProvider.getApplicationContext();
@@ -233,6 +238,53 @@ public class Spresso {
 ////				IntentMatchers.hasExtra(android.content.Intent.EXTRA_TEXT, Matchers.containsInRelativeOrder("ggt.gaa.st",  "&see=")),
 //				not(IntentMatchers.isInternal())
 //		));
+	}
+
+	@Test
+	public void testDeepLinkWithImport() {
+		// Arguments are long because they're still using full guid's.
+		String deepLink = "https://ggt.gaa.st/#url=https%3A%2F%2Ffosdem.org%2F2026%2Fschedule%2Fxml&see=eJwVjMENQyEMxXbh3CdBXlLILFUP-YTsP0LpyQdb_jRaz_lkIYQHJk6stxbmqHiSOTy8vZqWbU8O0CmwUwbfx6FTyq9bdfo_61WVMZBGwlIFd0KEXsji7p7t-wMj1h7f&del=eJyLVkoySzazMDOz0DU3TzbVNU00TdS1NDUx1LU0SU1JTTEyNbJMslCKBQDOEAou";
+		android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(deepLink));
+		intent.setClass(ApplicationProvider.getApplicationContext(), ScheduleViewActivity.class);
+
+		CountingIdlingResource loaders = new CountingIdlingResource("deepLinkLoaders");
+		ScheduleViewActivity.setIdler(loaders);
+		Espresso.registerIdlingResources(loaders);
+
+		androidx.test.core.app.ActivityScenario.launch(intent);
+
+		onView(withClassName(is("net.gaast.giggity.ImportView")))
+		.check(matches(isDisplayed()));
+
+		onView(withText(R.string.reminders)).check(matches(isDisplayed()));
+		onView(withText(R.string.hidden)).check(matches(isDisplayed()));
+
+		// I wish there were a "click on the n'th *match*" matcher but it seems not.
+		onView(Matchers.allOf(withText(R.string.import_all), isDisplayed(), isDescendantOfA(withParentIndex(4))))
+		.perform(click());
+
+		Giggity context = ApplicationProvider.getApplicationContext();
+		ScheduleUI s = context.getSchedule("https://fosdem.org/2026/schedule/xml", Fetcher.Source.CACHE_ONLY, null);
+		Assert.assertEquals("https://ggt.gaa.st/#url=https%3A%2F%2Ffosdem.org%2F2026%2Fschedule%2Fxml", s.exportLink());
+
+		onView(Matchers.allOf(withText(R.string.overwrite), isDisplayed()))
+		.perform(click());
+
+		// Can't do an exact match because I don't think the order will be deterministic. :(
+		Assert.assertNotEquals("https://ggt.gaa.st/#url=https%3A%2F%2Ffosdem.org%2F2026%2Fschedule%2Fxml", s.exportLink());
+
+		int num = 0;
+		for (Schedule.Line line : s.getTents()) {
+			for (Schedule.Item it : line.getItems()) {
+				if (it.getRemind()) {
+					onData(scheduleItemByTitle(startsWith(it.getTitle()))).inAdapterView(withClassName(is("net.gaast.giggity.ImportView"))).check(matches(isDisplayed()));
+					num++;
+				}
+			}
+		}
+		Assert.assertEquals(3, num);
+
+		Espresso.unregisterIdlingResources(loaders);
 	}
 
 	// Probably delete this, was included by the recorder but I'm not actually using it anymore.
