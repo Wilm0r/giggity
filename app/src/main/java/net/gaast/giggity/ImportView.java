@@ -79,7 +79,6 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 		return ids;
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public void refreshContents() {
 		ArrayList fullList = new ArrayList();
