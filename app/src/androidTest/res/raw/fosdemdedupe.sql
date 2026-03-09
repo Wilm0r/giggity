@@ -1,4 +1,4 @@
-PRAGMA user_version=20;
+PRAGMA user_version=21;
 PRAGMA foreign_keys=OFF;
 BEGIN TRANSACTION;
 CREATE TABLE android_metadata (locale TEXT);
@@ -21,8 +21,8 @@ INSERT INTO schedule_item VALUES(11,59,'c7a83873-8b82-57aa-afa4-6c3853c11855',1,
 INSERT INTO schedule_item VALUES(12,59,'9ec7eb3b-e0c3-58e4-9bc3-27a47dc8e93d',1,0,NULL);
 INSERT INTO schedule_item VALUES(13,59,'4519970c-00d4-5fc2-9f99-5e436da0ae1f',1,0,NULL);
 INSERT INTO schedule_item VALUES(14,59,'8f9d02af-8e5e-5cd3-a5ac-cd0aa3a88912',1,0,NULL);
-PRAGMA writable_schema=ON;
-INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)VALUES('table','item_search','item_search',0,'CREATE VIRTUAL TABLE item_search Using FTS4(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)');
+CREATE VIRTUAL TABLE item_search Using FTS4(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track, tokenize=unicode61)
+/* item_search(sch_id,sci_id_s,title,subtitle,description,speakers,track) */;
 CREATE TABLE IF NOT EXISTS 'item_search_content'(docid INTEGER PRIMARY KEY, 'c0sch_id', 'c1sci_id_s', 'c2title', 'c3subtitle', 'c4description', 'c5speakers', 'c6track');
 CREATE TABLE IF NOT EXISTS 'item_search_segments'(blockid INTEGER PRIMARY KEY, block BLOB);
 CREATE TABLE IF NOT EXISTS 'item_search_segdir'(level INTEGER,idx INTEGER,start_block INTEGER,leaves_end_block INTEGER,end_block INTEGER,root BLOB,PRIMARY KEY(level, idx));

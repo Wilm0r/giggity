@@ -20,8 +20,8 @@ INSERT INTO schedule VALUES(13,'SFScon 2021','https://www.sfscon.it/?calendar=20
 INSERT INTO schedule VALUES(14,'rC3: NOWHERE - 2021','https://static.rc3.world/schedule/everything.xml',1640624400,NULL,NULL,1800,1640624400,1640883600,'Europe/Berlin',NULL,'{"links":[{"title":"Links","url":"https:\/\/links.rc3.world\/"},{"title":"Live-streams","url":"https:\/\/streaming.media.ccc.de\/rc3\/"},{"title":"rC3 World","url":"https:\/\/rc3.world\/2021\/"},{"title":"Weblog","url":"https:\/\/events.ccc.de\/"}]}',NULL);
 INSERT INTO schedule VALUES(15,'FOSDEM 2022','https://fosdem.org/2022/schedule/xml',1644080400,NULL,NULL,1800,1644080400,1644166800,'Europe/Brussels',NULL,'{"links":[{"url":"https:\/\/fosdem.org\/2022\/","title":"Website"},{"url":"https:\/\/volunteers.fosdem.org\/faq\/","title":"Volunteer"},{"url":"https:\/\/fosdem.org\/2022\/stands\/","title":"Stands"}],"icon":"https:\/\/archive.fosdem.org\/2018\/assets\/style\/logo-gear-7204a6874eb0128932db10ff4030910401ac06f4e907f8b4a40da24ba592b252.png"}',NULL);
 CREATE TABLE schedule_item (sci_id Integer Primary Key AutoIncrement Not Null, sci_sch_id Integer Not Null, sci_id_s VarChar(128), sci_remind Boolean, sci_hidden Boolean, sci_stars Integer(2) Null);
-PRAGMA writable_schema=ON;
-INSERT INTO sqlite_master(type,name,tbl_name,rootpage,sql)VALUES('table','item_search','item_search',0,'CREATE VIRTUAL TABLE item_search Using FTS4(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)');
+CREATE VIRTUAL TABLE item_search Using FTS4(sch_id Unindexed, sci_id_s Unindexed, title, subtitle, description, speakers, track)
+/* item_search(sch_id,sci_id_s,title,subtitle,description,speakers,track) */;
 CREATE TABLE IF NOT EXISTS 'item_search_content'(docid INTEGER PRIMARY KEY, 'c0sch_id', 'c1sci_id_s', 'c2title', 'c3subtitle', 'c4description', 'c5speakers', 'c6track');
 CREATE TABLE IF NOT EXISTS 'item_search_segments'(blockid INTEGER PRIMARY KEY, block BLOB);
 CREATE TABLE IF NOT EXISTS 'item_search_segdir'(level INTEGER,idx INTEGER,start_block INTEGER,leaves_end_block INTEGER,end_block INTEGER,root BLOB,PRIMARY KEY(level, idx));
