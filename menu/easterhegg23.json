@@ -1,0 +1,20 @@
+{
+	"version": 2026030900,
+	"url": "https://pretalx.eh23.easterhegg.eu/eh23/schedule/export/schedule.xml",
+	"title": "Easterhegg 23",
+	"start": "2026-04-03",
+	"end": "2026-04-06",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://eh23.easterhegg.eu/",
+				"title": "Website"
+			},
+			{
+				"url": "https://engel.eh23.easterhegg.eu/",
+				"title": "Engelsystem"
+			}
+		]
+	}
+}
