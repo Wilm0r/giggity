@@ -237,11 +237,13 @@ public class NestedScroller extends HorizontalScrollView {
 	public void setInitialXY(int x, int y) {
 		if (initialX == -1) {
 			// OK maybe we were called late, in which case let's just scroll directly.
+			Log.d("NestedScroller", "initial race missed? " + x + "," + y);
 			setScrollX(x);
 			vscroll.setScrollY(y);
+		} else {
+			initialX = x;
+			initialY = y;
 		}
-		initialX = x;
-		initialY = y;
 	}
 
 	@Override
@@ -255,8 +257,8 @@ public class NestedScroller extends HorizontalScrollView {
 		if (initialX > 0 || initialY > 0) {
 			Log.d("NestedScroller", "initial: " + initialX + "," + initialY);
 			scrollTo(initialX, initialY);
-			initialX = initialY = 0;
 		}
+		initialX = initialY = -1;
 	}
 
 	public interface Listener {
