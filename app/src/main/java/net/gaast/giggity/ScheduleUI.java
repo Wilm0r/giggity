@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
 import androidx.annotation.NonNull;
@@ -296,7 +297,7 @@ public class ScheduleUI extends Schedule {
 		}
 		if (see.length() > 0) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try (DeflaterOutputStream gz = new DeflaterOutputStream(out)) {
+			try (DeflaterOutputStream gz = new DeflaterOutputStream(out, new Deflater(Deflater.BEST_COMPRESSION))) {
 				gz.write(see.toString().getBytes(StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				// It's a string you muppet
@@ -305,7 +306,7 @@ public class ScheduleUI extends Schedule {
 		}
 		if (del.length() > 0) {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			try (DeflaterOutputStream gz = new DeflaterOutputStream(out)) {
+			try (DeflaterOutputStream gz = new DeflaterOutputStream(out, new Deflater(Deflater.BEST_COMPRESSION))) {
 				gz.write(del.toString().getBytes(StandardCharsets.UTF_8));
 			} catch (IOException e) {
 				// It's a string you muppet
