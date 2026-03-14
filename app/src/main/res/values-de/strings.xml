@@ -8,6 +8,9 @@
 	<string name="settings">Einstellungen</string>
 	<string name="default_view">Standardansicht</string>
 	<string name="font_size">Schriftgröße bei der Programmübersicht</string>
+	<string name="block_schedule_show_track">Track- statt Raumname anzeigen</string>
+	<string name="block_schedule_show_track_yes">Tracknamen anzeigen wenn eindeutig</string>
+	<string name="block_schedule_show_track_no">Immer Raumname anzeigen</string>
 	<string name="block_schedule">Programmübersicht</string>
 	<!-- Reminder / Notification Logic -->
 	<string name="reminder">Veranstaltungserinnerungen</string>

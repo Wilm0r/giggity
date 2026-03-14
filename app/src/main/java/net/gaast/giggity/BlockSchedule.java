@@ -192,7 +192,12 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			head.setHeight(TentHeight);
 			head.setWidth(TentWidth);
 			head.setGravity(Gravity.CENTER_HORIZONTAL);
-			head.setText(tent.getTitle());
+			if (pref.getBoolean("block_schedule_show_track", false)) {
+				Schedule.Track track = tent.getTrack();
+				head.setText(track != null ? track.getTitle() : tent.getTitle());
+			} else {
+				head.setText(tent.getTitle());
+			}
 			head.setTextSize(fontSizeSmall);
 			head.setBackgroundColor(c.tentbg[y&1]);
 			head.setTextColor(c.tentfg[y&1]);

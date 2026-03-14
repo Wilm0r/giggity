@@ -12,6 +12,9 @@
 	<string name="block_schedule_vertical">Vertical block schedule</string>
 	<string name="block_schedule_vertical_yes">Time goes downward</string>
 	<string name="block_schedule_vertical_no">Time goes to the right</string>
+	<string name="block_schedule_show_track">Prefer track names over room names</string>
+	<string name="block_schedule_show_track_yes">Show track name when unambiguous</string>
+	<string name="block_schedule_show_track_no">Always show room name</string>
 	<string name="block_schedule">Block schedule</string>
 
 	<!-- Reminder / Notification Logic -->

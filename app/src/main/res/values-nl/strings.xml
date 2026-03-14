@@ -11,6 +11,9 @@
 	<string name="block_schedule_vertical">Verticaal blokkenschema</string>
 	<string name="block_schedule_vertical_yes">Tijd loopt naar beneden</string>
 	<string name="block_schedule_vertical_no">Tijd loopt naar rechts</string>
+	<string name="block_schedule_show_track">Thema i.p.v. naam van zaal weergeven</string>
+	<string name="block_schedule_show_track_yes">Toon thema (wanneer eenduidig)</string>
+	<string name="block_schedule_show_track_no">Altijd zaal weergeven</string>
 	<string name="block_schedule">Blokkenschema</string>
 	<!-- Reminder / Notification Logic -->
 	<string name="reminder">Herinneringen</string>

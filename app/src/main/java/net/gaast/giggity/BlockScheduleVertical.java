@@ -195,7 +195,12 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 //			head.setHeight(HourHeight);
 			head.setWidth(TentSize);
 			head.setGravity(Gravity.CENTER_HORIZONTAL);
-			head.setText(tent.getTitle());
+			if (pref.getBoolean("block_schedule_show_track", false)) {
+				Schedule.Track track = tent.getTrack();
+				head.setText(track != null ? track.getTitle() : tent.getTitle());
+			} else {
+				head.setText(tent.getTitle());
+			}
 			head.setMaxLines(2);
 			head.setTextSize(fontSizeSmall);
 			head.setBackgroundColor(c.tentbg[x&1]);
