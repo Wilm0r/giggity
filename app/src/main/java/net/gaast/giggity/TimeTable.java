@@ -40,12 +40,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
-/* Wrapper around ScheduleListView that adds the improvised tabs with room names below action bar. */
 public class TimeTable extends LinearLayout implements ScheduleViewer {
 	private Giggity app;
 	private Activity ctx;
 	
-	private Gallery groupSel;
 	private OnItemSelectedListener groupSelL;
 	private ScheduleListView scroller;
 	
@@ -65,17 +63,6 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 
 		RelativeLayout.LayoutParams lp;
 
-		/* Wannabe Material-style tabs. Gallery's deprecated but I don't like the replacements
-		   all that much. This works, just looks a little different (alpha instead of a thick
-		   underline indicating current tab). */
-		groupSel = new Gallery(ctx);
-		groupSel.setAdapter(new GroupListAdapter());
-		groupSel.setSpacing(0);
-		groupSel.setBackgroundResource(R.color.primary);
-		app.setShadow(groupSel, true);
-		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		addView(groupSel, lp);
-
 		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
 		scroller.setHideEndtime(true);
@@ -86,63 +73,19 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		addView(scroller, lp);
 
-		/* Set up some navigation listeners. */
-		groupSelL = new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parent, View view,
-					int position, long id) {
-				int to;
-				for (to = 0; to < scroller.getCount(); to++) {
-					try {
-						if (revGroups.get(scroller.getList().get(to)) == groups.get(position)) {
-							scroller.setSelection(to - 1);
-							break;
-						}
-					} catch (ClassCastException e) {
-						/* Title */
-					}
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> arg0) {
-			}
-		};
-		groupSel.setOnItemSelectedListener(groupSelL);
-		
 		scroller.setOnScrollListener(new OnScrollListener() {
-			private boolean scrolling = false;
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+			}
 
 			@Override
 			public void onScroll(AbsListView v, int first, int visible, int total) {
 				ScheduleViewActivity.onScroll(ctx);
-				if (!scrolling)
-					return;
 				/* Find the first real item currently on-screen. */
 				while (scroller.getList().get(first).getClass() != Schedule.Item.class && first < total)
 					first++;
 				if (first == total)
 					return; /* Hmm. Just titles, no events? */
-				int to;
-				for (to = 0; to < groups.size(); to ++)
-					if (revGroups.get(scroller.getList().get(first)) == groups.get(to)) {
-						groupSel.setSelection(to);
-					}
-			}
-
-			/* This function is supposed to kill feedback loops between the 
-			 * gallery and the scroller, in both directions, by disabling
-			 * this listener when we're not manually scrolling, and the
-			 * other one when we are. */
-			@Override
-			public void onScrollStateChanged(AbsListView v, int scrollState) {
-				/* Disable this listener while scrolling to avoid the feedback loop. */
-				if (scrollState == OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-					groupSel.setOnItemSelectedListener(null);
-				else if (scrollState == OnScrollListener.SCROLL_STATE_IDLE)
-					groupSel.setOnItemSelectedListener(groupSelL);
-				
-				scrolling = scrollState != OnScrollListener.SCROLL_STATE_IDLE;
 			}
 		});
 	}
@@ -215,36 +158,6 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		}
 
 		return ret;
-	}
-	
-	private class GroupListAdapter extends BaseAdapter {
-		@Override
-		public int getCount() {
-			return groups.size();
-		}
-
-		@Override
-		public Object getItem(int position) {
-			return groups.get(position);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
-			TextView ret = new TextView(ctx);
-
-			ret.setText(groups.get(position).getTitle().toUpperCase());
-			ret.setBackgroundResource(R.color.primary);
-			ret.setTextColor(getResources().getColor(android.R.color.white));
-			ret.setTextSize(14);
-			app.setPadding(ret, 10, 4, 10, 10);
-
-			return ret;
-		}
 	}
 
 	@Override
