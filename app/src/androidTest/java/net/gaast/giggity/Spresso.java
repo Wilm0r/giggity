@@ -2,6 +2,7 @@ package net.gaast.giggity;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -15,6 +16,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
 import java.nio.charset.StandardCharsets;
@@ -65,8 +67,10 @@ public class Spresso {
 			ChooserActivity.class);
 
 	@Rule
-	public GrantPermissionRule grantPermissionRule = GrantPermissionRule.grant(
-			"android.permission.POST_NOTIFICATIONS");
+	public TestRule grantPermissionRule =
+		Build.VERSION.SDK_INT >= 33
+			? GrantPermissionRule.grant("android.permission.POST_NOTIFICATIONS")
+			: (base, description) -> base;
 
 	private static Matcher scheduleByTitle(Matcher nameMatcher){
 		return new TypeSafeMatcher<Db.DbSchedule>(){
