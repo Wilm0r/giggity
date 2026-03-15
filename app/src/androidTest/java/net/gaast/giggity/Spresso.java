@@ -19,6 +19,8 @@ import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
+import android.preference.PreferenceManager;
+
 import java.nio.charset.StandardCharsets;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -277,6 +279,48 @@ public class Spresso {
 			}
 		}
 		Assert.assertEquals(3, num);
+
+		Espresso.unregisterIdlingResources(loaders);
+	}
+
+	// Pretty simple test just to make sure the render code still runs without crashing, and that
+	// toggle to vertical mode works as expected.
+	@Test
+	public void testBlockSchedule() throws InterruptedException {
+		Giggity context = ApplicationProvider.getApplicationContext();
+		context.getDb().updateRawSchedule("{\"id\": \"debconf23\", \"version\": 2023090301, \"url\": \"https://debconf23.debconf.org/schedule/pentabarf.xml\", \"title\": \"DebConf 23\", \"start\": \"2023-09-10\", \"end\": \"2023-09-17\", \"timezone\": \"Asia/Kolkata\", \"metadata\": {\"icon\": \"https://debconf23.debconf.org/static/img/favicon/favicon-128-rgba.png\"}}".getBytes(StandardCharsets.UTF_8));
+
+		// Ensure horizontal mode so we can test the toggle.
+		PreferenceManager.getDefaultSharedPreferences(context).edit()
+				.putBoolean("block_schedule_vertical", false)
+				.apply();
+
+		onView(withClassName(containsString("SwipeRefreshLayout"))).perform(swipeDown());
+		onView(withClassName(containsString("SwipeRefreshLayout"))).perform(swipeDown());
+
+		CountingIdlingResource loaders = new CountingIdlingResource("blockScheduleLoaders");
+		ScheduleViewActivity.setIdler(loaders);
+		Espresso.registerIdlingResources(loaders);
+
+		onData(scheduleByTitle(containsString("DebConf 23"))).perform(click());
+
+		// Navigate to block schedule via the drawer. setScheduleView() calls days.show() so
+		// the transpose button should be visible immediately.
+		onView(withId(R.id.drawerLayout)).perform(DrawerActions.open());
+		onView(withId(R.id.drawerScroll)).perform(swipeDown());
+		onView(allOf(withId(R.id.block_schedule), withText(R.string.block_schedule))).perform(click());
+
+		onView(withClassName(is("net.gaast.giggity.BlockSchedule"))).check(matches(isDisplayed()));
+		onView(withId(R.id.transpose)).check(matches(isDisplayed()));
+
+		// Tap transpose: switches to vertical and resets the 2s hide timer.
+		onView(withId(R.id.transpose)).perform(click());
+		onView(withClassName(is("net.gaast.giggity.BlockScheduleVertical"))).check(matches(isDisplayed()));
+		onView(withId(R.id.transpose)).check(matches(isDisplayed()));
+
+		// After the hide delay (2000ms in DayButtonsHider), the button container goes INVISIBLE.
+		Thread.sleep(2500);
+		onView(withId(R.id.transpose)).check(matches(not(isDisplayed())));
 
 		Espresso.unregisterIdlingResources(loaders);
 	}

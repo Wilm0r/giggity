@@ -183,6 +183,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		int initScroll = HourSize * 4;
 		int bottomY = 0;
 		tents = new ArrayList<>(sched.getTents());
+		long basems = base.toInstant().toEpochMilli();
 		for (Schedule.Line tent : tents) {
 			int posy, w, h;
 
@@ -202,8 +203,6 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			head.setBackgroundColor(c.tentbg[x&1]);
 			head.setTextColor(c.tentfg[x&1]);
 			tentHeaders.addView(head); //, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-			long basems = base.toInstant().toEpochMilli();
 
 			y = 0;  // for alternating between background colours, not for positioning
 			w = TentSize;

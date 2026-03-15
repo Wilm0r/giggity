@@ -178,6 +178,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			}
 		});
 
+		long basems = base.minusMinutes(15).toInstant().toEpochMilli();
 		y = 0;
 		tents = new ArrayList<>(sched.getTents());
 		for (Schedule.Line tent : tents) {
@@ -198,8 +199,6 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			head.setBackgroundColor(c.tentbg[y&1]);
 			head.setTextColor(c.tentfg[y&1]);
 			tentHeaders.addView(head);
-
-			long basems = base.minusMinutes(15).toInstant().toEpochMilli();
 
 			x = 0;
 			h = TentHeight;
