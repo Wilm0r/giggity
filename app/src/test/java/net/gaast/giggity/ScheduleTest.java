@@ -43,7 +43,8 @@ public class ScheduleTest extends TestCase {
 	}
 
 	@Parameterized.Parameter(0)
-	public String tz_;
+	public String outTzName_;
+	ZoneId outTz_;
 
 	private void load(String fn) {
 		JSONObject js = null;
@@ -59,7 +60,8 @@ public class ScheduleTest extends TestCase {
 		if (!itz.isEmpty()) {
 			s.setInTZ(ZoneId.of(itz));
 		}
-		s.setOutTZ(ZoneId.of(tz_));
+		outTz_ = ZoneId.of(outTzName_);
+		s.setOutTZ(outTz_);
 
 		InputStream in = getClass().getClassLoader().getResourceAsStream(fn);
 		try {
@@ -69,7 +71,7 @@ public class ScheduleTest extends TestCase {
 			if (js != null && (md = js.optJSONObject(("metadata"))) != null) {
 				s.addMetadata(md.toString());
 			}
-			Log.d("ScheduleTest.load", fn + " loaded with tz=" + tz_ + " in " + ((System.nanoTime() - start) / 1000000.0) + " ms");
+			Log.d("ScheduleTest.load", fn + " loaded with tz=" + outTzName_ + " in " + ((System.nanoTime() - start) / 1000000.0) + " ms");
 		} catch (IOException e) {
 			Assert.assertFalse(true);
 		}
@@ -124,7 +126,7 @@ public class ScheduleTest extends TestCase {
 		assertThat(setNames(s.getTracks()), not(hasItem("Microkernel")));
 		assertThat(setNames(s.getTracks()), hasItem("Monitoring and Observability"));
 
-		assertThat(s.setDay(ZonedDateTime.of(2021, 2, 6, 12, 0, 0, 0, ZoneId.of(tz_))),
+		assertThat(s.setDay(ZonedDateTime.of(2021, 2, 6, 12, 0, 0, 0, outTz_)),
 		           is(0)); // Saturday
 		assertThat(s.getTents(), hasSize(87));
 
@@ -154,12 +156,12 @@ public class ScheduleTest extends TestCase {
 		s.setShowHidden(true);
 		assertThat(s.getTracks(), hasSize(109));
 
-		if (tz_.equals("America/New_York"))
-			assertThat(s.getTzDiff(), equalTo(  6.0));
-		else if(tz_.equals("Europe/Dublin"))
-			assertThat(s.getTzDiff(), equalTo(  1.0));
-		else if(tz_.equals("Australia/Sydney"))
-			assertThat(s.getTzDiff(), equalTo(-10.0));
+		if (outTzName_.equals("America/New_York"))
+			assertThat(s.getTzDiff(null), equalTo(  6.0));
+		else if(outTzName_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(null), equalTo(  1.0));
+		else if(outTzName_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(null), equalTo(-10.0));
 
 		assertThat(s.getLinks(), hasSize(3));
 
@@ -232,12 +234,12 @@ public class ScheduleTest extends TestCase {
 		assertThat(s.getItem("017b6087-ac16-4968-8beb-051596720f24").getId(), equalTo("1230"));
 		assertThat(s.getItem("4c1d5810-e052-539d-ac78-a4ea395b24cc").getId(), equalTo("893"));
 
-		if (tz_.equals("America/New_York"))
-			assertThat(s.getTzDiff(), equalTo(  6.0));
-		else if(tz_.equals("Europe/Dublin"))
-			assertThat(s.getTzDiff(), equalTo(  1.0));
-		else if(tz_.equals("Australia/Sydney"))
-			assertThat(s.getTzDiff(), equalTo(-10.0));
+		if (outTzName_.equals("America/New_York"))
+			assertThat(s.getTzDiff(null), equalTo(  6.0));
+		else if(outTzName_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(null), equalTo(  1.0));
+		else if(outTzName_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(null), equalTo(-10.0));
 	}
 
 	@Test
@@ -252,12 +254,12 @@ public class ScheduleTest extends TestCase {
 
 		Assert.assertFalse(s.isToday());
 
-		if (tz_.equals("America/New_York"))
-			assertThat(s.getTzDiff(), equalTo( 6.0));
-		else if(tz_.equals("Europe/Dublin"))
-			assertThat(s.getTzDiff(), equalTo( 1.0));
-		else if(tz_.equals("Australia/Sydney"))
-			assertThat(s.getTzDiff(), equalTo(-8.0));
+		if (outTzName_.equals("America/New_York"))
+			assertThat(s.getTzDiff(null), equalTo( 6.0));
+		else if(outTzName_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(null), equalTo( 1.0));
+		else if(outTzName_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(null), equalTo(-8.0));
 	}
 
 	@Test
@@ -272,12 +274,12 @@ public class ScheduleTest extends TestCase {
 
 		Assert.assertFalse(s.isToday());
 
-		if (tz_.equals("America/New_York"))
-			assertThat(s.getTzDiff(), equalTo(15.0));
-		else if(tz_.equals("Europe/Dublin"))
-			assertThat(s.getTzDiff(), equalTo(10.0));
-		else if(tz_.equals("Australia/Sydney"))
-			assertThat(s.getTzDiff(), equalTo(-1.0));
+		if (outTzName_.equals("America/New_York"))
+			assertThat(s.getTzDiff(null), equalTo(15.0));
+		else if(outTzName_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(null), equalTo(10.0));
+		else if(outTzName_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(null), equalTo(-1.0));
 
 		assertThat(s.setDay(0).getDayOfWeek(), is(DayOfWeek.SUNDAY));
 		assertThat(s.setDay(5).getDayOfWeek(), is(DayOfWeek.FRIDAY));
@@ -296,12 +298,12 @@ public class ScheduleTest extends TestCase {
 
 		Assert.assertFalse(s.isToday());
 
-		if (tz_.equals("America/New_York"))
-			assertThat(s.getTzDiff(), equalTo( 6.0));
-		else if(tz_.equals("Europe/Dublin"))
-			assertThat(s.getTzDiff(), equalTo( 1.0));
-		else if(tz_.equals("Australia/Sydney"))
-			assertThat(s.getTzDiff(), equalTo(-8.0));
+		if (outTzName_.equals("America/New_York"))
+			assertThat(s.getTzDiff(null), equalTo( 6.0));
+		else if(outTzName_.equals("Europe/Dublin"))
+			assertThat(s.getTzDiff(null), equalTo( 1.0));
+		else if(outTzName_.equals("Australia/Sydney"))
+			assertThat(s.getTzDiff(null), equalTo(-8.0));
 
 		assertThat(s.setDay(0).getDayOfWeek(), is(DayOfWeek.TUESDAY));
 		assertThat(s.getTents(), hasSize(13));

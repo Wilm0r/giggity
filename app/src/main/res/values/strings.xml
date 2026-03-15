@@ -56,7 +56,8 @@
 
 	<!-- Main Menu & Navigation Drawer -->
 	<string name="drw_tz_offset">Timezone offset:</string>
-	<string name="drw_tz_is_yours">Times shown are local to you</string>
+	<string name="drw_tz_is_yours">Times are local to you</string>
+	<string name="drw_tz_event">Times are in event timezone</string>
 	<string name="change_day">Change day</string>
 	<string name="show_hidden">Show hidden items</string>
 	<string name="timetable">Timetable</string>

@@ -39,15 +39,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.TreeSet;
 
-@SuppressLint("SimpleDateFormat")
+@SuppressWarnings("deprecation")
 public class BlockScheduleVertical extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
 	/* This is a vertical (i.e. time goes down instead of to the right) version of BlockSchedule.
 	 * You'd think that these classes should be related but there's not THAT much reuse potential,
@@ -113,7 +112,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		TentSize = Math.max(pref.getInt("block_schedule_tent_height", TentSize), (Resources.getSystem().getDisplayMetrics().widthPixels - HeaderSize) / sched.getTents().size());
 		
 		int x, y;
-		Calendar base, cal, end;
+		ZonedDateTime base, end;
 		ArrayList<Schedule.Line> tents;
 
 		String fontSetting = pref.getString("font_size", "medium");
@@ -129,14 +128,11 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 
 		schedCont = new AbsoluteLayout(ctx);
 
-		base = Calendar.getInstance();
-		base.setTime(sched.getFirstTime());
-		base.add(Calendar.MINUTE, -(base.get(Calendar.MINUTE) % 30));
+		base = sched.getFirstTimeZoned();
+		base = base.minusMinutes(base.getMinute() % 30);
 
-		end = Calendar.getInstance();
-		end.setTime(sched.getLastTime());
 		// Some slack needed for edge-to-edge, should remain mostly invisible.
-		end.add(Calendar.HOUR_OF_DAY, 2);
+		end = sched.getLastTimeZoned().plusHours(2);
 
 		/* Simple background pattern with halfhour/tent grid. */
 		Bitmap bmp = Bitmap.createBitmap(TentSize * 2, HourSize, Bitmap.Config.ARGB_8888);
@@ -207,20 +203,14 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			head.setTextColor(c.tentfg[x&1]);
 			tentHeaders.addView(head); //, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
-			cal = Calendar.getInstance();
-			cal.setTime(base.getTime());
-//			cal.add(Calendar.MINUTE, -15);
+			long basems = base.toInstant().toEpochMilli();
 
 			y = 0;  // for alternating between background colours, not for positioning
 			w = TentSize;
-			
+
 			for (Schedule.Item gig : tent.getItems()) {
-				posy = (int) ((gig.getStartTime().getTime() -
-				               cal.getTime().getTime()) *
-						HourSize / 3600000);
-				h    = (int) ((gig.getEndTime().getTime() -
-				               cal.getTime().getTime()) *
-						HourSize / 3600000) - posy + 1;
+				posy = (int) ((gig.getStartTime().getTime() - basems) * HourSize / 3600000);
+				h    = (int) ((gig.getEndTime().getTime() - basems) * HourSize / 3600000) - posy + 1;
 
 				initScroll = Math.min(initScroll, posy);
 				bottomY = Math.max(bottomY, posy + h);
@@ -380,24 +370,19 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 	
 	protected class Clock extends ScrollView {
 		private AbsoluteLayout child_;
-		private Calendar base_;
-		
-		public Clock(Activity ctx, Calendar base, Calendar end) {
+		private ZonedDateTime base_;
+
+		public Clock(Activity ctx, ZonedDateTime base, ZonedDateTime end) {
 			super(ctx);
+			base_ = base;
 
 			setHorizontalScrollBarEnabled(false);
 			setVerticalScrollBarEnabled(false);
 
 			TextView cell;
 
-			base_ = new GregorianCalendar();
-			base_.setTime(base.getTime());
-			
-			SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-			Calendar cal;
-			
-			cal = Calendar.getInstance();
-			cal.setTime(base_.getTime());
+			DateTimeFormatter df = DateTimeFormatter.ofPattern("HH:mm");
+			ZonedDateTime cur = base_;
 
 			AbsoluteLayout.LayoutParams lp = new AbsoluteLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, 0, 0);
@@ -408,7 +393,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 			while(true) {
 				cell = new TextView(ctx);
 				cell.setRotation(-90);
-				cell.setText(df.format(cal.getTime()));
+				cell.setText(cur.format(df));
 				cell.setGravity(Gravity.RIGHT);
 				// Yes you won't believe just how painful vertical elements are in the Android
 				// composer. Measuring etc. is done *before* rotation so if you set the dimensions
@@ -420,13 +405,13 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 				cell.setTextSize(fontSizeSmall);
 				child_.addView(cell, new AbsoluteLayout.LayoutParams(HourSize / 2, HourSize / 2, 0, i * HourSize / 2));
 
-				if (cal.after(end))
+				if (cur.isAfter(end))
 					break;
-				
-				cal.add(Calendar.MINUTE, 30);
+
+				cur = cur.plusMinutes(30);
 				i++;
 			}
-			
+
 			update();
 
 			// ... then at the end I crop it using an intermediate view. Is that allowed? ;)
@@ -439,11 +424,10 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		/* Mark the current 30m period in the clock green. */
 		public void update() {
 			int i;
-			Calendar cal = new GregorianCalendar();
-			cal.setTime(base_.getTime());
+			ZonedDateTime cur = base_;
 			for (i = 0; i < child_.getChildCount(); i ++) {
 				TextView cell = (TextView) child_.getChildAt(i);
-				long diff = System.currentTimeMillis() - cal.getTimeInMillis();
+				long diff = System.currentTimeMillis() - cur.toInstant().toEpochMilli();
 				if (diff >= 0 && diff < 1800000) {
 					cell.setBackgroundColor(c.clockbg[2]);
 					cell.setTextColor(c.clockfg[1]);
@@ -451,7 +435,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 					if (sched.isToday() && diff > 0) {
 						cell.setAlpha(.5F);
 					}
-					if (cal.get(Calendar.MINUTE) == 0) {
+					if (cur.getMinute() == 0) {
 						cell.setBackgroundColor(c.clockbg[0]);
 						cell.setTextColor(c.clockfg[0]);
 					} else {
@@ -460,7 +444,7 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 					}
 				}
 
-				cal.add(Calendar.MINUTE, 30);
+				cur = cur.plusMinutes(30);
 			}
 		}
 

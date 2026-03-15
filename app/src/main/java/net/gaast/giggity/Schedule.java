@@ -249,6 +249,10 @@ public class Schedule implements Serializable {
 		return lastTime.toEpochSecond() - firstTime.toEpochSecond();
 	}
 
+	public ZoneId getInTZ() {
+		return inTZ;
+	}
+
 	public void setInTZ(ZoneId inTZ) {
 		if (fullyLoaded) {
 			throw new RuntimeException("Can't change inTZ after loading.");
@@ -293,15 +297,19 @@ public class Schedule implements Serializable {
 		}
 	}
 
-	public double getTzDiff() {
+	/* Return tz difference in hours between tz (or outTZ if it's null) and inTZ. */
+	public double getTzDiff(ZoneId tz) {
 		// Calculate difference *now* if the event is current, otherwise at the start of the conf.
 		// (Just in case there's a DST change on one of the sides mid-event?)
+		if (tz == null) {
+			tz = outTZ;
+		}
 		ZonedDateTime mp = ZonedDateTime.now().withZoneSameInstant(inTZ);
 		if (!isToday()) {
 			mp = firstTime;
 		}
 		int diff = inTZ.getRules().getOffset(mp.toInstant()).getTotalSeconds() -
-		           outTZ.getRules().getOffset(mp.toInstant()).getTotalSeconds();
+		           tz.getRules().getOffset(mp.toInstant()).getTotalSeconds();
 		return diff / 3600.0;
 	}
 

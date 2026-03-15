@@ -75,6 +75,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.AbstractList;
@@ -756,10 +757,21 @@ public class ScheduleViewActivity extends Activity {
 		// TODO: Switch back to getFirst/getLast when fully on Java 21 (API 35?)
 		dr.setText(Giggity.dateRange(days.get(0), days.get(days.size()-1)));
 
-		double offset = sched.getTzDiff();
+		double offset = sched.getTzDiff(ZoneId.systemDefault());
 		if (offset != 0) {
 			String plus = offset > 0 ? "+" : "";
-			dr.setText(dr.getText() + "\n" + getString(R.string.drw_tz_offset) + " " + plus + offset + "\n" + getString(R.string.drw_tz_is_yours));
+			String dateRange = dr.getText().toString();
+			Runnable updateTzText = () -> {
+				boolean eventTZ = sched.getTzDiff(null) == 0;
+				dr.setText(dateRange + "\n" + getString(R.string.drw_tz_offset) + " " + plus + offset + "\n" +
+				           getString(eventTZ ? R.string.drw_tz_event : R.string.drw_tz_is_yours));
+			};
+			updateTzText.run();
+			dr.setOnClickListener(v -> {
+				sched.setOutTZ(sched.getTzDiff(null) == 0 ? ZoneId.systemDefault() : sched.getInTZ());
+				updateTzText.run();
+				redrawSchedule();
+			});
 		}
 
 		if (sched.getLinks() != null) {

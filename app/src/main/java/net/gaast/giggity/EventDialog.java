@@ -51,8 +51,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -62,7 +61,7 @@ import static net.gaast.giggity.Schedule.RoomStatus.FULL;
 
 /* Mind you, one day this was an actual Dialog, but not anymore technically. It's just a pretty
    densely populated view used in two different ways (depending on whether we're on a tablet. */
-@SuppressLint({"SimpleDateFormat", "SetTextI18n"})
+@SuppressLint("SetTextI18n")
 public class EventDialog extends FrameLayout {
 	private Context ctx_;
 	private Giggity app_;
@@ -84,7 +83,7 @@ public class EventDialog extends FrameLayout {
 		LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		root = inflater.inflate(R.layout.event_dialog, null);
 		TextView t;
-		Format tf = new SimpleDateFormat("HH:mm");
+		DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
 		
 		t = root.findViewById(R.id.title);
 		t.setText(item_.getTitle());
@@ -118,7 +117,7 @@ public class EventDialog extends FrameLayout {
 
 		t = root.findViewById(R.id.time);
 		t.setText(item_.getSchedule().getDayFormat().format(item_.getStartTimeZoned()) + " " +
-		          tf.format(item_.getStartTime()) + "–" + tf.format(item_.getEndTime()));
+		          item_.getStartTimeZoned().format(tf) + "–" + item_.getEndTimeZoned().format(tf));
 		
 		t = root.findViewById(R.id.track);
 		if (item_.getTrack() != null) {
@@ -159,8 +158,8 @@ public class EventDialog extends FrameLayout {
 				if (overlaps == null)
 					overlaps = ctx_.getResources().getString(R.string.overlap) + " ";
 				overlaps += other.getTitle() +
-				         " (" + tf.format(other.getStartTime()) + "–" + tf.format(other.getEndTime()) + "), ";
-			} else if (other.getStartTime().after(item_.getEndTime())){
+				         " (" + other.getStartTimeZoned().format(tf) + "–" + other.getEndTimeZoned().format(tf) + "), ";
+			} else if (other.getStartTimeZoned().isAfter(item_.getEndTimeZoned())){
 				break;
 			}
 		}

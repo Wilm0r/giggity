@@ -50,6 +50,7 @@
 	<!-- Main Menu & Navigation Drawer -->
 	<string name="drw_tz_offset">Tijdzone verschil:</string>
 	<string name="drw_tz_is_yours">Tijden naar lokaal omgerekend</string>
+	<string name="drw_tz_event">Tijden niet omgerekend</string>
 	<string name="change_day">Andere dag</string>
 	<string name="show_hidden">Verborgen items tonen</string>
 	<string name="timetable">Tijdschema</string>

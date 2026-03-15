@@ -39,13 +39,12 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
-@SuppressLint("SimpleDateFormat")
+@SuppressWarnings("deprecation")
 public class BlockSchedule extends LinearLayout implements NestedScroller.Listener, ScheduleViewer {
 	Giggity app;
 	Schedule sched;
@@ -108,7 +107,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		removeAllViews();
 		
 		int x, y;
-		Calendar base, cal, end;
+		ZonedDateTime base, end;
 		ArrayList<Schedule.Line> tents;
 
 		String fontSetting = pref.getString("font_size", "medium");
@@ -122,14 +121,11 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 
 		schedCont = new AbsoluteLayout(ctx);
 
-		base = Calendar.getInstance();
-		base.setTime(sched.getFirstTime());
-		base.add(Calendar.MINUTE, -(base.get(Calendar.MINUTE) % 30));
+		base = sched.getFirstTimeZoned();
+		base = base.minusMinutes(base.getMinute() % 30);
 
-		end = Calendar.getInstance();
-		end.setTime(sched.getLastTime());
 		// Some slack needed for edge-to-edge, should remain mostly invisible.
-		end.add(Calendar.HOUR_OF_DAY, 2);
+		end = sched.getLastTimeZoned().plusHours(2);
 
 		/* Little hack to create a background drawable with some (dotted) lines for easier readability. */
 		Bitmap bmp = Bitmap.createBitmap(HourWidth, TentHeight, Bitmap.Config.ARGB_8888);
@@ -138,7 +134,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			bmp.setPixel(x, TentHeight - 1, c.lines);
 		}
 		int hourX;
-		if (base.get(Calendar.MINUTE) == 0) {
+		if (base.getMinute() == 0) {
 			hourX = HourWidth / 4;
 		} else {
 			hourX = HourWidth * 3 / 4;
@@ -203,20 +199,14 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 			head.setTextColor(c.tentfg[y&1]);
 			tentHeaders.addView(head);
 
-			cal = Calendar.getInstance();
-			cal.setTime(base.getTime());
-			cal.add(Calendar.MINUTE, -15);
+			long basems = base.minusMinutes(15).toInstant().toEpochMilli();
 
 			x = 0;
 			h = TentHeight;
-			
+
 			for (Schedule.Item gig : tent.getItems()) {
-				posx = (int) ((gig.getStartTime().getTime() -
-				               cal.getTime().getTime()) *
-				              HourWidth / 3600000);
-				w    = (int) ((gig.getEndTime().getTime() -
-				               cal.getTime().getTime()) *
-				              HourWidth / 3600000) - posx + 1;
+				posx = (int) ((gig.getStartTime().getTime() - basems) * HourWidth / 3600000);
+				w    = (int) ((gig.getEndTime().getTime() - basems) * HourWidth / 3600000) - posx + 1;
 				
 				Element cell = new Element(ctx);
 				cell.setItem(gig);
@@ -352,29 +342,24 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 	
 	protected class Clock extends HorizontalScrollView {
 		private LinearLayout child_;
-		private Calendar base_;
-		
-		public Clock(Activity ctx, Calendar base, Calendar end) {
+		private ZonedDateTime base_;
+
+		public Clock(Activity ctx, ZonedDateTime base, ZonedDateTime end) {
 			super(ctx);
+			base_ = base;
 
 			setHorizontalScrollBarEnabled(false);
 
 			TextView cell;
 
-			base_ = new GregorianCalendar();
-			base_.setTime(base.getTime());
-			
-			SimpleDateFormat df = new SimpleDateFormat("HH:mm");
-			Calendar cal;
-			
-			cal = Calendar.getInstance();
-			cal.setTime(base_.getTime());
+			DateTimeFormatter df = DateTimeFormatter.ofPattern("HH:mm");
+			ZonedDateTime cur = base_;
 
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
 
 			child_ = new LinearLayout(ctx);
-			
+
 			cell = new TextView(ctx);
 			cell.setGravity(Gravity.CENTER_HORIZONTAL);
 			cell.setHeight(HourHeight);
@@ -384,20 +369,20 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 
 			while(true) {
 				cell = new TextView(ctx);
-				
-				cell.setText(df.format(cal.getTime()));
+
+				cell.setText(cur.format(df));
 				cell.setGravity(Gravity.CENTER_HORIZONTAL);
 				cell.setHeight(HourHeight);
 				cell.setWidth(HourWidth / 2);
 				cell.setTextSize(fontSizeSmall);
 				child_.addView(cell, lp);
 
-				if (cal.after(end))
+				if (cur.isAfter(end))
 					break;
-				
-				cal.add(Calendar.MINUTE, 30);
+
+				cur = cur.plusMinutes(30);
 			}
-			
+
 			update();
 			addView(child_);
 		}
@@ -405,11 +390,10 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 		/* Mark the current 30m period in the clock green. */
 		public void update() {
 			int i;
-			Calendar cal = new GregorianCalendar();
-			cal.setTime(base_.getTime());
+			ZonedDateTime cur = base_;
 			for (i = 1; i < child_.getChildCount(); i ++) {
 				TextView cell = (TextView) child_.getChildAt(i);
-				long diff = System.currentTimeMillis() - cal.getTimeInMillis();
+				long diff = System.currentTimeMillis() - cur.toInstant().toEpochMilli();
 				/* 2018-01-22: Switching this to nearest-time instead of most-recent-time and
 				   I now wonder why I did not do it that way initially...
 				   So, now after 16:15, 16:30 will be rendered as the current half-hour, instead of
@@ -421,7 +405,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 					if (sched.isToday() && diff > 0) {
 						cell.setAlpha(.5F);
 					}
-					if (cal.get(Calendar.MINUTE) == 0) {
+					if (cur.getMinute() == 0) {
 						cell.setBackgroundColor(c.clockbg[0]);
 						cell.setTextColor(c.clockfg[0]);
 					} else {
@@ -430,7 +414,7 @@ public class BlockSchedule extends LinearLayout implements NestedScroller.Listen
 					}
 				}
 
-				cal.add(Calendar.MINUTE, 30);
+				cur = cur.plusMinutes(30);
 			}
 		}
 

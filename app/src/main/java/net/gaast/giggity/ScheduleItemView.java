@@ -8,11 +8,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
-@SuppressLint({"SimpleDateFormat", "SetTextI18n"})
+@SuppressLint("SetTextI18n")
 public class ScheduleItemView extends LinearLayout {
 	public static final int COMPACT = 1;
 	public static final int SHOW_REMIND = 2;
@@ -27,16 +26,16 @@ public class ScheduleItemView extends LinearLayout {
 
 		inflate(ctx, R.layout.schedule_item, this);
 		
-		Format df = new SimpleDateFormat("EE d MMM");
-		Format tf = new SimpleDateFormat("HH:mm");
-		
+		DateTimeFormatter df = DateTimeFormatter.ofPattern("EE d MMM");
+		DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
+
 		TextView title, room, time, date;
 
 		time = findViewById(R.id.time);
-		String timeText = tf.format(item.getStartTime());
+		String timeText = item.getStartTimeZoned().format(tf);
 		if ((flags & HIDE_ENDTIME) == 0) {
 			timeText += "–" +  // en-dash
-			            tf.format(item.getEndTime());
+			            item.getEndTimeZoned().format(tf);
 		}
 		time.setText(timeText);
 
@@ -52,7 +51,7 @@ public class ScheduleItemView extends LinearLayout {
 
 		if ((flags & COMPACT) == 0) {
 			time.setTextColor(getResources().getColor(R.color.dark_text));
-			date.setText(df.format(item.getStartTime()) + "  ");
+			date.setText(item.getStartTimeZoned().format(df) + "  ");
 			room.setText(item.getLine().getTitle());
 		} else {
 			date.setVisibility(GONE);
@@ -69,7 +68,7 @@ public class ScheduleItemView extends LinearLayout {
 			v.setBackgroundResource(R.drawable.schedule_item_remind_background);
 			title.setTextColor(getResources().getColor(R.color.light_text));
 			room.setTextColor(getResources().getColor(R.color.light_text));
-		} else if ((flags & SHOW_NOW) != 0 && item.compareTo(new Date()) == 0) {
+		} else if ((flags & SHOW_NOW) != 0 && item.compareTo(ZonedDateTime.now()) == 0) {
 			setBackgroundColor(0x11FFFFFF);
 		} else {
 			setBackgroundResource(android.R.color.transparent);
