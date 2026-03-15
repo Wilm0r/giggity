@@ -2,8 +2,8 @@ package net.gaast.giggity;
 
 import android.content.Context;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.TreeSet;
 
 public class MyItemsView extends ScheduleListView implements ScheduleViewer {
@@ -24,7 +24,7 @@ public class MyItemsView extends ScheduleListView implements ScheduleViewer {
 		ArrayList fullList = new ArrayList();
 		TreeSet<Schedule.Item> seen = new TreeSet<Schedule.Item>();
 		TreeSet<Schedule.Item> coming = new TreeSet<Schedule.Item>();
-		Date now = new Date();
+		ZonedDateTime now = ZonedDateTime.now();
 
 		for (Schedule.Line tent : sched.getTents()) {
 			for (Schedule.Item item : tent.getItems()) {

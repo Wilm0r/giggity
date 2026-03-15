@@ -1379,19 +1379,7 @@ public class Schedule implements Serializable {
 				return another.hashCode() - hashCode();
 		}
 
-		// FIXME: Grr I think these two do the opposite of what a compareTo is meant to do?
-		public int compareTo(Date d) {
-			/* 0 if the event is "now" (d==now),
-			 * -1 if it's in the future,
-			 * 1 if it's in the past. */
-			if (d.before(getStartTime()))
-				return -1;
-			else if (getEndTime().after(d))
-				return 0;
-			else
-				return 1;
-		}
-
+		// FIXME: Grr I think this does the opposite of what a compareTo is meant to do?
 		public int compareTo(ZonedDateTime d) {
 			/* 0 if the event is "now" (d==now),
 			 * -1 if it's in the future,
