@@ -18,7 +18,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.zip.DeflaterInputStream;
 import java.util.zip.InflaterInputStream;
 
 import androidx.annotation.NonNull;
