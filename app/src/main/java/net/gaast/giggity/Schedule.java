@@ -754,7 +754,7 @@ public class Schedule implements Serializable {
 					return;
 				}
 
-				item = new Schedule.Item(uid, uid, name, startTime, endTime);
+				item = new Schedule.Item(uid, null, name, startTime, endTime);
 				
 				if ((s = eventData.get("description")) != null) {
 					item.setDescription(s);
@@ -1038,14 +1038,14 @@ public class Schedule implements Serializable {
 			if (item.guid != null) {
 				Item prev = itemsById.put(item.guid, item);
 				if (prev != null) {
-					Log.i("Schedule.loadPentabarf", "Schedule contains duplicate event guid=" +
+					Log.i("Schedule.addItem", "Schedule contains duplicate event guid=" +
 							item.guid + " used by both " + prev.getTitle() + ", and by " + item.getTitle());
 				}
 			}
 			if (item.id != null) {
 				Item prev = itemsById.put(item.id, item);
 				if (prev != null) {
-					Log.i("Schedule.loadPentabarf", "Schedule contains duplicate event id=" +
+					Log.i("Schedule.addItem", "Schedule contains duplicate event id=" +
 							item.id + " used by both guid=" + prev.getGuid() + " and guid=" + item.guid);
 				}
 			}
