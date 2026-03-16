@@ -262,10 +262,8 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 					}
 				}
 				return new ScheduleItemView(ctx, it1, flags);
-			} else if (items.get(position).getClass() == Schedule.Line.class) {
-				return new ScheduleLineView(ctx, (Schedule.Line) items.get(position));
-			} else if (items.get(position).getClass() == Schedule.Track.class) {
-				return new ScheduleTrackView(ctx, (Schedule.Track) items.get(position));
+			} else if (items.get(position) instanceof Schedule.ItemList) {
+				return makeHeaderView(items.get(position));
 			} else if (items.get(position).getClass() == String.class) {
 				String text = (String) items.get(position);
 				if (text.trim().isEmpty()) {
@@ -301,60 +299,36 @@ public class ScheduleListView extends ListView implements ScheduleViewer {
 		}
 	}
 
-	private class ScheduleLineView extends LinearLayout {
-		Context ctx;
-		Schedule.Line line;
-
-		public ScheduleLineView(Context context, Schedule.Line line_) {
-			super(context);
-			ctx = context;
-			line = line_;
-
-			inflate(ctx, R.layout.schedule_line, this);
-
-			TextView tv = findViewById(R.id.lineTitle);
+	// Used for sticky headers in TimeTable as well. Might want to just integrate that here maybe.
+	protected View makeHeaderView(Object group) {
+		LinearLayout view = new LinearLayout(ctx);
+		view.inflate(ctx, R.layout.schedule_line, view);
+		TextView tv = view.findViewById(R.id.lineTitle);
+		if (group instanceof Schedule.Line) {
+			Schedule.Line line = (Schedule.Line) group;
 			tv.setText(line.getTitle());
-
 			Schedule.Track track = line.getTrack();
 			if (track != null && !line.getTitle().toLowerCase().contains(track.getTitle().toLowerCase())) {
-				tv = findViewById(R.id.lineSubTitle);
-				tv.setText(track.getTitle());
-				tv.setVisibility(View.VISIBLE);
+				TextView sub = view.findViewById(R.id.lineSubTitle);
+				sub.setText(track.getTitle());
+				sub.setVisibility(View.VISIBLE);
 			}
-
 			if (line.getLocation() != null) {
 				// TODO: Restore icon or so to indicate location info is available for room?
 				// Also, maybe a nicer way to show (FOSDEM-specific, for now) room status
-				setOnClickListener(ScheduleUI.locationClickListener(getContext(), line));
-
-				// No clue when I stopped adding this view but I guess it can indeed stay away?
-//				ImageView iv = new ImageView(ctx);
-//				iv.setImageResource(R.drawable.ic_place_black_24dp);
+				view.setOnClickListener(ScheduleUI.locationClickListener(ctx, line));
 			}
-		}
-	}
-
-	private class ScheduleTrackView extends LinearLayout {
-		Context ctx;
-		Schedule.Track track;
-
-		public ScheduleTrackView(Context context, Schedule.Track track_) {
-			super(context);
-			ctx = context;
-			track = track_;
-
-			inflate(ctx, R.layout.schedule_line, this);
-
-			TextView tv = findViewById(R.id.lineTitle);
+		} else {
+			Schedule.Track track = (Schedule.Track) group;
 			tv.setText(track.getTitle());
-
-			Schedule.Line allLine = track_.getLine();
+			Schedule.Line allLine = track.getLine();
 			if (allLine != null && !track.getTitle().toLowerCase().contains(allLine.getTitle().toLowerCase())) {
-				tv = findViewById(R.id.lineSubTitle);
-				tv.setText(allLine.getTitle());
-				tv.setVisibility(View.VISIBLE);
+				TextView sub = view.findViewById(R.id.lineSubTitle);
+				sub.setText(allLine.getTitle());
+				sub.setVisibility(View.VISIBLE);
 			}
 		}
+		return view;
 	}
 
 	/* Need to change this to true in SearchActivity. */

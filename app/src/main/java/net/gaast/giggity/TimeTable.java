@@ -21,17 +21,13 @@ package net.gaast.giggity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.BaseAdapter;
-import android.widget.Gallery;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,12 +36,13 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class TimeTable extends LinearLayout implements ScheduleViewer {
+public class TimeTable extends FrameLayout implements ScheduleViewer {
 	private Giggity app;
 	private Activity ctx;
-	
-	private OnItemSelectedListener groupSelL;
+
 	private ScheduleListView scroller;
+	private LinearLayout stickyHeader;
+	private Object currentHeaderGroup;
 	
 	private ArrayList<Schedule.ItemList> groups;
 
@@ -57,11 +54,8 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		ctx = ctx_;
 		app = (Giggity) ctx.getApplication();
 		groups = new ArrayList<>(groups_);
-		this.setOrientation(LinearLayout.VERTICAL);
 
 		flatten();
-
-		RelativeLayout.LayoutParams lp;
 
 		scroller = new ScheduleListView(ctx);
 		scroller.setCompact(true); /* Hide tent + day info, redundant in this view. */
@@ -70,8 +64,12 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 		if (!groups.isEmpty() && groups.get(0).getClass() == Schedule.Track.class) {
 			scroller.setMultiRoom(true);
 		}
-		lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		addView(scroller, lp);
+		addView(scroller, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
+		stickyHeader = new LinearLayout(ctx);
+		FrameLayout.LayoutParams shLp = new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		shLp.gravity = Gravity.TOP;
+		addView(stickyHeader, shLp);
 
 		scroller.setOnScrollListener(new OnScrollListener() {
 			@Override
@@ -81,13 +79,69 @@ public class TimeTable extends LinearLayout implements ScheduleViewer {
 			@Override
 			public void onScroll(AbsListView v, int first, int visible, int total) {
 				ScheduleViewActivity.onScroll(ctx);
-				/* Find the first real item currently on-screen. */
-				while (scroller.getList().get(first).getClass() != Schedule.Item.class && first < total)
-					first++;
-				if (first == total)
-					return; /* Hmm. Just titles, no events? */
+				updateStickyHeader(first);
 			}
 		});
+	}
+
+	private void updateStickyHeader(int first) {
+		// Find the most recent section header at or before the first visible position.
+		int headerPos = -1;
+		for (int i = first; i >= 0; i--) {
+			if (fullList.get(i) instanceof Schedule.ItemList) {
+				headerPos = i;
+				break;
+			}
+		}
+		if (headerPos == -1) {
+			stickyHeader.setVisibility(View.GONE);
+			return;
+		}
+
+		// Rebuild the sticky header view when the section changes.
+		Object group = fullList.get(headerPos);
+		if (group != currentHeaderGroup) {
+			currentHeaderGroup = group;
+			stickyHeader.removeAllViews();
+			stickyHeader.addView(scroller.makeHeaderView(group),
+					new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			stickyHeader.setVisibility(View.VISIBLE);
+		}
+
+		float translateY = 0;
+
+		// While the current section header is still visible in the list, float the sticky
+		// header on top of it so they look like one (seamless until it scrolls off the top).
+		if (headerPos >= first) {
+			int childIndex = headerPos - first;
+			if (childIndex < scroller.getChildCount()) {
+				int listHeaderTop = scroller.getChildAt(childIndex).getTop();
+				if (listHeaderTop > 0) {
+					translateY = listHeaderTop;
+				}
+			}
+		}
+
+		// Once stuck at the top, push it up as the next section header scrolls into view.
+		if (translateY == 0) {
+			for (int i = 0; i < scroller.getChildCount(); i++) {
+				int adapterPos = first + i;
+				if (adapterPos >= fullList.size()) break;
+				if (fullList.get(adapterPos) instanceof Schedule.ItemList && adapterPos != headerPos) {
+					int childTop = scroller.getChildAt(i).getTop();
+					int stickyHeight = stickyHeader.getHeight();
+					if (childTop < stickyHeight) {
+						translateY = childTop - stickyHeight;
+					}
+					break;
+				}
+			}
+		}
+
+		stickyHeader.setTranslationY(translateY);
+		// If the sticky header is disappearing, fade it away too, which to me looks slightly more
+		// natural than the double header effect?
+		stickyHeader.setAlpha(1 + translateY / stickyHeader.getHeight());
 	}
 
 	@Override

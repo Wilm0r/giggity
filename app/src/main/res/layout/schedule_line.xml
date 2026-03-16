@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_marginTop="15dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -26,33 +25,43 @@
             android:textSize="16sp"/>
     </LinearLayout>
 
+    <!-- Explicit background here to make the sticky header cover whatever scrolls under it. -->
     <LinearLayout
-        android:id="@+id/titlecolumn"
-        android:background="@drawable/schedule_line_background"
+        android:background="?android:attr/colorBackground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="3dp"
-        android:padding="7dp"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/lineTitle"
+        <LinearLayout
+            android:id="@+id/titlecolumn"
+            android:background="@drawable/schedule_line_background"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="Janson"
-            android:textColor="@color/light_text"
-            android:textSize="18sp"
-            android:textStyle="bold"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="12dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="3dp"
+            android:padding="7dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/lineSubTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lineTitle"
-            android:gravity="center_horizontal"
-            android:text="Main track"
-            android:textColor="@color/light_text"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/lineTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="Janson"
+                android:textColor="@color/light_text"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/lineSubTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lineTitle"
+                android:gravity="center_horizontal"
+                android:text="Main track"
+                android:textColor="@color/light_text"
+                android:visibility="gone" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>
