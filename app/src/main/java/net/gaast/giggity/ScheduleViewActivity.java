@@ -151,6 +151,11 @@ public class ScheduleViewActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		if (savedInstanceState == null) {
+			savedInstanceState = getIntent().getExtras();
+		}
+
 //		if (Build.VERSION.SDK_INT >= 30) {
 //			// (I forgot what this was for, IIRC as part of edge-to-edge on older devices, unsuccessfully?
 //			WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
@@ -316,20 +321,22 @@ public class ScheduleViewActivity extends Activity {
 			showEventId = parts[1];
 		}
 
-		if (app.hasSchedule(url)) {
+		if (app.hasSchedule(url) && !getIntent().getBooleanExtra("PREFER_ONLINE", false)) {
 			sched = app.getCachedSchedule(url);
 			onScheduleLoaded(savedInstanceState);
 		} else {
 			Fetcher.Source fs;
 			if (getIntent().getBooleanExtra("PREFER_ONLINE", false))
-				fs = Fetcher.Source.DEFAULT;
+				fs = Fetcher.Source.REFRESH;
 			else
-				fs = Fetcher.Source.CACHE;
+				fs = Fetcher.Source.CACHE_1D;
 
 			drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
 			drawerToggle.setDrawerIndicatorEnabled(false);  // Shows a not functioning back button. :<
-			loadScheduleAsync(url, fs);
+			loadScheduleAsync(url, fs, savedInstanceState);
 		}
+		// Don't make it stick. (When re-rendering after enabling dark mode, for example)
+		getIntent().removeExtra("PREFER_ONLINE");
 
 		if (Build.VERSION.SDK_INT >= 30) {
 			bigScreen.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
@@ -543,7 +550,7 @@ public class ScheduleViewActivity extends Activity {
 		public void setDone(LoadProgressDoneInterface done);
 	}
 
-	private void loadScheduleAsync(final String url, final Fetcher.Source source) {
+	private void loadScheduleAsync(final String url, final Fetcher.Source source, Bundle savedInstanceState) {
 		final LoadProgressView prog = new LoadProgressView();
 		Db.DbSchedule dbs = app.getDb().getSchedule(url);
 		if (dbs != null) {
@@ -552,7 +559,7 @@ public class ScheduleViewActivity extends Activity {
 		prog.setDone(new LoadProgressDoneInterface() {
 			@Override
 			public void done() {
-				onScheduleLoaded();
+				onScheduleLoaded(savedInstanceState);
 				viewerContainer.removeView((View) prog);
 			}
 		});
@@ -566,7 +573,7 @@ public class ScheduleViewActivity extends Activity {
 			@Override
 			public void fallBack() {
 				viewerContainer.removeView((View) prog);
-				loadScheduleAsync(url, Fetcher.Source.CACHE_ONLY);
+				loadScheduleAsync(url, Fetcher.Source.CACHE_ONLY, savedInstanceState);
 			}
 		});
 		viewerContainer.addView((View) prog, new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -720,15 +727,30 @@ public class ScheduleViewActivity extends Activity {
 		}
 
 		if (getIntent().getBooleanExtra("EXPORT_SELECTIONS", false)) {
-			Intent t = new Intent(android.content.Intent.ACTION_SEND);
-			t.setType("text/plain");
-			t.putExtra(Intent.EXTRA_TITLE, sched.getTitle());
-			t.putExtra(Intent.EXTRA_TEXT, sched.exportLink());
-			startActivity(Intent.createChooser(t, null));
+			shareSelections();
 			// Leave this activity again after triggering the chooser. We're only relying on SVA to
 			// make sure the schedule + selections are loaded.
 			finish();
 		}
+	}
+
+	private void refreshSchedule() {
+		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sched.getUrl()),
+				ScheduleViewActivity.this, ScheduleViewActivity.class);
+		intent.putExtra("PREFER_ONLINE", true);
+		Bundle state = new Bundle();
+		onSaveInstanceState(state);
+		intent.putExtras(state);
+		startActivity(intent);
+		finish();
+	}
+
+	private void shareSelections() {
+		Intent t = new Intent(android.content.Intent.ACTION_SEND);
+		t.setType("text/plain");
+		t.putExtra(Intent.EXTRA_TITLE, sched.getTitle());
+		t.putExtra(Intent.EXTRA_TEXT, sched.exportLink());
+		startActivity(Intent.createChooser(t, null));
 	}
 
 	@Override
@@ -1193,6 +1215,12 @@ public class ScheduleViewActivity extends Activity {
 				break;
 			case R.id.show_hidden:
 				toggleShowHidden();
+				break;
+			case R.id.refresh:
+				refreshSchedule();
+				break;
+			case R.id.share_selections:
+				shareSelections();
 				break;
 			case R.id.home_shortcut:
 				addHomeShortcut();

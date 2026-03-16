@@ -142,6 +142,9 @@ public class Giggity extends Application {
 	}
 	
 	public ScheduleUI getSchedule(String url, Fetcher.Source source, Handler progress) throws Schedule.LoadException {
+		if (source == Fetcher.Source.REFRESH) {
+			scheduleCache.remove(url);
+		}
 		if (!hasSchedule(url)) {
 			scheduleCache.put(url, ScheduleUI.loadSchedule(this, url, source, progress));
 		}

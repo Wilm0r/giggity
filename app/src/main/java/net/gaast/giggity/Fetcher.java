@@ -1,8 +1,6 @@
 package net.gaast.giggity;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.http.HttpResponseCache;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,10 +34,9 @@ public class Fetcher implements AutoCloseable {
 	public enum Source {
 		REFRESH,           /* Ctrl-R, y'know */
 		DEFAULT,           /* Check online (304 -> cache, and fail if we're offline). */
-		CACHE_1D,          /* Get from cache but refresh once a day. */
-		CACHE,             /* Get from cache, allow fetch if not available. (Will fetch ~yearly actually) */
+		CACHE_1D,          /* Get from cache but check for fresh once a day. */
+		CACHE_1Y,          /* "Always" get from cache, if we can. */
 		CACHE_ONLY,        /* Get from cache or fail. */
-		CACHE_IF_OFFLINE,  /* Check online if we're not offline, otherwise use cache. */
 	}
 
 	public static boolean init(Context ctx) {
@@ -73,14 +70,6 @@ public class Fetcher implements AutoCloseable {
 
 		Log.d("Fetcher", "Creating fetcher for " + url + " source=" + source);
 
-		NetworkInfo network = ((ConnectivityManager)
-				app.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-		// Probably not quite as relevant now as when I first wrote Giggity.. Docs recommend to use
-		// a listener instead but meh, don't care much + suddenly reloading when connectivity comes
-		// back would be annoying UX as well, not worth it.
-		// --- I don't even seem to be using CACHE_IF_OFFLINE anymore by now?
-		boolean online = (network == null) || !network.isConnected();
-
 		URL dl = new URL(url);
 		dlc = (HttpURLConnection) dl.openConnection();
 		dlc.setInstanceFollowRedirects(true);
@@ -94,13 +83,6 @@ public class Fetcher implements AutoCloseable {
 			Log.w("Fetcher", "Cache appears to be missing?");
 		}
 
-		if (source == Source.CACHE_IF_OFFLINE) {
-			if (!online) {
-				source = Source.CACHE;
-			} else {
-				source = Source.DEFAULT;
-			}
-		}
 		switch (source) {
 			case DEFAULT:
 				// No special headers needed, that's what default is about.. :)
@@ -113,7 +95,7 @@ public class Fetcher implements AutoCloseable {
 				// (Would be nice to still trust the server if it returned a higher max-age but how?)
 				dlc.addRequestProperty("Cache-Control", "max-age=" + (24 * 60 * 60));  // 1d
 				break;
-			case CACHE:
+			case CACHE_1Y:
 				// Add 1y to whatever the server said. Practically rely on cache forever.
 				dlc.addRequestProperty("Cache-Control", "max-stale=" + (365 * 24 * 60 * 60));  // 1y
 				break;
@@ -123,6 +105,13 @@ public class Fetcher implements AutoCloseable {
 				dlc.addRequestProperty("Cache-Control", "max-stale=" + (3650 * 24 * 60 * 60));
 				break;
 		}
+
+//		Log.d("Fetcher.Source", "" + source);
+//		for (Map.Entry<String, java.util.List<String>> hd : dlc.getRequestProperties().entrySet()) {
+//			for (String v : hd.getValue()) {
+//				Log.d("Fetcher", "> " + hd.getKey() + ": " + v);
+//			}
+//		}
 
 		// Request building ends here as we first try to access response fields.
 		String status = dlc.getResponseCode() + " " + dlc.getResponseMessage();
@@ -137,11 +126,12 @@ public class Fetcher implements AutoCloseable {
 		isFresh_ = true;
 		for (Map.Entry<String, java.util.List<String>> hd : dlc.getHeaderFields().entrySet()) {
 			for (String v : hd.getValue()) {
-//				Log.d("Fetcher", "" + hd.getKey() + ": " + v);
+				// Log.d("Fetcher", "< " + hd.getKey() + ": " + v);
 				if (hd.getKey() == null) {
 				} else if (hd.getKey().equals("Warning") && v.contains("Response is stale")) {
 					isFresh_ = false;
-				} else if (hd.getKey().equals("X-Android-Response-Source") && v.contains("CACHE")) {
+				} else if (hd.getKey().equals("X-Android-Response-Source") && v.startsWith("CACHE")) {
+					// CONDITIONAL_CACHE 304 shouldn't count as from cache.
 					fromCache_ = true;
 				}
 			}

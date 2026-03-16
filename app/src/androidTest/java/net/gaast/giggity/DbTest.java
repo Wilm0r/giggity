@@ -138,7 +138,7 @@ public class DbTest {
 		// app.getDb() getting called deep inside. It's confusing but doesn't break this test.
 		// Also, this is loading real schedule data from fosdem.org. Some day I should bother
 		// to mock that but so far FOSDEM scheduled have remained online for *years* reliably.
-		Schedule sched = ScheduleUI.loadSchedule(app, goodUrl, Fetcher.Source.CACHE, new Handler(Looper.getMainLooper()));
+		Schedule sched = ScheduleUI.loadSchedule(app, goodUrl, Fetcher.Source.CACHE_1Y, new Handler(Looper.getMainLooper()));
 		c.setSchedule(sched, goodUrl, true);
 		sched.addMetadata(c.getMetadata());
 

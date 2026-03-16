@@ -113,7 +113,7 @@
                     style="@style/BurgerMenuSeparator"
                     android:visibility="gone" />
 
-                <!-- misc -->
+                <!-- view misc -->
                 <TextView
                     android:id="@+id/change_day"
                     style="@style/BurgerMenuItem"
@@ -123,6 +123,20 @@
                     android:id="@+id/show_hidden"
                     style="@style/BurgerMenuItem"
                     android:text="@string/show_hidden"/>
+
+				<View
+					style="@style/BurgerMenuSeparator" />
+
+				<!-- misc actions  -->
+				<TextView
+					android:id="@+id/refresh"
+					style="@style/BurgerMenuItem"
+					android:text="@string/refresh"/>
+
+				<TextView
+					android:id="@+id/share_selections"
+					style="@style/BurgerMenuItem"
+					android:text="@string/share_selections"/>
 
 				<View
 					style="@style/BurgerMenuSeparator" />
