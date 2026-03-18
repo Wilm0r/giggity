@@ -68,8 +68,15 @@ import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.test.espresso.idling.CountingIdlingResource;
 
 public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRefreshListener {
+	static CountingIdlingResource idler;
+
+	public static void setIdler(CountingIdlingResource idler) {
+		ChooserActivity.idler = idler;
+	}
+
 	private Db.Connection db;
 
 	private SwipeRefreshLayout refresher;
@@ -199,6 +206,8 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				}
 			};
 
+			final CountingIdlingResource activeIdler = idler;
+			if (activeIdler != null) activeIdler.increment();
 			loader = new Thread() {
 				@Override
 				public void run() {
@@ -208,6 +217,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 					} else {
 						Log.d("Chooser", "I had a handler but you eated it");
 					}
+					if (activeIdler != null) activeIdler.decrement();
 				}
 			};
 
