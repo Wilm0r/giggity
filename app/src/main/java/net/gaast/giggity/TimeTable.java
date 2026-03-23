@@ -102,7 +102,11 @@ public class TimeTable extends FrameLayout implements ScheduleViewer {
 		if (group != currentHeaderGroup) {
 			currentHeaderGroup = group;
 			stickyHeader.removeAllViews();
-			stickyHeader.addView(scroller.makeHeaderView(group),
+			View hv = scroller.makeHeaderView(group);
+			// Avoid consuming touch events as that tends to break tests. Rethink this later if
+			// we do want taps to find the room location work here too.
+			hv.setClickable(false);
+			stickyHeader.addView(hv,
 					new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			stickyHeader.setVisibility(View.VISIBLE);
 		}
