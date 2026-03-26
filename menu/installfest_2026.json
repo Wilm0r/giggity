@@ -1,0 +1,21 @@
+{
+    "version": 2026032500,
+    "url": "https://pretalx.installfest.cz/installfest-2026-2025/schedule/export/schedule.xml",
+    "title": "Installfest 2026",
+    "start": "2026-03-28",
+    "end": "2026-03-29",
+    "timezone": "Europe/Prague",
+    "metadata": {
+            "icon": "https://installfest.cz/if19/images/logo-tux.png",
+            "links": [
+                {
+                    "url": "https://installfest.cz/if26/",
+                    "title": "Web Installfestu"
+                },
+                {
+                    "url": "https://installfest.cz/if26/find-us",
+                    "title": "Kde nás najdete"
+                }
+            ]
+    }
+}
