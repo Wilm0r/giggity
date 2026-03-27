@@ -1,0 +1,14 @@
+{
+	"version": 2026032700,
+	"url": "https://chemnitzer.linux-tage.de/2026/de/api/ical/programm",
+	"title": "Chemnitzer Linuxtage 2026",
+	"start": "2026-03-28",
+	"end": "2026-03-29",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{ "url": "https://chemnitzer.linux-tage.de/2026/", "title": "Website" }
+		],
+		"icon": "https://chemnitzer.linux-tage.de/2026/static/img/logo_de.png"
+	}
+}
