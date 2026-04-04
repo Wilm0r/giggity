@@ -1,8 +1,7 @@
 package net.gaast.giggity;
 
-import android.app.Activity;
-import android.app.Instrumentation;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -11,25 +10,22 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.hamcrest.TypeSafeMatcher;
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestRule;
 import org.junit.runner.RunWith;
 
-import android.preference.PreferenceManager;
-
 import java.nio.charset.StandardCharsets;
 
 import androidx.test.core.app.ApplicationProvider;
-import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.contrib.DrawerActions;
 import androidx.test.espresso.idling.CountingIdlingResource;
-import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.intent.matcher.IntentMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.GrantPermissionRule;
@@ -45,8 +41,6 @@ import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intending;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.isInternal;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -66,7 +60,7 @@ import static org.hamcrest.Matchers.startsWith;
 public class Spresso {
 
 	@Rule
-	public IntentsTestRule<ChooserActivity> mActivityRule = new IntentsTestRule<>(
+	public ActivityScenarioRule<ChooserActivity> mActivityRule = new ActivityScenarioRule<>(
 			ChooserActivity.class);
 
 	@Rule
@@ -103,17 +97,10 @@ public class Spresso {
 		};
 	}
 
-	@Before
-	public void setUp() {
-		intending(not(isInternal())).respondWith(new Instrumentation.ActivityResult(Activity.RESULT_OK, null));
-	}
-
-	@After
-	public void tearDown() {
-	}
-
 	@Test
 	public void testBasicNav() {
+		Intents.init();
+
 		// I wrote this test in '23 when this schedule was near the top of the list. Of course by
 		// now it isn't in the list anymore at all by default, so add it.
 		Giggity context = ApplicationProvider.getApplicationContext();
@@ -230,13 +217,22 @@ public class Spresso {
 		onView(allOf(withText(R.string.share_selections))).perform(click());
 //		onData(scheduleByTitle(containsString("FOSDEM 2026"))).perform(scrollTo());
 
-		// No worky so far: Wanted to match 1 intents. Actually matched 0 intents.
-		// Timing issue maybe?
-//		Intents.intended(allOf(
-//				IntentMatchers.hasAction(android.content.Intent.ACTION_SEND),
-////				IntentMatchers.hasExtra(android.content.Intent.EXTRA_TEXT, Matchers.containsInRelativeOrder("ggt.gaa.st",  "&see=")),
-//				not(isInternal())
-//		));
+		ScheduleViewActivity.setIdler(null);
+
+		// shareSelections() wraps the ACTION_SEND intent in a chooser, so Espresso records
+		// ACTION_CHOOSER. Match the nested EXTRA_INTENT to inspect the actual share content.
+		Intents.intended(allOf(
+				IntentMatchers.hasAction(android.content.Intent.ACTION_CHOOSER),
+				IntentMatchers.hasExtra(android.content.Intent.EXTRA_INTENT, allOf(
+						IntentMatchers.hasAction(android.content.Intent.ACTION_SEND),
+						IntentMatchers.hasExtra(android.content.Intent.EXTRA_TEXT, allOf(
+								containsString("ggt.gaa.st"),
+								containsString("&see=")
+						))
+				))
+		));
+
+		Intents.release();
 	}
 
 	@Test
@@ -282,8 +278,6 @@ public class Spresso {
 			}
 		}
 		Assert.assertEquals(3, num);
-
-		Espresso.unregisterIdlingResources(loaders);
 	}
 
 	// Pretty simple test just to make sure the render code still runs without crashing, and that

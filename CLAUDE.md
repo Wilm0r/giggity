@@ -47,6 +47,7 @@ It also should never pick up a dependency on Play Services.
 | `BlockSchedule.java` / `BlockScheduleVertical.java` | Time-grid view renderers |
 | `ScheduleListView.java` | List-based schedule view, subclassed/used by a few viewers like for example `TimeTable` and `ItemSearch` |
 | `ChooserActivity.java` | Launcher/schedule selector |
+| `ImportView.java` | Shows incoming selections/deletions from a deep link (`&see=`/`&del=` params); offers overwrite/merge import |
 
 ### Data Flow
 
@@ -59,11 +60,23 @@ It also should never pick up a dependency on Play Services.
 
 Uses `java.time.*` (ZonedDateTime). Two timezones are tracked: `inTZ` (source/event timezone) and `outTZ` (display timezone). Day boundaries default to 6am (which Pentabarf XML scheduled can customise).
 
-### Deep Linking
-
-The app handles `https://ggt.gaa.st/` URLs with the format `#url=<schedule_url>&json=<metadata>`. The `tools/ggt.sh` script generates QR codes for these links.
-
 ### Conference Menu
 
 Conference entries live in `menu/*.json`. The build merges them into a single resource file. Schema is in `tools/menu-schema.json`; `tools/menu-ci.py` validates entries.
 The merged file is built into the binary but at startup Giggity will first try to fetch the most recent version from ggt.gaa.st.
+
+ggt.gaa.st is a tiny little service (source code in `ggt/`) with a webhook called by GitHub on menu file submissions, so that it can always serve a super fresh menu at https://ggt.gaa.st/menu.json.
+
+### Deep Linking
+
+The app handles `https://ggt.gaa.st/` URLs with the format `#url=<schedule_url>&json=<metadata>`. The `tools/ggt.sh` script generates QR codes for these links.
+
+### Instrumented Tests (`Spresso.java`)
+
+The single instrumented test class uses `IntentsTestRule<ChooserActivity>`, which launches a fresh `ChooserActivity` before each test and finishes it after (calling `Intents.init()` / `Intents.release()` around each test). A few things to know:
+
+- **Tests require live network**: schedules are fetched from the internet. Test speed depends on network and HTTP cache freshness (`Fetcher.Source.CACHE_1D` = reuse if <1 day old).
+- **Idler pattern for async sync**: `ScheduleViewActivity` and `ChooserActivity` have a static `setIdler(CountingIdlingResource)` method. Tests create a `CountingIdlingResource`, register it with Espresso, and set it on the activity before triggering a load. The `LoadProgressView` / `LoadProgressDialog` inner classes of SVA read the static `idler` field and increment/decrement it. Always call `setIdler(null)` at test end to detach — but only AFTER the load completes (the decrement reads the static field at call time, so nulling early causes the count to never reach 0 and Espresso hangs).
+- **`IntentsTestRule` teardown race**: `afterActivityFinished()` (which calls `Intents.release()`) is async relative to the next test's `afterActivityLaunched()` (which calls `Intents.init()`). Explicitly calling `Intents.release()` in `@After tearDown()` avoids the "init called twice in a row" race. `IntentsTestRule.afterActivityFinished()` has a try/catch so the redundant release is safe.
+- **`ActivityScenario` within a test**: If a test uses `ActivityScenario.launch()` to start SVA directly (bypassing ChooserActivity), close the scenario explicitly with `scenario.close()` at the end. Not closing it leaves SVA alive, which can prevent `IntentsTestRule` from properly finalizing ChooserActivity between tests.
+- **Sticky header touch events**: `TimeTable`'s sticky header overlay (`stickyHeader` FrameLayout) sits on top of `ScheduleListView`. Header views built by `ScheduleListView.makeHeaderView()` become clickable when a room has `latlon` data (they open a geo intent). If left clickable, they intercept taps meant for list items underneath. The sticky header copy is set `clickable=false` to pass touches through.
