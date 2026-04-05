@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	android:versionCode="544" android:versionName="2.2">
-	<!-- TODO: Convert versionCode back to hex when fdroid supports it! Except ... now Android SDK itself seems to reject it. *fliptable* -->
+	android:versionCode="768" android:versionName="3.0">
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 	<uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" android:maxSdkVersion="32" />
