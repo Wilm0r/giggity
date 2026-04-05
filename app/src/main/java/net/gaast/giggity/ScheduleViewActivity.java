@@ -652,8 +652,10 @@ public class ScheduleViewActivity extends Activity {
 			// might have changed.
 			pref = PreferenceManager.getDefaultSharedPreferences(app);
 			showHidden = pref.getBoolean("show_hidden", false);
+			sched.setShowHidden(showHidden);
 			vertical = pref.getBoolean("block_schedule_vertical", false);
 			redrawSchedule();
+			updateNavDrawer();
 			redraw = false;
 		} else {
 			if (viewer != null) {

@@ -108,8 +108,10 @@ public class BlockScheduleVertical extends LinearLayout implements NestedScrolle
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 		// Re-fetching the setting to try to make this a little less sticky when columns are for
 		// example temporarily extra wide (rotated screen, day with fewer tents?).
-		TentSize = Math.max(pref.getInt("block_schedule_tent_height", TentSize), (Resources.getSystem().getDisplayMetrics().widthPixels - HeaderSize) / sched.getTents().size());
-		
+		if (sched.getTents().size() > 0) {
+			TentSize = Math.max(pref.getInt("block_schedule_tent_height", TentSize), (Resources.getSystem().getDisplayMetrics().widthPixels - HeaderSize) / sched.getTents().size());
+		}
+
 		int x, y;
 		ZonedDateTime base, end;
 		ArrayList<Schedule.Line> tents;
