@@ -440,7 +440,7 @@ public class Db extends SQLiteOpenHelper {
 				json = sw.toString();
 			} else {
 				f = new Fetcher(app, getSeedUrl(),
-				                source == SeedSource.ONLINE ? Fetcher.Source.REFRESH : Fetcher.Source.CACHE_1Y);
+				                source == SeedSource.ONLINE ? Fetcher.Source.REFRESH : Fetcher.Source.CACHE_ONLY);
 				json = f.slurp();
 				// TODO: Clean up?
 			}
