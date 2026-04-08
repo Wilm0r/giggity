@@ -69,9 +69,8 @@ public class ImportView extends ScheduleListView implements ScheduleViewer {
 				} catch (JSONException e) {
 					ids.add(array.getString(i));
 				}
-				ids.add(array.optString(i, ""));
 			}
-		} catch (IOException | JSONException e) {
+		} catch (IOException | JSONException | IllegalArgumentException e) {
 			android.util.Log.e("Giggity", "Error decoding param: " + param, e);
 		}
 
