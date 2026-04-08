@@ -167,10 +167,10 @@ public class ScheduleViewActivity extends Activity {
 		showHidden = pref.getBoolean("show_hidden", false);
 		vertical = pref.getBoolean("block_schedule_vertical", false);
 
-		if (savedInstanceState != null) {
-			curView = savedInstanceState.getInt("curView", curView);
-		} else if (getIntent().getDataString().contains("&see=") || getIntent().getDataString().contains("&del=")) {
+		if (getIntent().getDataString().contains("&see=") || getIntent().getDataString().contains("&del=")) {
 			curView = R.id.imports;
+		} else if (savedInstanceState != null) {
+			curView = savedInstanceState.getInt("curView", curView);
 		}
 
 		/* Consider making this a setting, some may find their tablet too small. */
