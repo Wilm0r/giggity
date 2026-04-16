@@ -1,0 +1,22 @@
+
+{
+	"version": 2026041600,
+	"url": "https://cfp.ctbk.de/fsck-2026/schedule.xml",
+	"title": "FSCK 2026",
+	"start": "2026-05-08",
+	"end": "2026-05-10",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{ "url": "https://wiki.ctbk.de/FSCK2026", "title": "Website" },
+			{ "url": "https://wiki.ctbk.de/FSCK2026/Hotels", "title": "Where to stay" },
+			{ "url": "https://engel.ctbk.de/login", "title": "Volunteer" }
+		],
+		"icon": "https://wiki.ctbk.de/images/a/a5/FSCK_Logo_400.png?20260428112748"
+	},
+	"rooms": [
+		{ "name": "Cube", "latlon": [47.05821, 15.4591] },
+		{ "name": "Movie Theatre 4", "latlon": [47.05904, 15.45969] },
+		{ "name": "Movie Theatre 5", "latlon": [47.05821, 15.46083] },
+	]
+}
