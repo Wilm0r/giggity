@@ -3,7 +3,8 @@
 import argparse
 import copy
 import datetime
-import json
+import json   # Strict, use for writes only
+import json5  # More permissive, use for reading only
 import operator
 import os
 import pathlib
@@ -34,7 +35,7 @@ def load_locally(path):
 		for fn in flist:
 			text = open(os.path.join(p, fn), "r", encoding="utf-8").read()
 			# check_indents(text, fn)
-			all[fn] = json.loads(text)
+			all[fn] = json5.loads(text)
 
 	return all
 
@@ -51,7 +52,7 @@ def load_git(path, revision):
 	for name, mode, object_id in menu.iteritems():
 		text = str(repo[object_id].data, "utf-8")
 		# check_indents(text, name)
-		all[name.decode("utf-8")] = json.loads(text)
+		all[name.decode("utf-8")] = json5.loads(text)
 	
 	return all
 
@@ -69,7 +70,7 @@ def load_github(url):
 			p = f.path.split("/")
 			if len(p) != 3 or p[1] != "menu" or not p[2]:
 				continue
-			all[p[2]] = json.loads(tf.extractfile(f).read())
+			all[p[2]] = json5.loads(tf.extractfile(f).read())
 	return all
 
 def start_date(all, weeks=None):
