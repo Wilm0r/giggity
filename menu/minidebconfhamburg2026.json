@@ -1,0 +1,25 @@
+{
+    "version": 2026042701,
+    "url": "https://hamburg2026.mini.debconf.org/schedule/pentabarf.xml",
+    "title": "MiniDebConf Hamburg 2026",
+    "start": "2026-05-04",
+    "end": "2026-05-11",
+    "timezone": "Europe/Paris",
+    "metadata": {
+        "icon": "https://hamburg2026.mini.debconf.org/media/pages_files/mdh26_logo.png",
+        "links": [
+            {
+                "url": "https://hamburg2026.mini.debconf.org/",
+                "title": "Website"
+            },
+            {
+                "title": "Wiki",
+                "url": "https://wiki.debian.org/DebianEvents/de/2026/MiniDebConfHamburg/"
+            },
+            {
+                "url": "https://hamburg2026.mini.debconf.org/about/coc/",
+                "title": "Code of Conduct"
+            }
+        ]
+    }
+}
