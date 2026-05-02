@@ -1,0 +1,51 @@
+{
+	"version": 2026050100,
+	"url": "https://pretalx.lebib.org/camp-interhack-2026-2025/schedule/export/schedule.xml",
+	"title": "Camp Interhack 2026",
+	"start": "2026-07-02",
+	"end": "2026-07-05",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://2026.camp.interhacker.space/assets/stickers/ecran.png",
+		"links": [
+			{
+				"url": "https://2026.camp.interhacker.space/",
+				"title": "Site web"
+			},
+			{
+				"url": "https://2026.camp.interhacker.space/guide.html",
+				"title": "Guide"
+			},
+			{
+				"url": "https://grist.interhacker.space/o/camp/forms/jhWe1wCu16LGEu81RTn3Um/4",
+				"title": "Inscription obligatoire"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Partout.*",
+				"latlon": [47.541614, -2.091345]
+			},
+			{
+				"name": ".*place du Camp",
+				"latlon": [47.541614, -2.091345]
+			},
+			{
+				"name": "Réfectoire",
+				"latlon": [47.541735, -2.091686]
+			},
+			{
+				"name": "Salle Goldorak",
+				"latlon": [47.541894, -2.091726]
+			},
+			{
+				"name": "Terrain de Basket",
+				"latlon": [47.541630, -2.091066]
+			},
+			{
+				"name": "Hackerspace Datapaulette",
+				"latlon": [47.541907, -2.091839]
+			}
+		]
+	}
+}
