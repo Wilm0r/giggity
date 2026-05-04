@@ -1,0 +1,20 @@
+{
+	"version": 2026050400,
+	"url": "https://cfp.rpll.fr/rpll-2026/schedule/export/schedule.xml",
+	"title": "RPLL 2026",
+	"start": "2026-05-12",
+	"end": "2026-05-12",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.rpll.fr/",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://www.rpll.fr/inscription-visiteurs-2026",
+				"title": "Inscription"
+			}
+		]
+	}
+}
