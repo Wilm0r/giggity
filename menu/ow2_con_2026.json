@@ -1,0 +1,21 @@
+{
+	"version": 2026050400,
+	"url": "https://pretalx.ow2.org/ow2con-2026/schedule/export/schedule.xml",
+	"title": "OW2con'26",
+	"start": "2026-06-02",
+	"end": "2026-06-03",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://cdn.fosstodon.org/accounts/avatars/111/209/971/603/314/340/original/4cf839b390c6420c.png",
+		"links": [
+			{
+				"url": "https://www.ow2con.org/view/2026/",
+				"title": "Website"
+			},
+			{
+				"url": "https://pretix.ow2.org/ow2con-2026/",
+				"title": "Registration"
+			}
+		]
+	}
+}
