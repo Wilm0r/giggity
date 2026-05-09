@@ -1,0 +1,29 @@
+{
+	"title": "5. Tage der Digitalen Freiheit",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://tdf.cttue.de/",
+				"title": "Website"
+			},
+			{
+				"url": "https://elfen.cttue.de/login",
+				"title": "Elfensystem"
+			},
+			{
+				"url": "https://pretix.cttue.de/cttue/tdf5-hackertours/",
+				"title": "Hackertours"
+			},
+			{
+				"url": "https://tdf.cttue.de/venue.html",
+				"title": "Lageplan / Map"
+			}
+		]
+	},
+	"url": "https://cfp.cttue.de/tdf5/schedule/export/schedule.xml",
+	"start": "2026-05-15",
+	"end": "2026-05-17",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 86400,
+	"version": 2026050800
+}
