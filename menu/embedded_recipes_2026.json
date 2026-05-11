@@ -1,0 +1,17 @@
+{
+	"version": 2026051100,
+	"url": "https://cfp.embedded-recipes.org/er2026/schedule.xml",
+	"title": "Embedded Recipes 2026",
+	"start": "2026-05-27",
+	"end": "2026-05-28",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"icon": "https://embedded-recipes.org/2026/images/ER/logo-BL-white.png",
+		"links": [
+			{
+				"url": "https://embedded-recipes.org/2026/",
+				"title": "Website"
+			}
+		]
+	}
+}
