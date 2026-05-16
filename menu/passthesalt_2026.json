@@ -1,0 +1,38 @@
+{
+	"version": 2026051600,
+	"url": "https://cfp.pass-the-salt.org/pts2026/schedule/export/schedule.xml",
+	"title": "Pass the SALT 2026",
+	"start": "2026-06-30",
+	"end": "2026-07-02",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2026.pass-the-salt.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://pretix.eu/passthesalt/2026/",
+				"title": "Free Ticket"
+			},
+			{
+				"url": "https://2026.pass-the-salt.org/practical/",
+				"title": "Practical & safety"
+			},
+			{
+				"url": "https://2026.pass-the-salt.org/code-of-conduct/",
+				"title": "Code of Conduct"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Amphitheater .*",
+				"latlon": [50.631036, 3.045595]
+			},
+			{
+				"name": "Room LW.*",
+				"latlon": [50.631036, 3.045595]
+			}
+		]
+	}
+}
