@@ -1,0 +1,24 @@
+{
+  "version": 2026051700,
+  "url": "https://cfp.gulas.ch/gpn24/schedule/export/schedule.xml",
+  "title": "24. Gulaschprogrammiernacht",
+  "start": "2026-06-04",
+  "end": "2026-06-07",
+  "timezone": "Europe/Berlin",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://entropia.de/GPN24",
+        "title": "Website"
+      },
+      {
+        "url": "https://entropia.de/GPN24:FAQ",
+        "title": "FAQ"
+      },
+      {
+        "url": "https://troll.gulas.ch/",
+        "title": "Trollsystem"
+      }
+    ]
+  }
+}
