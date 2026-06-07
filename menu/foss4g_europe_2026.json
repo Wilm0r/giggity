@@ -1,0 +1,52 @@
+{
+	"version": 2026060700,
+	"url": "https://sotm.osmz.ru/fe2026.html",
+	"title": "FOSS4G Europe 2026",
+	"start": "2026-06-29",
+	"end": "2026-07-05",
+	"timezone": "Europe/Bucharest",
+	"refresh_interval": 7200,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2026.europe.foss4g.org/",
+				"title": "Website"
+			},
+      {
+        "url": "https://2026.europe.foss4g.org/about/coc/",
+        "title": "Code of Conduct"
+      },
+			{
+				"url": "https://2026.europe.foss4g.org/sponsors/",
+				"title": "Sponsors"
+			}
+		],
+		"rooms": [
+			{
+				"name": "A..|Info lab .|Auditorium|Lunch Place",
+				"show_name": "West Univeristy of Timișoara",
+				"latlon": [45.747226, 21.231447]
+			},
+			{
+				"name": "ICAM",
+				"latlon": [45.761114, 21.229947]
+			},
+			{
+				"name": "ZAZA Resto Pub",
+				"latlon": [45.748162, 21.229781]
+			},
+			{
+				"name": "Vineri 15",
+				"latlon": [45.748248, 21.230226]
+			},
+			{
+				"name": "Three Holy Hierarchs Metropolitan Cathedral",
+				"latlon": [45.751095, 21.224419]
+			},
+			{
+				"name": "Recaș Winery",
+				"latlon": [45.827241, 21.525704]
+			}
+		]
+	}
+}
