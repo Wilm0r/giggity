@@ -1,0 +1,25 @@
+{
+    "version": 2026060801,
+    "url": "https://ch2026.mini.debconf.org/schedule/pentabarf.xml",
+    "title": "MiniDebConf Winterthur 2026",
+    "start": "2026-08-25",
+    "end": "2026-08-30",
+    "timezone": "Europe/Paris",
+    "metadata": {
+        "icon": "https://wiki.debian.org/DebianEvents/ch/2026/MiniDebConf?action=AttachFile&do=get&target=mdc-ch-2026-square.png",
+        "links": [
+            {
+                "url": "https://ch2026.mini.debconf.org/",
+                "title": "Website"
+            },
+            {
+                "title": "Wiki",
+                "url": "https://wiki.debian.org/DebianEvents/ch/2026/MiniDebConf"
+            },
+            {
+                "url": "https://ch2026.mini.debconf.org/about/coc/",
+                "title": "Code of Conduct"
+            }
+        ]
+    }
+}
