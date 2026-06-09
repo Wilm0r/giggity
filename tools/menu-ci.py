@@ -277,7 +277,10 @@ def validate_entry(e):
 	# Forced to use GET not HEAD even though I don't need the data because for
 	# example the retarded CCC server refuses HEAD requests.
 	try:
-		http.fetch(e["url"])
+		content = http.fetch(e["url"])
+		leader = None if not isinstance(content, bytes) else content.decode()[:16]
+		if not leader or (leader[:6] != '<?xml ' and leader[:6] != 'BEGIN:'):
+			ret.append("URL should reference an XML or an ICS file: %s" % e["url"])
 		ret += validate_url(e["url"])
 	except FetchError as err:
 		ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))

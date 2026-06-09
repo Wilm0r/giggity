@@ -1,6 +1,6 @@
 {
-	"version": 2026060700,
-	"url": "https://sotm.osmz.ru/fe2026.html",
+	"version": 2026060701,
+	"url": "https://sotm.osmz.ru/fe2026.xml",
 	"title": "FOSS4G Europe 2026",
 	"start": "2026-06-29",
 	"end": "2026-07-05",
@@ -12,10 +12,10 @@
 				"url": "https://2026.europe.foss4g.org/",
 				"title": "Website"
 			},
-      {
-        "url": "https://2026.europe.foss4g.org/about/coc/",
-        "title": "Code of Conduct"
-      },
+			{
+				"url": "https://2026.europe.foss4g.org/about/coc/",
+				"title": "Code of Conduct"
+			},
 			{
 				"url": "https://2026.europe.foss4g.org/sponsors/",
 				"title": "Sponsors"
