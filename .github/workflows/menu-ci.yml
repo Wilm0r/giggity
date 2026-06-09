@@ -89,3 +89,15 @@ jobs:
           comment-tag: menu-ci
           title-path: /tmp/menu-ci-title.json
           file-path: /tmp/menu-ci-comment.md
+
+  menu-only:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - name: Warn if non-menu files are changed in the same PR. (Sometimes needed, usually accidental.)
+        uses: xalvarez/prevent-file-change-action@v3.0.0
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          pattern: '^(?!menu\/).*$'
+          trustedAuthors: Wilm0r
