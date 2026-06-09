@@ -1,9 +1,9 @@
 {
-	"version": 2026060701,
+	"version": 2026060802,
 	"url": "https://sotm.osmz.ru/fe2026.xml",
 	"title": "FOSS4G Europe 2026",
 	"start": "2026-06-29",
-	"end": "2026-07-05",
+	"end": "2026-07-04",
 	"timezone": "Europe/Bucharest",
 	"refresh_interval": 7200,
 	"metadata": {
