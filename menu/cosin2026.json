@@ -1,0 +1,20 @@
+{
+    "version": 2026061001,
+    "url": "https://pretalx.chaostreff.ch/cosin-2026/schedule.xml",
+    "title": "CoSin 2026 Biel/Bienne",
+    "start": "2026-06-12",
+    "end": "2026-06-14",
+    "timezone": "Europe/Paris",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://cosin.ch/",
+                "title": "Website"
+            },
+            {
+                "url": "https://cosin.ch/de/coc/",
+                "title": "Code of Conduct"
+            }
+        ]
+    }
+}
