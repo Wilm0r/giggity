@@ -40,7 +40,7 @@ def git_pull(path, local_path="/tmp/giggity.git"):
 	try:
 		porcelain.pull(local_path, path)
 		return local_path
-	except dulwich.errors.NotGitRepository:
+	except (dulwich.errors.NotGitRepository, dulwich.errors.NoIndexPresent):
 		pass
 		# Expected first time, run stuff below instead.
 		# (But doing so within this block causes weird error reporting.)
