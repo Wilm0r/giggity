@@ -1,0 +1,70 @@
+{
+	"version": 2026061500,
+	"url": "https://pretalx.devconf.info/devconf-cz-2026/schedule/export/schedule.xml",
+	"title": "DevConf.CZ 2026",
+	"start": "2026-06-18",
+	"end": "2026-06-19",
+	"timezone": "Europe/Prague",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.devconf.info/cz/",
+				"title": "Website"
+			},
+			{
+				"url": "https://www.devconf.info/cz/#about",
+				"title": "About"
+			},
+			{
+				"url": "https://www.devconf.info/cz/faq/",
+				"title": "FAQ"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Students club",
+				"latlon": [49.226533,16.595117]
+			},
+			{
+				"name": "D105",
+				"latlon": [49.2261850,16.5969408]
+			},
+			{
+				"name": "D0206",
+				"latlon": [49.2261281,16.5968657]
+			},
+			{
+				"name": "D0207",
+				"latlon": [49.2261798,16.5970507]
+			},
+			{
+				"name": "E112",
+				"latlon": [49.2266904,16.5974410]
+			},
+			{
+				"name": "E104",
+				"latlon": [49.2267806,16.5972398]
+			},
+			{
+				"name": "E105", 
+				"latlon": [49.2268472,16.5974933]
+			},
+			{
+				"name": "A112",
+				"latlon": [49.2262621,16.5963896]
+			},
+			{
+				"name": "A113", 
+				"latlon": [49.2261404,16.5964915]
+			},
+			{
+				"name": "A218", 
+				"latlon": [49.2264601,16.5962903]
+			},
+			{
+				"name": "C228",
+				"latlon": [49.2267666,16.5970266]
+			}
+		]
+	}
+}
