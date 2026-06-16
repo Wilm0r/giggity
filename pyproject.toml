@@ -1,12 +1,13 @@
 [project]
 name = "giggity"
-version = "0.1.0"
+version = "0.2.0"
 description = "Giggity Tools"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "dulwich>=0.22.8",
-    "jsonschema>=4.23.0",
-    "pillow>=11.2.1",
-    "urllib3>=2.4.0",
+    "dulwich>=0.24.10",
+    "json5>=0.14.0",
+    "jsonschema>=4.26.0",
+    "pillow>=12.2.0",
+    "urllib3>=2.7.0",
 ]
