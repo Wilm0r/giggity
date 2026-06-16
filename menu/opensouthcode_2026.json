@@ -1,0 +1,17 @@
+{
+	"version": 2026061601,
+	"url": "https://www.opensouthcode.org/conferences/opensouthcode2026/schedule.xml",
+	"title": "OpenSouthCode 2026",
+	"start": "2026-06-26",
+	"end": "2026-06-27",
+	"timezone": "Europe/Madrid",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.opensouthcode.org/conferences/opensouthcode2026",
+				"title": "Website"
+			}
+		],
+		"icon": "https://www.opensouthcode.org/logo1.png"
+	}
+}
