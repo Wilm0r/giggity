@@ -279,7 +279,7 @@ def validate_entry(e):
 	try:
 		content = http.fetch(e["url"])
 		leader = None if not isinstance(content, bytes) else content.decode()[:16]
-		if not leader or (leader[:6] != '<?xml ' and leader[:6] != 'BEGIN:'):
+		if not leader or (leader[:6] != '<?xml ' and leader[:6] != 'BEGIN:' and not leader.strip().startswith("<schedule>")):
 			ret.append("URL should reference an XML or an ICS file: %s" % e["url"])
 		ret += validate_url(e["url"])
 	except FetchError as err:
