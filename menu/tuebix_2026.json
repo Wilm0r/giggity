@@ -1,0 +1,21 @@
+{
+	"version": 2026061802,
+	"url": "https://cfp.tuebix.org/tuebix-2026/schedule/export/schedule.xml",
+	"title": "Tübix 2026",
+	"start": "2026-07-04",
+	"end": "2026-07-04",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.tuebix.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://www.tuebix.org/2026/lageplan.pdf",
+				"title": "Lageplan",
+				"type": "application/pdf"
+			}
+		]
+	}
+}
