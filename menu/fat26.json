@@ -1,0 +1,24 @@
+{
+	"version": 2026062501,
+	"url": "https://participate.hackwerk.fun/fat26/schedule/export/schedule.xml",
+	"title": "FAT 26",
+	"start": "2026-07-03",
+	"end": "2026-07-05",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackwerk.fun/",
+				"title": "Website"
+			},
+			{
+				"url": "https://matrix.to/#/#fat25:aalen.space",
+				"title": "Matrix chat"
+			},
+			{
+				"url": "https://engel.hackwerk.fun/login",
+				"title": "Engelsystem"
+			}
+		]
+	}
+}
