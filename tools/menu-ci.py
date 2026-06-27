@@ -139,7 +139,7 @@ class HTTP():
 
 		self.hcache = {}
 
-	def fetch(self, url: str, img: bool=False, head: bool=False):
+	def fetch(self, url: str, img: bool=False, head: bool=False, headers: Dict[str, str]=None):
 		"""Simple URL fetcher, will return bytes or a parsed image depending
 		on what you ask for. Or raise FetchError if anything went wrong."""
 
@@ -147,7 +147,8 @@ class HTTP():
 		try:
 			LOG.C("Fetching %s" % url)
 			u = self.o.request(
-				method, url, redirect=False, preload_content=False, timeout=60, retries=False)
+				method, url, redirect=False, preload_content=False, timeout=60, retries=False,
+                headers=headers)
 			if 300 <= u.status < 400:
 				diff_protocol = ""
 				if not u.get_redirect_location().startswith(
@@ -303,13 +304,13 @@ def validate_entry(e):
 		c3_by_slug = {}
 		if "c3nav_base" in md:
 			try:
-				url = md["c3nav_base"] + "/api/locations/?format=json"
-				c3nav = http.fetch(url)
+				url = md["c3nav_base"] + "/api/v2/map/locations/"
+				c3nav = http.fetch(url, headers={'X-API-Key': 'anonymous'})
 				c3nav = json.loads(c3nav)
 				c3_by_slug = {v["slug"]: v for v in c3nav}
 				ret += validate_url(url)
 			except FetchError as err:
-				ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))
+				ret.append("Could not fetch c3nav for %s %s: %s" % (e["title"], url, err))
 
 		for room in md.get("rooms", []):
 			# Forgot why I wrote this check initially, it's now also in the schema already..
