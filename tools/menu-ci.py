@@ -309,7 +309,7 @@ def validate_entry(e):
 				c3_by_slug = {v["slug"]: v for v in c3nav}
 				ret += validate_url(url)
 			except FetchError as err:
-				ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))
+				ret.append("Could not fetch c3nav for %s %s: %s" % (e["title"], url, err))
 
 		for room in md.get("rooms", []):
 			# Forgot why I wrote this check initially, it's now also in the schema already..
