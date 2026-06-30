@@ -1,0 +1,16 @@
+{
+	"version": 2026062501,
+	"url": "https://lpc.events/event/20/event.ics?detail=contributions",
+	"title": "Linux Plumbers Conference 2026",
+	"start": "2026-10-05",
+	"end": "2026-10-07",
+	"timezone": "Europe/Prague",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://lpc.events/event/20/",
+				"title": "Website"
+			}
+		]
+	}
+}
