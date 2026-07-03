@@ -1,0 +1,17 @@
+{
+	"version": 2026070301,
+	"url": "https://datatracker.ietf.org/meeting/126/agenda.ics",
+	"title": "IETF 126 Vienna",
+	"start": "2026-07-18",
+	"end": "2026-06-24",
+	"timezone": "Europe/Berlin",
+	"refresh_interval": 86400,
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.ietf.org/meeting/126/",
+				"title": "Website"
+			}
+		]
+	}
+}
