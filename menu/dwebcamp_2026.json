@@ -1,0 +1,26 @@
+{
+	"version": 2026063001,
+	"url": "https://talx.dod.ngo/dwebcamp-2026/schedule/export/schedule.xml",
+	"title": "DWeb Camp 2026",
+	"start": "2026-07-08",
+	"end": "2026-07-12",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2026.dwebcamp.org/",
+				"title": "Website"
+			},
+			{
+				"url": "https://2026.dwebcamp.org/faq/",
+				"title": "FAQ"
+			},
+			{
+				"url": "https://dwebcamp.org/static/img/DWeb-Camp-2026-map.jpg",
+				"title": "Map",
+				"type": "image/jpg"
+			}
+		],
+		"icon": "https://dwebcamp.org/static/img/favicons/favicon-196x196.png"
+	}
+}
