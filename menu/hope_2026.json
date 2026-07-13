@@ -1,0 +1,30 @@
+{
+	"version": 2026072401,
+	"url": "https://schedule.hope.net/hope26/schedule/export/schedule.xml",
+	"title": "HOPE 2026",
+	"start": "2026-08-14",
+	"end": "2026-08-16",
+	"timezone": "America/New_York",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.hope.net/",
+				"title": "Website"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Crystal Ballroom",
+				"latlon": [40.75281775688111, -73.99358402883551]
+			},
+			{
+				"name": "Grand Ballroom",
+				"latlon": [40.75281775688111, -73.99358402883551]
+			},
+			{
+				"name": "Gramercy Park Suite",
+				"latlon": [40.75281775688111, -73.99358402883551]
+			}
+		]
+	}
+}
