@@ -1,0 +1,33 @@
+{
+	"version": 2019122000,
+	"url": "https://debconf26.debconf.org/schedule/pentabarf.xml",
+	"title": "DebConf 26",
+	"start": "2026-07-13",
+	"end": "2026-07-25",
+	"timezone": "America/Argentina/Cordoba",
+	"metadata": {
+		"icon": "https://debconf26.debconf.org/static/img/logo.8224b7f40c56.png",
+		"links": [
+			{
+				"url": "https://debconf26.debconf.org/",
+				"title": "DebConf 26"
+            },
+            {
+                "title": "Wiki",
+                "url": "https://wiki.debian.org/DebConf/26"
+            },
+            {
+                "url": "https://debconf26.debconf.org/about/coc/",
+                "title": "Code of Conduct"
+            },
+            {
+                "url": "https://debconf26.debconf.org/about/debcamp/",
+                "title": "DebCamp"
+            },
+            {
+                "url": "https://debconf26.debconf.org/static/img/venue-map.png",
+                "title": "Map"
+			}
+		]
+	}
+}
