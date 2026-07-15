@@ -1,0 +1,35 @@
+{
+	"version": 2026071300,
+	"url": "https://www.paris-web.fr/2026/paris-web-2026.ics",
+	"title": "Paris Web 2026 - Conférences",
+	"start": "2026-09-24",
+	"end": "2026-09-25",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.paris-web.fr/2026",
+				"title": "Site Web"
+			},
+			{
+				"url": "https://inscriptions.paris-web.fr/",
+				"title": "Tarifs et inscription"
+			},
+			{
+				"url": "https://www.paris-web.fr/2026/informations-pratiques",
+				"title": "Informations pratiques"
+			}
+		],
+		"rooms": [
+			{
+				"name": "Auditorium",
+				"show_name": "Auditorium - Institut Pasteur",
+				"latlon": [48.841065, 2.309524]
+			},
+			{
+				"name": "Module .*",
+				"latlon": [48.841257, 2.310967]
+			}
+		]
+	}
+}
