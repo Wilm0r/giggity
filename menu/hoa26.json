@@ -1,0 +1,20 @@
+{
+	"version": 2026072100,
+	"url": "https://talks.hackenopenair.de/hoa26/schedule/export/schedule.xml",
+	"title": "Hacken Open Air 2026",
+	"start": "2026-07-21",
+	"end": "2026-07-25",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://hackenopenair.de/",
+				"title": "Website"
+			},
+			{
+				"url": "https://hackenopenair.de/public/workshops",
+				"title": "Self Organized Sessions"
+			}
+		]
+	}
+}
