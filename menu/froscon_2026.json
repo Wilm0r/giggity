@@ -1,0 +1,25 @@
+{
+    "version": 2026071799,
+    "url": "https://programm.froscon.org/2026/schedule.xml",
+    "title": "FrOSCon 2026",
+    "start": "2026-08-15",
+    "end": "2026-08-16",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "icon": "https://froscon.org/icons/apple-touch-icon.png",
+        "links": [
+            {
+                "url": "https://froscon.org/",
+                "title": "Website"
+            },
+            {
+                "url": "https://froscon.org/en/program/project-rooms/",
+                "title": "Project rooms"
+            },
+            {
+                "url": "https://media.ccc.de/b/conferences/froscon",
+                "title": "Recordings"
+            }
+        ]
+    }
+}
