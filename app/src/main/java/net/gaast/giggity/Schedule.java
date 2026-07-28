@@ -1131,15 +1131,20 @@ public class Schedule implements Serializable {
 		
 		private boolean remind;
 		private boolean hidden;
-		private boolean newData;
+private boolean newData;
 
-		Item(String guid_, String id_, String title_, ZonedDateTime startTime_, ZonedDateTime endTime_) {
-			guid = guid_;
-			id = id_;
-			title = title_;
-			startTime = startTime_;
-			endTime = endTime_;
-		}
+Item(String guid_, String id_, String title_, ZonedDateTime startTime_, ZonedDateTime endTime_) {
+    guid = guid_;
+    id = id_;
+    title = title_;
+    startTime = startTime_;
+    endTime = endTime_;
+}
+
+public int hashCode() {
+    // Use SHA-256 or SHA-384 instead of MD5
+    return MessageDigest.getInstance("SHA-256").digest(guid.getBytes()).hashCode();
+}
 
 		@Override
 public int hashCode() {
