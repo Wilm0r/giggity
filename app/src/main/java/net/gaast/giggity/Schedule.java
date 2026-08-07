@@ -162,7 +162,7 @@ public class Schedule implements Serializable {
 			/* Some schedules have empty days in between. :-/ Skip those. */
 			for (Schedule.Item item : allItems) {
 				if (item.startTime.compareTo(day) >= 0 &&
-				    item.endTime.compareTo(dayEnd) <= 0) {
+				    item.startTime.compareTo(dayEnd) < 0) {
 					// Exact start time of day (could be "yesterday")
 					dayList.add(day);
 					// Midnight date-only for display purpose.
@@ -285,7 +285,7 @@ public class Schedule implements Serializable {
 			dayFirstTime = dayLastTime = null;
 			for (Schedule.Item item : allItems) {
 				if (item.startTime.compareTo(curDay) >= 0 &&
-						item.endTime.compareTo(curDayEnd) <= 0) {
+						item.startTime.compareTo(curDayEnd) < 0) {
 					if (dayFirstTime == null || item.startTime.isBefore(dayFirstTime))
 						dayFirstTime = item.startTime;
 					if (dayLastTime == null || item.endTime.isAfter(dayLastTime))
@@ -1006,7 +1006,7 @@ public class Schedule implements Serializable {
 			for (Item item : items) {
 				if ((!item.isHidden() || showHidden) &&
 				    (curDay == null || (!item.startTime.isBefore(curDay) &&
-				                        !item.endTime.isAfter(curDayEnd))))
+				                        item.startTime.isBefore(curDayEnd))))
 					ret.add(item);
 			}
 			return ret;
