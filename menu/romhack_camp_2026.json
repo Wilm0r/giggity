@@ -1,0 +1,16 @@
+{
+  "version": 2026080700,
+  "url": "https://cfp.romhack.io/romhack-camp-2026/schedule/export/schedule.xml",
+  "title": "RomHack Camp 2026",
+  "start": "2026-10-02",
+  "end": "2026-10-04",
+  "timezone": "Europe/Rome",
+  "metadata": {
+    "icon": "https://romhack.io/wp-content/uploads/2026/08/romhack_camp_icon_512.png",
+    "links": [
+      { "url": "https://romhack.io/", "title": "Website" },
+      { "url": "https://romhack.io/romhack-participant-faq/", "title": "FAQ" },
+      { "url": "https://romhack.io/romhack-camp-directions/", "title": "Directions" }
+    ]
+  }
+}
