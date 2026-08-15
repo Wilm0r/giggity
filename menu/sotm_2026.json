@@ -6,10 +6,15 @@
 	"end": "2026-08-30",
 	"timezone": "Europe/Paris",
 	"metadata": {
+		"icon": "https://2026.stateofthemap.org/img/logo/sotm_2026.svg",
 		"links": [
 			{
 				"url": "https://2026.stateofthemap.org/",
 				"title": "Website"
+			},
+			{
+				"url": "https://umap.openstreetmap.fr/fr/map/sotm-2026-paris_1374311",
+				"title": "Map"
 			}
 		]
 	}
