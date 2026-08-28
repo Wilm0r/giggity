@@ -1,0 +1,16 @@
+{
+    "version": 2026082899,
+    "url": "https://pretalx.postmarketos.org/postmarketos-conference-2026/schedule/export/schedule.xml",
+    "title": "The postmarketOS and Alpine Linux Conference 2026",
+    "start": "2026-09-25",
+    "end": "2026-09-27",
+    "timezone": "Europe/Berlin",
+    "metadata": {
+        "links": [
+            {
+                "url": "https://postmarketos.org/conference/",
+                "title": "Website"
+            }
+        ]
+    }
+}
