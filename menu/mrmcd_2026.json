@@ -1,0 +1,28 @@
+{
+	"version": 2026083001,
+	"url": "https://talks.mrmcd.net/2026/schedule/export/schedule.xml",
+	"title": "MRMCD 2026",
+	"start": "2026-09-11",
+	"end": "2026-09-13",
+	"timezone": "Europe/Berlin",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://2026.mrmcd.net",
+				"title": "Website"
+			},
+			{
+				"url": "https://tickets.mrmcd.net/mrmcd/2026/",
+				"title": "Tickets"
+			},
+			{
+				"url": "https://engel.mrmcd.net/login",
+				"title": "Engelsystem / Matrosensystem"
+			},
+			{
+				"url": "https://wiki.mrmcd.net/",
+				"title": "Wiki"
+			}
+		]
+	}
+}
