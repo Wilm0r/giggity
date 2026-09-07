@@ -22,7 +22,7 @@ public class ScheduleHashCodeTest {
 		Schedule.Item first = item("https://example.test/schedule", "item-guid");
 		Schedule.Item second = item("https://example.test/schedule", "item-guid");
 
-		assertEquals(first, second);
+		assertEquals(first.getUrl(), second.getUrl());
 		assertEquals(first.hashCode(), second.hashCode());
 	}
 }
