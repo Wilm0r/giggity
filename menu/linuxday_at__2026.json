@@ -1,0 +1,28 @@
+{
+  "version": 2026090500,
+  "url": "https://www.linuxday.at/vortraege/2026/calendar.ics",
+  "title": "LinuxDay.at Vortraege",
+  "start": "2026-09-26",
+  "end": "2026-09-26",
+  "timezone": "Europe/Vienna",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://www.linuxday.at/",
+        "title": "Webseite"
+      },
+      {
+         "url": "https://www.linuxday.at/aussteller/2026",
+         "title": "Aussteller"
+      },
+      {
+         "url": "https://www.linuxday.at/vortraege/2026",
+         "title": "Vorträge"
+      },
+      {
+         "url": "https://www.linuxday.at/ort.html",
+         "title": "Wie komme ich zur HTL-Dornbirn"
+      }     
+    ]
+  }
+}
