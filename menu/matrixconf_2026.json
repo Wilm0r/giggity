@@ -1,0 +1,24 @@
+{
+  "version": 2026091100,
+  "url": "https://cfp.2026.matrix.org/matrix-conference-2026/schedule/export/schedule.xml",
+  "title": "The Matrix Conference 2026",
+  "start": "2026-10-21",
+  "end": "2026-10-22",
+  "timezone": "Europe/Stockholm",
+  "metadata": {
+    "links": [
+      {
+        "url": "https://2026.matrix.org",
+        "title": "Website"
+      },
+      {
+        "url": "https://2026.matrix.org/attend/#getting-there",
+        "title": "Venue and Travel"
+      },
+      {
+        "url": "https://2026.matrix.org/attend/#health-and-safety",
+        "title": "Health and Safety"
+      }
+    ]
+  }
+}
