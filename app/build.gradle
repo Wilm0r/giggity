@@ -1,3 +1,5 @@
+import javax.inject.Inject
+
 apply plugin: 'com.android.application'
 
 def generatedRes = 'build/genrule/res'
@@ -68,15 +70,27 @@ repositories {
     mavenCentral()
 }
 
+interface ExecOps {
+    @Inject
+    ExecOperations getExecOperations()
+}
+
 tasks.register('generateMenu') {
+    def execOps = project.objects.newInstance(ExecOps)
     doLast {
         def menuJson = new ByteArrayOutputStream()
         mkdir "${generatedRes}/raw"
-        def res = exec {
+        def res = execOps.execOperations.exec {
             workingDir = '..'
             standardOutput = menuJson
-            commandLine = 'tools/merge.py'
-            args = ['-w', '60']
+            commandLine = project.findProperty('uvPath') ?: System.getenv('UV_PATH') ?: 'uv'
+            args = [
+                'run',
+                '--no-project',
+                '--with-requirements', 'tools/requirements.txt',
+                'tools/merge.py',
+                '-w', '60'
+            ]
             ignoreExitValue = true
         }
         if (res.getExitValue() == 0) {
