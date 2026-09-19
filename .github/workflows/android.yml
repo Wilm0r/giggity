@@ -18,6 +18,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Install packages
+      run: pip install uv
+
     - uses: actions/checkout@v4
     - name: set up JDK
       uses: actions/setup-java@v4
