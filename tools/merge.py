@@ -84,7 +84,7 @@ def start_date(all, weeks=None):
 
 def merge(all, first):
 	out = {
-		"version": 0,
+		"version": max(s.get("version", 0) for s in all.values()),
 		"schedules": [],
 	}
 
@@ -97,7 +97,7 @@ def merge(all, first):
 			continue
 		s = copy.deepcopy(s)
 		if "id" in s:
-			if s["version"] <= 2023090423:
+			if s.get("version", 2026000000) <= 2023090423:
 				# Most recent file with this issue. Fix it quietly.
 				# Honestly no idea how these appeared, it was never in the spec yet ~15 files have it!
 				del s["id"]
@@ -106,8 +106,8 @@ def merge(all, first):
 		s = {
 			"id": pathlib.PurePath(fn).stem,  # .stem = basename without extension
 			**s,
+			"version": out["version"]
 		}
-		out["version"] = max(out["version"], s["version"])
 		out["schedules"].append(s)
 
 	return out

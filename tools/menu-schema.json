@@ -36,8 +36,9 @@
           "version": {
             "$id": "/properties/schedules/items/properties/version",
             "type": "integer",
-            "title": "Version number of this entry",
+            "title": "DEPRECATED: Not read since 2019: Version number of this entry",
             "description": "Formatted like an old fashioned DNS SOA version number",
+            "deprecated": true,
             "default": 0,
             "examples": [
               2016072901
