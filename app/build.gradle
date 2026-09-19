@@ -78,25 +78,34 @@ interface ExecOps {
 tasks.register('generateMenu') {
     def execOps = project.objects.newInstance(ExecOps)
     doLast {
+        boolean isDebug = gradle.taskGraph.allTasks.any { it.name.toLowerCase().contains('debug') }
         def menuJson = new ByteArrayOutputStream()
         mkdir "${generatedRes}/raw"
-        def res = execOps.execOperations.exec {
-            workingDir = '..'
-            standardOutput = menuJson
-            commandLine = project.findProperty('uvPath') ?: System.getenv('UV_PATH') ?: 'uv'
-            args = [
-                'run',
-                '--no-project',
-                '--with-requirements', 'tools/requirements.txt',
-                'tools/merge.py',
-                '-w', '60'
-            ]
-            ignoreExitValue = true
-        }
-        if (res.getExitValue() == 0) {
+
+        try {
+            def res = execOps.execOperations.exec {
+                workingDir = '..'
+                standardOutput = menuJson
+                commandLine = project.findProperty('uvPath') ?: System.getenv('UV_PATH') ?: 'uv'
+                args = [
+                    'run',
+                    '--no-project',
+                    '--with-requirements', 'tools/requirements.txt',
+                    'tools/merge.py',
+                    '-w', '60'
+                ]
+                ignoreExitValue = isDebug
+            }
+            if (res.getExitValue() != 0) {
+                throw new GradleException("The menu merger script failed with a non-zero exit code.")
+            }
             new File(projectDir, "${generatedRes}/raw/menu.json").text = menuJson
-        } else {
-            logger.warn("WARNING: The menu merger did not run successfully! Will fall back to a stale menu.json file.")
+        } catch (Exception e) {
+            if (!isDebug) {
+                throw new GradleException("Could not run menu merger process: ${e.message}", e)
+            }
+            logger.warn("Could not run menu merger process: ${e.message}")
+            logger.warn("Will fall back to a stale menu.json file.")
         }
     }
 }
