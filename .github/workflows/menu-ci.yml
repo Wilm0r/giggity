@@ -15,6 +15,9 @@ on:
 
 jobs:
   validate:
+    permissions:
+      contents: read
+      pull-requests: write
     runs-on: ubuntu-latest
     env:
       # adb variable (alternative to -s flag).
