@@ -924,7 +924,6 @@ public class Schedule implements Serializable {
 					// https://github.com/Wilm0r/giggity/issues/521 and also
 					// https://github.com/Wilm0r/giggity/pull/533
 					endTime = endTime.plusDays(Integer.parseInt(dur.group(1)));
-					Log.i("Schedule.loadPentabarf", "Multi-day event?" + startTime + " " + endTime);
 				}
 
 				if (guid != null && guid.equals(id)) {
