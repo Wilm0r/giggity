@@ -221,7 +221,7 @@ public class ScheduleTest extends TestCase {
 		assertThat(room.getLocation(), is("https://36c3.c3nav.de/l/fhb"));
 		assertThat(room.getItems(), hasSize(23));
 		s.setDay(1); // Sat
-		assertThat(room.getItems(), hasSize(7));
+		assertThat(room.getItems(), hasSize(6));  // Made one event multi-day which for now makes it invisible.
 		s.setDay(-1); // Back to all
 		assertThat(room.getItems(), hasSize(23));
 

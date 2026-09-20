@@ -799,7 +799,8 @@ public class Schedule implements Serializable {
 		private ArrayList<Link> links;
 		private LocalDate curDay;
 
-		private DateTimeFormatter df, tf, zdf;
+		private final DateTimeFormatter df, tf, zdf;
+		private final Pattern durp;
 
 		public PentabarfParser() {
 			tentMap = new HashMap<>();
@@ -807,6 +808,8 @@ public class Schedule implements Serializable {
 			df = DateTimeFormatter.ISO_LOCAL_DATE;
 			// tf = DateTimeFormatter.ISO_LOCAL_TIME;  // Nope, won't take the optional seconds. :<
 			tf = DateTimeFormatter.ofPattern("H:mm[:ss]");
+
+			durp = Pattern.compile("^(?:(\\d+):)?(\\d+:\\d+)$");
 
 			// zoned date+time format in the <date/> tag, not used by all schedules BUT the only one
 			// that may have tz awareness... (Used by several schedules yet for example not FOSDEM.
@@ -911,8 +914,18 @@ public class Schedule implements Serializable {
 					}
 				}
 
-				LocalTime rawTime = LocalTime.parse(durationS, tf);
+				Matcher dur = durp.matcher(durationS);
+				dur.matches();  // Call this before you can access the groups. :-/
+				LocalTime rawTime = LocalTime.parse(dur.group(2), tf);
 				endTime = startTime.plusHours(rawTime.getHour()).plusMinutes(rawTime.getMinute());
+				if (dur.group(1) != null) {
+					// This is all very theoretical since I don't really want to support
+					// multi-day items, but let's at least parse things properly?
+					// https://github.com/Wilm0r/giggity/issues/521 and also
+					// https://github.com/Wilm0r/giggity/pull/533
+					endTime = endTime.plusDays(Integer.parseInt(dur.group(1)));
+					Log.i("Schedule.loadPentabarf", "Multi-day event?" + startTime + " " + endTime);
+				}
 
 				if (guid != null && guid.equals(id)) {
 					id = null;
