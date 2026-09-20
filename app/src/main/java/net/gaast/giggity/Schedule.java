@@ -1155,19 +1155,10 @@ public class Schedule implements Serializable {
 
 		@Override
 		public int hashCode() {
-			// No clue what the default version does but the numbers seem too low to me.
-			// I'm using this for notification + alarm IDs now so use all 32 bits.
-			// Or at least I once was, not clear whether I still do, and whether to care about the
-			// antiquated hash algorithm?
-			try {
-				MessageDigest md5 = MessageDigest.getInstance("MD5");
-				md5.update(getUrl().getBytes());
-				byte[] raw = md5.digest();
-				return ByteBuffer.wrap(raw, 0, 4).getInt();
-			} catch (NoSuchAlgorithmException e) {  // WTF no
-				e.printStackTrace();
-				return super.hashCode();
-			}
+			// I forgot why I was even overriding this one. Probably not very
+			// useful, though can't hurt to do it on just the unique URL
+			// instead of the whole object!
+			return getUrl().hashCode();
 		}
 		
 		public Schedule getSchedule() {
