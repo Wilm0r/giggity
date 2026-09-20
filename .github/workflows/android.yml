@@ -12,6 +12,9 @@ on:
       - 'menu/**'
       - 'metadata/**'
 
+permissions:
+  contents: read
+
 jobs:
   build:
 
