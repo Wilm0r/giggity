@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
+import datetime
 import hashlib
 import hmac
 import json
 import jsonschema
+import math
 import os
 import re
 import tempfile
@@ -73,6 +75,16 @@ def bytes_if_not(src):
 
 @app.route("/update-menu-cache", methods=["GET", "POST"])
 def update():
+	# Picking a version# this way could lead to multiple versions of the file
+	# generated with the same number which isn't optimal. It could cause some
+	# annoyance if someone refreshes their Giggity right as I approve a batch
+	# of menu PRs for example.
+	#
+	# Rare race though and I'll try to address it on the reader side soon.
+	d = datetime.datetime.now(datetime.UTC)
+	version = (d.year * 1000000 + d.month * 10000 + d.day * 100 +
+	           math.floor(d.timestamp() % 86400 / 864))
+
 	req_digest = request.headers.get("X-Hub-Signature")
 	if req_digest:
 		# Same here, manual says request.data returns a string but it's actually a byte
@@ -108,7 +120,7 @@ def update():
 	for rev in todo:
 		cached = bucket.blob("menu-cache/%s" % rev)
 		items = merge.load_git(path, rev)
-		raw_json = merge.merge(items, merge.start_date(items, 60))
+		raw_json = merge.merge(items, merge.start_date(items, 60), version)
 		formatted = merge.format_file(raw_json)
 		try:
 			jsonschema.validate(json.loads(formatted), MENU_JSON_SCHEMA)

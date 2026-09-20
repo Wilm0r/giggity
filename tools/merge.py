@@ -82,9 +82,12 @@ def start_date(all, weeks=None):
 	last = max(dates)
 	return datetime.datetime.strftime(last - datetime.timedelta(weeks=weeks), "%Y-%m-%d")
 
-def merge(all, first):
+def merge(all, first, version=None):
+	if not version:
+		version = max(s.get("version", 0) for s in all.values())
+
 	out = {
-		"version": max(s.get("version", 0) for s in all.values()),
+		"version": version,
 		"schedules": [],
 	}
 
@@ -106,7 +109,7 @@ def merge(all, first):
 		s = {
 			"id": pathlib.PurePath(fn).stem,  # .stem = basename without extension
 			**s,
-			"version": out["version"]
+			"version": version  # Keep adding it just for old Giggity versions.
 		}
 		out["schedules"].append(s)
 

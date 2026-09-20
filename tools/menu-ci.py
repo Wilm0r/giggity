@@ -286,6 +286,9 @@ def validate_entry(e):
 	except FetchError as err:
 		ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))
 
+	if e.get("version", 2026000000) > 2026092000:
+		ret.append("The \"version\" tag is no longer required.")
+
 	if e["end"] < e["start"]:
 		ret.append("Conference ends (%(end)s) before it starts (%(start)s)?" % e)
 	if e["end"] < datetime.datetime.now().strftime("%Y-%m-%d"):
@@ -296,7 +299,7 @@ def validate_entry(e):
 			zoneinfo.ZoneInfo(e["timezone"])
 		except zoneinfo._common.ZoneInfoNotFoundError:
 			ret.append("Timezone does not exist: %s" % e["timezone"])
-	elif e["version"] >= 2021091100:
+	elif e.get("version", 2026000000) >= 2021091100:
 		ret.append("The timezone property is now required.")
 
 	md = e.get("metadata")
@@ -357,13 +360,6 @@ def validate_entry(e):
 
 	return ret
 
-maxver = max(e["version"] for e in new["schedules"])
-todayver = int(datetime.datetime.now().strftime("%Y%m%d99"))
-if new["version"] < maxver:
-	LOG.E("File version (%d) number must be ≥ %d (highest version in file)" % (new["version"], maxver))
-elif new["version"] > todayver:
-	LOG.E("File version (%d) number must be ≤ %d" % (new["version"], todayver))
-
 changed = []
 pr_title = []
 base_entries: Dict[str, Dict] = {e["id"]: e for e in base.get("schedules", [])}
@@ -395,8 +391,6 @@ for e in new["schedules"]:
 				continue
 		else:
 			LOG.I("Changed: %s" % e["title"])
-			if e["version"] <= base_entries[eid]["version"]:
-				LOG.E("Version number for %r must be updated" % e["title"])
 			base_entries.pop(eid)
 			changed.append(e)
 	else:
@@ -440,15 +434,6 @@ for e in new["schedules"]:
 		else:
 			LOG.E("Schedule file doesn't seem to load in Giggity successfully. (See CI logs for details?)")
 			LOG.C("\n".join(load_log))  # Won't end up in markdown but should be in verbose logs.
-
-if changed and base:
-	if new["version"] <= base["version"]:
-		LOG.E("File version number must be > %d (previous version)" % base["version"])
-	for e in changed:
-		# Not in validate_entry() because that function shouldn't itself
-		# assume changes were made relative to the base version.
-		if e["version"] <= base["version"]:
-			LOG.E("Schedule %s version number must be > %d (previous version)" % (e["title"], base["version"]))
 
 for e in changed:
 	if e.get("refresh_interval", 86400) < 86400 and not http.cache_sensible(e["url"]):

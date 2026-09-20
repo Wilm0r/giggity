@@ -20,9 +20,8 @@ with organising your visit, like:
  * Include coordinates of all the venue's rooms so you can see where
    they are in your preferred maps application, or c3nav integration.
  * Add direct shortcut (or widget) to your homescreen.
- * Export your selections via a QR code to sync with other devices or with your
-   friends. (Relies on deprecated ZXing QR scanner, functionality to be
-   replaced.
+ * Export your selections (QR, chat, etc.) to sync with other devices
+   or with friends.
 
 It's free software, and available on [Google
 Play](https://play.google.com/store/apps/details?id=net.gaast.giggity&hl=en),
@@ -83,7 +82,6 @@ To do this, construct a JSON file formatted like this in the [menu directory](me
 
 ```js
 {
-	"version": 2019122000,
 	"url": "URL_OF_YOUR_PENTABARF_FILE",
 	"title": "TITLE",  // preferably have it match the title in your Pentabarf
 	"start": "2020-02-01",
