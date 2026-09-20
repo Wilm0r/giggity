@@ -121,6 +121,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		db = app.getDb();
 		pref = PreferenceManager.getDefaultSharedPreferences(app);
 
+		LinearLayout cont = new LinearLayout(this);
 		list = new ListView(this);
 		if (Build.VERSION.SDK_INT >= 30) {
 			list.setOnApplyWindowInsetsListener(new View.OnApplyWindowInsetsListener() {
@@ -129,8 +130,8 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				public WindowInsets onApplyWindowInsets(@NonNull View v, @NonNull WindowInsets insets) {
 					DisplayCutout cut = null;
 					Insets r = insets.getInsets(WindowInsets.Type.systemBars() | WindowInsets.Type.displayCutout());
-					list.setPadding(r.left, r.top, r.right, r.bottom);
-					list.setClipToPadding(false);
+					cont.setPadding(r.left, r.top, r.right, r.bottom);
+					cont.setClipToPadding(false);
 
 					return insets;
 				}
@@ -171,7 +172,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		refresher.setOnRefreshListener(this);
 		refresher.addView(list);
 
-		LinearLayout cont = new LinearLayout(this);
 		cont.setOrientation(LinearLayout.VERTICAL);
 //		cont.setFitsSystemWindows(true);
 		cont.addView(refresher, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1));
