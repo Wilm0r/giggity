@@ -72,6 +72,11 @@ public class Fetcher implements AutoCloseable {
 
 		URL dl = new URL(url);
 		dlc = (HttpURLConnection) dl.openConnection();
+		// HttpURLConnection doesn't do happy eyeballs (RFC 6555) so if a server is broken
+		// on one of the address families we might get stuck forever without this timeout.
+		// I hope 5s is long enough for lossy connections? (Good luck with the rest of the
+		// fetch anyway..)
+		dlc.setConnectTimeout(5000);
 		dlc.setInstanceFollowRedirects(true);
 		dlc.addRequestProperty("Accept-Encoding", "gzip");
 		dlc.addRequestProperty("User-Agent", "Giggity/" + BuildConfig.VERSION_NAME);
