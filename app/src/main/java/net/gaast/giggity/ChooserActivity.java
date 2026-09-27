@@ -137,8 +137,8 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 				}
 			});
 		}
-		updateList();  // To make sure there's always something on screen.
-		refreshSeed(false);  // Possibly find new data then refresh, asynchronously.
+		// To make sure there's always something on screen. Background fetch starts below.
+		updateList();
 
 		list.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -176,6 +176,9 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 //		cont.setFitsSystemWindows(true);
 		cont.addView(refresher, new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT, 1));
 
+		// Start background fetch now. Late so that we can show progress hint in UI.
+		refreshSeed(false);
+
 		cont.setBackgroundResource(R.color.primary_dark);
 		setContentView(cont);
 	}
@@ -184,6 +187,7 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		long seedAge = System.currentTimeMillis() - pref.getLong("last_menu_seed_ts", 0);
 		if (force || seedAge < 0 || seedAge > Db.SEED_FETCH_INTERVAL) {
 			Log.d("ChooserActivity", "seedAge " + seedAge);
+			refresher.setRefreshing(true);
 
 			final Thread loader;
 
@@ -233,7 +237,6 @@ public class ChooserActivity extends Activity implements SwipeRefreshLayout.OnRe
 		Giggity app = (Giggity) getApplication();
 		app.flushSchedules();
 
-		refresher.setRefreshing(true);
 		refreshSeed(true);
 	}
 
