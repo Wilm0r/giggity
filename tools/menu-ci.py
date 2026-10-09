@@ -384,7 +384,7 @@ for e in new["schedules"]:
 		LOG.E("ID changes (renames) are not allowed. (URL %s, ID %s→%s)" % (url, base_url_id[url], eid))
 
 	if eid in base_entries:
-		if e == base_entries[eid]:
+		if {**e, "version": None} == {**base_entries[eid], "version": None}:
 			LOG.C("Unchanged: %s" % e["title"])
 			base_entries.pop(eid)
 			if not args.all:
