@@ -282,8 +282,7 @@ public class Db extends SQLiteOpenHelper {
 	private boolean updateData(SQLiteDatabase db, boolean online) {
 		Seed seed = loadSeed(online ? SeedSource.ONLINE : SeedSource.CACHED);
 		Seed localSeed = loadSeed(SeedSource.BUILT_IN);
-		/* Pick the best one. localSeed *can* be newer than the cached one. Should not
-		 * ever be newer than the online one though. */
+		/* Pick the best one. Should usually be the online one these days. */
 		if (seed != null && localSeed != null) {
 			if (localSeed.version > seed.version)
 				seed = localSeed;
@@ -300,12 +299,11 @@ public class Db extends SQLiteOpenHelper {
 		int newver = seed.version;
 
 		Log.d("DeoxideDb.versions", "" + seed.version + " " + version + " " + oldDbVer + " " + dbVersion);
-		if (seed.version <= version && oldDbVer == dbVersion) {
-			/* No updates required, both data and structure are up to date. */
-			Log.d("DeoxideDb.updateData", "Already up to date: " + version + " " + oldDbVer);
-			return true;
-		}
-		
+
+		/* Previous Giggity versions would return here if the seed version matches the most recently
+		 * loaded one, but version# bumps aren't guaranteed anymore plus really how long can it take
+		 * to run ~50 SQL UPDATE statements once a day...
+		 */
 		for (Seed.Schedule sched : seed.schedules) {
 			updateSingleSchedule(db, sched);
 		}
