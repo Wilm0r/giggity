@@ -1,0 +1,88 @@
+{
+  "url": "https://talks.openalt.cz/openalt-2026/schedule/export/schedule.xml",
+  "title": "OpenAlt 2026",
+  "start": "2026-11-07",
+  "end": "2026-11-08",
+  "timezone": "Europe/Prague",
+  "metadata": {
+    "icon": "https://gitlab.com/uploads/-/system/project/avatar/45099900/logo_konference-150.png",
+    "links": [
+      {
+        "url": "https://www.openalt.cz/2026/",
+        "title": "Website"
+      }
+    ]
+  },
+  "rooms": [
+    {
+      "latlon": [
+        49.226218,
+        16.596903
+      ],
+      "name": "D105"
+    },
+    {
+      "latlon": [
+        49.226186,
+        16.596815
+      ],
+      "name": "D0206"
+    },
+    {
+      "latlon": [
+        49.226216,
+        16.597027
+      ],
+      "name": "D0207"
+    },
+    {
+      "latlon": [
+        49.226311,
+        16.596415
+      ],
+      "name": "A112"
+    },
+    {
+      "latlon": [
+        49.226178,
+        16.596482
+      ],
+      "name": "A113"
+    },
+    {
+      "latlon": [
+        49.226579,
+        16.595023
+      ],
+      "name": "R212"
+    },
+    {
+      "latlon": [
+        49.226447,
+        16.595087
+      ],
+      "name": "R211"
+    },
+    {
+      "latlon": [
+        49.226682,
+        16.597448
+      ],
+      "name": "E112"
+    },
+    {
+      "latlon": [
+        49.226859,
+        16.597501
+      ],
+      "name": "E105"
+    },
+    {
+      "latlon": [
+        49.226789,
+        16.597257
+      ],
+      "name": "E104"
+    }
+  ]
+}
