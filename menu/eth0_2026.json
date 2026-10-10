@@ -1,0 +1,17 @@
+{
+	"url": "https://content.eth0.nl/en/eth0_2026/public/schedule.xml",
+	"title": "eth0:2026",
+	"start": "2026-11-06",
+	"end": "2026-11-08",
+	"timezone": "Europe/Amsterdam",
+	"refresh_interval": 86400,
+	"metadata": {
+		"icon": "https://wiki.eth0.nl/images/f/f6/Logo_2026.png",
+		"links": [
+			{
+				"url": "https://wiki.eth0.nl/index.php/Eth0:2026_Autumn",
+				"title": "Wiki"
+			}
+		]
+	}
+}
