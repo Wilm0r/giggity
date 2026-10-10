@@ -1,0 +1,49 @@
+{
+	"url": "https://www.pycon.fr/2026/fr/calendar.ics",
+	"title": "PyConFR 2026",
+	"start": "2026-10-29",
+	"end": "2026-11-01",
+	"timezone": "Europe/Paris",
+	"metadata": {
+		"links": [
+			{
+				"url": "https://www.pycon.fr/2026/fr/",
+				"title": "Site Web"
+			},
+			{
+				"title": "Inscription",
+				"url": "https://www.pycon.fr/2026/fr/schedule.html#register"
+			}
+		],
+		"rooms": [
+			{
+				"name": "MARI/SUGGAR",
+				"latlon": [43.445971, -1.553809]
+			},
+			{
+				"name": "PATUEK",
+				"latlon": [43.445971, -1.553809]
+			},
+			{
+				"name": "BASENDERIE",
+				"latlon": [43.445971, -1.553809]
+			},
+			{
+				"name": "LANG5",
+				"latlon": [43.445971, -1.553809]
+			},
+			{
+				"name": "LANG6",
+				"latlon": [43.445971, -1.553809]
+			},
+			{
+				"name": "LANG7",
+				"latlon": [43.445971, -1.553809]
+			},
+			{
+				"name": "LANG8",
+				"latlon": [43.445971, -1.553809]
+			}
+		]
+	}
+}
