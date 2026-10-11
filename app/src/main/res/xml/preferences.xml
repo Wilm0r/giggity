@@ -16,27 +16,31 @@
 						android:title="@string/show_hidden"
 						android:defaultValue="false" />
 
-	<ListPreference android:key="font_size"
-					android:title="@string/font_size"
-					android:dialogTitle="@string/font_size"
-					android:positiveButtonText="@string/ok"
-					android:negativeButtonText="@string/cancel"
-					android:entries="@array/font_size"
-					android:entryValues="@array/font_size_values"
-					android:summary="%s"
-					android:defaultValue="medium" />
+	<PreferenceCategory android:title="@string/block_schedule">
 
-	<CheckBoxPreference android:key="block_schedule_vertical"
-		android:title="@string/block_schedule_vertical"
-		android:summaryOff="@string/block_schedule_vertical_no"
-		android:summaryOn="@string/block_schedule_vertical_yes"
-		android:defaultValue="false" />
-
-	<CheckBoxPreference android:key="block_schedule_show_track"
-		android:title="@string/block_schedule_show_track"
-		android:summaryOff="@string/block_schedule_show_track_no"
-		android:summaryOn="@string/block_schedule_show_track_yes"
-		android:defaultValue="false" />
+		<ListPreference
+			android:defaultValue="medium"
+			android:dialogTitle="@string/font_size"
+			android:entries="@array/font_size"
+			android:entryValues="@array/font_size_values"
+			android:key="font_size"
+			android:negativeButtonText="@string/cancel"
+			android:positiveButtonText="@string/ok"
+			android:summary="%s"
+			android:title="@string/font_size" />
+		<CheckBoxPreference
+			android:defaultValue="false"
+			android:key="block_schedule_vertical"
+			android:summaryOff="@string/block_schedule_vertical_no"
+			android:summaryOn="@string/block_schedule_vertical_yes"
+			android:title="@string/block_schedule_vertical" />
+		<CheckBoxPreference
+			android:defaultValue="false"
+			android:key="block_schedule_show_track"
+			android:summaryOff="@string/block_schedule_show_track_no"
+			android:summaryOn="@string/block_schedule_show_track_yes"
+			android:title="@string/block_schedule_show_track" />
+	</PreferenceCategory>
 
 
 	<PreferenceCategory android:title="@string/reminder">

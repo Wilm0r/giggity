@@ -8,7 +8,7 @@
 	<!-- SettingsActivity -->
 	<string name="settings">Settings</string>
 	<string name="default_view">Default view</string>
-	<string name="font_size">Block schedule font size</string>
+	<string name="font_size">Font size</string>
 	<string name="block_schedule_vertical">Vertical block schedule</string>
 	<string name="block_schedule_vertical_yes">Time goes downward</string>
 	<string name="block_schedule_vertical_no">Time goes to the right</string>

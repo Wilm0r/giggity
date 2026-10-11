@@ -7,7 +7,7 @@
 	<!-- SettingsActivity -->
 	<string name="settings">Instellingen</string>
 	<string name="default_view">Standaard weergave</string>
-	<string name="font_size">Lettergrootte blokkenschema</string>
+	<string name="font_size">Lettergrootte</string>
 	<string name="block_schedule_vertical">Verticaal blokkenschema</string>
 	<string name="block_schedule_vertical_yes">Tijd loopt naar beneden</string>
 	<string name="block_schedule_vertical_no">Tijd loopt naar rechts</string>
