@@ -1,7 +1,9 @@
 package net.gaast.giggity;
 
 import android.content.Context;
+import android.net.http.HttpEngine;
 import android.net.http.HttpResponseCache;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -14,9 +16,9 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.zip.GZIPInputStream;
 
 /** Caching HTTP fetcher. */
 public class Fetcher implements AutoCloseable {
@@ -30,6 +32,9 @@ public class Fetcher implements AutoCloseable {
 	private InputStream inStream;
 	private BufferedReader inReader;
 	static HttpResponseCache cache;
+	private static HttpEngine httpEngine;
+
+	private static final int httpCacheBytes = 32 * 1024 * 1024;
 
 	public enum Source {
 		REFRESH,           /* Ctrl-R, y'know */
@@ -53,14 +58,38 @@ public class Fetcher implements AutoCloseable {
 			dir.delete();
 		}
 
-		try {
-			dir = new File(ctx.getCacheDir(), "HttpResponseCache");
-			// 32 MiB. No clue what I need, would've preferred something time-based but no such
-			// option. But let's allow for some large PDFs or something without evicting schedules?
-			cache = HttpResponseCache.install(dir, 32 * 1024 * 1024);
-		} catch (IOException e) {
-			Log.w("Fetcher", "HttpResponseCache.install: " + e);
-			return false;
+		File httpResponseCacheDir = new File(ctx.getCacheDir(), "HttpResponseCache");
+
+		if (Build.VERSION.SDK_INT >= 34) {
+			try {
+				httpEngine = new HttpEngine.Builder(ctx)
+						.setEnableHttp2(true)
+						// Cronet waits for QUIC for way too long, noticeably slows schedule loads.
+						.setEnableQuic(false)
+						.setEnableBrotli(true)
+						.setStoragePath(httpResponseCacheDir.getAbsolutePath())
+						.setEnableHttpCache(
+								HttpEngine.Builder.HTTP_CACHE_DISK,
+								httpCacheBytes
+						)
+						.setUserAgent("Giggity/" + BuildConfig.VERSION_NAME)
+						.build();
+				Log.i("Fetcher", "HttpEngine initialized successfully");
+			} catch (Throwable t) {
+				Log.w("Fetcher", "Failed to initialize HttpEngine, falling back: " + t);
+			}
+		}
+
+		if (httpEngine == null) {
+			Log.w("Fetcher", "Using old-fashioned HTTPURLConnection on old device.");
+			try {
+				// 32 MiB. No clue what I need, would've preferred something time-based but no such
+				// option. But let's allow for some large PDFs or something without evicting schedules?
+				cache = HttpResponseCache.install(httpResponseCacheDir, httpCacheBytes);
+			} catch (IOException e) {
+				Log.w("Fetcher", "HttpResponseCache.install: " + e);
+				return false;
+			}
 		}
 		return true;
 	}
@@ -71,15 +100,18 @@ public class Fetcher implements AutoCloseable {
 		Log.d("Fetcher", "Creating fetcher for " + url + " source=" + source);
 
 		URL dl = new URL(url);
-		dlc = (HttpURLConnection) dl.openConnection();
-		// HttpURLConnection doesn't do happy eyeballs (RFC 6555) so if a server is broken
-		// on one of the address families we might get stuck forever without this timeout.
-		// I hope 5s is long enough for lossy connections? (Good luck with the rest of the
-		// fetch anyway..)
-		dlc.setConnectTimeout(5000);
+		if (httpEngine != null && Build.VERSION.SDK_INT >= 34) {
+			dlc = (HttpURLConnection) httpEngine.openConnection(dl);
+		} else {
+			dlc = (HttpURLConnection) dl.openConnection();
+			// HttpURLConnection doesn't do happy eyeballs (RFC 6555) so if a server is broken
+			// on one of the address families we might get stuck forever without this timeout.
+			// I hope 5s is long enough for lossy connections? (Good luck with the rest of the
+			// fetch anyway..)
+			dlc.setConnectTimeout(5000);
+			dlc.addRequestProperty("User-Agent", "Giggity/" + BuildConfig.VERSION_NAME);
+		}
 		dlc.setInstanceFollowRedirects(true);
-		dlc.addRequestProperty("Accept-Encoding", "gzip");
-		dlc.addRequestProperty("User-Agent", "Giggity/" + BuildConfig.VERSION_NAME);
 
 		if (source != Source.CACHE_ONLY && Looper.myLooper() == Looper.getMainLooper()) {
 			throw new IOException("Fetcher: Should only allow Source.CACHE_ONLY in UI thread!");
@@ -91,23 +123,26 @@ public class Fetcher implements AutoCloseable {
 		switch (source) {
 			case DEFAULT:
 				// No special headers needed, that's what default is about.. :)
+				dlc.setUseCaches(true);
 				break;
 			case REFRESH:
-				dlc.addRequestProperty("Cache-Control", "max-age=0");
+				dlc.setUseCaches(false); // Bypasses local cache for network fetch
+				dlc.setRequestProperty("Cache-Control", "max-age=0");
 				break;
 			case CACHE_1D:
 				// Rely on cache with daily refreshes, regardless of what the server said.
 				// (Would be nice to still trust the server if it returned a higher max-age but how?)
-				dlc.addRequestProperty("Cache-Control", "max-age=" + (24 * 60 * 60));  // 1d
+				dlc.setUseCaches(true);
+				dlc.setRequestProperty("Cache-Control", "max-age=86400"); // 1 day
 				break;
 			case CACHE_1Y:
 				// Add 1y to whatever the server said. Practically rely on cache forever.
-				dlc.addRequestProperty("Cache-Control", "max-stale=" + (365 * 24 * 60 * 60));  // 1y
+				dlc.setUseCaches(true);
+				dlc.setRequestProperty("Cache-Control", "max-stale=31536000"); // 1 year
 				break;
 			case CACHE_ONLY:
-				dlc.addRequestProperty("Cache-Control", "only-if-cached");
-				// 10y (though apparently I could just omit the argument?)
-				dlc.addRequestProperty("Cache-Control", "max-stale=" + (3650 * 24 * 60 * 60));
+				dlc.setUseCaches(true);
+				dlc.setRequestProperty("Cache-Control", "only-if-cached, max-stale=315360000");
 				break;
 		}
 
@@ -129,7 +164,7 @@ public class Fetcher implements AutoCloseable {
 
 		fromCache_ = false;
 		isFresh_ = true;
-		for (Map.Entry<String, java.util.List<String>> hd : dlc.getHeaderFields().entrySet()) {
+		for (Map.Entry<String, List<String>> hd : dlc.getHeaderFields().entrySet()) {
 			for (String v : hd.getValue()) {
 				// Log.d("Fetcher", "< " + hd.getKey() + ": " + v);
 				if (hd.getKey() == null) {
@@ -153,9 +188,6 @@ public class Fetcher implements AutoCloseable {
 			}
 
 			String enc = dlc.getContentEncoding();
-			if (enc != null && enc.contains("gzip")) {
-				inStream = new GZIPInputStream(inStream);
-			}
 		} else {
 			throw new IOException("Download error: HTTP " + status);
 		}
@@ -235,7 +267,9 @@ public class Fetcher implements AutoCloseable {
 	 *  previous copy). Sadly we have lost that level now but I don't think it was used much anyway.
 	 *  Just keep this as a cache flush checkpoint. */
 	public void keep() {
-		cache.flush();
+		if (cache != null) {
+			cache.flush();
+		}
 	}
 
 	/** Intermediate streamer to report progress to caller (mostly for UI). */

@@ -563,12 +563,9 @@ public class ScheduleViewActivity extends Activity {
 				viewerContainer.removeView((View) prog);
 			}
 		});
-		try {
-			new Fetcher(app, url, Fetcher.Source.CACHE_ONLY).close();
-		} catch (IOException e) {
-			// No cached copy available apparently so hide that option.
-			prog.findViewById(R.id.load_cached).setVisibility(View.GONE);
-		}
+		// Disable "Load Cached" button initially on UI thread
+		prog.findViewById(R.id.load_cached).setEnabled(false);
+
 		prog.setFallBack(new LoadProgressFallBackInterface() {
 			@Override
 			public void fallBack() {
@@ -581,6 +578,17 @@ public class ScheduleViewActivity extends Activity {
 		new Thread() {
 			@Override
 			public void run() {
+				// Check if cached copy exists asynchronously in background thread.
+				// Sadly with HttpEngine even CACHE_ONLY can't be in the UI thread anymore.
+				if (source != Fetcher.Source.CACHE_ONLY) {
+					try (Fetcher f = new Fetcher(app, url, Fetcher.Source.CACHE_ONLY)) {
+						// Cached copy exists! Enable cache fallback option.
+						runOnUiThread(() -> prog.findViewById(R.id.load_cached).setEnabled(true));
+					} catch (IOException ignored) {
+						// No cached copy available, keep button GONE
+					}
+				}
+
 				try {
 					sched = app.getSchedule(url, source, prog.getUpdater());
 					if (prog.getUpdater() != null) {
