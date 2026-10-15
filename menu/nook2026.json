@@ -1,0 +1,28 @@
+{
+  "url": "https://chaotikum.org/conferences/nook2026/frab.xml",
+  "title": "Nights of open Knowledge 2026",
+  "start": "2026-11-20",
+  "end": "2026-11-21",
+  "timezone": "Europe/Berlin",
+  "metadata": {
+    "icon": "https://2026.nook-luebeck.de/android-chrome-192x192.png",
+    "links": [
+      {
+        "url": "https://2026.nook-luebeck.de/",
+        "title": "Website"
+      },
+      {
+        "url": "https://2026.nook-luebeck.de/schedule/",
+        "title": "Programm und Stände"
+      },
+      {
+        "url": "https://2026.nook-luebeck.de/team/",
+        "title": "Team"
+      },
+      {
+        "url": "https://2026.nook-luebeck.de/anreise/",
+        "title": "Anreise"
+      }
+    ]
+  }
+}
