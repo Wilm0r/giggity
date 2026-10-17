@@ -1,0 +1,389 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- Made with love by pretalx v2026.2.1. -->
+<schedule>
+    <generator name="pretalx" system="cfp.romhack.io" version="2026.2.1" />
+    <version>0.4.3</version>
+    <conference>
+        <title>RomHack Camp 2026</title>
+        <acronym>romhack-camp-2026</acronym>
+        <start>2026-10-02</start>
+        <end>2026-10-04</end>
+        <days>3</days>
+        <timeslot_duration>00:05</timeslot_duration>
+        <base_url>https://cfp.romhack.io</base_url>
+        
+        <time_zone_name>Europe/Rome</time_zone_name>
+        
+        
+        <track name="Orga" slug="14-orga"  color="#a52a2a" />
+        
+        <track name="Cybersecurity and Hacking" slug="5-cybersecurity-and-hacking"  color="#00ccff" />
+        
+        <track name="Entertainment" slug="13-entertainment"  color="#7b2fbf" />
+        
+        <track name="Gaming and game development" slug="12-gaming-and-game-development"  color="#800aa7" />
+        
+        <track name="Hardware, Makers and IoT" slug="6-hardware-makers-and-iot"  color="#fbaa12" />
+        
+        <track name="Journalism, society, hacker culture" slug="10-journalism-society-hacker-culture"  color="#61be3d" />
+        
+        <track name="Kids" slug="4-kids"  color="#001dff" />
+        
+        <track name="Networking and Radio" slug="11-networking-and-radio"  color="#25a785" />
+        
+        <track name="Scripting, Coding, Development" slug="7-scripting-coding-development"  color="#d02077" />
+        
+        <track name="Other" slug="9-other"  color="#406d78" />
+        
+    </conference>
+    <day index='1' date='2026-10-02' start='2026-10-02T04:00:00+02:00' end='2026-10-03T03:59:00+02:00'>
+        <room name='STAGE 1' guid='47b38352-0691-5618-8b15-f67c738deddd'>
+            <event guid='89839af4-ef15-5a58-8e2f-fc9263688830' id='177' code='7DJ87Y'>
+                <room>STAGE 1</room>
+                <title>RomHack Camp Opening</title>
+                <subtitle></subtitle>
+                <type>Talk</type>
+                <date>2026-10-02T11:00:00+02:00</date>
+                <start>11:00</start>
+                <duration>00:40</duration>
+                <abstract>**Welcome to the second edition of RomHack Camp!** 
+We are thrilled to gather the community back at the Flaminio Village in Rome for three intensive days of hacking, sharing, and networking.  
+
+In this opening session, the Cyber Saiyan team will set the stage for the weekend ahead. 
+We will walk you through the **camp layout**, introduce this year&apos;s **Community Villages**, and share **essential logistical details** to help you navigate the venue.  We will also preview the upcoming highlights of the weekend.
+
+Grab a seat as we kick off RomHack Camp 2026, celebrate our community, and officially start an unforgettable weekend of collaborative learning. 
+
+Let the hacking begin!</abstract>
+                <slug>romhack-camp-2026-177-romhack-camp-opening</slug>
+                <track>Orga</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/7DJ87Y/</url>
+                <feedback_url></feedback_url>
+            </event>
+            <event guid='4289128a-10cd-5396-88c5-333686509ab1' id='184' code='MKHXNV'>
+                <room>STAGE 1</room>
+                <title>Presentazione &quot;Manualetto di sicurezza digitale per giornalisti e attivisti&quot;</title>
+                <subtitle></subtitle>
+                <type>Talk</type>
+                <date>2026-10-02T17:00:00+02:00</date>
+                <start>17:00</start>
+                <duration>00:40</duration>
+                <abstract>A Febbraio 2026 il progetto editoriale [Guerre di Rete](https://guerredirete.it) ha pubblicato il &quot;Manualetto di sicurezza digitale per giornalisti e attivisti&quot;.
+
+Durante il Camp presenteremo il manualetto, in ricordo di Carola Frediani, fondatrice ed anima del progetto Guerre di Rete, venuta a mancare troppo presto,  il 3 Giugno 2026.
+
+ll manualetto &#232; rivolto a categorie essenziali per il funzionamento della democrazia e del dibattito pubblico, che troppe volte abbiamo visto essere target di attacchi informatici, sorveglianza, campagne d&#8217;odio e di molestie nel mondo, in Europa, in Italia.
+&#201; scritto da giornalisti e attivisti in maniera semplice e discorsiva, ma fornisce anche indicazioni pratiche di base per iniziare a sistemare e a proteggere la propria vita digitale.</abstract>
+                <slug>romhack-camp-2026-184-presentazione-manualetto-di-sicurezza-digitale-per-giornalisti-e-attivisti</slug>
+                <track>Journalism, society, hacker culture</track>
+                
+                <persons>
+                    <person id='143'>Guerre di Rete</person>
+                </persons>
+                <language>it</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/MKHXNV/</url>
+                <feedback_url></feedback_url>
+            </event>
+            <event guid='7527ff27-94e7-5fa4-abe4-7942ad80bd8f' id='209' code='GY3RFX'>
+                <room>STAGE 1</room>
+                <title>Hacker Cinema Night - Sneakers (1992)</title>
+                <subtitle></subtitle>
+                <type>Workshop</type>
+                <date>2026-10-02T20:30:00+02:00</date>
+                <start>20:30</start>
+                <duration>02:00</duration>
+                <abstract>The Camp goes dark and the screen lights up.
+
+On Friday night we open our two open-air screenings with a film that needs no introduction to this crowd: [Sneakers](https://www.imdb.com/title/tt0105435/) (1992). A team of security specialists, a black box that breaks any encryption, and a plot that put pentesting on the big screen decades before it was cool. &quot;Setec Astronomy&quot; &#8212; you&apos;ll get it.
+
+Grab a drink, find a spot under the sky, and watch with the people who get it. No slides, no keynotes &#8212; just a film, together.</abstract>
+                <slug>romhack-camp-2026-209-hacker-cinema-night-sneakers-1992</slug>
+                <track>Entertainment</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/GY3RFX/</url>
+                <feedback_url></feedback_url>
+            </event>
+            <event guid='ff2b4a74-f281-520d-8470-088d727a707e' id='211' code='E7ZT7B'>
+                <room>STAGE 1</room>
+                <title>After Dark - Friday Music Session (DJ TBA)</title>
+                <subtitle></subtitle>
+                <type>Workshop</type>
+                <date>2026-10-02T22:30:00+02:00</date>
+                <start>22:30</start>
+                <duration>02:00</duration>
+                <abstract>The screen goes dark, the speakers wake up.
+
+Right after the Friday film, the Camp turns up the volume. Two hours of music to keep the night going with the community.
+
+No agenda, no schedule to follow, just good sound, good people, and the woods around you.
+
+The DJ line-up will be announced closer to the Camp.</abstract>
+                <slug>romhack-camp-2026-211-after-dark-friday-music-session-dj-tba</slug>
+                <track>Entertainment</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/E7ZT7B/</url>
+                <feedback_url></feedback_url>
+            </event>
+            
+        </room>
+        <room name='WORKSHOP 2' guid='5704863c-a7a0-53ae-9462-b14a304bf451'>
+            <event guid='5642155c-3d83-58df-8c2e-ad348d7ea737' id='193' code='EMS9ZU'>
+                <room>WORKSHOP 2</room>
+                <title>Community CTF by fibonhack</title>
+                <subtitle></subtitle>
+                <type>Talk</type>
+                <date>2026-10-02T17:00:00+02:00</date>
+                <start>17:00</start>
+                <duration>15:00</duration>
+                <abstract>Cyber Saiyan is proud to join forces with [fibonhack]([url](https://fibonhack.it/)) to present &#8220;**From Dusk Till Dawn**&#8221;, an on-site hacking marathon taking place during RomHack Camp.
+
+This isn&#8217;t your average competition. While the rest of the camp sleeps, 5 elite teams will battle through the night. 12 hours. Pure adrenaline.
+
+&#128681; Meet the Finalists
+&#129351; 1st - FR13NDS TEAM - Kazakhstan &#127472;&#127487;
+&#129352; 2nd - TPC - Japan &#127471;&#127477;
+&#129353; 3rd - thePizzaIncident - Italy &#127470;&#127481;
+&#127941; 4th - SaturnX - South Korea &#127472;&#127479;
+&#127941; 5th - Mntcrl - UniBa, Italy &#127470;&#127481;</abstract>
+                <slug>romhack-camp-2026-193-community-ctf-by-fibonhack</slug>
+                <track>Cybersecurity and Hacking</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/EMS9ZU/</url>
+                <feedback_url></feedback_url>
+            </event>
+            
+        </room>
+        
+    </day>
+    <day index='2' date='2026-10-03' start='2026-10-03T04:00:00+02:00' end='2026-10-04T03:59:00+02:00'>
+        <room name='STAGE 1' guid='47b38352-0691-5618-8b15-f67c738deddd'>
+            <event guid='ad86b14a-57f8-5f1f-991c-8b46f202047f' id='185' code='GHGK7L'>
+                <room>STAGE 1</room>
+                <title>Presentazione libro &quot;L&apos;inganno dell&apos;Automa&quot; di Carola Frediani</title>
+                <subtitle></subtitle>
+                <type>Talk</type>
+                <date>2026-10-03T11:30:00+02:00</date>
+                <start>11:30</start>
+                <duration>00:40</duration>
+                <abstract>Insieme alla famiglia di Carola, gli amici la redazione di Guerre di Rete presenteremo il suo ultimo libro &quot;L&apos;inganno dell&apos;Automa&quot;
+
+_&#171;&#200; un big game, my friend. Chi si oppone non finisce bene.&#187; Italia contemporanea. Andrea, un giovane ricercatore di cybersicurezza che vive tra Milano e la Liguria, viene interrotto nella sua edonistica quotidianit&#224; dalla notizia dell&#8217;arresto a Dubai di un vecchio amico. L&#8217;uomo, che commerciava vulnerabilit&#224; informatiche e si dedicava a vari traffici in giro per il mondo, &#232; accusato di spionaggio. Mentre Andrea cerca di capire come aiutare l&#8217;amico e cosa si nasconda dietro l&#8217;arresto, incrocia sulla sua strada una giornalista investigativa, Agnese, autrice di un blog molto seguito, dal quale si scaglia contro la corruzione del governo; ma anche Caterina, brillante e frustrata social media manager di una politica nazionale. Travolta da rivelazioni, inquietanti trafficanti d&#8217;armi, e oscuri intrecci di politici corrotti e societ&#224; di intelligenza artificiale, la vita dei tre viene cambiata, obbligandoli a cercare giustizia pi&#249; che una facile via d&#8217;uscita. E non tutto &#232; ci&#242; che sembra._
+
+https://www.ibs.it/inganno-dell-automa-libro-carola-frediani</abstract>
+                <slug>romhack-camp-2026-185-presentazione-libro-l-inganno-dell-automa-di-carola-frediani</slug>
+                <track>Journalism, society, hacker culture</track>
+                
+                <persons>
+                    <person id='143'>Guerre di Rete</person>
+                </persons>
+                <language>it</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/GHGK7L/</url>
+                <feedback_url></feedback_url>
+            </event>
+            <event guid='56d822d2-1f7e-5799-a21e-5136064328cc' id='179' code='9ZK9QM'>
+                <room>STAGE 1</room>
+                <title>Community CTF by fibonhack - Award Ceremony</title>
+                <subtitle></subtitle>
+                <type>Lightning Talk</type>
+                <date>2026-10-03T18:00:00+02:00</date>
+                <start>18:00</start>
+                <duration>00:30</duration>
+                <abstract>The long night is finally over! After an intense 12-hour on-site hacking marathon, it is time to wrap up the From Dusk Till Dawn CTF.
+
+Organized by the brilliant community-driven group **fibonhack**, this competition tested the limits of our finalists across Web Security, Binary Exploitation, Cryptography, and Reverse Engineering. 
+While the rest of the camp slept, five elite teams&#8212;FR13NDS TEAM, TPC, thePizzaIncident, SaturnX, and Mntcrl&#8212;battled it out from Friday at 19:00 straight through to Saturday morning at 07:00.
+
+In this 20-minute award ceremony, the **fibonhack** and **Cyber Saiyan** teams will take the stage to review the final scoreboard and officially crown the **RomHack Camp 2026 Community CTF Champions**.
+
+Join us to celebrate the incredible skills of our players, discover who takes home the prizes, and give a massive round of applause to everyone who survived until dawn!</abstract>
+                <slug>romhack-camp-2026-179-community-ctf-by-fibonhack-award-ceremony</slug>
+                <track>Cybersecurity and Hacking</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person><person id='153'>fibonhack</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/9ZK9QM/</url>
+                <feedback_url></feedback_url>
+            </event>
+            <event guid='62a04fba-999e-5f68-a821-f88a17dcf636' id='210' code='PUJVLA'>
+                <room>STAGE 1</room>
+                <title>Hacker Cinema Night - The Hitchhiker&apos;s Guide to the Galaxy (2005)</title>
+                <subtitle></subtitle>
+                <type>Workshop</type>
+                <date>2026-10-03T20:30:00+02:00</date>
+                <start>20:30</start>
+                <duration>02:00</duration>
+                <abstract>One more night, one more film.
+
+After a full day of hacking and the CTF award ceremony, we close Saturday under the open sky with [The Hitchhiker&apos;s Guide to the Galaxy](https://www.imdb.com/title/tt0371724/) (2005). Douglas Adams&apos; tale of Earth&apos;s demolition, improbable escapes, and one very useful towel &#8212; a reminder that the answer might be 42, but the fun is in the questions.
+
+Same spot, same spirit as Friday. Bring your towel and Don&apos;t Panic.</abstract>
+                <slug>romhack-camp-2026-210-hacker-cinema-night-the-hitchhiker-s-guide-to-the-galaxy-2005</slug>
+                <track>Entertainment</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/PUJVLA/</url>
+                <feedback_url></feedback_url>
+            </event>
+            <event guid='bba5981f-b818-568b-a25d-9d7cb572b7b6' id='212' code='HEPMEH'>
+                <room>STAGE 1</room>
+                <title>After Dark - Saturday Music Session (DJ TBA)</title>
+                <subtitle></subtitle>
+                <type>Workshop</type>
+                <date>2026-10-03T22:30:00+02:00</date>
+                <start>22:30</start>
+                <duration>02:00</duration>
+                <abstract>One more night, one more set.
+
+After the Saturday film, we close the Camp&apos;s last full night the right way. Two hours of open-air music with the community.
+
+Same spirit as Friday, one more chance to hang out under the sky before the Camp winds down.
+
+The DJ line-up will be announced closer to the Camp.</abstract>
+                <slug>romhack-camp-2026-212-after-dark-saturday-music-session-dj-tba</slug>
+                <track>Entertainment</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/HEPMEH/</url>
+                <feedback_url></feedback_url>
+            </event>
+            
+        </room>
+        
+    </day>
+    <day index='3' date='2026-10-04' start='2026-10-04T04:00:00+02:00' end='2026-10-05T03:59:00+02:00'>
+        <room name='STAGE 1' guid='47b38352-0691-5618-8b15-f67c738deddd'>
+            <event guid='fb41af49-1448-5da8-9aac-312aaae73711' id='178' code='UW8HAH'>
+                <room>STAGE 1</room>
+                <title>RomHack Camp Closing</title>
+                <subtitle></subtitle>
+                <type>Talk</type>
+                <date>2026-10-04T12:30:00+02:00</date>
+                <start>12:30</start>
+                <duration>00:30</duration>
+                <abstract>As three incredible days of hacking, learning, and community life come to an end, it&#8217;s time to gather for the RomHack Camp 2026 closing remarks.  
+
+In this final session, the Cyber Saiyan team will look back at the best highlights of this second edition, sharing key event insights, memorable milestones, and our collective achievements. 
+Most importantly, we want to express our deepest gratitude to our brilliant speakers, the independent community groups who brought the villages to life, our supportive sponsors, and our tireless team of volunteers who made this event possible. 
+
+Join us to wrap up the camp, celebrate the community, and get a quick sneak peek at what&#8217;s next on the roadmap for Cyber Saiyan.  Safe travels home!</abstract>
+                <slug>romhack-camp-2026-178-romhack-camp-closing</slug>
+                <track>Orga</track>
+                
+                <persons>
+                    <person id='115'>Cyber Saiyan</person>
+                </persons>
+                <language>en</language>
+                
+                <recording>
+                    <license></license>
+                    <optout>false</optout>
+                </recording>
+                <links></links>
+                <attachments></attachments>
+
+                <url>https://cfp.romhack.io/romhack-camp-2026/talk/UW8HAH/</url>
+                <feedback_url></feedback_url>
+            </event>
+            
+        </room>
+        
+    </day>
+    
+</schedule>
