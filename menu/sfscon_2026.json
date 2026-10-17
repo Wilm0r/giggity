@@ -1,0 +1,28 @@
+{
+  "url": "https://www.sfscon.it/?calendar=2026&format=xml",
+  "title": "SFSCON 2026",
+  "start": "2026-11-13",
+  "end": "2026-11-14",
+  "timezone": "Europe/Brussels",
+  "metadata": {
+    "icon": "https://www.sfscon.it/wp-content/uploads/2020/10/cropped-cropped-sfsconnew-180x180.png",
+    "links": [
+      {
+        "url": "https://www.sfscon.it/",
+        "title": "Website"
+      },
+      {
+        "url": "https://www.sfscon.it/side-events/",
+        "title": "Side Events"
+      },
+      {
+        "url": "https://www.sfscon.it/attendee-guide/",
+        "title": "Attendee's Guide"
+      },
+      {
+        "url": "https://www.sfscon.it/venue/",
+        "title": "Venue"
+      }
+    ]
+  }
+}
