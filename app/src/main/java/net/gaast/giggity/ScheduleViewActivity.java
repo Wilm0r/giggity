@@ -1214,35 +1214,23 @@ public class ScheduleViewActivity extends Activity {
 	/* Called by either onOptionsItemSelected() above or by the nav drawer onclicks. BUT the custom
 	 * buttons (if any) have their own event handlers. */
 	private void onOptionsItemSelectedInt(int id) {
-		switch (id) {
-			case R.id.settings:
-				redraw = true;
-				Intent intent = new Intent(this, SettingsActivity.class);
-				startActivity(intent);
-				break;
-			case R.id.change_day:
-				showDayDialog();
-				break;
-			case R.id.show_hidden:
-				toggleShowHidden();
-				break;
-			case R.id.refresh:
-				refreshSchedule();
-				break;
-			case R.id.share_selections:
-				shareSelections();
-				break;
-			case R.id.home_shortcut:
-				addHomeShortcut();
-				break;
-			case R.id.search:
-			case R.id.timetable:
-			case R.id.tracks:
-			case R.id.block_schedule:
-			case R.id.now_next:
-			case R.id.my_events:
-				setView(id);
-				break;
+		if (id == R.id.settings) {
+			redraw = true;
+			Intent intent = new Intent(this, SettingsActivity.class);
+			startActivity(intent);
+		} else if (id == R.id.change_day) {
+			showDayDialog();
+		} else if (id == R.id.show_hidden) {
+			toggleShowHidden();
+		} else if (id == R.id.refresh) {
+			refreshSchedule();
+		} else if (id == R.id.share_selections) {
+			shareSelections();
+		} else if (id == R.id.home_shortcut) {
+			addHomeShortcut();
+		} else if (id == R.id.search || id == R.id.timetable || id == R.id.tracks
+				|| id == R.id.block_schedule || id == R.id.now_next || id == R.id.my_events) {
+			setView(id);
 		}
 	}
 
