@@ -286,7 +286,8 @@ def validate_entry(e):
 	except FetchError as err:
 		ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))
 
-	if e.get("version", 2026000000) > 2026092000:
+	if "version" in e and not args.all:
+		# (If args.all then *all* entries are validated, not just changed/new ones.)
 		ret.append("The \"version\" tag is no longer required.")
 
 	if e["end"] < e["start"]:
@@ -294,13 +295,13 @@ def validate_entry(e):
 	if e["end"] < datetime.datetime.now().strftime("%Y-%m-%d"):
 		ret.append("Conference already ended (%(end)s)?" % e)
 
-	if "timezone" in e:
+	if "timezone" not in e:
+		ret.append("The timezone property is now required.")
+	else:
 		try:
 			zoneinfo.ZoneInfo(e["timezone"])
 		except zoneinfo._common.ZoneInfoNotFoundError:
 			ret.append("Timezone does not exist: %s" % e["timezone"])
-	elif e.get("version", 2026000000) >= 2021091100:
-		ret.append("The timezone property is now required.")
 
 	md = e.get("metadata")
 	if md:
