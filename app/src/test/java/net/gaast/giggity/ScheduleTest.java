@@ -336,4 +336,24 @@ public class ScheduleTest extends TestCase {
 			assertThat(last.getTitle(), equalTo("Dinner"));
 		}
 	}
+
+	@Test
+	public void testRomhackCamp2026() {
+		// https://github.com/Wilm0r/giggity/issues/532 : an event running from 17:00 to 08:00
+		// the next day (past the 06:00 default day_change) made its room disappear entirely,
+		// since it fit within neither adjacent day.
+		load("romhack_camp_2026.xml");
+		assertThat(s.getDays(), hasSize(3));
+		assertThat(setNames(s.getTents()), hasItems("STAGE 1", "WORKSHOP 2"));
+
+		s.setDay(0);
+		assertThat(setNames(s.getTents()), hasItem("WORKSHOP 2"));
+		for (Schedule.Line room : s.getTents()) {
+			if (room.getTitle().equals("WORKSHOP 2")) {
+				assertThat(room.getItems(), hasSize(1));
+				assertThat(room.getItems().iterator().next().getTitle(),
+				           is("Community CTF by fibonhack"));
+			}
+		}
+	}
 }
