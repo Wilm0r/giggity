@@ -15,6 +15,9 @@
 	<string name="reminder_enabled_sub_on">Zobrazit připomínku před začátkem eventu</string>
 	<string name="reminder_enabled_sub_off">Připomínky vypnuty</string>
 	<string name="reminder_period">Minuty před začátkem</string>
+	<string name="calendar_enabled">Zobrazit v kalendáři</string>
+	<string name="calendar_enabled_sub">Zobrazit mé události v kalendářových aplikacích</string>
+	<string name="calendar_name">Moje události v Giggity</string>
 	<string name="notification_channel">Připomínka</string>
 	<string name="notification_channel_description">Vámi sledovaný event za chvíli začíná</string>
 	<!-- EventDialog -->

@@ -121,6 +121,8 @@ public class ScheduleUI extends Schedule {
 			throw new Schedule.LateException();
 		}
 
+		// Must go first so "my events" can be deleted by calendar apps
+		ret.app.calendar.processDirty();
 		ret.db = ret.app.getDb();
 		ret.db.setSchedule(ret, url, f.isFresh());
 		String md_json = ret.db.getMetadata();
@@ -130,6 +132,7 @@ public class ScheduleUI extends Schedule {
 
 		/* From now, changes should be marked to go back into the db. */
 		ret.fullyLoaded = true;
+		ret.app.calendar.reconcile(ret);
 
 		return ret;
 	}

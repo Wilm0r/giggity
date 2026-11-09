@@ -58,6 +58,11 @@
 		                android:entries="@array/reminder_periods" 
 		                android:entryValues="@array/reminder_periods"
 						android:summary="%s minutes" />
+
+		<CheckBoxPreference android:key="calendar_enabled"
+		                    android:title="@string/calendar_enabled"
+		                    android:summary="@string/calendar_enabled_sub"
+		                    android:defaultValue="false" />
 	
 	</PreferenceCategory>
 

@@ -18,6 +18,9 @@
 	<string name="reminder_enabled_sub_on">An markierte Veranstaltungen erinnern</string>
 	<string name="reminder_enabled_sub_off">Nicht an markierte Veranstaltungen erinnern</string>
 	<string name="reminder_period">Minuten vor der Veranstaltung</string>
+	<string name="calendar_enabled">Im Kalender anzeigen</string>
+	<string name="calendar_enabled_sub">Meine Veranstaltungen in Kalender-Apps anzeigen</string>
+	<string name="calendar_name">Meine Giggity-Veranstaltungen</string>
 	<!-- EventDialog -->
 	<string name="speaker">Sprecher:</string>
 	<string name="speakers">Sprecher:</string>
