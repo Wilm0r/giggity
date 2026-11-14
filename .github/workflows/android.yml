@@ -24,9 +24,9 @@ jobs:
     - name: Install packages
       run: pip install uv
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
     - name: set up JDK
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
         java-version: '17'
         distribution: 'temurin'
