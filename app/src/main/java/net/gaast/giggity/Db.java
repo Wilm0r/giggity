@@ -845,7 +845,14 @@ public class Db extends SQLiteOpenHelper {
 			}
 		}
 
+		public void clearRemind(String url, String guid) {
+			SQLiteDatabase db = getWritableDatabase();
+			db.execSQL("Update schedule_item Set sci_remind = 0 Where sci_id_s = ? And sci_sch_id In " +
+			           "(Select sch_id From schedule Where sch_url = ?)", new String[]{guid, url});
+		}
+
 		// These last few are intentionally *not* schedule-specific.
+
 		public void addSearchQuery(String query) {
 			SQLiteDatabase db = getWritableDatabase();
 			ContentValues row = new ContentValues();

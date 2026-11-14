@@ -23,6 +23,9 @@
 	<string name="reminder_enabled_sub_on">Notifications before my events start</string>
 	<string name="reminder_enabled_sub_off">Notifications suppressed</string>
 	<string name="reminder_period">Minutes before event</string>
+	<string name="calendar_enabled">Show in calendar</string>
+	<string name="calendar_enabled_sub">Show my events in calendar apps</string>
+	<string name="calendar_name">My Giggity events</string>
 	<string name="notification_channel">Reminders</string>
 	<string name="notification_channel_description">Notification ahead of a selected event starting</string>
 

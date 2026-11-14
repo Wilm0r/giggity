@@ -15,6 +15,9 @@
 	<string name="reminder_enabled_sub_on">Me rappeler les évènements sélectionnés</string>
 	<string name="reminder_enabled_sub_off">Ne pas me rappeler les évènements sélectionnés</string>
 	<string name="reminder_period">Minutes avant l\'évènement</string>
+	<string name="calendar_enabled">Afficher dans le calendrier</string>
+	<string name="calendar_enabled_sub">Afficher mes évènements dans les applis d\'agenda</string>
+	<string name="calendar_name">Mes évènements Giggity</string>
 	<!-- EventDialog -->
 	<string name="speaker">Conférencier :</string>
 	<string name="speakers">Conférenciers :</string>

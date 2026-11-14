@@ -21,6 +21,9 @@
 	<string name="reminder_enabled_sub_on">Waarschuw als een gemarkeerd item begint</string>
 	<string name="reminder_enabled_sub_off">Geen waarschuwing als een gemarkeerd item begint</string>
 	<string name="reminder_period">Minuten voor aanvang</string>
+	<string name="calendar_enabled">In agenda tonen</string>
+	<string name="calendar_enabled_sub">Mijn items in agenda-apps tonen</string>
+	<string name="calendar_name">Mijn Giggity-evenementen</string>
 	<string name="notification_channel">Herrineringen</string>
 	<string name="notification_channel_description">Notificatie voordat een gemarkeerd item begint</string>
 	<!-- EventDialog -->

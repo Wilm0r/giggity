@@ -65,6 +65,7 @@ public class Giggity extends Application {
 	HashMap<String,ScheduleUI> scheduleCache = new HashMap<>();  // url→ScheduleUI
 	TreeSet<Schedule.Item> remindItems = new TreeSet<>();
 	Reminder reminder;
+	CalendarSync calendar;
 
 	static final String CHANNEL_ID = "X-GIGGITY-REMINDER";
 	
@@ -73,6 +74,7 @@ public class Giggity extends Application {
 		super.onCreate();
 		db = new Db(this);
 		reminder = new Reminder(this);
+		calendar = new CalendarSync(this);
 		
 		PreferenceManager.setDefaultValues(this, R.xml.preferences, true);
 		
@@ -159,6 +161,7 @@ public class Giggity extends Application {
 			remindItems.remove(item);
 		
 		reminder.poke(item);
+		calendar.update(item);
 		Widget.updateWidget(this);
 	}
 

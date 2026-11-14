@@ -15,6 +15,9 @@
 	<string name="reminder_enabled_sub_on">Ricordami gli eventi segnati</string>
 	<string name="reminder_enabled_sub_off">Non ricordarmi gli eventi segnati</string>
 	<string name="reminder_period">Minuti prima di un evento</string>
+	<string name="calendar_enabled">Mostra nel calendario</string>
+	<string name="calendar_enabled_sub">Mostra i miei eventi nelle app di calendario</string>
+	<string name="calendar_name">I miei eventi Giggity</string>
 	<string name="notification_channel">Promemoria</string>
 	<string name="notification_channel_description">Notifiche prima di un evento selezionato</string>
 	<!-- EventDialog -->

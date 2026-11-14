@@ -124,7 +124,7 @@ public class Reminder {
 		PendingIntent endIntent = PendingIntent.getBroadcast(app, id | 1, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
 
 		AlarmManager am = (AlarmManager) app.getSystemService(Context.ALARM_SERVICE);
-		boolean enabled = pref.getBoolean("reminder_enabled", true);
+		boolean enabled = pref.getBoolean("reminder_enabled", true) && !app.calendar.isEnabled();
 		am.cancel(ntfIntent);
 		am.cancel(endIntent);
 		if (enabled && item.getRemind()) {
