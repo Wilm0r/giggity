@@ -1,0 +1,28 @@
+name = "ggt-menu-worker"
+main = "worker.js"
+compatibility_date = "2026-10-01"
+
+# ggw.gaa.st is the shadow/staging hostname while ggt.gaa.st still lives on
+# AppEngine. To cut over: delete the existing ggt.gaa.st DNS record (wrangler
+# won't overwrite it) and uncomment the second line. Both hostnames serve
+# the exact same worker + bucket.
+routes = [
+  { pattern = "ggw.gaa.st", custom_domain = true },
+  # { pattern = "ggt.gaa.st", custom_domain = true },
+]
+
+# Everything in static/ is served directly, without invoking the worker:
+#   /                             -> index.html
+#   /nodatapolicy(.html)          -> nodatapolicy.html
+#   /.well-known/assetlinks.json  (needed for Android App Links verification)
+# Only requests that don't match a file there end up in worker.js.
+[assets]
+directory = "./static"
+binding = "ASSETS"
+html_handling = "auto-trailing-slash"
+not_found_handling = "none"
+
+# Filled by .github/workflows/update-menu.yml
+[[r2_buckets]]
+binding = "MENU_BUCKET"
+bucket_name = "ggt-menu"

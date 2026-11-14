@@ -1,0 +1,83 @@
+name: Update menu.json on ggt.gaa.st
+
+# Merges menu/*.json into a single menu.json and uploads it to the R2 bucket
+# that the ggt.gaa.st worker (see ggt/cf/) serves it from.
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'menu/**'
+      - 'tools/merge.py'
+      - 'tools/menu-schema.json'
+      - 'tools/requirements.txt'
+      - '.github/workflows/update-menu.yml'
+  workflow_dispatch: # Allow manual trigger
+
+# Never let an older run finish after (and so overwrite) a newer one.
+concurrency:
+  group: update-menu
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-upload:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: pip install -r tools/requirements.txt
+
+      - name: Merge menu files
+        run: tools/merge.py --weeks 60 --timestamp-version > menu.json
+
+      - name: Validate result
+        run: |
+          python3 - <<'EOF'
+          import json, jsonschema
+          menu = json.load(open("menu.json"))
+          jsonschema.validate(menu, json.load(open("tools/menu-schema.json")))
+          print("OK: version %d, %d schedules" % (menu["version"], len(menu["schedules"])))
+          EOF
+
+      - name: Upload to Cloudflare R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          # Newer aws-cli versions default to checksum flavours R2 doesn't accept.
+          AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+          AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+          R2_BUCKET: ggt-menu # Same as bucket_name in ggt/cf/wrangler.toml
+          R2_ENDPOINT: https://${{ vars.CLOUDFLARE_ACCOUNT_ID }}.r2.cloudflarestorage.com
+        run: |
+          # aws-cli is pre-installed on ubuntu-latest. Per-commit copy first
+          # (for /menu.json?rev=...), then the one everybody actually fetches.
+          for key in "menu-${GITHUB_SHA}.json" menu.json; do
+            aws s3 cp menu.json "s3://${R2_BUCKET}/${key}" \
+              --endpoint-url "${R2_ENDPOINT}" \
+              --content-type "application/json; charset=utf-8"
+          done
+
+      # The worker keeps menu.json in Cloudflare's edge cache, kick it out
+      # so the new version is visible right away.
+      - name: Purge edge cache
+        env:
+          CLOUDFLARE_PURGE_TOKEN: ${{ secrets.CLOUDFLARE_PURGE_TOKEN }}
+          ZONE_ID: ${{ vars.CLOUDFLARE_ZONE_ID }}
+        run: |
+          curl -sS --fail-with-body -X POST \
+            "https://api.cloudflare.com/client/v4/zones/${ZONE_ID}/purge_cache" \
+            -H "Authorization: Bearer ${CLOUDFLARE_PURGE_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"files": ["https://ggt.gaa.st/menu.json", "https://ggw.gaa.st/menu.json"]}'

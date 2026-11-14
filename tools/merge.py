@@ -82,6 +82,13 @@ def start_date(all, weeks=None):
 	last = max(dates)
 	return datetime.datetime.strftime(last - datetime.timedelta(weeks=weeks), "%Y-%m-%d")
 
+def timestamp_version(now=None):
+	# YYYYMMDDnn, where nn is how far into the (UTC) day we are in 1/100ths
+	# (so steps of 864s). Same scheme ggt.gaa.st has always used.
+	d = now or datetime.datetime.now(datetime.UTC)
+	return (d.year * 1000000 + d.month * 10000 + d.day * 100 +
+	        int(d.timestamp() % 86400 // 864))
+
 def merge(all, first, version=None):
 	if not version:
 		version = max(s.get("version", 0) for s in all.values())
@@ -131,6 +138,10 @@ if __name__ == "__main__":
 	parser.add_argument(
 		"--weeks", "-w", type=int, nargs="?",
 		help="max range in weeks of items to preserve (counting from last/most future one)")
+	parser.add_argument(
+		"--timestamp-version",
+		action="store_true",
+		help="use current time as file version instead of the highest one seen in the input")
 
 	args = parser.parse_args()
 
@@ -139,4 +150,8 @@ if __name__ == "__main__":
 	else:
 		all = load_locally("menu")
 
-	print(format_file(merge(all, start_date(all, args.weeks))))
+	version = None
+	if args.timestamp_version:
+		version = timestamp_version()
+
+	print(format_file(merge(all, start_date(all, args.weeks), version=version)))

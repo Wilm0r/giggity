@@ -2,3 +2,5 @@
 .git
 .gitignore
 __pycache__/
+cf/.wrangler/
+cf/node_modules/
