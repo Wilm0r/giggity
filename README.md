@@ -25,14 +25,14 @@ with organising your visit, like:
 
 It's free software, and available on [Google
 Play](https://play.google.com/store/apps/details?id=net.gaast.giggity&hl=en),
-[F-Droid](https://f-droid.org/repository/browse/?fdid=net.gaast.giggity)
+[F-Droid](https://f-droid.org/packages/net.gaast.giggity/)
 and I guess other Android markets.
 
 It's named Giggity, after the word "Gig". The fact that it is also a
 well-known catch phrase of a certain cartoon character may or may not be
 coincidental. ;-)
 
-<a href="https://f-droid.org/app/net.gaast.giggity">
+<a href="https://f-droid.org/packages/net.gaast.giggity/">
 <img src="https://f-droid.org/badge/get-it-on.png" height="64" alt="F-Droid">
 </a>
 
