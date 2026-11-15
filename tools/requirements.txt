@@ -1,3 +1,0 @@
-dulwich==1.2.9
-jsonschema==4.26.0
-json5==0.14.0

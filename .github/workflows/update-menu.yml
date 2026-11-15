@@ -11,7 +11,7 @@ on:
       - 'menu/**'
       - 'tools/merge.py'
       - 'tools/menu-schema.json'
-      - 'tools/requirements.txt'
+      - 'pyproject.toml'
       - '.github/workflows/update-menu.yml'
   workflow_dispatch: # Allow manual trigger
 
@@ -36,7 +36,9 @@ jobs:
           python-version: '3.13'
 
       - name: Install dependencies
-        run: pip install -r tools/requirements.txt
+        run: |
+          python -m pip install --upgrade pip
+          pip install --group merge
 
       - name: Merge menu files
         run: tools/merge.py --weeks 60 --timestamp-version > menu.json

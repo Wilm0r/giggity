@@ -90,8 +90,7 @@ tasks.register('generateMenu') {
                 commandLine = project.findProperty('uvPath') ?: System.getenv('UV_PATH') ?: 'uv'
                 args = [
                     'run',
-                    '--no-project',
-                    '--with-requirements', 'tools/requirements.txt',
+                    '--only-group', 'merge',
                     'tools/merge.py',
                     '-w', '60'
                 ]

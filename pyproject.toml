@@ -4,4 +4,25 @@ version = "0.2.0"
 description = "Giggity Tools"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = {file = ["tools/requirements-ci.txt"]}
+dependencies = []
+
+# Works with both uv and pip (25.1+):
+#   uv run tools/menu-ci.py                         (ci is the default group)
+#   uv run --only-group merge tools/merge.py        (what the Gradle build does)
+#   pip install --group ci
+[dependency-groups]
+# Enough for tools/merge.py.
+merge = [
+	"dulwich==1.2.21",
+	"jsonschema==4.26.0",
+	"json5==0.14.0",
+]
+# Everything tools/menu-ci.py needs.
+ci = [
+	{include-group = "merge"},
+	"pillow==13.0.0",
+	"urllib3==2.8.0",
+]
+
+[tool.uv]
+default-groups = ["ci"]
