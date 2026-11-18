@@ -6,7 +6,6 @@ import datetime
 import json   # Strict, use for writes only
 import json5  # More permissive, use for reading only
 import operator
-import os
 import pathlib
 import re
 import sys
@@ -31,11 +30,12 @@ def check_indents(lines, fn):
 
 def load_locally(path):
 	all = {}
-	for p, _, flist in os.walk(path):
-		for fn in flist:
-			text = open(os.path.join(p, fn), "r", encoding="utf-8").read()
-			# check_indents(text, fn)
-			all[fn] = json5.loads(text)
+	for f in pathlib.Path(path).rglob("*"):
+		if not f.is_file():
+			continue
+		text = f.read_text(encoding="utf-8")
+		# check_indents(text, f.name)
+		all[f.name] = json5.loads(text)
 
 	return all
 
@@ -67,8 +67,8 @@ def load_github(url):
 	u = pm.request("GET", url, preload_content=False)
 	with tarfile.open(fileobj=u, mode="r|gz") as tf:
 		for f in tf:
-			p = f.path.split("/")
-			if len(p) != 3 or p[1] != "menu" or not p[2]:
+			p = pathlib.PurePosixPath(f.path).parts
+			if len(p) != 3 or p[1] != "menu" or not f.isfile():
 				continue
 			all[p[2]] = json5.loads(tf.extractfile(f).read())
 	return all

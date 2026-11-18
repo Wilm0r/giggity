@@ -19,6 +19,7 @@ import datetime
 import gzip
 import json
 import os
+import pathlib
 import re
 import select
 import shlex
@@ -48,7 +49,7 @@ class Log():
 		self._colour = sys.stdout.isatty()
 		self.md = None
 		if fn is not None:
-			self.md = open(fn, "x")
+			self.md = pathlib.Path(fn).open("x")
 
 	def C(self, text: str):  # Console-only, just for progress updates.
 		print(text)
@@ -69,7 +70,7 @@ class Log():
 		if self.md: self.md.write("**Error:** " + text + "\n")
 
 
-SCHEMA = "tools/menu-schema.json"
+SCHEMA = pathlib.Path("tools/menu-schema.json")
 
 parser = argparse.ArgumentParser(
 	description="Validation of Giggity menu.json files based on JSON "
@@ -100,10 +101,11 @@ if args.stderr:
 LOG = Log(args.summary_comment)
 
 try:
-	if args.load_new_from:
-		new = merge.merge(merge.load_locally(args.load_new_from), "")
-	else:
-		new = merge.merge(merge.load_locally("menu"), "")
+	new_raw = merge.load_locally(args.load_new_from or "menu")
+	new = merge.merge(new_raw, "")
+	# merge() stamps a "version" on every entry for old clients, so keep the
+	# unmerged entries around to check what's actually in the input files.
+	new_raw = {pathlib.PurePath(fn).stem: s for fn, s in new_raw.items()}
 except Exception as e:
 	LOG.E("Merge/parse failure while loading menu.")
 	raise
@@ -120,7 +122,7 @@ except Exception as e:
 	LOG.E("Merge/parse failure while loading baseline menu. Very confused now.")
 	raise
 
-schema = json.load(open(SCHEMA, "r"))
+schema = json.load(SCHEMA.open("r"))
 jsonschema.validate(new, schema)
 
 
@@ -130,9 +132,9 @@ class FetchError(Exception):
 
 class HTTP():
 	def __init__(self):
-		certs = "/etc/ssl/certs/ca-certificates.crt"
-		if os.path.exists(certs):
-			self.o = urllib3.PoolManager(cert_reqs="CERT_REQUIRED", ca_certs=certs)
+		certs = pathlib.Path("/etc/ssl/certs/ca-certificates.crt")
+		if certs.exists():
+			self.o = urllib3.PoolManager(cert_reqs="CERT_REQUIRED", ca_certs=str(certs))
 		else:
 			LOG.I("HTTPS certificate verification disabled since %s seems to be missing." % certs)
 			self.o = urllib3.PoolManager()
@@ -286,7 +288,7 @@ def validate_entry(e):
 	except FetchError as err:
 		ret.append("Could not fetch %s %s: %s" % (e["title"], e["url"], err))
 
-	if "version" in e and not args.all:
+	if "version" in new_raw.get(e["id"], {}) and not args.all:
 		# (If args.all then *all* entries are validated, not just changed/new ones.)
 		ret.append("The \"version\" tag is no longer required.")
 
@@ -444,7 +446,7 @@ for e in base_entries.values():
 	LOG.I("Removed: %s" % e["title"])
 
 if args.pr_title and len(pr_title) == 1:
-	open(args.pr_title, "x").write(json.dumps(pr_title[0]))
+	pathlib.Path(args.pr_title).open("x").write(json.dumps(pr_title[0]))
 
 if LOG.errors:
 	LOG.E("File validation failed! :-( Please correct the issues listed above.")
